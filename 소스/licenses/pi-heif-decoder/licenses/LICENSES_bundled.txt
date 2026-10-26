@@ -1,0 +1,7 @@
+This wheel bundles decoder-only libheif 1.23.4 and libde265. Both libraries
+are dynamically linked and licensed under LGPL-3.0-or-later. Source and license:
+https://github.com/strukturag/libheif/tree/v1.23.4
+
+https://github.com/strukturag/libde265
+
+No x265, x264, AOM, dav1d, OpenH264, or encoder plugins are built or shipped.
