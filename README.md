@@ -1,8 +1,12 @@
 <div align="center">
 
-# FlipRing-File-Converter-Project
+# 플립링 파일 변환·PDF 도구
 
-## 🔄 플립링 파일 변환·PDF 도구
+**FlipRing-File-Converter-Project**
+
+**기술 분류:** 데스크톱 소프트웨어 › Qt·문서 처리 › 파일 변환·PDF·OCR
+
+
 
 ### Windows 원형 메뉴 · 로컬 변환 · PDF 편집·OCR
 
@@ -15,7 +19,31 @@
 
 [빠른 시작](#quick-start) · [저장소 구성](#repository-structure) · [입출력 구성](#data-settings)
 
+[예시 이미지](#preview)
+
 </div>
+
+<a name="preview"></a>
+
+## 🖼️ 예시로 보기
+
+<p align="center"><img src="assets/previews/historical-app-preview.png" width="456" alt="기존 앱 화면 · FlipRing-File-Converter-Project" /></p>
+
+**기존 앱 화면** — 프로젝트의 기존 Studio GUI 검토 기록 중 변환 완료 원형 메뉴 화면입니다. 이번 작업에서 앱을 실행한 결과가 아닙니다.
+
+
+
+<a name="input-processing-output"></a>
+
+## 🔄 입력·처리·출력
+
+| 단계 | 이 프로젝트에서 다루는 내용 |
+| :--- | :--- |
+| 입력 | 로컬 이미지·문서·미디어·PDF |
+| 처리 | PySide6 UI, 변환 엔진·외부 도구, 페이지 편집·Tesseract OCR |
+| 출력 | 새 형식 파일·편집 PDF·인식 문서 |
+
+
 
 ---
 
