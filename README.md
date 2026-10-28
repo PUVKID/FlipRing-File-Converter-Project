@@ -1,17 +1,10 @@
 <div align="center">
 
-# 🔄 플립링 파일 변환·PDF 도구
+# 🔄 FlipRing Project
 
-**FlipRing-File-Converter-Project**
+파일 변환과 PDF 편집·OCR을 한 화면에서 처리하는 Windows 앱입니다.
 
 **기술 분류:** 데스크톱 소프트웨어 › Qt·문서 처리 › 파일 변환·PDF·OCR
-
-
-
-### ✨ Windows 원형 메뉴 · 로컬 변환 · PDF 편집·OCR
-
-파일을 선택하고 변환 형식을 고르면 원본 옆에 새 결과를 저장합니다.<br>
-원형 메뉴와 트레이, PDF 작업 화면을 연결한 Windows 데스크톱 앱입니다.
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![Qt](https://img.shields.io/badge/PySide6-41CD52?style=flat-square&logo=qt&logoColor=white)
@@ -22,6 +15,41 @@
 [예시 이미지](#preview)
 
 </div>
+
+<a name="overview"></a>
+
+## 🗺️ 한눈에 보는 구성
+
+<p align="center"><img src="assets/overview.png" width="960" alt="프로젝트의 입력·처리·출력을 정리한 설명도" /></p>
+보관한 프로젝트 자료의 흐름을 정리한 설명도입니다.
+
+<a name="latest-changes"></a>
+## ✨ 최신차수에서 달라진 점
+
+**기본 · 현재 구조·숫자 차수 없음** — 원형 메뉴·트레이와 변환·PDF 처리의 현재 구조
+
+숫자 차수 이력이 없어 현재 구조의 핵심을 안내합니다.
+
+- app.py는 Shift를 누른 채 파일을 끄는 입력을 감시하고 원형 메뉴·트레이·작업 큐를 연결합니다. 일반 변환과 PDF 작업은 각각 단일 작업 스레드이며 두 큐를 동시에 실행하지 않습니다.
+- engine.convert는 파일 종류별 도구를 선택하고 같은 드라이브 임시 폴더에서 처리한 뒤 새 이름으로 이동합니다. 압축의 상위·절대 경로와 링크를 검사합니다.
+- pdf_tools와 pdf_panel은 페이지 추출·삭제·회전·압축·OCR 출력 옵션을 처리합니다. PDF 결과는 배타적 생성으로 덮어쓰기를 피하며 OCR의 행·열은 글자 위치에서 추정합니다.
+- studio_ui·ui_motion은 화면과 유한 애니메이션을 구성합니다. 최근 기록은 입력·출력·오류를 최대 200개 보관하므로 운영 파일 경로를 포함할 수 있습니다.
+
+[🔍 최신 자료 자세히 보기](docs/versions/%EA%B8%B0%EB%B3%B8.md) · [🗂️ 전체 차수 의미 비교](docs/VERSIONS.md)
+
+### 🧭 차수 바로가기
+
+[기본](docs/versions/%EA%B8%B0%EB%B3%B8.md)
+
+숫자 차수 폴더가 없는 현재 구조입니다. 기본은 문서상 분류이며 새로 만든 1차나 제품 릴리스 번호가 아닙니다.
+
+| 관심 있는 내용 | 바로가기 |
+| :--- | :--- |
+| 코드를 먼저 보고 싶어요 | [최신 원본 폴더](%EC%86%8C%EC%8A%A4/) |
+| 이전과 무엇이 다른가요? | [차수별 해설과 근거](docs/VERSIONS.md) |
+| 어떻게 실행하나요? | [준비 조건과 실행 제약](#quick-start) |
+
+
 
 <a name="preview"></a>
 
