@@ -1,0 +1,161 @@
+{
+  "actual_origin": "Debian",
+  "package": "gcc-mingw-w64-x86-64-posix-runtime",
+  "version": "14.2.0-19+27+b1",
+  "built_using": "gcc-14 (= 14.2.0-19)",
+  "files": [
+    {
+      "path": "README.md",
+      "size": 5499,
+      "sha256": "48d0f8f4862710e2eb722a6c50343c1a91b9279fbc900ef68da2a874e7eefeb9"
+    },
+    {
+      "path": "COPYING.txt",
+      "size": 18002,
+      "sha256": "231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c"
+    },
+    {
+      "path": "COPYING3.txt",
+      "size": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": "COPYING.RUNTIME.txt",
+      "size": 3324,
+      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+    },
+    {
+      "path": "gcc-mingw-w64_27.dsc",
+      "size": 7737,
+      "sha256": "492f2ba821e43a3d40817841bd32caa5d49673fe66921bf5ba9c8b81c391dfea"
+    },
+    {
+      "path": "gcc-mingw-w64_27.tar.xz",
+      "size": 36248,
+      "sha256": "c1bf57cbe5f952ee5a7fa8b3e91dd031474e5ce61f468628f48b00e5bcbe8e30"
+    },
+    {
+      "path": "gcc-14_14.2.0-19.dsc",
+      "size": 47347,
+      "sha256": "7db1e202cce66617e9134a662c877a3a773de5b612fd52179815877e0ecfb847"
+    },
+    {
+      "path": "gcc-14_14.2.0.orig.tar.gz",
+      "size": 94299633,
+      "sha256": "e162a5ef3f0077ecae598c6556908d2ab80841532df3398072a96a6df6e6aa29"
+    },
+    {
+      "path": "gcc-14_14.2.0-19.debian.tar.xz",
+      "size": 2577016,
+      "sha256": "31cbab4bafa48aa1c540497bd8098cbcf98e673778f927651ed944709f687781"
+    },
+    {
+      "path": "debian14-runtime-comparison.json",
+      "size": 2940,
+      "sha256": "56c01a1990eb25c6fbb6d20620e61833d9d108c4dd3cda381758fd17fb43220c"
+    },
+    {
+      "path": "debian14-runtime-control.txt",
+      "size": 890,
+      "sha256": "c337735ffef8f8b7925181ceed849504a19c00f6538770cfa6efae2d70f2ac80"
+    },
+    {
+      "path": "download_one.py",
+      "size": 1742,
+      "sha256": "854c338fea68c51aa829875db0491142d8991944c67a020dad2a858cbcfe0105"
+    },
+    {
+      "path": "inspect_runtime.py",
+      "size": 3108,
+      "sha256": "64eaaa29bbb5f296914e50af136d2471932a146f05d195939f1f95e6892bdae9"
+    },
+    {
+      "path": "finalize_sources.py",
+      "size": 5581,
+      "sha256": "1a11daba81aa1135b49b83f7b40559579fd2248d2d127a31a60215163c28aa57"
+    },
+    {
+      "path": "debian27/rules",
+      "size": 16681,
+      "sha256": "534993c328dd2ac9439cca693328e42936773d96361de249589d702c420e662c"
+    },
+    {
+      "path": "debian27/copyright",
+      "size": 75729,
+      "sha256": "f891d7e0c56f503a92c7258d540b3d8215852d8387cbca8f1f07c6f4b6e67da6"
+    },
+    {
+      "path": "debian27/control",
+      "size": 37328,
+      "sha256": "40bf1a4b1b7dc1a1abb391a84ac73168dbfa9979cc482303a3f2e50d3618c0c3"
+    },
+    {
+      "path": "debian27/changelog",
+      "size": 28689,
+      "sha256": "5a4cfcad5966c6c73a76cfb20e646a1c6a24aa86ba5f68c47bf8c33fdff27767"
+    },
+    {
+      "path": "debian-gcc14/rules",
+      "size": 2984,
+      "sha256": "5a90bab597f87910b61564ce34aeedf66a35dd22a2c68b13686e95f17df1c3d9"
+    },
+    {
+      "path": "debian-gcc14/copyright",
+      "size": 69004,
+      "sha256": "20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79"
+    },
+    {
+      "path": "debian-gcc14/README.source",
+      "size": 1288,
+      "sha256": "419cba6d5fc2c44b61de0e67756a6b9ec4e87efa506f3df1c248dee611345b23"
+    },
+    {
+      "path": "debian-gcc14/changelog",
+      "size": 761264,
+      "sha256": "23b451e790b66adc6fd008447a384c6863e72ed18ad556a68aa22e35c7ef2938"
+    },
+    {
+      "path": "gcc-mingw-w64_27.dsc.origin.json",
+      "size": 1017,
+      "sha256": "0ff3b179ed505d9bb813ce75b0c9c58c679fea0bf3b98f9808be9819d0bc2a05"
+    },
+    {
+      "path": "gcc-mingw-w64_27.tar.xz.origin.json",
+      "size": 1104,
+      "sha256": "7aaca5e52c21d25760d33dc9f097347199a842284e5c95a067b57dcdd90b7d04"
+    },
+    {
+      "path": "gcc-14_14.2.0-19.dsc.origin.json",
+      "size": 997,
+      "sha256": "90373d96e908c7911b60e03525e177f40d06d773b0f33891c806462f7cf3dcd8"
+    },
+    {
+      "path": "gcc-14_14.2.0.orig.tar.gz.origin.json",
+      "size": 1050,
+      "sha256": "a1eb8891796e436cb467bada79f3eaf071700e63c56b7d94d398c9bf4401d178"
+    },
+    {
+      "path": "gcc-14_14.2.0-19.debian.tar.xz.origin.json",
+      "size": 1072,
+      "sha256": "fcedb9982c31b5e69c0fc136e0cbf4233fdb531eb41773d2e8253ed0c3389a7f"
+    },
+    {
+      "path": "gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb.origin.json",
+      "size": 1313,
+      "sha256": "4920f4808e536d872b11b4c3cb74f687770902a0514744176a25281b72874304"
+    }
+  ],
+  "include_metadata": [
+    "출하목록.json",
+    "SHA256SUMS.txt"
+  ],
+  "exclude": [
+    "*.deb",
+    "*-data.tar.*",
+    "Ubuntu13 후보 자료",
+    "실패 출처 기록"
+  ],
+  "vendor_modified": false,
+  "compiler_rebuild_tested": false,
+  "pgp_signature_verified": false
+}

@@ -1,0 +1,61 @@
+{
+  "time": "2026-10-21T03:43:07.586013+09:00",
+  "repository": "https://github.com/sun-typeface/SUIT",
+  "commit": "55118d981336d8fce005eb62888c12c0568ef7b0",
+  "license": "SIL Open Font License 1.1",
+  "upstream_bytes_modified": false,
+  "files": [
+    {
+      "local_path": "assets/fonts/SUIT-Regular.ttf",
+      "upstream_path": "fonts/static/ttf/SUIT-Regular.ttf",
+      "url": "https://raw.githubusercontent.com/sun-typeface/SUIT/55118d981336d8fce005eb62888c12c0568ef7b0/fonts/static/ttf/SUIT-Regular.ttf",
+      "bytes": 594324,
+      "sha256": "88c94c990b9996c558666ef07c11664ab177c3be191e2846950b48f245d02274",
+      "git_blob_sha1": "3f26179419c2107c1bd6ce401d164a6ec855c128",
+      "observed_upstream_tree_blob_sha1": "3f26179419c2107c1bd6ce401d164a6ec855c128",
+      "git_blob_match": true
+    },
+    {
+      "local_path": "assets/fonts/SUIT-Medium.ttf",
+      "upstream_path": "fonts/static/ttf/SUIT-Medium.ttf",
+      "url": "https://raw.githubusercontent.com/sun-typeface/SUIT/55118d981336d8fce005eb62888c12c0568ef7b0/fonts/static/ttf/SUIT-Medium.ttf",
+      "bytes": 592832,
+      "sha256": "06be0060927642883b9027b275744fc8234826e6563015ebe3324f3802ae005f",
+      "git_blob_sha1": "dc6f4fcd6da9b0a5f7ed61d0f7b22918081a0a44",
+      "observed_upstream_tree_blob_sha1": "dc6f4fcd6da9b0a5f7ed61d0f7b22918081a0a44",
+      "git_blob_match": true
+    },
+    {
+      "local_path": "assets/fonts/SUIT-SemiBold.ttf",
+      "upstream_path": "fonts/static/ttf/SUIT-SemiBold.ttf",
+      "url": "https://raw.githubusercontent.com/sun-typeface/SUIT/55118d981336d8fce005eb62888c12c0568ef7b0/fonts/static/ttf/SUIT-SemiBold.ttf",
+      "bytes": 591696,
+      "sha256": "8d202e0341b9426b653c1b3d36b2c0d1f4b482a7dfa83baaccf84d355d688fbd",
+      "git_blob_sha1": "30e3d23d5af8cac3d04a9961e7e0585b2acbd247",
+      "observed_upstream_tree_blob_sha1": "30e3d23d5af8cac3d04a9961e7e0585b2acbd247",
+      "git_blob_match": true
+    },
+    {
+      "local_path": "licenses/SUIT/OFL.txt",
+      "upstream_path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/sun-typeface/SUIT/55118d981336d8fce005eb62888c12c0568ef7b0/LICENSE",
+      "bytes": 4380,
+      "sha256": "30d101ee3c35ef629d622d933d261a27b2f60223e0a3b0f36791e569c2b9daa9",
+      "git_blob_sha1": "7ee44cf05fe09f5dc9293f40b96f3f9f66478d65",
+      "observed_upstream_tree_blob_sha1": "7ee44cf05fe09f5dc9293f40b96f3f9f66478d65",
+      "git_blob_match": true
+    }
+  ],
+  "Qt_font_coverage": {
+    "status": "PASS",
+    "evidence": "evidence/SUIT-실제글리프-원인확인.json; work/fluid-ui/SUIT-문자오버로드-진단.json",
+    "executor_role": "deep",
+    "all_three_weights_valid": true,
+    "UCS4_integer_character_support": true,
+    "QTextLayout_glyph_runs_family": "SUIT",
+    "missing_glyph_zero_count": 0,
+    "Windows_and_offscreen_rendering": "정상 관찰",
+    "previous_str_overload_test": "이 환경에서 한글 거짓 음성; 바인딩 내부 변환 원인은 단정하지 않음",
+    "scope": "부모와 별도 deep 진단 근거를 기록했으며 본 기록 작성자가 추가 렌더링 시험을 실행한 것은 아님"
+  }
+}
