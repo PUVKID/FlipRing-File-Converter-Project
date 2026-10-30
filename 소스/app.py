@@ -18,7 +18,7 @@ import winreg
 
 from PySide6.QtCore import (
     Qt, QTimer, Signal, QObject, QPointF, QRectF, QSettings, QLockFile,
-    QUrl, QVariantAnimation, QEasingCurve, QSignalBlocker, QTranslator, QEvent,
+    QUrl, QVariantAnimation, QEasingCurve, QSignalBlocker, QTranslator, QEvent, QSize,
 )
 from PySide6.QtGui import (
     QColor, QPainter, QPen, QPainterPath, QFont, QFontDatabase,
@@ -28,11 +28,12 @@ from PySide6.QtWidgets import (
     QApplication, QWidget, QMainWindow, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QFileDialog, QComboBox, QListWidget, QTabWidget, QCheckBox,
     QSystemTrayIcon, QMenu, QMessageBox, QProgressBar, QGraphicsOpacityEffect,
-    QStylePainter, QStyleOptionButton, QStyle, QFrame, QInputDialog, QListWidgetItem, QScrollArea,
+    QStylePainter, QStyleOptionButton, QStyle, QFrame, QInputDialog, QListWidgetItem, QScrollArea, QSizePolicy,
 )
 import engine
 from flipring_workflow import PresetStore, preflight, BUILTINS
 from preview_panel import PreviewPanel
+from fixed_viewport import fit_window, scroll_content
 from i18n import tr, error_text, QT_KOREAN
 from pdf_panel import PdfToolsPanel
 from studio_ui import StudioCard, NavButton, FileDropCard, Toggle, HistoryDelegate, svg_icon
@@ -674,8 +675,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(self.text("settings_title", app=self.app_name()))
         self.setWindowIcon(icon())
         self.setAcceptDrops(True)
-        self.resize(1080, 780)
-        self.setMinimumSize(960, 680)
+        self.resize(1160, 820)
         self.setFont(ui_font())
         self.pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix="변환")
         self.bridge = Bridge()
@@ -711,7 +711,9 @@ class MainWindow(QMainWindow):
             self.history_error = True
 
         host = QWidget()
-        self.setCentralWidget(host)
+        self.viewport_scroll = scroll_content(host, QSize(960, 740))
+        self.viewport_scroll.setObjectName('fixedViewport')
+        self.setCentralWidget(self.viewport_scroll)
         shell = QHBoxLayout(host)
         shell.setContentsMargins(0, 0, 0, 0)
         shell.setSpacing(0)
@@ -765,6 +767,10 @@ class MainWindow(QMainWindow):
         self.key_badge.setObjectName("keyBadge")
         header.addWidget(self.key_badge, 0, Qt.AlignTop)
         layout.addLayout(header)
+        header_line = QFrame()
+        header_line.setObjectName('workspaceDivider')
+        header_line.setFrameShape(QFrame.HLine)
+        layout.addWidget(header_line)
         shell.addWidget(content, 1)
         self.subtitle = QLabel()
         self.subtitle.setObjectName("muted")
@@ -776,6 +782,7 @@ class MainWindow(QMainWindow):
         workspace_row = QVBoxLayout(settings_page)
         workspace_row.setContentsMargins(0, 0, 0, 0)
         workspace_row.setSpacing(20)
+        workspace_row.setAlignment(Qt.AlignTop)
         self.drop_card = FileDropCard(file_urls, Wheel._accept_copy)
         self.drop_card.orbit.setMinimumHeight(56)
         self.drop_card.orbit.setMaximumHeight(56)
@@ -886,7 +893,7 @@ class MainWindow(QMainWindow):
         tools_layout.addWidget(note)
         tools_layout.addWidget(self.localized(self.button("", self.refresh_tools), "refresh_tools"))
         tools_layout.addStretch()
-        self.tabs.addTab(tools_page, self.text("tools"))
+        self.tabs.addTab(scroll_content(tools_page), self.text("tools"))
 
         history_page = QWidget()
         history_layout = QVBoxLayout(history_page)
@@ -910,7 +917,7 @@ class MainWindow(QMainWindow):
         about_layout.addWidget(self.localized(self.button("", self.open_licenses), "licenses"))
         about_outer.addWidget(about_card)
         about_outer.addStretch()
-        self.tabs.addTab(about_page, self.text("about"))
+        self.tabs.addTab(scroll_content(about_page), self.text("about"))
         self.pdf_panel = PdfToolsPanel(self.language, self)
         self.pdf_panel.scroll.widget().layout().setContentsMargins(0, 0, 0, 0)
         self.pdf_panel.scroll.widget().layout().setSpacing(20)
@@ -967,17 +974,30 @@ class MainWindow(QMainWindow):
             pulse_widget(widget)
         self.retranslate()
         self.motion_changed(self.reduced_motion_toggle.isChecked())
+        # 본문도 같은 논리 크기를 유지하고 작은 화면에서만 바깥으로 스크롤한다.
+        host.setFixedSize(1160, 820)
+        self.viewport_scroll.setWidgetResizable(False)
+        fit_window(self, QSize(1160, 820), fixed=True)
+
+    def section_heading(self, key):
+        label = self.localized(QLabel(), key)
+        label.setObjectName('sectionHeading')
+        label.setWordWrap(True)
+        label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        return label
 
     def build_workbench(self, layout):
         self.workbench = QWidget()
         body = QVBoxLayout(self.workbench)
         body.setContentsMargins(0, 0, 0, 0)
         body.setSpacing(8)
+        body.addWidget(self.section_heading('section_queue'))
         self.queue_list = QListWidget()
         self.queue_list.setMinimumHeight(80)
         self.queue_list.setMaximumHeight(90)
         self.queue_list.currentRowChanged.connect(self.preview_selection)
         body.addWidget(self.queue_list)
+        body.addWidget(self.section_heading('section_execute'))
         row = QHBoxLayout()
         self.output_combo = QComboBox()
         row.addWidget(self.localized(QLabel(), 'output_format'))
@@ -993,6 +1013,7 @@ class MainWindow(QMainWindow):
         self.preflight_label = self.localized(QLabel(), 'estimate_note')
         self.preflight_label.setWordWrap(True)
         body.addWidget(self.preflight_label)
+        body.addWidget(self.section_heading('section_preview'))
         self.preview_panel = PreviewPanel()
         self.preview_panel.reveal_requested.connect(self.reveal_preview)
         body.addWidget(self.preview_panel, 1)
@@ -1005,6 +1026,8 @@ class MainWindow(QMainWindow):
         preset_row.addWidget(self.localized(self.button('', self.save_conversion_preset), 'preset_save'))
         preset_row.addWidget(self.localized(self.button('', self.delete_selected_preset), 'preset_delete'))
         layout.insertLayout(1, preset_row)
+        self.preset_heading = self.section_heading('section_presets')
+        layout.insertWidget(1, self.preset_heading)
 
     def motion_changed(self, enabled):
         self.settings.setValue('reduced_motion', bool(enabled))
@@ -1226,7 +1249,9 @@ class MainWindow(QMainWindow):
         QWidget {font-family:'SUIT','Segoe UI','Malgun Gothic';font-size:13px;font-weight:400;color:#242424;}
         QMainWindow {background:#f6f6f6;}
         QMenu {background:#fafafa;}
-        QFrame#sidebar {background:#191919;border:0;}
+        QFrame#sidebar {background:#191919;border:0;border-right:1px solid #424242;}
+        QFrame#workspaceDivider {color:#d7d7d7;background:#d7d7d7;max-height:1px;border:0;}
+        QLabel#sectionHeading {font-size:12px;font-weight:600;color:#505050;padding:7px 0 5px 0;border-bottom:1px solid #dedede;}
         QLabel#brand {font-size:24px;font-weight:600;color:#f5f5f5;padding:0 10px 3px 10px;}
         QLabel#sideCaption {color:#969696;font-size:11px;padding:0 10px;}
         QLabel#sideMaker {color:#dedede;font-size:12px;padding:0 10px;}

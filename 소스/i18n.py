@@ -5,6 +5,10 @@ import re
 
 
 TEXT = {
+    "section_presets": ("저장한 작업 설정", "Saved presets"),
+    "section_queue": ("선택 파일 · 작업 목록", "Selected files · Job queue"),
+    "section_execute": ("출력 형식 · 실행", "Output format · Actions"),
+    "section_preview": ("원본과 결과 비교", "Compare original and result"),
     "selection_no_common": ("선택한 파일들에 공통 출력 형식이 없습니다. 같은 종류의 지원 파일을 선택하세요.", "These files have no common output format. Select supported files of the same kind."),
     "reduce_motion": ("모션 줄이기", "Reduce motion"),
     "output_format": ("출력 형식", "Output format"),

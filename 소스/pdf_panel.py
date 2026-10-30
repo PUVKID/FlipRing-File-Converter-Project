@@ -71,6 +71,7 @@ TEXT = {
     "editor_empty": ("PDF를 열어 페이지를 확인하고 편집하세요.", "Open a PDF to view and edit its pages."),
     "editor_hint": ("썸네일을 드래그해 순서 변경 · Ctrl/Shift로 다중 선택", "Drag thumbnails to reorder · Ctrl/Shift to select multiple pages"),
     "page_label": ("{number}쪽 · 원본 {source}쪽", "Page {number} · Source {source}"),
+    "page_label_short": ("{number}쪽 · 원본 {source}", "Page {number} · #{source}"),
     "editor_count": ("{name} · {count}쪽 · {selected}쪽 선택", "{name} · {count} pages · {selected} selected"),
     "editor_ready": ("페이지 편집은 메모리에만 반영됩니다. 새 PDF로 저장하세요.", "Edits stay in memory. Save them as a new PDF."),
     "selection_empty": ("먼저 페이지를 선택해 주세요.", "Select pages first."),
@@ -175,7 +176,13 @@ class PagePreview(QLabel):
 
     def _fit(self):
         if not self.original.isNull():
-            self.setPixmap(self.original.scaled(self.size() - QSize(12, 12), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+            ratio = self.devicePixelRatioF()
+            size = self.size() - QSize(12, 12)
+            pixmap = self.original.scaled(max(1, round(size.width() * ratio)),
+                                           max(1, round(size.height() * ratio)),
+                                           Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            pixmap.setDevicePixelRatio(ratio)
+            self.setPixmap(pixmap)
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
@@ -267,6 +274,8 @@ class EnlargedPreview(QDialog):
         super().__init__(panel)
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.resize(840, 760)
+        from fixed_viewport import fit_window
+        fit_window(self, QSize(840, 760))
         self.raster = pixmap
         self.zoom_factor = 1.0
         layout = QVBoxLayout(self)
@@ -935,8 +944,9 @@ class PdfToolsPanel(QWidget):
         for index, page in enumerate(self.workspace.pages):
             item = self.pages_list.item(index)
             if item is not None:
-                item.setText(self.tr_text("page_label", number=index + 1, source=page.source_index + 1))
-                item.setToolTip(item.text() + f" · +{page.rotation}°")
+                item.setText(self.tr_text("page_label_short", number=index + 1, source=page.source_index + 1))
+                full_label = self.tr_text("page_label", number=index + 1, source=page.source_index + 1)
+                item.setToolTip(full_label + f" · +{page.rotation}°")
         self.editor_summary.setText(self.tr_text("editor_count", name=self.workspace.source.name,
                                                count=self.workspace.page_count, selected=len(self.selected_page_indices())))
 
@@ -1090,9 +1100,14 @@ class PdfToolsPanel(QWidget):
         if not missing and not needs_preview:
             return
 
+        # 논리 크기와 표시 배율을 구분해 필요한 픽셀 수로 렌더한다.
+        ratio = self.devicePixelRatioF()
+        thumbnail_height = max(140, round(140 * ratio))
+        preview_height = max(1100, round(760 * ratio))
+
         def render(cancel, progress):
-            images = [(key, workspace.render(index, 140, cancel=cancel)) for index, key in missing]
-            preview = workspace.render(current, 1100, cancel=cancel) if needs_preview else None
+            images = [(key, workspace.render(index, thumbnail_height, cancel=cancel)) for index, key in missing]
+            preview = workspace.render(current, preview_height, cancel=cancel) if needs_preview else None
             return images, preview_key, preview
 
         self._submit_workspace("render", render)

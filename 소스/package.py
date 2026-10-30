@@ -34,8 +34,8 @@ required += [directory / filename for directory in (root / "licenses/7Zip", prog
 required += [root / filename for filename in (
     "app.py", "i18n.py", "studio_ui.py", "ui_motion.py", "engine.py", "pdf_tools.py", "pdf_panel.py", "test_pdf_tools.py",
     "flipring_workflow.py", "preview_panel.py", "pdf_pages.py", "pdf_lock.py", "test_workbench.py", "test_pdf_workspace.py",
-    "build.py", "package.py", "test_gui.py", "test_engine.py", "test_conversion_matrix.py",
-    "requirements-lock.txt", "빌드방법.md", "사용안내.txt", "검토기록.md", "1.7-새기능안내.md", "LICENSE.txt",
+    "fixed_viewport.py", "test_fixed_layout.py", "build.py", "package.py", "test_gui.py", "test_engine.py", "test_conversion_matrix.py",
+    "offscreen-monitor.json", "requirements-lock.txt", "빌드방법.md", "사용안내.txt", "검토기록.md", "1.7-새기능안내.md", "1.8-화면안내.md", "LICENSE.txt",
     "assets/NanumGothicBold.ttf", "assets/NanumGothic-OFL.txt", "test-fixtures/sample.heic",
     "assets/combo-chevron.svg",
     "assets/fonts/SUIT-Regular.ttf", "assets/fonts/SUIT-Medium.ttf", "assets/fonts/SUIT-SemiBold.ttf",

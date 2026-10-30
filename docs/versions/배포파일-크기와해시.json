@@ -24,6 +24,18 @@
       "path": "설치파일/FlipRing-Setup.exe",
       "bytes": 562369196,
       "sha256": "08699831c44df41a79556677d8baa85abf9825a55f677dcb06a619b072302468"
+    },
+    {
+      "version": "1.8.0",
+      "path": "프로그램/FlipRing/FlipRing.exe",
+      "bytes": 7010119,
+      "sha256": "214134e5a57ea054291208c9863bb719922854e6012b9e4e6027168999f39ddb"
+    },
+    {
+      "version": "1.8.0",
+      "path": "설치파일/FlipRing-Setup.exe",
+      "bytes": 562401986,
+      "sha256": "54aca94ace6d48ba94b6845bdcc177499e7b5c90d652fae813d010abbc44a412"
     }
   ]
 }

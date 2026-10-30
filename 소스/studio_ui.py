@@ -6,15 +6,24 @@ from ui_motion import start_motion, set_reduced_motion
 
 from PySide6.QtCore import Qt, Signal, QVariantAnimation, QEasingCurve, QRectF, QPointF, QSignalBlocker, QSize
 from PySide6.QtGui import QColor, QPainter, QPen, QPainterPath, QFont, QPixmap, QIcon
+from PySide6.QtSvg import QSvgRenderer
 from PySide6.QtWidgets import QWidget, QAbstractButton, QFrame, QVBoxLayout, QLabel, QSizePolicy, QCheckBox, QStyledItemDelegate, QStyle
 
 
 def svg_icon(path, color="#5a5a5a"):
     """공식 SVG 원문은 보존하고 표시 색상만 메모리에서 바꾼다."""
-    pixmap = QPixmap()
-    if not pixmap.loadFromData(path.read_bytes().replace(b"currentColor", color.encode("ascii"))):
+    renderer = QSvgRenderer(path.read_bytes().replace(b"currentColor", color.encode("ascii")))
+    if not renderer.isValid():
         raise RuntimeError(f"UI icon could not be loaded: {path}")
-    return QIcon(pixmap)
+    icon = QIcon()
+    for side in (16, 20, 24, 32, 40, 48, 64):
+        pixmap = QPixmap(side, side)
+        pixmap.fill(Qt.transparent)
+        painter = QPainter(pixmap)
+        renderer.render(painter)
+        painter.end()
+        icon.addPixmap(pixmap)
+    return icon
 
 
 class StudioCard(QFrame):
@@ -152,7 +161,7 @@ class NavButton(QAbstractButton):
         self.toggled.connect(self.transition)
 
     def set_svg(self, path):
-        self.svg_icons = {selected: svg_icon(path, color).pixmap(20, 20)
+        self.svg_icons = {selected: svg_icon(path, color)
                           for selected, color in ((False, "#b8b8b8"), (True, "#f3f3f3"))}
 
     def _frame(self, value):
@@ -193,11 +202,14 @@ class NavButton(QAbstractButton):
         painter.setPen(Qt.NoPen)
         painter.setBrush(QColor(255, 255, 255, round(20 * self.amount)))
         painter.drawRoundedRect(QRectF(self.rect()).adjusted(0, 1, 0, -1), 10, 10)
+        if self.isChecked():
+            painter.setBrush(QColor('#eeeeee'))
+            painter.drawRoundedRect(QRectF(3, 13, 3, self.height() - 26), 1.5, 1.5)
         color = QColor("#f3f3f3" if self.isChecked() else "#b8b8b8")
         painter.setPen(QPen(color, 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
         painter.setBrush(Qt.NoBrush)
         if self.svg_icons is not None:
-            painter.drawPixmap(16, round(self.height() / 2 - 10), self.svg_icons[self.isChecked()])
+            self.svg_icons[self.isChecked()].paint(painter, 16, round(self.height() / 2 - 10), 20, 20)
         font = self.font()
         font.setWeight(QFont.Medium if self.isChecked() else QFont.Normal)
         painter.setFont(font)

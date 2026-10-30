@@ -19,7 +19,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--output-root", type=Path, default=ROOT.parent, help="새 프로그램과 설치 파일을 저장할 빈 배포 폴더")
 args = parser.parse_args()
 release_root = args.output_root.resolve()
-release_version = "1.7.0"
+release_version = "1.8.0"
 output = release_root / "프로그램"
 if (output / name).exists() or (release_root / "설치파일" / (name + "-Setup.exe")).exists():
     raise SystemExit("기존 프로그램을 보존하기 위해 빌드를 중단합니다. 새 작업 폴더에서 빌드하세요.")

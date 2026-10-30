@@ -4,7 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 import weakref
 
-from PySide6.QtCore import Qt, QObject, QEvent, QVariantAnimation, QEasingCurve, QRectF, QPointF, QTimer, QUrl, QSignalBlocker
+from PySide6.QtCore import Qt, QObject, QEvent, QVariantAnimation, QEasingCurve, QRectF, QPointF, QTimer, QUrl, QSignalBlocker, QSize
 from PySide6.QtGui import QColor, QPainter, QPen, QPainterPath, QIcon, QPixmap
 from PySide6.QtWidgets import (
     QApplication, QWidget, QFrame, QLabel, QVBoxLayout, QHBoxLayout, QFileDialog,
@@ -328,6 +328,18 @@ class StateMark(QWidget):
         self.animation.setEndValue(1.0)
         self.animation.valueChanged.connect(self._frame)
 
+        # 첫 틱 지연을 보완하도록400ms 종료 이벤트를 등록한다. 이벤트 루프 지연 시 전달도 늦어질 수 있다.
+        self.deadline = QTimer(self)
+        self.deadline.setSingleShot(True)
+        self.deadline.setTimerType(Qt.PreciseTimer)
+        self.deadline.timeout.connect(self._finish)
+        self.animation.finished.connect(self.deadline.stop)
+
+    def _finish(self):
+        self.deadline.stop()
+        self.animation.setCurrentTime(self.animation.duration())
+        self._frame(1.0)
+
     def _frame(self, value):
         self.phase = float(value)
         self.update()
@@ -336,15 +348,18 @@ class StateMark(QWidget):
         self.state = state
         self.setAccessibleName(state)
         self.animation.stop()
+        self.deadline.stop()
         if self.isVisible():
             self.animation.setCurrentTime(0)
             self._frame(float(self.animation.currentValue()))
+            self.deadline.start(self.animation.duration())
             start_motion(self.animation)
         else:
             self._frame(1.0)
 
     def hideEvent(self, event):
         self.animation.stop()
+        self.deadline.stop()
         self._frame(1.0)
         super().hideEvent(event)
 
@@ -405,8 +420,9 @@ class MotionToolTip(QFrame):
     def show_text(self, owner, text, point):
         self.owner = weakref.ref(owner)
         self.label.setText(text)
-        self.adjustSize()
         available = owner.screen().availableGeometry()
+        self.label.setMaximumWidth(max(1, min(510, available.width() - 28)))
+        self.adjustSize()
         self.move(max(available.left(), min(point.x() + 12, available.right() - self.width())),
                   max(available.top(), min(point.y() + 18, available.bottom() - self.height())))
         self.show()
@@ -496,25 +512,36 @@ class MonoFileIcons(QFileIconProvider):
 
     def icon(self, value):
         folder = value.isDir() if hasattr(value, "isDir") else value in (QFileIconProvider.Folder, QFileIconProvider.Drive)
-        pixmap = QPixmap(24, 24)
-        pixmap.fill(Qt.transparent)
-        painter = QPainter(pixmap)
-        painter.setRenderHint(QPainter.Antialiasing)
-        painter.setPen(QPen(QColor("#6a6a6a"), 1.4, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
-        painter.setBrush(QColor("#f5f5f5"))
-        if folder:
-            path = QPainterPath(QPointF(3, 7))
-            for point in ((3, 5), (9, 5), (11, 7), (21, 7), (21, 19), (3, 19)):
-                path.lineTo(*point)
-            path.closeSubpath()
-            painter.drawPath(path)
-        else:
-            painter.drawRoundedRect(QRectF(5, 3, 14, 18), 2, 2)
-            painter.drawLine(8, 9, 16, 9)
-            painter.drawLine(8, 13, 16, 13)
-            painter.drawLine(8, 17, 13, 17)
-        painter.end()
-        return QIcon(pixmap)
+        cached = getattr(self, '_density_icons', {})
+        if folder in cached:
+            return cached[folder]
+        icon = QIcon()
+        # 동일한24논리픽셀 도형에 배율별 실제 픽셀을 제공한다.
+        for ratio in (1.0, 1.25, 1.5, 2.0):
+            side = round(24 * ratio)
+            pixmap = QPixmap(side, side)
+            pixmap.setDevicePixelRatio(ratio)
+            pixmap.fill(Qt.transparent)
+            painter = QPainter(pixmap)
+            painter.setRenderHint(QPainter.Antialiasing)
+            painter.setPen(QPen(QColor("#6a6a6a"), 1.4, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+            painter.setBrush(QColor("#f5f5f5"))
+            if folder:
+                path = QPainterPath(QPointF(3, 7))
+                for point in ((3, 5), (9, 5), (11, 7), (21, 7), (21, 19), (3, 19)):
+                    path.lineTo(*point)
+                path.closeSubpath()
+                painter.drawPath(path)
+            else:
+                painter.drawRoundedRect(QRectF(5, 3, 14, 18), 2, 2)
+                painter.drawLine(8, 9, 16, 9)
+                painter.drawLine(8, 13, 16, 13)
+                painter.drawLine(8, 17, 13, 17)
+            painter.end()
+            icon.addPixmap(pixmap)
+        cached[folder] = icon
+        self._density_icons = cached
+        return icon
 
 
 class MotionFileDialog(QFileDialog):
@@ -535,7 +562,8 @@ class MotionFileDialog(QFileDialog):
         self.setOption(QFileDialog.ShowDirsOnly, folder)
         self.setViewMode(QFileDialog.Detail)
         self.resize(900, 650)
-        self.setMinimumSize(760, 530)
+        from fixed_viewport import fit_window
+        fit_window(self, QSize(900, 650))
         self._icon_provider = MonoFileIcons(language)
         self.setIconProvider(self._icon_provider)
         if name_filter:
@@ -641,12 +669,36 @@ class MotionFileDialog(QFileDialog):
             tree = self.findChild(QTreeView, "treeView")
             if tree is not None:
                 header = tree.header()
-                header.setSectionResizeMode(0, QHeaderView.Stretch)
+                header.setStretchLastSection(False)
+                header.setSectionResizeMode(0, QHeaderView.Interactive)
                 for column, width in ((1, 80), (2, 135), (3, 175)):
                     header.setSectionResizeMode(column, QHeaderView.Interactive)
                     header.resizeSection(column, width)
+                header.sectionResized.connect(self._keep_name_width)
+                tree.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+                tree.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
             self._header_configured = True
+        self._fit_name_column()
         self.mark.respond()
+
+    def _keep_name_width(self, column, old_width, width):
+        if column == 0 and width < 180:
+            tree = self.findChild(QTreeView, 'treeView')
+            if tree is not None:
+                tree.header().resizeSection(0, 180)
+
+    def _fit_name_column(self):
+        tree = self.findChild(QTreeView, 'treeView')
+        if tree is not None:
+            header = tree.header()
+            others = sum(header.sectionSize(column) for column in range(1, header.count()))
+            # 작은 창에서도 이름 열의 폭을 유지하고 나머지 열은 가로로 탐색한다.
+            header.resizeSection(0, max(180, tree.viewport().width() - others))
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        if self._header_configured:
+            self._fit_name_column()
 
     def changeEvent(self, event):
         super().changeEvent(event)
@@ -740,7 +792,9 @@ def decorate_message(dialog):
     if message is not None:
         message.setWordWrap(True)
         message.setMaximumWidth(580)
-    dialog.setMinimumWidth(420)
+    from fixed_viewport import fit_window
+    dialog.adjustSize()
+    fit_window(dialog, dialog.size().expandedTo(QSize(420, 1)))
     parent = dialog.parentWidget()
     if parent is not None:
         owner = weakref.ref(parent)
