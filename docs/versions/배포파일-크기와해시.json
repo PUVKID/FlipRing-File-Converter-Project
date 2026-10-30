@@ -1,0 +1,29 @@
+{
+  "scope": "파일 바이트 대조이며 바이너리 내부 기능·성능 차이를 추정하지 않습니다.",
+  "files": [
+    {
+      "version": "1.6.0",
+      "path": "프로그램/FlipRing/FlipRing.exe",
+      "bytes": 6942144,
+      "sha256": "9922cb6a5798573ca49ed3f7a0ce9fa626be8b212f9e5fba3ee99a2b0fcf6415"
+    },
+    {
+      "version": "1.6.0",
+      "path": "설치파일/FlipRing-Setup.exe",
+      "bytes": 559948760,
+      "sha256": "4718e1325e93ecd00917db611bedebb71df05d2b49dedd397dd91c8872ed4a20"
+    },
+    {
+      "version": "1.7.0",
+      "path": "프로그램/FlipRing/FlipRing.exe",
+      "bytes": 7003374,
+      "sha256": "4b30939622b0b12fec0c195df95163d542fff0d7028f3f0edc10bd534ec2f0c1"
+    },
+    {
+      "version": "1.7.0",
+      "path": "설치파일/FlipRing-Setup.exe",
+      "bytes": 562369196,
+      "sha256": "08699831c44df41a79556677d8baa85abf9825a55f677dcb06a619b072302468"
+    }
+  ]
+}

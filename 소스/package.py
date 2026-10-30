@@ -27,10 +27,15 @@ required += [program / "_internal/assets/fonts" / filename for filename in (
     "SUIT-Regular.ttf", "SUIT-Medium.ttf", "SUIT-SemiBold.ttf",
 )]
 required += [program / "licenses/SUIT" / filename for filename in ("OFL.txt", "원본출처.json")]
+required += [directory / filename for directory in (root / "vendor/7zip", program / "_internal/vendor/7zip")
+             for filename in ("7z.exe", "7z.dll")]
+required += [directory / filename for directory in (root / "licenses/7Zip", program / "licenses/7Zip")
+             for filename in ("License.txt", "Source-License.txt", "LGPL-2.1.txt", "unRarLicense.txt", "출하목록.json", "sources/7z2605-src.tar.xz")]
 required += [root / filename for filename in (
     "app.py", "i18n.py", "studio_ui.py", "ui_motion.py", "engine.py", "pdf_tools.py", "pdf_panel.py", "test_pdf_tools.py",
-    "build.py", "package.py", "test_gui.py", "test_engine.py",
-    "requirements-lock.txt", "빌드방법.md", "사용안내.txt", "검토기록.md", "LICENSE.txt",
+    "flipring_workflow.py", "preview_panel.py", "pdf_pages.py", "pdf_lock.py", "test_workbench.py", "test_pdf_workspace.py",
+    "build.py", "package.py", "test_gui.py", "test_engine.py", "test_conversion_matrix.py",
+    "requirements-lock.txt", "빌드방법.md", "사용안내.txt", "검토기록.md", "1.7-새기능안내.md", "LICENSE.txt",
     "assets/NanumGothicBold.ttf", "assets/NanumGothic-OFL.txt", "test-fixtures/sample.heic",
     "assets/combo-chevron.svg",
     "assets/fonts/SUIT-Regular.ttf", "assets/fonts/SUIT-Medium.ttf", "assets/fonts/SUIT-SemiBold.ttf",
@@ -98,12 +103,44 @@ def verify_gcc_sources(directory):
     return manifest
 
 
+def verify_7zip(vendor, notices):
+    """동일 버전의 실행부·두 원문 고지·전체 상응 소스를 누락 없이 대조한다."""
+    manifest = notices / "출하목록.json"
+    data = json.loads(manifest.read_text(encoding="utf-8"))
+    if data.get("version") != "26.05":
+        raise SystemExit("7-Zip 고정 버전이 일치하지 않습니다.")
+    expected = {"vendor/7zip/" + name: vendor / name for name in ("7z.exe", "7z.dll")}
+    expected.update({"licenses/7Zip/" + name: notices / name for name in (
+        "License.txt", "Source-License.txt", "LGPL-2.1.txt", "unRarLicense.txt", "sources/7z2605-src.tar.xz")})
+    files = data.get("files")
+    if not isinstance(files, list) or len(files) != len(expected) or any(not isinstance(entry, dict) for entry in files):
+        raise SystemExit("7-Zip 출하 목록의 항목 수와 형식이 올바르지 않습니다.")
+    paths = [entry.get("path") for entry in files]
+    if any(not isinstance(path, str) for path in paths) or len(set(paths)) != len(paths) or set(paths) != set(expected):
+        raise SystemExit("7-Zip 출하 목록의 경로가 누락·중복되거나 범위를 벗어납니다.")
+    for entry in files:
+        path = expected[entry["path"]]
+        size, digest = entry.get("size"), entry.get("sha256")
+        if type(size) is not int or size < 0 or not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+            raise SystemExit("7-Zip 출하 목록의 크기·해시 형식이 올바르지 않습니다.")
+        if not path.is_file() or path.stat().st_size != size:
+            raise SystemExit("7-Zip 실행부·원문·소스가 누락되거나 크기가 다릅니다: " + str(path))
+        with path.open("rb") as stream:
+            if hashlib.file_digest(stream, "sha256").hexdigest() != digest:
+                raise SystemExit("7-Zip 자료의 SHA-256이 다릅니다: " + str(path))
+    return manifest
+
+
 # 소스 보관본과 고객 실행 폴더에 같은 고지·소스를 동봉했는지 각각 검증한다.
 gcc_relative = Path("licenses/OCR/ubuntu-gcc")
 source_manifest = verify_gcc_sources(root / gcc_relative)
 program_manifest = verify_gcc_sources(program / gcc_relative)
 if source_manifest.read_bytes() != program_manifest.read_bytes():
     raise SystemExit("소스와 프로그램의 GCC 출하 목록이 다릅니다.")
+source_7zip = verify_7zip(root / "vendor/7zip", root / "licenses/7Zip")
+program_7zip = verify_7zip(program / "_internal/vendor/7zip", program / "licenses/7Zip")
+if source_7zip.read_bytes() != program_7zip.read_bytes():
+    raise SystemExit("소스와 프로그램의 7-Zip 출하 목록이 다릅니다.")
 
 # 개발 환경과 빌드 캐시를 제외한 실제 소스 및 동봉 라이브러리 자료를 모두 기록한다.
 excluded = {"build-cache", "__pycache__", ".venv", "venv"}

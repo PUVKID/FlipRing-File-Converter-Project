@@ -16,6 +16,30 @@ import engine
 from i18n import tr
 
 
+def reduced_motion():
+    application = QApplication.instance()
+    return bool(application and application.property('flipringReducedMotion'))
+
+
+def start_motion(animation):
+    """감소 모드에서도 완료 신호와 최종 상태를 적용한다."""
+    animation.start()
+    if reduced_motion():
+        animation.setCurrentTime(animation.duration())
+
+
+def set_reduced_motion(root, enabled):
+    application = QApplication.instance()
+    if application is None: return
+    application.setProperty('flipringReducedMotion', bool(enabled))
+    if enabled:
+        # 이미 열린 휠·팝업을 포함하며 타이머와 실제 작업 진행은 변경하지 않는다.
+        for window in application.topLevelWidgets():
+            for animation in window.findChildren(QVariantAnimation):
+                if isValid(animation) and animation.state() == QVariantAnimation.Running:
+                    animation.setCurrentTime(animation.duration())
+
+
 SURFACE_STYLE = """
 QFileDialog#flipringPicker {background:#fafafa;}
 QFileDialog#flipringPicker QWidget {font-family:'SUIT';font-size:13px;color:#262626;}
@@ -169,7 +193,7 @@ class SurfaceMotion(QObject):
             self.animation.setEndValue(0.0)
             self.animation.setCurrentTime(0)
         self._frame(current)
-        self.animation.start()
+        start_motion(self.animation)
 
     def selection_pulse(self, *unused):
         widget = self.parent()
@@ -315,7 +339,7 @@ class StateMark(QWidget):
         if self.isVisible():
             self.animation.setCurrentTime(0)
             self._frame(float(self.animation.currentValue()))
-            self.animation.start()
+            start_motion(self.animation)
         else:
             self._frame(1.0)
 
@@ -432,7 +456,7 @@ class PickerMark(QWidget):
         self.animation.stop()
         self.animation.setCurrentTime(0)
         self._frame(float(self.animation.currentValue()))
-        self.animation.start()
+        start_motion(self.animation)
 
     def hideEvent(self, event):
         self.animation.stop()

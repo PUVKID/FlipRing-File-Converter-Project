@@ -1,0 +1,3050 @@
+--- 1.4.0/app.py
++++ 1.6.0/app.py
+@@ -26,11 +26,14 @@
+     QApplication, QWidget, QMainWindow, QVBoxLayout, QHBoxLayout, QLabel,
+     QPushButton, QFileDialog, QComboBox, QListWidget, QTabWidget, QCheckBox,
+     QSystemTrayIcon, QMenu, QMessageBox, QProgressBar, QGraphicsOpacityEffect,
+-    QStylePainter, QStyleOptionButton, QStyle,
++    QStylePainter, QStyleOptionButton, QStyle, QFrame,
+ )
+ import engine
+ from i18n import tr, error_text, QT_KOREAN
+ from pdf_panel import PdfToolsPanel
++from studio_ui import StudioCard, NavButton, FileDropCard, Toggle, HistoryDelegate, svg_icon
++from ui_motion import (make_file_dialog, install_surface_motions, pulse_widget, StateMark,
++                       install_motion_system, SURFACE_STYLE, MotionMessageBox, decorate_message)
+ 
+ VERSION = 3
+ APPNAME = "플립링"
+@@ -129,6 +132,7 @@
+     for role in (QPalette.WindowText, QPalette.Text, QPalette.ButtonText):
+         palette.setColor(QPalette.Disabled, role, QColor("#999999"))
+     application.setPalette(palette)
++    install_motion_system(application, install_button_motions)
+ 
+ 
+ class DialogTranslator(QTranslator):
+@@ -147,6 +151,9 @@
+ def apply_language(language):
+     # 파일명·시스템 파일 형식·외부 진단은 사용자 데이터로 보존한다.
+     application = QApplication.instance()
++    tooltip = getattr(application, "_flipring_tooltip", None)
++    if tooltip is not None:
++        tooltip.hide()
+     previous = getattr(application, "_mono_translator", None)
+     if previous is not None:
+         application.removeTranslator(previous)
+@@ -182,13 +189,17 @@
+ 
+ def message_dialog(parent, title, message):
+     # 기본 정보/경고 아이콘의 유색 표시 대신 제목과 본문으로 상태를 전달한다.
+-    dialog = QMessageBox(parent)
++    dialog = MotionMessageBox(parent)
+     dialog.setWindowTitle(title)
+     dialog.setWindowIcon(icon())
+     dialog.setText(message)
++    dialog.setTextFormat(Qt.PlainText)
+     dialog.setIcon(QMessageBox.NoIcon)
+     dialog.setStandardButtons(QMessageBox.Ok)
++    decorate_message(dialog)
+     install_button_motions(dialog)
++    dialog.setStyleSheet(SURFACE_STYLE)
++    install_surface_motions(dialog)
+     return dialog
+ 
+ 
+@@ -224,6 +235,7 @@
+ 
+     def __init__(self, button):
+         super().__init__(button)
++        button._flipring_button_motion = self
+         self.amount = 0.0
+         self.hovered = False
+         self.pressed = False
+@@ -274,8 +286,10 @@
+             self.button.initStyleOption(option)
+             painter = QStylePainter(self.button)
+             painter.setRenderHint(QPainter.Antialiasing)
+-            shade = 255 - round(13 * self.amount) - (6 if self.button.isDown() else 0)
+-            border = 226 - round(25 * self.amount)
++            primary = bool(self.button.property("primary"))
++            shade = (28 + round(16 * self.amount) if primary else
++                     255 - round(13 * self.amount) - (6 if self.button.isDown() else 0))
++            border = shade if primary else 226 - round(25 * self.amount)
+             if self.button.hasFocus():
+                 border = 112
+             painter.setBrush(QColor(shade, shade, shade))
+@@ -641,7 +655,7 @@
+ 
+ 
+ class MainWindow(QMainWindow):
+-    """상주 컨트롤러와 작은 설정창. 변환 선택은 원형 메뉴에서 수행한다."""
++    """상주 컨트롤러와 파일·문서 작업 공간. 변환 선택은 원형 메뉴에서 수행한다."""
+ 
+     def __init__(self):
+         super().__init__()
+@@ -655,8 +669,8 @@
+         self.setWindowTitle(self.text("settings_title", app=self.app_name()))
+         self.setWindowIcon(icon())
+         self.setAcceptDrops(True)
+-        self.resize(460, 600)
+-        self.setMinimumSize(460, 570)
++        self.resize(1080, 780)
++        self.setMinimumSize(960, 680)
+         self.setFont(ui_font())
+         self.pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix="변환")
+         self.bridge = Bridge()
+@@ -689,31 +703,93 @@
+ 
+         host = QWidget()
+         self.setCentralWidget(host)
+-        layout = QVBoxLayout(host)
+-        layout.setContentsMargins(22, 22, 22, 18)
+-        layout.setSpacing(10)
++        shell = QHBoxLayout(host)
++        shell.setContentsMargins(0, 0, 0, 0)
++        shell.setSpacing(0)
++        self.sidebar = QFrame()
++        self.sidebar.setObjectName("sidebar")
++        self.sidebar.setFixedWidth(204)
++        sidebar_layout = QVBoxLayout(self.sidebar)
++        sidebar_layout.setContentsMargins(16, 28, 16, 22)
++        sidebar_layout.setSpacing(6)
+         self.brand = QLabel()
+         self.brand.setObjectName("brand")
+-        layout.addWidget(self.brand)
++        sidebar_layout.addWidget(self.brand)
++        side_caption = self.localized(QLabel(), "studio_workspace")
++        side_caption.setObjectName("sideCaption")
++        sidebar_layout.addWidget(side_caption)
++        sidebar_layout.addSpacing(30)
++        self.nav_buttons = {}
++        for index, symbol in ((0, "convert"), (4, "pdf"), (2, "history"), (1, "tools"), (3, "about")):
++            button = NavButton(symbol)
++            filename = {"convert": "arrow-left-right", "pdf": "scan-text", "history": "rotate-ccw-clock",
++                        "tools": "sliders-horizontal", "about": "info"}[symbol]
++            button.set_svg(engine.asset("lucide/" + filename + ".svg"))
++            button.clicked.connect(lambda checked=False, target=index: self.tabs.setCurrentIndex(target))
++            self.nav_buttons[index] = button
++            sidebar_layout.addWidget(button)
++        sidebar_layout.addStretch()
++        maker = self.localized(QLabel(), "studio_maker")
++        maker.setObjectName("sideMaker")
++        sidebar_layout.addWidget(maker)
++        local = self.localized(QLabel(), "studio_local")
++        local.setObjectName("sideCaption")
++        sidebar_layout.addWidget(local)
++        shell.addWidget(self.sidebar)
++        content = QWidget()
++        content.setObjectName("workspace")
++        layout = QVBoxLayout(content)
++        layout.setContentsMargins(30, 28, 30, 20)
++        layout.setSpacing(22)
++        header = QHBoxLayout()
++        headings = QVBoxLayout()
++        headings.setSpacing(6)
++        self.page_title = QLabel()
++        self.page_title.setObjectName("pageTitle")
++        headings.addWidget(self.page_title)
++        self.page_description = QLabel()
++        self.page_description.setObjectName("muted")
++        self.page_description.setWordWrap(True)
++        headings.addWidget(self.page_description)
++        header.addLayout(headings, 1)
++        self.key_badge = QLabel()
++        self.key_badge.setObjectName("keyBadge")
++        header.addWidget(self.key_badge, 0, Qt.AlignTop)
++        layout.addLayout(header)
++        shell.addWidget(content, 1)
+         self.subtitle = QLabel()
+         self.subtitle.setObjectName("muted")
+         self.subtitle.setWordWrap(True)
+-        layout.addWidget(self.subtitle)
+         self.tabs = SoftTabs()
++        self.tabs.tabBar().hide()
+         layout.addWidget(self.tabs, 1)
+         settings_page = QWidget()
+-        settings_layout = QVBoxLayout(settings_page)
+-        settings_layout.setContentsMargins(16, 18, 16, 14)
+-        settings_layout.setSpacing(13)
+-        language_row = QHBoxLayout()
+-        language_row.addWidget(self.localized(QLabel(), "language"))
++        workspace_row = QHBoxLayout(settings_page)
++        workspace_row.setContentsMargins(0, 0, 0, 0)
++        workspace_row.setSpacing(20)
++        self.drop_card = FileDropCard(file_urls, Wheel._accept_copy)
++        self.drop_card.clicked.connect(self.pick_files)
++        self.drop_card.files_dropped.connect(self.receive_files)
++        self.localized(self.drop_card.title, "studio_drop_title")
++        self.localized(self.drop_card.caption, "studio_drop_caption")
++        workspace_row.addWidget(self.drop_card, 1)
++        self.quick_settings = StudioCard()
++        self.quick_settings.setFixedWidth(286)
++        settings_layout = QVBoxLayout(self.quick_settings)
++        settings_layout.setContentsMargins(20, 22, 20, 22)
++        settings_layout.setSpacing(8)
++        quick_heading = self.localized(QLabel(), "studio_quick_settings")
++        quick_heading.setObjectName("cardTitle")
++        settings_layout.addWidget(quick_heading)
++        settings_layout.addWidget(self.subtitle)
++        settings_layout.addSpacing(6)
++        settings_layout.addWidget(self.localized(QLabel(), "language"))
+         self.language_combo = QComboBox()
+         self.language_combo.addItem("한국어", "ko")
+         self.language_combo.addItem("English", "en")
+         self.language_combo.setCurrentIndex(self.language_combo.findData(self.language))
+         self.language_combo.currentIndexChanged.connect(self.language_changed)
+-        language_row.addWidget(self.language_combo, 1)
+-        settings_layout.addLayout(language_row)
++        settings_layout.addWidget(self.language_combo)
+         settings_layout.addWidget(self.localized(QLabel(), "trigger_label"))
+         self.trigger = QComboBox()
+         for label, code in TRIGGER_KEYS:
+@@ -729,44 +805,60 @@
+         settings_layout.addWidget(self.trigger)
+         self.record_button = self.button(self.text("record"), self.record_key)
+         settings_layout.addWidget(self.record_button)
+-        self.auto = self.localized(QCheckBox(), "auto")
++        self.auto = self.localized(Toggle(), "auto")
+         self.auto.setChecked(self.autostart_enabled())
+         self.auto.toggled.connect(self.autostart)
+         settings_layout.addWidget(self.auto)
+-        self.reveal = self.localized(QCheckBox(), "reveal")
++        self.reveal = self.localized(Toggle(), "reveal")
+         self.reveal.setChecked(self.settings.value("reveal", False, type=bool))
+         self.reveal.toggled.connect(lambda value: self.settings.setValue("reveal", value))
+         settings_layout.addWidget(self.reveal)
+-        self.notifications = self.localized(QCheckBox(), "notifications")
++        self.notifications = self.localized(Toggle(), "notifications")
+         self.notifications.setChecked(self.settings.value("notify", True, type=bool))
+         self.notifications.toggled.connect(lambda value: self.settings.setValue("notify", value))
+         settings_layout.addWidget(self.notifications)
+-        note = self.localized(QLabel(), "original_note")
+-        note.setObjectName("muted")
+-        note.setWordWrap(True)
+-        settings_layout.addWidget(note)
+         settings_layout.addStretch()
++        workspace_row.addWidget(self.quick_settings)
+         row = QHBoxLayout()
+-        row.addWidget(self.localized(self.button("", self.pick_files), "pick_files"))
+-        row.addWidget(self.localized(self.button("", self.pick_folder), "pick_folder"))
+-        settings_layout.addLayout(row)
++        row.setContentsMargins(12, 16, 12, 0)
++        choose = self.localized(self.button("", self.pick_files), "pick_files")
++        choose.setProperty("primary", True)
++        choose.setIcon(svg_icon(engine.asset("lucide/file-up.svg"), "#ffffff"))
++        self.choose_button = choose
++        row.addWidget(choose)
++        self.folder_button = self.localized(self.button("", self.pick_folder), "pick_folder")
++        self.folder_button.setIcon(svg_icon(engine.asset("lucide/folder-open.svg")))
++        row.addWidget(self.folder_button)
++        self.drop_card.body.addLayout(row)
++        self.selection_label = self.localized(QLabel(), "studio_no_selection")
++        self.selection_label.setAlignment(Qt.AlignCenter)
++        self.selection_label.setObjectName("muted")
++        self.drop_card.body.addWidget(self.selection_label)
+         self.tabs.addTab(settings_page, self.text("settings"))
+ 
+         tools_page = QWidget()
+         tools_layout = QVBoxLayout(tools_page)
+-        tools_layout.setSpacing(10)
++        tools_layout.setContentsMargins(0, 0, 0, 0)
++        tools_layout.setSpacing(16)
+         self.tool_labels = {}
+         for name, (title, package, purpose) in engine.TOOLS.items():
+-            row = QHBoxLayout()
+-            row.addWidget(self.localized(QLabel(), "purpose_" + name, prefix=title + " · "), 1)
++            card = StudioCard()
++            row = QHBoxLayout(card)
++            row.setContentsMargins(22, 20, 22, 20)
++            details = QVBoxLayout()
++            title_label = QLabel(title)
++            title_label.setObjectName("cardTitle")
++            details.addWidget(title_label)
++            details.addWidget(self.localized(QLabel(), "purpose_" + name))
++            row.addLayout(details, 1)
+             row.addWidget(self.localized(self.button("", lambda checked=False, pkg=package:
+-                                      QApplication.clipboard().setText(self.install_command(pkg))), "install_command"))
+-            tools_layout.addLayout(row)
++                                      self.copy_install_command(pkg)), "install_command"))
++            tools_layout.addWidget(card)
+             status = QLabel()
+             status.setObjectName("muted")
+             status.setWordWrap(True)
+             self.tool_labels[name] = status
+-            tools_layout.addWidget(status)
++            details.addWidget(status)
+         note = self.localized(QLabel(), "tools_note")
+         note.setWordWrap(True)
+         note.setObjectName("muted")
+@@ -777,30 +869,47 @@
+ 
+         history_page = QWidget()
+         history_layout = QVBoxLayout(history_page)
++        history_layout.setContentsMargins(0, 0, 0, 0)
+         self.history = HistoryList()
++        self.history.setItemDelegate(HistoryDelegate(self.history))
+         self.history.itemDoubleClicked.connect(self.open_history_result)
+         history_layout.addWidget(self.history)
+         history_layout.addWidget(self.localized(QLabel(), "recent_note"))
+         self.tabs.addTab(history_page, self.text("history"))
+         about_page = QWidget()
+-        about_layout = QVBoxLayout(about_page)
++        about_outer = QVBoxLayout(about_page)
++        about_outer.setContentsMargins(0, 0, 0, 0)
++        about_card = StudioCard()
++        about_layout = QVBoxLayout(about_card)
++        about_layout.setContentsMargins(30, 30, 30, 30)
+         about = self.localized(QLabel(), "about_text")
+         about.setWordWrap(True)
++        about.setObjectName("aboutBody")
+         about_layout.addWidget(about)
+         about_layout.addWidget(self.localized(self.button("", self.open_licenses), "licenses"))
+-        about_layout.addStretch()
++        about_outer.addWidget(about_card)
++        about_outer.addStretch()
+         self.tabs.addTab(about_page, self.text("about"))
+         self.pdf_panel = PdfToolsPanel(self.language, self)
+-        self.pdf_panel.scroll.widget().layout().setContentsMargins(16, 16, 16, 16)
+-        self.pdf_panel.scroll.widget().layout().setSpacing(12)
++        self.pdf_panel.scroll.widget().layout().setContentsMargins(0, 0, 0, 0)
++        self.pdf_panel.scroll.widget().layout().setSpacing(20)
+         self.pdf_panel.form.setVerticalSpacing(12)
+         self.pdf_panel.form.setHorizontalSpacing(14)
+         self.pdf_panel.result_ready.connect(self.pdf_finished)
++        self.pdf_panel.activity_changed.connect(self.pdf_activity_changed)
+         self.tabs.addTab(self.pdf_panel, self.text("pdf_tools"))
++        self.tabs.currentChanged.connect(self.update_navigation)
++        footer = QHBoxLayout()
++        self.status_mark = StateMark()
++        footer.addWidget(self.status_mark)
+         self.status = QLabel(self.text("ready"))
+         self.status.setObjectName("muted")
+         self.status.setWordWrap(True)
+-        layout.addWidget(self.status)
++        footer.addWidget(self.status, 1)
++        self.original_badge = self.localized(QLabel(), "studio_originals")
++        self.original_badge.setObjectName("muted")
++        footer.addWidget(self.original_badge)
++        layout.addLayout(footer)
+         self.progress = QProgressBar()
+         self.progress.setRange(0, 0)
+         self.progress.hide()
+@@ -820,7 +929,19 @@
+         self.refresh_history()
+         self.apply_style()
+         install_button_motions(self)
++        install_surface_motions(self)
++        for widget in (self.status, self.selection_label, self.page_title, self.page_description,
++                       self.key_badge, self.record_button):
++            pulse_widget(widget)
+         self.retranslate()
++
++    def update_navigation(self, index):
++        for target, button in self.nav_buttons.items():
++            button.setChecked(target == index)
++        keys = {0: "studio_convert", 1: "studio_helpers", 2: "history", 3: "about", 4: "pdf_tools"}
++        self.page_title.setText(self.text(keys[index]))
++        self.page_description.setText(self.text("studio_description_" + str(index)))
++        pulse_widget(self.page_title)
+ 
+     def text(self, message_id, **values):
+         return tr(self.language, message_id, **values)
+@@ -859,23 +980,33 @@
+             widget.setText(prefix + self.text(key, app=self.app_name()))
+         for index, key in enumerate(("settings", "tools", "history", "about", "pdf_tools")):
+             self.tabs.setTabText(index, self.text(key))
++        for index, key in ((0, "studio_convert"), (1, "studio_helpers"), (2, "history"), (3, "about"), (4, "pdf_tools")):
++            self.nav_buttons[index].setText(self.text(key))
++        self.update_navigation(self.tabs.currentIndex())
++        self.update_selection_label()
+         self.pdf_panel.set_language(self.language)
+         self.update_record_label()
++        self.record_button.setToolTip(self.text("original_note"))
+         self.update_trigger_hint()
+-        self.refresh_tools()
++        self.render_tools()
+         self.refresh_history()
+         self.update_status()
+-        self.update_tray_menu()
++        self.update_tray_menu(refresh=False)
+         self.wheel.update()
+ 
+     def update_record_label(self):
+         key = "record_wait" if self.recording else "recorded" if self.recorded_key is not None else "record"
+         self.record_button.setText(self.text(key, key=self.recorded_key))
++        pulse_widget(self.record_button)
+ 
+     def update_status(self):
++        before = self.status.text()
+         if self.pending:
+             self.status.setText(self.text("queue", count=self.pending))
+             self.tray.setToolTip(self.app_name() + " · " + self.text("converting", count=self.pending))
++        elif self.pdf_panel.is_busy() or getattr(self, "_pdf_activity", "ready") in {"cancelling", "cancelled"}:
++            self.status.setText(self.pdf_panel.status.text())
++            self.tray.setToolTip(self.app_name())
+         elif self.last_result is not None:
+             output, error = self.last_result
+             self.status.setText(self.text("failed_status", error=error_text(self.language, error)[:90]) if error
+@@ -884,6 +1015,12 @@
+         else:
+             self.status.setText(self.text("ready"))
+             self.tray.setToolTip(self.app_name())
++        state = ("working" if self.pending else self.pdf_panel.status_mark.state
++                 if self.pdf_panel.is_busy() or getattr(self, "_pdf_activity", "ready") in {"cancelling", "cancelled"}
++                 else "error" if self.last_result and self.last_result[1] else "complete" if self.last_result else "ready")
++        if before != self.status.text() or self.status_mark.state != state:
++            self.status_mark.respond(state)
++            pulse_widget(self.status)
+ 
+     @staticmethod
+     def button(text, action):
+@@ -896,26 +1033,47 @@
+     def install_command(package):
+         return f"winget install --id {package} -e --source winget --accept-package-agreements --accept-source-agreements"
+ 
++    def copy_install_command(self, package):
++        QApplication.clipboard().setText(self.install_command(package))
++        self.status.setText(self.text("command_copied"))
++        self.status_mark.respond("complete")
++        pulse_widget(self.status)
++
+     def apply_style(self):
+         style = """
+         QWidget {font-family:'SUIT','Segoe UI','Malgun Gothic';font-size:13px;font-weight:400;color:#242424;}
+-        QMainWindow,QMenu {background:#fafafa;}
+-        QLabel#brand {font-size:24px;font-weight:500;color:#191919;padding-bottom:2px;}
+-        QLabel#muted {color:#626262;font-size:12px;}
+-        QTabWidget::pane {border:0;border-radius:12px;background:#ffffff;}
++        QMainWindow {background:#f6f6f6;}
++        QMenu {background:#fafafa;}
++        QFrame#sidebar {background:#191919;border:0;}
++        QLabel#brand {font-size:24px;font-weight:600;color:#f5f5f5;padding:0 10px 3px 10px;}
++        QLabel#sideCaption {color:#969696;font-size:11px;padding:0 10px;}
++        QLabel#sideMaker {color:#dedede;font-size:12px;padding:0 10px;}
++        QLabel#pageTitle {font-size:29px;font-weight:600;color:#202020;}
++        QLabel#muted {color:#707070;font-size:12px;}
++        QLabel#keyBadge {background:#eeeeee;border-radius:9px;padding:9px 13px;color:#5e5e5e;font-size:11px;}
++        QFrame#studioCard,QFrame#dropCard {background:#ffffff;border:1px solid #e7e7e7;border-radius:18px;}
++        QLabel#cardTitle {font-size:16px;font-weight:600;color:#242424;}
++        QLabel#dropTitle {font-size:21px;font-weight:500;color:#242424;}
++        QLabel#aboutBody {font-size:15px;color:#404040;}
++        QTabWidget::pane {border:0;background:transparent;}
+         QTabBar::tab {background:transparent;padding:12px 12px;color:#626262;font-weight:500;}
+         QTabBar::tab:selected {color:#242424;border-bottom:1px solid #4a4a4a;}
+-        QPushButton {background:#ffffff;border:1px solid #e2e2e2;border-radius:8px;padding:7px 12px;font-weight:500;min-height:18px;}
++        QPushButton {background:#ffffff;border:1px solid #e2e2e2;border-radius:8px;padding:8px 12px;font-weight:500;min-height:18px;}
++        QPushButton[primary="true"] {background:#202020;border-color:#202020;color:#ffffff;}
+         QPushButton:disabled {color:#8a8a8a;}
+         QComboBox:focus,QLineEdit:focus,QSpinBox:focus {border-color:#888888;}
+         QListWidget,QComboBox,QLineEdit,QSpinBox {background:#ffffff;border:1px solid #e2e2e2;border-radius:8px;padding:8px;}
+         QComboBox {padding-right:30px;}
+         QComboBox:disabled {color:#8a8a8a;background:#fafafa;}
+         QComboBox::drop-down {subcontrol-origin:padding;subcontrol-position:top right;width:24px;border:0;background:transparent;}
++        QSpinBox#pdfNumeric {padding-right:28px;min-height:20px;}
++        QSpinBox#pdfNumeric::up-button {subcontrol-origin:padding;subcontrol-position:top right;width:22px;height:18px;border:0;background:transparent;}
++        QSpinBox#pdfNumeric::down-button {subcontrol-origin:padding;subcontrol-position:bottom right;width:22px;height:18px;border:0;background:transparent;}
++        QSpinBox#pdfNumeric::up-arrow,QSpinBox#pdfNumeric::down-arrow {image:none;}
+         QListWidget::item {padding:10px;border-bottom:1px solid #f0f0f0;}
+         QListWidget::item:selected {background:#efefef;color:#242424;}
+         QComboBox QAbstractItemView {background:#ffffff;color:#242424;selection-background-color:#ededed;selection-color:#242424;}
+-        QScrollArea {border:0;background:#ffffff;}
++        QScrollArea {border:0;background:transparent;}
+         QScrollBar:vertical {background:#f7f7f7;width:7px;margin:3px 0;}
+         QScrollBar::handle:vertical {background:#c5c5c5;min-height:24px;border-radius:3px;}
+         QScrollBar::add-line:vertical,QScrollBar::sub-line:vertical {height:0;}
+@@ -937,10 +1095,18 @@
+         style += '\nQComboBox::down-arrow {image:url("' + arrow + '");width:12px;height:8px;}'
+         self.setStyleSheet(style)
+         self.tray_menu.setStyleSheet(style)
+-
+-    def update_tray_menu(self):
++        self.tray_menu.setStyleSheet(self.tray_menu.styleSheet() + SURFACE_STYLE)
++
++    def update_tray_menu(self, refresh=True):
++        if refresh or not hasattr(self, "_tool_paths"):
++            self._tool_paths = {name: engine.tool(name) for name in engine.TOOLS}
++            self.render_tools()
+         menu = self.tray_menu
++        previous_menus = [action.menu() for action in menu.actions() if action.menu() is not None]
+         menu.clear()
++        # QAction 제거만으로는 부모가 소유한 하위 메뉴가 소멸하지 않는다.
++        for previous in previous_menus:
++            previous.deleteLater()
+         title = menu.addAction(self.app_name())
+         title.setEnabled(False)
+         label = self.trigger.currentText()
+@@ -976,12 +1142,12 @@
+             action.triggered.connect(checkbox.setChecked)
+         tools_menu = menu.addMenu(self.text("helpers"))
+         for name, (title, package, purpose) in engine.TOOLS.items():
+-            installed = bool(engine.tool(name))
++            installed = bool(self._tool_paths[name])
+             action = tools_menu.addAction(("✓ " if installed else "✗ ") + title + " · " + self.text("purpose_" + name))
+             action.setEnabled(False)
+             if not installed:
+                 tools_menu.addAction(self.text("copy_install", tool=title), lambda checked=False, pkg=package:
+-                                     QApplication.clipboard().setText(self.install_command(pkg)))
++                                     self.copy_install_command(pkg))
+         tools_menu.addAction(self.text("details"), lambda: self.open_page(1))
+         menu.addSeparator()
+         menu.addAction(self.text("history"), lambda: self.open_page(2))
+@@ -990,6 +1156,7 @@
+         menu.addAction(self.text("about"), lambda: self.open_page(3))
+         menu.addSeparator()
+         menu.addAction(self.text("quit"), self.quit)
++        install_surface_motions(menu)
+ 
+     def tray_activated(self, reason):
+         if reason == QSystemTrayIcon.DoubleClick:
+@@ -1004,6 +1171,7 @@
+         if self.trigger.currentData() == -1:
+             label = self.text("custom_hint", key=self.custom_vk)
+         self.subtitle.setText(self.text("drag_hint", key=label))
++        self.key_badge.setText(self.text("studio_key_badge", key=label))
+ 
+     def open_page(self, index):
+         self.tabs.setCurrentIndex(index)
+@@ -1035,38 +1203,54 @@
+         QDesktopServices.openUrl(QUrl.fromLocalFile(str(folder)))
+ 
+     def refresh_tools(self):
++        self._tool_paths = {name: engine.tool(name) for name in engine.TOOLS}
++        self.render_tools()
++        self.update_tray_menu(refresh=False)
++
++    def render_tools(self):
++        """언어 변경은 관측을 다시 그린다. 명시 새로고침·트레이 열기는 실제 도구를 다시 찾는다."""
+         for name, label in self.tool_labels.items():
+-            path = engine.tool(name)
++            path = self._tool_paths.get(name)
+             label.setText(self.text("available" if path else "not_installed"))
+             label.setToolTip(path or "")
++            pulse_widget(label)
+ 
+     def pick_files(self):
+         dialog = self.file_dialog(False)
+-        if dialog.exec() == QFileDialog.Accepted:
+-            self.set_files(dialog.selectedFiles())
+-            self.preview()
++        try:
++            if dialog.exec() == QFileDialog.Accepted:
++                self.set_files(dialog.selectedFiles())
++                self.preview()
++        finally:
++            dialog.deleteLater()
+ 
+     def pick_folder(self):
+         dialog = self.file_dialog(True)
+-        if dialog.exec() == QFileDialog.Accepted:
+-            self.set_files(dialog.selectedFiles())
+-            self.preview()
++        try:
++            if dialog.exec() == QFileDialog.Accepted:
++                self.set_files(dialog.selectedFiles())
++                self.preview()
++        finally:
++            dialog.deleteLater()
+ 
+     def file_dialog(self, folder):
+-        dialog = QFileDialog(self, self.text("pick_folder_title" if folder else "pick_files_title"))
+-        dialog.setOption(QFileDialog.DontUseNativeDialog, True)
+-        dialog.setFileMode(QFileDialog.Directory if folder else QFileDialog.ExistingFiles)
+-        if folder:
+-            dialog.setOption(QFileDialog.ShowDirsOnly, True)
+-        for role, key in ((QFileDialog.LookIn, "dialog_location"), (QFileDialog.FileName, "dialog_filename"),
+-                          (QFileDialog.FileType, "dialog_filter"), (QFileDialog.Reject, "cancel"),
+-                          (QFileDialog.Accept, "dialog_choose" if folder else "dialog_open")):
+-            dialog.setLabelText(role, self.text(key))
++        dialog = make_file_dialog(self, self.text("pick_folder_title" if folder else "pick_files_title"), folder=folder)
+         install_button_motions(dialog)
+         return dialog
+ 
+     def set_files(self, paths):
+         self.paths = list(dict.fromkeys(str(Path(path)) for path in paths))
++        self.update_selection_label()
++        self.drop_card.orbit.respond(engine.targets(self.paths) if self.paths else None)
++
++    def update_selection_label(self):
++        self.selection_label.setText(self.text("file_count", count=len(self.paths)) if self.paths
++                                     else self.text("studio_no_selection"))
++        pulse_widget(self.selection_label)
++
++    def receive_files(self, paths):
++        self.set_files(paths)
++        self.preview()
+ 
+     def dragEnterEvent(self, event):
+         if event.possibleActions() & Qt.CopyAction and file_urls(event.mimeData()):
+@@ -1097,6 +1281,8 @@
+             # PDFium을 쓰는 두 작업 큐를 동시에 실행하지 않는다.
+             message_dialog(self, self.text("busy_title"), self.text("busy_message")).exec()
+             return
++        self._pdf_activity = "ready"
++        self.drop_card.orbit.respond(state="working")
+         for path in paths:
+             self.pending += 1
+ 
+@@ -1115,6 +1301,7 @@
+         self.pending -= 1
+         self.append_record(source, output, error)
+         self.update_status()
++        self.drop_card.orbit.respond(state="working" if self.pending else "error" if error else "complete")
+         if not self.pending:
+             self.progress.hide()
+             self.tray.setToolTip(self.app_name())
+@@ -1124,6 +1311,14 @@
+         # PDF 패널의 자체 작업 큐는 기존 파일 변환 pending에 합산하지 않는다.
+         self.append_record(source, output, error)
+         self.update_status()
++        self.drop_card.orbit.respond(state=self.pdf_panel.status_mark.state if self.pdf_panel.is_busy()
++                                     else "error" if error else "complete")
++
++    def pdf_activity_changed(self, state):
++        self._pdf_activity = state
++        self.update_status()
++        if not self.pending:
++            self.drop_card.orbit.respond(state=state if state != "ready" else "file")
+ 
+     def append_record(self, source, output, error):
+         """두 변환 경로의 결과를 기존 기록 스키마로 저장한다."""
+@@ -1161,8 +1356,16 @@
+             item.setData(Qt.UserRole, row["output"])
+             item.setData(Qt.UserRole + 1, row["error"])
+             item.setData(Qt.UserRole + 2, True)
++            item.setData(Qt.UserRole + 3, {
++                "source": Path(row["source"]).name, "format": Path(row["output"] or row["source"]).suffix[1:].upper(),
++                "time": row["time"].replace("T", "  "),
++                "detail": self.text("history_failed", error=error_text(self.language, row["error"]))
++                if row["error"] else Path(row["output"]).name,
++            })
++            item.setToolTip(row["source"] + "\n" + (error_text(self.language, row["error"]) if row["error"] else row["output"]))
+         if hasattr(self, "history_error"):
+             self.history.addItem(self.text("history_error"))
++        pulse_widget(self.history)
+ 
+     def open_history_result(self, item):
+         if item is None or item.data(Qt.UserRole + 2) is not True:
+--- 1.4.0/build.py
++++ 1.6.0/build.py
+@@ -72,7 +72,7 @@
+ [Setup]
+ AppId=PUVKID.FlipRing
+ AppName=FlipRing
+-AppVersion=1.4.0
++AppVersion=1.6.0
+ AppPublisher=PUVKID
+ DefaultDirName={{localappdata}}\\Programs\\FlipRing
+ DefaultGroupName=FlipRing
+--- 1.4.0/i18n.py
++++ 1.6.0/i18n.py
+@@ -76,6 +76,29 @@
+     "running_title": ("플립링 실행 중", "FlipRing is running"),
+     "running_message": ("파일을 끌며 Shift를 누르세요. 설정은 트레이 아이콘에 있습니다.", "Hold Shift while dragging a file. Settings are in the system tray."),
+     "external_error": ("외부 도구 또는 시스템 오류: {detail}", "External tool or system error: {detail}"),
++    "studio_workspace": ("파일을 위한 작업 공간", "A workspace for your files"),
++    "studio_maker": ("PUVKID 제작", "Made by PUVKID"),
++    "studio_local": ("무료 · 내 컴퓨터에서 처리", "Free · Processed on your PC"),
++    "studio_convert": ("파일 변환", "Convert files"),
++    "studio_helpers": ("외부 도우미", "Helper tools"),
++    "studio_description_0": ("작업은 가볍게. 파일은 새로운 형식으로.", "Less friction. More possibilities for your files."),
++    "studio_description_1": ("필요한 도구를 연결해 변환 범위를 넓히세요.", "Connect the tools that extend your workflow."),
++    "studio_description_2": ("완료한 작업과 결과 파일을 한곳에서 확인하세요.", "Your completed work and output files, in one place."),
++    "studio_description_3": ("파일 작업을 더 단순하게, 플립링.", "A simpler way to work with files."),
++    "studio_description_4": ("페이지 편집부터 문자 인식까지, 하나의 작업 공간.", "From page editing to text recognition, in one workspace."),
++    "studio_drop_title": ("파일을 놓으면 시작됩니다", "Drop files. Find a new format."),
++    "studio_drop_caption": ("파일을 끌어 놓거나 눌러서 선택하세요.\n변환 휠에서 원하는 형식을 고르면 됩니다.", "Drop files here or click to choose.\nPick an output format in the conversion wheel."),
++    "studio_quick_settings": ("내 방식으로", "Make it yours"),
++    "studio_no_selection": ("이미지 · 문서 · 오디오 · 압축 파일", "Images · Documents · Audio · Archives"),
++    "studio_originals": ("원본은 그대로 보존합니다", "Your originals stay untouched"),
++    "studio_key_badge": ("{key} + 드래그", "{key} + drag"),
++    "picker_caption": ("위치를 고르고, 필요한 파일만 이어서 선택하세요.", "Browse to a location, then choose the files you need."),
++    "picker_folder_caption": ("압축할 폴더를 선택하세요. 원본은 그대로 보존됩니다.", "Choose a folder to archive. Your originals stay untouched."),
++    "picker_empty": ("아직 선택한 항목이 없습니다", "No items selected yet"),
++    "picker_selected": ("{count}개 항목 선택", "{count} item(s) selected"),
++    "picker_folder_type": ("폴더", "Folder"),
++    "picker_pdf_title": ("PDF 또는 이미지 선택", "Choose PDFs or images"),
++    "command_copied": ("설치 명령을 복사했습니다", "Install command copied"),
+ }
+ 
+ 
+--- 1.4.0/package.py
++++ 1.6.0/package.py
+@@ -11,6 +11,15 @@
+ installer = release / "설치파일" / (name + "-Setup.exe")
+ required = [program / (name + ".exe"), installer]
+ required.append(program / "_internal/assets/combo-chevron.svg")
++lucide_icons = (
++    "arrow-left-right", "scan-text", "rotate-ccw-clock", "sliders-horizontal", "info", "folder-open",
++    "file-up", "check", "x", "arrow-up-right", "plus", "file",
++)
++for icon in lucide_icons:
++    required += [root / "assets/lucide" / (icon + ".svg"),
++                 program / "_internal/assets/lucide" / (icon + ".svg")]
++for filename in ("LICENSE", "원본출처.json"):
++    required += [root / "licenses/Lucide" / filename, program / "licenses/Lucide" / filename]
+ required += [program / "_internal/vendor/tesseract" / filename for filename in (
+     "tesseract.exe", "tessdata/eng.traineddata", "tessdata/kor.traineddata", "tessdata/osd.traineddata",
+ )]
+@@ -19,7 +28,7 @@
+ )]
+ required += [program / "licenses/SUIT" / filename for filename in ("OFL.txt", "원본출처.json")]
+ required += [root / filename for filename in (
+-    "app.py", "i18n.py", "engine.py", "pdf_tools.py", "pdf_panel.py", "test_pdf_tools.py",
++    "app.py", "i18n.py", "studio_ui.py", "ui_motion.py", "engine.py", "pdf_tools.py", "pdf_panel.py", "test_pdf_tools.py",
+     "build.py", "package.py", "test_gui.py", "test_engine.py",
+     "requirements-lock.txt", "빌드방법.md", "사용안내.txt", "검토기록.md", "LICENSE.txt",
+     "assets/NanumGothicBold.ttf", "assets/NanumGothic-OFL.txt", "test-fixtures/sample.heic",
+--- 1.4.0/pdf_panel.py
++++ 1.6.0/pdf_panel.py
+@@ -5,13 +5,16 @@
+ from concurrent.futures import ThreadPoolExecutor
+ from pathlib import Path
+ 
+-from PySide6.QtCore import QObject, Signal, Slot, Qt, QCoreApplication
++from PySide6.QtCore import QObject, Signal, Slot, Qt, QCoreApplication, QPointF
++from PySide6.QtGui import QPainter, QPen, QColor
+ from PySide6.QtWidgets import (
+     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QComboBox,
+     QListWidget, QFileDialog, QLineEdit, QSpinBox, QCheckBox, QProgressBar,
+-    QScrollArea, QFormLayout, QAbstractItemView,
++    QScrollArea, QFormLayout, QAbstractItemView, QStyleOptionSpinBox, QStyle, QAbstractSpinBox,
+ )
+ import pdf_tools
++from studio_ui import StudioCard, Toggle
++from ui_motion import make_file_dialog, install_surface_motions, pulse_widget, StateMark
+ 
+ 
+ TEXT = {
+@@ -85,8 +88,50 @@
+     finished = Signal(object)
+ 
+ 
++class OptionComboBox(QComboBox):
++    """닫힌 옵션 위의 휠은 설정 변경 대신 부모 스크롤로 전달한다."""
++
++    def wheelEvent(self, event):
++        if self.view().isVisible():
++            super().wheelEvent(event)
++        else:
++            event.ignore()
++
++
++class OptionSpinBox(QSpinBox):
++    """기본 증감 입력은 유지하고 평면 버튼에 화살표만 그린다."""
++
++    def __init__(self, parent=None):
++        super().__init__(parent)
++        self.setObjectName("pdfNumeric")
++
++    def wheelEvent(self, event):
++        event.ignore()
++
++    def paintEvent(self, event):
++        super().paintEvent(event)
++        option = QStyleOptionSpinBox()
++        self.initStyleOption(option)
++        painter = QPainter(self)
++        painter.setRenderHint(QPainter.Antialiasing)
++        for control, flag, direction in ((QStyle.SC_SpinBoxUp, QAbstractSpinBox.StepEnabledFlag.StepUpEnabled, 1),
++                                         (QStyle.SC_SpinBoxDown, QAbstractSpinBox.StepEnabledFlag.StepDownEnabled, -1)):
++            rectangle = self.style().subControlRect(QStyle.CC_SpinBox, option, control, self)
++            if rectangle.isEmpty():
++                continue
++            enabled = self.isEnabled() and bool(self.stepEnabled() & flag)
++            painter.setPen(QPen(QColor("#757575" if enabled else "#bbbbbb"), 1.4,
++                                Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
++            center = rectangle.center()
++            tip = QPointF(center.x(), center.y() - direction * 1.5)
++            painter.drawLine(QPointF(center.x() - 3, center.y() + direction * 1.5), tip)
++            painter.drawLine(tip, QPointF(center.x() + 3, center.y() + direction * 1.5))
++        painter.end()
++
++
+ class PdfToolsPanel(QWidget):
+     result_ready = Signal(str, str, str)
++    activity_changed = Signal(str)
+ 
+     def __init__(self, language, parent=None):
+         super().__init__(parent)
+@@ -108,24 +153,23 @@
+         self._status_key = "ready"
+         self._status_values = {}
+         self._labels = {}
+-        outer = QVBoxLayout(self)
++        outer = QHBoxLayout(self)
+         outer.setContentsMargins(0, 0, 0, 0)
+-        self.scroll = QScrollArea()
+-        self.scroll.setWidgetResizable(True)
+-        self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+-        outer.addWidget(self.scroll)
+-        host = QWidget()
+-        self.scroll.setWidget(host)
+-        layout = QVBoxLayout(host)
+-        layout.setContentsMargins(12, 12, 12, 12)
+-        layout.setSpacing(9)
++        outer.setSpacing(20)
++        self.sources_card = StudioCard()
++        self.sources_card.setMinimumWidth(280)
++        outer.addWidget(self.sources_card, 1)
++        source_layout = QVBoxLayout(self.sources_card)
++        source_layout.setContentsMargins(22, 22, 22, 22)
++        source_layout.setSpacing(16)
+         self.files_label = QLabel()
+-        layout.addWidget(self.files_label)
++        self.files_label.setObjectName("cardTitle")
++        self.files_label.setWordWrap(True)
++        source_layout.addWidget(self.files_label)
+         self.files = QListWidget()
+         self.files.setSelectionMode(QAbstractItemView.ExtendedSelection)
+-        self.files.setMinimumHeight(90)
+-        self.files.setMaximumHeight(140)
+-        layout.addWidget(self.files)
++        self.files.setMinimumHeight(250)
++        source_layout.addWidget(self.files, 1)
+         row = QHBoxLayout()
+         self.add_button = QPushButton()
+         self.remove_button = QPushButton()
+@@ -137,45 +181,61 @@
+         self.remove_button.clicked.connect(self.remove_files)
+         self.up_button.clicked.connect(lambda: self.move_file(-1))
+         self.down_button.clicked.connect(lambda: self.move_file(1))
+-        layout.addLayout(row)
++        source_layout.addLayout(row)
++        self.options_card = StudioCard()
++        self.options_card.setMinimumWidth(320)
++        outer.addWidget(self.options_card, 1)
++        actions_layout = QVBoxLayout(self.options_card)
++        actions_layout.setContentsMargins(22, 22, 22, 22)
++        actions_layout.setSpacing(15)
++        # 파일 조작과 실행·취소는 고정하고 긴 옵션만 안쪽에서 스크롤한다.
++        self.scroll = QScrollArea()
++        self.scroll.setWidgetResizable(True)
++        self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
++        actions_layout.addWidget(self.scroll, 1)
++        host = QWidget()
++        self.scroll.setWidget(host)
++        layout = QVBoxLayout(host)
++        layout.setContentsMargins(0, 0, 0, 0)
++        layout.setSpacing(15)
+         self.form = QFormLayout()
+         self.form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+-        self.form.setRowWrapPolicy(QFormLayout.WrapLongRows)
+-        self.operation = QComboBox()
++        self.form.setRowWrapPolicy(QFormLayout.WrapAllRows)
++        self.operation = OptionComboBox()
+         for key in ("merge", "split", "extract", "delete", "rotate", "images_to_pdf", "pdf_to_images", "compress", "recognize"):
+             self.operation.addItem(key, key)
+         self._row("operation", self.operation)
+         self.pages = QLineEdit()
+         self._row("pages", self.pages)
+-        self.rotation = QComboBox()
++        self.rotation = OptionComboBox()
+         for angle in (90, 180, 270):
+             self.rotation.addItem(f"{angle}°", angle)
+         self._row("rotation", self.rotation)
+-        self.compression = QComboBox()
++        self.compression = OptionComboBox()
+         for key in ("lossless", "images"):
+             self.compression.addItem(key, key)
+         self._row("compression", self.compression)
+-        self.quality = QSpinBox()
++        self.quality = OptionSpinBox()
+         self.quality.setRange(20, 95)
+         self.quality.setValue(80)
+         self._row("quality", self.quality)
+-        self.dpi = QSpinBox()
++        self.dpi = OptionSpinBox()
+         self.dpi.setRange(60, 600)
+         self.dpi.setValue(200)
+         self.dpi.setSingleStep(25)
+         self._row("dpi", self.dpi)
+-        self.ocr_language = QComboBox()
++        self.ocr_language = OptionComboBox()
+         for label, code in (("bilingual", "kor+eng"), ("korean", "kor"), ("english", "eng")):
+             self.ocr_language.addItem(label, code)
+         self._row("ocr_language", self.ocr_language)
+-        self.output = QComboBox()
++        self.output = OptionComboBox()
+         self._row("output", self.output)
+-        self.psm = QComboBox()
++        self.psm = OptionComboBox()
+         for label, code in (("automatic", 3), ("block", 6), ("sparse", 11)):
+             self.psm.addItem(label, code)
+         self._row("layout", self.psm)
+         layout.addLayout(self.form)
+-        self.force = QCheckBox()
++        self.force = Toggle()
+         layout.addWidget(self.force)
+         self.lossy_note = QLabel()
+         self.lossy_note.setWordWrap(True)
+@@ -189,29 +249,36 @@
+         self.note.setWordWrap(True)
+         self.note.setObjectName("muted")
+         layout.addWidget(self.note)
++        layout.addStretch()
+         row = QHBoxLayout()
+         self.start_button = QPushButton()
++        self.start_button.setProperty("primary", True)
+         self.cancel_button = QPushButton()
+         self.cancel_button.setEnabled(False)
+         self.start_button.clicked.connect(self.start)
+         self.cancel_button.clicked.connect(self.cancel)
+         row.addWidget(self.start_button)
+         row.addWidget(self.cancel_button)
+-        layout.addLayout(row)
++        actions_layout.addLayout(row)
+         self.progress = QProgressBar()
+         self.progress.setRange(0, 100)
+         self.progress.setValue(0)
+         self.progress.hide()
+-        layout.addWidget(self.progress)
++        actions_layout.addWidget(self.progress)
+         self.status = QLabel()
+         self.status.setWordWrap(True)
+-        layout.addWidget(self.status)
+-        layout.addStretch()
++        status_row = QHBoxLayout()
++        self.status_mark = StateMark()
++        status_row.addWidget(self.status_mark)
++        status_row.addWidget(self.status, 1)
++        actions_layout.addLayout(status_row)
+         self.operation.currentIndexChanged.connect(self._options_changed)
+         self.compression.currentIndexChanged.connect(self._options_changed)
+         self.output.currentIndexChanged.connect(self._notes_changed)
+         self.set_language(self.language)
+         self._options_changed()
++        install_surface_motions(self)
++        pulse_widget(self.status)
+ 
+     def _row(self, key, widget):
+         label = QLabel()
+@@ -277,15 +344,22 @@
+         self.note.setVisible(operation == "recognize")
+         self.lossy_note.setVisible(operation == "compress")
+         self._notes_changed()
++        pulse_widget(self.scroll.widget())
+ 
+     def _notes_changed(self):
+         self.pdf_note.setVisible(self.operation.currentData() == "recognize" and self.output.currentData() == "pdf")
+ 
+     def add_files(self):
+-        paths, _ = QFileDialog.getOpenFileNames(self, self.tr_text("pick"), "",
+-                                               "PDF / Images (*.pdf *.png *.jpg *.jpeg *.tif *.tiff *.bmp *.webp *.heic *.gif)",
+-                                               options=QFileDialog.DontUseNativeDialog)
+-        self.set_files(self.input_paths() + paths)
++        dialog = self.file_dialog()
++        try:
++            if dialog.exec() == QFileDialog.Accepted:
++                self.set_files(self.input_paths() + dialog.selectedFiles())
++        finally:
++            dialog.deleteLater()
++
++    def file_dialog(self):
++        return make_file_dialog(self, self.tr_text("pick"),
++                                name_filter="PDF / Images (*.pdf *.png *.jpg *.jpeg *.tif *.tiff *.bmp *.webp *.heic *.gif)")
+ 
+     def input_paths(self):
+         return [self.files.item(index).data(Qt.UserRole) for index in range(self.files.count())]
+@@ -299,17 +373,24 @@
+             item = self.files.item(self.files.count() - 1)
+             item.setData(Qt.UserRole, path)
+             item.setToolTip(path)
++        pulse_widget(self.files)
+ 
+     def remove_files(self):
++        if self._busy:
++            return
+         for item in self.files.selectedItems():
+             self.files.takeItem(self.files.row(item))
++        pulse_widget(self.files)
+ 
+     def move_file(self, offset):
++        if self._busy:
++            return
+         row = self.files.currentRow()
+         if 0 <= row + offset < self.files.count() and row >= 0:
+             item = self.files.takeItem(row)
+             self.files.insertItem(row + offset, item)
+             self.files.setCurrentRow(row + offset)
++            self.files._flipring_surface_motion.selection_pulse()
+ 
+     def is_busy(self):
+         return self._busy
+@@ -322,6 +403,8 @@
+             widget.setEnabled(not value)
+         self.cancel_button.setEnabled(value)
+         self.progress.setVisible(value)
++        pulse_widget(self.options_card)
++        self.activity_changed.emit(self.status_mark.state)
+ 
+     def start(self):
+         if self._busy or self._pool is None:
+@@ -386,6 +469,12 @@
+     def _render_status(self):
+         self.status.setText(self.error_text(self._error) if self._error is not None else
+                             self.tr_text(self._status_key, **self._status_values))
++        state = ("cancelled" if isinstance(self._error, pdf_tools.Cancelled) else "error" if self._error is not None else
++                 {"working": "working", "cancelling": "cancelling", "cancelled": "cancelled", "done": "complete",
++                  "empty": "error", "busy": "working"}.get(self._status_key, "ready"))
++        self.status_mark.respond(state)
++        pulse_widget(self.status)
++        self.activity_changed.emit(state)
+ 
+     @Slot(object)
+     def _finish(self, future):
+--- 1.4.0/studio_ui.py
++++ 1.6.0/studio_ui.py
+@@ -0,0 +1,403 @@
++"""작업 공간의 내비게이션과 파일 상태를 그리는 Qt 전용 구성 요소."""
++from __future__ import annotations
++
++import math
++
++from PySide6.QtCore import Qt, Signal, QVariantAnimation, QEasingCurve, QRectF, QPointF, QSignalBlocker, QSize
++from PySide6.QtGui import QColor, QPainter, QPen, QPainterPath, QFont, QPixmap, QIcon
++from PySide6.QtWidgets import QWidget, QAbstractButton, QFrame, QVBoxLayout, QLabel, QSizePolicy, QCheckBox, QStyledItemDelegate, QStyle
++
++
++def svg_icon(path, color="#5a5a5a"):
++    """공식 SVG 원문은 보존하고 표시 색상만 메모리에서 바꾼다."""
++    pixmap = QPixmap()
++    if not pixmap.loadFromData(path.read_bytes().replace(b"currentColor", color.encode("ascii"))):
++        raise RuntimeError(f"UI icon could not be loaded: {path}")
++    return QIcon(pixmap)
++
++
++class StudioCard(QFrame):
++    def __init__(self, parent=None):
++        super().__init__(parent)
++        self.setObjectName("studioCard")
++        self.setAttribute(Qt.WA_StyledBackground, True)
++
++
++class HistoryDelegate(QStyledItemDelegate):
++    """저장 데이터는 그대로 두고 파일·결과·시각을 구분해 표시한다."""
++
++    def sizeHint(self, option, index):
++        return QSize(280, 86)
++
++    def paint(self, painter, option, index):
++        row = index.data(Qt.UserRole + 3)
++        if not isinstance(row, dict):
++            return super().paint(painter, option, index)
++        painter.save()
++        painter.setRenderHint(QPainter.Antialiasing)
++        rectangle = QRectF(option.rect).adjusted(4, 3, -4, -3)
++        painter.setPen(Qt.NoPen)
++        painter.setBrush(QColor("#eeeeee" if option.state & QStyle.State_Selected else "#ffffff"))
++        painter.drawRoundedRect(rectangle, 10, 10)
++        icon = QRectF(rectangle.left() + 16, rectangle.top() + 17, 42, 44)
++        painter.setBrush(QColor("#f1f1f1"))
++        painter.drawRoundedRect(icon, 9, 9)
++        font = option.font
++        font.setPixelSize(9)
++        font.setWeight(QFont.Medium)
++        painter.setFont(font)
++        painter.setPen(QColor("#666666"))
++        painter.drawText(icon, Qt.AlignCenter, row["format"])
++        left = rectangle.left() + 74
++        width = max(20, rectangle.width() - 94)
++        font.setPixelSize(13)
++        font.setWeight(QFont.Medium)
++        painter.setFont(font)
++        painter.setPen(QColor("#303030"))
++        painter.drawText(QRectF(left, rectangle.top() + 15, width, 22), Qt.AlignLeft | Qt.AlignVCenter,
++                         painter.fontMetrics().elidedText(row["source"], Qt.ElideMiddle, int(width)))
++        font.setPixelSize(11)
++        font.setWeight(QFont.Normal)
++        painter.setFont(font)
++        painter.setPen(QColor("#737373"))
++        detail = row["time"] + "   ·   " + row["detail"]
++        painter.drawText(QRectF(left, rectangle.top() + 40, width, 20), Qt.AlignLeft | Qt.AlignVCenter,
++                         painter.fontMetrics().elidedText(detail, Qt.ElideMiddle, int(width)))
++        painter.restore()
++
++
++class Toggle(QCheckBox):
++    """QCheckBox의 상태·키보드·시그널을 유지하는 작은 전환 스위치."""
++
++    def __init__(self, parent=None):
++        super().__init__(parent)
++        self.amount = 0.0
++        self.setFixedHeight(38)
++        self.setCursor(Qt.PointingHandCursor)
++        self.motion = QVariantAnimation(self)
++        self.motion.setDuration(180)
++        self.motion.setEasingCurve(QEasingCurve.InOutSine)
++        self.motion.valueChanged.connect(self._frame)
++        self.toggled.connect(self._transition)
++
++    def sizeHint(self):
++        return QSize(200, 38)
++
++    def minimumSizeHint(self):
++        return QSize(140, 38)
++
++    def hitButton(self, position):
++        return self.rect().contains(position)
++
++    def _frame(self, value):
++        self.amount = float(value)
++        self.update()
++
++    def _transition(self, checked):
++        self.motion.stop()
++        if not self.isVisible():
++            self.amount = float(checked)
++            self.update()
++            return
++        with QSignalBlocker(self.motion):
++            self.motion.setStartValue(self.amount)
++            self.motion.setEndValue(float(checked))
++            self.motion.setCurrentTime(0)
++        self.motion.start()
++
++    def hideEvent(self, event):
++        self.motion.stop()
++        self.amount = float(self.isChecked())
++        super().hideEvent(event)
++
++    def paintEvent(self, event):
++        painter = QPainter(self)
++        painter.setRenderHint(QPainter.Antialiasing)
++        painter.setPen(QColor("#424242" if self.isEnabled() else "#999999"))
++        painter.drawText(QRectF(0, 0, self.width() - 52, self.height()),
++                         Qt.AlignVCenter | Qt.AlignLeft | Qt.TextWordWrap, self.text())
++        shade = round(220 - 166 * self.amount)
++        painter.setPen(Qt.NoPen)
++        painter.setBrush(QColor(shade, shade, shade))
++        x, y = self.width() - 39, (self.height() - 22) / 2
++        painter.drawRoundedRect(QRectF(x, y, 38, 22), 11, 11)
++        painter.setBrush(QColor("#ffffff"))
++        painter.drawEllipse(QRectF(x + 3 + 16 * self.amount, y + 3, 16, 16))
++        if self.hasFocus():
++            painter.setPen(QPen(QColor("#888888"), 1))
++            painter.setBrush(Qt.NoBrush)
++            painter.drawRoundedRect(QRectF(self.rect()).adjusted(0.5, 0.5, -0.5, -0.5), 6, 6)
++        painter.end()
++
++
++class NavButton(QAbstractButton):
++    """입력 영역을 고정하고 명암만 바꾸는 사이드 내비게이션."""
++
++    def __init__(self, symbol, parent=None):
++        super().__init__(parent)
++        self.symbol = symbol
++        self.svg_icons = None
++        self.hovered = False
++        self.amount = 0.0
++        self.setCheckable(True)
++        self.setAutoExclusive(True)
++        self.setFocusPolicy(Qt.StrongFocus)
++        self.setCursor(Qt.PointingHandCursor)
++        self.setFixedHeight(46)
++        self.motion = QVariantAnimation(self)
++        self.motion.setDuration(170)
++        self.motion.setEasingCurve(QEasingCurve.InOutSine)
++        self.motion.valueChanged.connect(self._frame)
++        self.toggled.connect(self.transition)
++
++    def set_svg(self, path):
++        self.svg_icons = {selected: svg_icon(path, color).pixmap(20, 20)
++                          for selected, color in ((False, "#b8b8b8"), (True, "#f3f3f3"))}
++
++    def _frame(self, value):
++        self.amount = float(value)
++        self.update()
++
++    def transition(self):
++        target = 1.0 if self.hovered or self.isChecked() else 0.0
++        self.motion.stop()
++        if abs(target - self.amount) < 0.001:
++            self.update()
++            return
++        with QSignalBlocker(self.motion):
++            self.motion.setStartValue(self.amount)
++            self.motion.setEndValue(target)
++            self.motion.setCurrentTime(0)
++        self.motion.start()
++
++    def enterEvent(self, event):
++        self.hovered = True
++        self.transition()
++        super().enterEvent(event)
++
++    def leaveEvent(self, event):
++        self.hovered = False
++        self.transition()
++        super().leaveEvent(event)
++
++    def hideEvent(self, event):
++        self.motion.stop()
++        self.amount = 1.0 if self.isChecked() else 0.0
++        self.hovered = False
++        super().hideEvent(event)
++
++    def paintEvent(self, event):
++        painter = QPainter(self)
++        painter.setRenderHint(QPainter.Antialiasing)
++        painter.setPen(Qt.NoPen)
++        painter.setBrush(QColor(255, 255, 255, round(20 * self.amount)))
++        painter.drawRoundedRect(QRectF(self.rect()).adjusted(0, 1, 0, -1), 10, 10)
++        color = QColor("#f3f3f3" if self.isChecked() else "#b8b8b8")
++        painter.setPen(QPen(color, 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
++        painter.setBrush(Qt.NoBrush)
++        if self.svg_icons is not None:
++            painter.drawPixmap(16, round(self.height() / 2 - 10), self.svg_icons[self.isChecked()])
++        font = self.font()
++        font.setWeight(QFont.Medium if self.isChecked() else QFont.Normal)
++        painter.setFont(font)
++        painter.drawText(QRectF(46, 0, self.width() - 58, self.height()), Qt.AlignVCenter | Qt.AlignLeft, self.text())
++        if self.hasFocus():
++            painter.setPen(QPen(QColor("#909090"), 1))
++            painter.drawRoundedRect(QRectF(self.rect()).adjusted(1, 2, -1, -2), 9, 9)
++        painter.end()
++
++
++class OrbitVisual(QWidget):
++    """파일 상태에 반응하는 중심 링. 유한 애니메이션 외에는 다시 그리지 않는다."""
++
++    def __init__(self, parent=None):
++        super().__init__(parent)
++        self.setMinimumSize(240, 220)
++        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
++        self.phase = 0.0
++        self.approach = 0.0
++        self.state = "file"
++        self.formats = ["PNG", "JPG", "PDF", "WEBP"]
++        self.intro = QVariantAnimation(self)
++        self.intro.setDuration(720)
++        self.intro.setEasingCurve(QEasingCurve.OutCubic)
++        self.intro.setStartValue(0.0)
++        self.intro.setEndValue(1.0)
++        self.intro.valueChanged.connect(self._intro_frame)
++        self.motion = QVariantAnimation(self)
++        self.motion.setDuration(230)
++        self.motion.setEasingCurve(QEasingCurve.InOutSine)
++        self.motion.valueChanged.connect(self._approach_frame)
++
++    def _intro_frame(self, value):
++        self.phase = float(value)
++        self.update()
++
++    def _approach_frame(self, value):
++        self.approach = float(value)
++        self.update()
++
++    def set_approach(self, active):
++        target = 1.0 if active else 0.0
++        self.motion.stop()
++        if abs(target - self.approach) < 0.001:
++            return
++        with QSignalBlocker(self.motion):
++            self.motion.setStartValue(self.approach)
++            self.motion.setEndValue(target)
++            self.motion.setCurrentTime(0)
++        self.motion.start()
++
++    def respond(self, formats=None, state="file"):
++        self.state = state
++        if formats:
++            self.formats = [value.upper() for value in formats[:4]]
++        self.intro.stop()
++        self.intro.setCurrentTime(0)
++        # 같은 0시각에서는 신호가 생략되므로 숨김 때 바뀐 그리기값도 직접 맞춘다.
++        self._intro_frame(float(self.intro.currentValue()))
++        self.intro.start()
++
++    def showEvent(self, event):
++        super().showEvent(event)
++        self.respond(state=self.state)
++
++    def hideEvent(self, event):
++        self.intro.stop()
++        self.motion.stop()
++        self.phase = 1.0
++        self.approach = 0.0
++        super().hideEvent(event)
++
++    def paintEvent(self, event):
++        painter = QPainter(self)
++        painter.setRenderHint(QPainter.Antialiasing)
++        center = QPointF(self.width() / 2, self.height() / 2)
++        radius = min(self.width() * 0.32, self.height() * 0.38, 116)
++        radius *= 0.86 + 0.14 * self.phase + 0.055 * self.approach
++        painter.translate(center)
++        painter.setBrush(Qt.NoBrush)
++        painter.setPen(QPen(QColor("#eeeeee"), 1))
++        painter.drawEllipse(QPointF(), radius + 29, radius + 29)
++        painter.drawEllipse(QPointF(), radius + 15, radius + 15)
++        for index in range(3):
++            painter.save()
++            painter.rotate(index * 60 + (1 - self.phase) * 35 + self.approach * 12)
++            painter.setPen(QPen(QColor(120 + index * 35, 120 + index * 35, 120 + index * 35), 1.2))
++            painter.drawEllipse(QRectF(-radius, -radius * 0.46, radius * 2, radius * 0.92))
++            painter.restore()
++        painter.setPen(Qt.NoPen)
++        painter.setBrush(QColor("#202020"))
++        painter.drawEllipse(QPointF(), 35 + self.approach * 3, 35 + self.approach * 3)
++        painter.setPen(QPen(QColor("#ffffff"), 1.7, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
++        painter.setBrush(Qt.NoBrush)
++        if self.state == "complete":
++            path = QPainterPath(QPointF(-12, 0))
++            path.lineTo(-3, 9)
++            path.lineTo(14, -10)
++            painter.drawPath(path)
++        elif self.state == "error":
++            painter.drawLine(-9, -9, 9, 9)
++            painter.drawLine(9, -9, -9, 9)
++        elif self.state == "working":
++            painter.drawArc(QRectF(-13, -13, 26, 26), round(self.phase * 120 * 16), 260 * 16)
++        elif self.state in {"cancelling", "cancelled"}:
++            painter.drawLine(-9, 0, 9, 0)
++            if self.state == "cancelling":
++                painter.drawArc(QRectF(-14, -14, 28, 28), round(self.phase * 120 * 16), 240 * 16)
++        else:
++            painter.drawRoundedRect(QRectF(-10, -14, 21, 28), 3, 3)
++            painter.drawLine(-5, -4, 6, -4)
++            painter.drawLine(-5, 2, 6, 2)
++            painter.drawLine(-5, 8, 2, 8)
++        font = self.font()
++        font.setPixelSize(10)
++        font.setWeight(QFont.Medium)
++        painter.setFont(font)
++        for index, label in enumerate(self.formats):
++            progress = min(1.0, max(0.0, (self.phase - index * 0.12) / 0.64))
++            if progress <= 0:
++                continue
++            angle = math.radians(-60 + index * 90 + self.approach * 4)
++            distance = (radius + 18) * (0.5 + 0.5 * progress)
++            point = QPointF(math.cos(angle) * distance, math.sin(angle) * distance)
++            rectangle = QRectF(point.x() - 27, point.y() - 12, 54, 24)
++            painter.setPen(QPen(QColor("#e6e6e6"), 1))
++            painter.setBrush(QColor("#ffffff"))
++            painter.drawRoundedRect(rectangle, 12, 12)
++            painter.setPen(QColor("#5a5a5a"))
++            painter.drawText(rectangle, Qt.AlignCenter, label)
++        painter.end()
++
++
++class FileDropCard(StudioCard):
++    clicked = Signal()
++    files_dropped = Signal(list)
++
++    def __init__(self, validator, accept_copy, parent=None):
++        super().__init__(parent)
++        self.validator = validator
++        self.accept_copy = accept_copy
++        self.setObjectName("dropCard")
++        self.setAcceptDrops(True)
++        self.setCursor(Qt.PointingHandCursor)
++        self.setFocusPolicy(Qt.StrongFocus)
++        self.body = QVBoxLayout(self)
++        self.body.setContentsMargins(26, 20, 26, 24)
++        self.body.setSpacing(8)
++        self.orbit = OrbitVisual()
++        self.body.addWidget(self.orbit, 1)
++        self.title = QLabel()
++        self.title.setObjectName("dropTitle")
++        self.title.setAlignment(Qt.AlignCenter)
++        self.body.addWidget(self.title)
++        self.caption = QLabel()
++        self.caption.setObjectName("muted")
++        self.caption.setAlignment(Qt.AlignCenter)
++        self.caption.setWordWrap(True)
++        self.body.addWidget(self.caption)
++
++    def enterEvent(self, event):
++        self.orbit.set_approach(True)
++        super().enterEvent(event)
++
++    def leaveEvent(self, event):
++        self.orbit.set_approach(False)
++        super().leaveEvent(event)
++
++    def dragEnterEvent(self, event):
++        if event.possibleActions() & Qt.CopyAction and self.validator(event.mimeData()):
++            self.accept_copy(event)
++            self.orbit.set_approach(True)
++        else:
++            event.ignore()
++
++    def dragMoveEvent(self, event):
++        self.dragEnterEvent(event)
++
++    def dragLeaveEvent(self, event):
++        self.orbit.set_approach(False)
++        event.accept()
++
++    def dropEvent(self, event):
++        paths = self.validator(event.mimeData())
++        if not paths or not event.possibleActions() & Qt.CopyAction:
++            event.ignore()
++            return
++        self.accept_copy(event)
++        self.orbit.set_approach(False)
++        self.files_dropped.emit(paths)
++
++    def mouseReleaseEvent(self, event):
++        if event.button() == Qt.LeftButton and self.rect().contains(event.position().toPoint()):
++            self.clicked.emit()
++            event.accept()
++        else:
++            super().mouseReleaseEvent(event)
++
++    def keyPressEvent(self, event):
++        if event.key() in (Qt.Key_Return, Qt.Key_Enter, Qt.Key_Space):
++            self.clicked.emit()
++            event.accept()
++        else:
++            super().keyPressEvent(event)
+--- 1.4.0/test_gui.py
++++ 1.6.0/test_gui.py
+@@ -14,12 +14,13 @@
+ from unittest.mock import Mock, patch
+ 
+ from PySide6.QtCore import Qt, QPoint, QPointF, QMimeData, QUrl, QEvent, QAbstractAnimation, QCoreApplication
+-from PySide6.QtGui import QFont, QFontDatabase, QFontInfo, QRawFont, QTextLayout, QPalette, QDragEnterEvent, QDragMoveEvent, QDropEvent, QMouseEvent
++from PySide6.QtGui import QFont, QFontDatabase, QFontInfo, QRawFont, QTextLayout, QPalette, QDragEnterEvent, QDragMoveEvent, QDropEvent, QMouseEvent, QWheelEvent, QHelpEvent
+ from PySide6.QtTest import QTest, QSignalSpy
+-from PySide6.QtWidgets import QApplication, QFileDialog, QDialogButtonBox, QMessageBox, QStyleOptionComboBox
++from PySide6.QtWidgets import QApplication, QFileDialog, QDialogButtonBox, QMessageBox, QStyleOptionComboBox, QStyleOptionSpinBox, QTreeView, QMenu, QLineEdit
+ from shiboken6 import isValid
+ import app
+ import i18n
++from studio_ui import OrbitVisual
+ from pdf_panel import ERRORS as PDF_ERRORS
+ from pdf_tools import PdfToolError
+ 
+@@ -97,11 +98,15 @@
+         self.wheel.display(QPoint(500, 380), paths or [str(SOURCE)], preview)
+         APPLICATION.processEvents()
+ 
+-    def test_01_compact_settings_and_tray(self):
++    def test_01_studio_workspace_and_tray(self):
+         self.assertEqual(self.window.tabs.count(), 5)
+         self.assertEqual([self.window.tabs.tabText(i) for i in range(4)], ["설정", "도구", "기록", "정보"])
+         self.assertIs(self.window.tabs.widget(4), self.window.pdf_panel)
+-        self.assertLessEqual(self.window.width(), 460)
++        self.assertGreaterEqual(self.window.width(), 960)
++        self.assertEqual(self.window.minimumWidth(), 960)
++        self.assertEqual(self.window.minimumHeight(), 680)
++        self.assertEqual(self.window.sidebar.width(), 204)
++        self.assertFalse(self.window.tabs.tabBar().isVisible())
+         self.assertFalse(hasattr(self.window, "list"))
+         self.window.update_tray_menu()
+         texts = [action.text() for action in self.window.tray_menu.actions()]
+@@ -111,6 +116,399 @@
+         APPLICATION.processEvents()
+         self.assertTrue(self.window.grab().save(str(ROOT / "3차-간단설정.png")))
+         self.window.hide()
++
++    def test_60_sidebar_native_input_maps_all_pages_and_keeps_one_selection(self):
++        self.window.show()
++        self.window.tabs.setCurrentIndex(0)
++        APPLICATION.processEvents()
++        for index in (4, 2, 1, 3, 0):
++            button = self.window.nav_buttons[index]
++            self.assertTrue(all(not pixmap.isNull() for pixmap in button.svg_icons.values()))
++            geometry = button.geometry()
++            QTest.mouseClick(button, Qt.LeftButton)
++            self.assertEqual(self.window.tabs.currentIndex(), index)
++            self.assertTrue(button.isChecked())
++            self.assertEqual(sum(item.isChecked() for item in self.window.nav_buttons.values()), 1)
++            self.assertEqual(button.geometry(), geometry)
++            self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        current = self.window.nav_buttons[0]
++        QTest.mouseClick(current, Qt.LeftButton)
++        self.assertTrue(current.isChecked())
++        target = self.window.nav_buttons[4]
++        target.setEnabled(False)
++        QTest.mouseClick(target, Qt.LeftButton)
++        self.assertEqual(self.window.tabs.currentIndex(), 0)
++        target.setEnabled(True)
++        QTest.keyClick(target, Qt.Key_Space)
++        self.assertEqual(self.window.tabs.currentIndex(), 4)
++        self.assertTrue(target.isChecked())
++        self.window.hide()
++        self.assertTrue(all(button.motion.state() == QAbstractAnimation.Stopped
++                            for button in self.window.nav_buttons.values()))
++
++    def test_61_workspace_drop_and_file_buttons_open_actual_conversion_path(self):
++        self.window.tabs.setCurrentIndex(0)
++        self.window.show()
++        self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        APPLICATION.processEvents()
++        card = self.window.drop_card
++        geometry = card.geometry()
++        mime = mime_for()
++        enter = QDragEnterEvent(QPoint(30, 30), Qt.CopyAction | Qt.MoveAction,
++                                mime, Qt.LeftButton, Qt.ShiftModifier)
++        card.dragEnterEvent(enter)
++        self.assertTrue(enter.isAccepted())
++        self.assertEqual(enter.dropAction(), Qt.CopyAction)
++        with patch.object(self.wheel, "display") as display:
++            drop = drop_at(QPointF(30, 30), mime)
++            card.dropEvent(drop)
++            self.assertTrue(drop.isAccepted())
++            self.assertEqual(drop.dropAction(), Qt.CopyAction)
++            self.assertEqual(self.window.paths, [str(SOURCE)])
++            self.assertEqual(display.call_args.args[1], [str(SOURCE)])
++            self.assertTrue(display.call_args.kwargs["preview"])
++            invalid = drop_at(QPointF(30, 30), mime_for(QUrl("https://example.invalid/file.png")))
++            card.dropEvent(invalid)
++            self.assertFalse(invalid.isAccepted())
++            self.assertEqual(display.call_count, 1)
++            picker = Mock()
++            picker.exec.return_value = QFileDialog.Accepted
++            picker.selectedFiles.return_value = [str(SOURCE2)]
++            with patch.object(self.window, "file_dialog", return_value=picker) as choose:
++                QTest.mouseClick(self.window.choose_button, Qt.LeftButton)
++                choose.assert_called_once_with(False)
++                self.assertEqual(self.window.paths, [str(SOURCE2)])
++                self.assertEqual(display.call_count, 2)
++                choose.reset_mock()
++                QTest.mouseClick(self.window.folder_button, Qt.LeftButton)
++                choose.assert_called_once_with(True)
++                self.assertEqual(display.call_count, 3)
++                choose.reset_mock()
++                QTest.keyClick(card, Qt.Key_Return)
++                choose.assert_called_once_with(False)
++                self.assertEqual(display.call_count, 4)
++        self.assertEqual(card.geometry(), geometry)
++        self.assertEqual(hashlib.sha256(SOURCE.read_bytes()).hexdigest(), ORIGINAL_HASH)
++        self.window.hide()
++
++    def test_62_pill_toggle_preserves_checkbox_signals_keyboard_and_motion(self):
++        toggle = app.Toggle()
++        toggle.setText("알림 Notifications")
++        toggle.resize(230, 38)
++        toggle.show()
++        APPLICATION.processEvents()
++        signals = QSignalSpy(toggle.toggled)
++        try:
++            geometry = toggle.geometry()
++            QTest.mouseClick(toggle, Qt.LeftButton)
++            self.assertTrue(toggle.isChecked())
++            self.assertEqual(signals.count(), 1)
++            toggle.motion.setCurrentTime(90)
++            middle = toggle.amount
++            self.assertGreater(middle, 0)
++            self.assertLess(middle, 1)
++            QTest.keyClick(toggle, Qt.Key_Space)
++            self.assertFalse(toggle.isChecked())
++            self.assertEqual(signals.count(), 2)
++            self.assertAlmostEqual(toggle.amount, middle)
++            toggle.motion.setCurrentTime(toggle.motion.duration())
++            self.assertAlmostEqual(toggle.amount, 0)
++            toggle.setEnabled(False)
++            QTest.mouseClick(toggle, Qt.LeftButton)
++            self.assertEqual(signals.count(), 2)
++            self.assertEqual(toggle.geometry(), geometry)
++        finally:
++            toggle.hide()
++            self.assertEqual(toggle.motion.state(), QAbstractAnimation.Stopped)
++            toggle.deleteLater()
++
++    def test_63_center_ring_has_distinct_finite_frames_and_continuous_drag_retarget(self):
++        self.window.tabs.setCurrentIndex(0)
++        self.window.show()
++        self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        APPLICATION.processEvents()
++        orbit = self.window.drop_card.orbit
++        geometry = orbit.geometry()
++        orbit.respond(["jpg", "pdf", "webp", "png"])
++        images = []
++        for milliseconds in (0, 220, 720):
++            orbit.intro.setCurrentTime(milliseconds)
++            filename = ROOT / f"Studio-ring-intro-{milliseconds}.png"
++            self.assertTrue(orbit.grab().save(str(filename)))
++            images.append(filename.read_bytes())
++        self.assertEqual(len(set(images)), 3)
++        self.assertEqual(orbit.intro.state(), QAbstractAnimation.Stopped)
++        orbit.set_approach(True)
++        orbit.motion.setCurrentTime(115)
++        current = orbit.approach
++        self.assertGreater(current, 0)
++        self.assertLess(current, 1)
++        orbit.set_approach(False)
++        self.assertAlmostEqual(orbit.approach, current)
++        orbit.motion.setCurrentTime(230)
++        self.assertAlmostEqual(orbit.approach, 0)
++        orbit.respond(state="complete")
++        orbit.intro.setCurrentTime(720)
++        self.assertEqual(orbit.state, "complete")
++        self.assertTrue(orbit.grab().save(str(ROOT / "Studio-ring-complete.png")))
++        self.assertEqual(orbit.geometry(), geometry)
++        self.window.hide()
++        self.assertEqual(orbit.intro.state(), QAbstractAnimation.Stopped)
++        self.assertEqual(orbit.motion.state(), QAbstractAnimation.Stopped)
++
++    def test_64_studio_resize_languages_and_pdf_columns_keep_controls_accessible(self):
++        original_size = self.window.size()
++        panel = self.window.pdf_panel
++        operation = panel.operation.currentData()
++        self.window.show()
++        try:
++            for language in ("ko", "en"):
++                self.window.set_language(language)
++                for width, height in ((960, 680), (1280, 840)):
++                    self.window.resize(width, height)
++                    self.window.tabs.setCurrentIndex(0)
++                    self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++                    APPLICATION.processEvents()
++                    self.assertEqual(self.window.sidebar.width(), 204)
++                    self.assertGreaterEqual(self.window.drop_card.width(), 300)
++                    self.assertTrue(self.window.quick_settings.rect().contains(self.window.notifications.geometry()))
++                    self.assertEqual(self.window.page_title.text(), self.window.text("studio_convert"))
++                    self.window.tabs.setCurrentIndex(4)
++                    panel.operation.setCurrentIndex(panel.operation.findData("recognize"))
++                    self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++                    APPLICATION.processEvents()
++                    self.assertLess(panel.sources_card.geometry().left(), panel.options_card.geometry().left())
++                    self.assertFalse(panel.scroll.horizontalScrollBar().isVisible())
++                    self.assertTrue(panel.operation.isEnabled())
++                    self.assertEqual(self.window.page_title.text(), self.window.text("pdf_tools"))
++                    if width == 1280:
++                        self.assertTrue(self.window.grab().save(str(ROOT / f"Studio-{language}-pdf-ocr.png")))
++            self.window.tabs.setCurrentIndex(0)
++            self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++            self.assertTrue(self.window.grab().save(str(ROOT / "Studio-en-workspace.png")))
++        finally:
++            panel.operation.setCurrentIndex(panel.operation.findData(operation))
++            self.window.resize(original_size)
++            self.window.set_language("ko")
++            self.window.hide()
++
++    def test_65_history_visual_rows_keep_schema_roles_and_full_path_tooltip(self):
++        previous = self.window.records
++        previous_language = self.window.language
++        row = {"time": "2026-10-21T05:00:00", "source": str(SOURCE),
++               "output": str(ROOT / "완료한 결과.pdf"), "error": ""}
++        self.window.records = [row]
++        try:
++            self.window.refresh_history()
++            item = self.window.history.item(0)
++            self.assertEqual(set(row), {"time", "source", "output", "error"})
++            self.assertEqual(item.data(Qt.UserRole), row["output"])
++            self.assertEqual(item.data(Qt.UserRole + 1), "")
++            self.assertIs(item.data(Qt.UserRole + 2), True)
++            self.assertEqual(item.data(Qt.UserRole + 3)["source"], SOURCE.name)
++            self.assertIn(row["output"], item.toolTip())
++            self.window.tabs.setCurrentIndex(2)
++            self.window.show()
++            self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++            APPLICATION.processEvents()
++            self.assertGreaterEqual(self.window.history.visualItemRect(item).height(), 80)
++            self.assertTrue(self.window.grab().save(str(ROOT / "Studio-history-rows.png")))
++            for language in ("ko", "en"):
++                self.window.set_language(language)
++                self.window.refresh_history()
++                self.assertEqual(self.window.history.item(0).toolTip(), row["source"] + "\n" + row["output"])
++            for stored, language in ((PDF_ERRORS["invalid_pdf"][0], "en"),
++                                     (PDF_ERRORS["invalid_pdf"][1], "ko")):
++                failed = dict(row, error=stored)
++                self.window.records = [failed]
++                self.window.set_language(language)
++                self.window.refresh_history()
++                item = self.window.history.item(0)
++                self.assertEqual(item.toolTip(), failed["source"] + "\n" + i18n.error_text(language, stored))
++                self.assertEqual(item.data(Qt.UserRole), failed["output"])
++                self.assertEqual(item.data(Qt.UserRole + 1), stored)
++                self.assertEqual(failed, dict(row, error=stored))
++            diagnostic = "Unrecognized OS diagnostic / 원문 진단 0x1234"
++            for language in ("ko", "en"):
++                self.window.records = [dict(row, error=diagnostic)]
++                self.window.set_language(language)
++                self.window.refresh_history()
++                tooltip = self.window.history.item(0).toolTip()
++                self.assertEqual(tooltip.split("\n", 1)[0], row["source"])
++                self.assertIn(diagnostic, tooltip)
++                self.assertEqual(self.window.history.item(0).data(Qt.UserRole + 1), diagnostic)
++        finally:
++            self.window.records = previous
++            self.window.set_language(previous_language)
++            self.window.refresh_history()
++            self.window.hide()
++
++    def test_66_ring_zero_time_hide_and_reentry_keep_value_and_drawing_in_sync(self):
++        orbit = OrbitVisual()
++        orbit.resize(360, 300)
++        orbit.show()
++        APPLICATION.processEvents()
++        try:
++            for _ in range(3):
++                orbit.intro.stop()
++                orbit.intro.setCurrentTime(0)
++                orbit.hide()
++                self.assertEqual(orbit.phase, 1)
++                self.assertEqual(orbit.intro.currentValue(), 0)
++                orbit.show()
++                self.assertEqual(orbit.intro.currentTime(), 0)
++                self.assertEqual(orbit.phase, orbit.intro.currentValue())
++                self.assertEqual(orbit.phase, 0)
++                orbit.respond()
++                self.assertEqual(orbit.phase, 0)
++                orbit.intro.setCurrentTime(220)
++                self.assertAlmostEqual(orbit.phase, orbit.intro.currentValue())
++                self.assertGreater(orbit.phase, 0)
++                self.assertLess(orbit.phase, 1)
++                orbit.intro.setCurrentTime(720)
++                self.assertEqual(orbit.phase, 1)
++                self.assertEqual(orbit.intro.state(), QAbstractAnimation.Stopped)
++        finally:
++            orbit.hide()
++            self.assertEqual(orbit.intro.state(), QAbstractAnimation.Stopped)
++            self.assertEqual(orbit.motion.state(), QAbstractAnimation.Stopped)
++            orbit.deleteLater()
++
++    def test_67_ocr_controls_stay_fully_exposed_while_only_options_scroll(self):
++        panel = self.window.pdf_panel
++        previous_size = self.window.size()
++        previous_operation = panel.operation.currentData()
++        buttons = (panel.add_button, panel.remove_button, panel.up_button,
++                   panel.down_button, panel.start_button, panel.cancel_button)
++        self.window.tabs.setCurrentIndex(4)
++        self.window.show()
++        self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        panel.operation.setCurrentIndex(panel.operation.findData("recognize"))
++        try:
++            for language in ("ko", "en"):
++                self.window.set_language(language)
++                for width, height in ((960, 680), (1080, 780), (1280, 840)):
++                    self.window.resize(width, height)
++                    APPLICATION.processEvents()
++                    positions = [button.mapTo(panel, QPoint()) for button in buttons]
++                    for value in (0, panel.scroll.verticalScrollBar().maximum()):
++                        panel.scroll.verticalScrollBar().setValue(value)
++                        APPLICATION.processEvents()
++                        for number, button in enumerate(buttons):
++                            with self.subTest(language=language, size=(width, height), scroll=value, button=button.text()):
++                                self.assertTrue(button.isVisible())
++                                self.assertTrue(button.visibleRegion().contains(button.rect()), "버튼 일부가 화면 밖에 가려졌습니다")
++                                self.assertTrue(panel.rect().contains(button.mapTo(panel, button.rect().topLeft())))
++                                self.assertTrue(panel.rect().contains(button.mapTo(panel, button.rect().bottomRight())))
++                                self.assertEqual(button.mapTo(panel, QPoint()), positions[number])
++                    if width == 960:
++                        self.assertTrue(self.window.grab().save(str(ROOT / f"Studio-{language}-ocr-fixed-controls.png")))
++        finally:
++            panel.operation.setCurrentIndex(panel.operation.findData(previous_operation))
++            self.window.resize(previous_size)
++            self.window.set_language("ko")
++            self.window.hide()
++
++    def test_68_dpi_flat_buttons_keep_visible_arrows_mouse_keys_and_limits(self):
++        panel = self.window.pdf_panel
++        previous = panel.operation.currentData()
++        value = panel.dpi.value()
++        self.window.tabs.setCurrentIndex(4)
++        self.window.show()
++        self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        panel.operation.setCurrentIndex(panel.operation.findData("recognize"))
++        panel.scroll.verticalScrollBar().setValue(0)
++        APPLICATION.processEvents()
++        spin = panel.dpi
++        try:
++            spin.clearFocus()
++            self.window.nav_buttons[4].setFocus()
++            APPLICATION.processEvents()
++            image = spin.grab().toImage()
++            self.assertTrue(all(image.pixelColor(image.width() - 2, y).red() >= 200
++                                for y in range(5, image.height() - 5)), "증감 영역에 강한 입체 외곽선이 남았습니다")
++            option = QStyleOptionSpinBox()
++            spin.initStyleOption(option)
++            up = spin.style().subControlRect(app.QStyle.CC_SpinBox, option, app.QStyle.SC_SpinBoxUp, spin)
++            down = spin.style().subControlRect(app.QStyle.CC_SpinBox, option, app.QStyle.SC_SpinBoxDown, spin)
++            for rectangle in (up, down):
++                self.assertTrue(spin.rect().contains(rectangle))
++                center = rectangle.center()
++                self.assertGreater(sum(image.pixelColor(x, y).red() < 180
++                                       for x in range(center.x() - 4, center.x() + 5)
++                                       for y in range(center.y() - 3, center.y() + 4)), 3)
++            geometry = spin.geometry()
++            spin.setValue(200)
++            QTest.keyClick(spin, Qt.Key_Up)
++            self.assertEqual(spin.value(), 225)
++            QTest.keyClick(spin, Qt.Key_Down)
++            self.assertEqual(spin.value(), 200)
++            QTest.mouseClick(spin, Qt.LeftButton, pos=up.center())
++            self.assertEqual(spin.value(), 225)
++            QTest.mouseClick(spin, Qt.LeftButton, pos=down.center())
++            self.assertEqual(spin.value(), 200)
++            spin.setValue(600)
++            QTest.mouseClick(spin, Qt.LeftButton, pos=up.center())
++            self.assertEqual(spin.value(), 600)
++            spin.setValue(60)
++            QTest.mouseClick(spin, Qt.LeftButton, pos=down.center())
++            self.assertEqual(spin.value(), 60)
++            self.assertEqual(spin.geometry(), geometry)
++            self.assertTrue(spin.grab().save(str(ROOT / "Studio-dpi-flat-buttons.png")))
++        finally:
++            spin.setValue(value)
++            panel.operation.setCurrentIndex(panel.operation.findData(previous))
++            self.window.hide()
++
++    def test_69_pdf_option_wheel_scrolls_without_changing_focused_or_unfocused_values(self):
++        panel = self.window.pdf_panel
++        previous_size = self.window.size()
++        previous_operation = panel.operation.currentData()
++        self.window.resize(960, 680)
++        self.window.tabs.setCurrentIndex(4)
++        self.window.show()
++        self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        panel.operation.setCurrentIndex(panel.operation.findData("recognize"))
++        APPLICATION.processEvents()
++        try:
++            for focused in (False, True):
++                for widget in (panel.output, panel.dpi):
++                    panel.scroll.ensureWidgetVisible(widget)
++                    (widget if focused else self.window.nav_buttons[4]).setFocus()
++                    APPLICATION.processEvents()
++                    scrollbar = panel.scroll.verticalScrollBar()
++                    before_scroll = scrollbar.value()
++                    before_value = widget.currentData() if hasattr(widget, "currentData") else widget.value()
++                    direction = -120 if before_scroll < scrollbar.maximum() else 120
++                    position = widget.mapTo(self.window, widget.rect().center())
++                    QTest.wheelEvent(self.window.windowHandle(), QPointF(position), QPoint(0, direction))
++                    APPLICATION.processEvents()
++                    after_value = widget.currentData() if hasattr(widget, "currentData") else widget.value()
++                    self.assertEqual(after_value, before_value, "옵션 위 스크롤이 값을 바꿨습니다")
++                    self.assertNotEqual(scrollbar.value(), before_scroll, "휠이 옵션 스크롤로 전달되지 않았습니다")
++            panel.scroll.ensureWidgetVisible(panel.output)
++            panel.output.setCurrentIndex(panel.output.findData("pdf"))
++            QTest.keyClick(panel.output, Qt.Key_Down)
++            self.assertEqual(panel.output.currentData(), "txt")
++            QTest.keyClick(panel.output, Qt.Key_Up)
++            self.assertEqual(panel.output.currentData(), "pdf")
++            panel.output.showPopup()
++            APPLICATION.processEvents()
++            self.assertTrue(panel.output.view().isVisible())
++            target = panel.output.model().index(panel.output.findData("txt"), 0)
++            activated = QSignalSpy(panel.output.activated)
++            QTest.mouseMove(panel.output.view().viewport(),
++                            pos=panel.output.view().visualRect(target).center())
++            QTest.mouseClick(panel.output.view().viewport(), Qt.LeftButton,
++                             pos=panel.output.view().visualRect(target).center())
++            self.assertEqual(panel.output.currentData(), "txt")
++            self.assertEqual(activated.count(), 1)
++            self.assertFalse(panel.output.view().isVisible())
++        finally:
++            panel.output.hidePopup()
++            panel.operation.setCurrentIndex(panel.operation.findData(previous_operation))
++            self.window.resize(previous_size)
++            self.window.hide()
+ 
+     def test_02_common_formats_preserved(self):
+         self.show_wheel([str(SOURCE), str(SOURCE2), str(SOURCE)])
+@@ -1419,6 +1817,452 @@
+         self.window.hide()
+ 
+ 
++    def test_70_shared_file_picker_has_designed_header_summary_and_finite_motion(self):
++        dialogs = [self.window.file_dialog(False), self.window.file_dialog(True)]
++        try:
++            for folder, dialog in zip((False, True), dialogs):
++                self.assertTrue(dialog.property("flipringFilePicker"),
++                                "파일·폴더 선택창에 승인된 공통 디자인과 모션이 없습니다")
++                self.assertEqual(dialog.fileMode(), QFileDialog.Directory if folder else QFileDialog.ExistingFiles)
++                self.assertTrue(dialog.testOption(QFileDialog.DontUseNativeDialog))
++                self.assertIsNotNone(dialog.findChild(app.QLabel, "pickerTitle"))
++                self.assertIsNotNone(dialog.findChild(app.QLabel, "pickerSummary"))
++                dialog.setDirectory(str(ROOT))
++                dialog.show()
++                APPLICATION.processEvents()
++                geometry = dialog.geometry()
++                motion = dialog._flipring_surface_motion
++                motion.animation.setCurrentTime(60)
++                middle = dialog.grab().toImage()
++                self.assertGreater(motion.amount, 0)
++                self.assertLess(motion.amount, 1)
++                self.assertTrue(middle.save(str(ROOT / f"Internal-picker-{'folder' if folder else 'files'}-middle.png")))
++                motion.animation.setCurrentTime(motion.animation.duration())
++                self.assertEqual(motion.animation.state(), QAbstractAnimation.Stopped)
++                self.assertFalse(motion.overlay.isVisible())
++                self.assertNotEqual(middle, dialog.grab().toImage())
++                self.assertEqual(dialog.geometry(), geometry)
++                self.assertIsNone(dialog.graphicsEffect())
++                QTest.keyClick(dialog, Qt.Key_Escape)
++                self.assertFalse(dialog.isVisible())
++                self.assertEqual(dialog.result(), QFileDialog.Rejected)
++        finally:
++            for dialog in dialogs:
++                dialog.hide()
++                dialog.deleteLater()
++
++    def test_71_inputs_lists_popups_and_real_status_have_owned_finite_feedback(self):
++        panel = self.window.pdf_panel
++        self.window.tabs.setCurrentIndex(4)
++        self.window.show()
++        APPLICATION.processEvents()
++        controls = [self.window.language_combo, self.window.trigger, self.window.history,
++                    panel.files, panel.operation, panel.pages, panel.output, panel.dpi,
++                    panel.force, self.window.status, panel.status, panel.progress]
++        try:
++            for widget in controls:
++                with self.subTest(control=widget.metaObject().className()):
++                    motion = getattr(widget, "_flipring_surface_motion", None)
++                    self.assertIsNotNone(motion, "조작 또는 실제 상태의 공통 피드백이 빠졌습니다")
++                    self.assertEqual(motion.parent(), widget)
++                    self.assertEqual(motion.animation.loopCount(), 1)
++            target = panel.operation
++            motion = target._flipring_surface_motion
++            geometry = target.geometry()
++            value = target.currentData()
++            motion.pulse()
++            motion.animation.setCurrentTime(65)
++            amount = motion.amount
++            self.assertGreater(amount, 0)
++            motion.pulse()
++            self.assertAlmostEqual(motion.amount, amount)
++            motion.animation.setCurrentTime(motion.animation.duration())
++            self.assertEqual(motion.animation.state(), QAbstractAnimation.Stopped)
++            self.assertFalse(motion.overlay.isVisible())
++            self.assertEqual(target.currentData(), value)
++            self.assertEqual(target.geometry(), geometry)
++            self.assertTrue(motion.overlay.testAttribute(Qt.WA_TransparentForMouseEvents))
++            target.showPopup()
++            APPLICATION.processEvents()
++            popup = target.view().window()
++            self.assertIsNotNone(getattr(popup, "_flipring_surface_motion", None))
++            target.hidePopup()
++            self.assertFalse(popup._flipring_surface_motion.overlay.isVisible())
++        finally:
++            self.window.hide()
++
++    def test_72_pdf_picker_uses_common_local_multiselect_and_filter(self):
++        panel = self.window.pdf_panel
++        factory = getattr(panel, "file_dialog", None)
++        self.assertTrue(callable(factory), "PDF 파일 추가가 공통 선택창을 사용하지 않습니다")
++        dialog = factory()
++        try:
++            self.assertTrue(dialog.property("flipringFilePicker"))
++            self.assertEqual(dialog.fileMode(), QFileDialog.ExistingFiles)
++            self.assertIn("*.pdf", dialog.nameFilters()[0])
++            self.assertIn("*.png", dialog.nameFilters()[0])
++            dialog.setDirectory(str(ROOT))
++            dialog.selectFile(str(SOURCE))
++            self.assertIn(SOURCE.resolve(), [Path(path).resolve() for path in dialog.selectedFiles()])
++            self.assertTrue(all(Path(path).is_file() for path in dialog.selectedFiles()))
++            dialog.reject()
++            self.assertEqual(dialog.result(), QFileDialog.Rejected)
++        finally:
++            dialog.deleteLater()
++
++    def test_73_picker_header_keeps_full_text_viewport_and_sorting(self):
++        dialog = self.window.file_dialog(False)
++        try:
++            dialog.setDirectory(str(ROOT))
++            dialog.show()
++            APPLICATION.processEvents()
++            tree = dialog.findChild(QTreeView, "treeView")
++            header = tree.header()
++            self.assertEqual(header.viewport().geometry().left(), 0,
++                             "목록 padding이 헤더에 상속되어 열 제목이 잘립니다")
++            self.assertEqual(header.viewport().geometry().top(), 0)
++            self.assertGreaterEqual(header.viewport().height(), header.fontMetrics().height() + 12)
++            self.assertEqual([tree.model().headerData(i, Qt.Horizontal, Qt.DisplayRole) for i in range(4)],
++                             ["이름", "크기", "종류", "수정한 날짜"])
++            previous = header.sortIndicatorOrder()
++            section = header.sectionViewportPosition(0)
++            QTest.mouseClick(header.viewport(), Qt.LeftButton, pos=QPoint(section + 25, header.height() // 2))
++            self.assertNotEqual(header.sortIndicatorOrder(), previous)
++            self.assertEqual(header.sortIndicatorSection(), 0)
++        finally:
++            dialog.hide()
++            dialog.deleteLater()
++
++    def test_74_rebuilt_tray_menus_release_old_motions_and_activate_once(self):
++        menu = self.window.tray_menu
++        self.window.show()
++        for language in ("en", "ko", "en", "ko"):
++            old = [action.menu() for action in menu.actions() if action.menu() is not None]
++            self.window.set_language(language)
++            self.window.update_tray_menu()
++            QCoreApplication.sendPostedEvents(None, QEvent.DeferredDelete)
++            self.assertTrue(all(not isValid(item) for item in old))
++            self.assertEqual(len(menu.findChildren(QMenu)), 2,
++                             "다시 만든 트레이 하위 메뉴와 모션이 누적됩니다")
++        menu.popup(QPoint(300, 200))
++        APPLICATION.processEvents()
++        action = next(action for action in menu.actions() if action.text() == "기록")
++        activated = QSignalSpy(action.triggered)
++        menu.setActiveAction(action)
++        QTest.keyClick(menu, Qt.Key_Return)
++        self.assertEqual(activated.count(), 1)
++        self.assertEqual(self.window.tabs.currentIndex(), 2)
++        self.assertFalse(menu.isVisible())
++        self.assertFalse(menu._flipring_surface_motion.overlay.isVisible())
++        self.window.hide()
++
++    def test_75_open_picker_retranslates_without_losing_selected_path(self):
++        dialogs = [self.window.file_dialog(False), self.window.file_dialog(True), self.window.pdf_panel.file_dialog()]
++        try:
++            for dialog in dialogs:
++                dialog.setDirectory(str(ROOT))
++                if dialog.fileMode() != QFileDialog.Directory:
++                    dialog.selectFile(str(SOURCE))
++                before = [Path(path).resolve() for path in dialog.selectedFiles()]
++                for language, accept in (("en", "Choose" if dialog.folder_mode else "Open"),
++                                          ("ko", "선택" if dialog.folder_mode else "열기")):
++                    self.window.set_language(language)
++                    APPLICATION.processEvents()
++                    self.assertEqual(dialog.language, language)
++                    self.assertEqual(dialog.labelText(QFileDialog.Accept), accept)
++                    self.assertEqual(dialog.heading.text(), dialog.windowTitle())
++                    self.assertIn("선택" if language == "ko" else "Choose", dialog.heading.text())
++                    self.assertEqual([Path(path).resolve() for path in dialog.selectedFiles()], before)
++                    from PySide6.QtCore import QFileInfo
++                    self.assertEqual(dialog._icon_provider.type(QFileInfo(str(ROOT))), "폴더" if language == "ko" else "Folder")
++        finally:
++            self.window.set_language("ko")
++            for dialog in dialogs:
++                dialog.deleteLater()
++
++    def test_76_message_has_designed_header_and_returns_without_motion_delay(self):
++        dialog = app.message_dialog(self.window, "저장 위치 안내", "<파일 이름>과 오류 원문을 보존합니다.")
++        try:
++            heading = dialog.findChild(app.QLabel, "messageTitle")
++            self.assertIsNotNone(heading, "메시지 내부 제목과 모션 헤더가 빠졌습니다")
++            self.assertEqual(heading.text(), "저장 위치 안내")
++            self.assertEqual(dialog.textFormat(), Qt.PlainText)
++            dialog.show()
++            APPLICATION.processEvents()
++            geometry = dialog.geometry()
++            message = dialog.findChild(app.QLabel, "qt_msgbox_label")
++            self.assertGreaterEqual(message.width(), dialog.layout().contentsRect().width() - 1,
++                                    "아이콘 없는 메시지 본문이 빈 아이콘 열 때문에 오른쪽으로 좁아집니다")
++            motion = dialog._flipring_surface_motion
++            motion.animation.setCurrentTime(80)
++            self.assertGreater(motion.amount, 0)
++            mark = dialog._flipring_message_mark
++            mark.animation.setCurrentTime(100)
++            self.assertGreater(mark.phase, 0)
++            self.assertLess(mark.phase, 1)
++            self.assertTrue(dialog.grab().save(str(ROOT / "Internal-message-middle.png")))
++            closed = QSignalSpy(dialog.finished)
++            QTest.keyClick(dialog, Qt.Key_Escape)
++            self.assertEqual(closed.count(), 1)
++            self.assertFalse(dialog.isVisible())
++            self.assertEqual(dialog.geometry(), geometry)
++            self.assertEqual(motion.animation.state(), QAbstractAnimation.Stopped)
++            self.assertEqual(mark.animation.state(), QAbstractAnimation.Stopped)
++        finally:
++            dialog.hide()
++            dialog.deleteLater()
++
++    def test_77_picker_keyboard_multiselect_enter_and_folder_accept_preserve_files(self):
++        folder = ROOT / "한글 선택 폴더"
++        folder.mkdir(exist_ok=True)
++        for folder_mode in (False, True):
++            dialog = self.window.file_dialog(folder_mode)
++            try:
++                dialog.setDirectory(str(ROOT))
++                dialog.show()
++                APPLICATION.processEvents()
++                edit = dialog.findChild(QLineEdit, "fileNameEdit")
++                edit.setText(str(folder) if folder_mode else f'"{SOURCE.name}" "{SOURCE2.name}"')
++                accepted = QSignalSpy(dialog.accepted)
++                QTest.keyClick(edit, Qt.Key_Return)
++                self.assertEqual(accepted.count(), 1)
++                self.assertFalse(dialog.isVisible())
++                actual = [Path(path).resolve() for path in dialog.selectedFiles()]
++                self.assertEqual(set(actual), {folder.resolve()} if folder_mode else {SOURCE.resolve(), SOURCE2.resolve()})
++                self.assertEqual(hashlib.sha256(SOURCE.read_bytes()).hexdigest(), ORIGINAL_HASH)
++            finally:
++                dialog.hide()
++                dialog.deleteLater()
++
++    def test_78_status_motion_tracks_real_states_and_stops_on_hide_and_reentry(self):
++        panel = self.window.pdf_panel
++        self.window.tabs.setCurrentIndex(4)
++        self.window.show()
++        APPLICATION.processEvents()
++        for key, expected in (("working", "working"), ("cancelling", "cancelling"),
++                              ("cancelled", "cancelled"), ("done", "complete")):
++            panel._set_status(key, label="실제 파일", count=2)
++            self.assertEqual(panel.status_mark.state, expected)
++            animation = panel.status_mark.animation
++            animation.setCurrentTime(100)
++            self.assertGreater(panel.status_mark.phase, 0)
++            self.assertLess(panel.status_mark.phase, 1)
++            animation.setCurrentTime(animation.duration())
++            self.assertEqual(animation.state(), QAbstractAnimation.Stopped)
++        self.window.last_result = ("", "지원하지 않는 변환입니다.")
++        self.window.update_status()
++        self.assertEqual(self.window.status_mark.state, "error")
++        self.window.hide()
++        from ui_motion import SurfaceMotion, StateMark
++        for motion in self.window.findChildren(SurfaceMotion):
++            self.assertEqual(motion.animation.state(), QAbstractAnimation.Stopped)
++            self.assertFalse(motion.overlay.isVisible())
++        for mark in self.window.findChildren(StateMark):
++            self.assertEqual(mark.animation.state(), QAbstractAnimation.Stopped)
++        self.window.show()
++        APPLICATION.processEvents()
++        panel.status_mark.respond("complete")
++        QTest.qWait(420)
++        self.assertEqual(panel.status_mark.animation.state(), QAbstractAnimation.Stopped)
++        self.assertAlmostEqual(panel.status_mark.phase, 1)
++        self.window.last_result = None
++        panel._set_status("ready")
++        self.window.hide()
++
++    def test_79_late_context_menu_and_plain_tooltip_use_owned_finite_motion(self):
++        from ui_motion import show_tooltip
++        self.window.show()
++        APPLICATION.processEvents()
++        menu = QMenu(self.window)
++        menu.addAction("원문 경로")
++        menu.popup(QPoint(300, 250))
++        APPLICATION.processEvents()
++        try:
++            motion = menu._flipring_surface_motion
++            style = menu.styleSheet()
++            menu.hide()
++            menu.popup(QPoint(300, 250))
++            APPLICATION.processEvents()
++            self.assertEqual(menu.styleSheet(), style, "팝업을 다시 열 때 스타일이 누적됩니다")
++            QTest.keyClick(menu, Qt.Key_Escape)
++            self.assertEqual(motion.animation.state(), QAbstractAnimation.Stopped)
++            owner = self.window.record_button
++            owner.setToolTip("<b>경로를 번역하거나 HTML로 실행하지 않습니다</b>")
++            point = owner.mapToGlobal(owner.rect().center())
++            help_event = QHelpEvent(QEvent.ToolTip, owner.rect().center(), point)
++            QApplication.sendEvent(owner, help_event)
++            tooltip = APPLICATION._flipring_tooltip
++            self.assertTrue(tooltip.isVisible())
++            self.assertEqual(tooltip.label.textFormat(), Qt.PlainText)
++            self.assertEqual(tooltip.label.text(), owner.toolTip())
++            self.assertTrue(tooltip.timeout.isActive())
++            QApplication.sendEvent(owner, QEvent(QEvent.Leave))
++            self.assertFalse(tooltip.isVisible())
++            self.assertFalse(tooltip.timeout.isActive())
++        finally:
++            menu.hide()
++            menu.deleteLater()
++            self.window.hide()
++
++    def test_80_pdf_file_row_changes_keep_order_data_and_busy_boundary(self):
++        panel = self.window.pdf_panel
++        self.window.tabs.setCurrentIndex(4)
++        self.window.show()
++        APPLICATION.processEvents()
++        panel.set_files([str(SOURCE), str(SOURCE2), str(SOURCE)])
++        self.assertEqual(panel.input_paths(), [str(SOURCE), str(SOURCE2)])
++        panel.files.setCurrentRow(1)
++        panel.move_file(-1)
++        self.assertEqual(panel.input_paths(), [str(SOURCE2), str(SOURCE)])
++        panel._set_busy(True)
++        before = panel.input_paths()
++        panel.move_file(1)
++        panel.remove_files()
++        self.assertEqual(panel.input_paths(), before)
++        panel._set_busy(False)
++        panel.files.setCurrentRow(0)
++        panel.remove_files()
++        self.assertEqual(panel.input_paths(), [str(SOURCE)])
++        motion = panel.files._flipring_surface_motion
++        self.assertEqual(motion.animation.state(), QAbstractAnimation.Running)
++        motion.animation.setCurrentTime(120)
++        self.assertGreater(motion.amount, 0)
++        self.window.hide()
++        self.assertFalse(motion.overlay.isVisible())
++
++    def test_81_row_feedback_retarget_starts_from_current_rendered_rectangle(self):
++        from ui_motion import ensure_surface_motion
++        from PySide6.QtCore import QRectF
++        host = app.QListWidget()
++        host.resize(280, 240)
++        host.show()
++        APPLICATION.processEvents()
++        motion = ensure_surface_motion(host)
++        try:
++            motion.pulse(rectangle=QRectF(4, 10, 250, 30))
++            motion.animation.setCurrentTime(motion.animation.duration())
++            motion.pulse(rectangle=QRectF(4, 100, 250, 30))
++            motion.animation.setCurrentTime(85)
++            before = motion.overlay.grab().toImage()
++            amount = motion.amount
++            motion.pulse(rectangle=QRectF(4, 160, 250, 30))
++            self.assertAlmostEqual(motion.amount, amount)
++            self.assertEqual(before, motion.overlay.grab().toImage(),
++                             "빠른 행 재선택에서 현재 그리기 위치가 이전 목적지로 튑니다")
++            motion.animation.setCurrentTime(motion.animation.duration())
++            self.assertFalse(motion.overlay.isVisible())
++        finally:
++            host.hide()
++            host.deleteLater()
++
++    def test_82_partial_queue_completion_keeps_overall_working_visual(self):
++        records, last = self.window.records.copy(), self.window.last_result
++        saved = self.window.history_path.read_bytes() if self.window.history_path.exists() else None
++        pending = self.window.pending
++        try:
++            self.window.pending = 2
++            self.window.finished(str(SOURCE), str(SOURCE2), "")
++            self.assertEqual(self.window.pending, 1)
++            self.assertEqual(self.window.drop_card.orbit.state, "working")
++            self.assertEqual(self.window.status_mark.state, "working")
++            self.assertIn("1", self.window.status.text())
++            self.window.finished(str(SOURCE), str(SOURCE2), "")
++            self.assertEqual(self.window.pending, 0)
++            self.assertEqual(self.window.drop_card.orbit.state, "complete")
++        finally:
++            self.window.records, self.window.last_result, self.window.pending = records, last, pending
++            self.window.refresh_history()
++            self.window.update_status()
++            if saved is not None:
++                self.window.history_path.write_bytes(saved)
++
++    def test_83_pdf_activity_reaches_home_visual_and_cancel_without_fake_percentage(self):
++        panel = self.window.pdf_panel
++        last = self.window.last_result
++        try:
++            panel._set_busy(True)
++            panel._set_status("working", label="실제 처리 파일")
++            self.assertEqual(self.window.status_mark.state, "working")
++            self.assertEqual(self.window.drop_card.orbit.state, "working")
++            self.assertEqual(self.window.status.text(), panel.status.text())
++            self.assertEqual(panel.progress.value(), 0)
++            panel._set_status("cancelling")
++            self.assertEqual(self.window.drop_card.orbit.state, "cancelling")
++            panel._set_busy(False)
++            panel._set_status("cancelled")
++            self.assertEqual(self.window.status_mark.state, "cancelled")
++            self.assertEqual(self.window.drop_card.orbit.state, "cancelled")
++        finally:
++            panel._set_busy(False)
++            panel._set_status("ready")
++            self.window.last_result = last
++            self.window.update_status()
++
++    def test_84_picker_ctrl_shift_view_selection_accepts_exact_unicode_files_once(self):
++        fixture = ROOT / "한글 다중 선택"
++        fixture.mkdir(exist_ok=True)
++        sources = [fixture / name for name in ("가.png", "나.png", "다.png")]
++        for path in sources:
++            path.write_bytes(SOURCE.read_bytes())
++        dialog = self.window.file_dialog(False)
++        try:
++            dialog.setDirectory(str(fixture))
++            dialog.show()
++            APPLICATION.processEvents()
++            QTest.qWait(50)
++            tree = dialog.findChild(QTreeView, "treeView")
++            tree.sortByColumn(0, Qt.AscendingOrder)
++            indexes = [tree.model().index(str(path)) for path in sources]
++            self.assertTrue(all(index.isValid() for index in indexes))
++            points = [tree.visualRect(index).center() for index in indexes]
++            QTest.mouseClick(tree.viewport(), Qt.LeftButton, Qt.NoModifier, points[0])
++            QTest.mouseClick(tree.viewport(), Qt.LeftButton, Qt.ControlModifier, points[2])
++            self.assertEqual({Path(path).resolve() for path in dialog.selectedFiles()},
++                             {sources[0].resolve(), sources[2].resolve()})
++            QTest.mouseClick(tree.viewport(), Qt.LeftButton, Qt.NoModifier, points[0])
++            QTest.mouseClick(tree.viewport(), Qt.LeftButton, Qt.ShiftModifier, points[2])
++            self.assertEqual({Path(path).resolve() for path in dialog.selectedFiles()}, {path.resolve() for path in sources})
++            self.assertIn("3", dialog.summary.text())
++            accepted = QSignalSpy(dialog.accepted)
++            QTest.keyClick(tree, Qt.Key_Return)
++            self.assertEqual(accepted.count(), 1)
++            self.assertFalse(dialog.isVisible())
++            self.assertEqual(hashlib.sha256(SOURCE.read_bytes()).hexdigest(), ORIGINAL_HASH)
++        finally:
++            dialog.hide()
++            dialog.deleteLater()
++
++    def test_85_language_uses_observed_helpers_and_explicit_refresh_detects_changes(self):
++        previous = getattr(self.window, "_tool_paths", None)
++        observations = {name: None for name in app.engine.TOOLS}
++        try:
++            with patch.object(app.engine, "tool", side_effect=lambda name: observations[name]) as discover:
++                self.window.refresh_tools()
++                self.assertEqual(discover.call_count, 3)
++                self.window.set_language("en")
++                self.window.set_language("ko")
++                self.assertEqual(discover.call_count, 3, "표시 언어를 바꾸며 같은 도구 경로를 다시 탐색합니다")
++                self.assertIn("미설치", self.window.tool_labels["ffmpeg"].text())
++                observations["ffmpeg"] = str(ROOT / "새로 설치한 ffmpeg.exe")
++                self.window.open_page(1)
++                self.assertEqual(discover.call_count, 6)
++                self.assertEqual(self.window.tool_labels["ffmpeg"].text(), "사용 가능")
++                self.assertEqual(self.window.tool_labels["ffmpeg"].toolTip(), observations["ffmpeg"])
++                observations["ffmpeg"] = None
++                self.window.tray_menu.popup(QPoint(300, 200))
++                APPLICATION.processEvents()
++                self.assertEqual(discover.call_count, 9)
++                tools = next(action.menu() for action in self.window.tray_menu.actions() if action.text() == "도우미 도구")
++                self.assertTrue(any(action.text().startswith("✗ FFmpeg") for action in tools.actions()))
++                QTest.keyClick(self.window.tray_menu, Qt.Key_Escape)
++        finally:
++            self.window.hide()
++            if previous is not None:
++                self.window._tool_paths = previous
++                self.window.render_tools()
++                self.window.update_tray_menu(refresh=False)
++
++
+ def main():
+     suite = unittest.defaultTestLoader.loadTestsFromTestCase(GuiTests)
+     result = unittest.TextTestRunner(verbosity=2, failfast=True).run(suite)
+--- 1.4.0/ui_motion.py
++++ 1.6.0/ui_motion.py
+@@ -0,0 +1,757 @@
++"""앱 내부 표면의 유한 피드백과 공통 파일 선택창. 실제 입력·파일 처리는 Qt에 맡긴다."""
++from __future__ import annotations
++
++from pathlib import Path
++import weakref
++
++from PySide6.QtCore import Qt, QObject, QEvent, QVariantAnimation, QEasingCurve, QRectF, QPointF, QTimer, QUrl, QSignalBlocker
++from PySide6.QtGui import QColor, QPainter, QPen, QPainterPath, QIcon, QPixmap
++from PySide6.QtWidgets import (
++    QApplication, QWidget, QFrame, QLabel, QVBoxLayout, QHBoxLayout, QFileDialog,
++    QDialogButtonBox, QAbstractItemView, QComboBox, QLineEdit, QAbstractSpinBox,
++    QAbstractButton, QProgressBar, QMenu, QToolButton, QFileIconProvider, QMessageBox, QTreeView, QHeaderView,
++)
++from shiboken6 import isValid
++import engine
++from i18n import tr
++
++
++SURFACE_STYLE = """
++QFileDialog#flipringPicker {background:#fafafa;}
++QFileDialog#flipringPicker QWidget {font-family:'SUIT';font-size:13px;color:#262626;}
++QFileDialog#flipringPicker QLabel#pickerTitle {font-size:24px;font-weight:600;}
++QFileDialog#flipringPicker QLabel#pickerCaption {color:#737373;font-size:12px;}
++QFileDialog#flipringPicker QLabel#pickerSummary {color:#646464;font-size:12px;}
++QFileDialog#flipringPicker QFrame#pickerHeader {background:transparent;border:0;}
++QFileDialog#flipringPicker QAbstractItemView {background:#ffffff;border:1px solid #e7e7e7;border-radius:12px;padding:8px;outline:0;}
++QFileDialog#flipringPicker QAbstractItemView::item {min-height:32px;padding:5px 7px;border:0;}
++QFileDialog#flipringPicker QAbstractItemView::item:selected {background:#eaeaea;color:#242424;border-radius:6px;}
++QFileDialog#flipringPicker QAbstractItemView::item:hover {background:#f3f3f3;}
++QFileDialog#flipringPicker QListView#sidebar {background:#f1f1f1;border:0;border-radius:12px;padding:10px;}
++QFileDialog#flipringPicker QHeaderView::section {background:#fafafa;border:0;border-bottom:1px solid #ededed;padding:9px;color:#6a6a6a;}
++QFileDialog#flipringPicker QHeaderView {padding:0;border:0;border-radius:0;}
++QFileDialog#flipringPicker QSplitter::handle {background:transparent;width:14px;}
++QFileDialog#flipringPicker QLineEdit,QFileDialog#flipringPicker QComboBox {background:#ffffff;border:1px solid #e4e4e4;border-radius:9px;padding:9px 11px;min-height:18px;}
++QFileDialog#flipringPicker QComboBox {padding-right:30px;}
++QFileDialog#flipringPicker QComboBox::drop-down {border:0;width:26px;}
++QFileDialog#flipringPicker QToolButton {background:#f1f1f1;border:0;border-radius:8px;padding:7px;min-width:20px;min-height:20px;}
++QFileDialog#flipringPicker QToolButton:checked {background:#dedede;}
++QFileDialog#flipringPicker QPushButton {background:#ffffff;border:1px solid #dedede;border-radius:9px;padding:10px 22px;min-height:18px;font-weight:500;}
++QFileDialog#flipringPicker QPushButton[primary="true"] {background:#222222;border-color:#222222;color:#ffffff;}
++QFileDialog#flipringPicker QScrollBar:vertical {background:#fafafa;width:7px;}
++QFileDialog#flipringPicker QScrollBar::handle:vertical {background:#c4c4c4;min-height:28px;border-radius:3px;}
++QFileDialog#flipringPicker QScrollBar::add-line:vertical,QFileDialog#flipringPicker QScrollBar::sub-line:vertical {height:0;}
++QFileDialog#flipringPicker QScrollBar::add-page:vertical,QFileDialog#flipringPicker QScrollBar::sub-page:vertical {background:none;}
++QMenu {background:#ffffff;color:#262626;border:1px solid #dfdfdf;border-radius:10px;padding:7px;}
++QMenu::item {padding:10px 23px;border-radius:7px;}
++QMenu::item:selected {background:#ededed;color:#262626;}
++QMenu::item:disabled {color:#898989;}
++QMenu::separator {height:1px;background:#ededed;margin:5px 10px;}
++QMessageBox {background:#fafafa;}
++QMessageBox QLabel {font-family:'SUIT';font-size:14px;color:#303030;padding:14px;}
++QMessageBox QLabel#messageTitle {font-size:20px;font-weight:600;padding:0;color:#242424;}
++QMessageBox QPushButton {font-family:'SUIT';font-size:13px;background:#242424;color:#ffffff;border:0;border-radius:9px;padding:10px 26px;min-height:19px;}
++"""
++
++
++class FeedbackOverlay(QWidget):
++    """항목 위치를 바꾸지 않고 테두리·광선만 그리는 입력 투명 레이어."""
++
++    def __init__(self, host):
++        super().__init__(host)
++        self.setAttribute(Qt.WA_TransparentForMouseEvents, True)
++        self.setAttribute(Qt.WA_NoSystemBackground, True)
++        self.setAttribute(Qt.WA_TranslucentBackground, True)
++        self.setFocusPolicy(Qt.NoFocus)
++        self.amount = 0.0
++        self.rectangle = None
++        self.origin = None
++        self.travel = 1.0
++        self.setGeometry(host.rect())
++        self.hide()
++
++    def paintEvent(self, event):
++        painter = QPainter(self)
++        painter.setRenderHint(QPainter.Antialiasing)
++        rectangle = self.current_rectangle()
++        painter.setPen(QPen(QColor(54, 54, 54, round(105 * self.amount)), 1.1))
++        painter.setBrush(QColor(90, 90, 90, round(8 * self.amount)))
++        painter.drawRoundedRect(rectangle, 8, 8)
++        painter.setPen(QPen(QColor(42, 42, 42, round(145 * self.amount)), 2, Qt.SolidLine, Qt.RoundCap))
++        width = max(0, rectangle.width() - 18) * (0.18 + 0.65 * self.amount)
++        painter.drawLine(QPointF(rectangle.left() + 9, rectangle.bottom() - 1),
++                         QPointF(rectangle.left() + 9 + width, rectangle.bottom() - 1))
++        painter.end()
++
++    def current_rectangle(self):
++        """현재 그리는 위치를 재사용해 빠른 행 이동도 그 지점에서 이어간다."""
++        rectangle = self.rectangle if self.rectangle is not None else QRectF(self.rect()).adjusted(3, 3, -3, -3)
++        if self.origin is not None:
++            start = self.origin
++            rectangle = QRectF(start.x() + (rectangle.x() - start.x()) * self.travel,
++                               start.y() + (rectangle.y() - start.y()) * self.travel,
++                               start.width() + (rectangle.width() - start.width()) * self.travel,
++                               start.height() + (rectangle.height() - start.height()) * self.travel)
++        return rectangle
++
++
++class SurfaceMotion(QObject):
++    """표면이 수명을 소유하며, 새 입력은 현재 프레임부터 유한 피드백으로 이어진다."""
++
++    def __init__(self, widget):
++        super().__init__(widget)
++        self.host = widget.viewport() if isinstance(widget, QAbstractItemView) else widget
++        self.overlay = FeedbackOverlay(self.host)
++        self.amount = 0.0
++        self.animation = QVariantAnimation(self)
++        self.animation.setDuration(280)
++        self.animation.setEasingCurve(QEasingCurve.InOutSine)
++        self.animation.valueChanged.connect(self._frame)
++        self.animation.finished.connect(self.stop)
++        widget.installEventFilter(self)
++        if self.host is not widget:
++            self.host.installEventFilter(self)
++        if isinstance(widget, QAbstractItemView):
++            self._selection_model = None
++            self._model = None
++            self._connect_view()
++            widget.verticalScrollBar().valueChanged.connect(self.selection_pulse)
++        if isinstance(widget, QComboBox):
++            widget.currentIndexChanged.connect(self.pulse)
++            ensure_surface_motion(widget.view().window())
++            install_surface_motions(widget.view())
++        elif isinstance(widget, QLineEdit):
++            widget.textEdited.connect(self.pulse)
++        elif isinstance(widget, QAbstractSpinBox) and hasattr(widget, "valueChanged"):
++            widget.valueChanged.connect(self.pulse)
++        elif isinstance(widget, QAbstractButton):
++            widget.clicked.connect(self.pulse)
++        elif isinstance(widget, QProgressBar):
++            widget.valueChanged.connect(self.pulse)
++        elif isinstance(widget, QMenu):
++            widget.hovered.connect(self.menu_pulse)
++
++    def _frame(self, value):
++        self.amount = float(value)
++        self.overlay.amount = self.amount
++        self.overlay.travel = min(1.0, self.animation.currentTime() / 170)
++        self.overlay.update()
++
++    def _connect_view(self):
++        widget = self.parent()
++        selection, model = widget.selectionModel(), widget.model()
++        if selection is not None and selection is not self._selection_model:
++            selection.selectionChanged.connect(self.selection_pulse)
++            selection.currentChanged.connect(self.selection_pulse)
++            self._selection_model = selection
++        if model is not None and model is not self._model:
++            model.rowsInserted.connect(self.selection_pulse)
++            model.rowsRemoved.connect(self.selection_pulse)
++            model.rowsMoved.connect(self.selection_pulse)
++            self._model = model
++
++    def pulse(self, *unused, rectangle=None):
++        widget = self.parent()
++        if not widget.isVisible():
++            return
++        current = self.amount
++        origin = self.overlay.current_rectangle() if self.overlay.rectangle is not None else None
++        self.animation.stop()
++        self.overlay.origin = origin if rectangle is not None else None
++        self.overlay.rectangle = rectangle
++        self.overlay.setGeometry(self.host.rect())
++        self.overlay.show()
++        self.overlay.raise_()
++        # 시작값을 현재 값으로 두므로 반복 입력에서도 밝기가 처음으로 튀지 않는다.
++        with QSignalBlocker(self.animation):
++            self.animation.setStartValue(current)
++            self.animation.setKeyValueAt(0.30, 0.9)
++            self.animation.setEndValue(0.0)
++            self.animation.setCurrentTime(0)
++        self._frame(current)
++        self.animation.start()
++
++    def selection_pulse(self, *unused):
++        widget = self.parent()
++        index = widget.currentIndex()
++        rectangle = QRectF(widget.visualRect(index)).adjusted(2, 2, -2, -2) if index.isValid() else None
++        self.pulse(rectangle=rectangle)
++
++    def menu_pulse(self, action):
++        self.pulse(rectangle=QRectF(self.parent().actionGeometry(action)).adjusted(1, 1, -1, -1))
++
++    def stop(self):
++        self.animation.stop()
++        self.amount = self.overlay.amount = 0.0
++        self.overlay.hide()
++
++    def eventFilter(self, watched, event):
++        kind = event.type()
++        if kind in (QEvent.Resize, QEvent.Show):
++            self.overlay.setGeometry(self.host.rect())
++            if kind == QEvent.Show:
++                if isinstance(self.parent(), QAbstractItemView):
++                    self._connect_view()
++                self.pulse()
++        elif kind in (QEvent.Enter, QEvent.FocusIn, QEvent.MouseButtonPress, QEvent.KeyPress):
++            if self.parent().isEnabled():
++                self.pulse()
++        elif kind in (QEvent.Hide, QEvent.Close):
++            self.stop()
++            self.overlay.rectangle = self.overlay.origin = None
++            hide_tooltip(self.parent())
++        elif kind == QEvent.Leave:
++            hide_tooltip(self.parent())
++        elif kind == QEvent.EnabledChange and not self.parent().isEnabled():
++            self.stop()
++        elif kind == QEvent.ToolTip:
++            text = self.parent().toolTip()
++            if isinstance(self.parent(), QAbstractItemView):
++                index = self.parent().indexAt(event.pos())
++                text = index.data(Qt.ToolTipRole) if index.isValid() else text
++            if text:
++                show_tooltip(self.parent(), str(text), event.globalPos())
++                event.accept()
++                return True
++        return False
++
++
++def ensure_surface_motion(widget):
++    motion = getattr(widget, "_flipring_surface_motion", None)
++    if motion is None:
++        motion = SurfaceMotion(widget)
++        widget._flipring_surface_motion = motion
++    return motion
++
++
++def install_surface_motions(root):
++    """소유권이 있는 컨트롤과 늦게 생기는 팝업에도 한 번만 연결한다."""
++    kinds = (QAbstractItemView, QComboBox, QLineEdit, QAbstractSpinBox, QAbstractButton, QMenu, QProgressBar)
++    for widget in [root] + root.findChildren(QWidget):
++        if isinstance(widget, kinds):
++            # 스크롤바의 상시 이동에는 중복 광선을 만들지 않는다. 스크롤되는 내용은 그대로 갱신된다.
++            ensure_surface_motion(widget)
++    return ensure_surface_motion(root)
++
++
++def pulse_widget(widget):
++    ensure_surface_motion(widget).pulse()
++
++
++class MotionSystem(QObject):
++    """Qt가 나중에 만드는 메뉴·팝업·편집 도움말까지 같은 앱 표면으로 연결한다."""
++
++    def __init__(self, application, button_installer):
++        super().__init__(application)
++        self.button_installer = button_installer
++        application.installEventFilter(self)
++
++    def eventFilter(self, watched, event):
++        if not isinstance(watched, QWidget) or isinstance(watched, FeedbackOverlay):
++            return False
++        kind = event.type()
++        if kind == QEvent.Show:
++            if isinstance(watched, (QMenu, QMessageBox)):
++                if not watched.property("flipringMotionStyle"):
++                    watched.setStyleSheet(watched.styleSheet() + SURFACE_STYLE)
++                    watched.setProperty("flipringMotionStyle", True)
++                if isinstance(watched, QMessageBox):
++                    decorate_message(watched)
++                install_surface_motions(watched)
++                if self.button_installer is not None:
++                    self.button_installer(watched)
++            elif isinstance(watched, (QAbstractItemView, QComboBox, QLineEdit, QAbstractSpinBox, QAbstractButton)):
++                ensure_surface_motion(watched)
++                if self.button_installer is not None:
++                    self.button_installer(watched)
++        elif kind == QEvent.ToolTip:
++            text = watched.toolTip()
++            owner = watched
++            if isinstance(watched.parentWidget(), QAbstractItemView):
++                owner = watched.parentWidget()
++            if isinstance(owner, QAbstractItemView):
++                index = owner.indexAt(event.pos())
++                text = index.data(Qt.ToolTipRole) if index.isValid() else text
++            if text:
++                show_tooltip(owner, str(text), event.globalPos())
++                event.accept()
++                return True
++        elif kind in (QEvent.Leave, QEvent.Hide, QEvent.MouseButtonPress, QEvent.KeyPress):
++            hide_tooltip(watched)
++        return False
++
++
++def install_motion_system(application, button_installer=None):
++    system = getattr(application, "_flipring_motion_system", None)
++    if system is None:
++        application._flipring_motion_system = system = MotionSystem(application, button_installer)
++    return system
++
++
++class StateMark(QWidget):
++    """실제 작업 상태의 유한 링·체크·취소 표시. 진행률을 추정하지 않는다."""
++
++    def __init__(self, parent=None):
++        super().__init__(parent)
++        self.setFixedSize(28, 28)
++        self.setAttribute(Qt.WA_TransparentForMouseEvents, True)
++        self.state = "ready"
++        self.phase = 1.0
++        self.animation = QVariantAnimation(self)
++        self.animation.setDuration(400)
++        self.animation.setEasingCurve(QEasingCurve.OutCubic)
++        self.animation.setStartValue(0.0)
++        self.animation.setEndValue(1.0)
++        self.animation.valueChanged.connect(self._frame)
++
++    def _frame(self, value):
++        self.phase = float(value)
++        self.update()
++
++    def respond(self, state):
++        self.state = state
++        self.setAccessibleName(state)
++        self.animation.stop()
++        if self.isVisible():
++            self.animation.setCurrentTime(0)
++            self._frame(float(self.animation.currentValue()))
++            self.animation.start()
++        else:
++            self._frame(1.0)
++
++    def hideEvent(self, event):
++        self.animation.stop()
++        self._frame(1.0)
++        super().hideEvent(event)
++
++    def showEvent(self, event):
++        super().showEvent(event)
++        self.respond(self.state)
++
++    def paintEvent(self, event):
++        painter = QPainter(self)
++        painter.setRenderHint(QPainter.Antialiasing)
++        painter.setPen(QPen(QColor("#e4e4e4"), 1.3))
++        painter.setBrush(Qt.NoBrush)
++        painter.drawEllipse(QRectF(3, 3, 22, 22))
++        painter.setPen(QPen(QColor("#505050"), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
++        if self.state in {"working", "cancelling"}:
++            painter.drawArc(QRectF(3, 3, 22, 22), round((1 - self.phase) * 230 * 16), 250 * 16)
++            if self.state == "cancelling":
++                painter.drawLine(11, 14, 17, 14)
++        elif self.state == "complete":
++            path = QPainterPath(QPointF(8, 14))
++            path.lineTo(12, 18)
++            path.lineTo(20, 10)
++            painter.setOpacity(0.45 + 0.55 * self.phase)
++            painter.drawPath(path)
++        elif self.state == "error":
++            painter.drawLine(10, 10, 18, 18)
++            painter.drawLine(18, 10, 10, 18)
++        elif self.state == "cancelled":
++            painter.drawLine(10, 14, 18, 14)
++        else:
++            painter.drawEllipse(QPointF(14, 14), 2.2, 2.2)
++        painter.end()
++
++
++class MotionToolTip(QFrame):
++    """앱 소유 도움말. 파일명·경로·오류 문자열을 HTML로 실행하지 않는다."""
++
++    def __init__(self):
++        super().__init__(None, Qt.ToolTip | Qt.FramelessWindowHint)
++        self.setAttribute(Qt.WA_TransparentForMouseEvents, True)
++        self.setObjectName("flipringTooltip")
++        self.setStyleSheet("QFrame#flipringTooltip {background:#242424;border:1px solid #494949;border-radius:10px;}"
++                           "QLabel {color:#fafafa;font-family:'SUIT';font-size:12px;background:transparent;}")
++        layout = QVBoxLayout(self)
++        layout.setContentsMargins(14, 11, 14, 11)
++        self.label = QLabel()
++        self.label.setTextFormat(Qt.PlainText)
++        self.label.setWordWrap(True)
++        self.label.setMaximumWidth(510)
++        layout.addWidget(self.label)
++        self.owner = None
++        self.timeout = QTimer(self)
++        self.timeout.setSingleShot(True)
++        self.timeout.setInterval(6000)
++        self.timeout.timeout.connect(self.hide)
++        ensure_surface_motion(self)
++
++    def show_text(self, owner, text, point):
++        self.owner = weakref.ref(owner)
++        self.label.setText(text)
++        self.adjustSize()
++        available = owner.screen().availableGeometry()
++        self.move(max(available.left(), min(point.x() + 12, available.right() - self.width())),
++                  max(available.top(), min(point.y() + 18, available.bottom() - self.height())))
++        self.show()
++        pulse_widget(self)
++        self.timeout.start()
++
++    def hideEvent(self, event):
++        self.timeout.stop()
++        super().hideEvent(event)
++
++
++def show_tooltip(owner, text, point):
++    application = QApplication.instance()
++    tooltip = getattr(application, "_flipring_tooltip", None)
++    if tooltip is None:
++        tooltip = application._flipring_tooltip = MotionToolTip()
++        application.aboutToQuit.connect(tooltip.close)
++    tooltip.show_text(owner, text, point)
++    return tooltip
++
++
++def hide_tooltip(owner):
++    tooltip = getattr(QApplication.instance(), "_flipring_tooltip", None)
++    if tooltip is not None and tooltip.owner is not None and tooltip.owner() is owner:
++        tooltip.hide()
++
++
++class PickerMark(QWidget):
++    """선택창의 위치 이동과 선택에 반응하는 작은 링. 타이머 반복은 없다."""
++
++    def __init__(self, parent=None):
++        super().__init__(parent)
++        self.setFixedSize(54, 54)
++        self.phase = 1.0
++        self.animation = QVariantAnimation(self)
++        self.animation.setDuration(380)
++        self.animation.setEasingCurve(QEasingCurve.OutCubic)
++        self.animation.setStartValue(0.0)
++        self.animation.setEndValue(1.0)
++        self.animation.valueChanged.connect(self._frame)
++
++    def _frame(self, value):
++        self.phase = float(value)
++        self.update()
++
++    def respond(self, *unused):
++        self.animation.stop()
++        self.animation.setCurrentTime(0)
++        self._frame(float(self.animation.currentValue()))
++        self.animation.start()
++
++    def hideEvent(self, event):
++        self.animation.stop()
++        self.phase = 1.0
++        super().hideEvent(event)
++
++    def showEvent(self, event):
++        super().showEvent(event)
++        self.respond()
++
++    def paintEvent(self, event):
++        painter = QPainter(self)
++        painter.setRenderHint(QPainter.Antialiasing)
++        painter.setPen(Qt.NoPen)
++        painter.setBrush(QColor("#242424"))
++        painter.drawRoundedRect(QRectF(1, 1, 52, 52), 16, 16)
++        painter.setBrush(Qt.NoBrush)
++        painter.setPen(QPen(QColor("#bfbfbf"), 1.2))
++        painter.drawEllipse(QPointF(27, 27), 16, 16)
++        painter.setPen(QPen(QColor("#ffffff"), 2, Qt.SolidLine, Qt.RoundCap))
++        painter.drawArc(QRectF(11, 11, 32, 32), round((1 - self.phase) * 110 * 16), 115 * 16)
++        painter.drawLine(23, 27, 31, 27)
++        painter.drawLine(27, 23, 27, 31)
++        painter.end()
++
++
++class MonoFileIcons(QFileIconProvider):
++    """선택창 내부 파일 표시는 흑백으로 통일하며 실제 파일 형식은 Qt 모델이 보존한다."""
++
++    def __init__(self, language):
++        super().__init__()
++        self.language = language
++
++    def type(self, info):
++        # 폴더는 앱 공통 문구다. 그 밖의 확장자별 형식 이름은 시스템 원문으로 보존한다.
++        return tr(self.language, "picker_folder_type") if info.isDir() else super().type(info)
++
++    def icon(self, value):
++        folder = value.isDir() if hasattr(value, "isDir") else value in (QFileIconProvider.Folder, QFileIconProvider.Drive)
++        pixmap = QPixmap(24, 24)
++        pixmap.fill(Qt.transparent)
++        painter = QPainter(pixmap)
++        painter.setRenderHint(QPainter.Antialiasing)
++        painter.setPen(QPen(QColor("#6a6a6a"), 1.4, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
++        painter.setBrush(QColor("#f5f5f5"))
++        if folder:
++            path = QPainterPath(QPointF(3, 7))
++            for point in ((3, 5), (9, 5), (11, 7), (21, 7), (21, 19), (3, 19)):
++                path.lineTo(*point)
++            path.closeSubpath()
++            painter.drawPath(path)
++        else:
++            painter.drawRoundedRect(QRectF(5, 3, 14, 18), 2, 2)
++            painter.drawLine(8, 9, 16, 9)
++            painter.drawLine(8, 13, 16, 13)
++            painter.drawLine(8, 17, 13, 17)
++        painter.end()
++        return QIcon(pixmap)
++
++
++class MotionFileDialog(QFileDialog):
++    """검증된 QFileDialog 모델과 키 동작을 카드형 작업 공간으로 감싼다."""
++
++    def __init__(self, parent, title, language="ko", *, folder=False, name_filter=""):
++        super().__init__(parent)
++        self.setOption(QFileDialog.DontUseNativeDialog, True)
++        self.setObjectName("flipringPicker")
++        self.setProperty("flipringFilePicker", True)
++        self.setWindowTitle(title)
++        self.setWindowIcon(parent.windowIcon() if parent else QIcon())
++        self.language = language
++        self.folder_mode = folder
++        self.title_key = "pick_folder_title" if folder else "picker_pdf_title" if name_filter else "pick_files_title"
++        self._header_configured = False
++        self.setFileMode(QFileDialog.Directory if folder else QFileDialog.ExistingFiles)
++        self.setOption(QFileDialog.ShowDirsOnly, folder)
++        self.setViewMode(QFileDialog.Detail)
++        self.resize(900, 650)
++        self.setMinimumSize(760, 530)
++        self._icon_provider = MonoFileIcons(language)
++        self.setIconProvider(self._icon_provider)
++        if name_filter:
++            self.setNameFilter(name_filter)
++        for role, key in ((QFileDialog.LookIn, "dialog_location"), (QFileDialog.FileName, "dialog_filename"),
++                          (QFileDialog.FileType, "dialog_filter"), (QFileDialog.Reject, "cancel"),
++                          (QFileDialog.Accept, "dialog_choose" if folder else "dialog_open")):
++            self.setLabelText(role, tr(language, key))
++        layout = self.layout()
++        # 기존 모델·보기·입력을 보존하고 탐색 영역을 헤더 아래로 옮긴다.
++        items = []
++        while layout.count():
++            item = layout.itemAt(0)
++            position = layout.getItemPosition(0)
++            items.append((layout.takeAt(0), position))
++        layout.setContentsMargins(24, 22, 24, 20)
++        layout.setHorizontalSpacing(12)
++        layout.setVerticalSpacing(13)
++        self.header = QFrame()
++        self.header.setObjectName("pickerHeader")
++        header = QHBoxLayout(self.header)
++        header.setContentsMargins(0, 0, 0, 14)
++        header.setSpacing(16)
++        self.mark = PickerMark()
++        header.addWidget(self.mark)
++        headings = QVBoxLayout()
++        headings.setSpacing(5)
++        self.heading = QLabel(title)
++        self.heading.setObjectName("pickerTitle")
++        headings.addWidget(self.heading)
++        self.caption = QLabel(tr(language, "picker_folder_caption" if folder else "picker_caption"))
++        self.caption.setObjectName("pickerCaption")
++        headings.addWidget(self.caption)
++        header.addLayout(headings, 1)
++        layout.addWidget(self.header, 0, 0, 1, 4)
++        button_box = self.findChild(QDialogButtonBox)
++        self._button_box = button_box
++        button_box.installEventFilter(self)
++        button_box.setOrientation(Qt.Horizontal)
++        for item, (row, column, row_span, column_span) in items:
++            if item.widget() is button_box:
++                continue
++            if item.widget() is not None:
++                layout.addWidget(item.widget(), row + 1, column, row_span, column_span)
++            elif item.layout() is not None:
++                layout.addLayout(item.layout(), row + 1, column, row_span, column_span)
++            else:
++                layout.addItem(item, row + 1, column, row_span, column_span)
++        footer = QWidget()
++        footer_layout = QHBoxLayout(footer)
++        footer_layout.setContentsMargins(0, 8, 0, 0)
++        self.summary = QLabel(tr(language, "picker_empty"))
++        self.summary.setObjectName("pickerSummary")
++        self.summary.setWordWrap(True)
++        footer_layout.addWidget(self.summary, 1)
++        footer_layout.addWidget(button_box)
++        layout.addWidget(footer, layout.rowCount(), 0, 1, 4)
++        for button in button_box.buttons():
++            if button_box.buttonRole(button) == QDialogButtonBox.AcceptRole:
++                button.setProperty("primary", True)
++        sidebar = self.findChild(QAbstractItemView, "sidebar")
++        if sidebar is not None:
++            sidebar.setMinimumWidth(155)
++            sidebar.setMaximumWidth(200)
++        # Qt의 실제 탐색 동작을 그대로 두고 기본 유색 시스템 아이콘만 바꾼다.
++        for name, symbol in (("backButton", "back"), ("forwardButton", "forward"),
++                             ("toParentButton", "up"), ("newFolderButton", "folder"),
++                             ("listModeButton", "list"), ("detailModeButton", "detail")):
++            button = self.findChild(QToolButton, name)
++            if button is not None:
++                button.setIcon(navigation_icon(symbol))
++        arrow = engine.asset("combo-chevron.svg").as_posix()
++        self.setStyleSheet(SURFACE_STYLE + '\nQComboBox::down-arrow {image:url("' + arrow + '");width:12px;height:8px;}')
++        self.currentChanged.connect(self._selection_changed)
++        self.directoryEntered.connect(self._directory_changed)
++        self._picker_selection_models = []
++        for view in self.findChildren(QAbstractItemView):
++            selection = view.selectionModel()
++            if view.objectName() in {"listView", "treeView"} and selection is not None and selection not in self._picker_selection_models:
++                selection.selectionChanged.connect(self._selection_changed)
++                self._picker_selection_models.append(selection)
++        filename = self.findChild(QLineEdit, "fileNameEdit")
++        if filename is not None:
++            filename.textEdited.connect(self._selection_changed)
++        install_surface_motions(self)
++
++    def _selection_changed(self, *unused):
++        files = self.selectedFiles()
++        self.summary.setText(tr(self.language, "picker_selected", count=len(files)) if files else
++                             tr(self.language, "picker_empty"))
++        self.summary.setToolTip("\n".join(files))
++        self.mark.respond()
++        pulse_widget(self.summary)
++
++    def _directory_changed(self, path):
++        self.mark.respond()
++        pulse_widget(self.header)
++        self._selection_changed(path)
++
++    def showEvent(self, event):
++        super().showEvent(event)
++        if not self._header_configured:
++            tree = self.findChild(QTreeView, "treeView")
++            if tree is not None:
++                header = tree.header()
++                header.setSectionResizeMode(0, QHeaderView.Stretch)
++                for column, width in ((1, 80), (2, 135), (3, 175)):
++                    header.setSectionResizeMode(column, QHeaderView.Interactive)
++                    header.resizeSection(column, width)
++            self._header_configured = True
++        self.mark.respond()
++
++    def changeEvent(self, event):
++        super().changeEvent(event)
++        if event.type() == QEvent.LanguageChange and hasattr(self, "caption"):
++            parent = self.parentWidget()
++            language = getattr(parent.window(), "language", self.language) if parent else self.language
++            self.set_language(language)
++
++    def eventFilter(self, watched, event):
++        if watched is getattr(self, "_button_box", None) and event.type() == QEvent.LanguageChange:
++            # 상위 선택창이 모든 버튼 라벨을 관리한다. 표준 Open 재번역으로 폴더의 Choose를 덮지 않는다.
++            parent = self.parentWidget()
++            language = getattr(parent.window(), "language", self.language) if parent else self.language
++            self.set_language(language)
++            return True
++        return super().eventFilter(watched, event)
++
++    def set_language(self, language):
++        self.language = "en" if language == "en" else "ko"
++        self._icon_provider.language = self.language
++        self.setWindowTitle(tr(self.language, self.title_key))
++        self.heading.setText(self.windowTitle())
++        for role, key in ((QFileDialog.LookIn, "dialog_location"), (QFileDialog.FileName, "dialog_filename"),
++                          (QFileDialog.FileType, "dialog_filter"), (QFileDialog.Reject, "cancel"),
++                          (QFileDialog.Accept, "dialog_choose" if self.folder_mode else "dialog_open")):
++            self.setLabelText(role, tr(self.language, key))
++        self.caption.setText(tr(self.language, "picker_folder_caption" if self.folder_mode else "picker_caption"))
++        self._selection_changed()
++
++    def done(self, result):
++        parent = self.parentWidget()
++        super().done(result)
++        # 선택과 취소는 즉시 반환하고, 닫힘 응답은 돌아온 작업 공간에서 유한하게 이어진다.
++        if parent is not None and isValid(parent):
++            pulse_widget(parent)
++
++
++def make_file_dialog(parent, title, *, folder=False, name_filter=""):
++    return MotionFileDialog(parent, title, getattr(parent, "language", "ko"), folder=folder, name_filter=name_filter)
++
++
++class MotionMessageBox(QMessageBox):
++    """모달 호출이 반환되면 소유한 모션·표면도 지연 해제한다."""
++
++    def exec(self):
++        try:
++            return super().exec()
++        finally:
++            self.deleteLater()
++
++
++def decorate_message(dialog):
++    """표준 버튼과 반환 코드는 유지하며 메시지 내부에도 같은 헤더를 제공한다."""
++    if hasattr(dialog, "_flipring_message_mark"):
++        return
++    layout = dialog.layout()
++    columns = layout.columnCount()
++    items = []
++    while layout.count():
++        position = layout.getItemPosition(0)
++        items.append((layout.takeAt(0), position))
++    layout.setContentsMargins(24, 24, 24, 20)
++    layout.setSpacing(14)
++    header = QWidget(dialog)
++    row = QHBoxLayout(header)
++    row.setContentsMargins(0, 0, 0, 6)
++    row.setSpacing(16)
++    mark = PickerMark()
++    row.addWidget(mark)
++    title = QLabel(dialog.windowTitle())
++    title.setObjectName("messageTitle")
++    title.setWordWrap(True)
++    row.addWidget(title, 1)
++    layout.addWidget(header, 0, 0, 1, columns)
++    for item, (y, x, height, width) in items:
++        if item.widget() is not None:
++            widget = item.widget()
++            if dialog.icon() == QMessageBox.NoIcon and widget.objectName() == "qt_msgbox_label":
++                # 아이콘이 없는 본문은 Qt의 빈 아이콘 열까지 사용한다.
++                layout.addWidget(widget, y + 1, 0, height, columns)
++            else:
++                layout.addWidget(widget, y + 1, x, height, width)
++        elif item.layout() is not None:
++            layout.addLayout(item.layout(), y + 1, x, height, width)
++        else:
++            layout.addItem(item, y + 1, x, height, width)
++    dialog._flipring_message_mark = mark
++    for button in dialog.buttons():
++        button.setProperty("primary", True)
++    message = dialog.findChild(QLabel, "qt_msgbox_label")
++    if message is not None:
++        message.setWordWrap(True)
++        message.setMaximumWidth(580)
++    dialog.setMinimumWidth(420)
++    parent = dialog.parentWidget()
++    if parent is not None:
++        owner = weakref.ref(parent)
++        def returned(*unused):
++            target = owner()
++            if target is not None and isValid(target):
++                pulse_widget(target)
++        dialog.finished.connect(returned)
++    install_surface_motions(dialog)
++
++
++def navigation_icon(symbol):
++    """선택창 탐색 버튼용 앱 자체 선 아이콘을 그린다."""
++    pixmap = QPixmap(20, 20)
++    pixmap.fill(Qt.transparent)
++    painter = QPainter(pixmap)
++    painter.setRenderHint(QPainter.Antialiasing)
++    painter.setPen(QPen(QColor("#505050"), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
++    if symbol in {"back", "forward", "up"}:
++        painter.translate(10, 10)
++        painter.rotate({"back": 0, "forward": 180, "up": 90}[symbol])
++        painter.drawLine(5, 0, -5, 0)
++        painter.drawLine(-5, 0, -1, -4)
++        painter.drawLine(-5, 0, -1, 4)
++    elif symbol == "folder":
++        painter.drawRoundedRect(QRectF(2, 5, 16, 12), 2, 2)
++        painter.drawLine(3, 5, 8, 5)
++        painter.drawLine(8, 5, 8, 3)
++        painter.drawLine(10, 8, 10, 14)
++        painter.drawLine(7, 11, 13, 11)
++    else:
++        for y in (5, 10, 15):
++            painter.drawPoint(4, y)
++            painter.drawLine(8, y, 17 if symbol == "list" else 13, y)
++            if symbol == "detail":
++                painter.drawPoint(17, y)
++    painter.end()
++    return QIcon(pixmap)

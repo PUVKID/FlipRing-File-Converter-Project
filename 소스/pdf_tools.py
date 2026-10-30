@@ -6,6 +6,7 @@ from contextlib import contextmanager
 import ctypes
 from ctypes import wintypes
 from dataclasses import dataclass
+from functools import wraps
 import io
 import os
 from pathlib import Path
@@ -22,6 +23,16 @@ import time
 from PIL import Image, ImageOps, ImageSequence
 from pypdf import PdfReader, PdfWriter
 import pypdfium2 as pdfium
+from pdf_lock import PDFIUM_LOCK
+
+
+def _serialized_pdfium(function):
+    """PDF 도구와 미리보기가 같은 네이티브 런타임에 동시에 진입하지 않는다."""
+    @wraps(function)
+    def guarded(*args, **kwargs):
+        with PDFIUM_LOCK:
+            return function(*args, **kwargs)
+    return guarded
 
 
 class PdfToolError(RuntimeError):
@@ -89,6 +100,108 @@ OPERATIONS = {"merge", "split", "extract", "delete", "rotate", "images_to_pdf",
 def check_cancel(cancel):
     if cancel is not None and cancel.is_set():
         raise Cancelled()
+
+
+def preflight_output(directory, estimated, cancel=None):
+    """실제 출력 위치를 점검한다. 예상량은 최종 크기나 공간 확보 보장이 아니다."""
+    check_cancel(cancel)
+    directory = Path(directory).resolve()
+    report = {"directory": str(directory), "estimated": estimated, "free": 0, "conservative": True}
+    try:
+        if not directory.is_dir():
+            raise OSError("Output directory does not exist")
+        report["free"] = shutil.disk_usage(directory).free
+        check_cancel(cancel)
+        if report["free"] < estimated:
+            error = PdfToolError("disk_space", source=str(directory))
+            error.preflight_checks = [report]
+            raise error
+        # 실제 결과와 같은 폴더에서 배타적 임시 파일을 만들고 닫아 쓰기·정리를 확인한다.
+        with tempfile.TemporaryFile(prefix=".flipring-check-", dir=directory) as probe:
+            probe.write(b"check")
+            probe.flush()
+            check_cancel(cancel)
+        return report
+    except OSError as cause:
+        error = PdfToolError("output_write", str(cause), source=str(directory))
+        error.preflight_checks = [report]
+        raise error from cause
+
+
+def preflight_request(request, cancel=None):
+    """출력 경로·같은 볼륨의 준비 공간을 합산하며 무거운 PDF 처리는 시작하지 않는다."""
+    check_cancel(cancel)
+    if request.operation not in OPERATIONS:
+        raise PdfToolError("operation")
+    if not request.paths:
+        raise PdfToolError("input_files")
+    paths, sizes = [], []
+    image_extensions = Image.registered_extensions()
+    for raw in request.paths:
+        check_cancel(cancel)
+        source = Path(raw).resolve()
+        try:
+            if not source.is_file():
+                raise OSError("Input file does not exist")
+            with source.open("rb") as stream:
+                stream.read(1)
+            size = source.stat().st_size
+        except OSError as cause:
+            raise PdfToolError("input_files", str(cause), source=str(source)) from cause
+        suffix = source.suffix.lower()
+        if request.operation == "images_to_pdf":
+            supported = suffix in image_extensions
+        elif request.operation == "recognize":
+            supported = suffix == ".pdf" or suffix in image_extensions
+        else:
+            supported = suffix == ".pdf"
+        if not supported:
+            raise PdfToolError("input_format", source=str(source))
+        paths.append(source)
+        sizes.append(size)
+    model_bytes = 0
+    if request.operation == "recognize":
+        if request.ocr_language not in {"kor+eng", "kor", "eng"}:
+            raise PdfToolError("ocr_language", source=str(paths[0]))
+        executable, data = tesseract_paths()
+        required = [Path(executable), Path(data) / "pdf.ttf"]
+        required += [Path(data) / (language + ".traineddata") for language in request.ocr_language.split("+")]
+        for path in required:
+            check_cancel(cancel)
+            try:
+                if not path.is_file():
+                    raise OSError("Bundled OCR file does not exist")
+                with path.open("rb") as stream:
+                    stream.read(1)
+                model_bytes += path.stat().st_size
+            except OSError as cause:
+                raise PdfToolError("ocr_missing", str(cause), source=str(paths[0])) from cause
+    combined = request.operation in {"merge", "images_to_pdf"}
+    grouped = {}
+    for source, size in zip(paths, sizes):
+        directory = paths[0].parent if combined else source.parent
+        grouped[directory] = grouped.get(directory, 0) + size
+    raster = request.operation in {"recognize", "pdf_to_images", "images_to_pdf"}
+    # 래스터·OCR은 임시 이미지와 모델 복사를 포함해 더 큰 준비 여유를 둔다.
+    estimated = {directory: size * (8 if raster else 4) + (128 if raster else 64) * 1024 * 1024 + model_bytes
+                 for directory, size in grouped.items()}
+    volumes, totals = {}, {}
+    for directory, size in estimated.items():
+        try:
+            volume = directory.stat().st_dev
+        except OSError as cause:
+            raise PdfToolError("output_write", str(cause), source=str(directory)) from cause
+        volumes[directory] = volume
+        totals[volume] = totals.get(volume, 0) + size
+    checks = []
+    for directory in grouped:
+        try:
+            checks.append(preflight_output(directory, totals[volumes[directory]], cancel))
+        except PdfToolError as error:
+            error.preflight_checks = checks + getattr(error, "preflight_checks", [])
+            raise
+    check_cancel(cancel)
+    return checks
 
 
 def page_indices(expression, count, *, allow_empty=True):
@@ -276,6 +389,7 @@ def image_ocr(image_path, work, request, cancel, *, searchable=False, staged_dat
     return PageContent(text, words, width, height), output.with_suffix(".pdf")
 
 
+@_serialized_pdfium
 def pdf_text_pages(path, cancel=None):
     # 글자의 실제 좌표를 읽어 PDF 표를 단순 문자열 한 셀로 축소하지 않는다.
     reader_for(path)
@@ -416,6 +530,7 @@ def export_document(contents, destination, kind):
         raise PdfToolError("output_format")
 
 
+@_serialized_pdfium
 def render_page(document, index, destination, dpi, cancel=None):
     check_cancel(cancel)
     page = document[index]
@@ -466,6 +581,7 @@ def _write_pdf(writer, path):
     writer.close()
 
 
+@_serialized_pdfium
 def _recognize(source, request, work, cancel, progress):
     source = Path(source)
     is_pdf = source.suffix.lower() == ".pdf"
@@ -516,6 +632,7 @@ def _recognize(source, request, work, cancel, progress):
             image_input.close()
 
 
+@_serialized_pdfium
 def execute(request, cancel=None, progress=None, result=None):
     """결과별 (입력, 출력, 오류) 콜백. 취소/실패 시 완성한 앞선 결과는 유지한다."""
     cancel = cancel if cancel is not None else threading.Event()
@@ -540,6 +657,7 @@ def execute(request, cancel=None, progress=None, result=None):
         raise PdfToolError("ocr_layout")
     if request.output_format not in ("pdf", "txt", "docx", "xlsx", "png", "jpg"):
         raise PdfToolError("output_format")
+    preflight_request(request, cancel)
     outputs = []
 
     def complete(produced, source, label):

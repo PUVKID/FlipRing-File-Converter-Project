@@ -7,11 +7,13 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 import json
 import math
+from ui_motion import start_motion, set_reduced_motion
 import os
 from pathlib import Path
 import subprocess
 import sys
 import time
+import threading
 import winreg
 
 from PySide6.QtCore import (
@@ -26,9 +28,11 @@ from PySide6.QtWidgets import (
     QApplication, QWidget, QMainWindow, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QFileDialog, QComboBox, QListWidget, QTabWidget, QCheckBox,
     QSystemTrayIcon, QMenu, QMessageBox, QProgressBar, QGraphicsOpacityEffect,
-    QStylePainter, QStyleOptionButton, QStyle, QFrame,
+    QStylePainter, QStyleOptionButton, QStyle, QFrame, QInputDialog, QListWidgetItem, QScrollArea,
 )
 import engine
+from flipring_workflow import PresetStore, preflight, BUILTINS
+from preview_panel import PreviewPanel
 from i18n import tr, error_text, QT_KOREAN
 from pdf_panel import PdfToolsPanel
 from studio_ui import StudioCard, NavButton, FileDropCard, Toggle, HistoryDelegate, svg_icon
@@ -218,6 +222,7 @@ def file_urls(mime):
 
 class Bridge(QObject):
     done = Signal(str, str, str)
+    started = Signal(str)
 
 
 class HistoryList(QListWidget):
@@ -263,7 +268,7 @@ class ButtonMotion(QObject):
             self.animation.setStartValue(self.amount)
             self.animation.setEndValue(target)
             self.animation.setCurrentTime(0)
-        self.animation.start()
+        start_motion(self.animation)
 
     def eventFilter(self, watched, event):
         kind = event.type()
@@ -347,7 +352,7 @@ class SoftTabs(QTabWidget):
         page.setGraphicsEffect(effect)
         self.fade.setStartValue(0.9)
         self.fade.setEndValue(1.0)
-        self.fade.start()
+        start_motion(self.fade)
 
     def hideEvent(self, event):
         self._finish_fade()
@@ -409,7 +414,7 @@ class Wheel(QWidget):
             self.motion.setStartValue(current)
             self.motion.setEndValue(target)
             self.motion.setCurrentTime(0)
-        self.motion.start()
+        start_motion(self.motion)
 
     def _highlight_frame(self, value):
         progress = float(value)
@@ -428,7 +433,7 @@ class Wheel(QWidget):
         self.highlight.stop()
         self._hover_from = self.weights.copy()
         self._hover_to = hit
-        self.highlight.start()
+        start_motion(self.highlight)
         self.update()
 
     def display(self, pos, paths=None, preview=False):
@@ -675,6 +680,10 @@ class MainWindow(QMainWindow):
         self.pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix="변환")
         self.bridge = Bridge()
         self.bridge.done.connect(self.finished)
+        self.bridge.started.connect(self.job_started)
+        self.jobs = []
+        self.selection_issue = ""
+        self.presets = PresetStore(DATA / "presets.json")
         self.pending = 0
         self.paths = []
         self.start_point = None
@@ -764,17 +773,21 @@ class MainWindow(QMainWindow):
         self.tabs.tabBar().hide()
         layout.addWidget(self.tabs, 1)
         settings_page = QWidget()
-        workspace_row = QHBoxLayout(settings_page)
+        workspace_row = QVBoxLayout(settings_page)
         workspace_row.setContentsMargins(0, 0, 0, 0)
         workspace_row.setSpacing(20)
         self.drop_card = FileDropCard(file_urls, Wheel._accept_copy)
+        self.drop_card.orbit.setMinimumHeight(56)
+        self.drop_card.orbit.setMaximumHeight(56)
+        self.drop_card.orbit.hide()
+        self.drop_card.setMaximumHeight(210)
         self.drop_card.clicked.connect(self.pick_files)
         self.drop_card.files_dropped.connect(self.receive_files)
         self.localized(self.drop_card.title, "studio_drop_title")
         self.localized(self.drop_card.caption, "studio_drop_caption")
-        workspace_row.addWidget(self.drop_card, 1)
+        workspace_row.addWidget(self.drop_card)
         self.quick_settings = StudioCard()
-        self.quick_settings.setFixedWidth(286)
+        self.quick_settings.setMinimumWidth(286)
         settings_layout = QVBoxLayout(self.quick_settings)
         settings_layout.setContentsMargins(20, 22, 20, 22)
         settings_layout.setSpacing(8)
@@ -818,7 +831,11 @@ class MainWindow(QMainWindow):
         self.notifications.toggled.connect(lambda value: self.settings.setValue("notify", value))
         settings_layout.addWidget(self.notifications)
         settings_layout.addStretch()
-        workspace_row.addWidget(self.quick_settings)
+        self.reduced_motion_toggle = self.localized(Toggle(), 'reduce_motion')
+        self.reduced_motion_toggle.setChecked(self.settings.value('reduced_motion', False, type=bool))
+        self.reduced_motion_toggle.toggled.connect(self.motion_changed)
+        settings_layout.insertWidget(settings_layout.count() - 1, self.reduced_motion_toggle)
+        self.build_workbench(workspace_row)
         row = QHBoxLayout()
         row.setContentsMargins(12, 16, 12, 0)
         choose = self.localized(self.button("", self.pick_files), "pick_files")
@@ -834,7 +851,11 @@ class MainWindow(QMainWindow):
         self.selection_label.setAlignment(Qt.AlignCenter)
         self.selection_label.setObjectName("muted")
         self.drop_card.body.addWidget(self.selection_label)
-        self.tabs.addTab(settings_page, self.text("settings"))
+        work_scroll = QScrollArea()
+        work_scroll.setFrameShape(QFrame.NoFrame)
+        work_scroll.setWidgetResizable(True)
+        work_scroll.setWidget(settings_page)
+        self.tabs.addTab(work_scroll, self.text("studio_convert"))
 
         tools_page = QWidget()
         tools_layout = QVBoxLayout(tools_page)
@@ -898,6 +919,17 @@ class MainWindow(QMainWindow):
         self.pdf_panel.result_ready.connect(self.pdf_finished)
         self.pdf_panel.activity_changed.connect(self.pdf_activity_changed)
         self.tabs.addTab(self.pdf_panel, self.text("pdf_tools"))
+        self.pdf_panel.preset_requested.connect(self.save_pdf_preset)
+        preferences = QScrollArea()
+        preferences.setWidgetResizable(True)
+        preferences.setFrameShape(QFrame.NoFrame)
+        preferences.setWidget(self.quick_settings)
+        self.tabs.addTab(preferences, self.text('settings'))
+        settings_nav = NavButton('tools')
+        settings_nav.set_svg(engine.asset('lucide/sliders-horizontal.svg'))
+        settings_nav.clicked.connect(lambda: self.tabs.setCurrentIndex(5))
+        self.nav_buttons[5] = settings_nav
+        sidebar_layout.insertWidget(sidebar_layout.count() - 3, settings_nav)
         self.tabs.currentChanged.connect(self.update_navigation)
         footer = QHBoxLayout()
         self.status_mark = StateMark()
@@ -934,11 +966,157 @@ class MainWindow(QMainWindow):
                        self.key_badge, self.record_button):
             pulse_widget(widget)
         self.retranslate()
+        self.motion_changed(self.reduced_motion_toggle.isChecked())
+
+    def build_workbench(self, layout):
+        self.workbench = QWidget()
+        body = QVBoxLayout(self.workbench)
+        body.setContentsMargins(0, 0, 0, 0)
+        body.setSpacing(8)
+        self.queue_list = QListWidget()
+        self.queue_list.setMinimumHeight(80)
+        self.queue_list.setMaximumHeight(90)
+        self.queue_list.currentRowChanged.connect(self.preview_selection)
+        body.addWidget(self.queue_list)
+        row = QHBoxLayout()
+        self.output_combo = QComboBox()
+        row.addWidget(self.localized(QLabel(), 'output_format'))
+        row.addWidget(self.output_combo)
+        self.run_button = self.localized(self.button('', self.run_selected), 'run_selected')
+        self.run_button.setProperty('primary', True)
+        row.addWidget(self.run_button)
+        self.cancel_button = self.localized(self.button('', self.cancel_jobs), 'cancel_queue')
+        row.addWidget(self.cancel_button)
+        self.retry_button = self.localized(self.button('', self.retry_failed), 'retry_failed')
+        row.addWidget(self.retry_button)
+        body.addLayout(row)
+        self.preflight_label = self.localized(QLabel(), 'estimate_note')
+        self.preflight_label.setWordWrap(True)
+        body.addWidget(self.preflight_label)
+        self.preview_panel = PreviewPanel()
+        self.preview_panel.reveal_requested.connect(self.reveal_preview)
+        body.addWidget(self.preview_panel, 1)
+        layout.addWidget(self.workbench, 1)
+        self.workbench.hide()
+        preset_row = QHBoxLayout()
+        self.preset_combo = QComboBox()
+        preset_row.addWidget(self.preset_combo, 1)
+        preset_row.addWidget(self.localized(self.button('', self.apply_selected_preset), 'preset_apply'))
+        preset_row.addWidget(self.localized(self.button('', self.save_conversion_preset), 'preset_save'))
+        preset_row.addWidget(self.localized(self.button('', self.delete_selected_preset), 'preset_delete'))
+        layout.insertLayout(1, preset_row)
+
+    def motion_changed(self, enabled):
+        self.settings.setValue('reduced_motion', bool(enabled))
+        self.settings.sync()
+        set_reduced_motion(self, enabled)
+        self.pdf_panel.set_reduced_motion(enabled)
+
+    def run_selected(self):
+        fmt = self.output_combo.currentData()
+        if fmt: self.enqueue(self.paths, fmt)
+
+    def refresh_queue(self):
+        selected = self.queue_list.currentRow()
+        with QSignalBlocker(self.queue_list):
+            self.queue_list.clear()
+            for entry in self.jobs:
+                state = self.text('job_' + entry['state'])
+                summary = f"{Path(entry['source']).name}  ·  {entry['format'].upper()}  ·  {state}"
+                if entry['error']: summary += ' · ' + error_text(self.language, entry['error'])[:100]
+                item = QListWidgetItem(summary)
+                report = entry.get('check')
+                detail = error_text(self.language, entry['error']) if entry['error'] else entry['output']
+                if report and report['estimated']:
+                    detail += '\n' + self.text('space_estimate', needed=f"{report['estimated'] / 1048576:.1f}", free=f"{report['free'] / 1048576:.1f}")
+                item.setToolTip(detail)
+                self.queue_list.addItem(item)
+            if self.jobs: self.queue_list.setCurrentRow(max(0, min(selected, len(self.jobs) - 1)))
+        busy = bool(self.pending)
+        self.run_button.setEnabled(not busy and bool(self.output_combo.currentData()))
+        self.cancel_button.setEnabled(busy or any(row['state'] == 'waiting' for row in self.jobs))
+        self.retry_button.setEnabled(not busy and any(row['state'] == 'failed' and row['format'] for row in self.jobs))
+        self.output_combo.setEnabled(not busy)
+
+    def preview_selection(self, *unused):
+        index = self.queue_list.currentRow()
+        if 0 <= index < len(self.jobs):
+            entry = self.jobs[index]
+            self.preview_panel.set_paths(entry['source'], entry['output'])
+            report = entry.get('check')
+            self.preflight_label.setText(self.text('space_estimate', needed=f"{report['estimated'] / 1048576:.1f}", free=f"{report['free'] / 1048576:.1f}") if report and report['estimated'] else self.text(self.selection_issue or 'estimate_note'))
+
+    def cancel_jobs(self):
+        for entry in self.jobs:
+            if entry['state'] in ('waiting', 'processing'):
+                entry['cancel'].set()
+                entry['state'] = 'cancelling' if entry['scheduled'] else 'cancelled'
+        self.refresh_queue()
+
+    def retry_failed(self):
+        if self.pending: return
+        failed = [row for row in self.jobs if row['state'] == 'failed' and row['format']]
+        if not failed: return
+        # 한 번의 실행은 같은 출력 형식으로 생성되므로 실패 항목만 재등록한다.
+        self.enqueue([row['source'] for row in failed], failed[0]['format'])
+
+    def reveal_preview(self, path):
+        try: select_in_explorer(path)
+        except (OSError, ValueError) as exc:
+            message_dialog(self, self.text('history_explorer_title'), str(exc)).exec()
+
+    def refresh_presets(self):
+        old = self.preset_combo.currentData()
+        self.preset_combo.clear()
+        for row in BUILTINS:
+            self.preset_combo.addItem(self.text(row['name']), row)
+        for row in self.presets.items: self.preset_combo.addItem(row['name'], row)
+        if old:
+            for index in range(self.preset_combo.count()):
+                if self.preset_combo.itemData(index) == old: self.preset_combo.setCurrentIndex(index)
+        self.preset_combo.setToolTip(self.text('preset_corrupt') if self.presets.error else '')
+
+    def apply_selected_preset(self):
+        if self.pending or self.pdf_panel.is_busy(): return
+        preset = self.preset_combo.currentData()
+        if not preset: return
+        if preset['kind'] == 'pdf':
+            if self.pdf_panel.apply_preset(preset['options']):
+                if self.paths: self.pdf_panel.set_files(self.paths)
+                self.tabs.setCurrentIndex(4)
+            return
+        index = self.output_combo.findData(preset['format'])
+        if index < 0:
+            message_dialog(self, self.text('preset_apply'), self.text('preset_incompatible')).exec()
+            return
+        self.output_combo.setCurrentIndex(index)
+
+    def save_conversion_preset(self):
+        fmt = self.output_combo.currentData()
+        if fmt: self.save_pdf_preset({'kind': 'convert', 'format': fmt, 'options': {}})
+
+    def save_pdf_preset(self, preset):
+        name, accepted = QInputDialog.getText(self, self.text('preset_save'), self.text('preset_name'))
+        if not accepted: return
+        try:
+            self.presets.save(dict(preset, name=name))
+            self.refresh_presets()
+        except (ValueError, OSError) as exc:
+            message_dialog(self, self.text('preset_save'), self.text('preset_invalid') + '\n' + error_text(self.language, str(exc))).exec()
+
+    def delete_selected_preset(self):
+        value = self.preset_combo.currentData()
+        if value and value in self.presets.items:
+            try:
+                self.presets.delete(value['name'])
+                self.refresh_presets()
+            except (ValueError, OSError) as exc:
+                message_dialog(self, self.text('preset_delete'), str(exc)).exec()
 
     def update_navigation(self, index):
         for target, button in self.nav_buttons.items():
             button.setChecked(target == index)
-        keys = {0: "studio_convert", 1: "studio_helpers", 2: "history", 3: "about", 4: "pdf_tools"}
+        keys = {0: "studio_convert", 1: "studio_helpers", 2: "history", 3: "about", 4: "pdf_tools", 5: "settings"}
         self.page_title.setText(self.text(keys[index]))
         self.page_description.setText(self.text("studio_description_" + str(index)))
         pulse_widget(self.page_title)
@@ -978,9 +1156,9 @@ class MainWindow(QMainWindow):
         self.wheel.setWindowTitle(self.text("wheel_title", app=self.app_name()))
         for widget, key, prefix in self._translated_widgets:
             widget.setText(prefix + self.text(key, app=self.app_name()))
-        for index, key in enumerate(("settings", "tools", "history", "about", "pdf_tools")):
+        for index, key in enumerate(("studio_convert", "tools", "history", "about", "pdf_tools", "settings")):
             self.tabs.setTabText(index, self.text(key))
-        for index, key in ((0, "studio_convert"), (1, "studio_helpers"), (2, "history"), (3, "about"), (4, "pdf_tools")):
+        for index, key in ((0, "studio_convert"), (1, "studio_helpers"), (2, "history"), (3, "about"), (4, "pdf_tools"), (5, "settings")):
             self.nav_buttons[index].setText(self.text(key))
         self.update_navigation(self.tabs.currentIndex())
         self.update_selection_label()
@@ -993,6 +1171,10 @@ class MainWindow(QMainWindow):
         self.update_status()
         self.update_tray_menu(refresh=False)
         self.wheel.update()
+        self.preview_panel.set_language(self.language)
+        self.refresh_presets()
+        self.refresh_queue()
+        self.preview_selection()
 
     def update_record_label(self):
         key = "record_wait" if self.recording else "recorded" if self.recorded_key is not None else "record"
@@ -1129,7 +1311,7 @@ class MainWindow(QMainWindow):
             action.setChecked(code == self.trigger.currentData())
             group.addAction(action)
             if code == -1:
-                action.triggered.connect(lambda: (self.open_page(0), self.record_key()))
+                action.triggered.connect(lambda: (self.open_page(5), self.record_key()))
             else:
                 action.triggered.connect(lambda checked=False, value=index: self.trigger.setCurrentIndex(value))
         # 메뉴가 살아 있는 동안 배타적 선택 그룹도 유지한다.
@@ -1152,7 +1334,7 @@ class MainWindow(QMainWindow):
         menu.addSeparator()
         menu.addAction(self.text("history"), lambda: self.open_page(2))
         menu.addAction(self.text("pdf_tools"), lambda: self.open_page(4))
-        menu.addAction(self.text("settings"), lambda: self.open_page(0))
+        menu.addAction(self.text("settings"), lambda: self.open_page(5))
         menu.addAction(self.text("about"), lambda: self.open_page(3))
         menu.addSeparator()
         menu.addAction(self.text("quit"), self.quit)
@@ -1239,9 +1421,35 @@ class MainWindow(QMainWindow):
         return dialog
 
     def set_files(self, paths):
+        if self.pending: return
         self.paths = list(dict.fromkeys(str(Path(path)) for path in paths))
+        self.jobs = [dict(source=path, format='', state='waiting', output='', error='', cancel=threading.Event(), scheduled=False) for path in self.paths]
         self.update_selection_label()
-        self.drop_card.orbit.respond(engine.targets(self.paths) if self.paths else None)
+        self.selection_issue = ''
+        for entry in self.jobs:
+            try:
+                if not Path(entry['source']).exists(): raise ValueError('입력이 없거나 이동되었습니다.')
+                engine.classify(entry['source'])
+            except (ValueError, OSError) as exc:
+                entry.update(state='failed', error=str(exc))
+        options = engine.targets(self.paths)
+        if self.paths and not options:
+            self.selection_issue = 'selection_no_common'
+            for entry in self.jobs:
+                if not entry['error']:
+                    entry.update(state='failed', error='선택한 파일들에 공통으로 사용할 수 있는 출력 형식이 없습니다.')
+        self.output_combo.clear()
+        for value in options: self.output_combo.addItem(value.upper(), value)
+        self.workbench.setVisible(bool(self.paths))
+        self.drop_card.title.setVisible(not self.paths)
+        self.drop_card.caption.setVisible(not self.paths)
+        self.selection_label.setVisible(not self.paths)
+        self.drop_card.body.setContentsMargins(12, 4, 12, 8) if self.paths else self.drop_card.body.setContentsMargins(26, 20, 26, 24)
+        self.drop_card.setMaximumHeight(80 if self.paths else 210)
+        self.refresh_queue()
+        if self.jobs: self.queue_list.setCurrentRow(0)
+        self.preview_selection()
+        self.drop_card.orbit.respond(options if self.paths else None)
 
     def update_selection_label(self):
         self.selection_label.setText(self.text("file_count", count=len(self.paths)) if self.paths
@@ -1277,31 +1485,65 @@ class MainWindow(QMainWindow):
         self.wheel.display(QCursor.pos(), self.paths, preview=True)
 
     def enqueue(self, paths, fmt):
-        if self.pdf_panel.is_busy():
-            # PDFium을 쓰는 두 작업 큐를 동시에 실행하지 않는다.
-            message_dialog(self, self.text("busy_title"), self.text("busy_message")).exec()
+        if self.pending or self.pdf_panel.is_busy():
+            message_dialog(self, self.text('busy_title'), self.text('busy_message')).exec()
             return
-        self._pdf_activity = "ready"
-        self.drop_card.orbit.respond(state="working")
-        for path in paths:
-            self.pending += 1
-
-            def job(source=path, target=fmt):
+        self._pdf_activity = 'ready'
+        selected = []
+        for path in dict.fromkeys(str(Path(p)) for p in paths):
+            entry = next((row for row in self.jobs if row['source'] == path), None)
+            if entry is None:
+                entry = dict(source=path, format=fmt, state='waiting', output='', error='', cancel=threading.Event(), scheduled=False)
+                self.jobs.append(entry)
+            if entry['state'] == 'complete': continue
+            entry.update(format=fmt, error='', output='', scheduled=False)
+            entry['cancel'] = threading.Event()
+            report = preflight(path, fmt)
+            entry['check'] = report
+            if not report['ok']:
+                entry.update(state='failed', error=report['error'])
+                self.append_record(path, '', report['error'])
+                continue
+            entry.update(state='waiting', scheduled=True)
+            selected.append(entry)
+        self.pending = len(selected)
+        self.workbench.setVisible(bool(self.jobs))
+        self.refresh_queue()
+        if not selected:
+            self.update_status()
+            return
+        self.drop_card.orbit.respond(state='working')
+        for entry in selected:
+            def job(row=entry):
                 try:
-                    self.bridge.done.emit(source, engine.convert(source, target), "")
+                    if row['cancel'].is_set(): raise engine.Cancelled('작업이 취소되었습니다.')
+                    self.bridge.started.emit(row['source'])
+                    result = engine.convert(row['source'], row['format'], cancel=row['cancel'])
+                    self.bridge.done.emit(row['source'], result, '')
                 except Exception as exc:
-                    self.bridge.done.emit(source, "", str(exc))
-
+                    self.bridge.done.emit(row['source'], '', str(exc))
             self.pool.submit(job)
         self.progress.show()
         self.update_status()
         self.tray.setIcon(icon(busy=True))
 
+    def job_started(self, source):
+        entry = next((row for row in self.jobs if row['source'] == source and row['scheduled']), None)
+        if entry:
+            entry['state'] = 'cancelling' if entry['cancel'].is_set() else 'processing'
+            self.refresh_queue()
+
     def finished(self, source, output, error):
-        self.pending -= 1
+        entry = next((row for row in self.jobs if row['source'] == source and row['scheduled']), None)
+        if entry:
+            entry.update(state='complete' if output else 'cancelled' if entry['cancel'].is_set() else 'failed',
+                         output=output, error=error, scheduled=False)
+        self.pending = max(0, self.pending - 1)
         self.append_record(source, output, error)
         self.update_status()
-        self.drop_card.orbit.respond(state="working" if self.pending else "error" if error else "complete")
+        self.refresh_queue()
+        self.preview_selection()
+        self.drop_card.orbit.respond(state='working' if self.pending else 'error' if error else 'complete')
         if not self.pending:
             self.progress.hide()
             self.tray.setToolTip(self.app_name())

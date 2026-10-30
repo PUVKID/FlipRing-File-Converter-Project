@@ -1,0 +1,1311 @@
+--- 1.2.0/app.py
++++ 1.4.0/app.py
+@@ -16,7 +16,7 @@
+ 
+ from PySide6.QtCore import (
+     Qt, QTimer, Signal, QObject, QPointF, QRectF, QSettings, QLockFile,
+-    QUrl, QVariantAnimation, QEasingCurve, QSignalBlocker, QTranslator,
++    QUrl, QVariantAnimation, QEasingCurve, QSignalBlocker, QTranslator, QEvent,
+ )
+ from PySide6.QtGui import (
+     QColor, QPainter, QPen, QPainterPath, QFont, QFontDatabase,
+@@ -25,7 +25,8 @@
+ from PySide6.QtWidgets import (
+     QApplication, QWidget, QMainWindow, QVBoxLayout, QHBoxLayout, QLabel,
+     QPushButton, QFileDialog, QComboBox, QListWidget, QTabWidget, QCheckBox,
+-    QSystemTrayIcon, QMenu, QMessageBox, QProgressBar,
++    QSystemTrayIcon, QMenu, QMessageBox, QProgressBar, QGraphicsOpacityEffect,
++    QStylePainter, QStyleOptionButton, QStyle,
+ )
+ import engine
+ from i18n import tr, error_text, QT_KOREAN
+@@ -44,19 +45,70 @@
+ USER32.GetAsyncKeyState.restype = ctypes.c_short
+ USER32.GetForegroundWindow.restype = wintypes.HWND
+ USER32.GetClassNameW.argtypes = [wintypes.HWND, wintypes.LPWSTR, ctypes.c_int]
++OLE32 = ctypes.WinDLL("ole32", use_last_error=True)
++OLE32.CoInitializeEx.argtypes = [ctypes.c_void_p, wintypes.DWORD]
++OLE32.CoInitializeEx.restype = ctypes.c_int32
++OLE32.CoUninitialize.argtypes = []
++OLE32.CoUninitialize.restype = None
++OLE32.CoTaskMemFree.argtypes = [ctypes.c_void_p]
++OLE32.CoTaskMemFree.restype = None
++SHELL32 = ctypes.WinDLL("shell32", use_last_error=True)
++SHELL32.SHParseDisplayName.argtypes = [
++    wintypes.LPCWSTR, ctypes.c_void_p, ctypes.POINTER(ctypes.c_void_p),
++    wintypes.ULONG, ctypes.POINTER(wintypes.ULONG),
++]
++SHELL32.SHParseDisplayName.restype = ctypes.c_int32
++SHELL32.SHOpenFolderAndSelectItems.argtypes = [
++    ctypes.c_void_p, wintypes.UINT, ctypes.POINTER(ctypes.c_void_p), wintypes.DWORD,
++]
++SHELL32.SHOpenFolderAndSelectItems.restype = ctypes.c_int32
+ EXPLORER_CLASSES = {"CabinetWClass", "ExploreWClass", "Progman", "WorkerW"}
+ 
+ 
++def select_in_explorer(path):
++    """파일을 실행하지 않고 탐색기에서 해당 파일을 선택한다."""
++    filename = str(Path(path).resolve())
++
++    def check(result, operation):
++        # HRESULT는 64비트 Windows에서도 부호 있는 32비트 값이다.
++        if ctypes.c_int32(result).value < 0:
++            raise OSError(f"{operation} (HRESULT 0x{result & 0xffffffff:08X})")
++
++    check(OLE32.CoInitializeEx(None, 0x2), "CoInitializeEx")
++    pidl = ctypes.c_void_p()
++    try:
++        check(SHELL32.SHParseDisplayName(filename, None, ctypes.byref(pidl), 0, None),
++              "SHParseDisplayName")
++        if not pidl.value:
++            raise OSError("SHParseDisplayName (HRESULT 0x80004005)")
++        # cidl=0에서는 전체 파일 PIDL 하나로 부모 폴더를 열고 그 파일을 선택한다.
++        check(SHELL32.SHOpenFolderAndSelectItems(pidl, 0, None, 0),
++              "SHOpenFolderAndSelectItems")
++    finally:
++        if pidl.value:
++            OLE32.CoTaskMemFree(pidl)
++        # S_OK와 S_FALSE를 포함한 성공 초기화마다 해제를 정확히 한 번 수행한다.
++        OLE32.CoUninitialize()
++
++
+ def ui_font(size=10, weight=QFont.Normal):
+-    # 운영체제 글꼴을 사용하며 글꼴 파일을 복제하거나 배포하지 않는다.
++    # 동봉 글꼴은 이 앱에만 등록하며 운영체제 글꼴 설정을 바꾸지 않는다.
+     font = QFont()
+-    font.setFamilies(["Segoe UI Variable", "Segoe UI", "Malgun Gothic", "맑은 고딕"])
++    font.setFamilies(["SUIT", "Segoe UI", "Malgun Gothic", "맑은 고딕"])
+     font.setPointSize(size)
+     font.setWeight(weight)
+     return font
+ 
+ 
+ def apply_application_style(application):
++    if not hasattr(application, "_flipring_fonts"):
++        application._flipring_fonts = {}
++        for style in ("Regular", "Medium", "SemiBold"):
++            filename = engine.asset(f"fonts/SUIT-{style}.ttf")
++            identifier = QFontDatabase.addApplicationFont(str(filename))
++            if identifier < 0:
++                raise RuntimeError(f"UI font could not be loaded: {filename}")
++            application._flipring_fonts[style] = identifier
+     application.setStyle("Fusion")
+     application.setFont(ui_font())
+     palette = QPalette()
+@@ -136,6 +188,7 @@
+     dialog.setText(message)
+     dialog.setIcon(QMessageBox.NoIcon)
+     dialog.setStandardButtons(QMessageBox.Ok)
++    install_button_motions(dialog)
+     return dialog
+ 
+ 
+@@ -164,6 +217,127 @@
+             super().mouseDoubleClickEvent(event)
+         else:
+             event.ignore()
++
++
++class ButtonMotion(QObject):
++    """입력 처리는 기본 버튼에 맡기고 배경·테두리만 부드럽게 그린다."""
++
++    def __init__(self, button):
++        super().__init__(button)
++        self.amount = 0.0
++        self.hovered = False
++        self.pressed = False
++        self.animation = QVariantAnimation(self)
++        self.animation.setDuration(130)
++        self.animation.setEasingCurve(QEasingCurve.InOutSine)
++        self.animation.valueChanged.connect(self._frame)
++        button.installEventFilter(self)
++
++    @property
++    def button(self):
++        return self.parent()
++
++    def _frame(self, value):
++        self.amount = float(value)
++        self.button.update()
++
++    def transition(self):
++        target = 1.0 if self.button.isEnabled() and (self.hovered or self.pressed) else 0.0
++        self.animation.stop()
++        if abs(target - self.amount) < 0.001:
++            self.button.update()
++            return
++        with QSignalBlocker(self.animation):
++            self.animation.setStartValue(self.amount)
++            self.animation.setEndValue(target)
++            self.animation.setCurrentTime(0)
++        self.animation.start()
++
++    def eventFilter(self, watched, event):
++        kind = event.type()
++        if kind in (QEvent.Enter, QEvent.Leave):
++            self.hovered = kind == QEvent.Enter
++            self.transition()
++        elif kind in (QEvent.MouseButtonPress, QEvent.MouseButtonRelease):
++            if event.button() == Qt.LeftButton:
++                self.pressed = kind == QEvent.MouseButtonPress
++                self.transition()
++        elif kind == QEvent.EnabledChange:
++            self.pressed = False
++            self.transition()
++        elif kind == QEvent.Hide:
++            self.animation.stop()
++            self.amount = 0.0
++            self.hovered = self.pressed = False
++        elif kind == QEvent.Paint:
++            option = QStyleOptionButton()
++            self.button.initStyleOption(option)
++            painter = QStylePainter(self.button)
++            painter.setRenderHint(QPainter.Antialiasing)
++            shade = 255 - round(13 * self.amount) - (6 if self.button.isDown() else 0)
++            border = 226 - round(25 * self.amount)
++            if self.button.hasFocus():
++                border = 112
++            painter.setBrush(QColor(shade, shade, shade))
++            painter.setPen(QColor(border, border, border))
++            painter.drawRoundedRect(QRectF(self.button.rect()).adjusted(0.5, 0.5, -0.5, -0.5), 8, 8)
++            painter.drawControl(QStyle.CE_PushButtonLabel, option)
++            painter.end()
++            return True
++        return False
++
++
++def install_button_motions(root):
++    """버튼이 모션을 직접 소유하게 하여 중복 등록과 전역 수명 보유를 막는다."""
++    buttons = ([root] if isinstance(root, QPushButton) else []) + root.findChildren(QPushButton)
++    for button in buttons:
++        if getattr(button, "_flipring_button_motion", None) is None:
++            button._flipring_button_motion = ButtonMotion(button)
++
++
++class SoftTabs(QTabWidget):
++    """페이지 위치와 입력 영역을 고정한 채 새 내용만 옅게 전환한다."""
++
++    def __init__(self, parent=None):
++        super().__init__(parent)
++        self.fade = QVariantAnimation(self)
++        self.fade.setDuration(140)
++        self.fade.setEasingCurve(QEasingCurve.InOutSine)
++        self.fade.valueChanged.connect(self._fade_frame)
++        self.fade.finished.connect(self._finish_fade)
++        self._fade_page = None
++        self.currentChanged.connect(self._change_page)
++
++    def _fade_frame(self, value):
++        if self._fade_page is not None:
++            effect = self._fade_page.graphicsEffect()
++            if effect is not None:
++                effect.setOpacity(float(value))
++
++    def _finish_fade(self):
++        self.fade.stop()
++        page, self._fade_page = self._fade_page, None
++        if page is not None and page.graphicsEffect() is not None:
++            # 정지한 효과의 배경 캐시를 제거하고 투명 페이지의 부모 배경을 갱신한다.
++            page.setGraphicsEffect(None)
++            self.window().update()
++
++    def _change_page(self, index):
++        self._finish_fade()
++        page = self.widget(index)
++        if page is None or not self.isVisible():
++            return
++        self._fade_page = page
++        effect = QGraphicsOpacityEffect(page)
++        effect.setOpacity(0.9)
++        page.setGraphicsEffect(effect)
++        self.fade.setStartValue(0.9)
++        self.fade.setEndValue(1.0)
++        self.fade.start()
++
++    def hideEvent(self, event):
++        self._finish_fade()
++        super().hideEvent(event)
+ 
+ 
+ class Wheel(QWidget):
+@@ -194,14 +368,14 @@
+         self._hover_from = {}
+         self._hover_to = -2
+         self.motion = QVariantAnimation(self)
+-        self.motion.setEasingCurve(QEasingCurve.OutCubic)
++        self.motion.setEasingCurve(QEasingCurve.InOutSine)
+         self.motion.valueChanged.connect(self._motion_frame)
+         self.motion.finished.connect(self._motion_finished)
+         self.highlight = QVariantAnimation(self)
+-        self.highlight.setDuration(100)
++        self.highlight.setDuration(150)
+         self.highlight.setStartValue(0.0)
+         self.highlight.setEndValue(1.0)
+-        self.highlight.setEasingCurve(QEasingCurve.OutCubic)
++        self.highlight.setEasingCurve(QEasingCurve.InOutSine)
+         self.highlight.valueChanged.connect(self._highlight_frame)
+ 
+     def _motion_frame(self, value):
+@@ -211,6 +385,17 @@
+     def _motion_finished(self):
+         if self._closing and self.reveal <= 0.001:
+             self.hide()
++
++    def _animate_reveal(self, target):
++        current = self.reveal
++        self.motion.stop()
++        # 설정을 바꾸는 동안 이전 시각의 값이 프레임으로 전달되지 않게 한다.
++        with QSignalBlocker(self.motion):
++            self.motion.setDuration(max(55, round((250 if target else 190) * abs(target - current))))
++            self.motion.setStartValue(current)
++            self.motion.setEndValue(target)
++            self.motion.setCurrentTime(0)
++        self.motion.start()
+ 
+     def _highlight_frame(self, value):
+         progress = float(value)
+@@ -233,14 +418,18 @@
+         self.update()
+ 
+     def display(self, pos, paths=None, preview=False):
++        continuing = self.isVisible()
+         self.motion.stop()
+-        self.highlight.stop()
++        if not continuing:
++            self.highlight.stop()
+         self._closing = False
+         self._drop_consumed = False
+         self.preview = preview
+-        self.reveal = 0.0
+-        self.hover = -1
+-        self.weights = {-1: 1.0}
++        if not continuing:
++            self.reveal = 0.0
++            self.hover = self._hover_to = -2
++            self.weights = {}
++            self._hover_from = {}
+         self.set_paths(paths or [])
+         self.setAcceptDrops(True)
+         screen = QApplication.screenAt(pos) or QApplication.primaryScreen()
+@@ -250,10 +439,8 @@
+         self.move(x, y)
+         self.show()
+         self.raise_()
+-        self.motion.setDuration(150)
+-        self.motion.setStartValue(0.0)
+-        self.motion.setEndValue(1.0)
+-        self.motion.start()
++        # 퇴장·등장 도중 다시 열어도 현재 프레임부터 이어서 표시한다.
++        self._animate_reveal(1.0)
+ 
+     def dismiss(self):
+         if not self.isVisible() or self._closing:
+@@ -261,11 +448,7 @@
+         self._closing = True
+         # 드롭을 확정한 뒤에는 퇴장 중인 그림이 새 드롭을 받아서는 안 된다.
+         self.setAcceptDrops(False)
+-        self.motion.stop()
+-        self.motion.setDuration(120)
+-        self.motion.setStartValue(self.reveal)
+-        self.motion.setEndValue(0.0)
+-        self.motion.start()
++        self._animate_reveal(0.0)
+ 
+     def hideEvent(self, event):
+         self.motion.stop()
+@@ -273,12 +456,19 @@
+         super().hideEvent(event)
+ 
+     def set_paths(self, paths):
+-        self.paths = list(dict.fromkeys(str(Path(path)) for path in paths))
++        paths = list(dict.fromkeys(str(Path(path)) for path in paths))
++        same_paths = paths == self.paths
++        previous_options = self.options
++        self.paths = paths
+         self.options = engine.targets(self.paths)
+         self.reasons = {}
+         for target in self.options:
+             self.reasons[target] = next(
+                 (missing for path in self.paths if (missing := engine.requirement(path, target))), None)
++        if same_paths and self.options == previous_options:
++            # 같은 파일의 도구 상태는 갱신하되 진행 중인 강조는 초기화하지 않는다.
++            self.update()
++            return
+         # 드래그 대상 변경 시 이전 형식의 강조가 새 형식에 남지 않게 한다.
+         self.highlight.stop()
+         self.weights = {}
+@@ -399,7 +589,7 @@
+             step = 360 / count
+             weight = self.weights.get(index, 0.0)
+             if weight > 0.001:
+-                color = QColor("#ededed" if not self.reasons[fmt] else "#555555")
++                color = QColor("#606060" if not self.reasons[fmt] else "#555555")
+                 color.setAlphaF(0.86 * weight)
+                 painter.fillPath(self._wedge(center, outer, inner, start, step), color)
+             if count > 1:
+@@ -413,9 +603,9 @@
+             x = center + radius * math.sin(radians)
+             y = center - radius * math.cos(radians)
+             missing = self.reasons[fmt]
+-            ink = 150 if missing else 242 - int(210 * weight)
++            ink = 150 if missing else 242
+             painter.setPen(QColor(ink, ink, ink))
+-            painter.setFont(ui_font(9 if count > 7 else 10, QFont.DemiBold))
++            painter.setFont(ui_font(9 if count > 7 else 10, QFont.Medium))
+             painter.drawText(QRectF(x - 49, y - (19 if missing else 12), 98, 24), Qt.AlignCenter, fmt.upper())
+             if missing:
+                 painter.setFont(ui_font(6))
+@@ -500,7 +690,8 @@
+         host = QWidget()
+         self.setCentralWidget(host)
+         layout = QVBoxLayout(host)
+-        layout.setContentsMargins(20, 20, 20, 15)
++        layout.setContentsMargins(22, 22, 22, 18)
++        layout.setSpacing(10)
+         self.brand = QLabel()
+         self.brand.setObjectName("brand")
+         layout.addWidget(self.brand)
+@@ -508,12 +699,12 @@
+         self.subtitle.setObjectName("muted")
+         self.subtitle.setWordWrap(True)
+         layout.addWidget(self.subtitle)
+-        self.tabs = QTabWidget()
++        self.tabs = SoftTabs()
+         layout.addWidget(self.tabs, 1)
+         settings_page = QWidget()
+         settings_layout = QVBoxLayout(settings_page)
+-        settings_layout.setContentsMargins(14, 16, 14, 12)
+-        settings_layout.setSpacing(12)
++        settings_layout.setContentsMargins(16, 18, 16, 14)
++        settings_layout.setSpacing(13)
+         language_row = QHBoxLayout()
+         language_row.addWidget(self.localized(QLabel(), "language"))
+         self.language_combo = QComboBox()
+@@ -600,6 +791,10 @@
+         about_layout.addStretch()
+         self.tabs.addTab(about_page, self.text("about"))
+         self.pdf_panel = PdfToolsPanel(self.language, self)
++        self.pdf_panel.scroll.widget().layout().setContentsMargins(16, 16, 16, 16)
++        self.pdf_panel.scroll.widget().layout().setSpacing(12)
++        self.pdf_panel.form.setVerticalSpacing(12)
++        self.pdf_panel.form.setHorizontalSpacing(14)
+         self.pdf_panel.result_ready.connect(self.pdf_finished)
+         self.tabs.addTab(self.pdf_panel, self.text("pdf_tools"))
+         self.status = QLabel(self.text("ready"))
+@@ -624,6 +819,7 @@
+         self.refresh_tools()
+         self.refresh_history()
+         self.apply_style()
++        install_button_motions(self)
+         self.retranslate()
+ 
+     def text(self, message_id, **values):
+@@ -692,7 +888,7 @@
+     @staticmethod
+     def button(text, action):
+         button = QPushButton(text)
+-        button.setMinimumHeight(32)
++        button.setMinimumHeight(35)
+         button.clicked.connect(action)
+         return button
+ 
+@@ -702,33 +898,43 @@
+ 
+     def apply_style(self):
+         style = """
+-        QWidget {font-family:'Segoe UI Variable','Segoe UI','Malgun Gothic';font-size:12px;font-weight:400;color:#171717;}
++        QWidget {font-family:'SUIT','Segoe UI','Malgun Gothic';font-size:13px;font-weight:400;color:#242424;}
+         QMainWindow,QMenu {background:#fafafa;}
+-        QLabel#brand {font-size:25px;font-weight:600;color:#111111;padding-bottom:2px;}
+-        QLabel#muted {color:#777777;font-size:11px;}
+-        QTabWidget::pane {border:1px solid #e0e0e0;border-radius:10px;background:#ffffff;}
+-        QTabBar::tab {background:transparent;padding:11px 14px;color:#777777;}
+-        QTabBar::tab:selected {color:#111111;font-weight:600;border-bottom:2px solid #171717;}
+-        QPushButton {background:#ffffff;border:1px solid #d4d4d4;border-radius:7px;padding:6px 11px;}
+-        QPushButton:hover {background:#eeeeee;border-color:#777777;}
+-        QPushButton:pressed {background:#dedede;}
+-        QPushButton:focus,QComboBox:focus {border-color:#171717;}
+-        QListWidget,QComboBox {background:#ffffff;border:1px solid #d4d4d4;border-radius:7px;padding:7px;}
+-        QListWidget::item {padding:8px;border-bottom:1px solid #eeeeee;}
+-        QListWidget::item:selected {background:#eeeeee;color:#111111;}
+-        QComboBox QAbstractItemView {background:#ffffff;color:#171717;selection-background-color:#242424;selection-color:#ffffff;}
+-        QCheckBox {spacing:8px;padding:3px 0;}
+-        QCheckBox::indicator {width:14px;height:14px;border:1px solid #aaaaaa;border-radius:3px;background:#ffffff;}
+-        QCheckBox::indicator:checked {background:#242424;border-color:#242424;}
+-        QCheckBox::indicator:hover {border-color:#171717;}
+-        QMenu {border:1px solid #d4d4d4;padding:6px;}
+-        QMenu::item {padding:8px 18px;}
+-        QMenu::item:selected {background:#e8e8e8;border-radius:5px;}
++        QLabel#brand {font-size:24px;font-weight:500;color:#191919;padding-bottom:2px;}
++        QLabel#muted {color:#626262;font-size:12px;}
++        QTabWidget::pane {border:0;border-radius:12px;background:#ffffff;}
++        QTabBar::tab {background:transparent;padding:12px 12px;color:#626262;font-weight:500;}
++        QTabBar::tab:selected {color:#242424;border-bottom:1px solid #4a4a4a;}
++        QPushButton {background:#ffffff;border:1px solid #e2e2e2;border-radius:8px;padding:7px 12px;font-weight:500;min-height:18px;}
++        QPushButton:disabled {color:#8a8a8a;}
++        QComboBox:focus,QLineEdit:focus,QSpinBox:focus {border-color:#888888;}
++        QListWidget,QComboBox,QLineEdit,QSpinBox {background:#ffffff;border:1px solid #e2e2e2;border-radius:8px;padding:8px;}
++        QComboBox {padding-right:30px;}
++        QComboBox:disabled {color:#8a8a8a;background:#fafafa;}
++        QComboBox::drop-down {subcontrol-origin:padding;subcontrol-position:top right;width:24px;border:0;background:transparent;}
++        QListWidget::item {padding:10px;border-bottom:1px solid #f0f0f0;}
++        QListWidget::item:selected {background:#efefef;color:#242424;}
++        QComboBox QAbstractItemView {background:#ffffff;color:#242424;selection-background-color:#ededed;selection-color:#242424;}
++        QScrollArea {border:0;background:#ffffff;}
++        QScrollBar:vertical {background:#f7f7f7;width:7px;margin:3px 0;}
++        QScrollBar::handle:vertical {background:#c5c5c5;min-height:24px;border-radius:3px;}
++        QScrollBar::add-line:vertical,QScrollBar::sub-line:vertical {height:0;}
++        QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical {background:none;}
++        QCheckBox {spacing:9px;padding:4px 0;}
++        QCheckBox::indicator {width:14px;height:14px;border:1px solid #aaaaaa;border-radius:4px;background:#ffffff;}
++        QCheckBox::indicator:checked {background:#383838;border-color:#383838;}
++        QCheckBox::indicator:hover {border-color:#626262;}
++        QMenu {border:1px solid #e2e2e2;padding:6px;}
++        QMenu::item {padding:9px 18px;}
++        QMenu::item:selected {background:#ededed;border-radius:6px;}
+         QMenu::item:disabled {color:#888888;}
+-        QProgressBar {max-height:3px;border:0;background:#e6e6e6;}
+-        QProgressBar::chunk {background:#242424;}
+-        QToolTip {background:#171717;color:#ffffff;border:0;padding:6px;}
++        QProgressBar {max-height:3px;border:0;border-radius:1px;background:#e9e9e9;}
++        QProgressBar::chunk {background:#4a4a4a;}
++        QToolTip {background:#242424;color:#ffffff;border:0;padding:7px;}
+         """
++        # 따옴표로 감싼 절대 경로는 한글·공백이 있는 소스/배포 경로에서도 유지된다.
++        arrow = engine.asset("combo-chevron.svg").as_posix()
++        style += '\nQComboBox::down-arrow {image:url("' + arrow + '");width:12px;height:8px;}'
+         self.setStyleSheet(style)
+         self.tray_menu.setStyleSheet(style)
+ 
+@@ -856,6 +1062,7 @@
+                           (QFileDialog.FileType, "dialog_filter"), (QFileDialog.Reject, "cancel"),
+                           (QFileDialog.Accept, "dialog_choose" if folder else "dialog_open")):
+             dialog.setLabelText(role, self.text(key))
++        install_button_motions(dialog)
+         return dialog
+ 
+     def set_files(self, paths):
+@@ -938,7 +1145,11 @@
+         else:
+             self.notify(self.text("done_title"), Path(output).name)
+             if self.reveal.isChecked():
+-                subprocess.Popen(["explorer.exe", "/select,", output])
++                try:
++                    select_in_explorer(output)
++                except (OSError, ValueError) as exc:
++                    message_dialog(self, self.text("history_explorer_title"),
++                                   self.text("history_explorer_error", detail=str(exc))).exec()
+ 
+     def refresh_history(self):
+         self.history.clear()
+@@ -968,7 +1179,7 @@
+                 message_dialog(self, self.text("history_missing_title"),
+                                self.text("history_missing_result")).exec()
+                 return
+-            subprocess.Popen(["explorer.exe", "/select,", str(result)])
++            select_in_explorer(result)
+         except (OSError, ValueError) as exc:
+             message_dialog(self, self.text("history_explorer_title"),
+                            self.text("history_explorer_error", detail=str(exc))).exec()
+--- 1.2.0/build.py
++++ 1.4.0/build.py
+@@ -72,7 +72,7 @@
+ [Setup]
+ AppId=PUVKID.FlipRing
+ AppName=FlipRing
+-AppVersion=1.3.0
++AppVersion=1.4.0
+ AppPublisher=PUVKID
+ DefaultDirName={{localappdata}}\\Programs\\FlipRing
+ DefaultGroupName=FlipRing
+--- 1.2.0/package.py
++++ 1.4.0/package.py
+@@ -10,14 +10,22 @@
+ program = release / "프로그램" / name
+ installer = release / "설치파일" / (name + "-Setup.exe")
+ required = [program / (name + ".exe"), installer]
++required.append(program / "_internal/assets/combo-chevron.svg")
+ required += [program / "_internal/vendor/tesseract" / filename for filename in (
+     "tesseract.exe", "tessdata/eng.traineddata", "tessdata/kor.traineddata", "tessdata/osd.traineddata",
+ )]
++required += [program / "_internal/assets/fonts" / filename for filename in (
++    "SUIT-Regular.ttf", "SUIT-Medium.ttf", "SUIT-SemiBold.ttf",
++)]
++required += [program / "licenses/SUIT" / filename for filename in ("OFL.txt", "원본출처.json")]
+ required += [root / filename for filename in (
+     "app.py", "i18n.py", "engine.py", "pdf_tools.py", "pdf_panel.py", "test_pdf_tools.py",
+     "build.py", "package.py", "test_gui.py", "test_engine.py",
+     "requirements-lock.txt", "빌드방법.md", "사용안내.txt", "검토기록.md", "LICENSE.txt",
+     "assets/NanumGothicBold.ttf", "assets/NanumGothic-OFL.txt", "test-fixtures/sample.heic",
++    "assets/combo-chevron.svg",
++    "assets/fonts/SUIT-Regular.ttf", "assets/fonts/SUIT-Medium.ttf", "assets/fonts/SUIT-SemiBold.ttf",
++    "licenses/SUIT/OFL.txt", "licenses/SUIT/원본출처.json",
+     "vendor/tesseract/tesseract.exe", "vendor/tesseract/tessdata/eng.traineddata",
+     "vendor/tesseract/tessdata/kor.traineddata", "vendor/tesseract/tessdata/osd.traineddata",
+     "licenses/OCR/MSYS2-구성요소.json", "licenses/OCR/읽어주세요.md",
+--- 1.2.0/test_gui.py
++++ 1.4.0/test_gui.py
+@@ -13,10 +13,11 @@
+ import unittest
+ from unittest.mock import Mock, patch
+ 
+-from PySide6.QtCore import Qt, QPoint, QPointF, QMimeData, QUrl
+-from PySide6.QtGui import QFont, QFontDatabase, QPalette, QDragEnterEvent, QDragMoveEvent, QDropEvent, QMouseEvent
++from PySide6.QtCore import Qt, QPoint, QPointF, QMimeData, QUrl, QEvent, QAbstractAnimation, QCoreApplication
++from PySide6.QtGui import QFont, QFontDatabase, QFontInfo, QRawFont, QTextLayout, QPalette, QDragEnterEvent, QDragMoveEvent, QDropEvent, QMouseEvent
+ from PySide6.QtTest import QTest, QSignalSpy
+-from PySide6.QtWidgets import QApplication, QFileDialog, QDialogButtonBox, QMessageBox
++from PySide6.QtWidgets import QApplication, QFileDialog, QDialogButtonBox, QMessageBox, QStyleOptionComboBox
++from shiboken6 import isValid
+ import app
+ import i18n
+ from pdf_panel import ERRORS as PDF_ERRORS
+@@ -219,13 +220,13 @@
+         self.assertEqual(self.wheel.windowOpacity(), 1.0)
+         self.assertTrue(self.wheel.acceptDrops())
+         self.wheel.grab().save(str(ROOT / "3차-모션중간.png"))
+-        settle(170)
++        settle(235)
+         self.assertAlmostEqual(self.wheel.reveal, 1)
+         self.wheel.set_hover(0)
+         settle(40)
+         self.assertGreater(self.wheel.weights.get(0, 0), 0)
+         self.assertLess(self.wheel.weights.get(0, 0), 1)
+-        settle(100)
++        settle(135)
+         self.assertAlmostEqual(self.wheel.weights[0], 1)
+         self.wheel.grab().save(str(ROOT / "3차-원본형메뉴.png"))
+         self.wheel.dismiss()
+@@ -234,7 +235,7 @@
+         self.assertGreater(self.wheel.reveal, 0)
+         self.assertLess(self.wheel.reveal, 1)
+         self.assertFalse(self.wheel.acceptDrops())
+-        settle(140)
++        settle(170)
+         self.assertFalse(self.wheel.isVisible())
+ 
+     def test_11_reopen_interrupts_stale_close_animation(self):
+@@ -440,7 +441,7 @@
+         self.window.settings.sync()
+         script = (
+             "import json,pathlib; from PySide6.QtWidgets import QApplication; import app; "
+-            f"app.DATA=pathlib.Path({str(app.DATA)!r}); q=QApplication([]); w=app.MainWindow(); "
++            f"app.DATA=pathlib.Path({str(app.DATA)!r}); q=QApplication([]); app.apply_application_style(q); w=app.MainWindow(); "
+             "w.timer.stop(); print(json.dumps({'language':w.language,'tab':w.tabs.tabText(0)})); "
+             "w.tray.hide(); w.wheel.hide(); w.pool.shutdown(wait=True)"
+         )
+@@ -508,7 +509,7 @@
+             self.window.last_result = None
+             self.window.set_language("ko")
+ 
+-    def test_27_monochrome_palette_wheel_icons_and_system_font(self):
++    def test_27_monochrome_palette_wheel_icons_and_bundled_font(self):
+         for color in re.findall(r"#[0-9a-fA-F]{6}", self.window.styleSheet()):
+             self.assertEqual(color[1:3], color[3:5])
+             self.assertEqual(color[3:5], color[5:7])
+@@ -517,12 +518,14 @@
+             color = APPLICATION.palette().color(role)
+             self.assertEqual(color.red(), color.green())
+             self.assertEqual(color.green(), color.blue())
+-        self.assertEqual(app.ui_font().families()[:2], ["Segoe UI Variable", "Segoe UI"])
++        self.assertEqual(app.ui_font().families()[:2], ["SUIT", "Segoe UI"])
+         self.assertIn("Malgun Gothic", app.ui_font().families())
+         self.assertEqual(app.ui_font().weight(), QFont.Normal)
+         self.assertEqual(APPLICATION.font().weight(), QFont.Normal)
+-        self.assertIn("Segoe UI", QFontDatabase.families())
+-        self.assertIn("Malgun Gothic", QFontDatabase.families())
++        self.assertEqual(QFontInfo(app.ui_font()).family(), "SUIT")
++        self.assertEqual(QFontInfo(APPLICATION.font()).family(), "SUIT")
++        self.assertEqual(set(APPLICATION._flipring_fonts), {"Regular", "Medium", "SemiBold"})
++        self.assertTrue(all(value >= 0 for value in APPLICATION._flipring_fonts.values()))
+         self.assertTrue(all(value >= 0 for value in REGISTERED_TEST_FONTS.values()))
+         self.show_wheel()
+         settle()
+@@ -610,7 +613,7 @@
+         self.window.refresh_history()
+         item = self.window.history.item(0)
+         self.assertEqual(item.data(Qt.UserRole), str(output))
+-        with patch.object(app.subprocess, "Popen") as launch:
++        with patch.object(app, "select_in_explorer") as launch:
+             self.window.tabs.setCurrentIndex(2)
+             self.window.show()
+             APPLICATION.processEvents()
+@@ -619,8 +622,8 @@
+             launch.assert_not_called()
+             QTest.mouseDClick(self.window.history.viewport(), Qt.LeftButton, pos=point)
+             APPLICATION.processEvents()
+-        launch.assert_called_once_with(["explorer.exe", "/select,", str(output)])
+-        with patch.object(app.subprocess, "Popen") as launch:
++        launch.assert_called_once_with(output)
++        with patch.object(app, "select_in_explorer") as launch:
+             QTest.mouseDClick(self.window.history.viewport(), Qt.RightButton, pos=point)
+             APPLICATION.processEvents()
+             launch.assert_not_called()
+@@ -641,7 +644,7 @@
+             self.window.records = rows
+             self.window.set_language(language)
+             self.window.refresh_history()
+-            with patch.object(app.subprocess, "Popen") as launch, \
++            with patch.object(app, "select_in_explorer") as launch, \
+                     patch.object(app, "message_dialog", return_value=Mock()) as dialog:
+                 self.window.open_history_result(self.window.history.item(1))
+                 self.window.open_history_result(self.window.history.item(0))
+@@ -660,7 +663,7 @@
+                                 "output": str(directory), "error": ""}]
+         self.window.refresh_history()
+         self.window.history.addItem("기록 오류 안내")
+-        with patch.object(app.subprocess, "Popen") as launch, \
++        with patch.object(app, "select_in_explorer") as launch, \
+                 patch.object(app, "message_dialog", return_value=Mock()) as dialog:
+             self.window.open_history_result(self.window.history.item(0))
+             self.window.open_history_result(self.window.history.item(1))
+@@ -681,14 +684,14 @@
+                 self.window.records = [{"time": "2026-10-21T12:00:00", "source": str(SOURCE),
+                                         "output": str(output), "error": ""}]
+                 self.window.refresh_history()
+-                with patch.object(app.subprocess, "Popen", side_effect=OSError("Unavailable")), \
++                with patch.object(app, "select_in_explorer", side_effect=OSError("Unavailable")), \
+                         patch.object(app, "message_dialog", return_value=Mock()) as dialog:
+                     self.window.open_history_result(self.window.history.item(0))
+                 self.assertEqual(dialog.call_args.args[1], self.window.text("history_explorer_title"))
+                 self.assertIn("Unavailable", dialog.call_args.args[2])
+                 self.window.records[0]["output"] = ""
+                 self.window.refresh_history()
+-                with patch.object(app.subprocess, "Popen") as launch, \
++                with patch.object(app, "select_in_explorer") as launch, \
+                         patch.object(app, "message_dialog", return_value=Mock()) as dialog:
+                     self.window.open_history_result(self.window.history.item(0))
+                 launch.assert_not_called()
+@@ -803,6 +806,618 @@
+             if before is not None:
+                 self.window.history_path.write_bytes(before)
+ 
++    def shell_mocks(self, initialize=0, parse=0, select=0, pointer=0x12345678ABCDEF00):
++        # 실제 탐색기나 운영체제 COM 상태를 변경하지 않는 계약 시험 대역이다.
++        ole, shell = Mock(), Mock()
++        ole.CoInitializeEx.return_value = initialize
++
++        def parse_name(filename, binding, result, flags, attributes):
++            app.ctypes.cast(result, app.ctypes.POINTER(app.ctypes.c_void_p))[0] = pointer
++            return parse
++
++        shell.SHParseDisplayName.side_effect = parse_name
++        shell.SHOpenFolderAndSelectItems.return_value = select
++        return ole, shell
++
++    def test_41_shell_api_uses_signed_hresult_and_pointer_sized_pidls(self):
++        self.assertEqual(app.ctypes.sizeof(app.ctypes.c_int32), 4)
++        self.assertEqual(app.ctypes.sizeof(app.ctypes.c_void_p), 8)
++        for function in (app.OLE32.CoInitializeEx, app.SHELL32.SHParseDisplayName,
++                         app.SHELL32.SHOpenFolderAndSelectItems):
++            self.assertIs(function.restype, app.ctypes.c_int32)
++        self.assertEqual(app.OLE32.CoInitializeEx.argtypes, [app.ctypes.c_void_p, app.wintypes.DWORD])
++        self.assertEqual(app.SHELL32.SHParseDisplayName.argtypes,
++                         [app.wintypes.LPCWSTR, app.ctypes.c_void_p,
++                          app.ctypes.POINTER(app.ctypes.c_void_p), app.wintypes.ULONG,
++                          app.ctypes.POINTER(app.wintypes.ULONG)])
++        self.assertEqual(app.SHELL32.SHOpenFolderAndSelectItems.argtypes,
++                         [app.ctypes.c_void_p, app.wintypes.UINT,
++                          app.ctypes.POINTER(app.ctypes.c_void_p), app.wintypes.DWORD])
++        self.assertEqual(app.OLE32.CoTaskMemFree.argtypes, [app.ctypes.c_void_p])
++        self.assertIsNone(app.OLE32.CoTaskMemFree.restype)
++        self.assertEqual(app.OLE32.CoUninitialize.argtypes, [])
++        self.assertIsNone(app.OLE32.CoUninitialize.restype)
++
++    def test_42_shell_selects_full_unicode_file_pidl_and_balances_both_com_successes(self):
++        filename = ROOT / "한글 공백 & [선택] 결과.pdf"
++        for initialized in (0, 1):
++            with self.subTest(initialized=initialized):
++                ole, shell = self.shell_mocks(initialize=initialized)
++                calls = Mock()
++                for name, function in (("initialize", ole.CoInitializeEx),
++                                       ("parse", shell.SHParseDisplayName),
++                                       ("select", shell.SHOpenFolderAndSelectItems),
++                                       ("free", ole.CoTaskMemFree),
++                                       ("uninitialize", ole.CoUninitialize)):
++                    calls.attach_mock(function, name)
++                with patch.object(app, "OLE32", ole), patch.object(app, "SHELL32", shell):
++                    app.select_in_explorer(filename)
++                ole.CoInitializeEx.assert_called_once_with(None, 0x2)
++                parsed = shell.SHParseDisplayName.call_args.args
++                self.assertEqual(parsed[:2], (str(filename.resolve()), None))
++                self.assertEqual(parsed[3:], (0, None))
++                selected = shell.SHOpenFolderAndSelectItems.call_args.args
++                self.assertEqual(selected[0].value, 0x12345678ABCDEF00)
++                self.assertEqual(selected[1:], (0, None, 0))
++                ole.CoTaskMemFree.assert_called_once_with(selected[0])
++                ole.CoUninitialize.assert_called_once_with()
++                self.assertEqual([entry[0] for entry in calls.mock_calls],
++                                 ["initialize", "parse", "select", "free", "uninitialize"])
++
++    def test_43_shell_com_failure_preserves_existing_com_and_reports_signed_hresult(self):
++        for result in (0x80010106, app.ctypes.c_int32(0x80010106).value):
++            with self.subTest(result=result):
++                ole, shell = self.shell_mocks(initialize=result)
++                with patch.object(app, "OLE32", ole), patch.object(app, "SHELL32", shell):
++                    with self.assertRaisesRegex(OSError, r"CoInitializeEx.*0x80010106"):
++                        app.select_in_explorer(SOURCE)
++                shell.SHParseDisplayName.assert_not_called()
++                shell.SHOpenFolderAndSelectItems.assert_not_called()
++                ole.CoTaskMemFree.assert_not_called()
++                ole.CoUninitialize.assert_not_called()
++
++    def test_44_shell_parse_failure_releases_any_returned_memory_and_com(self):
++        for pointer in (None, 0x12345678ABCDEF00):
++            with self.subTest(pointer=pointer):
++                ole, shell = self.shell_mocks(parse=0x80070002, pointer=pointer)
++                with patch.object(app, "OLE32", ole), patch.object(app, "SHELL32", shell):
++                    with self.assertRaisesRegex(OSError, r"SHParseDisplayName.*0x80070002"):
++                        app.select_in_explorer(SOURCE)
++                shell.SHOpenFolderAndSelectItems.assert_not_called()
++                if pointer is None:
++                    ole.CoTaskMemFree.assert_not_called()
++                else:
++                    self.assertEqual(ole.CoTaskMemFree.call_args.args[0].value, pointer)
++                    self.assertEqual(ole.CoTaskMemFree.call_count, 1)
++                ole.CoUninitialize.assert_called_once_with()
++
++    def test_45_shell_selection_failure_releases_pidl_and_com(self):
++        ole, shell = self.shell_mocks(select=app.ctypes.c_int32(0x80004005).value)
++        with patch.object(app, "OLE32", ole), patch.object(app, "SHELL32", shell):
++            with self.assertRaisesRegex(OSError, r"SHOpenFolderAndSelectItems.*0x80004005"):
++                app.select_in_explorer(SOURCE)
++        self.assertEqual(ole.CoTaskMemFree.call_args.args[0].value, 0x12345678ABCDEF00)
++        self.assertEqual(ole.CoTaskMemFree.call_count, 1)
++        ole.CoUninitialize.assert_called_once_with()
++
++    def test_46_shell_empty_pidl_does_not_open_a_folder(self):
++        ole, shell = self.shell_mocks(pointer=None)
++        with patch.object(app, "OLE32", ole), patch.object(app, "SHELL32", shell):
++            with self.assertRaisesRegex(OSError, r"SHParseDisplayName.*0x80004005"):
++                app.select_in_explorer(SOURCE)
++        shell.SHOpenFolderAndSelectItems.assert_not_called()
++        ole.CoTaskMemFree.assert_not_called()
++        ole.CoUninitialize.assert_called_once_with()
++
++    def test_47_optional_result_reveal_uses_same_api_and_keeps_conversion_success(self):
++        records, last_result = self.window.records.copy(), self.window.last_result
++        reveal = self.window.reveal.isChecked()
++        before = self.window.history_path.read_bytes() if self.window.history_path.exists() else None
++        output = ROOT / "완료 후 선택 결과.png"
++        output.write_bytes(b"result")
++        try:
++            self.window.reveal.setChecked(True)
++            with patch.object(app, "select_in_explorer") as select:
++                self.window.append_record(str(SOURCE), str(output), "")
++            select.assert_called_once_with(str(output))
++            for language in ("ko", "en"):
++                self.window.set_language(language)
++                with patch.object(app, "select_in_explorer", side_effect=OSError("HRESULT 0x80004005")), \
++                        patch.object(app, "message_dialog", return_value=Mock()) as dialog:
++                    self.window.append_record(str(SOURCE), str(output), "")
++                self.assertEqual(dialog.call_args.args[1], self.window.text("history_explorer_title"))
++                self.assertEqual(dialog.call_args.args[2],
++                                 self.window.text("history_explorer_error", detail="HRESULT 0x80004005"))
++                self.assertEqual(self.window.records[-1]["error"], "")
++                self.assertEqual(self.window.last_result, (str(output), ""))
++        finally:
++            self.window.reveal.setChecked(reveal)
++            self.window.records, self.window.last_result = records, last_result
++            self.window.set_language("ko")
++            self.window.refresh_history()
++            self.window.update_status()
++            if before is not None:
++                self.window.history_path.write_bytes(before)
++            output.unlink()
++
++    def test_48_wheel_reentry_preserves_rendered_progress_and_hit_regions(self):
++        point = QPoint(500, 380)
++        self.wheel.display(point, [str(SOURCE)])
++        self.wheel.motion.setCurrentTime(90)
++        geometry = self.wheel.geometry()
++        regions = [self.wheel.region(p) for p in (QPointF(170, 170), QPointF(220, 80), QPointF(2, 2))]
++        first = self.wheel.reveal
++        self.assertGreater(first, 0)
++        self.assertLess(first, 1)
++        self.assertTrue(self.wheel.grab().save(str(ROOT / "Fluid-wheel-open-middle.png")))
++        for attempt in range(3):
++            before = self.wheel.reveal
++            self.wheel.dismiss()
++            self.assertAlmostEqual(self.wheel.reveal, before)
++            self.wheel.motion.setCurrentTime(self.wheel.motion.duration() // 3)
++            closing = self.wheel.reveal
++            self.assertLess(closing, before)
++            self.assertGreater(closing, 0)
++            if attempt == 0:
++                self.assertTrue(self.wheel.grab().save(str(ROOT / "Fluid-wheel-close-middle.png")))
++            self.wheel.display(point, [str(SOURCE)])
++            self.assertAlmostEqual(self.wheel.reveal, closing)
++            self.assertTrue(self.wheel.acceptDrops())
++            self.wheel.motion.setCurrentTime(self.wheel.motion.duration() // 2)
++            self.assertGreater(self.wheel.reveal, closing)
++            self.assertEqual(self.wheel.geometry(), geometry)
++            self.assertEqual([self.wheel.region(p) for p in (QPointF(170, 170), QPointF(220, 80), QPointF(2, 2))], regions)
++        self.wheel.motion.setCurrentTime(self.wheel.motion.duration())
++        self.assertAlmostEqual(self.wheel.reveal, 1)
++        self.assertEqual(self.wheel.motion.state(), QAbstractAnimation.Stopped)
++        self.assertTrue(self.wheel.grab().save(str(ROOT / "Fluid-wheel-open-full.png")))
++        self.assertNotEqual((ROOT / "Fluid-wheel-open-middle.png").read_bytes(),
++                            (ROOT / "Fluid-wheel-open-full.png").read_bytes())
++
++    def test_49_fast_hover_retargets_current_weights_and_refreshes_helper_state(self):
++        self.show_wheel()
++        self.wheel.motion.setCurrentTime(self.wheel.motion.duration())
++        geometry = self.wheel.geometry()
++        points = (QPointF(170, 170), QPointF(220, 80), QPointF(2, 2))
++        regions = [self.wheel.region(point) for point in points]
++
++        def assert_visual_weights_unchanged(expected):
++            # 그리기는 누락된 키를 0으로 읽으므로 표현과 무관하게 모든 가중치를 대조한다.
++            actual = self.wheel.weights
++            keys = set(expected) | set(actual) | {-1} | set(range(len(self.wheel.options)))
++            for key in keys:
++                self.assertAlmostEqual(actual.get(key, 0.0), expected.get(key, 0.0))
++                self.assertTrue(0 <= actual.get(key, 0.0) <= 1)
++            self.assertEqual(self.wheel.geometry(), geometry)
++            self.assertEqual([self.wheel.region(point) for point in points], regions)
++
++        self.wheel.set_hover(0)
++        self.wheel.highlight.setCurrentTime(70)
++        before = self.wheel.weights.copy()
++        self.assertGreater(before[0], 0)
++        self.assertLess(before[0], 1)
++        self.assertTrue(self.wheel.grab().save(str(ROOT / "Fluid-hover-first-middle.png")))
++        self.wheel.set_hover(1)
++        assert_visual_weights_unchanged(before)
++        self.wheel.set_paths([str(SOURCE)])
++        assert_visual_weights_unchanged(before)
++        self.wheel.highlight.setCurrentTime(75)
++        self.assertGreater(self.wheel.weights[1], 0)
++        self.assertLess(self.wheel.weights[0], before[0])
++        self.assertTrue(self.wheel.grab().save(str(ROOT / "Fluid-hover-retarget-middle.png")))
++        for target in (2, -1, 0, 1):
++            before = self.wheel.weights.copy()
++            self.wheel.set_hover(target)
++            assert_visual_weights_unchanged(before)
++            self.wheel.highlight.setCurrentTime(35)
++            self.assertTrue(all(0 <= value <= 1 for value in self.wheel.weights.values()))
++        self.wheel.highlight.setCurrentTime(self.wheel.highlight.duration())
++        self.assertAlmostEqual(self.wheel.weights[1], 1)
++        self.assertEqual(self.wheel.highlight.state(), QAbstractAnimation.Stopped)
++        self.assertTrue(all(abs(value) < 0.001 for key, value in self.wheel.weights.items() if key != 1))
++        with patch.object(app.engine, "requirement", return_value="test helper") as requirement:
++            self.wheel.set_paths([str(SOURCE)])
++        self.assertTrue(requirement.called)
++        self.assertTrue(all(reason == "test helper" for reason in self.wheel.reasons.values()))
++        self.wheel.set_paths([str(SOURCE)])
++
++    def test_50_button_hover_frames_preserve_clicks_geometry_and_idle_state(self):
++        button = app.QPushButton("부드러운 버튼 Smooth")
++        button.setStyleSheet(self.window.styleSheet())
++        button.resize(210, 40)
++        motion = app.ButtonMotion(button)
++        clicks = QSignalSpy(button.clicked)
++        try:
++            button.show()
++            APPLICATION.processEvents()
++            motion.hovered = motion.pressed = False
++            motion.animation.stop()
++            motion.amount = 0.0
++            geometry = button.geometry()
++            self.assertTrue(button.grab().save(str(ROOT / "Fluid-button-normal.png")))
++            motion.eventFilter(button, QEvent(QEvent.Enter))
++            motion.animation.setCurrentTime(65)
++            middle = motion.amount
++            self.assertGreater(middle, 0)
++            self.assertLess(middle, 1)
++            self.assertTrue(button.grab().save(str(ROOT / "Fluid-button-hover-middle.png")))
++            motion.eventFilter(button, QEvent(QEvent.Leave))
++            self.assertAlmostEqual(motion.amount, middle)
++            motion.animation.setCurrentTime(motion.animation.duration())
++            self.assertAlmostEqual(motion.amount, 0)
++            self.assertEqual(motion.animation.state(), QAbstractAnimation.Stopped)
++            self.assertEqual(button.geometry(), geometry)
++            self.assertNotEqual((ROOT / "Fluid-button-normal.png").read_bytes(),
++                                (ROOT / "Fluid-button-hover-middle.png").read_bytes())
++            QTest.mouseClick(button, Qt.LeftButton)
++            self.assertEqual(clicks.count(), 1)
++            QTest.keyClick(button, Qt.Key_Space)
++            self.assertEqual(clicks.count(), 2)
++            button.setEnabled(False)
++            QTest.mouseClick(button, Qt.LeftButton)
++            self.assertEqual(clicks.count(), 2)
++            self.assertEqual(button.geometry(), geometry)
++            for item in self.window.findChildren(app.QPushButton):
++                self.assertIsInstance(getattr(item, "_flipring_button_motion", None), app.ButtonMotion)
++                self.assertIs(item._flipring_button_motion.parent(), item)
++                self.assertEqual([child for child in item.children() if isinstance(child, app.ButtonMotion)],
++                                 [item._flipring_button_motion])
++        finally:
++            button.hide()
++            button.deleteLater()
++
++    def test_51_rapid_tab_changes_release_old_effect_without_overlays_or_input_loss(self):
++        self.window.show()
++        APPLICATION.processEvents()
++        tabs = self.window.tabs
++        geometry = tabs.geometry()
++        old_page = tabs.currentWidget()
++        for index in (3, 1, 4, 0, 4):
++            tabs.setCurrentIndex(index)
++            current = tabs.currentWidget()
++            if old_page is not current:
++                self.assertIsNone(old_page.graphicsEffect())
++            tabs.fade.setCurrentTime(70)
++            self.assertGreater(current.graphicsEffect().opacity(), 0.9)
++            self.assertLess(current.graphicsEffect().opacity(), 1)
++            self.assertTrue(current.isEnabled())
++            self.assertFalse(current.testAttribute(Qt.WA_TransparentForMouseEvents))
++            self.assertEqual(tabs.geometry(), geometry)
++            old_page = current
++        self.assertTrue(self.window.grab().save(str(ROOT / "Fluid-tab-middle.png")))
++        tabs.fade.setCurrentTime(tabs.fade.duration())
++        self.assertIsNone(tabs.currentWidget().graphicsEffect())
++        self.assertIsNone(tabs._fade_page)
++        self.assertEqual(tabs.fade.state(), QAbstractAnimation.Stopped)
++        self.assertTrue(self.window.pdf_panel.operation.isEnabled())
++        self.assertTrue(self.window.pdf_panel.add_button.isEnabled())
++        self.window.hide()
++        self.assertIsNone(tabs.currentWidget().graphicsEffect())
++
++    def test_52_drops_during_close_are_rejected_and_reentry_accepts_once(self):
++        self.show_wheel()
++        self.wheel.motion.setCurrentTime(self.wheel.motion.duration())
++        self.wheel.dismiss()
++        self.wheel.motion.setCurrentTime(65)
++        event = drop_at(QPointF(220, 80))
++        self.wheel.dropEvent(event)
++        self.assertFalse(event.isAccepted())
++        self.assertEqual(self.events, [])
++        self.wheel.display(QPoint(500, 380), [str(SOURCE)])
++        event = drop_at(QPointF(220, 80))
++        self.wheel.dropEvent(event)
++        self.assertTrue(event.isAccepted())
++        self.assertEqual(event.dropAction(), Qt.CopyAction)
++        self.assertEqual(self.events, [([str(SOURCE)], "jpg")])
++        repeated = drop_at(QPointF(220, 80))
++        self.wheel.dropEvent(repeated)
++        self.assertFalse(repeated.isAccepted())
++        self.assertEqual(len(self.events), 1)
++        self.wheel.motion.setCurrentTime(self.wheel.motion.duration())
++        self.assertFalse(self.wheel.isVisible())
++        self.assertEqual(hashlib.sha256(SOURCE.read_bytes()).hexdigest(), ORIGINAL_HASH)
++
++    def test_53_bundled_suit_styles_shape_korean_english_and_apply_to_all_pages(self):
++        sample = "플립링한국어가나다한글FlipRingEnglish0123456789"
++        for style, weight in (("Regular", QFont.Normal), ("Medium", QFont.Medium), ("SemiBold", QFont.DemiBold)):
++            font = app.ui_font(12, weight)
++            raw = QRawFont.fromFont(font)
++            self.assertTrue(raw.isValid())
++            self.assertEqual(QFontInfo(font).family(), "SUIT")
++            self.assertEqual(raw.familyName(), "SUIT")
++            self.assertEqual(raw.styleName(), style)
++            self.assertEqual(raw.weight(), int(weight))
++            # UCS-4 정수 오버로드로 검사한다. 문자열 오버로드의 한글 거짓 음성과 구분한다.
++            self.assertTrue(all(raw.supportsCharacter(ord(character)) for character in sample))
++            shaped = QTextLayout(sample, font)
++            shaped.beginLayout()
++            line = shaped.createLine()
++            line.setLineWidth(1500)
++            shaped.endLayout()
++            self.assertTrue(shaped.glyphRuns())
++            for run in shaped.glyphRuns():
++                self.assertEqual(run.rawFont().familyName(), "SUIT")
++                self.assertTrue(all(glyph > 0 for glyph in run.glyphIndexes()))
++        self.window.show()
++        for language in ("ko", "en"):
++            self.window.set_language(language)
++            for index, label in ((0, "settings"), (4, "pdf-ocr")):
++                self.window.tabs.setCurrentIndex(index)
++                self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++                APPLICATION.processEvents()
++                self.assertTrue(self.window.grab().save(str(ROOT / f"Fluid-{language}-{label}.png")))
++            for widget in (self.window.brand, self.window.language_combo, self.window.record_button,
++                           self.window.pdf_panel.operation, self.window.pdf_panel.pages,
++                           self.window.pdf_panel.start_button, self.window.pdf_panel.status):
++                self.assertEqual(QFontInfo(widget.font()).family(), "SUIT")
++        self.window.set_language("ko")
++        self.window.hide()
++
++    def test_54_live_common_dialog_buttons_have_one_motion_and_keep_native_input(self):
++        notice = app.message_dialog(self.window, "확인", "버튼 모션과 입력을 확인합니다.")
++        picker = self.window.file_dialog(False)
++        dialogs = ((notice, "message"), (picker, "file"))
++        try:
++            for dialog, label in dialogs:
++                with self.subTest(dialog=label):
++                    dialog.show()
++                    APPLICATION.processEvents()
++                    buttons = dialog.findChildren(app.QPushButton)
++                    self.assertTrue(buttons)
++                    before = [getattr(button, "_flipring_button_motion", None) for button in buttons]
++                    self.assertTrue(all(isinstance(motion, app.ButtonMotion) for motion in before))
++                    app.install_button_motions(dialog)
++                    app.install_button_motions(dialog)
++                    self.assertEqual([button._flipring_button_motion for button in buttons], before)
++                    for index, button in enumerate(buttons):
++                        motion = button._flipring_button_motion
++                        self.assertIs(motion.parent(), button)
++                        self.assertEqual([child for child in button.children() if isinstance(child, app.ButtonMotion)], [motion])
++                        enabled = button.isEnabled()
++                        button.setEnabled(True)
++                        motion.animation.stop()
++                        motion.hovered = motion.pressed = False
++                        motion.amount = 0.0
++                        geometry = button.geometry()
++                        motion.eventFilter(button, QEvent(QEvent.Enter))
++                        motion.animation.setCurrentTime(65)
++                        middle = motion.amount
++                        self.assertGreater(middle, 0)
++                        self.assertLess(middle, 1)
++                        if index == 0:
++                            self.assertTrue(dialog.grab().save(str(ROOT / f"Fluid-live-{label}-buttons.png")))
++                        motion.eventFilter(button, QEvent(QEvent.Leave))
++                        self.assertAlmostEqual(motion.amount, middle)
++                        motion.animation.setCurrentTime(motion.animation.duration())
++                        self.assertAlmostEqual(motion.amount, 0)
++                        self.assertEqual(motion.animation.state(), QAbstractAnimation.Stopped)
++                        self.assertEqual(button.geometry(), geometry)
++                        button.setEnabled(enabled)
++                    action = (notice.button(QMessageBox.Ok) if dialog is notice else
++                              picker.findChild(QDialogButtonBox).button(QDialogButtonBox.Cancel))
++                    clicked = QSignalSpy(action.clicked)
++                    action.setEnabled(False)
++                    QTest.mouseClick(action, Qt.LeftButton)
++                    self.assertEqual(clicked.count(), 0)
++                    action.setEnabled(True)
++                    QTest.mouseClick(action, Qt.LeftButton)
++                    self.assertEqual(clicked.count(), 1)
++                    dialog.show()
++                    APPLICATION.processEvents()
++                    QTest.keyClick(action, Qt.Key_Space)
++                    self.assertEqual(clicked.count(), 2)
++                    dialog.hide()
++                    self.assertTrue(all(motion.animation.state() == QAbstractAnimation.Stopped for motion in before))
++        finally:
++            for dialog, _ in dialogs:
++                dialog.hide()
++                dialog.deleteLater()
++
++    def test_55_common_dialog_deferred_deletion_releases_button_owned_motions(self):
++        QCoreApplication.sendPostedEvents(None, QEvent.DeferredDelete)
++        baseline = len(self.window.findChildren(app.QPushButton))
++        self.assertFalse(hasattr(self.window, "_button_motions"))
++        for create in (lambda: app.message_dialog(self.window, "확인", "수명 확인"),
++                       lambda: self.window.file_dialog(False), lambda: self.window.file_dialog(True)):
++            dialog = create()
++            buttons = dialog.findChildren(app.QPushButton)
++            motions = [button._flipring_button_motion for button in buttons]
++            animations = [motion.animation for motion in motions]
++            self.assertTrue(buttons)
++            self.assertTrue(all(isValid(item) for item in buttons + motions + animations))
++            dialog.deleteLater()
++            self.assertTrue(isValid(dialog))
++            QCoreApplication.sendPostedEvents(None, QEvent.DeferredDelete)
++            self.assertFalse(isValid(dialog))
++            self.assertTrue(all(not isValid(item) for item in buttons + motions + animations))
++            self.assertEqual(len(self.window.findChildren(app.QPushButton)), baseline)
++
++    def test_56_combo_has_flat_frame_visible_arrow_and_unchanged_native_selection(self):
++        combo = self.window.trigger
++        original_index = combo.currentIndex()
++        original_style = self.window.styleSheet()
++        source_arrow = app.engine.asset("combo-chevron.svg")
++        self.assertFalse(app.QPixmap(str(source_arrow)).isNull())
++        spaced = ROOT / "한글 공백 경로"
++        spaced.mkdir(exist_ok=True)
++        copied_arrow = spaced / "선택 화살표.svg"
++        copied_arrow.write_bytes(source_arrow.read_bytes())
++        try:
++            self.window.tabs.setCurrentIndex(0)
++            self.window.show()
++            self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++            APPLICATION.processEvents()
++            geometry = combo.geometry()
++            with patch.object(app.engine, "asset", return_value=copied_arrow):
++                self.window.apply_style()
++            APPLICATION.processEvents()
++            self.assertEqual(combo.geometry(), geometry)
++            image = combo.grab().toImage()
++            # 내부 우측에 남던 어두운 입체선과 화살표 소실을 픽셀로 구분한다.
++            self.assertTrue(all(image.pixelColor(image.width() - 2, y).red() >= 200
++                                for y in range(8, image.height() - 8)))
++            arrow_pixels = [image.pixelColor(x, y) for y in range(8, image.height() - 8)
++                            for x in range(image.width() - 28, image.width() - 5)]
++            self.assertGreater(sum(color.red() < 180 for color in arrow_pixels), 5)
++            self.assertTrue(all(color.red() == color.green() == color.blue() for color in arrow_pixels))
++            self.assertTrue(combo.grab().save(str(ROOT / "Fluid-combo-flat-arrow.png")))
++            option = QStyleOptionComboBox()
++            combo.initStyleOption(option)
++            arrow_rect = combo.style().subControlRect(app.QStyle.CC_ComboBox, option,
++                                                       app.QStyle.SC_ComboBoxArrow, combo)
++            self.assertTrue(combo.rect().contains(arrow_rect))
++            self.assertGreaterEqual(arrow_rect.width(), 20)
++            combo.setCurrentIndex(0)
++            QTest.keyClick(combo, Qt.Key_Down)
++            self.assertEqual(combo.currentData(), 0x12)
++            QTest.mouseClick(combo, Qt.LeftButton, pos=arrow_rect.center())
++            APPLICATION.processEvents()
++            self.assertTrue(combo.view().isVisible())
++            index = combo.model().index(0, 0)
++            target = combo.view().visualRect(index).center()
++            activated = QSignalSpy(combo.activated)
++            # Qt의 팝업 직후 클릭 보호가 실제 행 이동으로 해제되는 입력 순서를 재현한다.
++            target_global = combo.view().viewport().mapToGlobal(target)
++            movement = QMouseEvent(QEvent.MouseMove, QPointF(target), QPointF(target),
++                                   QPointF(target_global), Qt.NoButton, Qt.NoButton, Qt.NoModifier)
++            QApplication.sendEvent(combo.view().viewport(), movement)
++            self.assertEqual(combo.view().currentIndex().row(), 0)
++            QTest.mouseClick(combo.view().viewport(), Qt.LeftButton, pos=target)
++            APPLICATION.processEvents()
++            self.assertEqual(combo.currentData(), 0x10)
++            self.assertEqual(activated.count(), 1)
++            self.assertFalse(combo.view().isVisible())
++            self.assertEqual(combo.geometry(), geometry)
++            combo.setEnabled(False)
++            QTest.keyClick(combo, Qt.Key_Down)
++            QTest.mouseClick(combo, Qt.LeftButton, pos=arrow_rect.center())
++            self.assertEqual(combo.currentData(), 0x10)
++            self.assertEqual(activated.count(), 1)
++            self.assertFalse(combo.view().isVisible())
++            self.assertTrue(combo.grab().save(str(ROOT / "Fluid-combo-disabled.png")))
++            combo.setEnabled(True)
++            combo.setFocus()
++            self.assertTrue(self.window.grab().save(str(ROOT / "Fluid-combo-final-settings.png")))
++        finally:
++            combo.hidePopup()
++            combo.setEnabled(True)
++            combo.setCurrentIndex(original_index)
++            self.window.setStyleSheet(original_style)
++            self.window.tray_menu.setStyleSheet(original_style)
++            self.window.hide()
++
++    def test_57_hover_label_contrast_stays_readable_through_rendered_frames(self):
++        self.show_wheel()
++        self.wheel.motion.setCurrentTime(self.wheel.motion.duration())
++        self.assertEqual(self.wheel.options[1], "webp")
++        self.assertFalse(self.wheel.reasons["webp"])
++        self.wheel.set_hover(1)
++        self.wheel.highlight.pause()
++        rows = []
++
++        def luminance(shade):
++            value = shade / 255
++            return value / 12.92 if value <= 0.04045 else ((value + 0.055) / 1.055) ** 2.4
++
++        for position in (0, 0.25, 0.5, 0.75, 1):
++            self.wheel.highlight.setCurrentTime(round(self.wheel.highlight.duration() * position))
++            image = self.wheel.grab().toImage()
++            background = image.pixelColor(303, 170)
++            # 고정 WEBP 라벨 내부만 검사하고 중앙 문구·외곽선·AA 경계 픽셀은 제외한다.
++            cores = [image.pixelColor(x, y) for y in range(153, 187) for x in range(240, 304)
++                     if image.pixelColor(x, y).alpha() >= 250 and image.pixelColor(x, y).red() >= 238]
++            self.assertTrue(cores)
++            foreground = max(cores, key=lambda color: color.red())
++            self.assertEqual(foreground.red(), foreground.green())
++            self.assertEqual(foreground.green(), foreground.blue())
++            # 흰 바탕 위에 놓인 최악의 투명 합성까지 포함해 대비를 계산한다.
++            paper_background = background.red() * background.alphaF() + 255 * (1 - background.alphaF())
++            contrast = (luminance(foreground.red()) + 0.05) / (luminance(paper_background) + 0.05)
++            self.assertGreaterEqual(contrast, 4.5)
++            rows.append({"animation_position": position, "actual_weight": self.wheel.weights.get(1, 0),
++                         "foreground_core": foreground.getRgb(), "background": background.getRgb(),
++                         "contrast_on_white": contrast, "glyph_core_pixels": len(cores)})
++            if position in (0, 0.5, 1):
++                self.assertTrue(self.wheel.grab().save(str(ROOT / f"Fluid-hover-contrast-{position:g}.png")))
++        self.wheel.highlight.stop()
++        (ROOT / "Fluid-호버대비.json").write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
++
++    def test_58_tab_completion_destroys_effect_and_requests_one_background_update(self):
++        tabs = self.window.tabs
++        self.window.show()
++        tabs.setCurrentIndex(0)
++        tabs.fade.setCurrentTime(tabs.fade.duration())
++        APPLICATION.processEvents()
++        geometry = tabs.geometry()
++        with patch.object(self.window, "update", wraps=self.window.update) as redraw:
++            tabs.setCurrentIndex(4)
++            effect = tabs.currentWidget().graphicsEffect()
++            self.assertIsInstance(effect, app.QGraphicsOpacityEffect)
++            self.assertTrue(isValid(effect))
++            page_geometry = tabs.currentWidget().geometry()
++            tabs.fade.setCurrentTime(70)
++            self.assertGreater(effect.opacity(), 0.9)
++            self.assertLess(effect.opacity(), 1)
++            self.assertEqual(redraw.call_count, 0)
++            tabs.fade.setCurrentTime(tabs.fade.duration())
++            self.assertFalse(isValid(effect))
++            self.assertIsNone(tabs._fade_page)
++            self.assertTrue(all(tabs.widget(i).graphicsEffect() is None for i in range(tabs.count())))
++            self.assertEqual(tabs.fade.state(), QAbstractAnimation.Stopped)
++            self.assertEqual(redraw.call_count, 1)
++            # 완료 뒤 도착한 프레임과 중복 정리는 삭제된 효과를 참조하거나 재갱신하지 않는다.
++            tabs._fade_frame(0.95)
++            tabs._finish_fade()
++            APPLICATION.processEvents()
++            self.assertEqual(redraw.call_count, 1)
++            self.assertEqual(tabs.geometry(), geometry)
++            self.assertEqual(tabs.currentWidget().geometry(), page_geometry)
++            self.assertTrue(self.window.pdf_panel.operation.isEnabled())
++            self.assertTrue(self.window.grab().save(str(ROOT / "Fluid-tab-complete-clean.png")))
++        self.window.hide()
++
++    def test_59_tab_interruption_hide_and_restart_leave_no_idle_effect_or_animation(self):
++        tabs = self.window.tabs
++        self.window.show()
++        tabs.setCurrentIndex(0)
++        tabs.fade.setCurrentTime(tabs.fade.duration())
++        APPLICATION.processEvents()
++        geometry = tabs.geometry()
++        previous = None
++        for index in (4, 2, 4, 0, 4):
++            tabs.setCurrentIndex(index)
++            if previous is not None:
++                self.assertFalse(isValid(previous))
++            effect = tabs.currentWidget().graphicsEffect()
++            self.assertTrue(isValid(effect))
++            self.assertIsNot(effect, previous)
++            tabs.fade.setCurrentTime(55)
++            self.assertEqual(sum(tabs.widget(i).graphicsEffect() is not None for i in range(tabs.count())), 1)
++            self.assertEqual(tabs.geometry(), geometry)
++            self.assertTrue(tabs.currentWidget().isEnabled())
++            previous = effect
++        self.window.hide()
++        self.assertFalse(isValid(previous))
++        self.assertIsNone(tabs._fade_page)
++        self.assertEqual(tabs.fade.state(), QAbstractAnimation.Stopped)
++        self.assertTrue(all(tabs.widget(i).graphicsEffect() is None for i in range(tabs.count())))
++        tabs._fade_frame(0.96)
++        tabs.setCurrentIndex(0)
++        self.assertIsNone(tabs.currentWidget().graphicsEffect())
++        self.window.show()
++        APPLICATION.processEvents()
++        self.assertEqual(tabs.fade.state(), QAbstractAnimation.Stopped)
++        self.assertIsNone(tabs.currentWidget().graphicsEffect())
++        tabs.setCurrentIndex(4)
++        restarted = tabs.currentWidget().graphicsEffect()
++        self.assertTrue(isValid(restarted))
++        tabs.fade.setCurrentTime(tabs.fade.duration())
++        self.assertFalse(isValid(restarted))
++        self.assertIsNone(tabs.currentWidget().graphicsEffect())
++        self.assertEqual(tabs.fade.state(), QAbstractAnimation.Stopped)
++        self.assertEqual(tabs.geometry(), geometry)
++        self.window.hide()
++
+ 
+ def main():
+     suite = unittest.defaultTestLoader.loadTestsFromTestCase(GuiTests)
+@@ -820,7 +1435,12 @@
+         "os_input_injected": False,
+         "registry_writes_tested": False,
+         "registered_test_fonts": REGISTERED_TEST_FONTS,
+-        "font_files_copied_or_redistributed": False,
++        "windows_system_font_files_copied_or_redistributed": False,
++        "bundled_ui_font_files": ["SUIT-Regular.ttf", "SUIT-Medium.ttf", "SUIT-SemiBold.ttf"],
++        "shell_selection_api_tested_with_mocks": True,
++        "actual_explorer_file_selection_tested": False,
++        "bundled_ui_font": "SUIT Regular 400 / Medium 500 / SemiBold 600",
++        "motion_scope": "실제 Qt 중간 프레임·재진입 연속성·호버 재지정·탭 전환·고정 드롭 영역을 검사했습니다. 실제 화면 프레임 속도는 별도 확인 범위입니다.",
+     }
+     (ROOT / "Mono-Qt검증.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+     print(json.dumps({key: value for key, value in report.items() if key not in ("failures", "errors")}, ensure_ascii=False))

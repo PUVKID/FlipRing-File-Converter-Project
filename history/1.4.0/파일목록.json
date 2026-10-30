@@ -1,0 +1,62 @@
+[
+  {
+    "path": "app.py",
+    "bytes": 57554,
+    "sha256": "4fde31515627bed86258d01251fb653767800005b22297c6a552f4efcb09fc3b"
+  },
+  {
+    "path": "build.py",
+    "bytes": 6727,
+    "sha256": "514bf3e3ca1599dee5d8bc54dac4d55bb3cd22740512f3bf095ac7a61344f00a"
+  },
+  {
+    "path": "engine.py",
+    "bytes": 21519,
+    "sha256": "d76603d53e6a9ac26767aade92da53b5726c045a3b82bf07f7357449fb5b1c28"
+  },
+  {
+    "path": "i18n.py",
+    "bytes": 12995,
+    "sha256": "242abd4700912d2d7b8505a521d9c3d90c7ec6c6442f14b2cadd1a551cd2f580"
+  },
+  {
+    "path": "LICENSE.txt",
+    "bytes": 1396,
+    "sha256": "8c7b2363b1bd25e3428416587833dbe61098d211f30420582879ec4810cbf52f"
+  },
+  {
+    "path": "package.py",
+    "bytes": 6573,
+    "sha256": "2100e60ab0205719d500784c774a6eebbf9573164055ae77a46fdbd6acc899b0"
+  },
+  {
+    "path": "pdf_panel.py",
+    "bytes": 21137,
+    "sha256": "65e08796aa43be0f4b1935da14489455766d919970c02097315c16491aa478b1"
+  },
+  {
+    "path": "pdf_tools.py",
+    "bytes": 26630,
+    "sha256": "dffbfb2f945bf8830841d870407050fc4bf98025354b14a9ab1ef936251b8274"
+  },
+  {
+    "path": "requirements-lock.txt",
+    "bytes": 644,
+    "sha256": "57a5e9a4c46e8212dccdab7557b87f6bc44047a55958afdb6d899a6f3c4feecb"
+  },
+  {
+    "path": "test_engine.py",
+    "bytes": 6669,
+    "sha256": "7111c87a4899343e7766a9e82cbd81df80177094280a1ec937b46f579407e3a3"
+  },
+  {
+    "path": "test_gui.py",
+    "bytes": 80013,
+    "sha256": "6d153d00d3bee713381584d602096653dd0aa8eeb64bd14b4dcae810144dd71a"
+  },
+  {
+    "path": "test_pdf_tools.py",
+    "bytes": 25413,
+    "sha256": "58032cfc269c038d9190c5e9cca9e9a2fd0436162c587b063147ada9f8dd8df7"
+  }
+]

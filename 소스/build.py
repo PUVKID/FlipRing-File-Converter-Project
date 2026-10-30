@@ -1,4 +1,5 @@
 """Windows 실행 파일과 설치 파일을 재현하는 빌드 스크립트."""
+import argparse
 import importlib.metadata as metadata
 import json
 import os
@@ -14,8 +15,13 @@ match = re.search(r"^VERSION = (\d+)$", (ROOT / "app.py").read_text(encoding="ut
 if not match: raise SystemExit("app.py의 VERSION 상수를 확인해 주세요.")
 version = int(match.group(1))
 name = "FlipRing"
-output = ROOT.parent / "프로그램"
-if (output / name).exists() or (ROOT.parent / "설치파일" / (name + "-Setup.exe")).exists():
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--output-root", type=Path, default=ROOT.parent, help="새 프로그램과 설치 파일을 저장할 빈 배포 폴더")
+args = parser.parse_args()
+release_root = args.output_root.resolve()
+release_version = "1.7.0"
+output = release_root / "프로그램"
+if (output / name).exists() or (release_root / "설치파일" / (name + "-Setup.exe")).exists():
     raise SystemExit("기존 프로그램을 보존하기 위해 빌드를 중단합니다. 새 작업 폴더에서 빌드하세요.")
 licenses = ROOT / "licenses"
 licenses.mkdir(exist_ok=True)
@@ -72,7 +78,7 @@ iss.write_text(f'''; PUVKID 무료 배포판 설치 구성
 [Setup]
 AppId=PUVKID.FlipRing
 AppName=FlipRing
-AppVersion=1.6.0
+AppVersion={release_version}
 AppPublisher=PUVKID
 DefaultDirName={{localappdata}}\\Programs\\FlipRing
 DefaultGroupName=FlipRing
@@ -80,7 +86,7 @@ PrivilegesRequired=lowest
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 MinVersion=10.0
-OutputDir=..\\설치파일
+OutputDir={release_root / "설치파일"}
 OutputBaseFilename={name}-Setup
 SetupIconFile=assets\\app.ico
 UninstallDisplayIcon={{app}}\\{name}.exe
@@ -95,7 +101,7 @@ InfoAfterFile=사용안내.txt
 Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "korean"; MessagesFile: "compiler:Languages\\Korean.isl"
 [Files]
-Source: "..\\프로그램\\{name}\\*"; DestDir: "{{app}}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{output / name}\\*"; DestDir: "{{app}}"; Flags: ignoreversion recursesubdirs createallsubdirs
 [Tasks]
 Name: "desktopicon"; Description: "{{cm:CreateDesktopIcon}}"; Flags: unchecked
 [Icons]
@@ -110,4 +116,4 @@ if not compiler.is_file():
         if candidate.is_file(): compiler = candidate; break
 if not compiler.is_file(): raise SystemExit("Inno Setup 6을 설치하거나 ISCC 환경 변수에 컴파일러 경로를 지정해 주세요.")
 subprocess.run([str(compiler), str(iss)], check=True, cwd=ROOT)
-print("빌드 완료:", output, ROOT.parent / "설치파일")
+print("빌드 완료:", output, release_root / "설치파일")

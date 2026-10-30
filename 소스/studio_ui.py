@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import math
+from ui_motion import start_motion, set_reduced_motion
 
 from PySide6.QtCore import Qt, Signal, QVariantAnimation, QEasingCurve, QRectF, QPointF, QSignalBlocker, QSize
 from PySide6.QtGui import QColor, QPainter, QPen, QPainterPath, QFont, QPixmap, QIcon
@@ -103,7 +104,7 @@ class Toggle(QCheckBox):
             self.motion.setStartValue(self.amount)
             self.motion.setEndValue(float(checked))
             self.motion.setCurrentTime(0)
-        self.motion.start()
+        start_motion(self.motion)
 
     def hideEvent(self, event):
         self.motion.stop()
@@ -168,7 +169,7 @@ class NavButton(QAbstractButton):
             self.motion.setStartValue(self.amount)
             self.motion.setEndValue(target)
             self.motion.setCurrentTime(0)
-        self.motion.start()
+        start_motion(self.motion)
 
     def enterEvent(self, event):
         self.hovered = True
@@ -246,7 +247,7 @@ class OrbitVisual(QWidget):
             self.motion.setStartValue(self.approach)
             self.motion.setEndValue(target)
             self.motion.setCurrentTime(0)
-        self.motion.start()
+        start_motion(self.motion)
 
     def respond(self, formats=None, state="file"):
         self.state = state
@@ -256,7 +257,7 @@ class OrbitVisual(QWidget):
         self.intro.setCurrentTime(0)
         # 같은 0시각에서는 신호가 생략되므로 숨김 때 바뀐 그리기값도 직접 맞춘다.
         self._intro_frame(float(self.intro.currentValue()))
-        self.intro.start()
+        start_motion(self.intro)
 
     def showEvent(self, event):
         super().showEvent(event)

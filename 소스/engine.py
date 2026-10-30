@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import csv
+from contextlib import contextmanager
 import html
 import io
 import json
@@ -13,6 +14,9 @@ import subprocess
 import sys
 import tarfile
 import tempfile
+import threading
+import time
+from pdf_lock import PDFIUM_LOCK
 import zipfile
 
 from PIL import Image, ImageOps
@@ -43,6 +47,33 @@ TOOLS = {
     "soffice": ("LibreOffice", "TheDocumentFoundation.LibreOffice", "Office 문서 · 발표 · 표"),
 }
 
+
+
+class Cancelled(RuntimeError):
+    """사용자 취소는 변환 실패와 구별한다."""
+
+
+_CONTEXT = threading.local()
+
+
+def check_cancel():
+    event = getattr(_CONTEXT, 'cancel', None)
+    if event is not None and event.is_set():
+        raise Cancelled('작업이 취소되었습니다.')
+
+
+def terminate_tree(process):
+    """외부 도우미와 후손을 종료한 뒤 파이프를 회수한다."""
+    if os.name == 'nt':
+        subprocess.run(['taskkill', '/PID', str(process.pid), '/T', '/F'],
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                       creationflags=subprocess.CREATE_NO_WINDOW, timeout=15)
+    else:
+        import signal
+        try: os.killpg(process.pid, signal.SIGKILL)
+        except ProcessLookupError: pass
+    if process.poll() is None: process.kill()
+    process.communicate()
 
 def asset(name):
     return Path(__file__).resolve().parent / "assets" / name
@@ -97,8 +128,141 @@ def tool(name):
     return None
 
 
+_RAR_LOCK = threading.RLock()
+
+
+def rar_tools():
+    """번들의 두 실행 구성 요소를 확인하고 정상 외부 도구 경로도 찾는다."""
+    vendor = Path(__file__).resolve().parent / 'vendor/7zip'
+    bundle = str(vendor / '7z.exe') if all((vendor / name).is_file() for name in ('7z.exe', '7z.dll')) else None
+    installed = Path(os.environ.get('ProgramFiles', 'C:/Program Files')) / '7-Zip/7z.exe'
+    return {'bundle': bundle, 'unrar': shutil.which('unrar'), 'unar': shutil.which('unar'),
+            'sevenzip': shutil.which('7z') or (str(installed) if installed.is_file() else None),
+            'sevenzip2': shutil.which('7zz')}
+
+
+def _stop_rar_process(process):
+    # 읽기 스레드가 파이프를 소유하므로 감시 스레드는 communicate를 호출하지 않는다.
+    if os.name == 'nt':
+        subprocess.run(['taskkill', '/PID', str(process.pid), '/T', '/F'],
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                       creationflags=subprocess.CREATE_NO_WINDOW, timeout=15)
+    else:
+        import signal
+        try: os.killpg(process.pid, signal.SIGKILL)
+        except ProcessLookupError: pass
+    if process.poll() is None: process.kill()
+
+
+@contextmanager
+def rar_processes():
+    """rarfile의 스트리밍·CRC 검사는 유지하고 생성한 외부 프로세스만 취소한다."""
+    import rarfile
+    with _RAR_LOCK:
+        original = rarfile.Popen
+        saved = {key: getattr(rarfile, key) for key in ('CURRENT_SETUP', 'UNRAR_TOOL', 'UNAR_TOOL', 'SEVENZIP_TOOL', 'SEVENZIP2_TOOL')}
+        processes, monitor_errors = [], []
+        stopped, expired = threading.Event(), threading.Event()
+        cancel = getattr(_CONTEXT, 'cancel', None)
+        deadline = time.monotonic() + 1800
+
+        def spawn(*args, **kwargs):
+            check_cancel()
+            kwargs['start_new_session'] = os.name != 'nt'
+            frozen = os.name == 'nt' and getattr(sys, 'frozen', False)
+            if frozen:
+                import ctypes
+                ctypes.windll.kernel32.SetDllDirectoryW(None)
+            try:
+                process = original(*args, **kwargs)
+                processes.append(process)
+                return process
+            finally:
+                if frozen: ctypes.windll.kernel32.SetDllDirectoryW(sys._MEIPASS)
+
+        def watch():
+            while not stopped.wait(0.05):
+                if (cancel is not None and cancel.is_set()) or time.monotonic() >= deadline:
+                    if time.monotonic() >= deadline: expired.set()
+                    for process in list(processes):
+                        if process.poll() is None:
+                            try: _stop_rar_process(process)
+                            except BaseException as exc: monitor_errors.append(exc)
+                    return
+
+        rarfile.Popen = spawn
+        monitor = threading.Thread(target=watch, name='FlipRing-RAR-cancel', daemon=True)
+        monitor.start()
+        try:
+            yield
+        finally:
+            stopped.set()
+            monitor.join()
+            rarfile.Popen = original
+            for key, value in saved.items(): setattr(rarfile, key, value)
+            for process in processes:
+                if process.poll() is None: _stop_rar_process(process)
+                process.wait()
+                for stream in (process.stdin, process.stdout, process.stderr):
+                    if stream is not None: stream.close()
+            check_cancel()
+            if monitor_errors: raise monitor_errors[0]
+            if expired.is_set(): raise RuntimeError('변환 제한 시간 30분을 초과했습니다.')
+
+
+def setup_rar_tools():
+    """매 사용 시 재탐색하여 이전 bsdtar 캐시로 되돌아가지 않는다."""
+    import rarfile
+    paths = rar_tools()
+    if paths['bundle']:
+        rarfile.SEVENZIP_TOOL = paths['bundle']
+        try:
+            return rarfile.tool_setup(unrar=False, unar=False, sevenzip2=False, bsdtar=False, force=True)
+        except rarfile.RarCannotExec:
+            pass
+    for key, attr in (('unrar', 'UNRAR_TOOL'), ('unar', 'UNAR_TOOL'), ('sevenzip', 'SEVENZIP_TOOL'), ('sevenzip2', 'SEVENZIP2_TOOL')):
+        if paths[key]: setattr(rarfile, attr, paths[key])
+    return rarfile.tool_setup(unrar=bool(paths['unrar']), unar=bool(paths['unar']),
+                             sevenzip=bool(paths['sevenzip']), sevenzip2=bool(paths['sevenzip2']),
+                             bsdtar=False, force=True)
+
+
+def adapt_rar_names(setup, entries):
+    """Windows 7-Zip의 비유니코드 RAR3 선택 이름만 OEM 해석과 맞춘다."""
+    import rarfile
+    if os.name != 'nt' or setup.setup['open_cmd'][0] not in ('SEVENZIP_TOOL', 'SEVENZIP2_TOOL'):
+        return
+    import ctypes
+    kernel = ctypes.windll.kernel32
+    names, selected = {}, set()
+    for entry in entries:
+        name = entry.filename
+        if isinstance(entry, rarfile.Rar3Info) and not entry.flags & rarfile.RAR_FILE_UNICODE:
+            raw = entry.orig_filename
+            size = kernel.MultiByteToWideChar(1, 0, raw, len(raw), None, 0)
+            if not size: raise ValueError('RAR 파일 이름을 해석할 수 없습니다.')
+            buffer = ctypes.create_unicode_buffer(size)
+            if kernel.MultiByteToWideChar(1, 0, raw, len(raw), buffer, size) != size:
+                raise ValueError('RAR 파일 이름을 해석할 수 없습니다.')
+            name = buffer[:size]
+        name = name.replace('/', os.path.sep)
+        key = name.casefold().rstrip('\\/')
+        if key in selected: raise ValueError('RAR 파일 이름이 도구에서 중복되어 안전하게 선택할 수 없습니다.')
+        selected.add(key)
+        names[entry.filename.replace('/', os.path.sep)] = name
+
+    class ExactNames(rarfile.ToolSetup):
+        def add_file_arg(self, cmdline, filename):
+            cmdline.append(names.get(filename, filename))
+
+    config = dict(setup.setup)
+    config['open_cmd'] = (*config['open_cmd'], '-spd')
+    rarfile.CURRENT_SETUP = ExactNames(config)
+
+
 def requirement(path, dst):
     kind, src = classify(path)
+    if src == "rar" and not any(rar_tools().values()): return "7-Zip"
     needed = None
     if kind in ("오디오", "비디오"):
         needed = "ffmpeg"
@@ -121,6 +285,7 @@ def requirement(path, dst):
 
 
 def run(exe, args, cwd=None):
+    check_cancel()
     if not exe:
         raise RuntimeError("변환 도구를 찾을 수 없습니다. 설정의 도우미 도구를 확인해 주세요.")
     flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
@@ -130,12 +295,24 @@ def run(exe, args, cwd=None):
         import ctypes
         ctypes.windll.kernel32.SetDllDirectoryW(None)
     try:
-        process = subprocess.Popen([str(exe), *map(str, args)], cwd=cwd, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=flags)
+        process = subprocess.Popen([str(exe), *map(str, args)], cwd=cwd, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=flags, start_new_session=(os.name != "nt"))
     finally:
         if frozen: ctypes.windll.kernel32.SetDllDirectoryW(sys._MEIPASS)
-    try: stdout, stderr = process.communicate(timeout=1800)
-    except subprocess.TimeoutExpired:
-        process.kill(); process.communicate(); raise RuntimeError("변환 제한 시간 30분을 초과했습니다.")
+    deadline = time.monotonic() + 1800
+    try:
+        while True:
+            check_cancel()
+            if time.monotonic() >= deadline:
+                raise RuntimeError("변환 제한 시간 30분을 초과했습니다.")
+            try:
+                stdout, stderr = process.communicate(timeout=0.15)
+                break
+            except subprocess.TimeoutExpired:
+                continue
+        check_cancel()
+    except BaseException:
+        terminate_tree(process)
+        raise
     if process.returncode:
         detail = (stderr or stdout).decode("utf-8", "replace")[-1200:]
         raise RuntimeError(f"{Path(exe).stem} 변환 실패 ({process.returncode})\n{detail}")
@@ -181,6 +358,11 @@ def write_text_pdf(content, output):
 
 
 def render_pdf(source, dst, work, base):
+    with PDFIUM_LOCK:
+        return _render_pdf(source, dst, work, base)
+
+
+def _render_pdf(source, dst, work, base):
     doc = pdfium.PdfDocument(str(source))
     try:
         if not len(doc):
@@ -189,6 +371,7 @@ def render_pdf(source, dst, work, base):
         if len(doc) > 1:
             out.mkdir()
         for i in range(len(doc)):
+            check_cancel()
             page = doc[i]
             bitmap = page.render(scale=2)
             try:
@@ -205,10 +388,12 @@ def render_pdf(source, dst, work, base):
 def office(source, dst, work):
     folder = work / ("office-" + next(tempfile._get_candidate_names()))
     folder.mkdir()
-    profile = (folder / "profile").as_uri()
     filters = {"csv": "csv:Text - txt - csv (StarCalc):44,34,76", "tsv": "csv:Text - txt - csv (StarCalc):9,34,76", "txt": "txt:Text (encoded):UTF8", "xlsx": "xlsx:Calc MS Excel 2007 XML"}
     extra = ["--infilter=CSV:" + ("9" if source.suffix.lower() == ".tsv" else "44") + ",34,76"] if source.suffix.lower() in (".csv", ".tsv") else []
-    run(tool("soffice"), [f"-env:UserInstallation={profile}", "--headless", "--norestore", *extra, "--convert-to", filters.get(dst, dst), "--outdir", folder, source])
+    # 긴 원본 경로 아래 프로필은 LibreOffice 초기화에서 중단될 수 있어 별도로 격리한다.
+    with tempfile.TemporaryDirectory(prefix="fr-lo-") as profile_folder:
+        profile = Path(profile_folder).as_uri()
+        run(tool("soffice"), [f"-env:UserInstallation={profile}", "--headless", "--norestore", *extra, "--convert-to", filters.get(dst, dst), "--outdir", folder, source])
     result = folder / f"{source.stem}.{'csv' if dst == 'tsv' else dst}"
     if not result.is_file():
         raise RuntimeError(f"LibreOffice에서 {dst.upper()} 결과를 만들지 못했습니다.")
@@ -330,16 +515,19 @@ def archive(source, src, dst, output, work):
                 z.extractall(root)
         elif src == "rar":
             import rarfile
-            sevenzip = Path(os.environ.get("ProgramFiles", "C:/Program Files")) / "7-Zip/7z.exe"
-            if sevenzip.is_file(): rarfile.SEVENZIP_TOOL = str(sevenzip)
-            bsdtar = Path(os.environ.get("WINDIR", "C:/Windows")) / "System32/tar.exe"
-            if bsdtar.is_file(): rarfile.BSDTAR_TOOL = str(bsdtar)
-            with rarfile.RarFile(source) as z:
-                for entry in z.infolist():
-                    safe_member(root, entry.filename)
-                    if entry.is_symlink(): raise ValueError("심볼릭 링크 압축은 지원하지 않습니다.")
-                try: z.extractall(root)
-                except rarfile.RarCannotExec as exc: raise RuntimeError("RAR 해제에 UnRAR 또는 7-Zip 도구가 필요합니다.") from exc
+            with rar_processes():
+                try:
+                    setup = setup_rar_tools()
+                    with rarfile.RarFile(source) as z:
+                        entries = z.infolist()
+                        for entry in entries:
+                            check_cancel()
+                            safe_member(root, entry.filename)
+                            if entry.is_symlink(): raise ValueError("심볼릭 링크 압축은 지원하지 않습니다.")
+                        adapt_rar_names(setup, entries)
+                        z.extractall(root)
+                except rarfile.RarCannotExec as exc:
+                    raise RuntimeError("RAR 해제에 UnRAR 또는 7-Zip 도구가 필요합니다.") from exc
         else:
             with tarfile.open(source) as z:
                 for entry in z.getmembers():
@@ -361,6 +549,12 @@ def archive(source, src, dst, output, work):
 
 
 def produce(source, dst, work):
+    check_cancel()
+    with PDFIUM_LOCK:
+        return _produce(source, dst, work)
+
+
+def _produce(source, dst, work):
     kind, src = classify(source)
     base = stem(source)
     out = work / f"{base}.{dst}"
@@ -396,6 +590,7 @@ def produce(source, dst, work):
         try:
             pages = []
             for i in range(len(doc)):
+                check_cancel()
                 page = doc[i]; tp = page.get_textpage()
                 try: pages.append(tp.get_text_range())
                 finally: tp.close(); page.close()
@@ -422,7 +617,18 @@ def produce(source, dst, work):
     raise ValueError("지원하지 않는 변환입니다.")
 
 
-def convert(path, dst):
+def convert(path, dst, cancel=None, progress=None):
+    previous = getattr(_CONTEXT, 'cancel', None)
+    _CONTEXT.cancel = cancel
+    try:
+        check_cancel()
+        if progress is not None: progress('processing')
+        return _convert(path, dst)
+    finally:
+        _CONTEXT.cancel = previous
+
+
+def _convert(path, dst):
     source = Path(path).resolve(strict=True)
     if dst not in targets([source]): raise ValueError("이 파일에 사용할 수 없는 출력 형식입니다.")
     missing = requirement(source, dst)
@@ -440,6 +646,7 @@ def convert(path, dst):
             if candidate.exists(): continue
             try:
                 # Windows의 rename은 대상이 존재하면 실패하므로 원본과 기존 결과를 보존한다.
+                check_cancel()
                 produced.rename(candidate)
                 return str(candidate)
             except FileExistsError:

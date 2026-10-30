@@ -1,0 +1,17 @@
+[
+  {
+    "path": "app.py",
+    "bytes": 50164,
+    "sha256": "faf4c9e0b4f018b1a33004c1609ef4aff2201f320e6bf452fe55f9a6a93e1f5e"
+  },
+  {
+    "path": "pdf_panel.py",
+    "bytes": 21137,
+    "sha256": "65e08796aa43be0f4b1935da14489455766d919970c02097315c16491aa478b1"
+  },
+  {
+    "path": "test_gui.py",
+    "bytes": 51626,
+    "sha256": "6bd734ca52ede83fc3b2b982420f2bc4fd8bdc4edbe28788cc9150e5bcd2370c"
+  }
+]

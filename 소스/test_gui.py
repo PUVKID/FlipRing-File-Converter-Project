@@ -99,9 +99,11 @@ class GuiTests(unittest.TestCase):
         APPLICATION.processEvents()
 
     def test_01_studio_workspace_and_tray(self):
-        self.assertEqual(self.window.tabs.count(), 5)
-        self.assertEqual([self.window.tabs.tabText(i) for i in range(4)], ["설정", "도구", "기록", "정보"])
+        self.assertEqual(self.window.tabs.count(), 6)
+        self.assertEqual([self.window.tabs.tabText(i) for i in range(4)], ["파일 변환", "도구", "기록", "정보"])
         self.assertIs(self.window.tabs.widget(4), self.window.pdf_panel)
+        self.assertEqual(self.window.tabs.tabText(5), "설정")
+        self.assertTrue(self.window.tabs.widget(5).isAncestorOf(self.window.language_combo))
         self.assertGreaterEqual(self.window.width(), 960)
         self.assertEqual(self.window.minimumWidth(), 960)
         self.assertEqual(self.window.minimumHeight(), 680)
@@ -121,7 +123,7 @@ class GuiTests(unittest.TestCase):
         self.window.show()
         self.window.tabs.setCurrentIndex(0)
         APPLICATION.processEvents()
-        for index in (4, 2, 1, 3, 0):
+        for index in (4, 2, 1, 3, 5, 0):
             button = self.window.nav_buttons[index]
             self.assertTrue(all(not pixmap.isNull() for pixmap in button.svg_icons.values()))
             geometry = button.geometry()
@@ -147,18 +149,31 @@ class GuiTests(unittest.TestCase):
                             for button in self.window.nav_buttons.values()))
 
     def test_61_workspace_drop_and_file_buttons_open_actual_conversion_path(self):
+        # 이전 검사에서 남은 선택에 의존하지 않고 빈 화면부터 드롭을 검사한다.
+        self.window.set_files([])
         self.window.tabs.setCurrentIndex(0)
         self.window.show()
         self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
         APPLICATION.processEvents()
         card = self.window.drop_card
         geometry = card.geometry()
+        self.assertEqual(card.maximumHeight(), 210)
+        self.assertTrue(card.title.isVisible())
         mime = mime_for()
         enter = QDragEnterEvent(QPoint(30, 30), Qt.CopyAction | Qt.MoveAction,
                                 mime, Qt.LeftButton, Qt.ShiftModifier)
         card.dragEnterEvent(enter)
         self.assertTrue(enter.isAccepted())
         self.assertEqual(enter.dropAction(), Qt.CopyAction)
+        APPLICATION.processEvents()
+        self.assertEqual(card.geometry(), geometry)
+        move = QDragMoveEvent(QPoint(32, 32), Qt.CopyAction | Qt.MoveAction,
+                              mime, Qt.LeftButton, Qt.ShiftModifier)
+        card.dragMoveEvent(move)
+        self.assertTrue(move.isAccepted())
+        self.assertEqual(move.dropAction(), Qt.CopyAction)
+        APPLICATION.processEvents()
+        self.assertEqual(card.geometry(), geometry)
         with patch.object(self.wheel, "display") as display:
             drop = drop_at(QPointF(30, 30), mime)
             card.dropEvent(drop)
@@ -167,6 +182,12 @@ class GuiTests(unittest.TestCase):
             self.assertEqual(self.window.paths, [str(SOURCE)])
             self.assertEqual(display.call_args.args[1], [str(SOURCE)])
             self.assertTrue(display.call_args.kwargs["preview"])
+            APPLICATION.processEvents()
+            self.assertEqual(card.maximumHeight(), 80)
+            self.assertLessEqual(card.height(), 80)
+            self.assertFalse(card.title.isVisible())
+            self.assertTrue(self.window.workbench.isVisible())
+            compact_geometry = card.geometry()
             invalid = drop_at(QPointF(30, 30), mime_for(QUrl("https://example.invalid/file.png")))
             card.dropEvent(invalid)
             self.assertFalse(invalid.isAccepted())
@@ -187,7 +208,8 @@ class GuiTests(unittest.TestCase):
                 QTest.keyClick(card, Qt.Key_Return)
                 choose.assert_called_once_with(False)
                 self.assertEqual(display.call_count, 4)
-        self.assertEqual(card.geometry(), geometry)
+        APPLICATION.processEvents()
+        self.assertEqual(card.geometry(), compact_geometry)
         self.assertEqual(hashlib.sha256(SOURCE.read_bytes()).hexdigest(), ORIGINAL_HASH)
         self.window.hide()
 
@@ -227,7 +249,11 @@ class GuiTests(unittest.TestCase):
         self.window.show()
         self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
         APPLICATION.processEvents()
-        orbit = self.window.drop_card.orbit
+        # 메인의 큰 장식은 제거했으며 독립 위젯에서 기존 모션 계약을 그대로 검사한다.
+        orbit = OrbitVisual(self.window)
+        orbit.resize(400, 300)
+        orbit.show()
+        APPLICATION.processEvents()
         geometry = orbit.geometry()
         orbit.respond(["jpg", "pdf", "webp", "png"])
         images = []
@@ -255,6 +281,7 @@ class GuiTests(unittest.TestCase):
         self.window.hide()
         self.assertEqual(orbit.intro.state(), QAbstractAnimation.Stopped)
         self.assertEqual(orbit.motion.state(), QAbstractAnimation.Stopped)
+        orbit.deleteLater()
 
     def test_64_studio_resize_languages_and_pdf_columns_keep_controls_accessible(self):
         original_size = self.window.size()
@@ -817,7 +844,7 @@ class GuiTests(unittest.TestCase):
         self.window.language_combo.setCurrentIndex(self.window.language_combo.findData("en"))
         self.assertEqual(self.window.language, "en")
         self.assertEqual(self.window.windowTitle(), "FlipRing Settings")
-        self.assertEqual(self.window.tabs.tabText(0), "Settings")
+        self.assertEqual(self.window.tabs.tabText(5), "Settings")
         self.assertEqual(self.window.trigger.currentData(), -1)
         self.assertEqual(self.window.custom_vk, 65)
         self.assertEqual(self.window.trigger.currentText(), "Custom")
@@ -840,7 +867,7 @@ class GuiTests(unittest.TestCase):
         script = (
             "import json,pathlib; from PySide6.QtWidgets import QApplication; import app; "
             f"app.DATA=pathlib.Path({str(app.DATA)!r}); q=QApplication([]); app.apply_application_style(q); w=app.MainWindow(); "
-            "w.timer.stop(); print(json.dumps({'language':w.language,'tab':w.tabs.tabText(0)})); "
+            "w.timer.stop(); print(json.dumps({'language':w.language,'tab':w.tabs.tabText(5)})); "
             "w.tray.hide(); w.wheel.hide(); w.pool.shutdown(wait=True)"
         )
         restarted = subprocess.run([sys.executable, "-B", "-X", "utf8", "-c", script],
@@ -871,7 +898,7 @@ class GuiTests(unittest.TestCase):
     def test_25_translation_placeholders_are_complete(self):
         formatter = string.Formatter()
         values = {"app": "FlipRing", "key": "F8", "tool": "FFmpeg", "count": 2,
-                  "name": "원본.jpg", "error": "Example", "detail": "OS diagnostic"}
+                  "name": "원본.jpg", "error": "Example", "detail": "OS diagnostic", "needed": "64.0", "free": "1024.0"}
         for message_id, pair in i18n.TEXT.items():
             with self.subTest(message_id=message_id):
                 fields = [{name for _, name, _, _ in formatter.parse(text) if name} for text in pair]
@@ -1101,7 +1128,7 @@ class GuiTests(unittest.TestCase):
             self.window.refresh_history()
 
     def test_35_pdf_panel_language_and_tab_contract(self):
-        self.assertEqual(self.window.tabs.count(), 5)
+        self.assertEqual(self.window.tabs.count(), 6)
         self.assertIs(self.window.tabs.widget(4), self.window.pdf_panel)
         for language in ("en", "ko"):
             with patch.object(self.window.pdf_panel, "set_language",
