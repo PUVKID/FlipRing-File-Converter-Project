@@ -1,0 +1,69 @@
+{
+  "run_id": "8c0b9a5f5d6f4575afc6a1a9d61b2749",
+  "shard_id": "gui-24",
+  "started_kst": "2026-10-30T08:44:18.628904+09:00",
+  "source_before": {
+    "app.py": "dc3a105f14826c1094460f9aa1d1c628a53769fdb3025917506ff688f1ea43f5",
+    "build.py": "ec419577705039dff18d05877c91867e20d18a864ad36b8c71dc00ed719b0e4d",
+    "engine.py": "96c3fe1ad25b3d6ae11278fc352f0916c218b836674fd172ec226770ee308992",
+    "i18n.py": "571197ba87995bce9fda0f308ebbc25ca296178854a50fe327c529d0536996ba",
+    "package.py": "df04621e3ec4f2b01d8c442bd655c051e7fd3435687018df07092f65a85aa9ec",
+    "pdf_lock.py": "886a099f8965ef6a9db14ddaea3dc5067ab8247d524482ff3cafc8ad78c62b0a",
+    "pdf_pages.py": "0eddd9a48630f382531e7019788de34a0a466e47b10bb3ab9a6c83564b746e2d",
+    "pdf_panel.py": "b461bec81fa302e8a9fbe4b6e774a4427607c4d7fe2ab07293002933e8308d51",
+    "pdf_tools.py": "5eb4dcc098c3d2a5b89de1f42a5262e25891d7c9df1319f045ae33d25c84830b",
+    "preview_panel.py": "d2cbc11562e43eb68929f775b69b8201c9545dc618b554192e4e07616d60d59e",
+    "studio_ui.py": "234a7850cd6d11a3c51dbfe457c2e975900c94f5711b4ac8a645cabe60bdda8a",
+    "test_conversion_matrix.py": "208c1ebd813aea82e8c072d6c3baaa0d2c78b299cf988f447d58002a81c9a4e7",
+    "test_engine.py": "7111c87a4899343e7766a9e82cbd81df80177094280a1ec937b46f579407e3a3",
+    "test_gui.py": "98edf321378435aee190ff8e7681906952e8bfc5ba1868bf04025bf4bc8d7ee5",
+    "test_pdf_tools.py": "58032cfc269c038d9190c5e9cca9e9a2fd0436162c587b063147ada9f8dd8df7",
+    "test_pdf_workspace.py": "da16cf732b25a0c045c96a445e1cf3a551f5ed57accc884b0f23cbcdd044333d",
+    "test_workbench.py": "23605e94fc5f5c122a100765ca108220a5ef947bd0a86990d3a7a0563751c72b",
+    "ui_motion.py": "fcc67d4503f205927c5122bc84dfc866fe2ae20bf53016e393bd02c3d625ac9a",
+    "workflow.py": "d2906861a3b1393f7be67aadc99dc370a5d4d1a82d227269e8524753d9112f20",
+    "requirements-lock.txt": "57a5e9a4c46e8212dccdab7557b87f6bc44047a55958afdb6d899a6f3c4feecb",
+    "빌드방법.md": "c5cfe07b7b0af161812ef5df1766672bfef06bb4254815dea43bc04559472a9c",
+    "사용안내.txt": "c7309613206aff37fe528d8bef5a882760b82f26122e9b7a74a08a5633923b52",
+    "1.7-새기능안내.md": "d3cadc4baf120686c9eebfd369e9473547fdf0e25a291728435815a7e879bb5a"
+  },
+  "stats": {
+    "testsRun": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "finished_kst": "2026-10-30T08:44:22.342431+09:00",
+  "actual_ids": [
+    "__main__.GuiTests.test_24_language_persists_when_window_recreated"
+  ],
+  "ended_ids": [
+    "__main__.GuiTests.test_24_language_persists_when_window_recreated"
+  ],
+  "source_after": {
+    "app.py": "dc3a105f14826c1094460f9aa1d1c628a53769fdb3025917506ff688f1ea43f5",
+    "build.py": "ec419577705039dff18d05877c91867e20d18a864ad36b8c71dc00ed719b0e4d",
+    "engine.py": "96c3fe1ad25b3d6ae11278fc352f0916c218b836674fd172ec226770ee308992",
+    "i18n.py": "571197ba87995bce9fda0f308ebbc25ca296178854a50fe327c529d0536996ba",
+    "package.py": "df04621e3ec4f2b01d8c442bd655c051e7fd3435687018df07092f65a85aa9ec",
+    "pdf_lock.py": "886a099f8965ef6a9db14ddaea3dc5067ab8247d524482ff3cafc8ad78c62b0a",
+    "pdf_pages.py": "0eddd9a48630f382531e7019788de34a0a466e47b10bb3ab9a6c83564b746e2d",
+    "pdf_panel.py": "b461bec81fa302e8a9fbe4b6e774a4427607c4d7fe2ab07293002933e8308d51",
+    "pdf_tools.py": "5eb4dcc098c3d2a5b89de1f42a5262e25891d7c9df1319f045ae33d25c84830b",
+    "preview_panel.py": "d2cbc11562e43eb68929f775b69b8201c9545dc618b554192e4e07616d60d59e",
+    "studio_ui.py": "234a7850cd6d11a3c51dbfe457c2e975900c94f5711b4ac8a645cabe60bdda8a",
+    "test_conversion_matrix.py": "208c1ebd813aea82e8c072d6c3baaa0d2c78b299cf988f447d58002a81c9a4e7",
+    "test_engine.py": "7111c87a4899343e7766a9e82cbd81df80177094280a1ec937b46f579407e3a3",
+    "test_gui.py": "98edf321378435aee190ff8e7681906952e8bfc5ba1868bf04025bf4bc8d7ee5",
+    "test_pdf_tools.py": "58032cfc269c038d9190c5e9cca9e9a2fd0436162c587b063147ada9f8dd8df7",
+    "test_pdf_workspace.py": "da16cf732b25a0c045c96a445e1cf3a551f5ed57accc884b0f23cbcdd044333d",
+    "test_workbench.py": "23605e94fc5f5c122a100765ca108220a5ef947bd0a86990d3a7a0563751c72b",
+    "ui_motion.py": "fcc67d4503f205927c5122bc84dfc866fe2ae20bf53016e393bd02c3d625ac9a",
+    "workflow.py": "d2906861a3b1393f7be67aadc99dc370a5d4d1a82d227269e8524753d9112f20",
+    "requirements-lock.txt": "57a5e9a4c46e8212dccdab7557b87f6bc44047a55958afdb6d899a6f3c4feecb",
+    "빌드방법.md": "c5cfe07b7b0af161812ef5df1766672bfef06bb4254815dea43bc04559472a9c",
+    "사용안내.txt": "c7309613206aff37fe528d8bef5a882760b82f26122e9b7a74a08a5633923b52",
+    "1.7-새기능안내.md": "d3cadc4baf120686c9eebfd369e9473547fdf0e25a291728435815a7e879bb5a"
+  },
+  "original_exit_code": 0
+}

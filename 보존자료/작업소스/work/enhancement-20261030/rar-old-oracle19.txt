@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "<stdin>", line 17, in <module>
+  File "D:\2026\FilpRing Project\work\venv\Lib\site-packages\rarfile.py", line 855, in read
+    with self.open(name, "r", pwd) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\2026\FilpRing Project\work\venv\Lib\site-packages\rarfile.py", line 840, in open
+    return self._file_parser.open(inf, pwd)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\2026\FilpRing Project\work\venv\Lib\site-packages\rarfile.py", line 1344, in open
+    return self._open_unrar(self._rarfile, inf, pwd)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\2026\FilpRing Project\work\venv\Lib\site-packages\rarfile.py", line 1391, in _open_unrar
+    setup = tool_setup()
+            ^^^^^^^^^^^^
+  File "D:\2026\FilpRing Project\work\venv\Lib\site-packages\rarfile.py", line 3596, in tool_setup
+    raise RarCannotExec("Cannot find working tool")
+rarfile.RarCannotExec: Cannot find working tool

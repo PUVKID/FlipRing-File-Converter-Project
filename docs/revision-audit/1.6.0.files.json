@@ -1,0 +1,197 @@
+[
+  {
+    "path": "LICENSE.txt",
+    "bytes": 1396,
+    "sha256": "8c7b2363b1bd25e3428416587833dbe61098d211f30420582879ec4810cbf52f",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 25,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "app.py",
+    "bytes": 68810,
+    "sha256": "7938ccd3c4869cb272444689bd3fc01e8b0dac6b1645187b0a0fb371720902d6",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 1498,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "build.py",
+    "bytes": 6727,
+    "sha256": "25e913d6a311017f16c13ea70ee39e8e10f60454df2965f8e314edfcf6d6c33f",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 113,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "engine.py",
+    "bytes": 21519,
+    "sha256": "d76603d53e6a9ac26767aade92da53b5726c045a3b82bf07f7357449fb5b1c28",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 447,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "i18n.py",
+    "bytes": 15469,
+    "sha256": "8f995eb33aa7e1b6fa753f451d8324dd6cc91802c33f2330f626d33aee102f19",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 178,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "package.py",
+    "bytes": 7099,
+    "sha256": "977cbf0e820a3456f97035c7fc614d8a3e87723024ef793d10170dc0f9b48abe",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 119,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "pdf_panel.py",
+    "bytes": 25166,
+    "sha256": "955f89240c2963620a236a55513d35f81008358b5f500d154c1baa176feeed8d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 498,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "pdf_tools.py",
+    "bytes": 26630,
+    "sha256": "dffbfb2f945bf8830841d870407050fc4bf98025354b14a9ab1ef936251b8274",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 644,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "requirements-lock.txt",
+    "bytes": 644,
+    "sha256": "57a5e9a4c46e8212dccdab7557b87f6bc44047a55958afdb6d899a6f3c4feecb",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 31,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "studio_ui.py",
+    "bytes": 15879,
+    "sha256": "fe088d87ddeb13836591bfea8ac0e0b1dbcc2cc662fbfec2e49a5ed3d279eaf1",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 403,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_engine.py",
+    "bytes": 6669,
+    "sha256": "7111c87a4899343e7766a9e82cbd81df80177094280a1ec937b46f579407e3a3",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 94,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_gui.py",
+    "bytes": 127149,
+    "sha256": "f27752075c05151ea54583b0b7aaf163fd4c28b64ce04ffbf17b44d66b196f9a",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 2295,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_pdf_tools.py",
+    "bytes": 25413,
+    "sha256": "58032cfc269c038d9190c5e9cca9e9a2fd0436162c587b063147ada9f8dd8df7",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 555,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "ui_motion.py",
+    "bytes": 34662,
+    "sha256": "9522a89392bd8569b067f432450655ea406cb2c4ee45cc8d2b258f22f934f6d5",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 757,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "파일목록.json",
+    "bytes": 1924,
+    "sha256": "ab7221b204fdcd14616209fe7af1133ab9144acbdfe246c01ab8580fd7f2b390",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 72,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  }
+]

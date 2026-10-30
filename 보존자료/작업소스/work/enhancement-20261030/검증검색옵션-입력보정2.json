@@ -1,0 +1,11 @@
+{
+  "cause": "독립 검증자의 rg 패턴이 기본 정규식에서 지원하지 않는 look-around를 포함합니다.",
+  "new_observation": "실제 rg 오류가 look-around 미지원과 --pcre2 대안을 명시했습니다. 원문과 당시15/1 상태는 독립 검토의 실패 기록에 보존됩니다.",
+  "method": "같은 읽기 전용 검색에 --pcre2 옵션만 추가합니다. 패턴·검색 범위·기대 의미·제품 파일은 바꾸지 않습니다.",
+  "selection_reason": "지원 옵션의 입력 오류가 확정되어 같은 독립 verifier가 검색 인자만 보정합니다.",
+  "role": "verifier",
+  "model": "gpt-6.1-sol",
+  "effort": "high",
+  "before_argv": ["rg", "-n", "from workflow|import workflow|(?<!flipring_)workflow.py|patch\\(.workflow|workflow\\.PresetStore", "소스", "docs", ".codex", "-g", "*.py", "-g", "*.md", "-g", "*.spec", "-g", "*.json", "--glob", "!**/build-cache/**", "--glob", "!**/vendor/**", "--glob", "!**/routing-state/**"],
+  "after_argv": ["rg", "--pcre2", "-n", "from workflow|import workflow|(?<!flipring_)workflow.py|patch\\(.workflow|workflow\\.PresetStore", "소스", "docs", ".codex", "-g", "*.py", "-g", "*.md", "-g", "*.spec", "-g", "*.json", "--glob", "!**/build-cache/**", "--glob", "!**/vendor/**", "--glob", "!**/routing-state/**"]
+}

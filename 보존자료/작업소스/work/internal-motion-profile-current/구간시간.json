@@ -1,0 +1,36 @@
+{
+  "started_kst": "2026-10-24T18:53:50.637313+09:00",
+  "argv": [
+    "D:\\2026\\FilpRing Project\\work\\venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "work\\internal-motion-profile.py",
+    "current"
+  ],
+  "cwd": "D:\\2026\\FilpRing Project",
+  "mode": "current",
+  "diagnostic_only": true,
+  "source_change": false,
+  "elapsed": 5.594000000011874,
+  "tests": 4,
+  "success": true,
+  "rows": [
+    {
+      "test": "test_24_language_persists_when_window_recreated (test_gui.GuiTests.test_24_language_persists_when_window_recreated)",
+      "seconds": 3.2190000000118744
+    },
+    {
+      "test": "test_29_dialog_labels_and_standard_buttons_follow_language (test_gui.GuiTests.test_29_dialog_labels_and_standard_buttons_follow_language)",
+      "seconds": 1.1559999999881256
+    },
+    {
+      "test": "test_54_live_common_dialog_buttons_have_one_motion_and_keep_native_input (test_gui.GuiTests.test_54_live_common_dialog_buttons_have_one_motion_and_keep_native_input)",
+      "seconds": 0.21900000001187436
+    },
+    {
+      "test": "test_55_common_dialog_deferred_deletion_releases_button_owned_motions (test_gui.GuiTests.test_55_common_dialog_deferred_deletion_releases_button_owned_motions)",
+      "seconds": 0.3129999999946449
+    }
+  ]
+}

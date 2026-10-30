@@ -1,0 +1,40 @@
+[
+  {
+    "argv": [
+      "D:\\2026\\FilpRing Project\\소스\\vendor\\7zip\\7z.exe",
+      "e",
+      "-so",
+      "-bb0",
+      "-spd",
+      "-p",
+      "--",
+      "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar",
+      "?龜龜棘棘?龜勻剋.txt"
+    ],
+    "oem_codepage": 949,
+    "rarfile_name": "уииоотивл.txt",
+    "tool_name": "?龜龜棘棘?龜勻剋.txt",
+    "exit": 0,
+    "stdout_hex": "310a",
+    "stderr_hex": ""
+  },
+  {
+    "argv": [
+      "D:\\2026\\FilpRing Project\\소스\\vendor\\7zip\\7z.exe",
+      "e",
+      "-so",
+      "-bb0",
+      "-spd",
+      "-p",
+      "--",
+      "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar",
+      "???릟?릟?릠.txt"
+    ],
+    "oem_codepage": 949,
+    "rarfile_name": "𝐀𝐁𝐁𝐂.txt",
+    "tool_name": "???릟?릟?릠.txt",
+    "exit": 0,
+    "stdout_hex": "310a",
+    "stderr_hex": ""
+  }
+]

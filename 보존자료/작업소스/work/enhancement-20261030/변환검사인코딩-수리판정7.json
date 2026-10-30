@@ -1,0 +1,9 @@
+{
+  "cause": "변환 검사기가 UTF-8로 읽는 자식 Python 출력이 Windows 기본 CP949로 생성됩니다.",
+  "new_observation": "동일 venv의 -X utf8 없는 자식 stdout.encoding은 cp949이며 한글 원시 c7d1b1db는 UTF-8 엄격 디코드에서 최초와 같은 0xc7 오류, CP949 엄격 디코드에서는 정상입니다. 최초 실패의 raw stdout은 미보존으로 복구 불가입니다.",
+  "method": "검사 소스의 fixture와 worker 자식 명령에 -B -X utf8을 명시하고 실패 raw stdout/stderr를 보존합니다. 기대266쌍과 실물 파서 기준 및 제한 시간을 유지하여 새 출력 폴더에서 재실행합니다.",
+  "selection_reason": "변환 제품이 아닌 검사기 자식 호출 두 곳으로 원인이 한정되었으므로 해당 검사기를 소유한 Terra가 코드 수정과 재검사를 수행합니다.",
+  "role": "terra",
+  "model": "gpt-6.1-terra",
+  "effort": "medium"
+}

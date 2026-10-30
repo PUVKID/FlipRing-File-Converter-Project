@@ -1,0 +1,71 @@
+{
+  "run_id": "c3554f752f0547939dd2009aadb38036",
+  "shard_id": "gui-70-85",
+  "started_kst": "2026-10-24T21:51:52.068105+09:00",
+  "source_before": {
+    "app.py": "7938ccd3c4869cb272444689bd3fc01e8b0dac6b1645187b0a0fb371720902d6",
+    "studio_ui.py": "fe088d87ddeb13836591bfea8ac0e0b1dbcc2cc662fbfec2e49a5ed3d279eaf1",
+    "pdf_panel.py": "955f89240c2963620a236a55513d35f81008358b5f500d154c1baa176feeed8d",
+    "i18n.py": "8f995eb33aa7e1b6fa753f451d8324dd6cc91802c33f2330f626d33aee102f19",
+    "ui_motion.py": "9522a89392bd8569b067f432450655ea406cb2c4ee45cc8d2b258f22f934f6d5",
+    "test_gui.py": "f27752075c05151ea54583b0b7aaf163fd4c28b64ce04ffbf17b44d66b196f9a",
+    "engine.py": "d76603d53e6a9ac26767aade92da53b5726c045a3b82bf07f7357449fb5b1c28",
+    "pdf_tools.py": "dffbfb2f945bf8830841d870407050fc4bf98025354b14a9ab1ef936251b8274",
+    "test_pdf_tools.py": "58032cfc269c038d9190c5e9cca9e9a2fd0436162c587b063147ada9f8dd8df7"
+  },
+  "stats": {
+    "testsRun": 16,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "finished_kst": "2026-10-24T21:52:07.884470+09:00",
+  "actual_ids": [
+    "__main__.GuiTests.test_70_shared_file_picker_has_designed_header_summary_and_finite_motion",
+    "__main__.GuiTests.test_71_inputs_lists_popups_and_real_status_have_owned_finite_feedback",
+    "__main__.GuiTests.test_72_pdf_picker_uses_common_local_multiselect_and_filter",
+    "__main__.GuiTests.test_73_picker_header_keeps_full_text_viewport_and_sorting",
+    "__main__.GuiTests.test_74_rebuilt_tray_menus_release_old_motions_and_activate_once",
+    "__main__.GuiTests.test_75_open_picker_retranslates_without_losing_selected_path",
+    "__main__.GuiTests.test_76_message_has_designed_header_and_returns_without_motion_delay",
+    "__main__.GuiTests.test_77_picker_keyboard_multiselect_enter_and_folder_accept_preserve_files",
+    "__main__.GuiTests.test_78_status_motion_tracks_real_states_and_stops_on_hide_and_reentry",
+    "__main__.GuiTests.test_79_late_context_menu_and_plain_tooltip_use_owned_finite_motion",
+    "__main__.GuiTests.test_80_pdf_file_row_changes_keep_order_data_and_busy_boundary",
+    "__main__.GuiTests.test_81_row_feedback_retarget_starts_from_current_rendered_rectangle",
+    "__main__.GuiTests.test_82_partial_queue_completion_keeps_overall_working_visual",
+    "__main__.GuiTests.test_83_pdf_activity_reaches_home_visual_and_cancel_without_fake_percentage",
+    "__main__.GuiTests.test_84_picker_ctrl_shift_view_selection_accepts_exact_unicode_files_once",
+    "__main__.GuiTests.test_85_language_uses_observed_helpers_and_explicit_refresh_detects_changes"
+  ],
+  "ended_ids": [
+    "__main__.GuiTests.test_70_shared_file_picker_has_designed_header_summary_and_finite_motion",
+    "__main__.GuiTests.test_71_inputs_lists_popups_and_real_status_have_owned_finite_feedback",
+    "__main__.GuiTests.test_72_pdf_picker_uses_common_local_multiselect_and_filter",
+    "__main__.GuiTests.test_73_picker_header_keeps_full_text_viewport_and_sorting",
+    "__main__.GuiTests.test_74_rebuilt_tray_menus_release_old_motions_and_activate_once",
+    "__main__.GuiTests.test_75_open_picker_retranslates_without_losing_selected_path",
+    "__main__.GuiTests.test_76_message_has_designed_header_and_returns_without_motion_delay",
+    "__main__.GuiTests.test_77_picker_keyboard_multiselect_enter_and_folder_accept_preserve_files",
+    "__main__.GuiTests.test_78_status_motion_tracks_real_states_and_stops_on_hide_and_reentry",
+    "__main__.GuiTests.test_79_late_context_menu_and_plain_tooltip_use_owned_finite_motion",
+    "__main__.GuiTests.test_80_pdf_file_row_changes_keep_order_data_and_busy_boundary",
+    "__main__.GuiTests.test_81_row_feedback_retarget_starts_from_current_rendered_rectangle",
+    "__main__.GuiTests.test_82_partial_queue_completion_keeps_overall_working_visual",
+    "__main__.GuiTests.test_83_pdf_activity_reaches_home_visual_and_cancel_without_fake_percentage",
+    "__main__.GuiTests.test_84_picker_ctrl_shift_view_selection_accepts_exact_unicode_files_once",
+    "__main__.GuiTests.test_85_language_uses_observed_helpers_and_explicit_refresh_detects_changes"
+  ],
+  "source_after": {
+    "app.py": "7938ccd3c4869cb272444689bd3fc01e8b0dac6b1645187b0a0fb371720902d6",
+    "studio_ui.py": "fe088d87ddeb13836591bfea8ac0e0b1dbcc2cc662fbfec2e49a5ed3d279eaf1",
+    "pdf_panel.py": "955f89240c2963620a236a55513d35f81008358b5f500d154c1baa176feeed8d",
+    "i18n.py": "8f995eb33aa7e1b6fa753f451d8324dd6cc91802c33f2330f626d33aee102f19",
+    "ui_motion.py": "9522a89392bd8569b067f432450655ea406cb2c4ee45cc8d2b258f22f934f6d5",
+    "test_gui.py": "f27752075c05151ea54583b0b7aaf163fd4c28b64ce04ffbf17b44d66b196f9a",
+    "engine.py": "d76603d53e6a9ac26767aade92da53b5726c045a3b82bf07f7357449fb5b1c28",
+    "pdf_tools.py": "dffbfb2f945bf8830841d870407050fc4bf98025354b14a9ab1ef936251b8274",
+    "test_pdf_tools.py": "58032cfc269c038d9190c5e9cca9e9a2fd0436162c587b063147ada9f8dd8df7"
+  },
+  "original_exit_code": 0
+}

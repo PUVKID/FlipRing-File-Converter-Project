@@ -1,0 +1,435 @@
+{
+  "observed_kst": "2026-10-21T05:36:44.733871+09:00",
+  "commit": "c29c276f16590cf017126671535ad8c792be64d8",
+  "commit_api": "https://api.github.com/repos/lucide-icons/lucide/commits/main",
+  "tree_api": "https://api.github.com/repos/lucide-icons/lucide/git/trees/c29c276f16590cf017126671535ad8c792be64d8?recursive=1",
+  "found": {
+    "arrow-left-right": [
+      {
+        "path": "icons/arrow-left-right.svg",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "acf2cb39ac824a91ac20dffb0367e37ddf1954b2",
+        "size": 313,
+        "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/acf2cb39ac824a91ac20dffb0367e37ddf1954b2"
+      }
+    ],
+    "scan-text": [
+      {
+        "path": "icons/scan-text.svg",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "e05aa8361e91c93635a02a214f17ee69686854b6",
+        "size": 435,
+        "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/e05aa8361e91c93635a02a214f17ee69686854b6"
+      }
+    ],
+    "history": [],
+    "sliders-horizontal": [
+      {
+        "path": "icons/sliders-horizontal.svg",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "819f80c1f0cc7fade2088fb776030e348657a486",
+        "size": 422,
+        "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/819f80c1f0cc7fade2088fb776030e348657a486"
+      }
+    ],
+    "info": [
+      {
+        "path": "icons/info.svg",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "2a46eac2b55a1ead226035d1efa8721f6f08bd17",
+        "size": 294,
+        "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/2a46eac2b55a1ead226035d1efa8721f6f08bd17"
+      }
+    ],
+    "folder-open": [
+      {
+        "path": "icons/folder-open.svg",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "b01f60fcb51848a9b3a7380d4566c4de7534745c",
+        "size": 401,
+        "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/b01f60fcb51848a9b3a7380d4566c4de7534745c"
+      }
+    ],
+    "file-up": [
+      {
+        "path": "icons/file-up.svg",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "d8d5bc8c36ac07d87555556e2acc44efa2a630fd",
+        "size": 427,
+        "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/d8d5bc8c36ac07d87555556e2acc44efa2a630fd"
+      }
+    ],
+    "check": [
+      {
+        "path": "icons/check.svg",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "5abe1527434e7b251bde0661f99af96178976d8c",
+        "size": 239,
+        "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/5abe1527434e7b251bde0661f99af96178976d8c"
+      }
+    ],
+    "x": [
+      {
+        "path": "icons/x.svg",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "e31794349d3eecea1b3ae8e974b68bb8f4becda7",
+        "size": 260,
+        "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/e31794349d3eecea1b3ae8e974b68bb8f4becda7"
+      }
+    ],
+    "arrow-up-right": [
+      {
+        "path": "icons/arrow-up-right.svg",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "93bdeea23865b4b238dd3038414160949a10f925",
+        "size": 260,
+        "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/93bdeea23865b4b238dd3038414160949a10f925"
+      }
+    ],
+    "plus": [
+      {
+        "path": "icons/plus.svg",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "41f92bb93eb6626368d71c9884127bbcf7d3ccdf",
+        "size": 256,
+        "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/41f92bb93eb6626368d71c9884127bbcf7d3ccdf"
+      }
+    ],
+    "file": [
+      {
+        "path": "icons/file.svg",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "161be7a29fb7c7b808eb57722fc544231a5aa5e4",
+        "size": 373,
+        "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/161be7a29fb7c7b808eb57722fc544231a5aa5e4"
+      }
+    ]
+  },
+  "history_candidates": [
+    {
+      "path": "icons/alarm-clock-check.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "841bac9c7fef3590df370977ffc185219111095d",
+      "size": 386,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/841bac9c7fef3590df370977ffc185219111095d"
+    },
+    {
+      "path": "icons/alarm-clock-minus.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9666ea2fc85fab4048e3aaf96206611d32352be0",
+      "size": 380,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/9666ea2fc85fab4048e3aaf96206611d32352be0"
+    },
+    {
+      "path": "icons/alarm-clock-off.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dfa27ac95abfbf7549fdb980a394e9adee9f933d",
+      "size": 410,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/dfa27ac95abfbf7549fdb980a394e9adee9f933d"
+    },
+    {
+      "path": "icons/alarm-clock-plus.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2d91ed0b47e2677c146485c301e93b157513ee42",
+      "size": 404,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/2d91ed0b47e2677c146485c301e93b157513ee42"
+    },
+    {
+      "path": "icons/alarm-clock.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0f99686aa9c49e45baf26b417989cb56422e4652",
+      "size": 384,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/0f99686aa9c49e45baf26b417989cb56422e4652"
+    },
+    {
+      "path": "icons/calendar-clock.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "305297d2d4d7e21bd6a506e56d6c93342db4e88e",
+      "size": 422,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/305297d2d4d7e21bd6a506e56d6c93342db4e88e"
+    },
+    {
+      "path": "icons/clipboard-clock.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5c4be70c2a09ac60245e129240176d422427d86f",
+      "size": 423,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/5c4be70c2a09ac60245e129240176d422427d86f"
+    },
+    {
+      "path": "icons/clock-1.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "982fe53c13c39f05b4741ffd02b51dc6c133d18b",
+      "size": 271,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/982fe53c13c39f05b4741ffd02b51dc6c133d18b"
+    },
+    {
+      "path": "icons/clock-10.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f2b739e0c2871e1ed5a92351d6531d1e4654963b",
+      "size": 272,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/f2b739e0c2871e1ed5a92351d6531d1e4654963b"
+    },
+    {
+      "path": "icons/clock-11.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "466132854157da2a006bde062c58df7b59277f85",
+      "size": 272,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/466132854157da2a006bde062c58df7b59277f85"
+    },
+    {
+      "path": "icons/clock-12.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "155381202b9a5162970e4f2a1709dcff2c3a224b",
+      "size": 267,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/155381202b9a5162970e4f2a1709dcff2c3a224b"
+    },
+    {
+      "path": "icons/clock-2.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "db1c444a4e6d7b9784a5aa5aec0a0ecf0bf9c2de",
+      "size": 271,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/db1c444a4e6d7b9784a5aa5aec0a0ecf0bf9c2de"
+    },
+    {
+      "path": "icons/clock-3.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ae9b437bc5561da94bd68ffc0cbbf615abddbfe5",
+      "size": 269,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/ae9b437bc5561da94bd68ffc0cbbf615abddbfe5"
+    },
+    {
+      "path": "icons/clock-4.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b6ae2834e60fc09547007a89067994e8b5ea55b5",
+      "size": 271,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/b6ae2834e60fc09547007a89067994e8b5ea55b5"
+    },
+    {
+      "path": "icons/clock-5.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cd66bf9ea92bd3c41e80ecab93691832286b1a2d",
+      "size": 271,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/cd66bf9ea92bd3c41e80ecab93691832286b1a2d"
+    },
+    {
+      "path": "icons/clock-6.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bf1300eac35f0f88bd5915f1bbe98526558e5d89",
+      "size": 268,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/bf1300eac35f0f88bd5915f1bbe98526558e5d89"
+    },
+    {
+      "path": "icons/clock-7.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3bc34158b5f73a5522506bb2068c579d771ea51c",
+      "size": 272,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/3bc34158b5f73a5522506bb2068c579d771ea51c"
+    },
+    {
+      "path": "icons/clock-8.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2a860f9aa3f88cb20dc9413da355c4fe4853ad0f",
+      "size": 272,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/2a860f9aa3f88cb20dc9413da355c4fe4853ad0f"
+    },
+    {
+      "path": "icons/clock-9.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c968e9cfc2605be0bdef785408aebb93baf6dbff",
+      "size": 269,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/c968e9cfc2605be0bdef785408aebb93baf6dbff"
+    },
+    {
+      "path": "icons/clock-alert.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "186d18b8e3db527d40d4cdb712d065957a36260f",
+      "size": 332,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/186d18b8e3db527d40d4cdb712d065957a36260f"
+    },
+    {
+      "path": "icons/clock-arrow-down.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fc01f6f460d1c8e25b0f9734eff9707405f6ee82",
+      "size": 343,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/fc01f6f460d1c8e25b0f9734eff9707405f6ee82"
+    },
+    {
+      "path": "icons/clock-arrow-left.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d5789f5ceef481d0c9cc55aca4d234408b2730e6",
+      "size": 345,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/d5789f5ceef481d0c9cc55aca4d234408b2730e6"
+    },
+    {
+      "path": "icons/clock-arrow-right.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9dcf5e0a2cde6bfca85c097298ae62ae4e017a45",
+      "size": 335,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/9dcf5e0a2cde6bfca85c097298ae62ae4e017a45"
+    },
+    {
+      "path": "icons/clock-arrow-up.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dcd8e26cf91d9fa996f505961b5dc41eb4fee699",
+      "size": 348,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/dcd8e26cf91d9fa996f505961b5dc41eb4fee699"
+    },
+    {
+      "path": "icons/clock-check.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c8d671d70447609d24dcc18a5203e81b93c1c549",
+      "size": 313,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/c8d671d70447609d24dcc18a5203e81b93c1c549"
+    },
+    {
+      "path": "icons/clock-fading.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3c700bfc52725cca00f81f78f821d1420408f292",
+      "size": 467,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/3c700bfc52725cca00f81f78f821d1420408f292"
+    },
+    {
+      "path": "icons/clock-plus.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bf943c46970dbf9b6790fbfd5dcca1ae2f9906fb",
+      "size": 344,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/bf943c46970dbf9b6790fbfd5dcca1ae2f9906fb"
+    },
+    {
+      "path": "icons/clock.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b6ae2834e60fc09547007a89067994e8b5ea55b5",
+      "size": 271,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/b6ae2834e60fc09547007a89067994e8b5ea55b5"
+    },
+    {
+      "path": "icons/file-clock.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2a1f06b29e8201b764a2b1b6da4d2c0d24d727d8",
+      "size": 430,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/2a1f06b29e8201b764a2b1b6da4d2c0d24d727d8"
+    },
+    {
+      "path": "icons/folder-clock.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0960b847ec65bbbdc30cdd5a6ea3b681a887a0d2",
+      "size": 391,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/0960b847ec65bbbdc30cdd5a6ea3b681a887a0d2"
+    },
+    {
+      "path": "icons/list-clock.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a9f34bf8b0cf9689f4be564e359bbfc1da1381bb",
+      "size": 352,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/a9f34bf8b0cf9689f4be564e359bbfc1da1381bb"
+    },
+    {
+      "path": "icons/mail-clock.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2e23b78bd77529300c640bc224fbc53afedeafdf",
+      "size": 409,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/2e23b78bd77529300c640bc224fbc53afedeafdf"
+    },
+    {
+      "path": "icons/rotate-ccw-clock.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "67152e4fbda9c61602d11985f3f1fa74136f00d7",
+      "size": 324,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/67152e4fbda9c61602d11985f3f1fa74136f00d7"
+    },
+    {
+      "path": "icons/rotate-ccw-key.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2c8417cade3f11cdc3e70a897f0a0b23b6ea39f7",
+      "size": 378,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/2c8417cade3f11cdc3e70a897f0a0b23b6ea39f7"
+    },
+    {
+      "path": "icons/rotate-ccw-square.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8234aec069a7af7dda5adc1eb2c8e7fad7759199",
+      "size": 349,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/8234aec069a7af7dda5adc1eb2c8e7fad7759199"
+    },
+    {
+      "path": "icons/rotate-ccw.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "eb0fe3491a9aec6af3b5fabac23d24493bde720f",
+      "size": 297,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/eb0fe3491a9aec6af3b5fabac23d24493bde720f"
+    },
+    {
+      "path": "icons/rotate-cw-clock.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c4cb79a0ef297a19fc23e70a2b76864c8e839b04",
+      "size": 318,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/c4cb79a0ef297a19fc23e70a2b76864c8e839b04"
+    },
+    {
+      "path": "icons/rotate-cw-fading-clock.svg",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f8cc2ee574edb5edb3361beb5ee5216b9cd4b4bb",
+      "size": 583,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/f8cc2ee574edb5edb3361beb5ee5216b9cd4b4bb"
+    }
+  ],
+  "license_tree": [
+    {
+      "path": "LICENSE",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "718bb3f0e44153809972abed31839375804bf652",
+      "size": 3208,
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/718bb3f0e44153809972abed31839375804bf652"
+    }
+  ]
+}

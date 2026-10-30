@@ -1,0 +1,13 @@
+{
+  "button_motion_before_show": 1,
+  "after_show": 2,
+  "manual_is_registered": false,
+  "actual_rectangle_before": "PySide6.QtCore.QRectF(4.000000, 55.000000, 250.000000, 30.000000)",
+  "actual_rectangle_after": "PySide6.QtCore.QRectF(4.000000, 100.000000, 250.000000, 30.000000)",
+  "amount_before": 0.6319930557302913,
+  "amount_after": 0.6319930557302913,
+  "remaining": 1,
+  "main_orbit_state": "complete",
+  "main_status_mark": "working",
+  "status_text": "변환 중 · 1개 대기"
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "recorded_kst": "2026-10-30T07:51:16.2576700+09:00",
+    "failure_kst": "정확한 실행 시각 미수집",
+    "session": "01a15519-c86d-7880-a2e6-c9070f59067d",
+    "task": "workflow-enhancement-20261030",
+    "request": "문서 읽기 묶음의 마지막 Get-ChildItem -Force -Name .git,AGENTS.md,.codex -ErrorAction SilentlyContinue",
+    "cwd": "D:\\2026\\FilpRing Project",
+    "exit_code": 1,
+    "original_error": "오류 출력 없음(-ErrorAction SilentlyContinue). 일부 나열 경로 없음.",
+    "product_changed_at_failure": false,
+    "repair_used_at_failure": 0,
+    "input_fix_used_at_failure": 0,
+    "limitation": "부모 메시지 직후 로컬 선기록을 누락하여 사후 기록. 단일 실패/부재 상태를 통과로 변경하지 않음."
+  },
+  {
+    "recorded_kst": "2026-10-30T07:51:16.2619623+09:00",
+    "failure_kst": "정확한 실행 시각 미수집",
+    "session": "01a15519-c86d-7880-a2e6-c9070f59067d",
+    "task": "workflow-enhancement-20261030",
+    "request": "기존 소스 읽기 묶음의 마지막 rg -n 'def set_reduced|reduced_motion' ui_motion.py studio_ui.py",
+    "cwd": "D:\\2026\\FilpRing Project\\소스",
+    "exit_code": 1,
+    "original_error": "오류 출력 없음. 당시 아직 구현되지 않은 모션감소 문자열 일치 없음.",
+    "product_changed_at_failure": false,
+    "repair_used_at_failure": 0,
+    "input_fix_used_at_failure": 0,
+    "limitation": "rg의 일치 없음 상태이며 제품 실패 아님. 로컬 선기록 누락을 사후 보존."
+  }
+]

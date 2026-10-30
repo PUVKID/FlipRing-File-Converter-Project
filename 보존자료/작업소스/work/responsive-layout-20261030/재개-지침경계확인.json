@@ -1,0 +1,59 @@
+{
+  "time_kst": "2026-10-30T11:27:37.882297+09:00",
+  "root": "D:\\2026\\FilpRing Project",
+  "kind": "고정 창·세부 디자인 기존 작업 재개",
+  "global_read_scope": "전체 UTF-8 검토; 현재 주입 사용자 원문과 대조. 관련 없는 프로필 원장 미접근.",
+  "docs_read_scope": "기존 전체 docs 검토 이력과 새 고정 창 명세 검토 유지",
+  "files": [
+    {
+      "path": "C:\\Users\\PUVKID\\.codex\\AGENTS.md",
+      "bytes": 42339,
+      "sha256": "1aea0e355d9741e9aeff83beae110e3bd62b05e57dbd3ebf52322fff2e14977e",
+      "modified_ns": 1793325784125697800
+    },
+    {
+      "path": "D:\\2026\\FilpRing Project\\docs\\2026-10-30_고정창과세부디자인.md",
+      "bytes": 4671,
+      "sha256": "b4755ec2b4a9ca91485aaa4c4f28e67fca5190378a6011f118bddf493c589f12",
+      "modified_ns": 1793326206132928000
+    },
+    {
+      "path": "D:\\2026\\FilpRing Project\\docs\\2026-10-30_작업흐름확장.md",
+      "bytes": 6032,
+      "sha256": "397a47a86f8dd9ebca443362ed82e1116ad7f93baaf202ddd5b575006c442ce5",
+      "modified_ns": 1793317665426328600
+    },
+    {
+      "path": "D:\\2026\\FilpRing Project\\docs\\내부모션.md",
+      "bytes": 3439,
+      "sha256": "4b03b9977ea4a48410d6e93e292b2c4a18ad213a121a5160e5147370afef941b",
+      "modified_ns": 1792563155000211600
+    },
+    {
+      "path": "D:\\2026\\FilpRing Project\\docs\\부드러운디자인.md",
+      "bytes": 3639,
+      "sha256": "bcb128918fca555fe9e243a24396611d5a608382a8797efb53c174c81a062831",
+      "modified_ns": 1792525401961117900
+    },
+    {
+      "path": "D:\\2026\\FilpRing Project\\docs\\스튜디오재설계.md",
+      "bytes": 5754,
+      "sha256": "ed8c5422a20bfb57049eb61fe643962d1d84cd59884d487a1e8004107b0cad0b",
+      "modified_ns": 1792529184501543600
+    },
+    {
+      "path": "D:\\2026\\FilpRing Project\\docs\\요구사항.md",
+      "bytes": 5082,
+      "sha256": "c1130591b6c24f88a049b5f3305e0ea624ca053c912a24c68c6c4b60595a8613",
+      "modified_ns": 1792517974989836300
+    },
+    {
+      "path": "D:\\2026\\FilpRing Project\\docs\\이동재개.md",
+      "bytes": 2234,
+      "sha256": "d2f53904a9f35434cf76af1a6c936115aa2c85ee006905f11f9233c9b451dafc",
+      "modified_ns": 1792826769560289300
+    }
+  ],
+  "nearest_git": "루트 없음; 공개 checkout은 work/enhancement-20261030/remote-baseline",
+  "project_marker": ".codex/routing-project.json"
+}

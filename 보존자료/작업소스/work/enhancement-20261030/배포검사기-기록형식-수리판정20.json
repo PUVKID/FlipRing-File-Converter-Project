@@ -1,0 +1,9 @@
+{
+  "cause": "부모가 새 배포 검사기를 작성하며 이전 실행 기록의 단일 engine/harness 필드명을 사용했습니다. 실제 새 기록은 start_sha256/end_sha256 사전입니다.",
+  "new_observation": "독립 verifier 정적검토와 부모의 실제 run-context.json 전문읽기에서 다섯 절대경로키 사전 및 기존 키 부재가 확인됐습니다.",
+  "method": "제품·266보고서·기준을 바꾸지 않고 검사기를 실제 다섯 경로의 시작/종료/현재SHA 대조로 고칩니다. 결손·변조 거부도 직접 확인합니다.",
+  "selection_reason": "실제 자료와 수정할 검사 함수가 명확한 일반 코드 오류이므로 build Sol/medium이 좁은 범위만 수정하고 별도 verifier가 검토합니다.",
+  "role": "build",
+  "model": "gpt-6.1-sol",
+  "effort": "medium"
+}

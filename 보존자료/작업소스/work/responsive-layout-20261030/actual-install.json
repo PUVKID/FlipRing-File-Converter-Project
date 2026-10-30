@@ -1,0 +1,12 @@
+{
+  "started_kst": "2026-10-30T12:06:38.9843426+09:00",
+  "finished_kst": "2026-10-30T12:06:49.3539671+09:00",
+  "installer": "D:\\2026\\FilpRing Project\\work\\responsive-layout-20261030\\release-stage1\\설치파일\\FlipRing-Setup.exe",
+  "installer_exit_code": 0,
+  "actual_launch_passed": true,
+  "pid": 69616,
+  "exe": "C:\\Users\\PUVKID\\AppData\\Local\\Programs\\FlipRing\\FlipRing.exe",
+  "window_handle": 24058806,
+  "window_title": "플립링 설정",
+  "responding": true
+}

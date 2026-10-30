@@ -1,0 +1,131 @@
+{
+  "repository": "https://github.com/lucide-icons/lucide",
+  "commit": "c29c276f16590cf017126671535ad8c792be64d8",
+  "retrieved_kst": "2026-10-21T05:37:44.484866+09:00",
+  "method": "관측된 immutable Git blob API의 base64 원문을 디코드하고 Git blob SHA1 일치 확인",
+  "license": "원문 LICENSE: ISC 및 Feather MIT 포함",
+  "name_mapping": {
+    "history": "rotate-ccw-clock"
+  },
+  "raw_404": "원인 미확정; 원본 실패 기록 별도 보존",
+  "files": [
+    {
+      "path": "assets/lucide/arrow-left-right.svg",
+      "original_path": "icons/arrow-left-right.svg",
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/acf2cb39ac824a91ac20dffb0367e37ddf1954b2",
+      "raw_url": "https://raw.githubusercontent.com/lucide-icons/lucide/c29c276f16590cf017126671535ad8c792be64d8/icons/arrow-left-right.svg",
+      "git_blob_sha1": "acf2cb39ac824a91ac20dffb0367e37ddf1954b2",
+      "sha256": "2d64da427cbb3f14e522658459903829575b09ec15162c1a69ea6ad341a4359a",
+      "size": 313
+    },
+    {
+      "path": "assets/lucide/scan-text.svg",
+      "original_path": "icons/scan-text.svg",
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/e05aa8361e91c93635a02a214f17ee69686854b6",
+      "raw_url": "https://raw.githubusercontent.com/lucide-icons/lucide/c29c276f16590cf017126671535ad8c792be64d8/icons/scan-text.svg",
+      "git_blob_sha1": "e05aa8361e91c93635a02a214f17ee69686854b6",
+      "sha256": "6c05f5346bf0a9c7cdf6132f7ae3428ea932e2206ace2480f41a3d3bdc6efd80",
+      "size": 435
+    },
+    {
+      "path": "assets/lucide/rotate-ccw-clock.svg",
+      "original_path": "icons/rotate-ccw-clock.svg",
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/67152e4fbda9c61602d11985f3f1fa74136f00d7",
+      "raw_url": "https://raw.githubusercontent.com/lucide-icons/lucide/c29c276f16590cf017126671535ad8c792be64d8/icons/rotate-ccw-clock.svg",
+      "git_blob_sha1": "67152e4fbda9c61602d11985f3f1fa74136f00d7",
+      "sha256": "a98ff758157910b9fc9d42d5d5dc80c2f4e037afa5f8ea4dee5f5649f03d438d",
+      "size": 324
+    },
+    {
+      "path": "assets/lucide/sliders-horizontal.svg",
+      "original_path": "icons/sliders-horizontal.svg",
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/819f80c1f0cc7fade2088fb776030e348657a486",
+      "raw_url": "https://raw.githubusercontent.com/lucide-icons/lucide/c29c276f16590cf017126671535ad8c792be64d8/icons/sliders-horizontal.svg",
+      "git_blob_sha1": "819f80c1f0cc7fade2088fb776030e348657a486",
+      "sha256": "e43a00e5eb684e6cbb61083bed2528d7a3fa5f265693eb2b5f314cd432aa65f4",
+      "size": 422
+    },
+    {
+      "path": "assets/lucide/info.svg",
+      "original_path": "icons/info.svg",
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/2a46eac2b55a1ead226035d1efa8721f6f08bd17",
+      "raw_url": "https://raw.githubusercontent.com/lucide-icons/lucide/c29c276f16590cf017126671535ad8c792be64d8/icons/info.svg",
+      "git_blob_sha1": "2a46eac2b55a1ead226035d1efa8721f6f08bd17",
+      "sha256": "bc977a64eb96f3e9c1041ffd09a3fceb70e3e65c02b571f76064062ed31f3cb9",
+      "size": 294
+    },
+    {
+      "path": "assets/lucide/folder-open.svg",
+      "original_path": "icons/folder-open.svg",
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/b01f60fcb51848a9b3a7380d4566c4de7534745c",
+      "raw_url": "https://raw.githubusercontent.com/lucide-icons/lucide/c29c276f16590cf017126671535ad8c792be64d8/icons/folder-open.svg",
+      "git_blob_sha1": "b01f60fcb51848a9b3a7380d4566c4de7534745c",
+      "sha256": "ee57452b40e71df310214091dd9da1941a397c83197b8ff8d7ae66dd4242578b",
+      "size": 401
+    },
+    {
+      "path": "assets/lucide/file-up.svg",
+      "original_path": "icons/file-up.svg",
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/d8d5bc8c36ac07d87555556e2acc44efa2a630fd",
+      "raw_url": "https://raw.githubusercontent.com/lucide-icons/lucide/c29c276f16590cf017126671535ad8c792be64d8/icons/file-up.svg",
+      "git_blob_sha1": "d8d5bc8c36ac07d87555556e2acc44efa2a630fd",
+      "sha256": "0bd753699aed9b50bcbde59b12e1409329bb9291c0aa523dd4553497cd665c0b",
+      "size": 427
+    },
+    {
+      "path": "assets/lucide/check.svg",
+      "original_path": "icons/check.svg",
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/5abe1527434e7b251bde0661f99af96178976d8c",
+      "raw_url": "https://raw.githubusercontent.com/lucide-icons/lucide/c29c276f16590cf017126671535ad8c792be64d8/icons/check.svg",
+      "git_blob_sha1": "5abe1527434e7b251bde0661f99af96178976d8c",
+      "sha256": "7f33acc9a77a61659531044525fc008edebe215bf4dcf1c789c8674ad3277db0",
+      "size": 239
+    },
+    {
+      "path": "assets/lucide/x.svg",
+      "original_path": "icons/x.svg",
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/e31794349d3eecea1b3ae8e974b68bb8f4becda7",
+      "raw_url": "https://raw.githubusercontent.com/lucide-icons/lucide/c29c276f16590cf017126671535ad8c792be64d8/icons/x.svg",
+      "git_blob_sha1": "e31794349d3eecea1b3ae8e974b68bb8f4becda7",
+      "sha256": "4a9cdab38fbb96162e7dace28e33f4ca0e49d8963a6162abc3d4691b7d675117",
+      "size": 260
+    },
+    {
+      "path": "assets/lucide/arrow-up-right.svg",
+      "original_path": "icons/arrow-up-right.svg",
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/93bdeea23865b4b238dd3038414160949a10f925",
+      "raw_url": "https://raw.githubusercontent.com/lucide-icons/lucide/c29c276f16590cf017126671535ad8c792be64d8/icons/arrow-up-right.svg",
+      "git_blob_sha1": "93bdeea23865b4b238dd3038414160949a10f925",
+      "sha256": "50b2503b9d11881142255466b7e3461d022b919735841c321d72003ac9959fe1",
+      "size": 260
+    },
+    {
+      "path": "assets/lucide/plus.svg",
+      "original_path": "icons/plus.svg",
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/41f92bb93eb6626368d71c9884127bbcf7d3ccdf",
+      "raw_url": "https://raw.githubusercontent.com/lucide-icons/lucide/c29c276f16590cf017126671535ad8c792be64d8/icons/plus.svg",
+      "git_blob_sha1": "41f92bb93eb6626368d71c9884127bbcf7d3ccdf",
+      "sha256": "7f6af73bf1ff6c4bca3f18351c8d1bdec6749c0c2530c4de5da85d520c21df17",
+      "size": 256
+    },
+    {
+      "path": "assets/lucide/file.svg",
+      "original_path": "icons/file.svg",
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/161be7a29fb7c7b808eb57722fc544231a5aa5e4",
+      "raw_url": "https://raw.githubusercontent.com/lucide-icons/lucide/c29c276f16590cf017126671535ad8c792be64d8/icons/file.svg",
+      "git_blob_sha1": "161be7a29fb7c7b808eb57722fc544231a5aa5e4",
+      "sha256": "499039795d7412d67664ff79d2eb6b7412e746b24c18c8fd8aba383c24ddada0",
+      "size": 373
+    },
+    {
+      "path": "licenses/Lucide/LICENSE",
+      "original_path": "LICENSE",
+      "url": "https://api.github.com/repos/lucide-icons/lucide/git/blobs/718bb3f0e44153809972abed31839375804bf652",
+      "raw_url": "https://raw.githubusercontent.com/lucide-icons/lucide/c29c276f16590cf017126671535ad8c792be64d8/LICENSE",
+      "git_blob_sha1": "718bb3f0e44153809972abed31839375804bf652",
+      "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+      "size": 3208
+    }
+  ],
+  "svg_security": "12개 XML 구조 검사: script/foreignObject/이벤트 속성/href/DTD/entity 없음; 원문 바이트 보존"
+}

@@ -1,0 +1,106 @@
+{
+  "captures": [
+    {
+      "name": "PDF-실행사전점검-한국어",
+      "language": "ko",
+      "size": [
+        960,
+        680
+      ],
+      "status": "완료 · 1개 결과",
+      "preflight": "repair14-render · 준비 예상 65 MiB / 여유 공간 386858 MiB\n사전 점검 · 보수적인 준비 예상량이며 최종 크기나 저장 성공을 보장하지 않습니다.",
+      "busy": false
+    },
+    {
+      "name": "PDF-실행사전점검-영어",
+      "language": "en",
+      "size": [
+        960,
+        680
+      ],
+      "status": "Done · 1 result(s)",
+      "preflight": "repair14-render · Estimated 65 MiB / Free space 386858 MiB\nPreflight · Conservative preparation estimate; it does not guarantee final size or successful storage.",
+      "busy": false
+    },
+    {
+      "name": "PDF-공간부족차단-한국어",
+      "language": "ko",
+      "size": [
+        960,
+        680
+      ],
+      "status": "repair14-render · 저장 위치의 여유 공간이 보수적인 준비 예상량보다 부족합니다.",
+      "preflight": "repair14-render · 준비 예상 65 MiB / 여유 공간 0 MiB\n사전 점검 · 보수적인 준비 예상량이며 최종 크기나 저장 성공을 보장하지 않습니다.",
+      "busy": false
+    },
+    {
+      "name": "PDF-공간부족차단-영어",
+      "language": "en",
+      "size": [
+        960,
+        680
+      ],
+      "status": "repair14-render · Free space at the output location is below the conservative preparation estimate.",
+      "preflight": "repair14-render · Estimated 65 MiB / Free space 0 MiB\nPreflight · Conservative preparation estimate; it does not guarantee final size or successful storage.",
+      "busy": false
+    },
+    {
+      "name": "PDF-편집저장공간부족-한국어",
+      "language": "ko",
+      "size": [
+        960,
+        680
+      ],
+      "status": "repair14-render · 저장 위치의 여유 공간이 보수적인 준비 예상량보다 부족합니다.",
+      "preflight": "repair14-render · 준비 예상 65 MiB / 여유 공간 0 MiB\n사전 점검 · 보수적인 준비 예상량이며 최종 크기나 저장 성공을 보장하지 않습니다.",
+      "busy": false
+    },
+    {
+      "name": "PDF-편집저장공간부족-영어",
+      "language": "en",
+      "size": [
+        960,
+        680
+      ],
+      "status": "repair14-render · Free space at the output location is below the conservative preparation estimate.",
+      "preflight": "repair14-render · Estimated 65 MiB / Free space 0 MiB\nPreflight · Conservative preparation estimate; it does not guarantee final size or successful storage.",
+      "busy": false
+    },
+    {
+      "name": "PDF-편집저장공간부족-큰창",
+      "language": "ko",
+      "size": [
+        1200,
+        820
+      ],
+      "status": "repair14-render · 저장 위치의 여유 공간이 보수적인 준비 예상량보다 부족합니다.",
+      "preflight": "repair14-render · 준비 예상 65 MiB / 여유 공간 0 MiB\n사전 점검 · 보수적인 준비 예상량이며 최종 크기나 저장 성공을 보장하지 않습니다.",
+      "busy": false
+    },
+    {
+      "name": "PDF-편집저장쓰기거부-한국어",
+      "language": "ko",
+      "size": [
+        960,
+        680
+      ],
+      "status": "repair14-render · 저장 폴더 쓰기 점검에 실패했습니다. 위치와 권한을 확인해 주세요.",
+      "preflight": "repair14-render · 준비 예상 65 MiB / 여유 공간 386844 MiB\n사전 점검 · 보수적인 준비 예상량이며 최종 크기나 저장 성공을 보장하지 않습니다.",
+      "busy": false
+    },
+    {
+      "name": "PDF-편집저장쓰기거부-영어",
+      "language": "en",
+      "size": [
+        960,
+        680
+      ],
+      "status": "repair14-render · The output folder write check failed. Check the location and permissions.",
+      "preflight": "repair14-render · Estimated 65 MiB / Free space 386844 MiB\nPreflight · Conservative preparation estimate; it does not guarantee final size or successful storage.",
+      "busy": false
+    }
+  ],
+  "source_preserved": true,
+  "completed_preserved": true,
+  "blocked_output_created": false
+}

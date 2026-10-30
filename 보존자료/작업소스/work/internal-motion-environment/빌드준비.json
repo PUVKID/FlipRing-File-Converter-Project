@@ -1,0 +1,73 @@
+{
+  "analysis_cache_exists": false,
+  "pyinstaller_spec_exists": true,
+  "runtime344_baseline_unchanged": true,
+  "lucide12_assets": {
+    "assets/lucide/arrow-left-right.svg": {
+      "size": 313,
+      "sha256": "2d64da427cbb3f14e522658459903829575b09ec15162c1a69ea6ad341a4359a"
+    },
+    "assets/lucide/arrow-up-right.svg": {
+      "size": 260,
+      "sha256": "50b2503b9d11881142255466b7e3461d022b919735841c321d72003ac9959fe1"
+    },
+    "assets/lucide/check.svg": {
+      "size": 239,
+      "sha256": "7f33acc9a77a61659531044525fc008edebe215bf4dcf1c789c8674ad3277db0"
+    },
+    "assets/lucide/file-up.svg": {
+      "size": 427,
+      "sha256": "0bd753699aed9b50bcbde59b12e1409329bb9291c0aa523dd4553497cd665c0b"
+    },
+    "assets/lucide/file.svg": {
+      "size": 373,
+      "sha256": "499039795d7412d67664ff79d2eb6b7412e746b24c18c8fd8aba383c24ddada0"
+    },
+    "assets/lucide/folder-open.svg": {
+      "size": 401,
+      "sha256": "ee57452b40e71df310214091dd9da1941a397c83197b8ff8d7ae66dd4242578b"
+    },
+    "assets/lucide/info.svg": {
+      "size": 294,
+      "sha256": "bc977a64eb96f3e9c1041ffd09a3fceb70e3e65c02b571f76064062ed31f3cb9"
+    },
+    "assets/lucide/plus.svg": {
+      "size": 256,
+      "sha256": "7f6af73bf1ff6c4bca3f18351c8d1bdec6749c0c2530c4de5da85d520c21df17"
+    },
+    "assets/lucide/rotate-ccw-clock.svg": {
+      "size": 324,
+      "sha256": "a98ff758157910b9fc9d42d5d5dc80c2f4e037afa5f8ea4dee5f5649f03d438d"
+    },
+    "assets/lucide/scan-text.svg": {
+      "size": 435,
+      "sha256": "6c05f5346bf0a9c7cdf6132f7ae3428ea932e2206ace2480f41a3d3bdc6efd80"
+    },
+    "assets/lucide/sliders-horizontal.svg": {
+      "size": 422,
+      "sha256": "e43a00e5eb684e6cbb61083bed2528d7a3fa5f265693eb2b5f314cd432aa65f4"
+    },
+    "assets/lucide/x.svg": {
+      "size": 260,
+      "sha256": "4a9cdab38fbb96162e7dace28e33f4ca0e49d8963a6162abc3d4691b7d675117"
+    }
+  },
+  "current_runtime_files": 356,
+  "program_files": 616,
+  "installed_versions_match_lock": 31,
+  "source_ui_fonts": {
+    "SUIT-Medium.ttf": "06be0060927642883b9027b275744fc8234826e6563015ebe3324f3802ae005f",
+    "SUIT-Regular.ttf": "88c94c990b9996c558666ef07c11664ab177c3be191e2846950b48f245d02274",
+    "SUIT-SemiBold.ttf": "8d202e0341b9426b653c1b3d36b2c0d1f4b482a7dfa83baaccf84d355d688fbd"
+  },
+  "rebuild_plan": "소스 캐시가 없어 기존 Analysis/PYZ/EXE 결과는 재사용할 수 없음. 동결 후 기존 spec의 Analysis/PYZ/EXE를 새로 실행하되 COLLECT를 생략해 전체 런타임 복제를 피할 수 있음. 새 Analysis의 destination+SHA를 현재 런타임356과 대조하고 base_library.zip 내부155항목의 내용 동등성을 검사한 뒤 재사용 여부 결정. 아직 UI 모듈 편집 중이므로 새 의존/자료 추가 여부 미확정. 새 모듈은 최종 동결 목록으로 package 필수 목록에 반영 필요. 전체 source rglob는 기존에 보존됨.",
+  "version": "1.6.0",
+  "performed_build": false,
+  "free_bytes": 35019796480,
+  "owned_hashes": {
+    "build.py": "25e913d6a311017f16c13ea70ee39e8e10f60454df2965f8e314edfcf6d6c33f",
+    "installer.iss": "530a9378c98c64e8fada22c5c03eb62212b259f63fc4b7d11a448cc507fad9fb",
+    "빌드방법.md": "059e5aa9118dad3bec231b1a76022474623c99db842404570dae42aad711f429",
+    "사용안내.txt": "96ef653c8d22c29447f6e8d909a1e6f686b0feab3194d0b0fbdd250f9ea54fd7"
+  }
+}

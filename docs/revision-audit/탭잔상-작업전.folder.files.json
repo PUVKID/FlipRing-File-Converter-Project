@@ -1,0 +1,41 @@
+[
+  {
+    "path": "app.py",
+    "bytes": 57399,
+    "sha256": "9ff9fce38ef9f74ffaf86aa226f40b714a7769e64781f69cdf1d925633d7a48b",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 1290,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_gui.py",
+    "bytes": 76078,
+    "sha256": "7f9ff2bf0b13a8564332a6886371429a114457f2abf7bd0b2969eb08a79b2d70",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 1374,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "파일목록.json",
+    "bytes": 272,
+    "sha256": "252dcf48e1a617085e078a6b5de749b05040e8a0cd6a963cdf15c9bf590e7d13",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 12,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  }
+]

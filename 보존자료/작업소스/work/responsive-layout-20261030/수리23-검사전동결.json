@@ -1,0 +1,34 @@
+[
+  {
+    "name": "app.py",
+    "sha256": "be1fb631debba94240f8d81549b7e14dd4d6c321c4963bf8d7ee6b99116a3ba8"
+  },
+  {
+    "name": "studio_ui.py",
+    "sha256": "2b31eaf6ce3f22732190ca8e6e3ab78134dab382fc0b360c39b434fe97a506ba"
+  },
+  {
+    "name": "ui_motion.py",
+    "sha256": "8ec3e250b0ca9afa3e57e212abbe39ac936f486fb0dbb52a90842764efb83707"
+  },
+  {
+    "name": "preview_panel.py",
+    "sha256": "fbaeb5e05627dd52a429c79e0c8a8d12dc071019969a94ab1178dfb8385d0f82"
+  },
+  {
+    "name": "pdf_panel.py",
+    "sha256": "e9bb66310316715f856dfd4dbbf11118da2436680af9d8621550e9f2cc8e2840"
+  },
+  {
+    "name": "i18n.py",
+    "sha256": "d3264e43e1b2008d2df6f6ee8ac9fa0044521bfff41433e927cda693bd0c3cab"
+  },
+  {
+    "name": "fixed_viewport.py",
+    "sha256": "357b4f0a6ab3e95f1b655801f71e719ede4230d9c8ec91ff77c2d7cce01e1aa5"
+  },
+  {
+    "name": "test_fixed_layout.py",
+    "sha256": "75087380cfbff6863c79191898bf159369c6876d8afe47fd5ffedaa5f57935a4"
+  }
+]

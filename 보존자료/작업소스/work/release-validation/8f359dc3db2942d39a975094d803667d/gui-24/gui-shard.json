@@ -1,0 +1,41 @@
+{
+  "run_id": "8f359dc3db2942d39a975094d803667d",
+  "shard_id": "gui-24",
+  "started_kst": "2026-10-24T22:01:24.629373+09:00",
+  "source_before": {
+    "app.py": "7938ccd3c4869cb272444689bd3fc01e8b0dac6b1645187b0a0fb371720902d6",
+    "studio_ui.py": "fe088d87ddeb13836591bfea8ac0e0b1dbcc2cc662fbfec2e49a5ed3d279eaf1",
+    "pdf_panel.py": "955f89240c2963620a236a55513d35f81008358b5f500d154c1baa176feeed8d",
+    "i18n.py": "8f995eb33aa7e1b6fa753f451d8324dd6cc91802c33f2330f626d33aee102f19",
+    "ui_motion.py": "9522a89392bd8569b067f432450655ea406cb2c4ee45cc8d2b258f22f934f6d5",
+    "test_gui.py": "f27752075c05151ea54583b0b7aaf163fd4c28b64ce04ffbf17b44d66b196f9a",
+    "engine.py": "d76603d53e6a9ac26767aade92da53b5726c045a3b82bf07f7357449fb5b1c28",
+    "pdf_tools.py": "dffbfb2f945bf8830841d870407050fc4bf98025354b14a9ab1ef936251b8274",
+    "test_pdf_tools.py": "58032cfc269c038d9190c5e9cca9e9a2fd0436162c587b063147ada9f8dd8df7"
+  },
+  "stats": {
+    "testsRun": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "finished_kst": "2026-10-24T22:01:42.266577+09:00",
+  "actual_ids": [
+    "__main__.GuiTests.test_24_language_persists_when_window_recreated"
+  ],
+  "ended_ids": [
+    "__main__.GuiTests.test_24_language_persists_when_window_recreated"
+  ],
+  "source_after": {
+    "app.py": "7938ccd3c4869cb272444689bd3fc01e8b0dac6b1645187b0a0fb371720902d6",
+    "studio_ui.py": "fe088d87ddeb13836591bfea8ac0e0b1dbcc2cc662fbfec2e49a5ed3d279eaf1",
+    "pdf_panel.py": "955f89240c2963620a236a55513d35f81008358b5f500d154c1baa176feeed8d",
+    "i18n.py": "8f995eb33aa7e1b6fa753f451d8324dd6cc91802c33f2330f626d33aee102f19",
+    "ui_motion.py": "9522a89392bd8569b067f432450655ea406cb2c4ee45cc8d2b258f22f934f6d5",
+    "test_gui.py": "f27752075c05151ea54583b0b7aaf163fd4c28b64ce04ffbf17b44d66b196f9a",
+    "engine.py": "d76603d53e6a9ac26767aade92da53b5726c045a3b82bf07f7357449fb5b1c28",
+    "pdf_tools.py": "dffbfb2f945bf8830841d870407050fc4bf98025354b14a9ab1ef936251b8274",
+    "test_pdf_tools.py": "58032cfc269c038d9190c5e9cca9e9a2fd0436162c587b063147ada9f8dd8df7"
+  },
+  "original_exit_code": 0
+}

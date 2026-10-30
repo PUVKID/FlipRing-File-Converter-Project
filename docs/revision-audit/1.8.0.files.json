@@ -1,0 +1,314 @@
+[
+  {
+    "path": "LICENSE.txt",
+    "bytes": 1396,
+    "sha256": "8c7b2363b1bd25e3428416587833dbe61098d211f30420582879ec4810cbf52f",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 25,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "app.py",
+    "bytes": 81675,
+    "sha256": "be1fb631debba94240f8d81549b7e14dd4d6c321c4963bf8d7ee6b99116a3ba8",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1765,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "build.py",
+    "bytes": 7061,
+    "sha256": "0b203dd20250ed3413ee41245322dce95a5d5cf0517fd00b59471c9188f6c69f",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 119,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "engine.py",
+    "bytes": 29743,
+    "sha256": "c473f5b6b530e4dff94df5cc5166657776a8131fa9244588ff0f1bae7ac1e27a",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 654,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "fixed_viewport.py",
+    "bytes": 2468,
+    "sha256": "357b4f0a6ab3e95f1b655801f71e719ede4230d9c8ec91ff77c2d7cce01e1aa5",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 60,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "flipring_workflow.py",
+    "bytes": 6873,
+    "sha256": "2959f12fe2b89498c5d29e3e1318f0da89ff96eaf06a52c628ad2e11a313398e",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 118,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "i18n.py",
+    "bytes": 19102,
+    "sha256": "d3264e43e1b2008d2df6f6ee8ac9fa0044521bfff41433e927cda693bd0c3cab",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 214,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "package.py",
+    "bytes": 10074,
+    "sha256": "05a8a127a030c6b467c438dbdd33bbd5b42f4686f86df0935f95c403e6a1379c",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 156,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "pdf_lock.py",
+    "bytes": 147,
+    "sha256": "886a099f8965ef6a9db14ddaea3dc5067ab8247d524482ff3cafc8ad78c62b0a",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 4,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "pdf_pages.py",
+    "bytes": 7563,
+    "sha256": "0eddd9a48630f382531e7019788de34a0a466e47b10bb3ab9a6c83564b746e2d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 170,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "pdf_panel.py",
+    "bytes": 62365,
+    "sha256": "e9bb66310316715f856dfd4dbbf11118da2436680af9d8621550e9f2cc8e2840",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 1231,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "pdf_tools.py",
+    "bytes": 31802,
+    "sha256": "5eb4dcc098c3d2a5b89de1f42a5262e25891d7c9df1319f045ae33d25c84830b",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 762,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "preview_panel.py",
+    "bytes": 6106,
+    "sha256": "fbaeb5e05627dd52a429c79e0c8a8d12dc071019969a94ab1178dfb8385d0f82",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 116,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "requirements-lock.txt",
+    "bytes": 644,
+    "sha256": "57a5e9a4c46e8212dccdab7557b87f6bc44047a55958afdb6d899a6f3c4feecb",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 31,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "studio_ui.py",
+    "bytes": 16400,
+    "sha256": "2b31eaf6ce3f22732190ca8e6e3ab78134dab382fc0b360c39b434fe97a506ba",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 416,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_conversion_matrix.py",
+    "bytes": 16249,
+    "sha256": "61c1ee5677fdea77b98868d919db90bfa8937409018969e41ddcdb83ba8970a9",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 259,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_engine.py",
+    "bytes": 6669,
+    "sha256": "7111c87a4899343e7766a9e82cbd81df80177094280a1ec937b46f579407e3a3",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 94,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_fixed_layout.py",
+    "bytes": 16446,
+    "sha256": "09a197267314a72957373cb8e3d17a9297ffa72cb69ec9124fda8b7ee2fcbba1",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 318,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_gui.py",
+    "bytes": 126342,
+    "sha256": "9a06e6c4cf76141bac8978abfb96aa0a83f4a1ab3aed144a9edde44494a9b70c",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 2322,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_pdf_tools.py",
+    "bytes": 25413,
+    "sha256": "58032cfc269c038d9190c5e9cca9e9a2fd0436162c587b063147ada9f8dd8df7",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 555,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_pdf_workspace.py",
+    "bytes": 27600,
+    "sha256": "da16cf732b25a0c045c96a445e1cf3a551f5ed57accc884b0f23cbcdd044333d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 598,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_workbench.py",
+    "bytes": 23935,
+    "sha256": "a9147d0b72067fffc1303397667eaa5cab62430d9658f76308a89b55f2b1c016",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 400,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "ui_motion.py",
+    "bytes": 38989,
+    "sha256": "07eeb948add98e295ce6c64b02faa6a11decd14ac9bae3a7d0ab380f92b737d9",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 835,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "파일목록.json",
+    "bytes": 3329,
+    "sha256": "7882b4d437f38e6d31b2b45522a53d3f7e88e2ef52280510523107ae1ffde766",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 117,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  }
+]

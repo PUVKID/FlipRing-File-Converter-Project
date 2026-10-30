@@ -1,0 +1,1656 @@
+--- 1.4.0/LICENSE.txt
++++ 내부모션-작업전/LICENSE.txt
+@@ -1,25 +0,0 @@
+-MIT License
+-
+-Copyright (c) 2026 PUVKID
+-
+-Permission is hereby granted, free of charge, to any person obtaining a copy
+-of this software and associated documentation files (the "Software"), to deal
+-in the Software without restriction, including without limitation the rights
+-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+-copies of the Software, and to permit persons to whom the Software is
+-furnished to do so, subject to the following conditions:
+-
+-The above copyright notice and this permission notice shall be included in all
+-copies or substantial portions of the Software.
+-
+-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+-SOFTWARE.
+-
+-적용 범위: PUVKID가 새로 작성한 Python 소스·검사·빌드/포장 스크립트 및 문서.
+-외부 vendor 자료·오픈소스 구성요소·글꼴에는 각 구성요소의 별도 라이선스가 적용됩니다.
+-원본 macOS DragWheel의 코드·이미지·실행 파일은 이 배포물에 포함하지 않습니다.
+--- 1.4.0/app.py
++++ 내부모션-작업전/app.py
+@@ -26,11 +26,12 @@
+     QApplication, QWidget, QMainWindow, QVBoxLayout, QHBoxLayout, QLabel,
+     QPushButton, QFileDialog, QComboBox, QListWidget, QTabWidget, QCheckBox,
+     QSystemTrayIcon, QMenu, QMessageBox, QProgressBar, QGraphicsOpacityEffect,
+-    QStylePainter, QStyleOptionButton, QStyle,
++    QStylePainter, QStyleOptionButton, QStyle, QFrame,
+ )
+ import engine
+ from i18n import tr, error_text, QT_KOREAN
+ from pdf_panel import PdfToolsPanel
++from studio_ui import StudioCard, NavButton, FileDropCard, Toggle, HistoryDelegate, svg_icon
+ 
+ VERSION = 3
+ APPNAME = "플립링"
+@@ -274,8 +275,10 @@
+             self.button.initStyleOption(option)
+             painter = QStylePainter(self.button)
+             painter.setRenderHint(QPainter.Antialiasing)
+-            shade = 255 - round(13 * self.amount) - (6 if self.button.isDown() else 0)
+-            border = 226 - round(25 * self.amount)
++            primary = bool(self.button.property("primary"))
++            shade = (28 + round(16 * self.amount) if primary else
++                     255 - round(13 * self.amount) - (6 if self.button.isDown() else 0))
++            border = shade if primary else 226 - round(25 * self.amount)
+             if self.button.hasFocus():
+                 border = 112
+             painter.setBrush(QColor(shade, shade, shade))
+@@ -641,7 +644,7 @@
+ 
+ 
+ class MainWindow(QMainWindow):
+-    """상주 컨트롤러와 작은 설정창. 변환 선택은 원형 메뉴에서 수행한다."""
++    """상주 컨트롤러와 파일·문서 작업 공간. 변환 선택은 원형 메뉴에서 수행한다."""
+ 
+     def __init__(self):
+         super().__init__()
+@@ -655,8 +658,8 @@
+         self.setWindowTitle(self.text("settings_title", app=self.app_name()))
+         self.setWindowIcon(icon())
+         self.setAcceptDrops(True)
+-        self.resize(460, 600)
+-        self.setMinimumSize(460, 570)
++        self.resize(1080, 780)
++        self.setMinimumSize(960, 680)
+         self.setFont(ui_font())
+         self.pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix="변환")
+         self.bridge = Bridge()
+@@ -689,31 +692,93 @@
+ 
+         host = QWidget()
+         self.setCentralWidget(host)
+-        layout = QVBoxLayout(host)
+-        layout.setContentsMargins(22, 22, 22, 18)
+-        layout.setSpacing(10)
++        shell = QHBoxLayout(host)
++        shell.setContentsMargins(0, 0, 0, 0)
++        shell.setSpacing(0)
++        self.sidebar = QFrame()
++        self.sidebar.setObjectName("sidebar")
++        self.sidebar.setFixedWidth(204)
++        sidebar_layout = QVBoxLayout(self.sidebar)
++        sidebar_layout.setContentsMargins(16, 28, 16, 22)
++        sidebar_layout.setSpacing(6)
+         self.brand = QLabel()
+         self.brand.setObjectName("brand")
+-        layout.addWidget(self.brand)
++        sidebar_layout.addWidget(self.brand)
++        side_caption = self.localized(QLabel(), "studio_workspace")
++        side_caption.setObjectName("sideCaption")
++        sidebar_layout.addWidget(side_caption)
++        sidebar_layout.addSpacing(30)
++        self.nav_buttons = {}
++        for index, symbol in ((0, "convert"), (4, "pdf"), (2, "history"), (1, "tools"), (3, "about")):
++            button = NavButton(symbol)
++            filename = {"convert": "arrow-left-right", "pdf": "scan-text", "history": "rotate-ccw-clock",
++                        "tools": "sliders-horizontal", "about": "info"}[symbol]
++            button.set_svg(engine.asset("lucide/" + filename + ".svg"))
++            button.clicked.connect(lambda checked=False, target=index: self.tabs.setCurrentIndex(target))
++            self.nav_buttons[index] = button
++            sidebar_layout.addWidget(button)
++        sidebar_layout.addStretch()
++        maker = self.localized(QLabel(), "studio_maker")
++        maker.setObjectName("sideMaker")
++        sidebar_layout.addWidget(maker)
++        local = self.localized(QLabel(), "studio_local")
++        local.setObjectName("sideCaption")
++        sidebar_layout.addWidget(local)
++        shell.addWidget(self.sidebar)
++        content = QWidget()
++        content.setObjectName("workspace")
++        layout = QVBoxLayout(content)
++        layout.setContentsMargins(30, 28, 30, 20)
++        layout.setSpacing(22)
++        header = QHBoxLayout()
++        headings = QVBoxLayout()
++        headings.setSpacing(6)
++        self.page_title = QLabel()
++        self.page_title.setObjectName("pageTitle")
++        headings.addWidget(self.page_title)
++        self.page_description = QLabel()
++        self.page_description.setObjectName("muted")
++        self.page_description.setWordWrap(True)
++        headings.addWidget(self.page_description)
++        header.addLayout(headings, 1)
++        self.key_badge = QLabel()
++        self.key_badge.setObjectName("keyBadge")
++        header.addWidget(self.key_badge, 0, Qt.AlignTop)
++        layout.addLayout(header)
++        shell.addWidget(content, 1)
+         self.subtitle = QLabel()
+         self.subtitle.setObjectName("muted")
+         self.subtitle.setWordWrap(True)
+-        layout.addWidget(self.subtitle)
+         self.tabs = SoftTabs()
++        self.tabs.tabBar().hide()
+         layout.addWidget(self.tabs, 1)
+         settings_page = QWidget()
+-        settings_layout = QVBoxLayout(settings_page)
+-        settings_layout.setContentsMargins(16, 18, 16, 14)
+-        settings_layout.setSpacing(13)
+-        language_row = QHBoxLayout()
+-        language_row.addWidget(self.localized(QLabel(), "language"))
++        workspace_row = QHBoxLayout(settings_page)
++        workspace_row.setContentsMargins(0, 0, 0, 0)
++        workspace_row.setSpacing(20)
++        self.drop_card = FileDropCard(file_urls, Wheel._accept_copy)
++        self.drop_card.clicked.connect(self.pick_files)
++        self.drop_card.files_dropped.connect(self.receive_files)
++        self.localized(self.drop_card.title, "studio_drop_title")
++        self.localized(self.drop_card.caption, "studio_drop_caption")
++        workspace_row.addWidget(self.drop_card, 1)
++        self.quick_settings = StudioCard()
++        self.quick_settings.setFixedWidth(286)
++        settings_layout = QVBoxLayout(self.quick_settings)
++        settings_layout.setContentsMargins(20, 22, 20, 22)
++        settings_layout.setSpacing(8)
++        quick_heading = self.localized(QLabel(), "studio_quick_settings")
++        quick_heading.setObjectName("cardTitle")
++        settings_layout.addWidget(quick_heading)
++        settings_layout.addWidget(self.subtitle)
++        settings_layout.addSpacing(6)
++        settings_layout.addWidget(self.localized(QLabel(), "language"))
+         self.language_combo = QComboBox()
+         self.language_combo.addItem("한국어", "ko")
+         self.language_combo.addItem("English", "en")
+         self.language_combo.setCurrentIndex(self.language_combo.findData(self.language))
+         self.language_combo.currentIndexChanged.connect(self.language_changed)
+-        language_row.addWidget(self.language_combo, 1)
+-        settings_layout.addLayout(language_row)
++        settings_layout.addWidget(self.language_combo)
+         settings_layout.addWidget(self.localized(QLabel(), "trigger_label"))
+         self.trigger = QComboBox()
+         for label, code in TRIGGER_KEYS:
+@@ -729,44 +794,60 @@
+         settings_layout.addWidget(self.trigger)
+         self.record_button = self.button(self.text("record"), self.record_key)
+         settings_layout.addWidget(self.record_button)
+-        self.auto = self.localized(QCheckBox(), "auto")
++        self.auto = self.localized(Toggle(), "auto")
+         self.auto.setChecked(self.autostart_enabled())
+         self.auto.toggled.connect(self.autostart)
+         settings_layout.addWidget(self.auto)
+-        self.reveal = self.localized(QCheckBox(), "reveal")
++        self.reveal = self.localized(Toggle(), "reveal")
+         self.reveal.setChecked(self.settings.value("reveal", False, type=bool))
+         self.reveal.toggled.connect(lambda value: self.settings.setValue("reveal", value))
+         settings_layout.addWidget(self.reveal)
+-        self.notifications = self.localized(QCheckBox(), "notifications")
++        self.notifications = self.localized(Toggle(), "notifications")
+         self.notifications.setChecked(self.settings.value("notify", True, type=bool))
+         self.notifications.toggled.connect(lambda value: self.settings.setValue("notify", value))
+         settings_layout.addWidget(self.notifications)
+-        note = self.localized(QLabel(), "original_note")
+-        note.setObjectName("muted")
+-        note.setWordWrap(True)
+-        settings_layout.addWidget(note)
+         settings_layout.addStretch()
++        workspace_row.addWidget(self.quick_settings)
+         row = QHBoxLayout()
+-        row.addWidget(self.localized(self.button("", self.pick_files), "pick_files"))
+-        row.addWidget(self.localized(self.button("", self.pick_folder), "pick_folder"))
+-        settings_layout.addLayout(row)
++        row.setContentsMargins(12, 16, 12, 0)
++        choose = self.localized(self.button("", self.pick_files), "pick_files")
++        choose.setProperty("primary", True)
++        choose.setIcon(svg_icon(engine.asset("lucide/file-up.svg"), "#ffffff"))
++        self.choose_button = choose
++        row.addWidget(choose)
++        self.folder_button = self.localized(self.button("", self.pick_folder), "pick_folder")
++        self.folder_button.setIcon(svg_icon(engine.asset("lucide/folder-open.svg")))
++        row.addWidget(self.folder_button)
++        self.drop_card.body.addLayout(row)
++        self.selection_label = self.localized(QLabel(), "studio_no_selection")
++        self.selection_label.setAlignment(Qt.AlignCenter)
++        self.selection_label.setObjectName("muted")
++        self.drop_card.body.addWidget(self.selection_label)
+         self.tabs.addTab(settings_page, self.text("settings"))
+ 
+         tools_page = QWidget()
+         tools_layout = QVBoxLayout(tools_page)
+-        tools_layout.setSpacing(10)
++        tools_layout.setContentsMargins(0, 0, 0, 0)
++        tools_layout.setSpacing(16)
+         self.tool_labels = {}
+         for name, (title, package, purpose) in engine.TOOLS.items():
+-            row = QHBoxLayout()
+-            row.addWidget(self.localized(QLabel(), "purpose_" + name, prefix=title + " · "), 1)
++            card = StudioCard()
++            row = QHBoxLayout(card)
++            row.setContentsMargins(22, 20, 22, 20)
++            details = QVBoxLayout()
++            title_label = QLabel(title)
++            title_label.setObjectName("cardTitle")
++            details.addWidget(title_label)
++            details.addWidget(self.localized(QLabel(), "purpose_" + name))
++            row.addLayout(details, 1)
+             row.addWidget(self.localized(self.button("", lambda checked=False, pkg=package:
+                                       QApplication.clipboard().setText(self.install_command(pkg))), "install_command"))
+-            tools_layout.addLayout(row)
++            tools_layout.addWidget(card)
+             status = QLabel()
+             status.setObjectName("muted")
+             status.setWordWrap(True)
+             self.tool_labels[name] = status
+-            tools_layout.addWidget(status)
++            details.addWidget(status)
+         note = self.localized(QLabel(), "tools_note")
+         note.setWordWrap(True)
+         note.setObjectName("muted")
+@@ -777,30 +858,44 @@
+ 
+         history_page = QWidget()
+         history_layout = QVBoxLayout(history_page)
++        history_layout.setContentsMargins(0, 0, 0, 0)
+         self.history = HistoryList()
++        self.history.setItemDelegate(HistoryDelegate(self.history))
+         self.history.itemDoubleClicked.connect(self.open_history_result)
+         history_layout.addWidget(self.history)
+         history_layout.addWidget(self.localized(QLabel(), "recent_note"))
+         self.tabs.addTab(history_page, self.text("history"))
+         about_page = QWidget()
+-        about_layout = QVBoxLayout(about_page)
++        about_outer = QVBoxLayout(about_page)
++        about_outer.setContentsMargins(0, 0, 0, 0)
++        about_card = StudioCard()
++        about_layout = QVBoxLayout(about_card)
++        about_layout.setContentsMargins(30, 30, 30, 30)
+         about = self.localized(QLabel(), "about_text")
+         about.setWordWrap(True)
++        about.setObjectName("aboutBody")
+         about_layout.addWidget(about)
+         about_layout.addWidget(self.localized(self.button("", self.open_licenses), "licenses"))
+-        about_layout.addStretch()
++        about_outer.addWidget(about_card)
++        about_outer.addStretch()
+         self.tabs.addTab(about_page, self.text("about"))
+         self.pdf_panel = PdfToolsPanel(self.language, self)
+-        self.pdf_panel.scroll.widget().layout().setContentsMargins(16, 16, 16, 16)
+-        self.pdf_panel.scroll.widget().layout().setSpacing(12)
++        self.pdf_panel.scroll.widget().layout().setContentsMargins(0, 0, 0, 0)
++        self.pdf_panel.scroll.widget().layout().setSpacing(20)
+         self.pdf_panel.form.setVerticalSpacing(12)
+         self.pdf_panel.form.setHorizontalSpacing(14)
+         self.pdf_panel.result_ready.connect(self.pdf_finished)
+         self.tabs.addTab(self.pdf_panel, self.text("pdf_tools"))
++        self.tabs.currentChanged.connect(self.update_navigation)
++        footer = QHBoxLayout()
+         self.status = QLabel(self.text("ready"))
+         self.status.setObjectName("muted")
+         self.status.setWordWrap(True)
+-        layout.addWidget(self.status)
++        footer.addWidget(self.status, 1)
++        self.original_badge = self.localized(QLabel(), "studio_originals")
++        self.original_badge.setObjectName("muted")
++        footer.addWidget(self.original_badge)
++        layout.addLayout(footer)
+         self.progress = QProgressBar()
+         self.progress.setRange(0, 0)
+         self.progress.hide()
+@@ -822,6 +917,13 @@
+         install_button_motions(self)
+         self.retranslate()
+ 
++    def update_navigation(self, index):
++        for target, button in self.nav_buttons.items():
++            button.setChecked(target == index)
++        keys = {0: "studio_convert", 1: "studio_helpers", 2: "history", 3: "about", 4: "pdf_tools"}
++        self.page_title.setText(self.text(keys[index]))
++        self.page_description.setText(self.text("studio_description_" + str(index)))
++
+     def text(self, message_id, **values):
+         return tr(self.language, message_id, **values)
+ 
+@@ -859,8 +961,13 @@
+             widget.setText(prefix + self.text(key, app=self.app_name()))
+         for index, key in enumerate(("settings", "tools", "history", "about", "pdf_tools")):
+             self.tabs.setTabText(index, self.text(key))
++        for index, key in ((0, "studio_convert"), (1, "studio_helpers"), (2, "history"), (3, "about"), (4, "pdf_tools")):
++            self.nav_buttons[index].setText(self.text(key))
++        self.update_navigation(self.tabs.currentIndex())
++        self.update_selection_label()
+         self.pdf_panel.set_language(self.language)
+         self.update_record_label()
++        self.record_button.setToolTip(self.text("original_note"))
+         self.update_trigger_hint()
+         self.refresh_tools()
+         self.refresh_history()
+@@ -899,23 +1006,38 @@
+     def apply_style(self):
+         style = """
+         QWidget {font-family:'SUIT','Segoe UI','Malgun Gothic';font-size:13px;font-weight:400;color:#242424;}
+-        QMainWindow,QMenu {background:#fafafa;}
+-        QLabel#brand {font-size:24px;font-weight:500;color:#191919;padding-bottom:2px;}
+-        QLabel#muted {color:#626262;font-size:12px;}
+-        QTabWidget::pane {border:0;border-radius:12px;background:#ffffff;}
++        QMainWindow {background:#f6f6f6;}
++        QMenu {background:#fafafa;}
++        QFrame#sidebar {background:#191919;border:0;}
++        QLabel#brand {font-size:24px;font-weight:600;color:#f5f5f5;padding:0 10px 3px 10px;}
++        QLabel#sideCaption {color:#969696;font-size:11px;padding:0 10px;}
++        QLabel#sideMaker {color:#dedede;font-size:12px;padding:0 10px;}
++        QLabel#pageTitle {font-size:29px;font-weight:600;color:#202020;}
++        QLabel#muted {color:#707070;font-size:12px;}
++        QLabel#keyBadge {background:#eeeeee;border-radius:9px;padding:9px 13px;color:#5e5e5e;font-size:11px;}
++        QFrame#studioCard,QFrame#dropCard {background:#ffffff;border:1px solid #e7e7e7;border-radius:18px;}
++        QLabel#cardTitle {font-size:16px;font-weight:600;color:#242424;}
++        QLabel#dropTitle {font-size:21px;font-weight:500;color:#242424;}
++        QLabel#aboutBody {font-size:15px;color:#404040;}
++        QTabWidget::pane {border:0;background:transparent;}
+         QTabBar::tab {background:transparent;padding:12px 12px;color:#626262;font-weight:500;}
+         QTabBar::tab:selected {color:#242424;border-bottom:1px solid #4a4a4a;}
+-        QPushButton {background:#ffffff;border:1px solid #e2e2e2;border-radius:8px;padding:7px 12px;font-weight:500;min-height:18px;}
++        QPushButton {background:#ffffff;border:1px solid #e2e2e2;border-radius:8px;padding:8px 12px;font-weight:500;min-height:18px;}
++        QPushButton[primary="true"] {background:#202020;border-color:#202020;color:#ffffff;}
+         QPushButton:disabled {color:#8a8a8a;}
+         QComboBox:focus,QLineEdit:focus,QSpinBox:focus {border-color:#888888;}
+         QListWidget,QComboBox,QLineEdit,QSpinBox {background:#ffffff;border:1px solid #e2e2e2;border-radius:8px;padding:8px;}
+         QComboBox {padding-right:30px;}
+         QComboBox:disabled {color:#8a8a8a;background:#fafafa;}
+         QComboBox::drop-down {subcontrol-origin:padding;subcontrol-position:top right;width:24px;border:0;background:transparent;}
++        QSpinBox#pdfNumeric {padding-right:28px;min-height:20px;}
++        QSpinBox#pdfNumeric::up-button {subcontrol-origin:padding;subcontrol-position:top right;width:22px;height:18px;border:0;background:transparent;}
++        QSpinBox#pdfNumeric::down-button {subcontrol-origin:padding;subcontrol-position:bottom right;width:22px;height:18px;border:0;background:transparent;}
++        QSpinBox#pdfNumeric::up-arrow,QSpinBox#pdfNumeric::down-arrow {image:none;}
+         QListWidget::item {padding:10px;border-bottom:1px solid #f0f0f0;}
+         QListWidget::item:selected {background:#efefef;color:#242424;}
+         QComboBox QAbstractItemView {background:#ffffff;color:#242424;selection-background-color:#ededed;selection-color:#242424;}
+-        QScrollArea {border:0;background:#ffffff;}
++        QScrollArea {border:0;background:transparent;}
+         QScrollBar:vertical {background:#f7f7f7;width:7px;margin:3px 0;}
+         QScrollBar::handle:vertical {background:#c5c5c5;min-height:24px;border-radius:3px;}
+         QScrollBar::add-line:vertical,QScrollBar::sub-line:vertical {height:0;}
+@@ -1004,6 +1126,7 @@
+         if self.trigger.currentData() == -1:
+             label = self.text("custom_hint", key=self.custom_vk)
+         self.subtitle.setText(self.text("drag_hint", key=label))
++        self.key_badge.setText(self.text("studio_key_badge", key=label))
+ 
+     def open_page(self, index):
+         self.tabs.setCurrentIndex(index)
+@@ -1067,6 +1190,16 @@
+ 
+     def set_files(self, paths):
+         self.paths = list(dict.fromkeys(str(Path(path)) for path in paths))
++        self.update_selection_label()
++        self.drop_card.orbit.respond(engine.targets(self.paths) if self.paths else None)
++
++    def update_selection_label(self):
++        self.selection_label.setText(self.text("file_count", count=len(self.paths)) if self.paths
++                                     else self.text("studio_no_selection"))
++
++    def receive_files(self, paths):
++        self.set_files(paths)
++        self.preview()
+ 
+     def dragEnterEvent(self, event):
+         if event.possibleActions() & Qt.CopyAction and file_urls(event.mimeData()):
+@@ -1097,6 +1230,7 @@
+             # PDFium을 쓰는 두 작업 큐를 동시에 실행하지 않는다.
+             message_dialog(self, self.text("busy_title"), self.text("busy_message")).exec()
+             return
++        self.drop_card.orbit.respond(state="working")
+         for path in paths:
+             self.pending += 1
+ 
+@@ -1115,6 +1249,7 @@
+         self.pending -= 1
+         self.append_record(source, output, error)
+         self.update_status()
++        self.drop_card.orbit.respond(state="error" if error else "complete")
+         if not self.pending:
+             self.progress.hide()
+             self.tray.setToolTip(self.app_name())
+@@ -1124,6 +1259,7 @@
+         # PDF 패널의 자체 작업 큐는 기존 파일 변환 pending에 합산하지 않는다.
+         self.append_record(source, output, error)
+         self.update_status()
++        self.drop_card.orbit.respond(state="error" if error else "complete")
+ 
+     def append_record(self, source, output, error):
+         """두 변환 경로의 결과를 기존 기록 스키마로 저장한다."""
+@@ -1161,6 +1297,13 @@
+             item.setData(Qt.UserRole, row["output"])
+             item.setData(Qt.UserRole + 1, row["error"])
+             item.setData(Qt.UserRole + 2, True)
++            item.setData(Qt.UserRole + 3, {
++                "source": Path(row["source"]).name, "format": Path(row["output"] or row["source"]).suffix[1:].upper(),
++                "time": row["time"].replace("T", "  "),
++                "detail": self.text("history_failed", error=error_text(self.language, row["error"]))
++                if row["error"] else Path(row["output"]).name,
++            })
++            item.setToolTip(row["source"] + "\n" + (error_text(self.language, row["error"]) if row["error"] else row["output"]))
+         if hasattr(self, "history_error"):
+             self.history.addItem(self.text("history_error"))
+ 
+--- 1.4.0/build.py
++++ 내부모션-작업전/build.py
+@@ -72,7 +72,7 @@
+ [Setup]
+ AppId=PUVKID.FlipRing
+ AppName=FlipRing
+-AppVersion=1.4.0
++AppVersion=1.5.0
+ AppPublisher=PUVKID
+ DefaultDirName={{localappdata}}\\Programs\\FlipRing
+ DefaultGroupName=FlipRing
+--- 1.4.0/i18n.py
++++ 내부모션-작업전/i18n.py
+@@ -76,6 +76,22 @@
+     "running_title": ("플립링 실행 중", "FlipRing is running"),
+     "running_message": ("파일을 끌며 Shift를 누르세요. 설정은 트레이 아이콘에 있습니다.", "Hold Shift while dragging a file. Settings are in the system tray."),
+     "external_error": ("외부 도구 또는 시스템 오류: {detail}", "External tool or system error: {detail}"),
++    "studio_workspace": ("파일을 위한 작업 공간", "A workspace for your files"),
++    "studio_maker": ("PUVKID 제작", "Made by PUVKID"),
++    "studio_local": ("무료 · 내 컴퓨터에서 처리", "Free · Processed on your PC"),
++    "studio_convert": ("파일 변환", "Convert files"),
++    "studio_helpers": ("외부 도우미", "Helper tools"),
++    "studio_description_0": ("작업은 가볍게. 파일은 새로운 형식으로.", "Less friction. More possibilities for your files."),
++    "studio_description_1": ("필요한 도구를 연결해 변환 범위를 넓히세요.", "Connect the tools that extend your workflow."),
++    "studio_description_2": ("완료한 작업과 결과 파일을 한곳에서 확인하세요.", "Your completed work and output files, in one place."),
++    "studio_description_3": ("파일 작업을 더 단순하게, 플립링.", "A simpler way to work with files."),
++    "studio_description_4": ("페이지 편집부터 문자 인식까지, 하나의 작업 공간.", "From page editing to text recognition, in one workspace."),
++    "studio_drop_title": ("파일을 놓으면 시작됩니다", "Drop files. Find a new format."),
++    "studio_drop_caption": ("파일을 끌어 놓거나 눌러서 선택하세요.\n변환 휠에서 원하는 형식을 고르면 됩니다.", "Drop files here or click to choose.\nPick an output format in the conversion wheel."),
++    "studio_quick_settings": ("내 방식으로", "Make it yours"),
++    "studio_no_selection": ("이미지 · 문서 · 오디오 · 압축 파일", "Images · Documents · Audio · Archives"),
++    "studio_originals": ("원본은 그대로 보존합니다", "Your originals stay untouched"),
++    "studio_key_badge": ("{key} + 드래그", "{key} + drag"),
+ }
+ 
+ 
+--- 1.4.0/package.py
++++ 내부모션-작업전/package.py
+@@ -11,6 +11,15 @@
+ installer = release / "설치파일" / (name + "-Setup.exe")
+ required = [program / (name + ".exe"), installer]
+ required.append(program / "_internal/assets/combo-chevron.svg")
++lucide_icons = (
++    "arrow-left-right", "scan-text", "rotate-ccw-clock", "sliders-horizontal", "info", "folder-open",
++    "file-up", "check", "x", "arrow-up-right", "plus", "file",
++)
++for icon in lucide_icons:
++    required += [root / "assets/lucide" / (icon + ".svg"),
++                 program / "_internal/assets/lucide" / (icon + ".svg")]
++for filename in ("LICENSE", "원본출처.json"):
++    required += [root / "licenses/Lucide" / filename, program / "licenses/Lucide" / filename]
+ required += [program / "_internal/vendor/tesseract" / filename for filename in (
+     "tesseract.exe", "tessdata/eng.traineddata", "tessdata/kor.traineddata", "tessdata/osd.traineddata",
+ )]
+@@ -19,7 +28,7 @@
+ )]
+ required += [program / "licenses/SUIT" / filename for filename in ("OFL.txt", "원본출처.json")]
+ required += [root / filename for filename in (
+-    "app.py", "i18n.py", "engine.py", "pdf_tools.py", "pdf_panel.py", "test_pdf_tools.py",
++    "app.py", "i18n.py", "studio_ui.py", "engine.py", "pdf_tools.py", "pdf_panel.py", "test_pdf_tools.py",
+     "build.py", "package.py", "test_gui.py", "test_engine.py",
+     "requirements-lock.txt", "빌드방법.md", "사용안내.txt", "검토기록.md", "LICENSE.txt",
+     "assets/NanumGothicBold.ttf", "assets/NanumGothic-OFL.txt", "test-fixtures/sample.heic",
+--- 1.4.0/pdf_panel.py
++++ 내부모션-작업전/pdf_panel.py
+@@ -5,13 +5,15 @@
+ from concurrent.futures import ThreadPoolExecutor
+ from pathlib import Path
+ 
+-from PySide6.QtCore import QObject, Signal, Slot, Qt, QCoreApplication
++from PySide6.QtCore import QObject, Signal, Slot, Qt, QCoreApplication, QPointF
++from PySide6.QtGui import QPainter, QPen, QColor
+ from PySide6.QtWidgets import (
+     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QComboBox,
+     QListWidget, QFileDialog, QLineEdit, QSpinBox, QCheckBox, QProgressBar,
+-    QScrollArea, QFormLayout, QAbstractItemView,
++    QScrollArea, QFormLayout, QAbstractItemView, QStyleOptionSpinBox, QStyle, QAbstractSpinBox,
+ )
+ import pdf_tools
++from studio_ui import StudioCard
+ 
+ 
+ TEXT = {
+@@ -85,6 +87,47 @@
+     finished = Signal(object)
+ 
+ 
++class OptionComboBox(QComboBox):
++    """닫힌 옵션 위의 휠은 설정 변경 대신 부모 스크롤로 전달한다."""
++
++    def wheelEvent(self, event):
++        if self.view().isVisible():
++            super().wheelEvent(event)
++        else:
++            event.ignore()
++
++
++class OptionSpinBox(QSpinBox):
++    """기본 증감 입력은 유지하고 평면 버튼에 화살표만 그린다."""
++
++    def __init__(self, parent=None):
++        super().__init__(parent)
++        self.setObjectName("pdfNumeric")
++
++    def wheelEvent(self, event):
++        event.ignore()
++
++    def paintEvent(self, event):
++        super().paintEvent(event)
++        option = QStyleOptionSpinBox()
++        self.initStyleOption(option)
++        painter = QPainter(self)
++        painter.setRenderHint(QPainter.Antialiasing)
++        for control, flag, direction in ((QStyle.SC_SpinBoxUp, QAbstractSpinBox.StepEnabledFlag.StepUpEnabled, 1),
++                                         (QStyle.SC_SpinBoxDown, QAbstractSpinBox.StepEnabledFlag.StepDownEnabled, -1)):
++            rectangle = self.style().subControlRect(QStyle.CC_SpinBox, option, control, self)
++            if rectangle.isEmpty():
++                continue
++            enabled = self.isEnabled() and bool(self.stepEnabled() & flag)
++            painter.setPen(QPen(QColor("#757575" if enabled else "#bbbbbb"), 1.4,
++                                Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
++            center = rectangle.center()
++            tip = QPointF(center.x(), center.y() - direction * 1.5)
++            painter.drawLine(QPointF(center.x() - 3, center.y() + direction * 1.5), tip)
++            painter.drawLine(tip, QPointF(center.x() + 3, center.y() + direction * 1.5))
++        painter.end()
++
++
+ class PdfToolsPanel(QWidget):
+     result_ready = Signal(str, str, str)
+ 
+@@ -108,24 +151,23 @@
+         self._status_key = "ready"
+         self._status_values = {}
+         self._labels = {}
+-        outer = QVBoxLayout(self)
++        outer = QHBoxLayout(self)
+         outer.setContentsMargins(0, 0, 0, 0)
+-        self.scroll = QScrollArea()
+-        self.scroll.setWidgetResizable(True)
+-        self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+-        outer.addWidget(self.scroll)
+-        host = QWidget()
+-        self.scroll.setWidget(host)
+-        layout = QVBoxLayout(host)
+-        layout.setContentsMargins(12, 12, 12, 12)
+-        layout.setSpacing(9)
++        outer.setSpacing(20)
++        self.sources_card = StudioCard()
++        self.sources_card.setMinimumWidth(280)
++        outer.addWidget(self.sources_card, 1)
++        source_layout = QVBoxLayout(self.sources_card)
++        source_layout.setContentsMargins(22, 22, 22, 22)
++        source_layout.setSpacing(16)
+         self.files_label = QLabel()
+-        layout.addWidget(self.files_label)
++        self.files_label.setObjectName("cardTitle")
++        self.files_label.setWordWrap(True)
++        source_layout.addWidget(self.files_label)
+         self.files = QListWidget()
+         self.files.setSelectionMode(QAbstractItemView.ExtendedSelection)
+-        self.files.setMinimumHeight(90)
+-        self.files.setMaximumHeight(140)
+-        layout.addWidget(self.files)
++        self.files.setMinimumHeight(250)
++        source_layout.addWidget(self.files, 1)
+         row = QHBoxLayout()
+         self.add_button = QPushButton()
+         self.remove_button = QPushButton()
+@@ -137,40 +179,56 @@
+         self.remove_button.clicked.connect(self.remove_files)
+         self.up_button.clicked.connect(lambda: self.move_file(-1))
+         self.down_button.clicked.connect(lambda: self.move_file(1))
+-        layout.addLayout(row)
++        source_layout.addLayout(row)
++        self.options_card = StudioCard()
++        self.options_card.setMinimumWidth(320)
++        outer.addWidget(self.options_card, 1)
++        actions_layout = QVBoxLayout(self.options_card)
++        actions_layout.setContentsMargins(22, 22, 22, 22)
++        actions_layout.setSpacing(15)
++        # 파일 조작과 실행·취소는 고정하고 긴 옵션만 안쪽에서 스크롤한다.
++        self.scroll = QScrollArea()
++        self.scroll.setWidgetResizable(True)
++        self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
++        actions_layout.addWidget(self.scroll, 1)
++        host = QWidget()
++        self.scroll.setWidget(host)
++        layout = QVBoxLayout(host)
++        layout.setContentsMargins(0, 0, 0, 0)
++        layout.setSpacing(15)
+         self.form = QFormLayout()
+         self.form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+-        self.form.setRowWrapPolicy(QFormLayout.WrapLongRows)
+-        self.operation = QComboBox()
++        self.form.setRowWrapPolicy(QFormLayout.WrapAllRows)
++        self.operation = OptionComboBox()
+         for key in ("merge", "split", "extract", "delete", "rotate", "images_to_pdf", "pdf_to_images", "compress", "recognize"):
+             self.operation.addItem(key, key)
+         self._row("operation", self.operation)
+         self.pages = QLineEdit()
+         self._row("pages", self.pages)
+-        self.rotation = QComboBox()
++        self.rotation = OptionComboBox()
+         for angle in (90, 180, 270):
+             self.rotation.addItem(f"{angle}°", angle)
+         self._row("rotation", self.rotation)
+-        self.compression = QComboBox()
++        self.compression = OptionComboBox()
+         for key in ("lossless", "images"):
+             self.compression.addItem(key, key)
+         self._row("compression", self.compression)
+-        self.quality = QSpinBox()
++        self.quality = OptionSpinBox()
+         self.quality.setRange(20, 95)
+         self.quality.setValue(80)
+         self._row("quality", self.quality)
+-        self.dpi = QSpinBox()
++        self.dpi = OptionSpinBox()
+         self.dpi.setRange(60, 600)
+         self.dpi.setValue(200)
+         self.dpi.setSingleStep(25)
+         self._row("dpi", self.dpi)
+-        self.ocr_language = QComboBox()
++        self.ocr_language = OptionComboBox()
+         for label, code in (("bilingual", "kor+eng"), ("korean", "kor"), ("english", "eng")):
+             self.ocr_language.addItem(label, code)
+         self._row("ocr_language", self.ocr_language)
+-        self.output = QComboBox()
++        self.output = OptionComboBox()
+         self._row("output", self.output)
+-        self.psm = QComboBox()
++        self.psm = OptionComboBox()
+         for label, code in (("automatic", 3), ("block", 6), ("sparse", 11)):
+             self.psm.addItem(label, code)
+         self._row("layout", self.psm)
+@@ -189,24 +247,25 @@
+         self.note.setWordWrap(True)
+         self.note.setObjectName("muted")
+         layout.addWidget(self.note)
++        layout.addStretch()
+         row = QHBoxLayout()
+         self.start_button = QPushButton()
++        self.start_button.setProperty("primary", True)
+         self.cancel_button = QPushButton()
+         self.cancel_button.setEnabled(False)
+         self.start_button.clicked.connect(self.start)
+         self.cancel_button.clicked.connect(self.cancel)
+         row.addWidget(self.start_button)
+         row.addWidget(self.cancel_button)
+-        layout.addLayout(row)
++        actions_layout.addLayout(row)
+         self.progress = QProgressBar()
+         self.progress.setRange(0, 100)
+         self.progress.setValue(0)
+         self.progress.hide()
+-        layout.addWidget(self.progress)
++        actions_layout.addWidget(self.progress)
+         self.status = QLabel()
+         self.status.setWordWrap(True)
+-        layout.addWidget(self.status)
+-        layout.addStretch()
++        actions_layout.addWidget(self.status)
+         self.operation.currentIndexChanged.connect(self._options_changed)
+         self.compression.currentIndexChanged.connect(self._options_changed)
+         self.output.currentIndexChanged.connect(self._notes_changed)
+--- 1.4.0/requirements-lock.txt
++++ 내부모션-작업전/requirements-lock.txt
+@@ -1,31 +0,0 @@
+-altgraph==0.17.5
+-charset-normalizer==3.5.2
+-cssselect2==0.10.1
+-et_xmlfile==2.0.0
+-lxml==6.1.3
+-openpyxl==3.1.5
+-packaging==26.3
+-pefile==2024.8.26
+-pi-heif-decoder==1.7.0.post4
+-pillow==13.0.0
+-pyinstaller==6.22.3
+-pyinstaller-hooks-contrib==2026.8
+-pypdf==6.21.1
+-pypdfium2==5.14.0
+-PySide6==6.12.0
+-PySide6_Addons==6.12.0
+-PySide6_Essentials==6.12.0
+-PySide6_Pdf==6.12.0.140
+-PySide6_WebEngine==6.12.0.140
+-python-docx==1.2.0
+-python-pptx==1.0.2
+-pywin32-ctypes==0.2.3
+-rarfile==4.5
+-reportlab==5.0.1
+-setuptools==84.0.0
+-shiboken6==6.12.0
+-svglib==2.3.0
+-tinycss2==1.5.1
+-typing_extensions==4.16.0
+-webencodings==0.6.1
+-xlsxwriter==3.2.9
+--- 1.4.0/studio_ui.py
++++ 내부모션-작업전/studio_ui.py
+@@ -0,0 +1,399 @@
++"""작업 공간의 내비게이션과 파일 상태를 그리는 Qt 전용 구성 요소."""
++from __future__ import annotations
++
++import math
++
++from PySide6.QtCore import Qt, Signal, QVariantAnimation, QEasingCurve, QRectF, QPointF, QSignalBlocker, QSize
++from PySide6.QtGui import QColor, QPainter, QPen, QPainterPath, QFont, QPixmap, QIcon
++from PySide6.QtWidgets import QWidget, QAbstractButton, QFrame, QVBoxLayout, QLabel, QSizePolicy, QCheckBox, QStyledItemDelegate, QStyle
++
++
++def svg_icon(path, color="#5a5a5a"):
++    """공식 SVG 원문은 보존하고 표시 색상만 메모리에서 바꾼다."""
++    pixmap = QPixmap()
++    if not pixmap.loadFromData(path.read_bytes().replace(b"currentColor", color.encode("ascii"))):
++        raise RuntimeError(f"UI icon could not be loaded: {path}")
++    return QIcon(pixmap)
++
++
++class StudioCard(QFrame):
++    def __init__(self, parent=None):
++        super().__init__(parent)
++        self.setObjectName("studioCard")
++        self.setAttribute(Qt.WA_StyledBackground, True)
++
++
++class HistoryDelegate(QStyledItemDelegate):
++    """저장 데이터는 그대로 두고 파일·결과·시각을 구분해 표시한다."""
++
++    def sizeHint(self, option, index):
++        return QSize(280, 86)
++
++    def paint(self, painter, option, index):
++        row = index.data(Qt.UserRole + 3)
++        if not isinstance(row, dict):
++            return super().paint(painter, option, index)
++        painter.save()
++        painter.setRenderHint(QPainter.Antialiasing)
++        rectangle = QRectF(option.rect).adjusted(4, 3, -4, -3)
++        painter.setPen(Qt.NoPen)
++        painter.setBrush(QColor("#eeeeee" if option.state & QStyle.State_Selected else "#ffffff"))
++        painter.drawRoundedRect(rectangle, 10, 10)
++        icon = QRectF(rectangle.left() + 16, rectangle.top() + 17, 42, 44)
++        painter.setBrush(QColor("#f1f1f1"))
++        painter.drawRoundedRect(icon, 9, 9)
++        font = option.font
++        font.setPixelSize(9)
++        font.setWeight(QFont.Medium)
++        painter.setFont(font)
++        painter.setPen(QColor("#666666"))
++        painter.drawText(icon, Qt.AlignCenter, row["format"])
++        left = rectangle.left() + 74
++        width = max(20, rectangle.width() - 94)
++        font.setPixelSize(13)
++        font.setWeight(QFont.Medium)
++        painter.setFont(font)
++        painter.setPen(QColor("#303030"))
++        painter.drawText(QRectF(left, rectangle.top() + 15, width, 22), Qt.AlignLeft | Qt.AlignVCenter,
++                         painter.fontMetrics().elidedText(row["source"], Qt.ElideMiddle, int(width)))
++        font.setPixelSize(11)
++        font.setWeight(QFont.Normal)
++        painter.setFont(font)
++        painter.setPen(QColor("#737373"))
++        detail = row["time"] + "   ·   " + row["detail"]
++        painter.drawText(QRectF(left, rectangle.top() + 40, width, 20), Qt.AlignLeft | Qt.AlignVCenter,
++                         painter.fontMetrics().elidedText(detail, Qt.ElideMiddle, int(width)))
++        painter.restore()
++
++
++class Toggle(QCheckBox):
++    """QCheckBox의 상태·키보드·시그널을 유지하는 작은 전환 스위치."""
++
++    def __init__(self, parent=None):
++        super().__init__(parent)
++        self.amount = 0.0
++        self.setFixedHeight(38)
++        self.setCursor(Qt.PointingHandCursor)
++        self.motion = QVariantAnimation(self)
++        self.motion.setDuration(180)
++        self.motion.setEasingCurve(QEasingCurve.InOutSine)
++        self.motion.valueChanged.connect(self._frame)
++        self.toggled.connect(self._transition)
++
++    def sizeHint(self):
++        return QSize(200, 38)
++
++    def minimumSizeHint(self):
++        return QSize(140, 38)
++
++    def hitButton(self, position):
++        return self.rect().contains(position)
++
++    def _frame(self, value):
++        self.amount = float(value)
++        self.update()
++
++    def _transition(self, checked):
++        self.motion.stop()
++        if not self.isVisible():
++            self.amount = float(checked)
++            self.update()
++            return
++        with QSignalBlocker(self.motion):
++            self.motion.setStartValue(self.amount)
++            self.motion.setEndValue(float(checked))
++            self.motion.setCurrentTime(0)
++        self.motion.start()
++
++    def hideEvent(self, event):
++        self.motion.stop()
++        self.amount = float(self.isChecked())
++        super().hideEvent(event)
++
++    def paintEvent(self, event):
++        painter = QPainter(self)
++        painter.setRenderHint(QPainter.Antialiasing)
++        painter.setPen(QColor("#424242" if self.isEnabled() else "#999999"))
++        painter.drawText(QRectF(0, 0, self.width() - 52, self.height()),
++                         Qt.AlignVCenter | Qt.AlignLeft | Qt.TextWordWrap, self.text())
++        shade = round(220 - 166 * self.amount)
++        painter.setPen(Qt.NoPen)
++        painter.setBrush(QColor(shade, shade, shade))
++        x, y = self.width() - 39, (self.height() - 22) / 2
++        painter.drawRoundedRect(QRectF(x, y, 38, 22), 11, 11)
++        painter.setBrush(QColor("#ffffff"))
++        painter.drawEllipse(QRectF(x + 3 + 16 * self.amount, y + 3, 16, 16))
++        if self.hasFocus():
++            painter.setPen(QPen(QColor("#888888"), 1))
++            painter.setBrush(Qt.NoBrush)
++            painter.drawRoundedRect(QRectF(self.rect()).adjusted(0.5, 0.5, -0.5, -0.5), 6, 6)
++        painter.end()
++
++
++class NavButton(QAbstractButton):
++    """입력 영역을 고정하고 명암만 바꾸는 사이드 내비게이션."""
++
++    def __init__(self, symbol, parent=None):
++        super().__init__(parent)
++        self.symbol = symbol
++        self.svg_icons = None
++        self.hovered = False
++        self.amount = 0.0
++        self.setCheckable(True)
++        self.setAutoExclusive(True)
++        self.setFocusPolicy(Qt.StrongFocus)
++        self.setCursor(Qt.PointingHandCursor)
++        self.setFixedHeight(46)
++        self.motion = QVariantAnimation(self)
++        self.motion.setDuration(170)
++        self.motion.setEasingCurve(QEasingCurve.InOutSine)
++        self.motion.valueChanged.connect(self._frame)
++        self.toggled.connect(self.transition)
++
++    def set_svg(self, path):
++        self.svg_icons = {selected: svg_icon(path, color).pixmap(20, 20)
++                          for selected, color in ((False, "#b8b8b8"), (True, "#f3f3f3"))}
++
++    def _frame(self, value):
++        self.amount = float(value)
++        self.update()
++
++    def transition(self):
++        target = 1.0 if self.hovered or self.isChecked() else 0.0
++        self.motion.stop()
++        if abs(target - self.amount) < 0.001:
++            self.update()
++            return
++        with QSignalBlocker(self.motion):
++            self.motion.setStartValue(self.amount)
++            self.motion.setEndValue(target)
++            self.motion.setCurrentTime(0)
++        self.motion.start()
++
++    def enterEvent(self, event):
++        self.hovered = True
++        self.transition()
++        super().enterEvent(event)
++
++    def leaveEvent(self, event):
++        self.hovered = False
++        self.transition()
++        super().leaveEvent(event)
++
++    def hideEvent(self, event):
++        self.motion.stop()
++        self.amount = 1.0 if self.isChecked() else 0.0
++        self.hovered = False
++        super().hideEvent(event)
++
++    def paintEvent(self, event):
++        painter = QPainter(self)
++        painter.setRenderHint(QPainter.Antialiasing)
++        painter.setPen(Qt.NoPen)
++        painter.setBrush(QColor(255, 255, 255, round(20 * self.amount)))
++        painter.drawRoundedRect(QRectF(self.rect()).adjusted(0, 1, 0, -1), 10, 10)
++        color = QColor("#f3f3f3" if self.isChecked() else "#b8b8b8")
++        painter.setPen(QPen(color, 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
++        painter.setBrush(Qt.NoBrush)
++        if self.svg_icons is not None:
++            painter.drawPixmap(16, round(self.height() / 2 - 10), self.svg_icons[self.isChecked()])
++        font = self.font()
++        font.setWeight(QFont.Medium if self.isChecked() else QFont.Normal)
++        painter.setFont(font)
++        painter.drawText(QRectF(46, 0, self.width() - 58, self.height()), Qt.AlignVCenter | Qt.AlignLeft, self.text())
++        if self.hasFocus():
++            painter.setPen(QPen(QColor("#909090"), 1))
++            painter.drawRoundedRect(QRectF(self.rect()).adjusted(1, 2, -1, -2), 9, 9)
++        painter.end()
++
++
++class OrbitVisual(QWidget):
++    """파일 상태에 반응하는 중심 링. 유한 애니메이션 외에는 다시 그리지 않는다."""
++
++    def __init__(self, parent=None):
++        super().__init__(parent)
++        self.setMinimumSize(240, 220)
++        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
++        self.phase = 0.0
++        self.approach = 0.0
++        self.state = "file"
++        self.formats = ["PNG", "JPG", "PDF", "WEBP"]
++        self.intro = QVariantAnimation(self)
++        self.intro.setDuration(720)
++        self.intro.setEasingCurve(QEasingCurve.OutCubic)
++        self.intro.setStartValue(0.0)
++        self.intro.setEndValue(1.0)
++        self.intro.valueChanged.connect(self._intro_frame)
++        self.motion = QVariantAnimation(self)
++        self.motion.setDuration(230)
++        self.motion.setEasingCurve(QEasingCurve.InOutSine)
++        self.motion.valueChanged.connect(self._approach_frame)
++
++    def _intro_frame(self, value):
++        self.phase = float(value)
++        self.update()
++
++    def _approach_frame(self, value):
++        self.approach = float(value)
++        self.update()
++
++    def set_approach(self, active):
++        target = 1.0 if active else 0.0
++        self.motion.stop()
++        if abs(target - self.approach) < 0.001:
++            return
++        with QSignalBlocker(self.motion):
++            self.motion.setStartValue(self.approach)
++            self.motion.setEndValue(target)
++            self.motion.setCurrentTime(0)
++        self.motion.start()
++
++    def respond(self, formats=None, state="file"):
++        self.state = state
++        if formats:
++            self.formats = [value.upper() for value in formats[:4]]
++        self.intro.stop()
++        self.intro.setCurrentTime(0)
++        # 같은 0시각에서는 신호가 생략되므로 숨김 때 바뀐 그리기값도 직접 맞춘다.
++        self._intro_frame(float(self.intro.currentValue()))
++        self.intro.start()
++
++    def showEvent(self, event):
++        super().showEvent(event)
++        self.respond(state=self.state)
++
++    def hideEvent(self, event):
++        self.intro.stop()
++        self.motion.stop()
++        self.phase = 1.0
++        self.approach = 0.0
++        super().hideEvent(event)
++
++    def paintEvent(self, event):
++        painter = QPainter(self)
++        painter.setRenderHint(QPainter.Antialiasing)
++        center = QPointF(self.width() / 2, self.height() / 2)
++        radius = min(self.width() * 0.32, self.height() * 0.38, 116)
++        radius *= 0.86 + 0.14 * self.phase + 0.055 * self.approach
++        painter.translate(center)
++        painter.setBrush(Qt.NoBrush)
++        painter.setPen(QPen(QColor("#eeeeee"), 1))
++        painter.drawEllipse(QPointF(), radius + 29, radius + 29)
++        painter.drawEllipse(QPointF(), radius + 15, radius + 15)
++        for index in range(3):
++            painter.save()
++            painter.rotate(index * 60 + (1 - self.phase) * 35 + self.approach * 12)
++            painter.setPen(QPen(QColor(120 + index * 35, 120 + index * 35, 120 + index * 35), 1.2))
++            painter.drawEllipse(QRectF(-radius, -radius * 0.46, radius * 2, radius * 0.92))
++            painter.restore()
++        painter.setPen(Qt.NoPen)
++        painter.setBrush(QColor("#202020"))
++        painter.drawEllipse(QPointF(), 35 + self.approach * 3, 35 + self.approach * 3)
++        painter.setPen(QPen(QColor("#ffffff"), 1.7, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
++        painter.setBrush(Qt.NoBrush)
++        if self.state == "complete":
++            path = QPainterPath(QPointF(-12, 0))
++            path.lineTo(-3, 9)
++            path.lineTo(14, -10)
++            painter.drawPath(path)
++        elif self.state == "error":
++            painter.drawLine(-9, -9, 9, 9)
++            painter.drawLine(9, -9, -9, 9)
++        elif self.state == "working":
++            painter.drawArc(QRectF(-13, -13, 26, 26), round(self.phase * 120 * 16), 260 * 16)
++        else:
++            painter.drawRoundedRect(QRectF(-10, -14, 21, 28), 3, 3)
++            painter.drawLine(-5, -4, 6, -4)
++            painter.drawLine(-5, 2, 6, 2)
++            painter.drawLine(-5, 8, 2, 8)
++        font = self.font()
++        font.setPixelSize(10)
++        font.setWeight(QFont.Medium)
++        painter.setFont(font)
++        for index, label in enumerate(self.formats):
++            progress = min(1.0, max(0.0, (self.phase - index * 0.12) / 0.64))
++            if progress <= 0:
++                continue
++            angle = math.radians(-60 + index * 90 + self.approach * 4)
++            distance = (radius + 18) * (0.5 + 0.5 * progress)
++            point = QPointF(math.cos(angle) * distance, math.sin(angle) * distance)
++            rectangle = QRectF(point.x() - 27, point.y() - 12, 54, 24)
++            painter.setPen(QPen(QColor("#e6e6e6"), 1))
++            painter.setBrush(QColor("#ffffff"))
++            painter.drawRoundedRect(rectangle, 12, 12)
++            painter.setPen(QColor("#5a5a5a"))
++            painter.drawText(rectangle, Qt.AlignCenter, label)
++        painter.end()
++
++
++class FileDropCard(StudioCard):
++    clicked = Signal()
++    files_dropped = Signal(list)
++
++    def __init__(self, validator, accept_copy, parent=None):
++        super().__init__(parent)
++        self.validator = validator
++        self.accept_copy = accept_copy
++        self.setObjectName("dropCard")
++        self.setAcceptDrops(True)
++        self.setCursor(Qt.PointingHandCursor)
++        self.setFocusPolicy(Qt.StrongFocus)
++        self.body = QVBoxLayout(self)
++        self.body.setContentsMargins(26, 20, 26, 24)
++        self.body.setSpacing(8)
++        self.orbit = OrbitVisual()
++        self.body.addWidget(self.orbit, 1)
++        self.title = QLabel()
++        self.title.setObjectName("dropTitle")
++        self.title.setAlignment(Qt.AlignCenter)
++        self.body.addWidget(self.title)
++        self.caption = QLabel()
++        self.caption.setObjectName("muted")
++        self.caption.setAlignment(Qt.AlignCenter)
++        self.caption.setWordWrap(True)
++        self.body.addWidget(self.caption)
++
++    def enterEvent(self, event):
++        self.orbit.set_approach(True)
++        super().enterEvent(event)
++
++    def leaveEvent(self, event):
++        self.orbit.set_approach(False)
++        super().leaveEvent(event)
++
++    def dragEnterEvent(self, event):
++        if event.possibleActions() & Qt.CopyAction and self.validator(event.mimeData()):
++            self.accept_copy(event)
++            self.orbit.set_approach(True)
++        else:
++            event.ignore()
++
++    def dragMoveEvent(self, event):
++        self.dragEnterEvent(event)
++
++    def dragLeaveEvent(self, event):
++        self.orbit.set_approach(False)
++        event.accept()
++
++    def dropEvent(self, event):
++        paths = self.validator(event.mimeData())
++        if not paths or not event.possibleActions() & Qt.CopyAction:
++            event.ignore()
++            return
++        self.accept_copy(event)
++        self.orbit.set_approach(False)
++        self.files_dropped.emit(paths)
++
++    def mouseReleaseEvent(self, event):
++        if event.button() == Qt.LeftButton and self.rect().contains(event.position().toPoint()):
++            self.clicked.emit()
++            event.accept()
++        else:
++            super().mouseReleaseEvent(event)
++
++    def keyPressEvent(self, event):
++        if event.key() in (Qt.Key_Return, Qt.Key_Enter, Qt.Key_Space):
++            self.clicked.emit()
++            event.accept()
++        else:
++            super().keyPressEvent(event)
+--- 1.4.0/test_gui.py
++++ 내부모션-작업전/test_gui.py
+@@ -14,12 +14,13 @@
+ from unittest.mock import Mock, patch
+ 
+ from PySide6.QtCore import Qt, QPoint, QPointF, QMimeData, QUrl, QEvent, QAbstractAnimation, QCoreApplication
+-from PySide6.QtGui import QFont, QFontDatabase, QFontInfo, QRawFont, QTextLayout, QPalette, QDragEnterEvent, QDragMoveEvent, QDropEvent, QMouseEvent
++from PySide6.QtGui import QFont, QFontDatabase, QFontInfo, QRawFont, QTextLayout, QPalette, QDragEnterEvent, QDragMoveEvent, QDropEvent, QMouseEvent, QWheelEvent
+ from PySide6.QtTest import QTest, QSignalSpy
+-from PySide6.QtWidgets import QApplication, QFileDialog, QDialogButtonBox, QMessageBox, QStyleOptionComboBox
++from PySide6.QtWidgets import QApplication, QFileDialog, QDialogButtonBox, QMessageBox, QStyleOptionComboBox, QStyleOptionSpinBox
+ from shiboken6 import isValid
+ import app
+ import i18n
++from studio_ui import OrbitVisual
+ from pdf_panel import ERRORS as PDF_ERRORS
+ from pdf_tools import PdfToolError
+ 
+@@ -97,11 +98,15 @@
+         self.wheel.display(QPoint(500, 380), paths or [str(SOURCE)], preview)
+         APPLICATION.processEvents()
+ 
+-    def test_01_compact_settings_and_tray(self):
++    def test_01_studio_workspace_and_tray(self):
+         self.assertEqual(self.window.tabs.count(), 5)
+         self.assertEqual([self.window.tabs.tabText(i) for i in range(4)], ["설정", "도구", "기록", "정보"])
+         self.assertIs(self.window.tabs.widget(4), self.window.pdf_panel)
+-        self.assertLessEqual(self.window.width(), 460)
++        self.assertGreaterEqual(self.window.width(), 960)
++        self.assertEqual(self.window.minimumWidth(), 960)
++        self.assertEqual(self.window.minimumHeight(), 680)
++        self.assertEqual(self.window.sidebar.width(), 204)
++        self.assertFalse(self.window.tabs.tabBar().isVisible())
+         self.assertFalse(hasattr(self.window, "list"))
+         self.window.update_tray_menu()
+         texts = [action.text() for action in self.window.tray_menu.actions()]
+@@ -111,6 +116,399 @@
+         APPLICATION.processEvents()
+         self.assertTrue(self.window.grab().save(str(ROOT / "3차-간단설정.png")))
+         self.window.hide()
++
++    def test_60_sidebar_native_input_maps_all_pages_and_keeps_one_selection(self):
++        self.window.show()
++        self.window.tabs.setCurrentIndex(0)
++        APPLICATION.processEvents()
++        for index in (4, 2, 1, 3, 0):
++            button = self.window.nav_buttons[index]
++            self.assertTrue(all(not pixmap.isNull() for pixmap in button.svg_icons.values()))
++            geometry = button.geometry()
++            QTest.mouseClick(button, Qt.LeftButton)
++            self.assertEqual(self.window.tabs.currentIndex(), index)
++            self.assertTrue(button.isChecked())
++            self.assertEqual(sum(item.isChecked() for item in self.window.nav_buttons.values()), 1)
++            self.assertEqual(button.geometry(), geometry)
++            self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        current = self.window.nav_buttons[0]
++        QTest.mouseClick(current, Qt.LeftButton)
++        self.assertTrue(current.isChecked())
++        target = self.window.nav_buttons[4]
++        target.setEnabled(False)
++        QTest.mouseClick(target, Qt.LeftButton)
++        self.assertEqual(self.window.tabs.currentIndex(), 0)
++        target.setEnabled(True)
++        QTest.keyClick(target, Qt.Key_Space)
++        self.assertEqual(self.window.tabs.currentIndex(), 4)
++        self.assertTrue(target.isChecked())
++        self.window.hide()
++        self.assertTrue(all(button.motion.state() == QAbstractAnimation.Stopped
++                            for button in self.window.nav_buttons.values()))
++
++    def test_61_workspace_drop_and_file_buttons_open_actual_conversion_path(self):
++        self.window.tabs.setCurrentIndex(0)
++        self.window.show()
++        self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        APPLICATION.processEvents()
++        card = self.window.drop_card
++        geometry = card.geometry()
++        mime = mime_for()
++        enter = QDragEnterEvent(QPoint(30, 30), Qt.CopyAction | Qt.MoveAction,
++                                mime, Qt.LeftButton, Qt.ShiftModifier)
++        card.dragEnterEvent(enter)
++        self.assertTrue(enter.isAccepted())
++        self.assertEqual(enter.dropAction(), Qt.CopyAction)
++        with patch.object(self.wheel, "display") as display:
++            drop = drop_at(QPointF(30, 30), mime)
++            card.dropEvent(drop)
++            self.assertTrue(drop.isAccepted())
++            self.assertEqual(drop.dropAction(), Qt.CopyAction)
++            self.assertEqual(self.window.paths, [str(SOURCE)])
++            self.assertEqual(display.call_args.args[1], [str(SOURCE)])
++            self.assertTrue(display.call_args.kwargs["preview"])
++            invalid = drop_at(QPointF(30, 30), mime_for(QUrl("https://example.invalid/file.png")))
++            card.dropEvent(invalid)
++            self.assertFalse(invalid.isAccepted())
++            self.assertEqual(display.call_count, 1)
++            picker = Mock()
++            picker.exec.return_value = QFileDialog.Accepted
++            picker.selectedFiles.return_value = [str(SOURCE2)]
++            with patch.object(self.window, "file_dialog", return_value=picker) as choose:
++                QTest.mouseClick(self.window.choose_button, Qt.LeftButton)
++                choose.assert_called_once_with(False)
++                self.assertEqual(self.window.paths, [str(SOURCE2)])
++                self.assertEqual(display.call_count, 2)
++                choose.reset_mock()
++                QTest.mouseClick(self.window.folder_button, Qt.LeftButton)
++                choose.assert_called_once_with(True)
++                self.assertEqual(display.call_count, 3)
++                choose.reset_mock()
++                QTest.keyClick(card, Qt.Key_Return)
++                choose.assert_called_once_with(False)
++                self.assertEqual(display.call_count, 4)
++        self.assertEqual(card.geometry(), geometry)
++        self.assertEqual(hashlib.sha256(SOURCE.read_bytes()).hexdigest(), ORIGINAL_HASH)
++        self.window.hide()
++
++    def test_62_pill_toggle_preserves_checkbox_signals_keyboard_and_motion(self):
++        toggle = app.Toggle()
++        toggle.setText("알림 Notifications")
++        toggle.resize(230, 38)
++        toggle.show()
++        APPLICATION.processEvents()
++        signals = QSignalSpy(toggle.toggled)
++        try:
++            geometry = toggle.geometry()
++            QTest.mouseClick(toggle, Qt.LeftButton)
++            self.assertTrue(toggle.isChecked())
++            self.assertEqual(signals.count(), 1)
++            toggle.motion.setCurrentTime(90)
++            middle = toggle.amount
++            self.assertGreater(middle, 0)
++            self.assertLess(middle, 1)
++            QTest.keyClick(toggle, Qt.Key_Space)
++            self.assertFalse(toggle.isChecked())
++            self.assertEqual(signals.count(), 2)
++            self.assertAlmostEqual(toggle.amount, middle)
++            toggle.motion.setCurrentTime(toggle.motion.duration())
++            self.assertAlmostEqual(toggle.amount, 0)
++            toggle.setEnabled(False)
++            QTest.mouseClick(toggle, Qt.LeftButton)
++            self.assertEqual(signals.count(), 2)
++            self.assertEqual(toggle.geometry(), geometry)
++        finally:
++            toggle.hide()
++            self.assertEqual(toggle.motion.state(), QAbstractAnimation.Stopped)
++            toggle.deleteLater()
++
++    def test_63_center_ring_has_distinct_finite_frames_and_continuous_drag_retarget(self):
++        self.window.tabs.setCurrentIndex(0)
++        self.window.show()
++        self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        APPLICATION.processEvents()
++        orbit = self.window.drop_card.orbit
++        geometry = orbit.geometry()
++        orbit.respond(["jpg", "pdf", "webp", "png"])
++        images = []
++        for milliseconds in (0, 220, 720):
++            orbit.intro.setCurrentTime(milliseconds)
++            filename = ROOT / f"Studio-ring-intro-{milliseconds}.png"
++            self.assertTrue(orbit.grab().save(str(filename)))
++            images.append(filename.read_bytes())
++        self.assertEqual(len(set(images)), 3)
++        self.assertEqual(orbit.intro.state(), QAbstractAnimation.Stopped)
++        orbit.set_approach(True)
++        orbit.motion.setCurrentTime(115)
++        current = orbit.approach
++        self.assertGreater(current, 0)
++        self.assertLess(current, 1)
++        orbit.set_approach(False)
++        self.assertAlmostEqual(orbit.approach, current)
++        orbit.motion.setCurrentTime(230)
++        self.assertAlmostEqual(orbit.approach, 0)
++        orbit.respond(state="complete")
++        orbit.intro.setCurrentTime(720)
++        self.assertEqual(orbit.state, "complete")
++        self.assertTrue(orbit.grab().save(str(ROOT / "Studio-ring-complete.png")))
++        self.assertEqual(orbit.geometry(), geometry)
++        self.window.hide()
++        self.assertEqual(orbit.intro.state(), QAbstractAnimation.Stopped)
++        self.assertEqual(orbit.motion.state(), QAbstractAnimation.Stopped)
++
++    def test_64_studio_resize_languages_and_pdf_columns_keep_controls_accessible(self):
++        original_size = self.window.size()
++        panel = self.window.pdf_panel
++        operation = panel.operation.currentData()
++        self.window.show()
++        try:
++            for language in ("ko", "en"):
++                self.window.set_language(language)
++                for width, height in ((960, 680), (1280, 840)):
++                    self.window.resize(width, height)
++                    self.window.tabs.setCurrentIndex(0)
++                    self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++                    APPLICATION.processEvents()
++                    self.assertEqual(self.window.sidebar.width(), 204)
++                    self.assertGreaterEqual(self.window.drop_card.width(), 300)
++                    self.assertTrue(self.window.quick_settings.rect().contains(self.window.notifications.geometry()))
++                    self.assertEqual(self.window.page_title.text(), self.window.text("studio_convert"))
++                    self.window.tabs.setCurrentIndex(4)
++                    panel.operation.setCurrentIndex(panel.operation.findData("recognize"))
++                    self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++                    APPLICATION.processEvents()
++                    self.assertLess(panel.sources_card.geometry().left(), panel.options_card.geometry().left())
++                    self.assertFalse(panel.scroll.horizontalScrollBar().isVisible())
++                    self.assertTrue(panel.operation.isEnabled())
++                    self.assertEqual(self.window.page_title.text(), self.window.text("pdf_tools"))
++                    if width == 1280:
++                        self.assertTrue(self.window.grab().save(str(ROOT / f"Studio-{language}-pdf-ocr.png")))
++            self.window.tabs.setCurrentIndex(0)
++            self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++            self.assertTrue(self.window.grab().save(str(ROOT / "Studio-en-workspace.png")))
++        finally:
++            panel.operation.setCurrentIndex(panel.operation.findData(operation))
++            self.window.resize(original_size)
++            self.window.set_language("ko")
++            self.window.hide()
++
++    def test_65_history_visual_rows_keep_schema_roles_and_full_path_tooltip(self):
++        previous = self.window.records
++        previous_language = self.window.language
++        row = {"time": "2026-10-21T05:00:00", "source": str(SOURCE),
++               "output": str(ROOT / "완료한 결과.pdf"), "error": ""}
++        self.window.records = [row]
++        try:
++            self.window.refresh_history()
++            item = self.window.history.item(0)
++            self.assertEqual(set(row), {"time", "source", "output", "error"})
++            self.assertEqual(item.data(Qt.UserRole), row["output"])
++            self.assertEqual(item.data(Qt.UserRole + 1), "")
++            self.assertIs(item.data(Qt.UserRole + 2), True)
++            self.assertEqual(item.data(Qt.UserRole + 3)["source"], SOURCE.name)
++            self.assertIn(row["output"], item.toolTip())
++            self.window.tabs.setCurrentIndex(2)
++            self.window.show()
++            self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++            APPLICATION.processEvents()
++            self.assertGreaterEqual(self.window.history.visualItemRect(item).height(), 80)
++            self.assertTrue(self.window.grab().save(str(ROOT / "Studio-history-rows.png")))
++            for language in ("ko", "en"):
++                self.window.set_language(language)
++                self.window.refresh_history()
++                self.assertEqual(self.window.history.item(0).toolTip(), row["source"] + "\n" + row["output"])
++            for stored, language in ((PDF_ERRORS["invalid_pdf"][0], "en"),
++                                     (PDF_ERRORS["invalid_pdf"][1], "ko")):
++                failed = dict(row, error=stored)
++                self.window.records = [failed]
++                self.window.set_language(language)
++                self.window.refresh_history()
++                item = self.window.history.item(0)
++                self.assertEqual(item.toolTip(), failed["source"] + "\n" + i18n.error_text(language, stored))
++                self.assertEqual(item.data(Qt.UserRole), failed["output"])
++                self.assertEqual(item.data(Qt.UserRole + 1), stored)
++                self.assertEqual(failed, dict(row, error=stored))
++            diagnostic = "Unrecognized OS diagnostic / 원문 진단 0x1234"
++            for language in ("ko", "en"):
++                self.window.records = [dict(row, error=diagnostic)]
++                self.window.set_language(language)
++                self.window.refresh_history()
++                tooltip = self.window.history.item(0).toolTip()
++                self.assertEqual(tooltip.split("\n", 1)[0], row["source"])
++                self.assertIn(diagnostic, tooltip)
++                self.assertEqual(self.window.history.item(0).data(Qt.UserRole + 1), diagnostic)
++        finally:
++            self.window.records = previous
++            self.window.set_language(previous_language)
++            self.window.refresh_history()
++            self.window.hide()
++
++    def test_66_ring_zero_time_hide_and_reentry_keep_value_and_drawing_in_sync(self):
++        orbit = OrbitVisual()
++        orbit.resize(360, 300)
++        orbit.show()
++        APPLICATION.processEvents()
++        try:
++            for _ in range(3):
++                orbit.intro.stop()
++                orbit.intro.setCurrentTime(0)
++                orbit.hide()
++                self.assertEqual(orbit.phase, 1)
++                self.assertEqual(orbit.intro.currentValue(), 0)
++                orbit.show()
++                self.assertEqual(orbit.intro.currentTime(), 0)
++                self.assertEqual(orbit.phase, orbit.intro.currentValue())
++                self.assertEqual(orbit.phase, 0)
++                orbit.respond()
++                self.assertEqual(orbit.phase, 0)
++                orbit.intro.setCurrentTime(220)
++                self.assertAlmostEqual(orbit.phase, orbit.intro.currentValue())
++                self.assertGreater(orbit.phase, 0)
++                self.assertLess(orbit.phase, 1)
++                orbit.intro.setCurrentTime(720)
++                self.assertEqual(orbit.phase, 1)
++                self.assertEqual(orbit.intro.state(), QAbstractAnimation.Stopped)
++        finally:
++            orbit.hide()
++            self.assertEqual(orbit.intro.state(), QAbstractAnimation.Stopped)
++            self.assertEqual(orbit.motion.state(), QAbstractAnimation.Stopped)
++            orbit.deleteLater()
++
++    def test_67_ocr_controls_stay_fully_exposed_while_only_options_scroll(self):
++        panel = self.window.pdf_panel
++        previous_size = self.window.size()
++        previous_operation = panel.operation.currentData()
++        buttons = (panel.add_button, panel.remove_button, panel.up_button,
++                   panel.down_button, panel.start_button, panel.cancel_button)
++        self.window.tabs.setCurrentIndex(4)
++        self.window.show()
++        self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        panel.operation.setCurrentIndex(panel.operation.findData("recognize"))
++        try:
++            for language in ("ko", "en"):
++                self.window.set_language(language)
++                for width, height in ((960, 680), (1080, 780), (1280, 840)):
++                    self.window.resize(width, height)
++                    APPLICATION.processEvents()
++                    positions = [button.mapTo(panel, QPoint()) for button in buttons]
++                    for value in (0, panel.scroll.verticalScrollBar().maximum()):
++                        panel.scroll.verticalScrollBar().setValue(value)
++                        APPLICATION.processEvents()
++                        for number, button in enumerate(buttons):
++                            with self.subTest(language=language, size=(width, height), scroll=value, button=button.text()):
++                                self.assertTrue(button.isVisible())
++                                self.assertTrue(button.visibleRegion().contains(button.rect()), "버튼 일부가 화면 밖에 가려졌습니다")
++                                self.assertTrue(panel.rect().contains(button.mapTo(panel, button.rect().topLeft())))
++                                self.assertTrue(panel.rect().contains(button.mapTo(panel, button.rect().bottomRight())))
++                                self.assertEqual(button.mapTo(panel, QPoint()), positions[number])
++                    if width == 960:
++                        self.assertTrue(self.window.grab().save(str(ROOT / f"Studio-{language}-ocr-fixed-controls.png")))
++        finally:
++            panel.operation.setCurrentIndex(panel.operation.findData(previous_operation))
++            self.window.resize(previous_size)
++            self.window.set_language("ko")
++            self.window.hide()
++
++    def test_68_dpi_flat_buttons_keep_visible_arrows_mouse_keys_and_limits(self):
++        panel = self.window.pdf_panel
++        previous = panel.operation.currentData()
++        value = panel.dpi.value()
++        self.window.tabs.setCurrentIndex(4)
++        self.window.show()
++        self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        panel.operation.setCurrentIndex(panel.operation.findData("recognize"))
++        panel.scroll.verticalScrollBar().setValue(0)
++        APPLICATION.processEvents()
++        spin = panel.dpi
++        try:
++            spin.clearFocus()
++            self.window.nav_buttons[4].setFocus()
++            APPLICATION.processEvents()
++            image = spin.grab().toImage()
++            self.assertTrue(all(image.pixelColor(image.width() - 2, y).red() >= 200
++                                for y in range(5, image.height() - 5)), "증감 영역에 강한 입체 외곽선이 남았습니다")
++            option = QStyleOptionSpinBox()
++            spin.initStyleOption(option)
++            up = spin.style().subControlRect(app.QStyle.CC_SpinBox, option, app.QStyle.SC_SpinBoxUp, spin)
++            down = spin.style().subControlRect(app.QStyle.CC_SpinBox, option, app.QStyle.SC_SpinBoxDown, spin)
++            for rectangle in (up, down):
++                self.assertTrue(spin.rect().contains(rectangle))
++                center = rectangle.center()
++                self.assertGreater(sum(image.pixelColor(x, y).red() < 180
++                                       for x in range(center.x() - 4, center.x() + 5)
++                                       for y in range(center.y() - 3, center.y() + 4)), 3)
++            geometry = spin.geometry()
++            spin.setValue(200)
++            QTest.keyClick(spin, Qt.Key_Up)
++            self.assertEqual(spin.value(), 225)
++            QTest.keyClick(spin, Qt.Key_Down)
++            self.assertEqual(spin.value(), 200)
++            QTest.mouseClick(spin, Qt.LeftButton, pos=up.center())
++            self.assertEqual(spin.value(), 225)
++            QTest.mouseClick(spin, Qt.LeftButton, pos=down.center())
++            self.assertEqual(spin.value(), 200)
++            spin.setValue(600)
++            QTest.mouseClick(spin, Qt.LeftButton, pos=up.center())
++            self.assertEqual(spin.value(), 600)
++            spin.setValue(60)
++            QTest.mouseClick(spin, Qt.LeftButton, pos=down.center())
++            self.assertEqual(spin.value(), 60)
++            self.assertEqual(spin.geometry(), geometry)
++            self.assertTrue(spin.grab().save(str(ROOT / "Studio-dpi-flat-buttons.png")))
++        finally:
++            spin.setValue(value)
++            panel.operation.setCurrentIndex(panel.operation.findData(previous))
++            self.window.hide()
++
++    def test_69_pdf_option_wheel_scrolls_without_changing_focused_or_unfocused_values(self):
++        panel = self.window.pdf_panel
++        previous_size = self.window.size()
++        previous_operation = panel.operation.currentData()
++        self.window.resize(960, 680)
++        self.window.tabs.setCurrentIndex(4)
++        self.window.show()
++        self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        panel.operation.setCurrentIndex(panel.operation.findData("recognize"))
++        APPLICATION.processEvents()
++        try:
++            for focused in (False, True):
++                for widget in (panel.output, panel.dpi):
++                    panel.scroll.ensureWidgetVisible(widget)
++                    (widget if focused else self.window.nav_buttons[4]).setFocus()
++                    APPLICATION.processEvents()
++                    scrollbar = panel.scroll.verticalScrollBar()
++                    before_scroll = scrollbar.value()
++                    before_value = widget.currentData() if hasattr(widget, "currentData") else widget.value()
++                    direction = -120 if before_scroll < scrollbar.maximum() else 120
++                    position = widget.mapTo(self.window, widget.rect().center())
++                    QTest.wheelEvent(self.window.windowHandle(), QPointF(position), QPoint(0, direction))
++                    APPLICATION.processEvents()
++                    after_value = widget.currentData() if hasattr(widget, "currentData") else widget.value()
++                    self.assertEqual(after_value, before_value, "옵션 위 스크롤이 값을 바꿨습니다")
++                    self.assertNotEqual(scrollbar.value(), before_scroll, "휠이 옵션 스크롤로 전달되지 않았습니다")
++            panel.scroll.ensureWidgetVisible(panel.output)
++            panel.output.setCurrentIndex(panel.output.findData("pdf"))
++            QTest.keyClick(panel.output, Qt.Key_Down)
++            self.assertEqual(panel.output.currentData(), "txt")
++            QTest.keyClick(panel.output, Qt.Key_Up)
++            self.assertEqual(panel.output.currentData(), "pdf")
++            panel.output.showPopup()
++            APPLICATION.processEvents()
++            self.assertTrue(panel.output.view().isVisible())
++            target = panel.output.model().index(panel.output.findData("txt"), 0)
++            activated = QSignalSpy(panel.output.activated)
++            QTest.mouseMove(panel.output.view().viewport(),
++                            pos=panel.output.view().visualRect(target).center())
++            QTest.mouseClick(panel.output.view().viewport(), Qt.LeftButton,
++                             pos=panel.output.view().visualRect(target).center())
++            self.assertEqual(panel.output.currentData(), "txt")
++            self.assertEqual(activated.count(), 1)
++            self.assertFalse(panel.output.view().isVisible())
++        finally:
++            panel.output.hidePopup()
++            panel.operation.setCurrentIndex(panel.operation.findData(previous_operation))
++            self.window.resize(previous_size)
++            self.window.hide()
+ 
+     def test_02_common_formats_preserved(self):
+         self.show_wheel([str(SOURCE), str(SOURCE2), str(SOURCE)])
+--- 1.4.0/파일목록.json
++++ 내부모션-작업전/파일목록.json
+@@ -1,13 +1,13 @@
+ [
+   {
+     "path": "app.py",
+-    "bytes": 57554,
+-    "sha256": "4fde31515627bed86258d01251fb653767800005b22297c6a552f4efcb09fc3b"
++    "bytes": 65789,
++    "sha256": "db66ffd7a6f6e6b1f47589e2ed5c8f9a6d1df3c8855286960cd1e27d237e9944"
+   },
+   {
+     "path": "build.py",
+     "bytes": 6727,
+-    "sha256": "514bf3e3ca1599dee5d8bc54dac4d55bb3cd22740512f3bf095ac7a61344f00a"
++    "sha256": "50ddb1a6c1759b30d10150f5d44738edb72ee53b139e54975c9ec0ab45193a0c"
+   },
+   {
+     "path": "engine.py",
+@@ -16,23 +16,18 @@
+   },
+   {
+     "path": "i18n.py",
+-    "bytes": 12995,
+-    "sha256": "242abd4700912d2d7b8505a521d9c3d90c7ec6c6442f14b2cadd1a551cd2f580"
+-  },
+-  {
+-    "path": "LICENSE.txt",
+-    "bytes": 1396,
+-    "sha256": "8c7b2363b1bd25e3428416587833dbe61098d211f30420582879ec4810cbf52f"
++    "bytes": 14757,
++    "sha256": "9de696a5036297c4c45419272084544e53d4713a479617ae64245b5437cd780b"
+   },
+   {
+     "path": "package.py",
+-    "bytes": 6573,
+-    "sha256": "2100e60ab0205719d500784c774a6eebbf9573164055ae77a46fdbd6acc899b0"
++    "bytes": 7083,
++    "sha256": "c03bfbc2f6f188e76a4187bcd72e9bcee200eadb91f8e294d25f18fa8d4bbd0b"
+   },
+   {
+     "path": "pdf_panel.py",
+-    "bytes": 21137,
+-    "sha256": "65e08796aa43be0f4b1935da14489455766d919970c02097315c16491aa478b1"
++    "bytes": 23908,
++    "sha256": "24a6ea470567446e5a44b340ffc2e5b1298fd071171e888ef6196a5886f08342"
+   },
+   {
+     "path": "pdf_tools.py",
+@@ -40,9 +35,9 @@
+     "sha256": "dffbfb2f945bf8830841d870407050fc4bf98025354b14a9ab1ef936251b8274"
+   },
+   {
+-    "path": "requirements-lock.txt",
+-    "bytes": 644,
+-    "sha256": "57a5e9a4c46e8212dccdab7557b87f6bc44047a55958afdb6d899a6f3c4feecb"
++    "path": "studio_ui.py",
++    "bytes": 15640,
++    "sha256": "3a1413904c3e9eba337eace67fab2b6c9575e89b1ed95bc796da48a43a4d6d89"
+   },
+   {
+     "path": "test_engine.py",
+@@ -51,8 +46,8 @@
+   },
+   {
+     "path": "test_gui.py",
+-    "bytes": 80013,
+-    "sha256": "6d153d00d3bee713381584d602096653dd0aa8eeb64bd14b4dcae810144dd71a"
++    "bytes": 102408,
++    "sha256": "3e87d95d9da8c60fbf4a0b09b1bd48a6671481de4cef5b1f3fd6883e1446bdde"
+   },
+   {
+     "path": "test_pdf_tools.py",

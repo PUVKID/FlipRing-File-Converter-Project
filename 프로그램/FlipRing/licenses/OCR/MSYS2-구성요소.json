@@ -1,0 +1,1792 @@
+{
+  "exact_binary_matched_package_count": 25,
+  "permissive_version_declared_package_count": 2,
+  "exact_packages": [
+    {
+      "package": "libarchive",
+      "dlls": [
+        "libarchive-13.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-libarchive-3.8.8-2-any.pkg.tar.zst",
+          "sha256": "25dd8243853b7a744c40aa5dcbfbc91116ee527b9c2e6ee6ee2f7300085611ca",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-libarchive"
+        ],
+        "pkgbase": [
+          "mingw-w64-libarchive"
+        ],
+        "xdata": [
+          "pkgtype=pkg"
+        ],
+        "pkgver": [
+          "3.8.8-2"
+        ],
+        "pkgdesc": [
+          "Multi-format archive and compression library (mingw-w64)"
+        ],
+        "url": [
+          "https://www.libarchive.org/"
+        ],
+        "builddate": [
+          "1782631822"
+        ],
+        "packager": [
+          "CI (https://github.com/msys2/msys2-autobuild/actions/runs/28315148190/job/83886907207)"
+        ],
+        "size": [
+          "5380188"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:BSD-2-Clause"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-cc-libs",
+          "mingw-w64-x86_64-bzip2",
+          "mingw-w64-x86_64-expat",
+          "mingw-w64-x86_64-libb2",
+          "mingw-w64-x86_64-libiconv",
+          "mingw-w64-x86_64-lz4",
+          "mingw-w64-x86_64-openssl",
+          "mingw-w64-x86_64-pcre2",
+          "mingw-w64-x86_64-xz",
+          "mingw-w64-x86_64-zlib",
+          "mingw-w64-x86_64-zstd"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-cmake",
+          "mingw-w64-x86_64-ninja"
+        ]
+      },
+      "binary_sha256": "25dd8243853b7a744c40aa5dcbfbc91116ee527b9c2e6ee6ee2f7300085611ca",
+      "binary_filename": "mingw-w64-x86_64-libarchive-3.8.8-2-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-libarchive-3.8.8-2.src.tar.zst",
+      "source_sha256": "e1874222820a00e0d008bc1f04decec7d098c67f8c15d891b8dd5461f5ea259a",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-libarchive-3.8.8-2.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libarchive-3.8.8-2-any.pkg.tar.zst"
+    },
+    {
+      "package": "libb2",
+      "dlls": [
+        "libb2-1.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-libb2-0.98.1-3-any.pkg.tar.zst",
+          "sha256": "3c898f08c5f19e25dc6d7e39aa36b6f323141f0e62c5c50f089cd3f89711854c",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-libb2"
+        ],
+        "pkgbase": [
+          "mingw-w64-libb2"
+        ],
+        "xdata": [
+          "pkgtype=pkg"
+        ],
+        "pkgver": [
+          "0.98.1-3"
+        ],
+        "pkgdesc": [
+          "C library providing BLAKE2b, BLAKE2s, BLAKE2bp, BLAKE2sp hash functions (mingw-w64)"
+        ],
+        "url": [
+          "https://blake2.net/"
+        ],
+        "builddate": [
+          "1756728749"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/dc632d99/17377189342)"
+        ],
+        "size": [
+          "89231"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "custom:CC0"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-cc-libs"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-autotools",
+          "mingw-w64-x86_64-cc"
+        ]
+      },
+      "binary_sha256": "3c898f08c5f19e25dc6d7e39aa36b6f323141f0e62c5c50f089cd3f89711854c",
+      "binary_filename": "mingw-w64-x86_64-libb2-0.98.1-3-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-libb2-0.98.1-3.src.tar.zst",
+      "source_sha256": "2069710882bfe0b70872b32c558af9895a37f742a11e0cb15f80dd7eedaf5717",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-libb2-0.98.1-3.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libb2-0.98.1-3-any.pkg.tar.zst"
+    },
+    {
+      "package": "brotli",
+      "dlls": [
+        "libbrotlicommon.dll",
+        "libbrotlidec.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-brotli-1.2.0-1-any.pkg.tar.zst",
+          "sha256": "f5f2f7e723a08378241d15f0537386950c1a48e2d82bc47bedd632bd61852aba",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-brotli"
+        ],
+        "pkgbase": [
+          "mingw-w64-brotli"
+        ],
+        "xdata": [
+          "pkgtype=split"
+        ],
+        "pkgver": [
+          "1.2.0-1"
+        ],
+        "pkgdesc": [
+          "Brotli compression library (mingw-w64)"
+        ],
+        "url": [
+          "https://github.com/google/brotli"
+        ],
+        "builddate": [
+          "1762401428"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/db1199d2/19124245426)"
+        ],
+        "size": [
+          "2200645"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:MIT"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-cmake",
+          "mingw-w64-x86_64-ninja"
+        ]
+      },
+      "binary_sha256": "f5f2f7e723a08378241d15f0537386950c1a48e2d82bc47bedd632bd61852aba",
+      "binary_filename": "mingw-w64-x86_64-brotli-1.2.0-1-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-brotli-1.2.0-1.src.tar.zst",
+      "source_sha256": "2f0f93875aac21990d20f1eaf0ad8b970eb6f186c663c77ae47aaaf9e5711fcf",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-brotli-1.2.0-1.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-brotli-1.2.0-1-any.pkg.tar.zst"
+    },
+    {
+      "package": "bzip2",
+      "dlls": [
+        "libbz2-1.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-bzip2-1.0.8-4-any.pkg.tar.zst",
+          "sha256": "123768f30ae14ba654a6feb70f8526146a331bc85f831a91a549ffb3f6cbffc7",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-bzip2-1.0.8-3-any.pkg.tar.zst",
+          "sha256": "653ec97c18dc139ca94e2b4b9d161a9b4d9e77ceb18dfb064eb95ef2a71171b6",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-bzip2"
+        ],
+        "pkgbase": [
+          "mingw-w64-bzip2"
+        ],
+        "pkgver": [
+          "1.0.8-3"
+        ],
+        "pkgdesc": [
+          "A high-quality data compression program (mingw-w64)"
+        ],
+        "url": [
+          "https://sourceware.org/bzip2/"
+        ],
+        "builddate": [
+          "1695797836"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/a79a8c4c/6322014468)"
+        ],
+        "size": [
+          "493207"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "custom"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-gcc-libs"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-autotools"
+        ]
+      },
+      "binary_sha256": "653ec97c18dc139ca94e2b4b9d161a9b4d9e77ceb18dfb064eb95ef2a71171b6",
+      "binary_filename": "mingw-w64-x86_64-bzip2-1.0.8-3-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-bzip2-1.0.8-3.src.tar.zst",
+      "source_sha256": "b818b3d164cd409b1fd883e3ecc056c5bc4d6cad408e871f2781bc11faf5a413",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-bzip2-1.0.8-3.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-bzip2-1.0.8-3-any.pkg.tar.zst"
+    },
+    {
+      "package": "curl-winssl",
+      "dlls": [
+        "libcurl-4.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-curl-winssl-8.21.0-2-any.pkg.tar.zst",
+          "sha256": "5bc07a331bd27e299dddbcbd6c62d2edaba3da0c09a70ab30d8c71307d1156fd",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-curl-winssl"
+        ],
+        "pkgbase": [
+          "mingw-w64-curl"
+        ],
+        "xdata": [
+          "pkgtype=split"
+        ],
+        "pkgver": [
+          "8.21.0-2"
+        ],
+        "pkgdesc": [
+          "Command line tool and library for transferring data with URLs (mingw-w64)"
+        ],
+        "url": [
+          "https://curl.se/"
+        ],
+        "builddate": [
+          "1783323591"
+        ],
+        "packager": [
+          "CI (https://github.com/msys2/msys2-autobuild/actions/runs/28774032409/job/85313814973)"
+        ],
+        "size": [
+          "4274433"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:MIT"
+        ],
+        "conflict": [
+          "mingw-w64-x86_64-curl",
+          "mingw-w64-x86_64-curl-gnutls",
+          "mingw-w64-x86_64-wcurl"
+        ],
+        "provides": [
+          "mingw-w64-x86_64-curl",
+          "mingw-w64-x86_64-wcurl"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-cc-libs",
+          "mingw-w64-x86_64-c-ares",
+          "mingw-w64-x86_64-brotli",
+          "mingw-w64-x86_64-libidn2",
+          "mingw-w64-x86_64-libpsl",
+          "mingw-w64-x86_64-zlib",
+          "mingw-w64-x86_64-zstd",
+          "mingw-w64-x86_64-libssh2-wincng"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-cmake",
+          "mingw-w64-x86_64-ninja",
+          "mingw-w64-x86_64-ca-certificates",
+          "mingw-w64-x86_64-libssh2",
+          "mingw-w64-x86_64-openssl",
+          "mingw-w64-x86_64-nghttp2",
+          "mingw-w64-x86_64-ngtcp2",
+          "mingw-w64-x86_64-nghttp3",
+          "mingw-w64-x86_64-gnutls",
+          "mingw-w64-x86_64-nghttp2",
+          "mingw-w64-x86_64-nghttp3",
+          "mingw-w64-x86_64-ngtcp2"
+        ]
+      },
+      "binary_sha256": "5bc07a331bd27e299dddbcbd6c62d2edaba3da0c09a70ab30d8c71307d1156fd",
+      "binary_filename": "mingw-w64-x86_64-curl-winssl-8.21.0-2-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-curl-8.21.0-2.src.tar.zst",
+      "source_sha256": "1f393077535ab17389e1fec0a685f83bff3e8fcae0e11d8fc40df227881d704c",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-curl-8.21.0-2.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-curl-winssl-8.21.0-2-any.pkg.tar.zst"
+    },
+    {
+      "package": "libdeflate",
+      "dlls": [
+        "libdeflate.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-libdeflate-1.26-1-any.pkg.tar.zst",
+          "sha256": "aa0d9b5e2d0413d5e01745a48ef0c8fa293172d48c13f87b61ada627ab7407ad",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-libdeflate-1.25-1-any.pkg.tar.zst",
+          "sha256": "75f921f6db5713c3a5d7d8e058684a9c5d31efe6eda131e0d05f408ed74f7475",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-libdeflate"
+        ],
+        "pkgbase": [
+          "mingw-w64-libdeflate"
+        ],
+        "xdata": [
+          "pkgtype=pkg"
+        ],
+        "pkgver": [
+          "1.25-1"
+        ],
+        "pkgdesc": [
+          "Heavily optimized library for DEFLATE/zlib/gzip compression and decompression (mingw-w64)"
+        ],
+        "url": [
+          "https://github.com/ebiggers/libdeflate"
+        ],
+        "builddate": [
+          "1762196437"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/db1199d2/19046008984)"
+        ],
+        "size": [
+          "385982"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:MIT"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-cmake",
+          "mingw-w64-x86_64-ninja"
+        ]
+      },
+      "binary_sha256": "75f921f6db5713c3a5d7d8e058684a9c5d31efe6eda131e0d05f408ed74f7475",
+      "binary_filename": "mingw-w64-x86_64-libdeflate-1.25-1-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-libdeflate-1.25-1.src.tar.zst",
+      "source_sha256": "53b756599ad6e44975bfe3224475a395e6b1c1c22783ae1216c5553fbfb8d746",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-libdeflate-1.25-1.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libdeflate-1.25-1-any.pkg.tar.zst"
+    },
+    {
+      "package": "expat",
+      "dlls": [
+        "libexpat-1.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-expat-2.8.2-1-any.pkg.tar.zst",
+          "sha256": "9f25550c738b7695164f4ea237af40512d7c63b4cd97aa417f3e0214930aca4f",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-expat"
+        ],
+        "pkgbase": [
+          "mingw-w64-expat"
+        ],
+        "xdata": [
+          "pkgtype=pkg"
+        ],
+        "pkgver": [
+          "2.8.2-1"
+        ],
+        "pkgdesc": [
+          "An XML parser library (mingw-w64)"
+        ],
+        "url": [
+          "https://libexpat.github.io/"
+        ],
+        "builddate": [
+          "1782464057"
+        ],
+        "packager": [
+          "CI (https://github.com/msys2/msys2-autobuild/actions/runs/28225880878/job/83617594768)"
+        ],
+        "size": [
+          "829273"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:MIT"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-cmake",
+          "mingw-w64-x86_64-ninja"
+        ]
+      },
+      "binary_sha256": "9f25550c738b7695164f4ea237af40512d7c63b4cd97aa417f3e0214930aca4f",
+      "binary_filename": "mingw-w64-x86_64-expat-2.8.2-1-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-expat-2.8.2-1.src.tar.zst",
+      "source_sha256": "e81ebe8069473b2ca011a01bdb95ab01a58b46395d37f9af3e74d9bd1b2648ea",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-expat-2.8.2-1.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-expat-2.8.2-1-any.pkg.tar.zst"
+    },
+    {
+      "package": "libiconv",
+      "dlls": [
+        "libiconv-2.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-libiconv-1.19-1-any.pkg.tar.zst",
+          "sha256": "21e334d0911f25de75d3e18e0697648bcecfa9658256d600cad0827d719c2f35",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-libiconv"
+        ],
+        "pkgbase": [
+          "mingw-w64-libiconv"
+        ],
+        "xdata": [
+          "pkgtype=split"
+        ],
+        "pkgver": [
+          "1.19-1"
+        ],
+        "pkgdesc": [
+          "Character encoding conversion library (mingw-w64)"
+        ],
+        "url": [
+          "https://www.gnu.org/software/libiconv/"
+        ],
+        "builddate": [
+          "1773477932"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/5e407709/23084514348)"
+        ],
+        "size": [
+          "2558477"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:LGPL-2.1-or-later",
+          "documentation:spdx:GPL-3.0-or-later"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-autotools",
+          "mingw-w64-x86_64-gettext-tools",
+          "mingw-w64-x86_64-gperf"
+        ]
+      },
+      "binary_sha256": "21e334d0911f25de75d3e18e0697648bcecfa9658256d600cad0827d719c2f35",
+      "binary_filename": "mingw-w64-x86_64-libiconv-1.19-1-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-libiconv-1.19-1.src.tar.zst",
+      "source_sha256": "74428280c17094da5b702c29b2e1a0abae59556ea5dfdd65705cc8ccc1e000fb",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-libiconv-1.19-1.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libiconv-1.19-1-any.pkg.tar.zst"
+    },
+    {
+      "package": "libidn2",
+      "dlls": [
+        "libidn2-0.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-libidn2-2.3.8-4-any.pkg.tar.zst",
+          "sha256": "f98a157446f9ac35465022e329cdaf6169b0c9fa19837e9d80aff9d4e5109013",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-libidn2"
+        ],
+        "pkgbase": [
+          "mingw-w64-libidn2"
+        ],
+        "xdata": [
+          "pkgtype=pkg"
+        ],
+        "pkgver": [
+          "2.3.8-4"
+        ],
+        "pkgdesc": [
+          "Implementation of the Stringprep, Punycode and IDNA specifications (mingw-w64)"
+        ],
+        "url": [
+          "https://www.gnu.org/software/libidn/#libidn2"
+        ],
+        "builddate": [
+          "1759596954"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/c6213b4d/18246305820)"
+        ],
+        "size": [
+          "774125"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:GPL-2.0-or-later",
+          "spdx:LGPL-3.0-or-later"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-gettext-runtime",
+          "mingw-w64-x86_64-libiconv",
+          "mingw-w64-x86_64-libunistring"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-autotools",
+          "mingw-w64-x86_64-gettext-tools",
+          "mingw-w64-x86_64-gtk-doc"
+        ]
+      },
+      "binary_sha256": "f98a157446f9ac35465022e329cdaf6169b0c9fa19837e9d80aff9d4e5109013",
+      "binary_filename": "mingw-w64-x86_64-libidn2-2.3.8-4-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-libidn2-2.3.8-4.src.tar.zst",
+      "source_sha256": "cd83e8514fbeb6a4499299b88691b9b9ecc3114cca1e2be4f6c54aab6ae9ddd0",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-libidn2-2.3.8-4.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libidn2-2.3.8-4-any.pkg.tar.zst"
+    },
+    {
+      "package": "gettext-runtime",
+      "dlls": [
+        "libintl-8.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-gettext-runtime-1.0-1-any.pkg.tar.zst",
+          "sha256": "be68d7f260633284b910c588c6d82ee304a81c8817a686d2cd9df83f872c27af",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-gettext-runtime"
+        ],
+        "pkgbase": [
+          "mingw-w64-gettext"
+        ],
+        "xdata": [
+          "pkgtype=split"
+        ],
+        "pkgver": [
+          "1.0-1"
+        ],
+        "pkgdesc": [
+          "GNU internationalization runtime library (mingw-w64)"
+        ],
+        "url": [
+          "https://www.gnu.org/software/gettext/"
+        ],
+        "builddate": [
+          "1769861809"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/59a03c95/21544284235)"
+        ],
+        "size": [
+          "2823016"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:GPL-3.0-or-later AND LGPL-2.1-or-later"
+        ],
+        "conflict": [
+          "mingw-w64-x86_64-gettext<=0.22.4-3"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-cc-libs",
+          "mingw-w64-x86_64-libiconv"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-autotools",
+          "mingw-w64-x86_64-ncurses",
+          "mingw-w64-x86_64-libiconv",
+          "groff"
+        ]
+      },
+      "binary_sha256": "be68d7f260633284b910c588c6d82ee304a81c8817a686d2cd9df83f872c27af",
+      "binary_filename": "mingw-w64-x86_64-gettext-runtime-1.0-1-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-gettext-1.0-1.src.tar.zst",
+      "source_sha256": "cca0d0c8f60353faccc5ad40405240014e4a7ccc8b1c6ca9f4626aef3097d26e",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-gettext-1.0-1.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-gettext-runtime-1.0-1-any.pkg.tar.zst"
+    },
+    {
+      "package": "jbigkit",
+      "dlls": [
+        "libjbig-0.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-jbigkit-2.1-6-any.pkg.tar.zst",
+          "sha256": "3db9e32abca5d208920a096e5ae01952f2d8a361780428b9646b6da6750f7321",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-jbigkit-2.1-5-any.pkg.tar.zst",
+          "sha256": "3343b02d3b5e5e44304d68f0122f2de1faba2df6c180b8ddc8ef01f9ad5fe75a",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-jbigkit"
+        ],
+        "pkgbase": [
+          "mingw-w64-jbigkit"
+        ],
+        "pkgver": [
+          "2.1-5"
+        ],
+        "pkgdesc": [
+          "Data compression library/utilities for bi-level high-resolution images (mingw-w64)"
+        ],
+        "url": [
+          "https://www.cl.cam.ac.uk/~mgk25/jbigkit/"
+        ],
+        "builddate": [
+          "1692352061"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/0af6deb9/5901145911)"
+        ],
+        "size": [
+          "459163"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:GPL-2.0"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-gcc-libs"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-libtool"
+        ]
+      },
+      "binary_sha256": "3343b02d3b5e5e44304d68f0122f2de1faba2df6c180b8ddc8ef01f9ad5fe75a",
+      "binary_filename": "mingw-w64-x86_64-jbigkit-2.1-5-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-jbigkit-2.1-5.src.tar.zst",
+      "source_sha256": "402e264e13ffd10424d3217e83076d9e1e3ab0db16303a33d42a4bd4cda4088b",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-jbigkit-2.1-5.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-jbigkit-2.1-5-any.pkg.tar.zst"
+    },
+    {
+      "package": "leptonica",
+      "dlls": [
+        "libleptonica-6.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-leptonica-1.87.0-2-any.pkg.tar.zst",
+          "sha256": "741e6ef13b7994dd2ce166135f32e3c6c1bc4eeb7b657242a8aaf3b479a04d7f",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-leptonica-1.87.0-1-any.pkg.tar.zst",
+          "sha256": "702d6ee60255b083aa37a3cbbe1a53ef253d9119204d0478d025efea2d0c91f9",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-leptonica"
+        ],
+        "pkgbase": [
+          "mingw-w64-leptonica"
+        ],
+        "xdata": [
+          "pkgtype=pkg"
+        ],
+        "pkgver": [
+          "1.87.0-1"
+        ],
+        "pkgdesc": [
+          "An open source C library for efficient image processing and image analysis operations (mingw-w64)"
+        ],
+        "url": [
+          "http://www.leptonica.org"
+        ],
+        "builddate": [
+          "1767086067"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/08a109fc/20593013287)"
+        ],
+        "size": [
+          "5547106"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:BSD-2-Clause"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-giflib",
+          "mingw-w64-x86_64-libjpeg-turbo",
+          "mingw-w64-x86_64-libpng",
+          "mingw-w64-x86_64-libtiff",
+          "mingw-w64-x86_64-libwebp",
+          "mingw-w64-x86_64-openjpeg2",
+          "mingw-w64-x86_64-zlib"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-cmake",
+          "mingw-w64-x86_64-ninja"
+        ],
+        "checkdepend": [
+          "mingw-w64-x86_64-gnuplot"
+        ]
+      },
+      "binary_sha256": "702d6ee60255b083aa37a3cbbe1a53ef253d9119204d0478d025efea2d0c91f9",
+      "binary_filename": "mingw-w64-x86_64-leptonica-1.87.0-1-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-leptonica-1.87.0-1.src.tar.zst",
+      "source_sha256": "956dd40b8213863ec55fe7a6a36bd501782f315306c5dae1cad8abc405979b7c",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-leptonica-1.87.0-1.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-leptonica-1.87.0-1-any.pkg.tar.zst"
+    },
+    {
+      "package": "lerc",
+      "dlls": [
+        "libLerc.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-lerc-4.1.1-1-any.pkg.tar.zst",
+          "sha256": "5bc170650bc02812a7c674a5f7b8ff2781b4bfa259ab2da2264c3008e2a04c72",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-lerc"
+        ],
+        "pkgbase": [
+          "mingw-w64-lerc"
+        ],
+        "xdata": [
+          "pkgtype=pkg"
+        ],
+        "pkgver": [
+          "4.1.1-1"
+        ],
+        "pkgdesc": [
+          "Limited Error Raster Compression library (mingw-w64)"
+        ],
+        "url": [
+          "https://github.com/Esri/lerc"
+        ],
+        "builddate": [
+          "1783407939"
+        ],
+        "packager": [
+          "CI (https://github.com/msys2/msys2-autobuild/actions/runs/28847968752/job/85556200187)"
+        ],
+        "size": [
+          "1914423"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:Apache-2.0"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-cc-libs"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-cmake",
+          "mingw-w64-x86_64-ninja"
+        ]
+      },
+      "binary_sha256": "5bc170650bc02812a7c674a5f7b8ff2781b4bfa259ab2da2264c3008e2a04c72",
+      "binary_filename": "mingw-w64-x86_64-lerc-4.1.1-1-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-lerc-4.1.1-1.src.tar.zst",
+      "source_sha256": "697824f8dba0b297949b294d7f850a21dfa817802cf91f3a73b6192a7c234f46",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-lerc-4.1.1-1.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-lerc-4.1.1-1-any.pkg.tar.zst"
+    },
+    {
+      "package": "lz4",
+      "dlls": [
+        "liblz4.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-lz4-1.10.0-1-any.pkg.tar.zst",
+          "sha256": "a4c5a3bcd26111554c87591275b8a681bfa4473d1607647e24c22ef6213c055c",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-lz4"
+        ],
+        "pkgbase": [
+          "mingw-w64-lz4"
+        ],
+        "xdata": [
+          "pkgtype=pkg"
+        ],
+        "pkgver": [
+          "1.10.0-1"
+        ],
+        "pkgdesc": [
+          "Very fast lossless compression algorithm (mingw-w64)"
+        ],
+        "url": [
+          "https://lz4.github.io/lz4/"
+        ],
+        "builddate": [
+          "1721693305"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/00495cb2/10050214050)"
+        ],
+        "size": [
+          "1637855"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "BSD",
+          "GPL2"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc"
+        ],
+        "checkdepend": [
+          "diffutils"
+        ]
+      },
+      "binary_sha256": "a4c5a3bcd26111554c87591275b8a681bfa4473d1607647e24c22ef6213c055c",
+      "binary_filename": "mingw-w64-x86_64-lz4-1.10.0-1-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-lz4-1.10.0-1.src.tar.zst",
+      "source_sha256": "d5cccad7b20a3e5d0cd59ebb6abb0819e8fe21c1cda4c2427161bbd416e9c08d",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-lz4-1.10.0-1.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-lz4-1.10.0-1-any.pkg.tar.zst"
+    },
+    {
+      "package": "xz",
+      "dlls": [
+        "liblzma-5.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-xz-5.8.3-1-any.pkg.tar.zst",
+          "sha256": "075bfaf1c7527f2fdd02ad5b973378e1e8d426ba7b614f122cebd81a8fe5d1c1",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-xz"
+        ],
+        "pkgbase": [
+          "mingw-w64-xz"
+        ],
+        "xdata": [
+          "pkgtype=pkg"
+        ],
+        "pkgver": [
+          "5.8.3-1"
+        ],
+        "pkgdesc": [
+          "Library and command line tools for XZ and LZMA compressed files (mingw-w64)"
+        ],
+        "url": [
+          "https://tukaani.org/xz"
+        ],
+        "builddate": [
+          "1775017550"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/b28ef76c/23831775366)"
+        ],
+        "size": [
+          "3110363"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:0BSD AND LGPL-2.1-or-later AND GPL-2.0-or-later"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-gettext-runtime"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-autotools",
+          "mingw-w64-x86_64-gettext-tools",
+          "mingw-w64-x86_64-doxygen",
+          "po4a"
+        ]
+      },
+      "binary_sha256": "075bfaf1c7527f2fdd02ad5b973378e1e8d426ba7b614f122cebd81a8fe5d1c1",
+      "binary_filename": "mingw-w64-x86_64-xz-5.8.3-1-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-xz-5.8.3-1.src.tar.zst",
+      "source_sha256": "a6096b17f7144d3ec4a35f70ebdc0819df0f6ed331f53b04d2a4452d5b66ed55",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-xz-5.8.3-1.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-xz-5.8.3-1-any.pkg.tar.zst"
+    },
+    {
+      "package": "openjpeg2",
+      "dlls": [
+        "libopenjp2-7.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-openjpeg2-2.5.4-2-any.pkg.tar.zst",
+          "sha256": "32f8f5dc7df9f1f2d57157717136fbba431e15bc000420c953c00ffdf76ecde4",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-openjpeg2"
+        ],
+        "pkgbase": [
+          "mingw-w64-openjpeg2"
+        ],
+        "xdata": [
+          "pkgtype=pkg"
+        ],
+        "pkgver": [
+          "2.5.4-2"
+        ],
+        "pkgdesc": [
+          "An open source JPEG 2000 codec (mingw-w64)"
+        ],
+        "url": [
+          "https://www.openjpeg.org/"
+        ],
+        "builddate": [
+          "1758893236"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/ecd1d51f/18039013654)"
+        ],
+        "size": [
+          "2334615"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:BSD-2-Clause"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-cc-libs",
+          "mingw-w64-x86_64-lcms2",
+          "mingw-w64-x86_64-libtiff",
+          "mingw-w64-x86_64-libpng",
+          "mingw-w64-x86_64-zlib"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-cmake",
+          "mingw-w64-x86_64-ninja"
+        ]
+      },
+      "binary_sha256": "32f8f5dc7df9f1f2d57157717136fbba431e15bc000420c953c00ffdf76ecde4",
+      "binary_filename": "mingw-w64-x86_64-openjpeg2-2.5.4-2-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-openjpeg2-2.5.4-2.src.tar.zst",
+      "source_sha256": "88be024421b79a557ea9cc94932806f5daddcae5d917895d81ac974df7f38b24",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-openjpeg2-2.5.4-2.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-openjpeg2-2.5.4-2-any.pkg.tar.zst"
+    },
+    {
+      "package": "libpng",
+      "dlls": [
+        "libpng16-16.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-libpng-1.6.58-1-any.pkg.tar.zst",
+          "sha256": "d8ae6066f99b3a04b83b8013b554a26a205d7e68580b80823c173ed045ba76a5",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-libpng"
+        ],
+        "pkgbase": [
+          "mingw-w64-libpng"
+        ],
+        "xdata": [
+          "pkgtype=pkg"
+        ],
+        "pkgver": [
+          "1.6.58-1"
+        ],
+        "pkgdesc": [
+          "A collection of routines used to create PNG format graphics (mingw-w64)"
+        ],
+        "url": [
+          "http://www.libpng.org/pub/png/libpng.html"
+        ],
+        "builddate": [
+          "1776436516"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/3e3ad5a1/24570439897)"
+        ],
+        "size": [
+          "2662476"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "custom"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-cc-libs",
+          "mingw-w64-x86_64-zlib"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-autotools"
+        ]
+      },
+      "binary_sha256": "d8ae6066f99b3a04b83b8013b554a26a205d7e68580b80823c173ed045ba76a5",
+      "binary_filename": "mingw-w64-x86_64-libpng-1.6.58-1-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-libpng-1.6.58-1.src.tar.zst",
+      "source_sha256": "9e985fc4cef509ec689f982dc6a948e9a8ee5184db25d65e9dd4c21872092348",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-libpng-1.6.58-1.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libpng-1.6.58-1-any.pkg.tar.zst"
+    },
+    {
+      "package": "libpsl",
+      "dlls": [
+        "libpsl-5.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-libpsl-0.21.5-3-any.pkg.tar.zst",
+          "sha256": "2a86f7ce3cd3fabff7eb8e5c0d3eb1134808881a44c3838e1b518b75cb402e35",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-libpsl"
+        ],
+        "pkgbase": [
+          "mingw-w64-libpsl"
+        ],
+        "xdata": [
+          "pkgtype=pkg"
+        ],
+        "pkgver": [
+          "0.21.5-3"
+        ],
+        "pkgdesc": [
+          "Public Suffix List library (mingw-w64)"
+        ],
+        "url": [
+          "https://rockdaboot.github.io/libpsl/"
+        ],
+        "builddate": [
+          "1732820506"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/a6b3079a/12073274117)"
+        ],
+        "size": [
+          "277657"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:MIT"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-libiconv",
+          "mingw-w64-x86_64-libidn2",
+          "mingw-w64-x86_64-libunistring",
+          "mingw-w64-x86_64-gettext-runtime"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-meson",
+          "mingw-w64-x86_64-ninja",
+          "mingw-w64-x86_64-pkgconf",
+          "mingw-w64-x86_64-python",
+          "mingw-w64-x86_64-gettext-tools"
+        ]
+      },
+      "binary_sha256": "2a86f7ce3cd3fabff7eb8e5c0d3eb1134808881a44c3838e1b518b75cb402e35",
+      "binary_filename": "mingw-w64-x86_64-libpsl-0.21.5-3-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-libpsl-0.21.5-3.src.tar.zst",
+      "source_sha256": "102b4ab4c60322162e808c5c81f545438c346c659e8fb63e0851066f07a0e76b",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-libpsl-0.21.5-3.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libpsl-0.21.5-3-any.pkg.tar.zst"
+    },
+    {
+      "package": "libtiff",
+      "dlls": [
+        "libtiff-6.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-libtiff-4.7.2-2-any.pkg.tar.zst",
+          "sha256": "e330307e569ea912f6911d6ceae994d96ac68c27b4860c1f805ce9078439786c",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-libtiff-4.7.2-1-any.pkg.tar.zst",
+          "sha256": "ebc466fa5664c1528834c59ee7134ba57df6db224e503b690870e2c613f30c3e",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-libtiff"
+        ],
+        "pkgbase": [
+          "mingw-w64-libtiff"
+        ],
+        "xdata": [
+          "pkgtype=split"
+        ],
+        "pkgver": [
+          "4.7.2-1"
+        ],
+        "pkgdesc": [
+          "Library for manipulation of TIFF images (mingw-w64)"
+        ],
+        "url": [
+          "https://libtiff.gitlab.io/libtiff/"
+        ],
+        "builddate": [
+          "1783083370"
+        ],
+        "packager": [
+          "CI (https://github.com/msys2/msys2-autobuild/actions/runs/28661920870/job/85004365524)"
+        ],
+        "size": [
+          "3322718"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:MIT"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-cc-libs",
+          "mingw-w64-x86_64-jbigkit",
+          "mingw-w64-x86_64-lerc",
+          "mingw-w64-x86_64-libjpeg-turbo",
+          "mingw-w64-x86_64-libdeflate",
+          "mingw-w64-x86_64-libwebp",
+          "mingw-w64-x86_64-xz",
+          "mingw-w64-x86_64-zlib",
+          "mingw-w64-x86_64-zstd"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-autotools",
+          "mingw-w64-x86_64-python-sphinx"
+        ]
+      },
+      "binary_sha256": "ebc466fa5664c1528834c59ee7134ba57df6db224e503b690870e2c613f30c3e",
+      "binary_filename": "mingw-w64-x86_64-libtiff-4.7.2-1-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-libtiff-4.7.2-1.src.tar.zst",
+      "source_sha256": "11f3bdc23a154a5cea2f8fffeab3e2a118bd773d2769e1dcea926ff02f2cf3e2",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-libtiff-4.7.2-1.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libtiff-4.7.2-1-any.pkg.tar.zst"
+    },
+    {
+      "package": "libunistring",
+      "dlls": [
+        "libunistring-5.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-libunistring-1.4.2-1-any.pkg.tar.zst",
+          "sha256": "c940cf52fb2b579baa596d3c1d911f7544cbf90f8bd19c260377aa115c65b059",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-libunistring"
+        ],
+        "pkgbase": [
+          "mingw-w64-libunistring"
+        ],
+        "xdata": [
+          "pkgtype=pkg"
+        ],
+        "pkgver": [
+          "1.4.2-1"
+        ],
+        "pkgdesc": [
+          "Library for manipulating Unicode strings and C strings. (mingw-w64)"
+        ],
+        "url": [
+          "https://www.gnu.org/software/libunistring"
+        ],
+        "builddate": [
+          "1776624318"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/actions/runs/24636365904/job/72032462295)"
+        ],
+        "size": [
+          "6633599"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:LGPL-3.0-or-later OR GPL-3.0-or-later"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-libiconv"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-autotools"
+        ]
+      },
+      "binary_sha256": "c940cf52fb2b579baa596d3c1d911f7544cbf90f8bd19c260377aa115c65b059",
+      "binary_filename": "mingw-w64-x86_64-libunistring-1.4.2-1-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-libunistring-1.4.2-1.src.tar.zst",
+      "source_sha256": "a5bafb360d5c13c5c52ef071d5a8288ce2345346b902f20ed6e9322766ec60eb",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-libunistring-1.4.2-1.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libunistring-1.4.2-1-any.pkg.tar.zst"
+    },
+    {
+      "package": "libwebp",
+      "dlls": [
+        "libwebp-7.dll",
+        "libwebpmux-3.dll",
+        "libsharpyuv-0.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-libwebp-1.6.0-1-any.pkg.tar.zst",
+          "sha256": "360b1690d41eb497dfe50526460a2424600a6a806cbb76c5b0fec9f14623ac59",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-libwebp"
+        ],
+        "pkgbase": [
+          "mingw-w64-libwebp"
+        ],
+        "xdata": [
+          "pkgtype=pkg"
+        ],
+        "pkgver": [
+          "1.6.0-1"
+        ],
+        "pkgdesc": [
+          "A library to encode and decode images in WebP format (mingw-w64)"
+        ],
+        "url": [
+          "https://developers.google.com/speed/webp/"
+        ],
+        "builddate": [
+          "1752174466"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/70dec0bd/16203711503)"
+        ],
+        "size": [
+          "4105222"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:BSD-3-Clause"
+        ],
+        "provides": [
+          "mingw-w64-x86_64-libsharpyuv"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-giflib",
+          "mingw-w64-x86_64-libjpeg-turbo",
+          "mingw-w64-x86_64-libpng",
+          "mingw-w64-x86_64-libtiff"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-cmake",
+          "mingw-w64-x86_64-ninja"
+        ]
+      },
+      "binary_sha256": "360b1690d41eb497dfe50526460a2424600a6a806cbb76c5b0fec9f14623ac59",
+      "binary_filename": "mingw-w64-x86_64-libwebp-1.6.0-1-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-libwebp-1.6.0-1.src.tar.zst",
+      "source_sha256": "c8c63f98e018a7595d22e8a3e65b7caf83345fed666866a6e67d153b16f48141",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-libwebp-1.6.0-1.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libwebp-1.6.0-1-any.pkg.tar.zst"
+    },
+    {
+      "package": "zstd",
+      "dlls": [
+        "libzstd.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-zstd-1.5.7-2-any.pkg.tar.zst",
+          "sha256": "1add6705b344664f6aca108c85f79ab5bdd9e1162662bb06a4cf40a34f6e0907",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-zstd"
+        ],
+        "pkgbase": [
+          "mingw-w64-zstd"
+        ],
+        "xdata": [
+          "pkgtype=pkg"
+        ],
+        "pkgver": [
+          "1.5.7-2"
+        ],
+        "pkgdesc": [
+          "Zstandard - Fast real-time compression algorithm (mingw-w64)"
+        ],
+        "url": [
+          "https://facebook.github.io/zstd/"
+        ],
+        "builddate": [
+          "1777662937"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/actions/runs/25228967898/job/73979493998)"
+        ],
+        "size": [
+          "3734402"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:BSD-3-Clause OR GPL-2.0-or-later"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-cc-libs"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-cmake",
+          "mingw-w64-x86_64-ninja"
+        ]
+      },
+      "binary_sha256": "1add6705b344664f6aca108c85f79ab5bdd9e1162662bb06a4cf40a34f6e0907",
+      "binary_filename": "mingw-w64-x86_64-zstd-1.5.7-2-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-zstd-1.5.7-2.src.tar.zst",
+      "source_sha256": "306797282df799e95d550e6d0bb4b0a7b848027b8e13893a24236e060837c217",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-zstd-1.5.7-2.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-zstd-1.5.7-2-any.pkg.tar.zst"
+    },
+    {
+      "package": "libssh2-wincng",
+      "dlls": [
+        "libssh2-1.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-libssh2-wincng-1.11.1-2-any.pkg.tar.zst",
+          "sha256": "3c5e60ffbe4789f97b0defe01f52cfcaf8191bb19c0d070083b21506bf0fc0c1",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-libssh2-wincng"
+        ],
+        "pkgbase": [
+          "mingw-w64-libssh2"
+        ],
+        "xdata": [
+          "pkgtype=split"
+        ],
+        "pkgver": [
+          "1.11.1-2"
+        ],
+        "pkgdesc": [
+          "A library implementing the SSH2 protocol as defined by Internet Drafts (mingw-w64)"
+        ],
+        "url": [
+          "https://libssh2.org/"
+        ],
+        "builddate": [
+          "1769693249"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/59a03c95/21477774111)"
+        ],
+        "size": [
+          "905729"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:BSD-3-Clause"
+        ],
+        "conflict": [
+          "mingw-w64-x86_64-libssh2"
+        ],
+        "provides": [
+          "mingw-w64-x86_64-libssh2"
+        ],
+        "depend": [
+          "mingw-w64-x86_64-zlib"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-autotools",
+          "mingw-w64-x86_64-openssl",
+          "mingw-w64-x86_64-zlib"
+        ]
+      },
+      "binary_sha256": "3c5e60ffbe4789f97b0defe01f52cfcaf8191bb19c0d070083b21506bf0fc0c1",
+      "binary_filename": "mingw-w64-x86_64-libssh2-wincng-1.11.1-2-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-libssh2-1.11.1-2.src.tar.zst",
+      "source_sha256": "bb78f8354441190221ece18a96c09f631fe02648f5dd7d1e247ae8d00a9fea5f",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-libssh2-1.11.1-2.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libssh2-wincng-1.11.1-2-any.pkg.tar.zst"
+    },
+    {
+      "package": "zlib",
+      "dlls": [
+        "zlib1.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-zlib-1.3.2-2-any.pkg.tar.zst",
+          "sha256": "9e75842a070ba648e986e12424e1c92c9d7d77200e85f6a34eeb600819f2e694",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-zlib"
+        ],
+        "pkgbase": [
+          "mingw-w64-zlib"
+        ],
+        "xdata": [
+          "pkgtype=split"
+        ],
+        "pkgver": [
+          "1.3.2-2"
+        ],
+        "pkgdesc": [
+          "Compression library implementing the deflate compression method found in gzip and PKZIP (mingw-w64)"
+        ],
+        "url": [
+          "https://www.zlib.net/"
+        ],
+        "builddate": [
+          "1772701644"
+        ],
+        "packager": [
+          "CI (msys2/msys2-autobuild/ad23bc5d/22710411548)"
+        ],
+        "size": [
+          "439244"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:Zlib"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-autotools",
+          "mingw-w64-x86_64-bzip2"
+        ]
+      },
+      "binary_sha256": "9e75842a070ba648e986e12424e1c92c9d7d77200e85f6a34eeb600819f2e694",
+      "binary_filename": "mingw-w64-x86_64-zlib-1.3.2-2-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-zlib-1.3.2-2.src.tar.zst",
+      "source_sha256": "eef69dea52357e01b272d6fd6dc4d7c0773f71260cb7bcde6047c8c383518db3",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-zlib-1.3.2-2.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-zlib-1.3.2-2-any.pkg.tar.zst"
+    },
+    {
+      "package": "libwinpthread",
+      "dlls": [
+        "libwinpthread-1.dll"
+      ],
+      "matched": true,
+      "attempts": [
+        {
+          "filename": "mingw-w64-x86_64-libwinpthread-14.0.0.r495.g63ebe6cdb-2-any.pkg.tar.zst",
+          "sha256": "e657ade501916ef2f0ff8b5f5d93dc65d39f1a0ec66cfee8206026b240f60518",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-libwinpthread-14.0.0.r495.g63ebe6cdb-1-any.pkg.tar.zst",
+          "sha256": "89cc97eb3c3a2d4f8a860e8b74eb396ce42e03dbb471dee9b2d6eaf23f72ef25",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-libwinpthread-14.0.0.r426.g4564ee4b5-2-any.pkg.tar.zst",
+          "sha256": "ac791deaf730ef7aa6fa66f31ce6ec53a02c43fa85562233a981c84c93456760",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-libwinpthread-14.0.0.r426.g4564ee4b5-1-any.pkg.tar.zst",
+          "sha256": "543017ce2731292b215bf1d36fd70a86d8a8d5ed0afba9d3db9fff89804cda71",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-libwinpthread-14.0.0.r420.g61d40c4c0-1-any.pkg.tar.zst",
+          "sha256": "c3ff34e309f785d5bf8c94015934e9aa5c058ed2adad58c5456540dd639eb09a",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-libwinpthread-14.0.0.r409.g6de5d3b4d-1-any.pkg.tar.zst",
+          "sha256": "30df09628da49b41a9332fb4c222cd410755c4a41914a0ec3ae5aabc21aa24c9",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-libwinpthread-14.0.0.r375.g9c1abbbf5-1-any.pkg.tar.zst",
+          "sha256": "1d0ed7fda332a5c879de210f3d72c75fa1f3df7cc63dd951e763dec8eb02c1ee",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-libwinpthread-14.0.0.r353.g6df76fa52-2-any.pkg.tar.zst",
+          "sha256": "e545ccc0416bcc62555da57959598e8559eac6a6cc1e5378bac024844d4ec8eb",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-libwinpthread-14.0.0.r302.gd7f3c5201-1-any.pkg.tar.zst",
+          "sha256": "f8f6d61c30c8019b8b6721ed5ef87c21d643288547ccc7eacccddf705c3ae2a9",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-libwinpthread-14.0.0.r283.ga7cb47123-1-any.pkg.tar.zst",
+          "sha256": "53cfb40f38b28a691265b461ff76cd83f67138e7e1125abe78959eb2e4058067",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-libwinpthread-14.0.0.r262.g5ea8e9fac-1-any.pkg.tar.zst",
+          "sha256": "e3e46297b13e180218f84df64ae206949f3f9acdfe686c8ba28db9353d4845f7",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-libwinpthread-14.0.0.r248.g7735a1a63-1-any.pkg.tar.zst",
+          "sha256": "c2dcdf4549af237e55b3b3315d24b09ca5323a2bf34ed7feb4b0e2b01570371a",
+          "matched": false
+        },
+        {
+          "filename": "mingw-w64-x86_64-libwinpthread-14.0.0.r220.gd999af622-1-any.pkg.tar.zst",
+          "sha256": "16bf944184656c6976b3c8b9ca872da49560d8b7cced36a63fe6638c6e63ae45",
+          "matched": true
+        }
+      ],
+      "pkginfo": {
+        "pkgname": [
+          "mingw-w64-x86_64-libwinpthread"
+        ],
+        "pkgbase": [
+          "mingw-w64-winpthreads"
+        ],
+        "xdata": [
+          "pkgtype=split"
+        ],
+        "pkgver": [
+          "14.0.0.r220.gd999af622-1"
+        ],
+        "pkgdesc": [
+          "MinGW-w64 winpthreads library (mingw-w64)"
+        ],
+        "url": [
+          "https://www.mingw-w64.org/"
+        ],
+        "builddate": [
+          "1784623812"
+        ],
+        "packager": [
+          "CI (https://github.com/msys2/msys2-autobuild/actions/runs/29815022351/job/88584261704)"
+        ],
+        "size": [
+          "68838"
+        ],
+        "arch": [
+          "any"
+        ],
+        "license": [
+          "spdx:MIT AND BSD-3-Clause-Clear"
+        ],
+        "replaces": [
+          "mingw-w64-x86_64-libwinpthread-git"
+        ],
+        "group": [
+          "mingw-w64-x86_64-toolchain"
+        ],
+        "conflict": [
+          "mingw-w64-x86_64-libwinpthread-git"
+        ],
+        "provides": [
+          "mingw-w64-x86_64-libwinpthread-git"
+        ],
+        "makedepend": [
+          "mingw-w64-x86_64-cc",
+          "mingw-w64-x86_64-autotools",
+          "mingw-w64-x86_64-crt",
+          "mingw-w64-x86_64-headers",
+          "git"
+        ]
+      },
+      "binary_sha256": "16bf944184656c6976b3c8b9ca872da49560d8b7cced36a63fe6638c6e63ae45",
+      "binary_filename": "mingw-w64-x86_64-libwinpthread-14.0.0.r220.gd999af622-1-any.pkg.tar.zst",
+      "source_filename": "mingw-w64-winpthreads-14.0.0.r220.gd999af622-1.src.tar.zst",
+      "source_sha256": "9743facee4a25c6bb44e856ed8182f7e4c652812481656e68aa57b9070992451",
+      "source_available": true,
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-winpthreads-14.0.0.r220.gd999af622-1.src.tar.zst",
+      "binary_url": "https://repo.msys2.org/mingw/mingw64/mingw-w64-x86_64-libwinpthread-14.0.0.r220.gd999af622-1-any.pkg.tar.zst"
+    }
+  ],
+  "permissive_same_version_notice_packages": [
+    {
+      "package": "giflib",
+      "version": "5.2.2-1",
+      "runtime_exact_binary_hash_match": false,
+      "version_evidence": "Tesseract --version compiled dependency versions",
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-giflib-5.2.2-1.src.tar.zst",
+      "source_sha256": "6d616349b0e707253f29e68298b4ed489783ebb8ce4b964e1ce1c1cfcc93425c",
+      "license_source": "official MSYS2 same-version package original license texts",
+      "source_required_by_license": false
+    },
+    {
+      "package": "libjpeg-turbo",
+      "version": "3.1.3-1",
+      "runtime_exact_binary_hash_match": false,
+      "version_evidence": "Tesseract --version compiled dependency versions",
+      "source_url": "https://repo.msys2.org/mingw/sources/mingw-w64-libjpeg-turbo-3.1.3-1.src.tar.zst",
+      "source_sha256": "7ee7a8847822952f2e8d304943fc7b766cd5a0bcc3490fab2e345f5766e21048",
+      "license_source": "official MSYS2 same-version package original license texts",
+      "source_required_by_license": false
+    }
+  ],
+  "explanation": "giflib/libjpeg-turbo는 허용 라이선스이며 Tesseract가 선언한 동일 버전의 원문 고지와 소스를 제공한다. 바이너리 SHA 동일성은 확인하지 못했으며 확인한 것으로 표시하지 않는다."
+}

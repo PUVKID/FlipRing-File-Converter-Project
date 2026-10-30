@@ -1,0 +1,8 @@
+{
+  "new_pid": 52400,
+  "language_before_restart": "en",
+  "method": "실제 작업 완료 뒤 프로세스 종료·재실행. language_changed의 settings.sync 및 ini=en 저장을 확인했습니다.",
+  "at_kst": "2026-10-24T20:28:08.2042951+09:00",
+  "exe": "D:\\2026\\FilpRing Project\\work\\native-release-1.6\\installed\\FlipRing.exe",
+  "old_pid": 63236
+}

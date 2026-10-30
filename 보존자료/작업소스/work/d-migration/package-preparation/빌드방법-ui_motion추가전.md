@@ -1,0 +1,85 @@
+# 플립링 빌드
+
+Windows 10/11 x64, Python 3.12 x64, Inno Setup 6이 필요합니다.
+현재 빌드 대상 릴리스는 1.6.0입니다. 설정·기록 데이터의 기존 스키마와 저장 위치는 변경하지 않습니다.
+스튜디오 UI 모듈 `studio_ui.py`와 `assets/lucide`의 원본 SVG 12개를 전체 소스에 함께 보관합니다. Lucide 고정 커밋·파일별 해시와 원문 ISC·Feather MIT 고지는 `licenses/Lucide`에 있으며 실행 폴더의 `licenses`에도 동봉합니다. `package.py`는 소스와 실행 폴더 양쪽의 아이콘·고지가 빠지면 포장을 거부합니다.
+앱 표시명은 한국어에서 플립링, 영어에서 FlipRing이며 제작자는 PUVKID입니다.
+실행 파일은 `프로그램/FlipRing/FlipRing.exe`, 설치 파일은 `설치파일/FlipRing-Setup.exe`입니다.
+프로그램·설치 파일·전체 소스는 플립링 폴더 하나에 보관합니다.
+설치 AppId는 `PUVKID.FlipRing`, 기본 설치 위치는 `%LOCALAPPDATA%\Programs\FlipRing`입니다.
+기존 DragWheel 설치와 분리되며 설치 언어는 한국어·영어를 선택할 수 있습니다. 앱 언어는 앱 안의 설정에서 별도로 선택합니다.
+기존 프로그램 폴더나 설치 파일이 있으면 빌드를 중단하여 보존합니다.
+동봉된 프로그램·설치 파일과 별도로 재현하려면 `소스` 폴더 전체만 새로운 빈 작업 폴더 안에 복사하고, 복사한 `소스`를 현재 폴더로 하여 아래 명령을 실행하세요. 새 부모 폴더의 `프로그램`·`설치파일`에 결과가 생성되므로 기존 배포물을 덮어쓰지 않습니다. `assets`·`vendor`·`licenses`와 검사 자료도 빠짐없이 복사해야 합니다.
+
+다음 명령은 `소스` 폴더에서 실행합니다. 새 개발 환경을 만드는 방법이며 고객 PC에 Python이나 가상환경을 배포할 필요는 없습니다.
+
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements-lock.txt
+$env:QT_QPA_PLATFORM = "offscreen"
+.\.venv\Scripts\python.exe -B -X utf8 test_gui.py ..\work\gui
+Remove-Item Env:QT_QPA_PLATFORM
+.\.venv\Scripts\python.exe -B -X utf8 build.py
+.\.venv\Scripts\python.exe -B -X utf8 package.py
+```
+
+기존 개발 환경을 사용하는 경우 해당 환경의 `python.exe`로 같은 `-m pip`, 검사, 빌드 명령을 실행할 수 있습니다. 특정 PC의 절대 경로에는 의존하지 않습니다.
+`build.py`는 `../프로그램`과 `../설치파일`에 결과를 만들고 `build-cache`에 임시 파일을 만듭니다.
+Inno Setup이 표준 위치에 없으면 `ISCC` 환경 변수로 지정합니다.
+PyInstaller는 현재 Python 환경에서 `python -m PyInstaller` 방식으로 실행됩니다.
+`package.py`는 프로그램·설치 파일·전체 소스의 `SHA256SUMS.txt`만 만들며 중복 ZIP을 생성하지 않습니다.
+가상환경과 빌드 캐시는 소스 배포 및 해시 목록에서 제외됩니다.
+`소스`에는 앱·번역 모듈 `i18n.py`·변환 엔진·빌드 및 해시 스크립트·검사 코드·고정 의존성 목록·시험 파일·글꼴·라이선스 자료를 함께 보관합니다.
+UI는 `assets/fonts`의 SUIT Regular·Medium·SemiBold 정적 TTF를 사용합니다. 공식 원본 그대로 동봉하며 SIL Open Font License 1.1 원문과 고정 커밋·해시는 `licenses/SUIT`에 보존합니다. Windows 글꼴 파일은 동봉하지 않습니다.
+선택 상자의 자체 제작 화살표 원본은 `assets/combo-chevron.svg`이며 소스와 실행 프로그램에 함께 동봉합니다.
+PDF 변환에서 사용하는 `assets/NanumGothicBold.ttf`와 OFL은 유지하며 UI 글꼴 선택과 별개입니다.
+언어 설정은 즉시 화면에 반영되고 저장되어 재시작 후에도 유지됩니다. 경로·파일명·출력 형식 이름은 번역하지 않습니다.
+빌드 전에 라이선스 원문과 LGPL 구성요소의 해당 소스 아카이브를 `licenses/`에 보존해야 합니다.
+이 폴더는 빌드할 때 프로그램 옆으로 복사됩니다. 호환 Qt/PySide 동적 라이브러리의 교체를 제한하지 않습니다.
+
+`test_gui.py`는 실제 Qt 창·이벤트·모션과 생성한 PNG 변환을 검사합니다.
+위 명령은 오프스크린 Qt 플랫폼을 사용하며 실제 Windows 화면 표시 검증과 구분합니다.
+키와 전경 창은 모형을 사용하며 실제 탐색기 OLE 드래그는 별도입니다.
+시험은 격리 설정 폴더만 쓰며 Windows 자동 시작 레지스트리를 변경하지 않습니다.
+
+전체 변환 회귀 시험은 FFmpeg·Pandoc·LibreOffice가 설치된 환경에서 실행합니다.
+시험 경로는 아직 없는 새 폴더여야 합니다.
+
+```powershell
+.\.venv\Scripts\python.exe -B -X utf8 test_engine.py ..\work\새변환시험
+```
+
+변환 엔진과 기존 드래그 동작은 유지했습니다.
+설정·기록·실행 잠금은 기존 DragWheel과 공유하므로 두 제품을 동시에 실행하지 마세요.
+실제 빌드·설치 및 탐색기 시험의 결과와 범위는 상위 폴더의 검증 자료를 확인하세요.
+코드 서명 인증서를 제공받지 않아 Authenticode 서명은 포함하지 않습니다.
+
+## PDF·OCR 구성과 재현
+
+PDF 기능은 `pdf_tools.py`, `pdf_panel.py`, `test_pdf_tools.py`에 있습니다.
+`pypdf`, `openpyxl`, `et_xmlfile`, `xlsxwriter`는 고정 의존성 목록과 라이선스 수집 목록에 포함합니다.
+`vendor/tesseract`의 Tesseract 5.5.3 실행 파일·필요 DLL·한글/영문/방향 감지 모델을 PyInstaller 자료로 포함하므로 고객 PC에 OCR 엔진을 별도 설치하지 않아도 됩니다.
+OCR 자료의 다운로드 URL·해시·모델 커밋과 해당 DLL의 원문 라이선스·상응 소스·패치는 `licenses/OCR`에 보관합니다.
+HEIC 디코더에 동봉된 MSYS2 GCC 16 런타임의 원문 고지·상응 소스·빌드 방법·출하 목록은 `licenses/HEIC-GNU-runtime`에 있습니다. OCR용 Debian GCC 14 자료와 다른 버전에 대응하므로 두 폴더를 모두 보존하고 프로그램의 `licenses` 폴더에도 함께 동봉합니다.
+`licenses/OCR/ubuntu-gcc`는 기존 조사 폴더명을 유지한 것으로 실제 두 GCC DLL의 정확한 출처는 Debian 패키지 `14.2.0-19+27+b1`입니다.
+`package.py`는 소스와 프로그램 양쪽의 GCC 출하 목록을 읽어 상응 소스의 상대 경로·누락·크기·SHA-256을 검사합니다. 목록 밖의 개발 조사 파일을 필수 배포 자료로 취급하지 않습니다.
+빌드를 재현할 때 이 디렉터리를 그대로 유지합니다. OCR 실행 파일을 임의의 시스템 Tesseract로 바꾸지 마세요.
+NSIS 설치 프로그램 자체와 추출에 사용한 7-Zip 도구는 고객 배포물에 포함하지 않습니다.
+Tesseract는 한글 절대 인자를 처리하지 못하는 경우가 있어 OCR 작업에 ASCII 상대 파일명을 사용합니다.
+
+PDF 합치기·분할·추출·삭제·회전·이미지와 PDF 변환·압축, OCR TXT·검색 가능한 PDF·Word·Excel 내보내기를 제공합니다.
+OCR 정확도는 원본 해상도·노이즈·기울기·글꼴·언어에 따라 달라집니다. 원본 문서의 배치·수식·표 구조·병합 셀을 완전히 복원하는 기능은 아닙니다.
+Word는 인식 문장 중심이며 표와 문서는 OCR 좌표로 추론합니다. 결과 검토가 필요합니다.
+PDF 압축 결과는 원본 구조에 따라 크기가 줄지 않을 수 있습니다.
+
+```powershell
+.\.venv\Scripts\python.exe -B -X utf8 test_pdf_tools.py ..\work\pdf-check --ocr --gui
+```
+
+위 검사의 실행 인자는 `test_pdf_tools.py`의 실제 CLI 계약과 최종 검증 보고서를 확인해 주세요. 검사 통과를 모든 문서의 정확도 보장으로 해석하지 않습니다.
+
+## D드라이브 이동 후 현재 작업 위치
+
+2026-10-24에 실제 프로젝트를 `D:\2026\FilpRing Project`에서 확인했습니다. 현재 빌드 작업의 기준 폴더는 `D:\2026\FilpRing Project\소스`이며 위 상대 경로 명령은 같은 방식으로 사용할 수 있습니다. 프로그램·설치 파일·전체 소스·빌드 방법·라이선스는 이 프로젝트 한 폴더에 보관합니다.
+
+이동한 개발 환경은 `D:\2026\FilpRing Project\work\venv\Scripts\python.exe`입니다. 해당 가상환경의 기본 Python은 현재 존재하는 C드라이브의 공용 Codex 런타임을 사용합니다. 가상환경 자체가 Python을 모두 포함하는 것은 아니므로 다른 PC에서는 위 신규 환경 생성 절차를 사용하세요. `pyvenv.cfg`의 기본 런타임이나 과거 검증 기록의 C경로를 임의로 D경로로 치환하지 마세요. 활성 검사 명세와 PyInstaller 명세의 현재 프로젝트 경로만 D 위치에 맞추었습니다.

@@ -1,0 +1,2290 @@
+[
+  {
+    "path": "1.7-새기능안내.md",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 4680,
+    "before_sha256": null,
+    "after_sha256": "6c812afba5f4d2ff99fdb4cac4b58466368d62ec7bba26b3d9815e5f5e774fb7"
+  },
+  {
+    "path": "1.8-화면안내.md",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1628,
+    "before_sha256": null,
+    "after_sha256": "3793caf258369a9353138467924fb40f26c4aa3d477b844da3948dc2c67c788f"
+  },
+  {
+    "path": "FlipRing.spec",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1287,
+    "before_sha256": null,
+    "after_sha256": "e05a799e8cd588fe577af2bc1e97c5f91c7f4ff0c7ccd83531ad143a2d1e6d79"
+  },
+  {
+    "path": "assets/NanumGothic-OFL.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 5398,
+    "before_sha256": null,
+    "after_sha256": "9413f0aaff51c59be2ff01113a28759b491e6fd67172c3d0a666e6354af18883"
+  },
+  {
+    "path": "assets/NanumGothicBold.ttf",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 4642244,
+    "before_sha256": null,
+    "after_sha256": "454eb3f503f377782a99eb84fc4bb7dde22a0f075d41b47427737f2985053bc9"
+  },
+  {
+    "path": "assets/app.ico",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 18404,
+    "before_sha256": null,
+    "after_sha256": "01856a7bafbdc15ff8d00257a113521256da3099958c32c86542d6bc3209f93a"
+  },
+  {
+    "path": "assets/combo-chevron.svg",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 214,
+    "before_sha256": null,
+    "after_sha256": "8b5dac9eed1bf0e5dd5fab90746f6d47f5ed028fba92f0abf7fbcbb917e94c39"
+  },
+  {
+    "path": "assets/fonts/SUIT-Medium.ttf",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 592832,
+    "before_sha256": null,
+    "after_sha256": "06be0060927642883b9027b275744fc8234826e6563015ebe3324f3802ae005f"
+  },
+  {
+    "path": "assets/fonts/SUIT-Regular.ttf",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 594324,
+    "before_sha256": null,
+    "after_sha256": "88c94c990b9996c558666ef07c11664ab177c3be191e2846950b48f245d02274"
+  },
+  {
+    "path": "assets/fonts/SUIT-SemiBold.ttf",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 591696,
+    "before_sha256": null,
+    "after_sha256": "8d202e0341b9426b653c1b3d36b2c0d1f4b482a7dfa83baaccf84d355d688fbd"
+  },
+  {
+    "path": "assets/lucide/arrow-left-right.svg",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 313,
+    "before_sha256": null,
+    "after_sha256": "2d64da427cbb3f14e522658459903829575b09ec15162c1a69ea6ad341a4359a"
+  },
+  {
+    "path": "assets/lucide/arrow-up-right.svg",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 260,
+    "before_sha256": null,
+    "after_sha256": "50b2503b9d11881142255466b7e3461d022b919735841c321d72003ac9959fe1"
+  },
+  {
+    "path": "assets/lucide/check.svg",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 239,
+    "before_sha256": null,
+    "after_sha256": "7f33acc9a77a61659531044525fc008edebe215bf4dcf1c789c8674ad3277db0"
+  },
+  {
+    "path": "assets/lucide/file-up.svg",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 427,
+    "before_sha256": null,
+    "after_sha256": "0bd753699aed9b50bcbde59b12e1409329bb9291c0aa523dd4553497cd665c0b"
+  },
+  {
+    "path": "assets/lucide/file.svg",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 373,
+    "before_sha256": null,
+    "after_sha256": "499039795d7412d67664ff79d2eb6b7412e746b24c18c8fd8aba383c24ddada0"
+  },
+  {
+    "path": "assets/lucide/folder-open.svg",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 401,
+    "before_sha256": null,
+    "after_sha256": "ee57452b40e71df310214091dd9da1941a397c83197b8ff8d7ae66dd4242578b"
+  },
+  {
+    "path": "assets/lucide/info.svg",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 294,
+    "before_sha256": null,
+    "after_sha256": "bc977a64eb96f3e9c1041ffd09a3fceb70e3e65c02b571f76064062ed31f3cb9"
+  },
+  {
+    "path": "assets/lucide/plus.svg",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 256,
+    "before_sha256": null,
+    "after_sha256": "7f6af73bf1ff6c4bca3f18351c8d1bdec6749c0c2530c4de5da85d520c21df17"
+  },
+  {
+    "path": "assets/lucide/rotate-ccw-clock.svg",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 324,
+    "before_sha256": null,
+    "after_sha256": "a98ff758157910b9fc9d42d5d5dc80c2f4e037afa5f8ea4dee5f5649f03d438d"
+  },
+  {
+    "path": "assets/lucide/scan-text.svg",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 435,
+    "before_sha256": null,
+    "after_sha256": "6c05f5346bf0a9c7cdf6132f7ae3428ea932e2206ace2480f41a3d3bdc6efd80"
+  },
+  {
+    "path": "assets/lucide/sliders-horizontal.svg",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 422,
+    "before_sha256": null,
+    "after_sha256": "e43a00e5eb684e6cbb61083bed2528d7a3fa5f265693eb2b5f314cd432aa65f4"
+  },
+  {
+    "path": "assets/lucide/x.svg",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 260,
+    "before_sha256": null,
+    "after_sha256": "4a9cdab38fbb96162e7dace28e33f4ca0e49d8963a6162abc3d4691b7d675117"
+  },
+  {
+    "path": "installer.iss",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1389,
+    "before_sha256": null,
+    "after_sha256": "8a81aae55de34176cfd65773a9e5dbf47e9bfbd6e47ae1778e51890591f213ce"
+  },
+  {
+    "path": "licenses/7Zip/LGPL-2.1.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 27032,
+    "before_sha256": null,
+    "after_sha256": "1e7e6bae5a5bde32f1ae5a7c37a082d1ab03cf89354f7f936ac40be9e39a6531"
+  },
+  {
+    "path": "licenses/7Zip/License.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 6031,
+    "before_sha256": null,
+    "after_sha256": "519ac0a4bded9c18ea02e0afb71f663d8c47373bd9facd3ac96a79f51d77765d"
+  },
+  {
+    "path": "licenses/7Zip/Source-License.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 6341,
+    "before_sha256": null,
+    "after_sha256": "9ac2b4a97ab5d523965534d8b2d5868e511b39096d51fff458ab72c38b80fccc"
+  },
+  {
+    "path": "licenses/7Zip/unRarLicense.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1921,
+    "before_sha256": null,
+    "after_sha256": "17bd9fa4399092c777536fff045b41df76ec9d2ac4c9b8e7345d3b8b6ccc7976"
+  },
+  {
+    "path": "licenses/7Zip/출하목록.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 2762,
+    "before_sha256": null,
+    "after_sha256": "4e8bf6bc1939cb49640d8aea6b85152085c4e48e3b17e2253e8dfcb3af4d8f7d"
+  },
+  {
+    "path": "licenses/GCC-RUNTIME-EXCEPTION.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3324,
+    "before_sha256": null,
+    "after_sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+  },
+  {
+    "path": "licenses/GPL-3.0.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 35149,
+    "before_sha256": null,
+    "after_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/GCC-PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1291,
+    "before_sha256": null,
+    "after_sha256": "2c9818f60ae5c6f4eee075cacf82424f8ee2e6d948786e332490535e854ee00d"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.LIB",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 26527,
+    "before_sha256": null,
+    "after_sha256": "a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.RUNTIME",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3324,
+    "before_sha256": null,
+    "after_sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING3",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 35147,
+    "before_sha256": null,
+    "after_sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/README",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 236,
+    "before_sha256": null,
+    "after_sha256": "33400d067fa3e2bd670a0868dcdb60c9486e8f559b675cf9ff1ff55d4e0d06ab"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/HEIC-GNU-GCC대조.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1872,
+    "before_sha256": null,
+    "after_sha256": "241751dc6e8f683f03e52218bcc5531c61ff3ab20b979e8db6487d980cecdc53"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/HEIC-GNU-PE수정영역.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 5993,
+    "before_sha256": null,
+    "after_sha256": "e9d1d2d5d7ffe916444c3ec84b2dc78f2ee846dd4e398496d38ab7df0dd4b1c8"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/HEIC-GNU-WINPTHREAD대조.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1120,
+    "before_sha256": null,
+    "after_sha256": "e63d37d228f0d4ac551faf0843aff4f6d9bb6416be1a39234c7e440925be15d6"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/HEIC-GNU-소스확보.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 434,
+    "before_sha256": null,
+    "after_sha256": "7acec12aefc960b7dfcc0251b81a549fe6bccac8556e3ffd1b823d83738b8c35"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/WINPTHREAD-PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 787,
+    "before_sha256": null,
+    "after_sha256": "0a7379d06cec37d3dc5283e2cbcccec35706175ba8a8eee743fc7acaf94d5746"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/WINPTHREAD-원문고지/libwinpthread/COPYING",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 2883,
+    "before_sha256": null,
+    "after_sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/libheif/windows/mingw-w64-libheif/PKGBUILD",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 2484,
+    "before_sha256": null,
+    "after_sha256": "216f26f9dfa169b467af26001c9da6864054bb17f433d7612bb109cf4e17b7b1"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/pyproject.toml",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3033,
+    "before_sha256": null,
+    "after_sha256": "a5cb5be4340e98bb35776130f9df8bae845da5ab8b0160490b8e7bece36aa075"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/setup.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 12778,
+    "before_sha256": null,
+    "after_sha256": "4b7786c05de87319ffc380265c91d776917f5a2d4fe31f3beb63cfe2c178c6f8"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/읽어주세요.md",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3330,
+    "before_sha256": null,
+    "after_sha256": "280d93a25999fce85879a23f36c73264ade0de631b89aa2d710b95766c724411"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/출하목록.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 4192,
+    "before_sha256": null,
+    "after_sha256": "89c48aa5b2e491d0b8138e8bb4b3e65cedf818354f4cc5eabe65ea53d1e98577"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-gcc-16.2.0-3/.SRCINFO",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 8081,
+    "before_sha256": null,
+    "after_sha256": "460257cf5496b17611ed36c01272e42fb41ae06cfc404374b1a2538970dc8158"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-gcc-16.2.0-3/PKGBUILD",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 25852,
+    "before_sha256": null,
+    "after_sha256": "226e4b4d6a5786b66eaf260181b5260934a77ee1d6548ef9d1f735ebaae30f1d"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1/.SRCINFO",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1390,
+    "before_sha256": null,
+    "after_sha256": "7c7488d882e286b56785565ba11d2982092bb62e96008e2ee535e94f0b1174c1"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1/PKGBUILD",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 4484,
+    "before_sha256": null,
+    "after_sha256": "7e5cec4463bd044cddeeb584dc6aab3e91dee5afd088d382e90c6232d0dd4e17"
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/프로그램-DLL목록.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 919,
+    "before_sha256": null,
+    "after_sha256": "2b8414f075aec3f6584eea7ba4b1726bc47a778a608642f24cf77f14a3cbbb67"
+  },
+  {
+    "path": "licenses/Inno-Setup-LICENSE.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1521,
+    "before_sha256": null,
+    "after_sha256": "2e5346868c2a18434489824e11d65c3031620f792fefc415d05f19cd441abf5c"
+  },
+  {
+    "path": "licenses/LGPL-3.0.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 7652,
+    "before_sha256": null,
+    "after_sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118"
+  },
+  {
+    "path": "licenses/Lucide/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3208,
+    "before_sha256": null,
+    "after_sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+  },
+  {
+    "path": "licenses/Lucide/원본출처.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 7537,
+    "before_sha256": null,
+    "after_sha256": "2e6884324f7361c89ffe0ab91fff02e5e16a688722328652e8630ea8206f588a"
+  },
+  {
+    "path": "licenses/Mesa-LICENSE.html",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 18044,
+    "before_sha256": null,
+    "after_sha256": "9e0c5f9cba3e7b810ca8ee1f306073e80f6d18d89f05497eb7a4b9f487ff7c5d"
+  },
+  {
+    "path": "licenses/NanumGothic-OFL.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 5398,
+    "before_sha256": null,
+    "after_sha256": "9413f0aaff51c59be2ff01113a28759b491e6fd67172c3d0a666e6354af18883"
+  },
+  {
+    "path": "licenses/OCR/GPL-3.0.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 35149,
+    "before_sha256": null,
+    "after_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  {
+    "path": "licenses/OCR/MSYS2-구성요소.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 57186,
+    "before_sha256": null,
+    "after_sha256": "b73639d1e4b4dd575763365958167531a6d96c2a97fcc80e11a6f305200bf0e0"
+  },
+  {
+    "path": "licenses/OCR/Tesseract-소스다운로드.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 378,
+    "before_sha256": null,
+    "after_sha256": "4eb2c7909396a02bddd980776ce7e019209f8ed3e42588148d709a48646eb0e8"
+  },
+  {
+    "path": "licenses/OCR/Tesseract-원본다운로드.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 296,
+    "before_sha256": null,
+    "after_sha256": "952a1f62d9f8940821dbf015eb83c8be99e873de50a621eb6c4bbd922762123f"
+  },
+  {
+    "path": "licenses/OCR/brotli/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 464,
+    "before_sha256": null,
+    "after_sha256": "af08cd3cb0686c720d469e5be4860a2773929c149c39159555ed817d5ada2dbc"
+  },
+  {
+    "path": "licenses/OCR/brotli/brotli/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1084,
+    "before_sha256": null,
+    "after_sha256": "3d180008e36922a4e8daec11c34c7af264fed5962d07924aea928c38e8663c94"
+  },
+  {
+    "path": "licenses/OCR/bzip2/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 448,
+    "before_sha256": null,
+    "after_sha256": "42dec4171b3ce74124bbd9b419ad572c60268d453bf40637dce748479781882f"
+  },
+  {
+    "path": "licenses/OCR/bzip2/bzip2/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1896,
+    "before_sha256": null,
+    "after_sha256": "c6dbbf828498be844a89eaa3b84adbab3199e342eb5cb2ed2f0d4ba7ec0f38a3"
+  },
+  {
+    "path": "licenses/OCR/curl-winssl/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1378,
+    "before_sha256": null,
+    "after_sha256": "a053893f72f1e6503ac71b091ba0cf3386c1f1cd6cf7944cc43c0d9313247613"
+  },
+  {
+    "path": "licenses/OCR/curl-winssl/curl/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1088,
+    "before_sha256": null,
+    "after_sha256": "82f2f4427d6545ee5aaac4f0b80428da6cc8ba41c2cf5da3a03680ec327b9681"
+  },
+  {
+    "path": "licenses/OCR/expat/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 488,
+    "before_sha256": null,
+    "after_sha256": "9eb42cdf8f6e95c7f09d990c30e00fa47e45a50f2378b99f472084c126d97d52"
+  },
+  {
+    "path": "licenses/OCR/expat/expat/COPYING",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1144,
+    "before_sha256": null,
+    "after_sha256": "31b15de82aa19a845156169a17a5488bf597e561b2c318d159ed583139b25e87"
+  },
+  {
+    "path": "licenses/OCR/gettext-runtime/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 710,
+    "before_sha256": null,
+    "after_sha256": "9432a898a3d7a16f62e30eb1c65a63e51ea80199ebc61f3a362dd01be052b0e7"
+  },
+  {
+    "path": "licenses/OCR/gettext-runtime/gettext-runtime/COPYING",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 495,
+    "before_sha256": null,
+    "after_sha256": "7ef2cdfe58e0c0460657b6598b49af29d4e03c1e41cbaf0e1da1eb8ad74b95d0"
+  },
+  {
+    "path": "licenses/OCR/gettext-runtime/gettext-runtime/intl/COPYING.LIB",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 26419,
+    "before_sha256": null,
+    "after_sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+  },
+  {
+    "path": "licenses/OCR/gettext-runtime/gettext-runtime/libasprintf/COPYING",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 65,
+    "before_sha256": null,
+    "after_sha256": "03133addae5b99a6148c538300e6d97074453089be1423b741bd081f18e2b298"
+  },
+  {
+    "path": "licenses/OCR/gettext-runtime/gettext-runtime/libasprintf/COPYING.LIB",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 26419,
+    "before_sha256": null,
+    "after_sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+  },
+  {
+    "path": "licenses/OCR/giflib/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 441,
+    "before_sha256": null,
+    "after_sha256": "51f5e616d8346958cd548e2237a840c50e9e84cbb53905da4045bb8b3a2b64c9"
+  },
+  {
+    "path": "licenses/OCR/jbigkit/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 496,
+    "before_sha256": null,
+    "after_sha256": "3efecb6c8e1eaf3381eecf5215a835a90439a20e39f83e41dbfdad0e2679dd64"
+  },
+  {
+    "path": "licenses/OCR/jbigkit/jbigkit/COPYING",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 17982,
+    "before_sha256": null,
+    "after_sha256": "91df39d1816bfb17a4dda2d3d2c83b1f6f2d38d53e53e41e8f97ad5ac46a0cad"
+  },
+  {
+    "path": "licenses/OCR/leptonica/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 817,
+    "before_sha256": null,
+    "after_sha256": "3d6f67437a0e2bda6c5922c2c55c5f5131ae9930a6f9212996c7bf8a392f1634"
+  },
+  {
+    "path": "licenses/OCR/leptonica/leptonica/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1521,
+    "before_sha256": null,
+    "after_sha256": "87829abb5bbb00b55a107365da89e9a33f86c4250169e5a1e5588505be7d5806"
+  },
+  {
+    "path": "licenses/OCR/lerc/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 549,
+    "before_sha256": null,
+    "after_sha256": "b98e36b32c7231c3a9acfa1da42ea8680152a75510d334b8e67d5bc07402a984"
+  },
+  {
+    "path": "licenses/OCR/lerc/lerc/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 9198,
+    "before_sha256": null,
+    "after_sha256": "77a8b761727c75e2167b15bfdf61b2c0bcf8792271228bebe80779106ad00671"
+  },
+  {
+    "path": "licenses/OCR/libarchive/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 894,
+    "before_sha256": null,
+    "after_sha256": "ad244556ef01d0035523b2788a3baba2c19c53dcbb5ab13ad2ccc178ebe2cac6"
+  },
+  {
+    "path": "licenses/OCR/libarchive/libarchive/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3089,
+    "before_sha256": null,
+    "after_sha256": "30e556b3959e3985d66efefec5eaac51d4995053caa1d3cffe6eb916f146f229"
+  },
+  {
+    "path": "licenses/OCR/libb2/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 495,
+    "before_sha256": null,
+    "after_sha256": "b31a8fc304b0f8740f86c3b50d0a773439fb2f637eed443f3a9c8bc39ba70c0d"
+  },
+  {
+    "path": "licenses/OCR/libb2/libb2/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 6556,
+    "before_sha256": null,
+    "after_sha256": "6a1ee543e5282cd9061881edf462e6fdab181f328da71fc2c9a6950a80e94d01"
+  },
+  {
+    "path": "licenses/OCR/libdeflate/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 525,
+    "before_sha256": null,
+    "after_sha256": "b5162afcdbf78bb94e7e1f9b16f78ae3daa277b2e49144aeacf41365702c4feb"
+  },
+  {
+    "path": "licenses/OCR/libdeflate/libdeflate/COPYING",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1078,
+    "before_sha256": null,
+    "after_sha256": "4ad69099cb4374836fd27583d9991e2838cd86b6e4666ab26b2d32582c91e73a"
+  },
+  {
+    "path": "licenses/OCR/libiconv/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 594,
+    "before_sha256": null,
+    "after_sha256": "7c64972a62c9feeddada9657103b833f9413cb8b39ab0160e348daaafa065366"
+  },
+  {
+    "path": "licenses/OCR/libiconv/libiconv/COPYING",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 35147,
+    "before_sha256": null,
+    "after_sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+  },
+  {
+    "path": "licenses/OCR/libiconv/libiconv/COPYING.LIB",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 26419,
+    "before_sha256": null,
+    "after_sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+  },
+  {
+    "path": "licenses/OCR/libiconv/libiconv/README",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 5741,
+    "before_sha256": null,
+    "after_sha256": "4ae66e61d1c6593c84c47105b368d579bcee1af566dbb959ec63a0c48425dcf4"
+  },
+  {
+    "path": "licenses/OCR/libiconv/libiconv/libcharset/COPYING.LIB",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 26419,
+    "before_sha256": null,
+    "after_sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+  },
+  {
+    "path": "licenses/OCR/libidn2/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 732,
+    "before_sha256": null,
+    "after_sha256": "dfbe55689e808d53e95c3b4e24b94395ce1108c3d9b6042b0ed9367ff24f9f5d"
+  },
+  {
+    "path": "licenses/OCR/libjpeg-turbo/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 715,
+    "before_sha256": null,
+    "after_sha256": "b86dde730391586237e10502ebd9691c6311ba0ffba9c43203bb0a8ad2ab7153"
+  },
+  {
+    "path": "licenses/OCR/libjpeg-turbo/libjpeg-turbo/LICENSE.md",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 5620,
+    "before_sha256": null,
+    "after_sha256": "2189dc45a8fe96204069f8124caa53a148dfdc193f50f584c6ca7849a6072872"
+  },
+  {
+    "path": "licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.ijg",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 12799,
+    "before_sha256": null,
+    "after_sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6"
+  },
+  {
+    "path": "licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 17784,
+    "before_sha256": null,
+    "after_sha256": "c553459fc4ea1f69526f0edf0c8ff6c4002fda5b76094abefabdc3de1ee62c10"
+  },
+  {
+    "path": "licenses/OCR/libjpeg-turbo/libjpeg-turbo/simd/jsimdext.inc",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 15563,
+    "before_sha256": null,
+    "after_sha256": "68c5d236785edf75344cebe8b9bec36568bd35c96eb72cc67ffecd66c17dbd74"
+  },
+  {
+    "path": "licenses/OCR/libpng/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 537,
+    "before_sha256": null,
+    "after_sha256": "74dbd8ab37f228f2b791c20773d72a14bd101586a99b7fe665146114844bba56"
+  },
+  {
+    "path": "licenses/OCR/libpng/libpng/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 5345,
+    "before_sha256": null,
+    "after_sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526"
+  },
+  {
+    "path": "licenses/OCR/libpsl/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 742,
+    "before_sha256": null,
+    "after_sha256": "1566b0f9bd3777a0e37ebfb05f9ce9c65b369e69385d94bf91812a4acf66f954"
+  },
+  {
+    "path": "licenses/OCR/libpsl/libpsl/COPYING",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1060,
+    "before_sha256": null,
+    "after_sha256": "322392e6001b2b3b0fca705dc9f11f26e12441188ecde50eb1d22909980b2925"
+  },
+  {
+    "path": "licenses/OCR/libssh2-wincng/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 662,
+    "before_sha256": null,
+    "after_sha256": "239cda9cef94151d2c5d94c3574b0aa2486cd3e1cdfaa8a7429f743ac04aebdd"
+  },
+  {
+    "path": "licenses/OCR/libssh2-wincng/libssh2/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1959,
+    "before_sha256": null,
+    "after_sha256": "f7f9633cf9ff2f1333f3d7ce46973a8716a4d2a2815ad56f30d437d5fea7bafe"
+  },
+  {
+    "path": "licenses/OCR/libtiff/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 842,
+    "before_sha256": null,
+    "after_sha256": "7f7ccb794e96c103c37ff0b567667ff10b397247691985b12dce56362d588855"
+  },
+  {
+    "path": "licenses/OCR/libtiff/libtiff/LICENSE.md",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 2416,
+    "before_sha256": null,
+    "after_sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade"
+  },
+  {
+    "path": "licenses/OCR/libunistring/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 569,
+    "before_sha256": null,
+    "after_sha256": "13da8767457adda92a35ccef074c17fdc6b6fe7bad0fb113f5b5ea15744abc62"
+  },
+  {
+    "path": "licenses/OCR/libunistring/libunistring/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 35149,
+    "before_sha256": null,
+    "after_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  {
+    "path": "licenses/OCR/libunistring/libunistring/LICENSE.LIB",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 7639,
+    "before_sha256": null,
+    "after_sha256": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c"
+  },
+  {
+    "path": "licenses/OCR/libwebp/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 693,
+    "before_sha256": null,
+    "after_sha256": "c2e173802642c0aef423a0208ba9dc52e922a0b3b49c5fc885b5f1f77aa88211"
+  },
+  {
+    "path": "licenses/OCR/libwebp/libwebp/COPYING",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1496,
+    "before_sha256": null,
+    "after_sha256": "5aec868f669e384a22372a4e8a1a6cd7d44c64cd451f960ca69cc170d1e13acf"
+  },
+  {
+    "path": "licenses/OCR/libwinpthread/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 786,
+    "before_sha256": null,
+    "after_sha256": "fe13f531ab475b13020d41a7d35b225fab1676fe5c9fff38007d51938f4e3633"
+  },
+  {
+    "path": "licenses/OCR/libwinpthread/libwinpthread/COPYING",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 2883,
+    "before_sha256": null,
+    "after_sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177"
+  },
+  {
+    "path": "licenses/OCR/lz4/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 427,
+    "before_sha256": null,
+    "after_sha256": "addb3bbcbf275fbbcdd78970e5ce37c84edff61acadec3f84a792da6c2ee459d"
+  },
+  {
+    "path": "licenses/OCR/openjpeg2/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 643,
+    "before_sha256": null,
+    "after_sha256": "846e5af55cfd46f5381ec619be5c651e001b07cef6df00908447784b1178d2c2"
+  },
+  {
+    "path": "licenses/OCR/openjpeg2/openjpeg/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 2112,
+    "before_sha256": null,
+    "after_sha256": "a6af136f3e15038a666b61f376612a07d9a4e48cb7c01adbf3e33b3f14ab49b6"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/COPYING.RUNTIME.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3324,
+    "before_sha256": null,
+    "after_sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/COPYING.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 18002,
+    "before_sha256": null,
+    "after_sha256": "231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/COPYING3.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 35147,
+    "before_sha256": null,
+    "after_sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/README.md",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 5499,
+    "before_sha256": null,
+    "after_sha256": "48d0f8f4862710e2eb722a6c50343c1a91b9279fbc900ef68da2a874e7eefeb9"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/SHA256SUMS.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 2589,
+    "before_sha256": null,
+    "after_sha256": "7da2384a5ce46f3f907a19c07c52872de4c180ce9507b81946e397fcf3a78faf"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian-gcc14/README.source",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1288,
+    "before_sha256": null,
+    "after_sha256": "419cba6d5fc2c44b61de0e67756a6b9ec4e87efa506f3df1c248dee611345b23"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian-gcc14/changelog",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 761264,
+    "before_sha256": null,
+    "after_sha256": "23b451e790b66adc6fd008447a384c6863e72ed18ad556a68aa22e35c7ef2938"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian-gcc14/copyright",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 69004,
+    "before_sha256": null,
+    "after_sha256": "20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian-gcc14/rules",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 2984,
+    "before_sha256": null,
+    "after_sha256": "5a90bab597f87910b61564ce34aeedf66a35dd22a2c68b13686e95f17df1c3d9"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian14-runtime-control.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 890,
+    "before_sha256": null,
+    "after_sha256": "c337735ffef8f8b7925181ceed849504a19c00f6538770cfa6efae2d70f2ac80"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian27/changelog",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 28689,
+    "before_sha256": null,
+    "after_sha256": "5a4cfcad5966c6c73a76cfb20e646a1c6a24aa86ba5f68c47bf8c33fdff27767"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian27/control",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 37328,
+    "before_sha256": null,
+    "after_sha256": "40bf1a4b1b7dc1a1abb391a84ac73168dbfa9979cc482303a3f2e50d3618c0c3"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian27/copyright",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 75729,
+    "before_sha256": null,
+    "after_sha256": "f891d7e0c56f503a92c7258d540b3d8215852d8387cbca8f1f07c6f4b6e67da6"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian27/rules",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 16681,
+    "before_sha256": null,
+    "after_sha256": "534993c328dd2ac9439cca693328e42936773d96361de249589d702c420e662c"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/download_one.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1742,
+    "before_sha256": null,
+    "after_sha256": "854c338fea68c51aa829875db0491142d8991944c67a020dad2a858cbcfe0105"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/finalize_sources.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 5581,
+    "before_sha256": null,
+    "after_sha256": "1a11daba81aa1135b49b83f7b40559579fd2248d2d127a31a60215163c28aa57"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/gcc-14_14.2.0-19.dsc",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 47347,
+    "before_sha256": null,
+    "after_sha256": "7db1e202cce66617e9134a662c877a3a773de5b612fd52179815877e0ecfb847"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.dsc",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 7737,
+    "before_sha256": null,
+    "after_sha256": "492f2ba821e43a3d40817841bd32caa5d49673fe66921bf5ba9c8b81c391dfea"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/inspect_runtime.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3108,
+    "before_sha256": null,
+    "after_sha256": "64eaaa29bbb5f296914e50af136d2471932a146f05d195939f1f95e6892bdae9"
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/출하목록.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 5069,
+    "before_sha256": null,
+    "after_sha256": "26d1c5a530d83fb4dc71ad7197f9a458b5b7fa4423e2f416da7dc578321228b5"
+  },
+  {
+    "path": "licenses/OCR/xz/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 638,
+    "before_sha256": null,
+    "after_sha256": "53d60ba64c99b6eb2581d14b81d0f90ea11bc3a208cd289d4f8629ff906c1c44"
+  },
+  {
+    "path": "licenses/OCR/xz/xz/COPYING",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3119,
+    "before_sha256": null,
+    "after_sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8"
+  },
+  {
+    "path": "licenses/OCR/xz/xz/COPYING.0BSD",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 607,
+    "before_sha256": null,
+    "after_sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1"
+  },
+  {
+    "path": "licenses/OCR/xz/xz/COPYING.GPLv2",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 17984,
+    "before_sha256": null,
+    "after_sha256": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6"
+  },
+  {
+    "path": "licenses/OCR/xz/xz/COPYING.GPLv3",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 35149,
+    "before_sha256": null,
+    "after_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  {
+    "path": "licenses/OCR/xz/xz/COPYING.LGPLv2.1",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 26419,
+    "before_sha256": null,
+    "after_sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+  },
+  {
+    "path": "licenses/OCR/zlib/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 514,
+    "before_sha256": null,
+    "after_sha256": "e30f2e78e3dea0449abce8207b70c511ee005042eeeef2ad6baed0c155056fb5"
+  },
+  {
+    "path": "licenses/OCR/zlib/zlib/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1002,
+    "before_sha256": null,
+    "after_sha256": "e32ff4e00d9d94930537635291da39e7e612703334bf6fde8c7f1686fe8a45a2"
+  },
+  {
+    "path": "licenses/OCR/zstd/PKGINFO.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 564,
+    "before_sha256": null,
+    "after_sha256": "b4b877831ba33bbf40ef52356c435365e85e4569c2733943ad56eea1f8c1fea1"
+  },
+  {
+    "path": "licenses/OCR/zstd/zstd/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1549,
+    "before_sha256": null,
+    "after_sha256": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8"
+  },
+  {
+    "path": "licenses/OCR/모델과실행.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1839,
+    "before_sha256": null,
+    "after_sha256": "05953162f92df56876b1ec900fb2ec4040fc475bfbd2c0bdaa2edced40c8c0fc"
+  },
+  {
+    "path": "licenses/OCR/읽어주세요.md",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3217,
+    "before_sha256": null,
+    "after_sha256": "bfa34f798177e0f419b3caea6f608ddfbfa3f22e99e7e45747c62be95832c47f"
+  },
+  {
+    "path": "licenses/OpenSSL-LICENSE.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 10175,
+    "before_sha256": null,
+    "after_sha256": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a"
+  },
+  {
+    "path": "licenses/Pillow/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 9300,
+    "before_sha256": null,
+    "after_sha256": "140f39cb31ec9b46109828a6286f034a4848621263d6aab38d2f142083dd06c5"
+  },
+  {
+    "path": "licenses/Pillow/licenses/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 78481,
+    "before_sha256": null,
+    "after_sha256": "988ffe8ab3480b0f4e9a0ab2702bffd73d9fb6b47198043fb3ba101a62fac236"
+  },
+  {
+    "path": "licenses/PySide6/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 5661,
+    "before_sha256": null,
+    "after_sha256": "8deea00d1df56b7d6b944cc05c226e56d3f408280217516f9444c60ab74dfd76"
+  },
+  {
+    "path": "licenses/PySide6/licenses/LicenseRef-Qt-Commercial.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 470,
+    "before_sha256": null,
+    "after_sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+  },
+  {
+    "path": "licenses/PySide6_Addons/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 4378,
+    "before_sha256": null,
+    "after_sha256": "07e5881696922ebc849f5f6b60c6d184ae7724e86b28bac5f707cac5e40ef518"
+  },
+  {
+    "path": "licenses/PySide6_Addons/licenses/LicenseRef-Qt-Commercial.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 470,
+    "before_sha256": null,
+    "after_sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+  },
+  {
+    "path": "licenses/PySide6_Essentials/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3889,
+    "before_sha256": null,
+    "after_sha256": "c5eacdfdda84b8d0e026020a630e6a732bd403c00fc17e3efb9e2e92df0b98a7"
+  },
+  {
+    "path": "licenses/PySide6_Essentials/licenses/LicenseRef-Qt-Commercial.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 470,
+    "before_sha256": null,
+    "after_sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+  },
+  {
+    "path": "licenses/PySide6_Pdf/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3588,
+    "before_sha256": null,
+    "after_sha256": "3c9fa9a5eda931852700287d94bb8bbea229379ff24590f282db4726f9bef49b"
+  },
+  {
+    "path": "licenses/PySide6_Pdf/licenses/LicenseRef-Qt-Commercial.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 470,
+    "before_sha256": null,
+    "after_sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+  },
+  {
+    "path": "licenses/PySide6_WebEngine/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3651,
+    "before_sha256": null,
+    "after_sha256": "7f3c76eac98f55c0c47894a8ab224d63bc6d865d13912df7ba52774f9cdc69ae"
+  },
+  {
+    "path": "licenses/PySide6_WebEngine/licenses/LicenseRef-Qt-Commercial.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 470,
+    "before_sha256": null,
+    "after_sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+  },
+  {
+    "path": "licenses/Python-LICENSE.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 25066,
+    "before_sha256": null,
+    "after_sha256": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a"
+  },
+  {
+    "path": "licenses/SUIT/OFL.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 4380,
+    "before_sha256": null,
+    "after_sha256": "30d101ee3c35ef629d622d933d261a27b2f60223e0a3b0f36791e569c2b9daa9"
+  },
+  {
+    "path": "licenses/SUIT/원본출처.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3175,
+    "before_sha256": null,
+    "after_sha256": "c978e5f2162108fd938c13890a687a9ddf8554849100e3efa3c39ff87987f1fd"
+  },
+  {
+    "path": "licenses/altgraph/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1002,
+    "before_sha256": null,
+    "after_sha256": "6c194d6db0c64d45535d10c95142b9b0cda7b7dcc7f1ddee302b3d536f3dbe46"
+  },
+  {
+    "path": "licenses/altgraph/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 7519,
+    "before_sha256": null,
+    "after_sha256": "dc60641dba229a3aef09f764f562c38d908b930c92615af2e626af31d6ff19b5"
+  },
+  {
+    "path": "licenses/charset-normalizer/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 47287,
+    "before_sha256": null,
+    "after_sha256": "49e955a09e1a159e0846872798006e8db7d518d8d70c637066fefdb08d3d9f7b"
+  },
+  {
+    "path": "licenses/charset-normalizer/licenses/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1092,
+    "before_sha256": null,
+    "after_sha256": "18577485d3704f1a479ded8e573c0976cfed315fd2fd17983fa988da4c2f70d1"
+  },
+  {
+    "path": "licenses/cssselect2/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 2941,
+    "before_sha256": null,
+    "after_sha256": "bb65ac3244a599d7bba63168f2ccea5849a4b2b1339568eab0ad933a8a44e475"
+  },
+  {
+    "path": "licenses/cssselect2/licenses/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1548,
+    "before_sha256": null,
+    "after_sha256": "6fd97229a1d1b0f6a8b41e109f413426dbc0874b1e03746d66cc33282601c2c2"
+  },
+  {
+    "path": "licenses/et_xmlfile/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 2711,
+    "before_sha256": null,
+    "after_sha256": "0e97d7ea909ed0fbe03d88bc8b6f58677cee1b07bd3353ce361cd2405915204e"
+  },
+  {
+    "path": "licenses/lxml/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3368,
+    "before_sha256": null,
+    "after_sha256": "4038f4e4decac1c15eb5fd883abf1370f2df9b176b53bd172dd709d4542e2a48"
+  },
+  {
+    "path": "licenses/lxml/licenses/LICENSE.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1538,
+    "before_sha256": null,
+    "after_sha256": "e7c3ce8d76331b0101cc46790ab43958ea90a364bcf962ed8763d5a818340e69"
+  },
+  {
+    "path": "licenses/lxml/licenses/LICENSES.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 6348,
+    "before_sha256": null,
+    "after_sha256": "df682c668de65321677b5e4861dca4128a8bad8067f230956e9da3f985b3d398"
+  },
+  {
+    "path": "licenses/openpyxl/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 2510,
+    "before_sha256": null,
+    "after_sha256": "23f80ca9830dd89435da1710f26deda8f81e5409287e74540210c72627a4ad96"
+  },
+  {
+    "path": "licenses/packaging/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3544,
+    "before_sha256": null,
+    "after_sha256": "70fdb89fc4d4a9a043bf7372b8972bcc883fddff34ab55e9cf80d73875384763"
+  },
+  {
+    "path": "licenses/packaging/licenses/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 197,
+    "before_sha256": null,
+    "after_sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+  },
+  {
+    "path": "licenses/packaging/licenses/LICENSE.APACHE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 10174,
+    "before_sha256": null,
+    "after_sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+  },
+  {
+    "path": "licenses/packaging/licenses/LICENSE.BSD",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1344,
+    "before_sha256": null,
+    "after_sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+  },
+  {
+    "path": "licenses/pefile/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1083,
+    "before_sha256": null,
+    "after_sha256": "b44409c067c6da52bfb54bb6624fb11a7b52157c3a13ae1400232f8196e86ad3"
+  },
+  {
+    "path": "licenses/pefile/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1355,
+    "before_sha256": null,
+    "after_sha256": "8ad83a5f8659e8da6eeaabf2dafa0eebb8c05832a3def16a5db4dd0d52e72474"
+  },
+  {
+    "path": "licenses/pi-heif-decoder/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 7354,
+    "before_sha256": null,
+    "after_sha256": "4b788e7e068cc9a5971d861f3e49d3b076385f373b5f3c0a26065fa6302b01a3"
+  },
+  {
+    "path": "licenses/pi-heif-decoder/licenses/LICENSE.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1546,
+    "before_sha256": null,
+    "after_sha256": "9e2635f155b00af5a46cb2f2c9b052072ec546d59837ee74efc9cba2cbb83f3d"
+  },
+  {
+    "path": "licenses/pi-heif-decoder/licenses/LICENSES_bundled.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 327,
+    "before_sha256": null,
+    "after_sha256": "5335a401c42f1761e56e393e45aac1c4cbd55e6d9ca9176595177b6b0fba26d9"
+  },
+  {
+    "path": "licenses/pyinstaller-hooks-contrib/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 16042,
+    "before_sha256": null,
+    "after_sha256": "686e63d76cb494d44c4533ed64a7d797970a1253493a4f875d39defc190396c4"
+  },
+  {
+    "path": "licenses/pyinstaller-hooks-contrib/licenses/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 27666,
+    "before_sha256": null,
+    "after_sha256": "91d0baaff00773038e72c0a1fc9d5d2d38706b7a2b9c04f34296608f931b9cd0"
+  },
+  {
+    "path": "licenses/pyinstaller/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 8517,
+    "before_sha256": null,
+    "after_sha256": "2991d3dcd53fe9966b8c16586322a7f9bbc564dd4752c190bd4fe8d6747f7046"
+  },
+  {
+    "path": "licenses/pyinstaller/licenses/COPYING.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 32604,
+    "before_sha256": null,
+    "after_sha256": "0598064c7d2718e38d7914a7d08343b2fa008e3bea9ebba2aa7a6ffa5900dd64"
+  },
+  {
+    "path": "licenses/pypdf/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 7639,
+    "before_sha256": null,
+    "after_sha256": "3925a75c81106ba7f048e0424e94740852099c166699f2afba934249dc527ebc"
+  },
+  {
+    "path": "licenses/pypdf/licenses/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1605,
+    "before_sha256": null,
+    "after_sha256": "a97ac230e5f33ef10a5367a850eb01f91f1a0b064e34742c7794d2294557f524"
+  },
+  {
+    "path": "licenses/pypdfium2/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 63509,
+    "before_sha256": null,
+    "after_sha256": "8733a714c056453b87b48c819495cc05f9038d38221b89505043d28c2501237e"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/LICENSES/Apache-2.0.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 11560,
+    "before_sha256": null,
+    "after_sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/LICENSES/BSD-3-Clause.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1485,
+    "before_sha256": null,
+    "after_sha256": "ad9a9e823df025f42389c1812eae28019f657d1ed7b3a4ebfd5010b0736a0da4"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/LICENSES/CC-BY-4.0.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 14844,
+    "before_sha256": null,
+    "after_sha256": "f1b1748301cd4274f46733c218d510929661b4990855de5fc645dacd69c4371c"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/abseil.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 11564,
+    "before_sha256": null,
+    "after_sha256": "f54fff0b905df5b3464527c652a30e903b172d6dcab4d89b5e6f105d5e4a4603"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/agg23.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 725,
+    "before_sha256": null,
+    "after_sha256": "c110d3ea2ad77467ce0dcff7d3337e6c8be8049a5103f4b9bd5fd911a77972e5"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/fast_float.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1106,
+    "before_sha256": null,
+    "after_sha256": "bf1b57355feca8fce77ee95f48002f8d4789fb71b30ec7599c06cda4901fbb2b"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 6742,
+    "before_sha256": null,
+    "after_sha256": "4a9a548027a2c1d37788519dea833294c9c81f1ebc280e817f41f50d0c642d78"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt.source-sha256.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 381,
+    "before_sha256": null,
+    "after_sha256": "4546389edc8f0d26c4cd8fa2706ae39a8843cc4c90bd6d605ba3b4160c89608f"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/icu.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 28286,
+    "before_sha256": null,
+    "after_sha256": "93679f4389d53b6835d89843f251844fb9bc455b35bab036d3c8e7abe497a47a"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/lcms.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1353,
+    "before_sha256": null,
+    "after_sha256": "7312b68c5b25e9bf2b828706fb4e29588f22705112f411fd42e1f7d84c3d139a"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.ijg",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 13059,
+    "before_sha256": null,
+    "after_sha256": "db16a04128171879c60708d171b88d97345a2dd20f9bfc173680a4497c73f704"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 5755,
+    "before_sha256": null,
+    "after_sha256": "be2b2b5ab168bce87bc3e31f2a5c5adba4b7f6e9e51d618e958d1d46972ebd95"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libopenjpeg.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1794,
+    "before_sha256": null,
+    "after_sha256": "c5ab0890a737c2dfa7ba675036554f6d17741d98629b0c2a145354d00617e6b2"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libpng.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 5479,
+    "before_sha256": null,
+    "after_sha256": "452390433ba0f88aa3e2b122c647741b72a0c117cd6ed7a329b49785aecb5511"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/llvm-libc.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 15418,
+    "before_sha256": null,
+    "after_sha256": "3b6226c32e168c83b891d8d6f0d3c29c2116dc3ef93dc93c307b54f279ecf383"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium-binaries.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1184,
+    "before_sha256": null,
+    "after_sha256": "8854f4388f1ca13b3ad9baa42e95f5546b4c0b17109c159256d3eca7be39b09b"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 12818,
+    "before_sha256": null,
+    "after_sha256": "961eacd9633fff6d051db7208b755e9210e30efac7adec3e6a6d52798f0ccf0e"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/simdutf.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1077,
+    "before_sha256": null,
+    "after_sha256": "c172a0ba936ff31230febb5dad869e25cb7c1a07480c7a381be8cf011bb52719"
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/zlib.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1332,
+    "before_sha256": null,
+    "after_sha256": "33fd641c9f3b0e0be64bc78fea9e94807674cdd70c48477599226cb8956565fe"
+  },
+  {
+    "path": "licenses/python-docx/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 2022,
+    "before_sha256": null,
+    "after_sha256": "4c4cc819ebe6de4aca44daccfd3f9173e6f46d9ed900ad1c388ff9efb7b6b1d7"
+  },
+  {
+    "path": "licenses/python-docx/licenses/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1104,
+    "before_sha256": null,
+    "after_sha256": "7652f271e46d0d533e9dc463f3b5fcbdcacf4d6a9c8d6b554d15efd0f37f6132"
+  },
+  {
+    "path": "licenses/python-pptx/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1104,
+    "before_sha256": null,
+    "after_sha256": "7652f271e46d0d533e9dc463f3b5fcbdcacf4d6a9c8d6b554d15efd0f37f6132"
+  },
+  {
+    "path": "licenses/python-pptx/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 2503,
+    "before_sha256": null,
+    "after_sha256": "d38c6af5f1817cc528706264d8343cd1c95dbdec5672f29b944f54f79134a3a2"
+  },
+  {
+    "path": "licenses/pywin32-ctypes/LICENSE.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1644,
+    "before_sha256": null,
+    "after_sha256": "dfa83b3e2709adfcdb838d9ad55823ca674abb780e60563d9dd9544ccbf785e9"
+  },
+  {
+    "path": "licenses/pywin32-ctypes/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3909,
+    "before_sha256": null,
+    "after_sha256": "1e3767d3faff4d5b9c347160883831098d1f25acf4306b02c9acdcc6bfb5883b"
+  },
+  {
+    "path": "licenses/rarfile/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 4555,
+    "before_sha256": null,
+    "after_sha256": "07fa8bf389799afa721f81a15bc04c34b9f1bab2335ba7856ac09e1f9052d9ac"
+  },
+  {
+    "path": "licenses/rarfile/licenses/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 756,
+    "before_sha256": null,
+    "after_sha256": "351350167805c294c7b3e170081ce1265445c46fbeb3e999e13b616c90c64a20"
+  },
+  {
+    "path": "licenses/reportlab/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1638,
+    "before_sha256": null,
+    "after_sha256": "eaf25ccdf6556f532b6efbc78104a0d47832b67dd1cf9b747a142a1c68e9fbaa"
+  },
+  {
+    "path": "licenses/reportlab/licenses/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1707,
+    "before_sha256": null,
+    "after_sha256": "ef831761646313921375fc2cb888e8eeaf7da213d0b92852c10c42f3a0b4d138"
+  },
+  {
+    "path": "licenses/setuptools/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1023,
+    "before_sha256": null,
+    "after_sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+  },
+  {
+    "path": "licenses/setuptools/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3563,
+    "before_sha256": null,
+    "after_sha256": "bdd67d4d16cf0bf3b893e7d18cd3d2d774adb82f37ed985bc7770c607226b35b"
+  },
+  {
+    "path": "licenses/setuptools/licenses/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1076,
+    "before_sha256": null,
+    "after_sha256": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d"
+  },
+  {
+    "path": "licenses/setuptools/licenses/LICENSE.APACHE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 10174,
+    "before_sha256": null,
+    "after_sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+  },
+  {
+    "path": "licenses/setuptools/licenses/LICENSE.BSD",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1344,
+    "before_sha256": null,
+    "after_sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+  },
+  {
+    "path": "licenses/setuptools/licenses/LICENSE.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1107,
+    "before_sha256": null,
+    "after_sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654"
+  },
+  {
+    "path": "licenses/shiboken6/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 2594,
+    "before_sha256": null,
+    "after_sha256": "2e443fc68a670b00b5ee6f2d67fa3005613de00a8294a8f257c6c1263032009a"
+  },
+  {
+    "path": "licenses/shiboken6/licenses/LicenseRef-Qt-Commercial.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 470,
+    "before_sha256": null,
+    "after_sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+  },
+  {
+    "path": "licenses/svglib/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 14081,
+    "before_sha256": null,
+    "after_sha256": "23a9e2c20edf5aecc9be4d3eadc0e469e2488fe38feba21060e14c2858fa419c"
+  },
+  {
+    "path": "licenses/svglib/licenses/LICENSE.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 7637,
+    "before_sha256": null,
+    "after_sha256": "9ccf26cfe845e0eb8bb58053e47366e7ab6b697ae010f7650978d4b71b7d1fc1"
+  },
+  {
+    "path": "licenses/tinycss2/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3007,
+    "before_sha256": null,
+    "after_sha256": "97a184ce0b479d613e7bb4bbc693067ae4c04e5665fd78e8381252f855bcab59"
+  },
+  {
+    "path": "licenses/tinycss2/licenses/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1534,
+    "before_sha256": null,
+    "after_sha256": "6b94acee20ec9f2709333134f3ba70322535fb420af0ce8c1455d9cbe297f1d5"
+  },
+  {
+    "path": "licenses/typing_extensions/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3310,
+    "before_sha256": null,
+    "after_sha256": "b05084ca1d50879865178d9fff9fabeab61bdfb1f361bfbde95421ffc8f9be46"
+  },
+  {
+    "path": "licenses/typing_extensions/licenses/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 13936,
+    "before_sha256": null,
+    "after_sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+  },
+  {
+    "path": "licenses/webencodings/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 3426,
+    "before_sha256": null,
+    "after_sha256": "3d9819d1209e5b56d4c6315efca7d5ca452ba7e55d4c3617ec63555c099bfb70"
+  },
+  {
+    "path": "licenses/webencodings/licenses/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1519,
+    "before_sha256": null,
+    "after_sha256": "e06ef33485e7498ad592887c41fa79cc8a7fecde576c7210e11bfdddef58040e"
+  },
+  {
+    "path": "licenses/xlsxwriter/LICENSE.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1349,
+    "before_sha256": null,
+    "after_sha256": "cf08b60a4ded986b58a617cb8304373bda5c4eff42fb4e30d7597b616e116e87"
+  },
+  {
+    "path": "licenses/xlsxwriter/METADATA",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 2712,
+    "before_sha256": null,
+    "after_sha256": "10d504f188e087f07a06b9038ed0535f37ac072c232e60c075ddb0aedb7b7d78"
+  },
+  {
+    "path": "licenses/구성요소.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 4387,
+    "before_sha256": null,
+    "after_sha256": "64f2185aef623acfd2eab6eae57e9164e6e98206d4778178f4572cecd525b503"
+  },
+  {
+    "path": "offscreen-monitor.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 141,
+    "before_sha256": null,
+    "after_sha256": "286c010caaf6c1e673d942e907c09274e0cb43870670653d45f263afa2c0c139"
+  },
+  {
+    "path": "test-fixtures/sample.heic",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 446,
+    "before_sha256": null,
+    "after_sha256": "121cff26bef161550056c1b0a67ccd391b62f8b6ebdcb4186549e542c2934f4c"
+  },
+  {
+    "path": "vendor/tesseract/doc/AUTHORS",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 787,
+    "before_sha256": null,
+    "after_sha256": "720862b7253993b348fe15f37ed6e0d4feb0fc8df8324284d75975d54dd29923"
+  },
+  {
+    "path": "vendor/tesseract/doc/LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 11358,
+    "before_sha256": null,
+    "after_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+  },
+  {
+    "path": "vendor/tesseract/doc/README.md",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 8152,
+    "before_sha256": null,
+    "after_sha256": "35ca53a67a2895ebdc2cf6777fc5808c1b0c5df650b896b79c82b2c4a004bd76"
+  },
+  {
+    "path": "vendor/tesseract/doc/tessdata_fast-LICENSE",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 11358,
+    "before_sha256": null,
+    "after_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+  },
+  {
+    "path": "vendor/tesseract/doc/tessdata_fast-README.md",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 4353,
+    "before_sha256": null,
+    "after_sha256": "22fee9835bff02fb7013aa9786a2144ae3d4c219083089375985a62808e7215e"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/alto",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 23,
+    "before_sha256": null,
+    "after_sha256": "23a038ff290c7471a1a8aa4b5d23e310b0bf49f718480dad6b619a7d06eca330"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/ambigs.train",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 146,
+    "before_sha256": null,
+    "after_sha256": "717e534fd4330ed3f9bdb006f0465aa2633cca866786a8f8d469dbd4b01c10c2"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/api_config",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 26,
+    "before_sha256": null,
+    "after_sha256": "2929bc0f1d2ba77f28cfc230f7b835b2b54038c0f9d2e8e4c5ada43803c999fd"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/bigram",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 129,
+    "before_sha256": null,
+    "after_sha256": "65e6583abc617a34d4091285181f2493d312c296a85629ac3c092d3b93b6e554"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/box.train",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 311,
+    "before_sha256": null,
+    "after_sha256": "a421355e3488bf3fdfc14a1bdcca08c6f6414ec92c53f0eea22317c868c1a623"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/box.train.stderr",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 311,
+    "before_sha256": null,
+    "after_sha256": "3e62cd37d2383abf0c6dfa5ba39fd1187fcff6856c4f4f27ea1554cb4c1874d2"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/digits",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 37,
+    "before_sha256": null,
+    "after_sha256": "e757d95bb1e51444860ea10d7f2c8bb8a0c9c4ccc58a0e8c67e8dc2933a56e2e"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/get.images",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 24,
+    "before_sha256": null,
+    "after_sha256": "28c774c157a2f48d835a1d58f5a35dd70106c136e176572ee43bbf46f3d65c92"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/hocr",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 40,
+    "before_sha256": null,
+    "after_sha256": "d6a7ec7c5143317a59fce2393054f6b7a8261824b934e7426fdd24febc929ad6"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/inter",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 59,
+    "before_sha256": null,
+    "after_sha256": "46303bf83668e446f4966d1ebf7418ad9f0c5e08836bc59d98cae3bbfc3aee9d"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/kannada",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 101,
+    "before_sha256": null,
+    "after_sha256": "7d34fec99283142a3a22d157dc5cc8824b93ee923e576e6bfd1b026039c2e8f0"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/linebox",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 70,
+    "before_sha256": null,
+    "after_sha256": "eb0279527b009a53432a9e1dde85bf42814901393546bc365bb61837f83355c9"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/logfile",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 25,
+    "before_sha256": null,
+    "after_sha256": "5eed5e41e5fbbf0862836c0e4cda7821f8e08441645858ec6821ab41d926e195"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/lstm.train",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 282,
+    "before_sha256": null,
+    "after_sha256": "3d1f8e5ab4e41467fdd938dc4d266eea081b477f8d74ab6b198dd1d854b5301c"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/lstmbox",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 26,
+    "before_sha256": null,
+    "after_sha256": "61255d1b7c9df76b673ff43d2d91cda7f4c3c2e7d7f0643a71b212739833017e"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/lstmdebug",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 98,
+    "before_sha256": null,
+    "after_sha256": "62d40d7a7d80315e10cdca2561d2ddf2981f53dfdbd567513b04d36f3add7f4e"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/makebox",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 26,
+    "before_sha256": null,
+    "after_sha256": "a8fe20a2bc9ff1e9e8ed06d56845336c978627b8e965600abd63f1f412c18ffe"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/page",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 67,
+    "before_sha256": null,
+    "after_sha256": "6e4b43f27a77124e66c87fce8de518ff81e918d3cc36fe71a3d01179c1856a07"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/pdf",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 22,
+    "before_sha256": null,
+    "after_sha256": "54d56e81dfefe289b0d2e4c7bc9bbe662711f5b8255c128b73bcd66efb6bba1a"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/quiet",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 21,
+    "before_sha256": null,
+    "after_sha256": "8a93fad8251f61b5f17b8628203a0e068c71e0907cd63012ab22afb7b560fce3"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/rebox",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 65,
+    "before_sha256": null,
+    "after_sha256": "73ca35d7d71084fb88e2eb9a5c53ad91682754b3aecb918dece7591ec22a0b26"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/strokewidth",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 377,
+    "before_sha256": null,
+    "after_sha256": "ffb140aadd3e26d0d9b3b355d592b50cff8b2c3ce0394b4a6de4fabc1c0942c9"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/tsv",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 22,
+    "before_sha256": null,
+    "after_sha256": "59d079bb75d8b3d7c839a3564580cb559e362c93a9d70f234e421c0c3e767e04"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 166,
+    "before_sha256": null,
+    "after_sha256": "9bcbdbe285fd3a024be563cb237751ceb3435d86610e231f08894023321af5d7"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/unlv",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 45,
+    "before_sha256": null,
+    "after_sha256": "1b02e7801de71f0757a26ba6d749e9182a0d9971929966bebb67f99db8733f40"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/wordstrbox",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 29,
+    "before_sha256": null,
+    "after_sha256": "9d1787cdce085ad36dc9d6ba6b2702ac262beaf06a0bb4a0b84355f6458261e5"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/eng.traineddata",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 4113088,
+    "before_sha256": null,
+    "after_sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/kor.traineddata",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1677415,
+    "before_sha256": null,
+    "after_sha256": "6b85e11d9bbf07863b97b3523b1b112844c43e713df8b66418a081fd1060b3b2"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/osd.traineddata",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 10562727,
+    "before_sha256": null,
+    "after_sha256": "9cf5d576fcc47564f11265841e5ca839001e7e6f38ff7f7aacf46d15a96b00ff"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/pdf.ttf",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 572,
+    "before_sha256": null,
+    "after_sha256": "c7845420925a23d88ed830a63957b8af85a66a8daf8d9fc90e843673b2ef1a59"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/tessconfigs/batch",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 49,
+    "before_sha256": null,
+    "after_sha256": "d91107c3a8c1c311b00c64aee56cbce4d48894c6e5762165f1ec7871c7b7bf4e"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/tessconfigs/batch.nochop",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 37,
+    "before_sha256": null,
+    "after_sha256": "5acabb534cfd4fd8fe111c854955e1ffa9390619ef43775b1a5fbaf5283f68bb"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/tessconfigs/matdemo",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 243,
+    "before_sha256": null,
+    "after_sha256": "d098cdf6ffe691ccc9dfa4490603f6ae33cdd313010cedfa50007ebde3ddd2d0"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/tessconfigs/msdemo",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 368,
+    "before_sha256": null,
+    "after_sha256": "0ed753a05ea60766f4269d81873b6390e937ea2df1758de91c57db7e92429555"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/tessconfigs/nobatch",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1,
+    "before_sha256": null,
+    "after_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/tessconfigs/segdemo",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 295,
+    "before_sha256": null,
+    "after_sha256": "7ec19f77f8c76b4dfb33ec8b13e11d7685ae5c9cf6eca4e7333cce0513ddac56"
+  },
+  {
+    "path": "검토기록.md",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 12686,
+    "before_sha256": null,
+    "after_sha256": "2a26395dae1c82ec728ac513fb05fd02dc50b37a5795fe036d999b25864090ac"
+  },
+  {
+    "path": "빌드방법.md",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 10787,
+    "before_sha256": null,
+    "after_sha256": "9fccbb5f22203ccaaa9996528351113c011f28806e5223eb0416899a83cc91df"
+  },
+  {
+    "path": "사용안내.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 7342,
+    "before_sha256": null,
+    "after_sha256": "72b6b6050e2ffe4a7234c0190311f7b5a8c323f30eb410ad393236296f7fac1d"
+  },
+  {
+    "path": "파일목록.json",
+    "status": "이전만 존재",
+    "before_bytes": 3329,
+    "after_bytes": null,
+    "before_sha256": "7882b4d437f38e6d31b2b45522a53d3f7e88e2ef52280510523107ae1ffde766",
+    "after_sha256": null
+  }
+]

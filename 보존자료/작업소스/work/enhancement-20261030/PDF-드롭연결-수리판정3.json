@@ -1,0 +1,12 @@
+{
+  "time_kst": "2026-10-30T07:45:10.966923+09:00",
+  "session": "01a15519-c86d-7880-a2e6-c9070f59067d",
+  "task": "workflow-enhancement-20261030",
+  "cause": "PDF실제MIME드롭은Qt기본IconMode에의존해거부되고편집탭에도기존옵션카드가표시됨. 새검사삽입때test17후반7줄이test19로잘못이동",
+  "new_observation": "red-drop-zoom.json원문test18 accepted=False,test19 options.visible=True,작업자가test17후반이동을직접확인하고과거PASS범위를정정함",
+  "method": "명시페이지MIME/모델순서변경·외부MIME거부,편집탭옵션숨김과확대미리보기연결. 기존7assert코드를원래test17위치로바이트내용보존해복원하고19개전체재검사",
+  "selection_reason": "위치와원인이PDF패널/검사삽입으로한정돼소유한같은deep구현자가수정하며기대의미/28본문유지",
+  "role": "deep",
+  "model": "gpt-6.1-sol",
+  "effort": "xhigh"
+}

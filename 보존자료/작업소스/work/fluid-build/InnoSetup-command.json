@@ -1,0 +1,13 @@
+{
+  "time": "2026-10-21T05:00:12.882631+09:00",
+  "argv": [
+    "C:\\Users\\PUVKID\\AppData\\Local\\Programs\\Inno Setup 6\\ISCC.exe",
+    "/OC:\\Users\\PUVKID\\Desktop\\플립링\\work\\fluid-build\\installer",
+    "C:\\Users\\PUVKID\\Desktop\\플립링\\소스\\installer.iss"
+  ],
+  "cwd": "C:\\Users\\PUVKID\\Desktop\\플립링\\소스",
+  "exit_code": 0,
+  "seconds": 66.01600000000326,
+  "free_bytes": 757997568,
+  "log": "C:\\Users\\PUVKID\\Desktop\\플립링\\work\\fluid-build\\InnoSetup.log"
+}

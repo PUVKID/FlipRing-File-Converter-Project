@@ -1,0 +1,15 @@
+{
+  "implementer": {
+    "agent_id": "/root/release_build_resume",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "evidence": "부모가 native collaboration.spawn_agent agent_type=build로 실제 배정했고 도구가 canonical ID를 반환함. 역할 정의 모델/강도 및 최종 빌드·검사기 수리20 결과를 확인. 제품 기능의 이전 구현 기여와 구분. 서버 보증 신원 확인 아님."
+  },
+  "verifier": {
+    "agent_id": "/root/final_verifier_resume",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "evidence": "부모 native collaboration.spawn_agent agent_type=verifier 실제호출과 canonical ID 반환. 구현과 다른 child의 독립163·EXE11·설치624·변환266대조 결과 확인. 제품수정금지 역할. 서버 보증 신원 확인 아님."
+  },
+  "scope": "제품 일반/PDF 이전 구현 기여는 보존 기록에 있으며 이번 구현자는 최종 포장·빌드와 배포 검사기 수리20 담당. 실제 사용자 Shift/PDF 확인은 대기 중이므로 최종 verify 미호출."
+}

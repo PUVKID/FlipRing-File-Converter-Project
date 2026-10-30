@@ -1,0 +1,33 @@
+         3826794 function calls (3825634 primitive calls) in 34.177 seconds
+
+   Ordered by: cumulative time
+   List reduced from 643 to 25 due to restriction <25>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000   34.177   34.177 runner.py:224(run)
+        1    0.000    0.000   34.177   34.177 suite.py:83(__call__)
+        1    0.000    0.000   34.177   34.177 suite.py:102(run)
+        1    0.000    0.000   33.349   33.349 case.py:689(__call__)
+        1    0.000    0.000   33.349   33.349 case.py:599(run)
+        1    0.000    0.000   33.348   33.348 case.py:588(_callTestMethod)
+        1    0.003    0.003   33.348   33.348 test_gui.py:1165(test_40_pdf_error_history_status_and_notifications_switch_both_ways)
+       78    0.001    0.000   32.356    0.415 app.py:960(set_language)
+       75    0.009    0.000   31.432    0.419 app.py:969(retranslate)
+      456    0.011    0.000   31.138    0.068 engine.py:80(tool)
+      456    0.152    0.000   29.558    0.065 shutil.py:1468(which)
+   172064    0.052    0.000   28.671    0.000 shutil.py:1453(_access_check)
+   172064   28.261    0.000   28.261    0.000 {built-in method nt._path_exists}
+       76    0.005    0.000   15.783    0.208 app.py:1202(refresh_tools)
+       76    0.014    0.000   15.639    0.206 app.py:1100(update_tray_menu)
+       74    1.194    0.016    1.194    0.016 {method 'sync' of 'PySide6.QtCore.QSettings' objects}
+     1073    0.001    0.000    1.017    0.001 pathlib.py:835(stat)
+     1073    0.985    0.001    1.016    0.001 {built-in method nt.stat}
+      152    0.002    0.000    0.869    0.006 pathlib.py:1081(glob)
+        1    0.000    0.000    0.827    0.827 suite.py:142(_handleClassSetUp)
+        1    0.000    0.000    0.827    0.827 test_gui.py:67(setUpClass)
+        1    0.002    0.002    0.827    0.827 app.py:660(__init__)
+       76    0.000    0.000    0.709    0.009 app.py:1301(pdf_finished)
+       76    0.003    0.000    0.704    0.009 app.py:1314(append_record)
+   173293    0.281    0.000    0.687    0.000 <frozen ntpath>:108(join)
+
+

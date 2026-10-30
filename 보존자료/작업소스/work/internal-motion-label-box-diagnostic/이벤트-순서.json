@@ -1,0 +1,356 @@
+[
+  {
+    "event": "constructed",
+    "folder": false,
+    "accept": "열기",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "en",
+    "before": "열기",
+    "after": "Open",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "en",
+    "before": "열기",
+    "after": "Open",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": true,
+    "input": "en",
+    "before": "선택",
+    "after": "Choose",
+    "mode": "FileMode.Directory"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "en",
+    "before": "Open",
+    "after": "Open",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": true,
+    "input": "en",
+    "before": "Choose",
+    "after": "Choose",
+    "mode": "FileMode.Directory"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "en",
+    "before": "Open",
+    "after": "Open",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "after_events",
+    "language": "en",
+    "folder": false,
+    "accept": "Open",
+    "title": "Choose files to convert",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "ko",
+    "before": "Open",
+    "after": "열기",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": true,
+    "input": "ko",
+    "before": "Choose",
+    "after": "선택",
+    "mode": "FileMode.Directory"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "ko",
+    "before": "Open",
+    "after": "열기",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "ko",
+    "before": "열기",
+    "after": "열기",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "ko",
+    "before": "열기",
+    "after": "열기",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": true,
+    "input": "ko",
+    "before": "선택",
+    "after": "선택",
+    "mode": "FileMode.Directory"
+  },
+  {
+    "event": "after_events",
+    "language": "ko",
+    "folder": false,
+    "accept": "열기",
+    "title": "변환할 파일 선택",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "constructed",
+    "folder": true,
+    "accept": "선택",
+    "mode": "FileMode.Directory"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "en",
+    "before": "열기",
+    "after": "Open",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": true,
+    "input": "en",
+    "before": "선택",
+    "after": "Choose",
+    "mode": "FileMode.Directory"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "en",
+    "before": "열기",
+    "after": "Open",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "en",
+    "before": "Open",
+    "after": "Open",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "en",
+    "before": "Open",
+    "after": "Open",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": true,
+    "input": "en",
+    "before": "Choose",
+    "after": "Choose",
+    "mode": "FileMode.Directory"
+  },
+  {
+    "event": "after_events",
+    "language": "en",
+    "folder": true,
+    "accept": "Choose",
+    "title": "Choose a folder to archive",
+    "mode": "FileMode.Directory"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "ko",
+    "before": "Open",
+    "after": "열기",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": true,
+    "input": "ko",
+    "before": "Choose",
+    "after": "선택",
+    "mode": "FileMode.Directory"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "ko",
+    "before": "Open",
+    "after": "열기",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "ko",
+    "before": "열기",
+    "after": "열기",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "ko",
+    "before": "열기",
+    "after": "열기",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": true,
+    "input": "ko",
+    "before": "선택",
+    "after": "선택",
+    "mode": "FileMode.Directory"
+  },
+  {
+    "event": "after_events",
+    "language": "ko",
+    "folder": true,
+    "accept": "선택",
+    "title": "압축할 폴더 선택",
+    "mode": "FileMode.Directory"
+  },
+  {
+    "event": "constructed",
+    "folder": false,
+    "accept": "열기",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "en",
+    "before": "열기",
+    "after": "Open",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": true,
+    "input": "en",
+    "before": "선택",
+    "after": "Choose",
+    "mode": "FileMode.Directory"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "en",
+    "before": "열기",
+    "after": "Open",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "en",
+    "before": "Open",
+    "after": "Open",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "en",
+    "before": "Open",
+    "after": "Open",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": true,
+    "input": "en",
+    "before": "Choose",
+    "after": "Choose",
+    "mode": "FileMode.Directory"
+  },
+  {
+    "event": "after_events",
+    "language": "en",
+    "folder": false,
+    "accept": "Open",
+    "title": "Choose PDFs or images",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "ko",
+    "before": "Open",
+    "after": "열기",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": true,
+    "input": "ko",
+    "before": "Choose",
+    "after": "선택",
+    "mode": "FileMode.Directory"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "ko",
+    "before": "Open",
+    "after": "열기",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "ko",
+    "before": "열기",
+    "after": "열기",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": false,
+    "input": "ko",
+    "before": "열기",
+    "after": "열기",
+    "mode": "FileMode.ExistingFiles"
+  },
+  {
+    "event": "set_language",
+    "folder": true,
+    "input": "ko",
+    "before": "선택",
+    "after": "선택",
+    "mode": "FileMode.Directory"
+  },
+  {
+    "event": "after_events",
+    "language": "ko",
+    "folder": false,
+    "accept": "열기",
+    "title": "PDF 또는 이미지 선택",
+    "mode": "FileMode.ExistingFiles"
+  }
+]

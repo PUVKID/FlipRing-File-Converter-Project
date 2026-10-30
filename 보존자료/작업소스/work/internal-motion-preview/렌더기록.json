@@ -1,0 +1,58 @@
+{
+  "platform": "offscreen",
+  "scope": "소스에서 직접 생성한 실제 Qt 위젯 렌더. OS 데스크톱/설치본/물리 Shift 캡처 아님. GIF 반복은 검토 미리보기만이며 앱은 유한 애니메이션.",
+  "files": [
+    {
+      "name": "01-home.png",
+      "bytes": 85382
+    },
+    {
+      "name": "02-file-picker.png",
+      "bytes": 41082
+    },
+    {
+      "name": "03-folder-picker.png",
+      "bytes": 32344
+    },
+    {
+      "name": "04-message.png",
+      "bytes": 11279
+    },
+    {
+      "name": "05-pdf.png",
+      "bytes": 41254
+    },
+    {
+      "name": "06-ocr.png",
+      "bytes": 55416
+    },
+    {
+      "name": "07-history.png",
+      "bytes": 28554
+    },
+    {
+      "name": "08-helpers.png",
+      "bytes": 50128
+    },
+    {
+      "name": "09-about.png",
+      "bytes": 50396
+    },
+    {
+      "name": "10-home-en.png",
+      "bytes": 80191
+    },
+    {
+      "name": "file-picker-open-select.gif",
+      "bytes": 177602
+    },
+    {
+      "name": "message-response.gif",
+      "bytes": 30327
+    },
+    {
+      "name": "picker-return-response.gif",
+      "bytes": 262785
+    }
+  ]
+}

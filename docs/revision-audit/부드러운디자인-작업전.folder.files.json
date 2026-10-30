@@ -1,0 +1,54 @@
+[
+  {
+    "path": "app.py",
+    "bytes": 50164,
+    "sha256": "faf4c9e0b4f018b1a33004c1609ef4aff2201f320e6bf452fe55f9a6a93e1f5e",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 1131,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "pdf_panel.py",
+    "bytes": 21137,
+    "sha256": "65e08796aa43be0f4b1935da14489455766d919970c02097315c16491aa478b1",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 409,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_gui.py",
+    "bytes": 51626,
+    "sha256": "6bd734ca52ede83fc3b2b982420f2bc4fd8bdc4edbe28788cc9150e5bcd2370c",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 967,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "파일목록.json",
+    "bytes": 410,
+    "sha256": "d154020279509d59f1abcd7545436f8f5a2bf596ed604837d82bb7131d90d7d4",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 17,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  }
+]

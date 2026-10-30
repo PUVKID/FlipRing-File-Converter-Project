@@ -1,0 +1,9 @@
+{
+  "time_kst": "2026-10-30T12:05:04.590022+09:00",
+  "run_id": "99146dd96ba04b37baa06fcf33208d33",
+  "total_tests": 163,
+  "passed": true,
+  "elapsed_seconds": 24.478666799957864,
+  "scope": "부모회귀, 독립최종검증아님",
+  "reports": "work/release-validation/99146dd96ba04b37baa06fcf33208d33/실행기록.json"
+}

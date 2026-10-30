@@ -1,0 +1,50 @@
+[
+  {
+    "id": "구문-UTF8-배포987해시",
+    "argv": [
+      "D:\\2026\\FilpRing Project\\work\\venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-c",
+      "exec('import ast,pathlib; fs=list(pathlib.Path(\"소스\").glob(\"*.py\")); assert fs; [(ast.parse(p.read_text(encoding=\"utf-8\")),p) for p in fs]; assert all(chr(0xfffd) not in p.read_text(encoding=\"utf-8\") for p in fs);print(\"구문 UTF8\",len(fs))');exec('import pathlib,json,hashlib;r=pathlib.Path(\".\");o=json.loads((r/\"evidence/배포검증.json\").read_text(encoding=\"utf-8\"));assert o[\"installer_exit_code\"]==0 and o[\"actual_launch_passed\"];assert o[\"files\"] and {\"프로그램/FlipRing/FlipRing.exe\",\"설치파일/FlipRing-Setup.exe\",\"소스/app.py\",\"소스/빌드방법.md\"}<={x[\"path\"] for x in o[\"files\"]};assert all(hashlib.file_digest((r/x[\"path\"]).open(\"rb\"),\"sha256\").hexdigest()==x[\"sha256\"] for x in o[\"files\"]);print(\"배포 검증 통과\")')"
+    ],
+    "cwd": "D:\\2026\\FilpRing Project",
+    "timeout_seconds": 6,
+    "exit_code": 0,
+    "status": "passed",
+    "duration_seconds": 1.735,
+    "output": "구문 UTF8 12\r\n배포 검증 통과\r\n",
+    "output_bytes": 38,
+    "captured_bytes": 38,
+    "output_truncated": false,
+    "capture_boundary_omitted_bytes": 0,
+    "output_invalid_utf8": false,
+    "output_display_truncated": false,
+    "output_note": "전체 출력입니다."
+  },
+  {
+    "id": "PDF-OCR-실제-패널",
+    "argv": [
+      "D:\\2026\\FilpRing Project\\work\\venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-c",
+      "import os,sys,runpy;os.environ[\"QT_QPA_PLATFORM\"]=\"offscreen\";sys.argv=[\"소스/test_pdf_tools.py\",\"work/pdf-ocr-check\",\"--ocr\",\"--gui\"];sys.path.insert(0,\"소스\");runpy.run_path(\"소스/test_pdf_tools.py\",run_name=\"__main__\")"
+    ],
+    "cwd": "D:\\2026\\FilpRing Project",
+    "timeout_seconds": 17.7,
+    "exit_code": 0,
+    "status": "passed",
+    "duration_seconds": 14.25,
+    "output": "test_01_ranges_safe_order (__main__.OcrTests.test_01_ranges_safe_order) ... ok\r\ntest_02_merge_order (__main__.OcrTests.test_02_merge_order) ... ok\r\ntest_03_split (__main__.OcrTests.test_03_split) ... ok\r\ntest_04_extract_order_and_delete (__main__.OcrTests.test_04_extract_order_and_delete) ... ok\r\ntest_05_rotate_selected (__main__.OcrTests.test_05_rotate_selected) ... ok\r\ntest_06_image_pdf_multiple_frames (__main__.OcrTests.test_06_image_pdf_multiple_frames) ... ok\r\ntest_07_lossless_compression_keeps_text (__main__.OcrTests.test_07_lossless_compression_keeps_text) ... ok\r\ntest_08_lossy_compression_renders (__main__.OcrTests.test_08_lossy_compression_renders) ... ok\r\ntest_09_unique_names_and_source_hash (__main__.OcrTests.test_09_unique_names_and_source_hash) ... ok\r\ntest_10_encrypted_pdf_explicit_error (__main__.OcrTests.test_10_encrypted_pdf_explicit_error) ... ok\r\ntest_11_cancel_before_work (__main__.OcrTests.test_11_cancel_before_work) ... ok\r\ntest_12_coordinate_table_docx_xlsx (__main__.OcrTests.test_12_coordinate_table_docx_xlsx) ... ok\r\ntest_13_formulas_are_literal_text (__main__.OcrTests.test_13_formulas_are_literal_text) ... ok\r\ntest_14_external_process_timeout_and_temp_cleanup (__main__.OcrTests.test_14_external_process_timeout_and_temp_cleanup) ... ok\r\ntest_15_cancel_terminates_process_tree (__main__.OcrTests.test_15_cancel_terminates_process_tree) ... ok\r\ntest_16_real_bilingual_ocr_unicode_path (__main__.OcrTests.test_16_real_bilingual_ocr_unicode_path) ... ok\r\ntest_17_searchable_pdf_image_and_scanned_pdf (__main__.OcrTests.test_17_searchable_pdf_image_and_scanned_pdf) ... ok\r\ntest_18_real_ocr_docx_table_and_xlsx_cells (__main__.OcrTests.test_18_real_ocr_docx_table_and_xlsx_cells) ... ok\r\ntest_19_panel_thread_result_language_and_restore (__main__.PanelTests.test_19_panel_thread_result_language_and_restore) ... ok\r\ntest_20_panel_error_restores_inputs (__main__.PanelTests.test_20_panel_error_restores_inputs) ... ok\r\ntest_21_panel_cancel_is_responsive (__main__.PanelTests.test_21_panel_cancel_is_responsive) ... ok\r\ntest_22_panel_blocks_existing_engine_queue (__main__.PanelTests.test_22_panel_blocks_existing_engine_queue) ... ok\r\ntest_23_worker_and_gui_thread_affinity (__main__.PanelTests.test_23_worker_and_gui_thread_affinity) ... ok\r\ntest_24_repeat_completion_cancellation_and_shutdown (__main__.PanelTests.test_24_repeat_completion_cancellation_and_shutdown) ... ok\r\ntest_25_real_ocr_in_background_panel (__main__.PanelTests.test_25_real_ocr_in_background_panel) ... ok\r\ntest_26_cancel_real_ocr_process_from_panel (__main__.PanelTests.test_26_cancel_real_ocr_process_from_panel) ... ok\r\ntest_27_second_input_failure_records_actual_source (__main__.PanelTests.test_27_second_input_failure_records_actual_source) ... invalid pdf header: b'inval'\r\nEOF marker not found\r\nok\r\ntest_28_merge_failure_has_source_and_global_error_has_none (__main__.PanelTests.test_28_merge_failure_has_source_and_global_error_has_none) ... invalid pdf header: b'inval'\r\nEOF marker not found\r\nok\r\n\r\n----------------------------------------------------------------------\r\nRan 28 tests in 13.238s\r\n\r\nOK\r\n{\"tests\": 28, \"ocr_enabled\": true, \"gui_enabled\": true, \"passed\": 28, \"skipped\": [], \"scope\": \"생성한 PDF/이미지의 로컬 편집·원본해시·좌표표·외부프로세스 취소/시간제한. OCR활성시 실제 portable Tesseract 한영/검색PDF/DOCX표/XLSX셀 검증.\"}\r\n",
+    "output_bytes": 3410,
+    "captured_bytes": 3410,
+    "output_truncated": false,
+    "capture_boundary_omitted_bytes": 0,
+    "output_invalid_utf8": false,
+    "output_display_truncated": false,
+    "output_note": "전체 출력입니다."
+  }
+]

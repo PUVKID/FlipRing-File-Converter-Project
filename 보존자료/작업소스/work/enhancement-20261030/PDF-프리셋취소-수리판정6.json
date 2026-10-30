@@ -1,0 +1,9 @@
+{
+  "cause": "PDF 프리셋 네 필드가 비문자열일 때 집합검사에서 TypeError가 발생하며 저장 성공과 완료 슬롯 사이의 취소가 완성 결과 기록을 버립니다.",
+  "new_observation": "red-malformed-latecancel은 21검사 중19통과입니다. test20의 네 손상 필드 오류와 test21의 완성PDF3페이지 존재·result_ready0을 실제 재현했습니다.",
+  "method": "pdf_panel의 네 문자열 필드를 선검증하여 손상 프리셋은 기존 옵션을 유지하고 False를 반환합니다. 성공 저장 결과는 늦은 취소에도 한 번 기록하며 미완료 load/render 취소는 유지합니다. 검사 기준 불변으로21개 전체를 실행합니다.",
+  "selection_reason": "PDF 작업 완료와 취소 시점의 경계이므로 해당 비동기 패널을 소유한 deep 담당자가 성공 파일과 기록의 일관성을 수정합니다.",
+  "role": "deep",
+  "model": "gpt-6.1-sol",
+  "effort": "xhigh"
+}

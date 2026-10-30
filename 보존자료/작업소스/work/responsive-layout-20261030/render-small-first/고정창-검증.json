@@ -1,0 +1,30 @@
+{
+  "tests": 6,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "observations": [
+    {
+      "size": [
+        636,
+        476
+      ],
+      "frame": [
+        0,
+        0,
+        640,
+        480
+      ],
+      "available": [
+        0,
+        0,
+        640,
+        480
+      ],
+      "dpr": 1.0
+    }
+  ],
+  "platform": "offscreen",
+  "scale_env": "1",
+  "scope": "실제 Qt offscreen 렌더와 제어 이벤트 시험. 실제 OS 화면 캡처·Windows 배율 변경 아님."
+}

@@ -1,0 +1,14 @@
+{
+  "menu_descendants_per_rebuild": [
+    4,
+    6,
+    8,
+    10
+  ],
+  "system_folder_type": "File Folder",
+  "system_python_type": "Python script",
+  "custom_folder_ko": "폴더",
+  "custom_folder_en": "Folder",
+  "caption_en": "Browse to a location, then choose the files you need.",
+  "heading_en": "변환할 파일 선택"
+}

@@ -1,0 +1,16 @@
+{
+  "time_kst": "2026-10-24T19:09:46.835509+09:00",
+  "before_sha256": "302472f5db4a5d73eae64163c10d321c3cc5a04ed58fa8e9579c186fbfd72fc3",
+  "candidate_sha256": "410f56cb6aad278b75d43aecb5cd30bfc0984bf057cda22ea49e08e90069cdf1",
+  "existing_argv_unchanged": true,
+  "criteria_skips_assertions_changed": false,
+  "individual_limits": [
+    30,
+    15
+  ],
+  "total_limit": 45,
+  "central_module_modified": false,
+  "validation_errors": [],
+  "executed": false,
+  "scope": "활성 명세 교체 전 준비. 기존 배포 증거는 아직1.5이므로 실제 전체 실행은 새 빌드·설치 근거 갱신 후."
+}

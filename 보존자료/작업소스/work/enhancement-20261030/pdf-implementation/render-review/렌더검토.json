@@ -1,0 +1,71 @@
+[
+  {
+    "language": "ko",
+    "requested_size": [
+      960,
+      680
+    ],
+    "actual_size": [
+      960,
+      680
+    ],
+    "source_card": [
+      938,
+      658
+    ],
+    "preview": [
+      885,
+      163
+    ],
+    "save_visible": true,
+    "cancel_visible": true,
+    "font_family": "SUIT",
+    "source_sha256": "2a521d697df5cd5a40f05ae758f4f2c43115b473c94c240bbd0af8d6c962c5ea"
+  },
+  {
+    "language": "en",
+    "requested_size": [
+      960,
+      680
+    ],
+    "actual_size": [
+      960,
+      680
+    ],
+    "source_card": [
+      938,
+      658
+    ],
+    "preview": [
+      885,
+      163
+    ],
+    "save_visible": true,
+    "cancel_visible": true,
+    "font_family": "SUIT",
+    "source_sha256": "2a521d697df5cd5a40f05ae758f4f2c43115b473c94c240bbd0af8d6c962c5ea"
+  },
+  {
+    "language": "ko",
+    "requested_size": [
+      1200,
+      820
+    ],
+    "actual_size": [
+      1200,
+      820
+    ],
+    "source_card": [
+      1178,
+      798
+    ],
+    "preview": [
+      1132,
+      295
+    ],
+    "save_visible": true,
+    "cancel_visible": true,
+    "font_family": "SUIT",
+    "source_sha256": "2a521d697df5cd5a40f05ae758f4f2c43115b473c94c240bbd0af8d6c962c5ea"
+  }
+]

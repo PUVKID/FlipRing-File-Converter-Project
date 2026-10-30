@@ -1,0 +1,3926 @@
+[
+  {
+    "path": "1.7-새기능안내.md",
+    "bytes": 4680,
+    "sha256": "6c812afba5f4d2ff99fdb4cac4b58466368d62ec7bba26b3d9815e5f5e774fb7",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 44,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "1.8-화면안내.md",
+    "bytes": 1628,
+    "sha256": "3793caf258369a9353138467924fb40f26c4aa3d477b844da3948dc2c67c788f",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 19,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "FlipRing.spec",
+    "bytes": 1287,
+    "sha256": "e05a799e8cd588fe577af2bc1e97c5f91c7f4ff0c7ccd83531ad143a2d1e6d79",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 14,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "LICENSE.txt",
+    "bytes": 1396,
+    "sha256": "8c7b2363b1bd25e3428416587833dbe61098d211f30420582879ec4810cbf52f",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 25,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "app.py",
+    "bytes": 81675,
+    "sha256": "be1fb631debba94240f8d81549b7e14dd4d6c321c4963bf8d7ee6b99116a3ba8",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1765,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "assets/NanumGothic-OFL.txt",
+    "bytes": 5398,
+    "sha256": "9413f0aaff51c59be2ff01113a28759b491e6fd67172c3d0a666e6354af18883",
+    "text_bytes": {
+      "utf8_bom_count": 1,
+      "crlf_count": 0,
+      "lf_without_cr_count": 126,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "assets/NanumGothicBold.ttf",
+    "bytes": 4642244,
+    "sha256": "454eb3f503f377782a99eb84fc4bb7dde22a0f075d41b47427737f2985053bc9"
+  },
+  {
+    "path": "assets/app.ico",
+    "bytes": 18404,
+    "sha256": "01856a7bafbdc15ff8d00257a113521256da3099958c32c86542d6bc3209f93a"
+  },
+  {
+    "path": "assets/combo-chevron.svg",
+    "bytes": 214,
+    "sha256": "8b5dac9eed1bf0e5dd5fab90746f6d47f5ed028fba92f0abf7fbcbb917e94c39",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 3,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "assets/fonts/SUIT-Medium.ttf",
+    "bytes": 592832,
+    "sha256": "06be0060927642883b9027b275744fc8234826e6563015ebe3324f3802ae005f"
+  },
+  {
+    "path": "assets/fonts/SUIT-Regular.ttf",
+    "bytes": 594324,
+    "sha256": "88c94c990b9996c558666ef07c11664ab177c3be191e2846950b48f245d02274"
+  },
+  {
+    "path": "assets/fonts/SUIT-SemiBold.ttf",
+    "bytes": 591696,
+    "sha256": "8d202e0341b9426b653c1b3d36b2c0d1f4b482a7dfa83baaccf84d355d688fbd"
+  },
+  {
+    "path": "assets/lucide/arrow-left-right.svg",
+    "bytes": 313,
+    "sha256": "2d64da427cbb3f14e522658459903829575b09ec15162c1a69ea6ad341a4359a",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 16,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "assets/lucide/arrow-up-right.svg",
+    "bytes": 260,
+    "sha256": "50b2503b9d11881142255466b7e3461d022b919735841c321d72003ac9959fe1",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 14,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "assets/lucide/check.svg",
+    "bytes": 239,
+    "sha256": "7f33acc9a77a61659531044525fc008edebe215bf4dcf1c789c8674ad3277db0",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 13,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "assets/lucide/file-up.svg",
+    "bytes": 427,
+    "sha256": "0bd753699aed9b50bcbde59b12e1409329bb9291c0aa523dd4553497cd665c0b",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 16,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "assets/lucide/file.svg",
+    "bytes": 373,
+    "sha256": "499039795d7412d67664ff79d2eb6b7412e746b24c18c8fd8aba383c24ddada0",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 14,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "assets/lucide/folder-open.svg",
+    "bytes": 401,
+    "sha256": "ee57452b40e71df310214091dd9da1941a397c83197b8ff8d7ae66dd4242578b",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 13,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "assets/lucide/info.svg",
+    "bytes": 294,
+    "sha256": "bc977a64eb96f3e9c1041ffd09a3fceb70e3e65c02b571f76064062ed31f3cb9",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 15,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "assets/lucide/plus.svg",
+    "bytes": 256,
+    "sha256": "7f6af73bf1ff6c4bca3f18351c8d1bdec6749c0c2530c4de5da85d520c21df17",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 14,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "assets/lucide/rotate-ccw-clock.svg",
+    "bytes": 324,
+    "sha256": "a98ff758157910b9fc9d42d5d5dc80c2f4e037afa5f8ea4dee5f5649f03d438d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 15,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "assets/lucide/scan-text.svg",
+    "bytes": 435,
+    "sha256": "6c05f5346bf0a9c7cdf6132f7ae3428ea932e2206ace2480f41a3d3bdc6efd80",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 19,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "assets/lucide/sliders-horizontal.svg",
+    "bytes": 422,
+    "sha256": "e43a00e5eb684e6cbb61083bed2528d7a3fa5f265693eb2b5f314cd432aa65f4",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 21,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "assets/lucide/x.svg",
+    "bytes": 260,
+    "sha256": "4a9cdab38fbb96162e7dace28e33f4ca0e49d8963a6162abc3d4691b7d675117",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 14,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "build.py",
+    "bytes": 7061,
+    "sha256": "0b203dd20250ed3413ee41245322dce95a5d5cf0517fd00b59471c9188f6c69f",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 119,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "engine.py",
+    "bytes": 29743,
+    "sha256": "c473f5b6b530e4dff94df5cc5166657776a8131fa9244588ff0f1bae7ac1e27a",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 654,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "fixed_viewport.py",
+    "bytes": 2468,
+    "sha256": "357b4f0a6ab3e95f1b655801f71e719ede4230d9c8ec91ff77c2d7cce01e1aa5",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 60,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "flipring_workflow.py",
+    "bytes": 6873,
+    "sha256": "2959f12fe2b89498c5d29e3e1318f0da89ff96eaf06a52c628ad2e11a313398e",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 118,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "i18n.py",
+    "bytes": 19102,
+    "sha256": "d3264e43e1b2008d2df6f6ee8ac9fa0044521bfff41433e927cda693bd0c3cab",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 214,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "installer.iss",
+    "bytes": 1389,
+    "sha256": "8a81aae55de34176cfd65773a9e5dbf47e9bfbd6e47ae1778e51890591f213ce",
+    "text_bytes": {
+      "utf8_bom_count": 1,
+      "crlf_count": 35,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/7Zip/LGPL-2.1.txt",
+    "bytes": 27032,
+    "sha256": "1e7e6bae5a5bde32f1ae5a7c37a082d1ab03cf89354f7f936ac40be9e39a6531",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 502,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/7Zip/License.txt",
+    "bytes": 6031,
+    "sha256": "519ac0a4bded9c18ea02e0afb71f663d8c47373bd9facd3ac96a79f51d77765d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 146,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/7Zip/Source-License.txt",
+    "bytes": 6341,
+    "sha256": "9ac2b4a97ab5d523965534d8b2d5868e511b39096d51fff458ab72c38b80fccc",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 151,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/7Zip/unRarLicense.txt",
+    "bytes": 1921,
+    "sha256": "17bd9fa4399092c777536fff045b41df76ec9d2ac4c9b8e7345d3b8b6ccc7976",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 40,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/7Zip/출하목록.json",
+    "bytes": 2762,
+    "sha256": "4e8bf6bc1939cb49640d8aea6b85152085c4e48e3b17e2253e8dfcb3af4d8f7d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 75,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/GCC-RUNTIME-EXCEPTION.txt",
+    "bytes": 3324,
+    "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 73,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/GPL-3.0.txt",
+    "bytes": 35149,
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 674,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/GCC-PKGINFO.txt",
+    "bytes": 1291,
+    "sha256": "2c9818f60ae5c6f4eee075cacf82424f8ee2e6d948786e332490535e854ee00d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 34,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.LIB",
+    "bytes": 26527,
+    "sha256": "a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 510,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.RUNTIME",
+    "bytes": 3324,
+    "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 73,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING3",
+    "bytes": 35147,
+    "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 674,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/README",
+    "bytes": 236,
+    "sha256": "33400d067fa3e2bd670a0868dcdb60c9486e8f559b675cf9ff1ff55d4e0d06ab",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 3,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/HEIC-GNU-GCC대조.json",
+    "bytes": 1872,
+    "sha256": "241751dc6e8f683f03e52218bcc5531c61ff3ab20b979e8db6487d980cecdc53",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 35,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/HEIC-GNU-PE수정영역.json",
+    "bytes": 5993,
+    "sha256": "e9d1d2d5d7ffe916444c3ec84b2dc78f2ee846dd4e398496d38ab7df0dd4b1c8",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 151,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/HEIC-GNU-WINPTHREAD대조.json",
+    "bytes": 1120,
+    "sha256": "e63d37d228f0d4ac551faf0843aff4f6d9bb6416be1a39234c7e440925be15d6",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 23,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/HEIC-GNU-소스확보.json",
+    "bytes": 434,
+    "sha256": "7acec12aefc960b7dfcc0251b81a549fe6bccac8556e3ffd1b823d83738b8c35",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 11,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/WINPTHREAD-PKGINFO.txt",
+    "bytes": 787,
+    "sha256": "0a7379d06cec37d3dc5283e2cbcccec35706175ba8a8eee743fc7acaf94d5746",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 21,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/WINPTHREAD-원문고지/libwinpthread/COPYING",
+    "bytes": 2883,
+    "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 57,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/libheif/windows/mingw-w64-libheif/PKGBUILD",
+    "bytes": 2484,
+    "sha256": "216f26f9dfa169b467af26001c9da6864054bb17f433d7612bb109cf4e17b7b1",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 76,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/pyproject.toml",
+    "bytes": 3033,
+    "sha256": "a5cb5be4340e98bb35776130f9df8bae845da5ab8b0160490b8e7bece36aa075",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 180,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/setup.py",
+    "bytes": 12778,
+    "sha256": "4b7786c05de87319ffc380265c91d776917f5a2d4fe31f3beb63cfe2c178c6f8",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 300,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/읽어주세요.md",
+    "bytes": 3330,
+    "sha256": "280d93a25999fce85879a23f36c73264ade0de631b89aa2d710b95766c724411",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 24,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/출하목록.json",
+    "bytes": 4192,
+    "sha256": "89c48aa5b2e491d0b8138e8bb4b3e65cedf818354f4cc5eabe65ea53d1e98577",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 120,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-gcc-16.2.0-3/.SRCINFO",
+    "bytes": 8081,
+    "sha256": "460257cf5496b17611ed36c01272e42fb41ae06cfc404374b1a2538970dc8158",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 173,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-gcc-16.2.0-3/PKGBUILD",
+    "bytes": 25852,
+    "sha256": "226e4b4d6a5786b66eaf260181b5260934a77ee1d6548ef9d1f735ebaae30f1d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 627,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1/.SRCINFO",
+    "bytes": 1390,
+    "sha256": "7c7488d882e286b56785565ba11d2982092bb62e96008e2ee535e94f0b1174c1",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 32,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1/PKGBUILD",
+    "bytes": 4484,
+    "sha256": "7e5cec4463bd044cddeeb584dc6aab3e91dee5afd088d382e90c6232d0dd4e17",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 127,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/HEIC-GNU-runtime/프로그램-DLL목록.json",
+    "bytes": 919,
+    "sha256": "2b8414f075aec3f6584eea7ba4b1726bc47a778a608642f24cf77f14a3cbbb67",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 25,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/Inno-Setup-LICENSE.txt",
+    "bytes": 1521,
+    "sha256": "2e5346868c2a18434489824e11d65c3031620f792fefc415d05f19cd441abf5c",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 31,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/LGPL-3.0.txt",
+    "bytes": 7652,
+    "sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 165,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/Lucide/LICENSE",
+    "bytes": 3208,
+    "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 43,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/Lucide/원본출처.json",
+    "bytes": 7537,
+    "sha256": "2e6884324f7361c89ffe0ab91fff02e5e16a688722328652e8630ea8206f588a",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 130,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/Mesa-LICENSE.html",
+    "bytes": 18044,
+    "sha256": "9e0c5f9cba3e7b810ca8ee1f306073e80f6d18d89f05497eb7a4b9f487ff7c5d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 316,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/NanumGothic-OFL.txt",
+    "bytes": 5398,
+    "sha256": "9413f0aaff51c59be2ff01113a28759b491e6fd67172c3d0a666e6354af18883",
+    "text_bytes": {
+      "utf8_bom_count": 1,
+      "crlf_count": 0,
+      "lf_without_cr_count": 126,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/GPL-3.0.txt",
+    "bytes": 35149,
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 674,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/MSYS2-구성요소.json",
+    "bytes": 57186,
+    "sha256": "b73639d1e4b4dd575763365958167531a6d96c2a97fcc80e11a6f305200bf0e0",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 1791,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/Tesseract-소스다운로드.json",
+    "bytes": 378,
+    "sha256": "4eb2c7909396a02bddd980776ce7e019209f8ed3e42588148d709a48646eb0e8",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 11,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/Tesseract-원본다운로드.json",
+    "bytes": 296,
+    "sha256": "952a1f62d9f8940821dbf015eb83c8be99e873de50a621eb6c4bbd922762123f",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 5,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/brotli/PKGINFO.txt",
+    "bytes": 464,
+    "sha256": "af08cd3cb0686c720d469e5be4860a2773929c149c39159555ed817d5ada2dbc",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 15,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/brotli/brotli/LICENSE",
+    "bytes": 1084,
+    "sha256": "3d180008e36922a4e8daec11c34c7af264fed5962d07924aea928c38e8663c94",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 19,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/bzip2/PKGINFO.txt",
+    "bytes": 448,
+    "sha256": "42dec4171b3ce74124bbd9b419ad572c60268d453bf40637dce748479781882f",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 14,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/bzip2/bzip2/LICENSE",
+    "bytes": 1896,
+    "sha256": "c6dbbf828498be844a89eaa3b84adbab3199e342eb5cb2ed2f0d4ba7ec0f38a3",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 42,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/curl-winssl/PKGINFO.txt",
+    "bytes": 1378,
+    "sha256": "a053893f72f1e6503ac71b091ba0cf3386c1f1cd6cf7944cc43c0d9313247613",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 38,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/curl-winssl/curl/LICENSE",
+    "bytes": 1088,
+    "sha256": "82f2f4427d6545ee5aaac4f0b80428da6cc8ba41c2cf5da3a03680ec327b9681",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 22,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/expat/PKGINFO.txt",
+    "bytes": 488,
+    "sha256": "9eb42cdf8f6e95c7f09d990c30e00fa47e45a50f2378b99f472084c126d97d52",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 15,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/expat/expat/COPYING",
+    "bytes": 1144,
+    "sha256": "31b15de82aa19a845156169a17a5488bf597e561b2c318d159ed583139b25e87",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 21,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/gettext-runtime/PKGINFO.txt",
+    "bytes": 710,
+    "sha256": "9432a898a3d7a16f62e30eb1c65a63e51ea80199ebc61f3a362dd01be052b0e7",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 20,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/gettext-runtime/gettext-runtime/COPYING",
+    "bytes": 495,
+    "sha256": "7ef2cdfe58e0c0460657b6598b49af29d4e03c1e41cbaf0e1da1eb8ad74b95d0",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 13,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/gettext-runtime/gettext-runtime/intl/COPYING.LIB",
+    "bytes": 26419,
+    "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 501,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/gettext-runtime/gettext-runtime/libasprintf/COPYING",
+    "bytes": 65,
+    "sha256": "03133addae5b99a6148c538300e6d97074453089be1423b741bd081f18e2b298",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/gettext-runtime/gettext-runtime/libasprintf/COPYING.LIB",
+    "bytes": 26419,
+    "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 501,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/giflib/PKGINFO.txt",
+    "bytes": 441,
+    "sha256": "51f5e616d8346958cd548e2237a840c50e9e84cbb53905da4045bb8b3a2b64c9",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 14,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/jbigkit/PKGINFO.txt",
+    "bytes": 496,
+    "sha256": "3efecb6c8e1eaf3381eecf5215a835a90439a20e39f83e41dbfdad0e2679dd64",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 14,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/jbigkit/jbigkit/COPYING",
+    "bytes": 17982,
+    "sha256": "91df39d1816bfb17a4dda2d3d2c83b1f6f2d38d53e53e41e8f97ad5ac46a0cad",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 339,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/leptonica/PKGINFO.txt",
+    "bytes": 817,
+    "sha256": "3d6f67437a0e2bda6c5922c2c55c5f5131ae9930a6f9212996c7bf8a392f1634",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 23,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/leptonica/leptonica/LICENSE",
+    "bytes": 1521,
+    "sha256": "87829abb5bbb00b55a107365da89e9a33f86c4250169e5a1e5588505be7d5806",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 26,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/lerc/PKGINFO.txt",
+    "bytes": 549,
+    "sha256": "b98e36b32c7231c3a9acfa1da42ea8680152a75510d334b8e67d5bc07402a984",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 16,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/lerc/lerc/LICENSE",
+    "bytes": 9198,
+    "sha256": "77a8b761727c75e2167b15bfdf61b2c0bcf8792271228bebe80779106ad00671",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 100,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libarchive/PKGINFO.txt",
+    "bytes": 894,
+    "sha256": "ad244556ef01d0035523b2788a3baba2c19c53dcbb5ab13ad2ccc178ebe2cac6",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 26,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libarchive/libarchive/LICENSE",
+    "bytes": 3089,
+    "sha256": "30e556b3959e3985d66efefec5eaac51d4995053caa1d3cffe6eb916f146f229",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 65,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libb2/PKGINFO.txt",
+    "bytes": 495,
+    "sha256": "b31a8fc304b0f8740f86c3b50d0a773439fb2f637eed443f3a9c8bc39ba70c0d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 15,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libb2/libb2/LICENSE",
+    "bytes": 6556,
+    "sha256": "6a1ee543e5282cd9061881edf462e6fdab181f328da71fc2c9a6950a80e94d01",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 117,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libdeflate/PKGINFO.txt",
+    "bytes": 525,
+    "sha256": "b5162afcdbf78bb94e7e1f9b16f78ae3daa277b2e49144aeacf41365702c4feb",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 15,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libdeflate/libdeflate/COPYING",
+    "bytes": 1078,
+    "sha256": "4ad69099cb4374836fd27583d9991e2838cd86b6e4666ab26b2d32582c91e73a",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 22,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libiconv/PKGINFO.txt",
+    "bytes": 594,
+    "sha256": "7c64972a62c9feeddada9657103b833f9413cb8b39ab0160e348daaafa065366",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 17,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libiconv/libiconv/COPYING",
+    "bytes": 35147,
+    "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 674,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libiconv/libiconv/COPYING.LIB",
+    "bytes": 26419,
+    "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 501,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libiconv/libiconv/README",
+    "bytes": 5741,
+    "sha256": "4ae66e61d1c6593c84c47105b368d579bcee1af566dbb959ec63a0c48425dcf4",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 178,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libiconv/libiconv/libcharset/COPYING.LIB",
+    "bytes": 26419,
+    "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 501,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libidn2/PKGINFO.txt",
+    "bytes": 732,
+    "sha256": "dfbe55689e808d53e95c3b4e24b94395ce1108c3d9b6042b0ed9367ff24f9f5d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 20,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libjpeg-turbo/PKGINFO.txt",
+    "bytes": 715,
+    "sha256": "b86dde730391586237e10502ebd9691c6311ba0ffba9c43203bb0a8ad2ab7153",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 20,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libjpeg-turbo/libjpeg-turbo/LICENSE.md",
+    "bytes": 5620,
+    "sha256": "2189dc45a8fe96204069f8124caa53a148dfdc193f50f584c6ca7849a6072872",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 135,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.ijg",
+    "bytes": 12799,
+    "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 260,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md",
+    "bytes": 17784,
+    "sha256": "c553459fc4ea1f69526f0edf0c8ff6c4002fda5b76094abefabdc3de1ee62c10",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 375,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libjpeg-turbo/libjpeg-turbo/simd/jsimdext.inc",
+    "bytes": 15563,
+    "sha256": "68c5d236785edf75344cebe8b9bec36568bd35c96eb72cc67ffecd66c17dbd74",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 545,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libpng/PKGINFO.txt",
+    "bytes": 537,
+    "sha256": "74dbd8ab37f228f2b791c20773d72a14bd101586a99b7fe665146114844bba56",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 16,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libpng/libpng/LICENSE",
+    "bytes": 5345,
+    "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 134,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libpsl/PKGINFO.txt",
+    "bytes": 742,
+    "sha256": "1566b0f9bd3777a0e37ebfb05f9ce9c65b369e69385d94bf91812a4acf66f954",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 22,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libpsl/libpsl/COPYING",
+    "bytes": 1060,
+    "sha256": "322392e6001b2b3b0fca705dc9f11f26e12441188ecde50eb1d22909980b2925",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 19,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libssh2-wincng/PKGINFO.txt",
+    "bytes": 662,
+    "sha256": "239cda9cef94151d2c5d94c3574b0aa2486cd3e1cdfaa8a7429f743ac04aebdd",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 19,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libssh2-wincng/libssh2/LICENSE",
+    "bytes": 1959,
+    "sha256": "f7f9633cf9ff2f1333f3d7ce46973a8716a4d2a2815ad56f30d437d5fea7bafe",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 43,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libtiff/PKGINFO.txt",
+    "bytes": 842,
+    "sha256": "7f7ccb794e96c103c37ff0b567667ff10b397247691985b12dce56362d588855",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 24,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libtiff/libtiff/LICENSE.md",
+    "bytes": 2416,
+    "sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 49,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libunistring/PKGINFO.txt",
+    "bytes": 569,
+    "sha256": "13da8767457adda92a35ccef074c17fdc6b6fe7bad0fb113f5b5ea15744abc62",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 15,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libunistring/libunistring/LICENSE",
+    "bytes": 35149,
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 674,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libunistring/libunistring/LICENSE.LIB",
+    "bytes": 7639,
+    "sha256": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 165,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libwebp/PKGINFO.txt",
+    "bytes": 693,
+    "sha256": "c2e173802642c0aef423a0208ba9dc52e922a0b3b49c5fc885b5f1f77aa88211",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 20,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libwebp/libwebp/COPYING",
+    "bytes": 1496,
+    "sha256": "5aec868f669e384a22372a4e8a1a6cd7d44c64cd451f960ca69cc170d1e13acf",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 30,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libwinpthread/PKGINFO.txt",
+    "bytes": 786,
+    "sha256": "fe13f531ab475b13020d41a7d35b225fab1676fe5c9fff38007d51938f4e3633",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 21,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/libwinpthread/libwinpthread/COPYING",
+    "bytes": 2883,
+    "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 57,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/lz4/PKGINFO.txt",
+    "bytes": 427,
+    "sha256": "addb3bbcbf275fbbcdd78970e5ce37c84edff61acadec3f84a792da6c2ee459d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 15,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/openjpeg2/PKGINFO.txt",
+    "bytes": 643,
+    "sha256": "846e5af55cfd46f5381ec619be5c651e001b07cef6df00908447784b1178d2c2",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 20,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/openjpeg2/openjpeg/LICENSE",
+    "bytes": 2112,
+    "sha256": "a6af136f3e15038a666b61f376612a07d9a4e48cb7c01adbf3e33b3f14ab49b6",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 39,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/COPYING.RUNTIME.txt",
+    "bytes": 3324,
+    "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 73,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/COPYING.txt",
+    "bytes": 18002,
+    "sha256": "231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 340,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/COPYING3.txt",
+    "bytes": 35147,
+    "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 674,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/README.md",
+    "bytes": 5499,
+    "sha256": "48d0f8f4862710e2eb722a6c50343c1a91b9279fbc900ef68da2a874e7eefeb9",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 55,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/SHA256SUMS.txt",
+    "bytes": 2589,
+    "sha256": "7da2384a5ce46f3f907a19c07c52872de4c180ce9507b81946e397fcf3a78faf",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 28,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian-gcc14/README.source",
+    "bytes": 1288,
+    "sha256": "419cba6d5fc2c44b61de0e67756a6b9ec4e87efa506f3df1c248dee611345b23",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 29,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian-gcc14/changelog",
+    "bytes": 761264,
+    "sha256": "23b451e790b66adc6fd008447a384c6863e72ed18ad556a68aa22e35c7ef2938",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 17589,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian-gcc14/copyright",
+    "bytes": 69004,
+    "sha256": "20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1532,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian-gcc14/rules",
+    "bytes": 2984,
+    "sha256": "5a90bab597f87910b61564ce34aeedf66a35dd22a2c68b13686e95f17df1c3d9",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 100,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian14-runtime-control.txt",
+    "bytes": 890,
+    "sha256": "c337735ffef8f8b7925181ceed849504a19c00f6538770cfa6efae2d70f2ac80",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 21,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian27/changelog",
+    "bytes": 28689,
+    "sha256": "5a4cfcad5966c6c73a76cfb20e646a1c6a24aa86ba5f68c47bf8c33fdff27767",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 761,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian27/control",
+    "bytes": 37328,
+    "sha256": "40bf1a4b1b7dc1a1abb391a84ac73168dbfa9979cc482303a3f2e50d3618c0c3",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 925,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian27/copyright",
+    "bytes": 75729,
+    "sha256": "f891d7e0c56f503a92c7258d540b3d8215852d8387cbca8f1f07c6f4b6e67da6",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1714,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/debian27/rules",
+    "bytes": 16681,
+    "sha256": "534993c328dd2ac9439cca693328e42936773d96361de249589d702c420e662c",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 447,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/download_one.py",
+    "bytes": 1742,
+    "sha256": "854c338fea68c51aa829875db0491142d8991944c67a020dad2a858cbcfe0105",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 34,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/finalize_sources.py",
+    "bytes": 5581,
+    "sha256": "1a11daba81aa1135b49b83f7b40559579fd2248d2d127a31a60215163c28aa57",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 88,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/gcc-14_14.2.0-19.dsc",
+    "bytes": 47347,
+    "sha256": "7db1e202cce66617e9134a662c877a3a773de5b612fd52179815877e0ecfb847",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 508,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.dsc",
+    "bytes": 7737,
+    "sha256": "492f2ba821e43a3d40817841bd32caa5d49673fe66921bf5ba9c8b81c391dfea",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 95,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/inspect_runtime.py",
+    "bytes": 3108,
+    "sha256": "64eaaa29bbb5f296914e50af136d2471932a146f05d195939f1f95e6892bdae9",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 60,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/ubuntu-gcc/출하목록.json",
+    "bytes": 5069,
+    "sha256": "26d1c5a530d83fb4dc71ad7197f9a458b5b7fa4423e2f416da7dc578321228b5",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 160,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/xz/PKGINFO.txt",
+    "bytes": 638,
+    "sha256": "53d60ba64c99b6eb2581d14b81d0f90ea11bc3a208cd289d4f8629ff906c1c44",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 18,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/xz/xz/COPYING",
+    "bytes": 3119,
+    "sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 70,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/xz/xz/COPYING.0BSD",
+    "bytes": 607,
+    "sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 11,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/xz/xz/COPYING.GPLv2",
+    "bytes": 17984,
+    "sha256": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 338,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/xz/xz/COPYING.GPLv3",
+    "bytes": 35149,
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 674,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/xz/xz/COPYING.LGPLv2.1",
+    "bytes": 26419,
+    "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 501,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/zlib/PKGINFO.txt",
+    "bytes": 514,
+    "sha256": "e30f2e78e3dea0449abce8207b70c511ee005042eeeef2ad6baed0c155056fb5",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 15,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/zlib/zlib/LICENSE",
+    "bytes": 1002,
+    "sha256": "e32ff4e00d9d94930537635291da39e7e612703334bf6fde8c7f1686fe8a45a2",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 22,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/zstd/PKGINFO.txt",
+    "bytes": 564,
+    "sha256": "b4b877831ba33bbf40ef52356c435365e85e4569c2733943ad56eea1f8c1fea1",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 16,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/zstd/zstd/LICENSE",
+    "bytes": 1549,
+    "sha256": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 30,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/모델과실행.json",
+    "bytes": 1839,
+    "sha256": "05953162f92df56876b1ec900fb2ec4040fc475bfbd2c0bdaa2edced40c8c0fc",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 46,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OCR/읽어주세요.md",
+    "bytes": 3217,
+    "sha256": "bfa34f798177e0f419b3caea6f608ddfbfa3f22e99e7e45747c62be95832c47f",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 26,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/OpenSSL-LICENSE.txt",
+    "bytes": 10175,
+    "sha256": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 177,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/Pillow/METADATA",
+    "bytes": 9300,
+    "sha256": "140f39cb31ec9b46109828a6286f034a4848621263d6aab38d2f142083dd06c5",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 182,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/Pillow/licenses/LICENSE",
+    "bytes": 78481,
+    "sha256": "988ffe8ab3480b0f4e9a0ab2702bffd73d9fb6b47198043fb3ba101a62fac236",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 1593,
+      "lf_without_cr_count": 36,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/PySide6/METADATA",
+    "bytes": 5661,
+    "sha256": "8deea00d1df56b7d6b944cc05c226e56d3f408280217516f9444c60ab74dfd76",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 144,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/PySide6/licenses/LicenseRef-Qt-Commercial.txt",
+    "bytes": 470,
+    "sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 8,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/PySide6_Addons/METADATA",
+    "bytes": 4378,
+    "sha256": "07e5881696922ebc849f5f6b60c6d184ae7724e86b28bac5f707cac5e40ef518",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 121,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/PySide6_Addons/licenses/LicenseRef-Qt-Commercial.txt",
+    "bytes": 470,
+    "sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 8,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/PySide6_Essentials/METADATA",
+    "bytes": 3889,
+    "sha256": "c5eacdfdda84b8d0e026020a630e6a732bd403c00fc17e3efb9e2e92df0b98a7",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 103,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/PySide6_Essentials/licenses/LicenseRef-Qt-Commercial.txt",
+    "bytes": 470,
+    "sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 8,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/PySide6_Pdf/METADATA",
+    "bytes": 3588,
+    "sha256": "3c9fa9a5eda931852700287d94bb8bbea229379ff24590f282db4726f9bef49b",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 81,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/PySide6_Pdf/licenses/LicenseRef-Qt-Commercial.txt",
+    "bytes": 470,
+    "sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 8,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/PySide6_WebEngine/METADATA",
+    "bytes": 3651,
+    "sha256": "7f3c76eac98f55c0c47894a8ab224d63bc6d865d13912df7ba52774f9cdc69ae",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 83,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/PySide6_WebEngine/licenses/LicenseRef-Qt-Commercial.txt",
+    "bytes": 470,
+    "sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 8,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/Python-LICENSE.txt",
+    "bytes": 25066,
+    "sha256": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 140,
+      "lf_without_cr_count": 362,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/SUIT/OFL.txt",
+    "bytes": 4380,
+    "sha256": "30d101ee3c35ef629d622d933d261a27b2f60223e0a3b0f36791e569c2b9daa9",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 93,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/SUIT/원본출처.json",
+    "bytes": 3175,
+    "sha256": "c978e5f2162108fd938c13890a687a9ddf8554849100e3efa3c39ff87987f1fd",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 60,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/altgraph/LICENSE",
+    "bytes": 1002,
+    "sha256": "6c194d6db0c64d45535d10c95142b9b0cda7b7dcc7f1ddee302b3d536f3dbe46",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 18,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/altgraph/METADATA",
+    "bytes": 7519,
+    "sha256": "dc60641dba229a3aef09f764f562c38d908b930c92615af2e626af31d6ff19b5",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 307,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/charset-normalizer/METADATA",
+    "bytes": 47287,
+    "sha256": "49e955a09e1a159e0846872798006e8db7d518d8d70c637066fefdb08d3d9f7b",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 892,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/charset-normalizer/licenses/LICENSE",
+    "bytes": 1092,
+    "sha256": "18577485d3704f1a479ded8e573c0976cfed315fd2fd17983fa988da4c2f70d1",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 21,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/cssselect2/METADATA",
+    "bytes": 2941,
+    "sha256": "bb65ac3244a599d7bba63168f2ccea5849a4b2b1339568eab0ad933a8a44e475",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 64,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/cssselect2/licenses/LICENSE",
+    "bytes": 1548,
+    "sha256": "6fd97229a1d1b0f6a8b41e109f413426dbc0874b1e03746d66cc33282601c2c2",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 29,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/et_xmlfile/METADATA",
+    "bytes": 2711,
+    "sha256": "0e97d7ea909ed0fbe03d88bc8b6f58677cee1b07bd3353ce361cd2405915204e",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 51,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/lxml/METADATA",
+    "bytes": 3368,
+    "sha256": "4038f4e4decac1c15eb5fd883abf1370f2df9b176b53bd172dd709d4542e2a48",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 89,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/lxml/licenses/LICENSE.txt",
+    "bytes": 1538,
+    "sha256": "e7c3ce8d76331b0101cc46790ab43958ea90a364bcf962ed8763d5a818340e69",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 31,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/lxml/licenses/LICENSES.txt",
+    "bytes": 6348,
+    "sha256": "df682c668de65321677b5e4861dca4128a8bad8067f230956e9da3f985b3d398",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 127,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/openpyxl/METADATA",
+    "bytes": 2510,
+    "sha256": "23f80ca9830dd89435da1710f26deda8f81e5409287e74540210c72627a4ad96",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 86,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/packaging/METADATA",
+    "bytes": 3544,
+    "sha256": "70fdb89fc4d4a9a043bf7372b8972bcc883fddff34ab55e9cf80d73875384763",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 112,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/packaging/licenses/LICENSE",
+    "bytes": 197,
+    "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 3,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/packaging/licenses/LICENSE.APACHE",
+    "bytes": 10174,
+    "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 177,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/packaging/licenses/LICENSE.BSD",
+    "bytes": 1344,
+    "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 23,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pefile/LICENSE",
+    "bytes": 1083,
+    "sha256": "b44409c067c6da52bfb54bb6624fb11a7b52157c3a13ae1400232f8196e86ad3",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 21,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pefile/METADATA",
+    "bytes": 1355,
+    "sha256": "8ad83a5f8659e8da6eeaabf2dafa0eebb8c05832a3def16a5db4dd0d52e72474",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 34,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pi-heif-decoder/METADATA",
+    "bytes": 7354,
+    "sha256": "4b788e7e068cc9a5971d861f3e49d3b076385f373b5f3c0a26065fa6302b01a3",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 178,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pi-heif-decoder/licenses/LICENSE.txt",
+    "bytes": 1546,
+    "sha256": "9e2635f155b00af5a46cb2f2c9b052072ec546d59837ee74efc9cba2cbb83f3d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 30,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pi-heif-decoder/licenses/LICENSES_bundled.txt",
+    "bytes": 327,
+    "sha256": "5335a401c42f1761e56e393e45aac1c4cbd55e6d9ca9176595177b6b0fba26d9",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 7,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pyinstaller-hooks-contrib/METADATA",
+    "bytes": 16042,
+    "sha256": "686e63d76cb494d44c4533ed64a7d797970a1253493a4f875d39defc190396c4",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 373,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pyinstaller-hooks-contrib/licenses/LICENSE",
+    "bytes": 27666,
+    "sha256": "91d0baaff00773038e72c0a1fc9d5d2d38706b7a2b9c04f34296608f931b9cd0",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 521,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pyinstaller/METADATA",
+    "bytes": 8517,
+    "sha256": "2991d3dcd53fe9966b8c16586322a7f9bbc564dd4752c190bd4fe8d6747f7046",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 213,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pyinstaller/licenses/COPYING.txt",
+    "bytes": 32604,
+    "sha256": "0598064c7d2718e38d7914a7d08343b2fa008e3bea9ebba2aa7a6ffa5900dd64",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 648,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdf/METADATA",
+    "bytes": 7639,
+    "sha256": "3925a75c81106ba7f048e0424e94740852099c166699f2afba934249dc527ebc",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 182,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdf/licenses/LICENSE",
+    "bytes": 1605,
+    "sha256": "a97ac230e5f33ef10a5367a850eb01f91f1a0b064e34742c7794d2294557f524",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 29,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/METADATA",
+    "bytes": 63509,
+    "sha256": "8733a714c056453b87b48c819495cc05f9038d38221b89505043d28c2501237e",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 1065,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/LICENSES/Apache-2.0.txt",
+    "bytes": 11560,
+    "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 202,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/LICENSES/BSD-3-Clause.txt",
+    "bytes": 1485,
+    "sha256": "ad9a9e823df025f42389c1812eae28019f657d1ed7b3a4ebfd5010b0736a0da4",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 26,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/LICENSES/CC-BY-4.0.txt",
+    "bytes": 14844,
+    "sha256": "f1b1748301cd4274f46733c218d510929661b4990855de5fc645dacd69c4371c",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 317,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/abseil.txt",
+    "bytes": 11564,
+    "sha256": "f54fff0b905df5b3464527c652a30e903b172d6dcab4d89b5e6f105d5e4a4603",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 203,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/agg23.txt",
+    "bytes": 725,
+    "sha256": "c110d3ea2ad77467ce0dcff7d3337e6c8be8049a5103f4b9bd5fd911a77972e5",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 14,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/fast_float.txt",
+    "bytes": 1106,
+    "sha256": "bf1b57355feca8fce77ee95f48002f8d4789fb71b30ec7599c06cda4901fbb2b",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 27,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt",
+    "bytes": 6742,
+    "sha256": "4a9a548027a2c1d37788519dea833294c9c81f1ebc280e817f41f50d0c642d78",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 169,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt.source-sha256.json",
+    "bytes": 381,
+    "sha256": "4546389edc8f0d26c4cd8fa2706ae39a8843cc4c90bd6d605ba3b4160c89608f",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 7,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/icu.txt",
+    "bytes": 28286,
+    "sha256": "93679f4389d53b6835d89843f251844fb9bc455b35bab036d3c8e7abe497a47a",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 568,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/lcms.txt",
+    "bytes": 1353,
+    "sha256": "7312b68c5b25e9bf2b828706fb4e29588f22705112f411fd42e1f7d84c3d139a",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 27,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.ijg",
+    "bytes": 13059,
+    "sha256": "db16a04128171879c60708d171b88d97345a2dd20f9bfc173680a4497c73f704",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 260,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
+    "bytes": 5755,
+    "sha256": "be2b2b5ab168bce87bc3e31f2a5c5adba4b7f6e9e51d618e958d1d46972ebd95",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 135,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libopenjpeg.txt",
+    "bytes": 1794,
+    "sha256": "c5ab0890a737c2dfa7ba675036554f6d17741d98629b0c2a145354d00617e6b2",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 32,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libpng.txt",
+    "bytes": 5479,
+    "sha256": "452390433ba0f88aa3e2b122c647741b72a0c117cd6ed7a329b49785aecb5511",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 134,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/llvm-libc.txt",
+    "bytes": 15418,
+    "sha256": "3b6226c32e168c83b891d8d6f0d3c29c2116dc3ef93dc93c307b54f279ecf383",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 278,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium-binaries.txt",
+    "bytes": 1184,
+    "sha256": "8854f4388f1ca13b3ad9baa42e95f5546b4c0b17109c159256d3eca7be39b09b",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 7,
+      "lf_without_cr_count": 2,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium.txt",
+    "bytes": 12818,
+    "sha256": "961eacd9633fff6d051db7208b755e9210e30efac7adec3e6a6d52798f0ccf0e",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 230,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/simdutf.txt",
+    "bytes": 1077,
+    "sha256": "c172a0ba936ff31230febb5dad869e25cb7c1a07480c7a381be8cf011bb52719",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 18,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/zlib.txt",
+    "bytes": 1332,
+    "sha256": "33fd641c9f3b0e0be64bc78fea9e94807674cdd70c48477599226cb8956565fe",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 29,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/python-docx/METADATA",
+    "bytes": 2022,
+    "sha256": "4c4cc819ebe6de4aca44daccfd3f9173e6f46d9ed900ad1c388ff9efb7b6b1d7",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 58,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/python-docx/licenses/LICENSE",
+    "bytes": 1104,
+    "sha256": "7652f271e46d0d533e9dc463f3b5fcbdcacf4d6a9c8d6b554d15efd0f37f6132",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 20,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/python-pptx/LICENSE",
+    "bytes": 1104,
+    "sha256": "7652f271e46d0d533e9dc463f3b5fcbdcacf4d6a9c8d6b554d15efd0f37f6132",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 20,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/python-pptx/METADATA",
+    "bytes": 2503,
+    "sha256": "d38c6af5f1817cc528706264d8343cd1c95dbdec5672f29b944f54f79134a3a2",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 58,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pywin32-ctypes/LICENSE.txt",
+    "bytes": 1644,
+    "sha256": "dfa83b3e2709adfcdb838d9ad55823ca674abb780e60563d9dd9544ccbf785e9",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 28,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/pywin32-ctypes/METADATA",
+    "bytes": 3909,
+    "sha256": "1e3767d3faff4d5b9c347160883831098d1f25acf4306b02c9acdcc6bfb5883b",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 134,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/rarfile/METADATA",
+    "bytes": 4555,
+    "sha256": "07fa8bf389799afa721f81a15bc04c34b9f1bab2335ba7856ac09e1f9052d9ac",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 97,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/rarfile/licenses/LICENSE",
+    "bytes": 756,
+    "sha256": "351350167805c294c7b3e170081ce1265445c46fbeb3e999e13b616c90c64a20",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 15,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/reportlab/METADATA",
+    "bytes": 1638,
+    "sha256": "eaf25ccdf6556f532b6efbc78104a0d47832b67dd1cf9b747a142a1c68e9fbaa",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 45,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/reportlab/licenses/LICENSE",
+    "bytes": 1707,
+    "sha256": "ef831761646313921375fc2cb888e8eeaf7da213d0b92852c10c42f3a0b4d138",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 29,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/setuptools/LICENSE",
+    "bytes": 1023,
+    "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 17,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/setuptools/METADATA",
+    "bytes": 3563,
+    "sha256": "bdd67d4d16cf0bf3b893e7d18cd3d2d774adb82f37ed985bc7770c607226b35b",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 106,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/setuptools/licenses/LICENSE",
+    "bytes": 1076,
+    "sha256": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 18,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/setuptools/licenses/LICENSE.APACHE",
+    "bytes": 10174,
+    "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 177,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/setuptools/licenses/LICENSE.BSD",
+    "bytes": 1344,
+    "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 23,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/setuptools/licenses/LICENSE.txt",
+    "bytes": 1107,
+    "sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 21,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/shiboken6/METADATA",
+    "bytes": 2594,
+    "sha256": "2e443fc68a670b00b5ee6f2d67fa3005613de00a8294a8f257c6c1263032009a",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 56,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/shiboken6/licenses/LicenseRef-Qt-Commercial.txt",
+    "bytes": 470,
+    "sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 8,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/svglib/METADATA",
+    "bytes": 14081,
+    "sha256": "23a9e2c20edf5aecc9be4d3eadc0e469e2488fe38feba21060e14c2858fa419c",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 364,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/svglib/licenses/LICENSE.txt",
+    "bytes": 7637,
+    "sha256": "9ccf26cfe845e0eb8bb58053e47366e7ab6b697ae010f7650978d4b71b7d1fc1",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 165,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/tinycss2/METADATA",
+    "bytes": 3007,
+    "sha256": "97a184ce0b479d613e7bb4bbc693067ae4c04e5665fd78e8381252f855bcab59",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 66,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/tinycss2/licenses/LICENSE",
+    "bytes": 1534,
+    "sha256": "6b94acee20ec9f2709333134f3ba70322535fb420af0ce8c1455d9cbe297f1d5",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 29,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/typing_extensions/METADATA",
+    "bytes": 3310,
+    "sha256": "b05084ca1d50879865178d9fff9fabeab61bdfb1f361bfbde95421ffc8f9be46",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 73,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/typing_extensions/licenses/LICENSE",
+    "bytes": 13936,
+    "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 279,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/webencodings/METADATA",
+    "bytes": 3426,
+    "sha256": "3d9819d1209e5b56d4c6315efca7d5ca452ba7e55d4c3617ec63555c099bfb70",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 71,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/webencodings/licenses/LICENSE",
+    "bytes": 1519,
+    "sha256": "e06ef33485e7498ad592887c41fa79cc8a7fecde576c7210e11bfdddef58040e",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 29,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/xlsxwriter/LICENSE.txt",
+    "bytes": 1349,
+    "sha256": "cf08b60a4ded986b58a617cb8304373bda5c4eff42fb4e30d7597b616e116e87",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 25,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/xlsxwriter/METADATA",
+    "bytes": 2712,
+    "sha256": "10d504f188e087f07a06b9038ed0535f37ac072c232e60c075ddb0aedb7b7d78",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 95,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "licenses/구성요소.json",
+    "bytes": 4387,
+    "sha256": "64f2185aef623acfd2eab6eae57e9164e6e98206d4778178f4572cecd525b503",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 187,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": false,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "offscreen-monitor.json",
+    "bytes": 141,
+    "sha256": "286c010caaf6c1e673d942e907c09274e0cb43870670653d45f263afa2c0c139",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "package.py",
+    "bytes": 10074,
+    "sha256": "05a8a127a030c6b467c438dbdd33bbd5b42f4686f86df0935f95c403e6a1379c",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 156,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "pdf_lock.py",
+    "bytes": 147,
+    "sha256": "886a099f8965ef6a9db14ddaea3dc5067ab8247d524482ff3cafc8ad78c62b0a",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 4,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "pdf_pages.py",
+    "bytes": 7563,
+    "sha256": "0eddd9a48630f382531e7019788de34a0a466e47b10bb3ab9a6c83564b746e2d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 170,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "pdf_panel.py",
+    "bytes": 62365,
+    "sha256": "e9bb66310316715f856dfd4dbbf11118da2436680af9d8621550e9f2cc8e2840",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 1231,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "pdf_tools.py",
+    "bytes": 31802,
+    "sha256": "5eb4dcc098c3d2a5b89de1f42a5262e25891d7c9df1319f045ae33d25c84830b",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 762,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "preview_panel.py",
+    "bytes": 6106,
+    "sha256": "fbaeb5e05627dd52a429c79e0c8a8d12dc071019969a94ab1178dfb8385d0f82",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 116,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "requirements-lock.txt",
+    "bytes": 644,
+    "sha256": "57a5e9a4c46e8212dccdab7557b87f6bc44047a55958afdb6d899a6f3c4feecb",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 31,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "studio_ui.py",
+    "bytes": 16400,
+    "sha256": "2b31eaf6ce3f22732190ca8e6e3ab78134dab382fc0b360c39b434fe97a506ba",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 416,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test-fixtures/sample.heic",
+    "bytes": 446,
+    "sha256": "121cff26bef161550056c1b0a67ccd391b62f8b6ebdcb4186549e542c2934f4c"
+  },
+  {
+    "path": "test_conversion_matrix.py",
+    "bytes": 16249,
+    "sha256": "61c1ee5677fdea77b98868d919db90bfa8937409018969e41ddcdb83ba8970a9",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 259,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_engine.py",
+    "bytes": 6669,
+    "sha256": "7111c87a4899343e7766a9e82cbd81df80177094280a1ec937b46f579407e3a3",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 94,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_fixed_layout.py",
+    "bytes": 16446,
+    "sha256": "09a197267314a72957373cb8e3d17a9297ffa72cb69ec9124fda8b7ee2fcbba1",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 318,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_gui.py",
+    "bytes": 126342,
+    "sha256": "9a06e6c4cf76141bac8978abfb96aa0a83f4a1ab3aed144a9edde44494a9b70c",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 2322,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_pdf_tools.py",
+    "bytes": 25413,
+    "sha256": "58032cfc269c038d9190c5e9cca9e9a2fd0436162c587b063147ada9f8dd8df7",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 555,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_pdf_workspace.py",
+    "bytes": 27600,
+    "sha256": "da16cf732b25a0c045c96a445e1cf3a551f5ed57accc884b0f23cbcdd044333d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 598,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "test_workbench.py",
+    "bytes": 23935,
+    "sha256": "a9147d0b72067fffc1303397667eaa5cab62430d9658f76308a89b55f2b1c016",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 400,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "ui_motion.py",
+    "bytes": 38989,
+    "sha256": "07eeb948add98e295ce6c64b02faa6a11decd14ac9bae3a7d0ab380f92b737d9",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 835,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/doc/AUTHORS",
+    "bytes": 787,
+    "sha256": "720862b7253993b348fe15f37ed6e0d4feb0fc8df8324284d75975d54dd29923",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 51,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/doc/LICENSE",
+    "bytes": 11358,
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 202,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/doc/README.md",
+    "bytes": 8152,
+    "sha256": "35ca53a67a2895ebdc2cf6777fc5808c1b0c5df650b896b79c82b2c4a004bd76",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 132,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/doc/tessdata_fast-LICENSE",
+    "bytes": 11358,
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 202,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/doc/tessdata_fast-README.md",
+    "bytes": 4353,
+    "sha256": "22fee9835bff02fb7013aa9786a2144ae3d4c219083089375985a62808e7215e",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 63,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/alto",
+    "bytes": 23,
+    "sha256": "23a038ff290c7471a1a8aa4b5d23e310b0bf49f718480dad6b619a7d06eca330",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/ambigs.train",
+    "bytes": 146,
+    "sha256": "717e534fd4330ed3f9bdb006f0465aa2633cca866786a8f8d469dbd4b01c10c2",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 7,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/api_config",
+    "bytes": 26,
+    "sha256": "2929bc0f1d2ba77f28cfc230f7b835b2b54038c0f9d2e8e4c5ada43803c999fd",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/bigram",
+    "bytes": 129,
+    "sha256": "65e6583abc617a34d4091285181f2493d312c296a85629ac3c092d3b93b6e554",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 5,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/box.train",
+    "bytes": 311,
+    "sha256": "a421355e3488bf3fdfc14a1bdcca08c6f6414ec92c53f0eea22317c868c1a623",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 12,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/box.train.stderr",
+    "bytes": 311,
+    "sha256": "3e62cd37d2383abf0c6dfa5ba39fd1187fcff6856c4f4f27ea1554cb4c1874d2",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 13,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/digits",
+    "bytes": 37,
+    "sha256": "e757d95bb1e51444860ea10d7f2c8bb8a0c9c4ccc58a0e8c67e8dc2933a56e2e",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/get.images",
+    "bytes": 24,
+    "sha256": "28c774c157a2f48d835a1d58f5a35dd70106c136e176572ee43bbf46f3d65c92",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/hocr",
+    "bytes": 40,
+    "sha256": "d6a7ec7c5143317a59fce2393054f6b7a8261824b934e7426fdd24febc929ad6",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 2,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/inter",
+    "bytes": 59,
+    "sha256": "46303bf83668e446f4966d1ebf7418ad9f0c5e08836bc59d98cae3bbfc3aee9d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 2,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/kannada",
+    "bytes": 101,
+    "sha256": "7d34fec99283142a3a22d157dc5cc8824b93ee923e576e6bfd1b026039c2e8f0",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 4,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/linebox",
+    "bytes": 70,
+    "sha256": "eb0279527b009a53432a9e1dde85bf42814901393546bc365bb61837f83355c9",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 2,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/logfile",
+    "bytes": 25,
+    "sha256": "5eed5e41e5fbbf0862836c0e4cda7821f8e08441645858ec6821ab41d926e195",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/lstm.train",
+    "bytes": 282,
+    "sha256": "3d1f8e5ab4e41467fdd938dc4d266eea081b477f8d74ab6b198dd1d854b5301c",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 11,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/lstmbox",
+    "bytes": 26,
+    "sha256": "61255d1b7c9df76b673ff43d2d91cda7f4c3c2e7d7f0643a71b212739833017e",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/lstmdebug",
+    "bytes": 98,
+    "sha256": "62d40d7a7d80315e10cdca2561d2ddf2981f53dfdbd567513b04d36f3add7f4e",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 4,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/makebox",
+    "bytes": 26,
+    "sha256": "a8fe20a2bc9ff1e9e8ed06d56845336c978627b8e965600abd63f1f412c18ffe",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/page",
+    "bytes": 67,
+    "sha256": "6e4b43f27a77124e66c87fce8de518ff81e918d3cc36fe71a3d01179c1856a07",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 3,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/pdf",
+    "bytes": 22,
+    "sha256": "54d56e81dfefe289b0d2e4c7bc9bbe662711f5b8255c128b73bcd66efb6bba1a",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/quiet",
+    "bytes": 21,
+    "sha256": "8a93fad8251f61b5f17b8628203a0e068c71e0907cd63012ab22afb7b560fce3",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/rebox",
+    "bytes": 65,
+    "sha256": "73ca35d7d71084fb88e2eb9a5c53ad91682754b3aecb918dece7591ec22a0b26",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 2,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/strokewidth",
+    "bytes": 377,
+    "sha256": "ffb140aadd3e26d0d9b3b355d592b50cff8b2c3ce0394b4a6de4fabc1c0942c9",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 12,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/tsv",
+    "bytes": 22,
+    "sha256": "59d079bb75d8b3d7c839a3564580cb559e362c93a9d70f234e421c0c3e767e04",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/txt",
+    "bytes": 166,
+    "sha256": "9bcbdbe285fd3a024be563cb237751ceb3435d86610e231f08894023321af5d7",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 3,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/unlv",
+    "bytes": 45,
+    "sha256": "1b02e7801de71f0757a26ba6d749e9182a0d9971929966bebb67f99db8733f40",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 2,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/configs/wordstrbox",
+    "bytes": 29,
+    "sha256": "9d1787cdce085ad36dc9d6ba6b2702ac262beaf06a0bb4a0b84355f6458261e5",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/eng.traineddata",
+    "bytes": 4113088,
+    "sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/kor.traineddata",
+    "bytes": 1677415,
+    "sha256": "6b85e11d9bbf07863b97b3523b1b112844c43e713df8b66418a081fd1060b3b2"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/osd.traineddata",
+    "bytes": 10562727,
+    "sha256": "9cf5d576fcc47564f11265841e5ca839001e7e6f38ff7f7aacf46d15a96b00ff"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/pdf.ttf",
+    "bytes": 572,
+    "sha256": "c7845420925a23d88ed830a63957b8af85a66a8daf8d9fc90e843673b2ef1a59"
+  },
+  {
+    "path": "vendor/tesseract/tessdata/tessconfigs/batch",
+    "bytes": 49,
+    "sha256": "d91107c3a8c1c311b00c64aee56cbce4d48894c6e5762165f1ec7871c7b7bf4e",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/tessconfigs/batch.nochop",
+    "bytes": 37,
+    "sha256": "5acabb534cfd4fd8fe111c854955e1ffa9390619ef43775b1a5fbaf5283f68bb",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 2,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/tessconfigs/matdemo",
+    "bytes": 243,
+    "sha256": "d098cdf6ffe691ccc9dfa4490603f6ae33cdd313010cedfa50007ebde3ddd2d0",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 7,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/tessconfigs/msdemo",
+    "bytes": 368,
+    "sha256": "0ed753a05ea60766f4269d81873b6390e937ea2df1758de91c57db7e92429555",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 12,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/tessconfigs/nobatch",
+    "bytes": 1,
+    "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 1,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "vendor/tesseract/tessdata/tessconfigs/segdemo",
+    "bytes": 295,
+    "sha256": "7ec19f77f8c76b4dfb33ec8b13e11d7685ae5c9cf6eca4e7333cce0513ddac56",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 0,
+      "lf_without_cr_count": 9,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "검토기록.md",
+    "bytes": 12686,
+    "sha256": "2a26395dae1c82ec728ac513fb05fd02dc50b37a5795fe036d999b25864090ac",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 98,
+      "lf_without_cr_count": 6,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "빌드방법.md",
+    "bytes": 10787,
+    "sha256": "9fccbb5f22203ccaaa9996528351113c011f28806e5223eb0416899a83cc91df",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 89,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  },
+  {
+    "path": "사용안내.txt",
+    "bytes": 7342,
+    "sha256": "72b6b6050e2ffe4a7234c0190311f7b5a8c323f30eb410ad393236296f7fac1d",
+    "text_bytes": {
+      "utf8_bom_count": 0,
+      "crlf_count": 86,
+      "lf_without_cr_count": 0,
+      "cr_without_lf_count": 0,
+      "ends_with_newline": true,
+      "empty_file": false
+    }
+  }
+]

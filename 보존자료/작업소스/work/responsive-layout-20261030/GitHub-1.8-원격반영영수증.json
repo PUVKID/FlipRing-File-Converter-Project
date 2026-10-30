@@ -1,0 +1,1638 @@
+{
+  "verified_at_kst": "2026-10-30T12:35:15.055275+09:00",
+  "commit": "b8e7839c7df327a98def7348a9626856599fc1f9",
+  "remote_head_match": true,
+  "clean": true,
+  "files": [
+    {
+      "path": ".gitignore",
+      "sha": "2790e141839d99eb7e86807cf4cc0146d3e4d3d2",
+      "size": 264
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha": "a2b35aeb8cf6913bb043eab6473565dab193df07",
+      "size": 5435
+    },
+    {
+      "path": "README.md",
+      "sha": "e3f6953972f65854fb24911fca14098afe0d66a7",
+      "size": 15543
+    },
+    {
+      "path": "assets/overview.png",
+      "sha": "d78f2cfae953a0bb1c0a6bd2c6c447a1bcc6c8a2",
+      "size": 71805
+    },
+    {
+      "path": "assets/previews/historical-app-preview.png",
+      "sha": "b462b418f7a5b95324f43410a348955aa22b8b1c",
+      "size": 24930
+    },
+    {
+      "path": "assets/screenshot-1.8-settings.png",
+      "sha": "59b93b6d327fcfb1aee0c8eb705f4bee1392ef65",
+      "size": 46997
+    },
+    {
+      "path": "docs/VERSIONS.md",
+      "sha": "8913e876a6f5f5e11edc1b72c8ce2f92b042ddb5",
+      "size": 2744
+    },
+    {
+      "path": "docs/changes/2026-10-30_1.7_실제조작확인.md",
+      "sha": "b5aaefece92dab4f299b43f1bf09d742baadc3c6",
+      "size": 2458
+    },
+    {
+      "path": "docs/changes/2026-10-30_1.8_고정창.md",
+      "sha": "41fe3946f09d6a50d435d6d73277014379d1774d",
+      "size": 8900
+    },
+    {
+      "path": "docs/changes/2026-10-30_1.8_공개전체.patch",
+      "sha": "e6444134682188e371ebed59acde2ad97b64d4b1",
+      "size": 1114813
+    },
+    {
+      "path": "docs/diffs/1.4.0.patch",
+      "sha": "df2d8585424379ba48d50f455b47c1a62f507e96",
+      "size": 70960
+    },
+    {
+      "path": "docs/diffs/1.6.0.patch",
+      "sha": "547ab01e2acf6de94e64adf4ffe32173b580d64a",
+      "size": 151945
+    },
+    {
+      "path": "docs/diffs/1.7.0.patch",
+      "sha": "3c35c1c16ab173c4a6085776b5d99f539982a66f",
+      "size": 582148
+    },
+    {
+      "path": "docs/diffs/1.8.0.patch",
+      "sha": "df045cfba713cf04917805ba30f724b13485b365",
+      "size": 237075
+    },
+    {
+      "path": "docs/diffs/내부모션-작업전.patch",
+      "sha": "8248915b56b51fa63a4b22307fc014796440014a",
+      "size": 78253
+    },
+    {
+      "path": "docs/versions/1.2.0.md",
+      "sha": "61c5fa240d77cd36eb83e28fae3644e2cf08b305",
+      "size": 1348
+    },
+    {
+      "path": "docs/versions/1.4.0.md",
+      "sha": "f52b94f902a22e344df02e907612e20d60153119",
+      "size": 5556
+    },
+    {
+      "path": "docs/versions/1.6.0.md",
+      "sha": "d3adc801734bfcbe2409506eeb13916527617908",
+      "size": 6234
+    },
+    {
+      "path": "docs/versions/1.7.0.md",
+      "sha": "152a2a46e7008260dbd254bac889a71008f9e43f",
+      "size": 9096
+    },
+    {
+      "path": "docs/versions/1.8.0.md",
+      "sha": "80f0e4749a706ef1bf155a5b94acc86bf70d766b",
+      "size": 9414
+    },
+    {
+      "path": "docs/versions/기본.md",
+      "sha": "28fb7a5d6a5efbbe7bd2791848f066b68670f281",
+      "size": 3004
+    },
+    {
+      "path": "docs/versions/내부모션-작업전.md",
+      "sha": "efc337bebc0590ecfaeee1a3ee654a0ec6acf166",
+      "size": 4826
+    },
+    {
+      "path": "docs/versions/배포파일-크기와해시.json",
+      "sha": "29056ba9395ea5989eeb4f440e5899a0aa0475c5",
+      "size": 1362
+    },
+    {
+      "path": "docs/versions/버튼모션-작업전.md",
+      "sha": "4ad30ba181c094e94407a71e5ef8d57f731ac343",
+      "size": 1059
+    },
+    {
+      "path": "docs/versions/부드러운디자인-작업전.md",
+      "sha": "1c0bed4af9fbe7a5326a27e20dbf4b494bdb5d7f",
+      "size": 1098
+    },
+    {
+      "path": "docs/versions/콤보-작업전.md",
+      "sha": "66e0ee0bc036cd4217018223f4621a419b0f64bc",
+      "size": 1041
+    },
+    {
+      "path": "docs/versions/탭잔상-작업전.md",
+      "sha": "53db961064b29db38c9335c0340aab49283552d4",
+      "size": 1050
+    },
+    {
+      "path": "docs/versions/호버대비-작업전.md",
+      "sha": "9d49607e0996f9bf5e3af86ed7b9fc174e4c3180",
+      "size": 1059
+    },
+    {
+      "path": "docs/내부모션.md",
+      "sha": "51d22167781de8abb128f8b298d090513c0e5ba6",
+      "size": 3439
+    },
+    {
+      "path": "docs/부드러운디자인.md",
+      "sha": "b4215a4c270953ff9ad5e82133764ca88e138d5e",
+      "size": 3639
+    },
+    {
+      "path": "docs/스튜디오재설계.md",
+      "sha": "6d23f0e473faf6be331f51787e72af9b016940da",
+      "size": 5754
+    },
+    {
+      "path": "history-table.md",
+      "sha": "8cda7d53a20500d3e6c13ac1950a6633ab798204",
+      "size": 2458
+    },
+    {
+      "path": "history/1.2.0/LICENSE.txt",
+      "sha": "aafe3436072465bcdb8a514d64f57ca244281cca",
+      "size": 1396
+    },
+    {
+      "path": "history/1.2.0/app.py",
+      "sha": "a15200be39f4ac6434f2063bc23b9090e36d17b3",
+      "size": 47990
+    },
+    {
+      "path": "history/1.2.0/build.py",
+      "sha": "3aeb00c2b90d05ea5529c166aea5ff5e30f5e586",
+      "size": 6727
+    },
+    {
+      "path": "history/1.2.0/engine.py",
+      "sha": "68924bbfcae48d77a2039e1d99055f549274e342",
+      "size": 21519
+    },
+    {
+      "path": "history/1.2.0/i18n.py",
+      "sha": "1635bfb651c843a7e83921bf9969fc8ec4b52b5d",
+      "size": 12995
+    },
+    {
+      "path": "history/1.2.0/package.py",
+      "sha": "6db8ab00ff33742ddc0dacf86a31d45a58871004",
+      "size": 6058
+    },
+    {
+      "path": "history/1.2.0/pdf_panel.py",
+      "sha": "188528ac69c6e2193a55bf9328d7834ec04677a8",
+      "size": 21137
+    },
+    {
+      "path": "history/1.2.0/pdf_tools.py",
+      "sha": "e8159721ad522e7bcdfd8abc17c0b7a3a37e4e88",
+      "size": 26630
+    },
+    {
+      "path": "history/1.2.0/requirements-lock.txt",
+      "sha": "049873f97354b787231e953239b3218a7f178c5d",
+      "size": 644
+    },
+    {
+      "path": "history/1.2.0/test_engine.py",
+      "sha": "b11910a566d4c7ac472606b94373244da2c799df",
+      "size": 6669
+    },
+    {
+      "path": "history/1.2.0/test_gui.py",
+      "sha": "52d8073b07730e085fced4154432f6f425aab345",
+      "size": 43194
+    },
+    {
+      "path": "history/1.2.0/test_pdf_tools.py",
+      "sha": "5cf3469af329194d40bfc28851921c9838939b32",
+      "size": 25413
+    },
+    {
+      "path": "history/1.2.0/파일목록.json",
+      "sha": "e20bdfe3990dd02b68768e0a7634a20d54d857a0",
+      "size": 1647
+    },
+    {
+      "path": "history/1.4.0/LICENSE.txt",
+      "sha": "aafe3436072465bcdb8a514d64f57ca244281cca",
+      "size": 1396
+    },
+    {
+      "path": "history/1.4.0/app.py",
+      "sha": "3b31ff545ca515770ecf361e0ba8122da5ba8123",
+      "size": 57554
+    },
+    {
+      "path": "history/1.4.0/build.py",
+      "sha": "e11fb23c0f000a1e34c91802ddee4274f40a600b",
+      "size": 6727
+    },
+    {
+      "path": "history/1.4.0/engine.py",
+      "sha": "68924bbfcae48d77a2039e1d99055f549274e342",
+      "size": 21519
+    },
+    {
+      "path": "history/1.4.0/i18n.py",
+      "sha": "1635bfb651c843a7e83921bf9969fc8ec4b52b5d",
+      "size": 12995
+    },
+    {
+      "path": "history/1.4.0/package.py",
+      "sha": "eca66057d1bad7fbbd42f99ea44988c7061f3e59",
+      "size": 6573
+    },
+    {
+      "path": "history/1.4.0/pdf_panel.py",
+      "sha": "188528ac69c6e2193a55bf9328d7834ec04677a8",
+      "size": 21137
+    },
+    {
+      "path": "history/1.4.0/pdf_tools.py",
+      "sha": "e8159721ad522e7bcdfd8abc17c0b7a3a37e4e88",
+      "size": 26630
+    },
+    {
+      "path": "history/1.4.0/requirements-lock.txt",
+      "sha": "049873f97354b787231e953239b3218a7f178c5d",
+      "size": 644
+    },
+    {
+      "path": "history/1.4.0/test_engine.py",
+      "sha": "b11910a566d4c7ac472606b94373244da2c799df",
+      "size": 6669
+    },
+    {
+      "path": "history/1.4.0/test_gui.py",
+      "sha": "388e90f998c672442bde48f2082598ef8494923d",
+      "size": 80013
+    },
+    {
+      "path": "history/1.4.0/test_pdf_tools.py",
+      "sha": "5cf3469af329194d40bfc28851921c9838939b32",
+      "size": 25413
+    },
+    {
+      "path": "history/1.4.0/파일목록.json",
+      "sha": "9cb56d2d5c1615d7d70d4797228f84685b60d246",
+      "size": 1647
+    },
+    {
+      "path": "history/1.6.0/LICENSE.txt",
+      "sha": "aafe3436072465bcdb8a514d64f57ca244281cca",
+      "size": 1396
+    },
+    {
+      "path": "history/1.6.0/app.py",
+      "sha": "df8143591cccac960a4359d3549d943abd8b0fec",
+      "size": 68810
+    },
+    {
+      "path": "history/1.6.0/build.py",
+      "sha": "808a0f699cee1f2a27d48a3716cf67208f7b5499",
+      "size": 6727
+    },
+    {
+      "path": "history/1.6.0/engine.py",
+      "sha": "68924bbfcae48d77a2039e1d99055f549274e342",
+      "size": 21519
+    },
+    {
+      "path": "history/1.6.0/i18n.py",
+      "sha": "12b89b40cde0ea8fa0a302df2718b6c65e4bf114",
+      "size": 15469
+    },
+    {
+      "path": "history/1.6.0/package.py",
+      "sha": "ec481cdcc81a357c4b93364eab322c6f96258ede",
+      "size": 7099
+    },
+    {
+      "path": "history/1.6.0/pdf_panel.py",
+      "sha": "17f01aaa642769ae98ba752362b3c934f094030f",
+      "size": 25166
+    },
+    {
+      "path": "history/1.6.0/pdf_tools.py",
+      "sha": "e8159721ad522e7bcdfd8abc17c0b7a3a37e4e88",
+      "size": 26630
+    },
+    {
+      "path": "history/1.6.0/requirements-lock.txt",
+      "sha": "049873f97354b787231e953239b3218a7f178c5d",
+      "size": 644
+    },
+    {
+      "path": "history/1.6.0/studio_ui.py",
+      "sha": "971b6453ca760369c579036015273f21c03d9dd8",
+      "size": 15879
+    },
+    {
+      "path": "history/1.6.0/test_engine.py",
+      "sha": "b11910a566d4c7ac472606b94373244da2c799df",
+      "size": 6669
+    },
+    {
+      "path": "history/1.6.0/test_gui.py",
+      "sha": "ea14260d91a7ad8fda3d7f61a333ce7685fc491f",
+      "size": 127149
+    },
+    {
+      "path": "history/1.6.0/test_pdf_tools.py",
+      "sha": "5cf3469af329194d40bfc28851921c9838939b32",
+      "size": 25413
+    },
+    {
+      "path": "history/1.6.0/ui_motion.py",
+      "sha": "3e9e69097686407710f46e9d2f1d14ed54e23b3b",
+      "size": 34662
+    },
+    {
+      "path": "history/1.6.0/파일목록.json",
+      "sha": "2830f643599dac64e699da9109d7d387fc66c146",
+      "size": 1924
+    },
+    {
+      "path": "history/1.7.0/LICENSE.txt",
+      "sha": "aafe3436072465bcdb8a514d64f57ca244281cca",
+      "size": 1396
+    },
+    {
+      "path": "history/1.7.0/app.py",
+      "sha": "f1a89011dac0c6dbf13a98e542368c96b36f6534",
+      "size": 80169
+    },
+    {
+      "path": "history/1.7.0/build.py",
+      "sha": "3832d78ebe48b5ffc85e0b879955507df71059d1",
+      "size": 7061
+    },
+    {
+      "path": "history/1.7.0/engine.py",
+      "sha": "13534cf5372ab3d8fabf7671fc8a8e6456a5b288",
+      "size": 29743
+    },
+    {
+      "path": "history/1.7.0/flipring_workflow.py",
+      "sha": "9f5f5f671e87e2121d9e04377e55268e2e5b0fe9",
+      "size": 6873
+    },
+    {
+      "path": "history/1.7.0/i18n.py",
+      "sha": "2bf5f23ebd98095f2aca4aa87b439dd9ae396824",
+      "size": 18782
+    },
+    {
+      "path": "history/1.7.0/package.py",
+      "sha": "9bab550bdb4a3c11b6ccc5a69e2db6d001ffa656",
+      "size": 9980
+    },
+    {
+      "path": "history/1.7.0/pdf_lock.py",
+      "sha": "2c0a315c6bbff2b6bea4d7e788d77cbbdc56fefc",
+      "size": 147
+    },
+    {
+      "path": "history/1.7.0/pdf_pages.py",
+      "sha": "d37a75e5c5c93dbd9c16aeeebb89cadc34777260",
+      "size": 7563
+    },
+    {
+      "path": "history/1.7.0/pdf_panel.py",
+      "sha": "aebd9ab7574b8a7a88ea58e4ee1b10d8d102813a",
+      "size": 60281
+    },
+    {
+      "path": "history/1.7.0/pdf_tools.py",
+      "sha": "67c74da7e6d81f46cbcd5b55aa79213413c5f4e6",
+      "size": 31802
+    },
+    {
+      "path": "history/1.7.0/preview_panel.py",
+      "sha": "d0179c841b2173d5b5dfde66bade45aa4debc118",
+      "size": 5112
+    },
+    {
+      "path": "history/1.7.0/requirements-lock.txt",
+      "sha": "049873f97354b787231e953239b3218a7f178c5d",
+      "size": 644
+    },
+    {
+      "path": "history/1.7.0/studio_ui.py",
+      "sha": "ffefa865b3bad11fb33702e5b7091aee1748778f",
+      "size": 15958
+    },
+    {
+      "path": "history/1.7.0/test_conversion_matrix.py",
+      "sha": "558a74ea2238e831e20362a760ae25dbfc056608",
+      "size": 16249
+    },
+    {
+      "path": "history/1.7.0/test_engine.py",
+      "sha": "b11910a566d4c7ac472606b94373244da2c799df",
+      "size": 6669
+    },
+    {
+      "path": "history/1.7.0/test_gui.py",
+      "sha": "f2b25984bed31ebb5b699ce735352257942d9262",
+      "size": 126341
+    },
+    {
+      "path": "history/1.7.0/test_pdf_tools.py",
+      "sha": "5cf3469af329194d40bfc28851921c9838939b32",
+      "size": 25413
+    },
+    {
+      "path": "history/1.7.0/test_pdf_workspace.py",
+      "sha": "d2e2bdc3dd7bd1e2f64856b299f3df13467711d6",
+      "size": 27600
+    },
+    {
+      "path": "history/1.7.0/test_workbench.py",
+      "sha": "82c60447b95d04db151e1f97d420ef10e5077250",
+      "size": 23935
+    },
+    {
+      "path": "history/1.7.0/ui_motion.py",
+      "sha": "72abf095f83e9400b51e2e9fdf6fc1cc556c6f88",
+      "size": 35633
+    },
+    {
+      "path": "history/1.7.0/파일목록.json",
+      "sha": "6ca68e532d7d9bcfd5bbd0ba55b8b5a135bff757",
+      "size": 2923
+    },
+    {
+      "path": "history/1.8.0/LICENSE.txt",
+      "sha": "aafe3436072465bcdb8a514d64f57ca244281cca",
+      "size": 1396
+    },
+    {
+      "path": "history/1.8.0/app.py",
+      "sha": "d86cca021114f8672789e526bdcec65f499fd2d4",
+      "size": 81675
+    },
+    {
+      "path": "history/1.8.0/build.py",
+      "sha": "1ad2aacca9c98f2e9d386012a232688848db1e80",
+      "size": 7061
+    },
+    {
+      "path": "history/1.8.0/engine.py",
+      "sha": "13534cf5372ab3d8fabf7671fc8a8e6456a5b288",
+      "size": 29743
+    },
+    {
+      "path": "history/1.8.0/fixed_viewport.py",
+      "sha": "7525c561057ce2c2e89012f2449361d09297a837",
+      "size": 2468
+    },
+    {
+      "path": "history/1.8.0/flipring_workflow.py",
+      "sha": "9f5f5f671e87e2121d9e04377e55268e2e5b0fe9",
+      "size": 6873
+    },
+    {
+      "path": "history/1.8.0/i18n.py",
+      "sha": "2cf4b502915cae349c99e59027eaf9250204c822",
+      "size": 19102
+    },
+    {
+      "path": "history/1.8.0/package.py",
+      "sha": "9bdd6950e49e3564114edf95eec5b91877dc932f",
+      "size": 10074
+    },
+    {
+      "path": "history/1.8.0/pdf_lock.py",
+      "sha": "2c0a315c6bbff2b6bea4d7e788d77cbbdc56fefc",
+      "size": 147
+    },
+    {
+      "path": "history/1.8.0/pdf_pages.py",
+      "sha": "d37a75e5c5c93dbd9c16aeeebb89cadc34777260",
+      "size": 7563
+    },
+    {
+      "path": "history/1.8.0/pdf_panel.py",
+      "sha": "79a7c9f86de0450e196584b5e9cf69468d9067dc",
+      "size": 62365
+    },
+    {
+      "path": "history/1.8.0/pdf_tools.py",
+      "sha": "67c74da7e6d81f46cbcd5b55aa79213413c5f4e6",
+      "size": 31802
+    },
+    {
+      "path": "history/1.8.0/preview_panel.py",
+      "sha": "4e986c4eb945d61cc30ddce97f76452f17b24e5e",
+      "size": 6106
+    },
+    {
+      "path": "history/1.8.0/requirements-lock.txt",
+      "sha": "049873f97354b787231e953239b3218a7f178c5d",
+      "size": 644
+    },
+    {
+      "path": "history/1.8.0/studio_ui.py",
+      "sha": "0dfcadd8f581f302fb16c3dbb1ab84288729f7f6",
+      "size": 16400
+    },
+    {
+      "path": "history/1.8.0/test_conversion_matrix.py",
+      "sha": "558a74ea2238e831e20362a760ae25dbfc056608",
+      "size": 16249
+    },
+    {
+      "path": "history/1.8.0/test_engine.py",
+      "sha": "b11910a566d4c7ac472606b94373244da2c799df",
+      "size": 6669
+    },
+    {
+      "path": "history/1.8.0/test_fixed_layout.py",
+      "sha": "4c911d3e6f75b731f2f6fefdadcdeaf28f3588f5",
+      "size": 16446
+    },
+    {
+      "path": "history/1.8.0/test_gui.py",
+      "sha": "6a7af51df977acc8a0d5627ae73669acbe0c7d1e",
+      "size": 126342
+    },
+    {
+      "path": "history/1.8.0/test_pdf_tools.py",
+      "sha": "5cf3469af329194d40bfc28851921c9838939b32",
+      "size": 25413
+    },
+    {
+      "path": "history/1.8.0/test_pdf_workspace.py",
+      "sha": "d2e2bdc3dd7bd1e2f64856b299f3df13467711d6",
+      "size": 27600
+    },
+    {
+      "path": "history/1.8.0/test_workbench.py",
+      "sha": "82c60447b95d04db151e1f97d420ef10e5077250",
+      "size": 23935
+    },
+    {
+      "path": "history/1.8.0/ui_motion.py",
+      "sha": "7f6b0745743d447b2412bced54eb5119e1ff2b15",
+      "size": 38989
+    },
+    {
+      "path": "history/1.8.0/파일목록.json",
+      "sha": "0e5f7cc0fda47e8e7eb16e3818d171f26f1cda4b",
+      "size": 3329
+    },
+    {
+      "path": "history/내부모션-작업전/app.py",
+      "sha": "427c1afeb734ebd162b928742cf8161fecfc7bce",
+      "size": 65789
+    },
+    {
+      "path": "history/내부모션-작업전/build.py",
+      "sha": "9e7a3053634f1dc7b56b315299f8e6ea353ea8ea",
+      "size": 6727
+    },
+    {
+      "path": "history/내부모션-작업전/engine.py",
+      "sha": "68924bbfcae48d77a2039e1d99055f549274e342",
+      "size": 21519
+    },
+    {
+      "path": "history/내부모션-작업전/i18n.py",
+      "sha": "29f8859f70928469c40e3ec047b7fb70d8e1b4c5",
+      "size": 14757
+    },
+    {
+      "path": "history/내부모션-작업전/package.py",
+      "sha": "2c52f7af932caf7798df735d306aa7ca64910614",
+      "size": 7083
+    },
+    {
+      "path": "history/내부모션-작업전/pdf_panel.py",
+      "sha": "3f8c1ac1584abace0f89fc371148d402e146a0a9",
+      "size": 23908
+    },
+    {
+      "path": "history/내부모션-작업전/pdf_tools.py",
+      "sha": "e8159721ad522e7bcdfd8abc17c0b7a3a37e4e88",
+      "size": 26630
+    },
+    {
+      "path": "history/내부모션-작업전/studio_ui.py",
+      "sha": "3e0d96f0327a03f1341f39d7da30ef28c60db037",
+      "size": 15640
+    },
+    {
+      "path": "history/내부모션-작업전/test_engine.py",
+      "sha": "b11910a566d4c7ac472606b94373244da2c799df",
+      "size": 6669
+    },
+    {
+      "path": "history/내부모션-작업전/test_gui.py",
+      "sha": "e0cb969ac3c7aac40a50accb095c50ffca3e7901",
+      "size": 102408
+    },
+    {
+      "path": "history/내부모션-작업전/test_pdf_tools.py",
+      "sha": "5cf3469af329194d40bfc28851921c9838939b32",
+      "size": 25413
+    },
+    {
+      "path": "history/내부모션-작업전/파일목록.json",
+      "sha": "e8f6e60dd75c9a096884af3d82b3126108958a9c",
+      "size": 1505
+    },
+    {
+      "path": "history/버튼모션-작업전/app.py",
+      "sha": "0185134692277c92b820dde1003adb4312782b98",
+      "size": 56494
+    },
+    {
+      "path": "history/버튼모션-작업전/test_gui.py",
+      "sha": "bd7af5d11c910722d5024ae8a263385d87b2ed81",
+      "size": 64113
+    },
+    {
+      "path": "history/버튼모션-작업전/파일목록.json",
+      "sha": "2a68e5e507708838f7c878a591231f78c85fa10a",
+      "size": 272
+    },
+    {
+      "path": "history/부드러운디자인-작업전/app.py",
+      "sha": "90d1c2c30194d390e38672f069f71b045e45839d",
+      "size": 50164
+    },
+    {
+      "path": "history/부드러운디자인-작업전/pdf_panel.py",
+      "sha": "188528ac69c6e2193a55bf9328d7834ec04677a8",
+      "size": 21137
+    },
+    {
+      "path": "history/부드러운디자인-작업전/test_gui.py",
+      "sha": "4f1d5d1204028b3fea30381c149054e8591b7696",
+      "size": 51626
+    },
+    {
+      "path": "history/부드러운디자인-작업전/파일목록.json",
+      "sha": "eb21c2dfb526095bc922d35b744842719cee5d9d",
+      "size": 410
+    },
+    {
+      "path": "history/콤보-작업전/app.py",
+      "sha": "2abda4009ae5bf2fbf50051a2185a3824afe3516",
+      "size": 56907
+    },
+    {
+      "path": "history/콤보-작업전/test_gui.py",
+      "sha": "55d8b4138aae06fffd7c519112a9b62387d81240",
+      "size": 69323
+    },
+    {
+      "path": "history/콤보-작업전/파일목록.json",
+      "sha": "cb122ee7fec8e5a7ecaf128e282962c7139bf21f",
+      "size": 272
+    },
+    {
+      "path": "history/탭잔상-작업전/app.py",
+      "sha": "5e2c586c5ab828a655cdf46e61371748b95a0ac3",
+      "size": 57399
+    },
+    {
+      "path": "history/탭잔상-작업전/test_gui.py",
+      "sha": "a62ab1e812286283d6bddd7cc0c4ef2a1a8e4a09",
+      "size": 76078
+    },
+    {
+      "path": "history/탭잔상-작업전/파일목록.json",
+      "sha": "66992155ac46da20ddb3a2c74ba67cc9f42d819b",
+      "size": 272
+    },
+    {
+      "path": "history/호버대비-작업전/app.py",
+      "sha": "c2fcc3f16c617a423746441d01a018b8c7de7d5c",
+      "size": 57419
+    },
+    {
+      "path": "history/호버대비-작업전/test_gui.py",
+      "sha": "b4c04c8c5dbfa44991a0c0a56d0200752dcba0bc",
+      "size": 73755
+    },
+    {
+      "path": "history/호버대비-작업전/파일목록.json",
+      "sha": "a0e026d38be5d26d219347423de0596589bee9fd",
+      "size": 272
+    },
+    {
+      "path": "소스/1.7-새기능안내.md",
+      "sha": "fe9741df2154d85b247686115e90cd01c650a1c7",
+      "size": 4680
+    },
+    {
+      "path": "소스/1.8-화면안내.md",
+      "sha": "8cf29946c668796b53c7dba544c1cf9731b08b02",
+      "size": 1628
+    },
+    {
+      "path": "소스/LICENSE.txt",
+      "sha": "aafe3436072465bcdb8a514d64f57ca244281cca",
+      "size": 1396
+    },
+    {
+      "path": "소스/app.py",
+      "sha": "d86cca021114f8672789e526bdcec65f499fd2d4",
+      "size": 81675
+    },
+    {
+      "path": "소스/build.py",
+      "sha": "1ad2aacca9c98f2e9d386012a232688848db1e80",
+      "size": 7061
+    },
+    {
+      "path": "소스/engine.py",
+      "sha": "13534cf5372ab3d8fabf7671fc8a8e6456a5b288",
+      "size": 29743
+    },
+    {
+      "path": "소스/fixed_viewport.py",
+      "sha": "7525c561057ce2c2e89012f2449361d09297a837",
+      "size": 2468
+    },
+    {
+      "path": "소스/flipring_workflow.py",
+      "sha": "9f5f5f671e87e2121d9e04377e55268e2e5b0fe9",
+      "size": 6873
+    },
+    {
+      "path": "소스/i18n.py",
+      "sha": "2cf4b502915cae349c99e59027eaf9250204c822",
+      "size": 19102
+    },
+    {
+      "path": "소스/licenses/7Zip/LGPL-2.1.txt",
+      "sha": "3394995abc5463238286bc53ce7608839b5d0ba7",
+      "size": 27032
+    },
+    {
+      "path": "소스/licenses/7Zip/License.txt",
+      "sha": "70f1df4a56b0d99131e9de337f41bf9d10989a9c",
+      "size": 6031
+    },
+    {
+      "path": "소스/licenses/7Zip/Source-License.txt",
+      "sha": "9c301dc1da14f342438a5cbb2a2ee14baf7b8d81",
+      "size": 6341
+    },
+    {
+      "path": "소스/licenses/7Zip/unRarLicense.txt",
+      "sha": "5f78b728da550062cf7d14efc7f6b51d68314238",
+      "size": 1921
+    },
+    {
+      "path": "소스/licenses/7Zip/출하목록.json",
+      "sha": "a64e54452ab9a58db91bf380fbb03c3e69e5d82e",
+      "size": 2762
+    },
+    {
+      "path": "소스/licenses/GCC-RUNTIME-EXCEPTION.txt",
+      "sha": "e1b3c69c179dfaff5744ea4bf853e6b0d90c9ef9",
+      "size": 3324
+    },
+    {
+      "path": "소스/licenses/GPL-3.0.txt",
+      "sha": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+      "size": 35149
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/GCC-PKGINFO.txt",
+      "sha": "393997ae201eae681711fa060651553eb1a18cb4",
+      "size": 1291
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.LIB",
+      "sha": "2d2d780e6014b850ca3b8437452e24eba5f96508",
+      "size": 26527
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.RUNTIME",
+      "sha": "e1b3c69c179dfaff5744ea4bf853e6b0d90c9ef9",
+      "size": 3324
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING3",
+      "sha": "94a9ed024d3859793618152ea559a168bbcbb5e2",
+      "size": 35147
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/README",
+      "sha": "b60f9f99feb2dc1a75efee3e3fa04397753a3ef1",
+      "size": 236
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/HEIC-GNU-GCC대조.json",
+      "sha": "9bfd97407be86f19cae92a6969d1a7d3a7b410ba",
+      "size": 1872
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/HEIC-GNU-PE수정영역.json",
+      "sha": "3d68fb5c6327bc7f92ade51708cafe82d9c26732",
+      "size": 5993
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/HEIC-GNU-WINPTHREAD대조.json",
+      "sha": "04117283e5a611d5b7f4e427ebf938116d6d7a12",
+      "size": 1120
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/HEIC-GNU-소스확보.json",
+      "sha": "5d5a752c0530da6a2bbe7c67e1b53f12abc71abd",
+      "size": 434
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/WINPTHREAD-PKGINFO.txt",
+      "sha": "ac0852f5e8a74eb153fe0e844552c143d1758ca6",
+      "size": 787
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/WINPTHREAD-원문고지/libwinpthread/COPYING",
+      "sha": "3507701238b798b1ddbf4d5ffe16f285f4458963",
+      "size": 2883
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/pyproject.toml",
+      "sha": "7fc1b5fd6d1aad2376004620c8cc799b8510be16",
+      "size": 3033
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/읽어주세요.md",
+      "sha": "f78aecb2028d9b4c90b9561853488ab36385294c",
+      "size": 3330
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/출하목록.json",
+      "sha": "613ca7c46e267a8e698bf84ba7abcca02d0ac8ea",
+      "size": 4192
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/프로그램-DLL목록.json",
+      "sha": "e3f3749a2646f6db1369f0df0a1dc2d867515342",
+      "size": 919
+    },
+    {
+      "path": "소스/licenses/Inno-Setup-LICENSE.txt",
+      "sha": "ac4dfe9e6543a360c5422b6f1fb88075e8b6073d",
+      "size": 1521
+    },
+    {
+      "path": "소스/licenses/LGPL-3.0.txt",
+      "sha": "0a041280bd00a9d068f503b8ee7ce35214bd24a1",
+      "size": 7652
+    },
+    {
+      "path": "소스/licenses/Lucide/LICENSE",
+      "sha": "718bb3f0e44153809972abed31839375804bf652",
+      "size": 3208
+    },
+    {
+      "path": "소스/licenses/Mesa-LICENSE.html",
+      "sha": "b686bf38de638ac5a88a8a69241cdc262936f79d",
+      "size": 18044
+    },
+    {
+      "path": "소스/licenses/OCR/GPL-3.0.txt",
+      "sha": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+      "size": 35149
+    },
+    {
+      "path": "소스/licenses/OCR/Tesseract-소스다운로드.json",
+      "sha": "caa53b4db7a92501337855adf69962c039ce148b",
+      "size": 378
+    },
+    {
+      "path": "소스/licenses/OCR/Tesseract-원본다운로드.json",
+      "sha": "460125974cb9055a246dba9e5a74982d9deed7d0",
+      "size": 296
+    },
+    {
+      "path": "소스/licenses/OCR/brotli/PKGINFO.txt",
+      "sha": "eff8fb2a1569b089830ca2b521863a301ef7300e",
+      "size": 464
+    },
+    {
+      "path": "소스/licenses/OCR/brotli/brotli/LICENSE",
+      "sha": "33b7cdd2dbaeddce1e35aa1a13f63d71154dc42f",
+      "size": 1084
+    },
+    {
+      "path": "소스/licenses/OCR/bzip2/PKGINFO.txt",
+      "sha": "357150f12ce6ab80b5a7fb8ab5693b2399773cf9",
+      "size": 448
+    },
+    {
+      "path": "소스/licenses/OCR/bzip2/bzip2/LICENSE",
+      "sha": "81a37eab7a5be1a34456f38adb74928cc9073e9b",
+      "size": 1896
+    },
+    {
+      "path": "소스/licenses/OCR/curl-winssl/PKGINFO.txt",
+      "sha": "344099b5542fed61c6f51c30ed83e29fa7d20f51",
+      "size": 1378
+    },
+    {
+      "path": "소스/licenses/OCR/curl-winssl/curl/LICENSE",
+      "sha": "2f71d999a9c8816b9ed595fbae9c9a7b6b7ad039",
+      "size": 1088
+    },
+    {
+      "path": "소스/licenses/OCR/expat/PKGINFO.txt",
+      "sha": "2c87f72165779de4256a47f7265534c12d0a4479",
+      "size": 488
+    },
+    {
+      "path": "소스/licenses/OCR/expat/expat/COPYING",
+      "sha": "c6d184a8aae845ce7bf4d195b214d8244d457f8f",
+      "size": 1144
+    },
+    {
+      "path": "소스/licenses/OCR/gettext-runtime/PKGINFO.txt",
+      "sha": "c05425d8316994f9de45ac1a2ddb816c6aadff45",
+      "size": 710
+    },
+    {
+      "path": "소스/licenses/OCR/gettext-runtime/gettext-runtime/COPYING",
+      "sha": "9045d4cd3fdc2f192776f6663ff5411ded29f8a1",
+      "size": 495
+    },
+    {
+      "path": "소스/licenses/OCR/gettext-runtime/gettext-runtime/intl/COPYING.LIB",
+      "sha": "f6683e74e0f0130f246dbf7054f4cacc88ca84b0",
+      "size": 26419
+    },
+    {
+      "path": "소스/licenses/OCR/gettext-runtime/gettext-runtime/libasprintf/COPYING",
+      "sha": "28ee03d142242d08d6517025f4075bd998ff412a",
+      "size": 65
+    },
+    {
+      "path": "소스/licenses/OCR/gettext-runtime/gettext-runtime/libasprintf/COPYING.LIB",
+      "sha": "f6683e74e0f0130f246dbf7054f4cacc88ca84b0",
+      "size": 26419
+    },
+    {
+      "path": "소스/licenses/OCR/giflib/PKGINFO.txt",
+      "sha": "e1a7b8be347d4d558794859ce85e2ea5b83a5921",
+      "size": 441
+    },
+    {
+      "path": "소스/licenses/OCR/jbigkit/PKGINFO.txt",
+      "sha": "d3b46f8ed7cac6d5b347d764c0e2bfcd6a2cd605",
+      "size": 496
+    },
+    {
+      "path": "소스/licenses/OCR/jbigkit/jbigkit/COPYING",
+      "sha": "a43ea2126fb6b114bff5f8e003ee118e045dacf1",
+      "size": 17982
+    },
+    {
+      "path": "소스/licenses/OCR/leptonica/PKGINFO.txt",
+      "sha": "bc914c9222485150efe7e332a476a69900c50ff0",
+      "size": 817
+    },
+    {
+      "path": "소스/licenses/OCR/leptonica/leptonica/LICENSE",
+      "sha": "73d44c601c0746534128804c3fb0b93772897f82",
+      "size": 1521
+    },
+    {
+      "path": "소스/licenses/OCR/lerc/PKGINFO.txt",
+      "sha": "76bf1b4833d8d9dddb3f8d6f7100cdb1d2acd6e5",
+      "size": 549
+    },
+    {
+      "path": "소스/licenses/OCR/lerc/lerc/LICENSE",
+      "sha": "863d15091ebca6473a211f9d99a0051502f63d8b",
+      "size": 9198
+    },
+    {
+      "path": "소스/licenses/OCR/libarchive/PKGINFO.txt",
+      "sha": "39ee6efa86df698b027653f51f2752e0de1b2197",
+      "size": 894
+    },
+    {
+      "path": "소스/licenses/OCR/libarchive/libarchive/LICENSE",
+      "sha": "9d0bcf81ff613bf5f36d71983b75e20cd0f69213",
+      "size": 3089
+    },
+    {
+      "path": "소스/licenses/OCR/libb2/PKGINFO.txt",
+      "sha": "d4aa48c9e477487cbd1276a67c8d4af68f7370b8",
+      "size": 495
+    },
+    {
+      "path": "소스/licenses/OCR/libb2/libb2/LICENSE",
+      "sha": "2c4afabdb632b5d68e60c9fe9fe0b0819676a729",
+      "size": 6556
+    },
+    {
+      "path": "소스/licenses/OCR/libdeflate/PKGINFO.txt",
+      "sha": "cdee680546af48671addf1d4b7bc42f204568dcc",
+      "size": 525
+    },
+    {
+      "path": "소스/licenses/OCR/libdeflate/libdeflate/COPYING",
+      "sha": "9b620b3c1907154089e3c49c16520abe56d9f80a",
+      "size": 1078
+    },
+    {
+      "path": "소스/licenses/OCR/libiconv/PKGINFO.txt",
+      "sha": "8712a11c4739197ef61f0426290af8becd933479",
+      "size": 594
+    },
+    {
+      "path": "소스/licenses/OCR/libiconv/libiconv/COPYING",
+      "sha": "94a9ed024d3859793618152ea559a168bbcbb5e2",
+      "size": 35147
+    },
+    {
+      "path": "소스/licenses/OCR/libiconv/libiconv/COPYING.LIB",
+      "sha": "f6683e74e0f0130f246dbf7054f4cacc88ca84b0",
+      "size": 26419
+    },
+    {
+      "path": "소스/licenses/OCR/libiconv/libiconv/README",
+      "sha": "f4c4e2423eff538ebdfb84a7909ec21f845934a0",
+      "size": 5741
+    },
+    {
+      "path": "소스/licenses/OCR/libiconv/libiconv/libcharset/COPYING.LIB",
+      "sha": "f6683e74e0f0130f246dbf7054f4cacc88ca84b0",
+      "size": 26419
+    },
+    {
+      "path": "소스/licenses/OCR/libidn2/PKGINFO.txt",
+      "sha": "f28453532b28ebde0909f0b315dda89cb6657576",
+      "size": 732
+    },
+    {
+      "path": "소스/licenses/OCR/libjpeg-turbo/PKGINFO.txt",
+      "sha": "4cbc67c63a2d969e28e57ff77280ea0ff535a7f1",
+      "size": 715
+    },
+    {
+      "path": "소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/LICENSE.md",
+      "sha": "f299cf39e7423fdd46b46d88e357ca2c66e601e3",
+      "size": 5620
+    },
+    {
+      "path": "소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.ijg",
+      "sha": "dbf8070cac812bcfd7eb4d407062919f69c777c8",
+      "size": 12799
+    },
+    {
+      "path": "소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md",
+      "sha": "86b5ea676a3b949461e394be57b220a50fa99e06",
+      "size": 17784
+    },
+    {
+      "path": "소스/licenses/OCR/libpng/PKGINFO.txt",
+      "sha": "c814a0f53a4dcd8cdfcd78083f8ccaf7e44c4abf",
+      "size": 537
+    },
+    {
+      "path": "소스/licenses/OCR/libpng/libpng/LICENSE",
+      "sha": "1b765ae9f96abea77d3d9a88c543e3b5f4725813",
+      "size": 5345
+    },
+    {
+      "path": "소스/licenses/OCR/libpsl/PKGINFO.txt",
+      "sha": "a4c056a946af1c8afe828f41e4c2b30848f32a83",
+      "size": 742
+    },
+    {
+      "path": "소스/licenses/OCR/libpsl/libpsl/COPYING",
+      "sha": "85945e764990021c40c3badb34f29bcf5fdd8149",
+      "size": 1060
+    },
+    {
+      "path": "소스/licenses/OCR/libssh2-wincng/PKGINFO.txt",
+      "sha": "bb1561604c1d97b9195622c8a1eb8ca3f6b4bc94",
+      "size": 662
+    },
+    {
+      "path": "소스/licenses/OCR/libssh2-wincng/libssh2/LICENSE",
+      "sha": "6eb51468404b21423ff3d842adfab0cd475de13d",
+      "size": 1959
+    },
+    {
+      "path": "소스/licenses/OCR/libtiff/PKGINFO.txt",
+      "sha": "de7f8268de10d508987edefff6e48db59bf89828",
+      "size": 842
+    },
+    {
+      "path": "소스/licenses/OCR/libtiff/libtiff/LICENSE.md",
+      "sha": "12d5ef231021c5da19f3b5af44192fb6f4184542",
+      "size": 2416
+    },
+    {
+      "path": "소스/licenses/OCR/libunistring/PKGINFO.txt",
+      "sha": "0c5d9334b47f1c635ff05091ec82228dfc275d35",
+      "size": 569
+    },
+    {
+      "path": "소스/licenses/OCR/libunistring/libunistring/LICENSE",
+      "sha": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+      "size": 35149
+    },
+    {
+      "path": "소스/licenses/OCR/libunistring/libunistring/LICENSE.LIB",
+      "sha": "fc8a5de7edf437cdc98a216370faf7c757279bcb",
+      "size": 7639
+    },
+    {
+      "path": "소스/licenses/OCR/libwebp/PKGINFO.txt",
+      "sha": "4761ff76cd36bf3bcce0d45ac8f3df7604454b83",
+      "size": 693
+    },
+    {
+      "path": "소스/licenses/OCR/libwebp/libwebp/COPYING",
+      "sha": "7a6f99547d4d6b4c5e6d5321acfaeba313e08de3",
+      "size": 1496
+    },
+    {
+      "path": "소스/licenses/OCR/libwinpthread/PKGINFO.txt",
+      "sha": "6e18a7012a902279fb69017d302fc1a51983fa4e",
+      "size": 786
+    },
+    {
+      "path": "소스/licenses/OCR/libwinpthread/libwinpthread/COPYING",
+      "sha": "3507701238b798b1ddbf4d5ffe16f285f4458963",
+      "size": 2883
+    },
+    {
+      "path": "소스/licenses/OCR/lz4/PKGINFO.txt",
+      "sha": "f40d22f7752c18f22614a66f3c08eb42da71e1db",
+      "size": 427
+    },
+    {
+      "path": "소스/licenses/OCR/openjpeg2/PKGINFO.txt",
+      "sha": "db67944423924ae257d95a4e1cade47823c5e27d",
+      "size": 643
+    },
+    {
+      "path": "소스/licenses/OCR/openjpeg2/openjpeg/LICENSE",
+      "sha": "e8fa41040dfbe8be524cac5b1bb19d60c6eb0320",
+      "size": 2112
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/COPYING.RUNTIME.txt",
+      "sha": "e1b3c69c179dfaff5744ea4bf853e6b0d90c9ef9",
+      "size": 3324
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/COPYING.txt",
+      "sha": "623b6258a134210f0b0ada106fdaab7f0370d9c5",
+      "size": 18002
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/COPYING3.txt",
+      "sha": "94a9ed024d3859793618152ea559a168bbcbb5e2",
+      "size": 35147
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/README.md",
+      "sha": "09dbcc18fe27a0b65bef50b5bce66beb46cf530c",
+      "size": 5499
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/debian-gcc14/README.source",
+      "sha": "8eed2f04b155b907fa7cfa6add03f46fc92e1a65",
+      "size": 1288
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/출하목록.json",
+      "sha": "0b7dc9a80fa7fa3ccb52672ee62054fbd34f95f4",
+      "size": 5069
+    },
+    {
+      "path": "소스/licenses/OCR/xz/PKGINFO.txt",
+      "sha": "9d006d3cc73d96ca3ace2db14d58e901fcfc3790",
+      "size": 638
+    },
+    {
+      "path": "소스/licenses/OCR/xz/xz/COPYING",
+      "sha": "ef3371389d7d45db6593a146fd9e027347f3122c",
+      "size": 3119
+    },
+    {
+      "path": "소스/licenses/OCR/xz/xz/COPYING.0BSD",
+      "sha": "4322122aecf1aecff317bd50334ba206dcb9ac41",
+      "size": 607
+    },
+    {
+      "path": "소스/licenses/OCR/xz/xz/COPYING.GPLv2",
+      "sha": "9efa6fbc962836e243e20f7f23db062e2c077d28",
+      "size": 17984
+    },
+    {
+      "path": "소스/licenses/OCR/xz/xz/COPYING.GPLv3",
+      "sha": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+      "size": 35149
+    },
+    {
+      "path": "소스/licenses/OCR/xz/xz/COPYING.LGPLv2.1",
+      "sha": "f6683e74e0f0130f246dbf7054f4cacc88ca84b0",
+      "size": 26419
+    },
+    {
+      "path": "소스/licenses/OCR/zlib/PKGINFO.txt",
+      "sha": "f6ed521856515740dfc8c12d5d711064ffda901e",
+      "size": 514
+    },
+    {
+      "path": "소스/licenses/OCR/zlib/zlib/LICENSE",
+      "sha": "b7a69d058e616651eae27b3f90c0b7fd36c099b2",
+      "size": 1002
+    },
+    {
+      "path": "소스/licenses/OCR/zstd/PKGINFO.txt",
+      "sha": "6964402e31687091590f78627efff0edca8a34c1",
+      "size": 564
+    },
+    {
+      "path": "소스/licenses/OCR/zstd/zstd/LICENSE",
+      "sha": "75800288cc243f164b9d130f125e2ffae28f8e39",
+      "size": 1549
+    },
+    {
+      "path": "소스/licenses/OCR/읽어주세요.md",
+      "sha": "b094c921bacb81ad2e6def04f66c46f8c6dc174e",
+      "size": 3217
+    },
+    {
+      "path": "소스/licenses/OpenSSL-LICENSE.txt",
+      "sha": "49cc83d2ee29d13453188217f0e4edd70c7f842f",
+      "size": 10175
+    },
+    {
+      "path": "소스/licenses/Pillow/licenses/LICENSE",
+      "sha": "9f0e2210d5cf5ec2733183bfc0791e9c999b2fbe",
+      "size": 78481
+    },
+    {
+      "path": "소스/licenses/PySide6/licenses/LicenseRef-Qt-Commercial.txt",
+      "sha": "2037409586774a3fc25e057c52f1a88508b10f7d",
+      "size": 470
+    },
+    {
+      "path": "소스/licenses/PySide6_Addons/licenses/LicenseRef-Qt-Commercial.txt",
+      "sha": "2037409586774a3fc25e057c52f1a88508b10f7d",
+      "size": 470
+    },
+    {
+      "path": "소스/licenses/PySide6_Essentials/licenses/LicenseRef-Qt-Commercial.txt",
+      "sha": "2037409586774a3fc25e057c52f1a88508b10f7d",
+      "size": 470
+    },
+    {
+      "path": "소스/licenses/PySide6_Pdf/licenses/LicenseRef-Qt-Commercial.txt",
+      "sha": "2037409586774a3fc25e057c52f1a88508b10f7d",
+      "size": 470
+    },
+    {
+      "path": "소스/licenses/PySide6_WebEngine/licenses/LicenseRef-Qt-Commercial.txt",
+      "sha": "2037409586774a3fc25e057c52f1a88508b10f7d",
+      "size": 470
+    },
+    {
+      "path": "소스/licenses/Python-LICENSE.txt",
+      "sha": "a76e7e9252ac73b9c98647b15fa1fe6ebd18973e",
+      "size": 25066
+    },
+    {
+      "path": "소스/licenses/SUIT/OFL.txt",
+      "sha": "7ee44cf05fe09f5dc9293f40b96f3f9f66478d65",
+      "size": 4380
+    },
+    {
+      "path": "소스/licenses/SUIT/원본출처.json",
+      "sha": "0d8c9de4b067ae9b2584401416ca78b3d651122c",
+      "size": 3175
+    },
+    {
+      "path": "소스/licenses/altgraph/LICENSE",
+      "sha": "6013a212b84af0b3e423b991188cb05098a47a86",
+      "size": 1002
+    },
+    {
+      "path": "소스/licenses/charset-normalizer/licenses/LICENSE",
+      "sha": "8885be9624d2bf3fdeca3551d3b5f475bcb536db",
+      "size": 1092
+    },
+    {
+      "path": "소스/licenses/cssselect2/licenses/LICENSE",
+      "sha": "520a431b122dba66bd2310534be4df9062fd5a11",
+      "size": 1548
+    },
+    {
+      "path": "소스/licenses/lxml/licenses/LICENSE.txt",
+      "sha": "88e1bc527848349426535afcd66efe2da478da44",
+      "size": 1538
+    },
+    {
+      "path": "소스/licenses/lxml/licenses/LICENSES.txt",
+      "sha": "6b1aab80c48baeab835a06085f30dbe846f0c796",
+      "size": 6348
+    },
+    {
+      "path": "소스/licenses/packaging/licenses/LICENSE",
+      "sha": "6f62d44e4ef733c0e713afcd2371fed7f2b3de67",
+      "size": 197
+    },
+    {
+      "path": "소스/licenses/packaging/licenses/LICENSE.APACHE",
+      "sha": "f433b1a53f5b830a205fd2df78e2b34974656c7b",
+      "size": 10174
+    },
+    {
+      "path": "소스/licenses/packaging/licenses/LICENSE.BSD",
+      "sha": "42ce7b75c92fb01a3f6ed17eea363f756b7da582",
+      "size": 1344
+    },
+    {
+      "path": "소스/licenses/pefile/LICENSE",
+      "sha": "0866dd7f8f03bbe30364bfd18d41fcd53d74dadf",
+      "size": 1083
+    },
+    {
+      "path": "소스/licenses/pi-heif-decoder/licenses/LICENSE.txt",
+      "sha": "d48cb0e85c59a3a2f6646b44d238899df52f848f",
+      "size": 1546
+    },
+    {
+      "path": "소스/licenses/pi-heif-decoder/licenses/LICENSES_bundled.txt",
+      "sha": "1d4e19e6307b8f9b80a27a8ba94463128e61a496",
+      "size": 327
+    },
+    {
+      "path": "소스/licenses/pyinstaller-hooks-contrib/licenses/LICENSE",
+      "sha": "99bef9e7dc1e29e876057749037f409516eb0509",
+      "size": 27666
+    },
+    {
+      "path": "소스/licenses/pyinstaller/licenses/COPYING.txt",
+      "sha": "d6caec5ab5778c36bd7e26d8d7a48eba1ac23dee",
+      "size": 32604
+    },
+    {
+      "path": "소스/licenses/pypdf/licenses/LICENSE",
+      "sha": "ab327d0312875458ba74983867f1b2622b6de39d",
+      "size": 1605
+    },
+    {
+      "path": "소스/licenses/pypdfium2/licenses/LICENSES/Apache-2.0.txt",
+      "sha": "75b52484ea471f882c29e02693b4f02dba175b5e",
+      "size": 11560
+    },
+    {
+      "path": "소스/licenses/pypdfium2/licenses/LICENSES/BSD-3-Clause.txt",
+      "sha": "0f5c95e57e62cbea256b1908056a7a9b1deed016",
+      "size": 1485
+    },
+    {
+      "path": "소스/licenses/pypdfium2/licenses/LICENSES/CC-BY-4.0.txt",
+      "sha": "f1833517145cc38d7f7194f1397ecb6996dc85bf",
+      "size": 14844
+    },
+    {
+      "path": "소스/licenses/python-docx/licenses/LICENSE",
+      "sha": "67ebe716ec4b2d64d6146b5e7cecd77ac7af9b79",
+      "size": 1104
+    },
+    {
+      "path": "소스/licenses/python-pptx/LICENSE",
+      "sha": "67ebe716ec4b2d64d6146b5e7cecd77ac7af9b79",
+      "size": 1104
+    },
+    {
+      "path": "소스/licenses/pywin32-ctypes/LICENSE.txt",
+      "sha": "5095adb68640bf70dca237be30d759fbf28ac2c3",
+      "size": 1644
+    },
+    {
+      "path": "소스/licenses/rarfile/licenses/LICENSE",
+      "sha": "b7d9d1daab6c7d5a322652c21fabffedaade95a6",
+      "size": 756
+    },
+    {
+      "path": "소스/licenses/reportlab/licenses/LICENSE",
+      "sha": "0ff4a17617915da75cff14d17c67538a957011ce",
+      "size": 1707
+    },
+    {
+      "path": "소스/licenses/setuptools/LICENSE",
+      "sha": "1bb5a44356f00884a71ceeefd24ded6caaba2418",
+      "size": 1023
+    },
+    {
+      "path": "소스/licenses/setuptools/licenses/LICENSE",
+      "sha": "f60bd572013c6abcb3a82ba9b50d84935de6394f",
+      "size": 1076
+    },
+    {
+      "path": "소스/licenses/setuptools/licenses/LICENSE.APACHE",
+      "sha": "f433b1a53f5b830a205fd2df78e2b34974656c7b",
+      "size": 10174
+    },
+    {
+      "path": "소스/licenses/setuptools/licenses/LICENSE.BSD",
+      "sha": "42ce7b75c92fb01a3f6ed17eea363f756b7da582",
+      "size": 1344
+    },
+    {
+      "path": "소스/licenses/setuptools/licenses/LICENSE.txt",
+      "sha": "a31470f14c5978d5fcc3bc173b8399b6c9a6443f",
+      "size": 1107
+    },
+    {
+      "path": "소스/licenses/shiboken6/licenses/LicenseRef-Qt-Commercial.txt",
+      "sha": "2037409586774a3fc25e057c52f1a88508b10f7d",
+      "size": 470
+    },
+    {
+      "path": "소스/licenses/svglib/licenses/LICENSE.txt",
+      "sha": "cca7fc278f5c81ce23a2687208f0d63a6ea44009",
+      "size": 7637
+    },
+    {
+      "path": "소스/licenses/tinycss2/licenses/LICENSE",
+      "sha": "f4b5452fc6ef437c5de8ba4f1feb29e09b1ea930",
+      "size": 1534
+    },
+    {
+      "path": "소스/licenses/typing_extensions/licenses/LICENSE",
+      "sha": "f26bcf4d2de6eb136e31006ca3ab447d5e488adf",
+      "size": 13936
+    },
+    {
+      "path": "소스/licenses/webencodings/licenses/LICENSE",
+      "sha": "844468c9e45bc7d9eaa2ec315b42132bccd8f16d",
+      "size": 1519
+    },
+    {
+      "path": "소스/licenses/xlsxwriter/LICENSE.txt",
+      "sha": "e1e6c8a50f5dbc0916f417a5c3605e4a980ae926",
+      "size": 1349
+    },
+    {
+      "path": "소스/licenses/구성요소.json",
+      "sha": "07951bc8de5099826991789e77527af6ebc7a4ac",
+      "size": 4387
+    },
+    {
+      "path": "소스/offscreen-monitor.json",
+      "sha": "6b272760cfb8398fe8d41df1cd2a42525b63b6ac",
+      "size": 141
+    },
+    {
+      "path": "소스/package.py",
+      "sha": "9bdd6950e49e3564114edf95eec5b91877dc932f",
+      "size": 10074
+    },
+    {
+      "path": "소스/pdf_lock.py",
+      "sha": "2c0a315c6bbff2b6bea4d7e788d77cbbdc56fefc",
+      "size": 147
+    },
+    {
+      "path": "소스/pdf_pages.py",
+      "sha": "d37a75e5c5c93dbd9c16aeeebb89cadc34777260",
+      "size": 7563
+    },
+    {
+      "path": "소스/pdf_panel.py",
+      "sha": "79a7c9f86de0450e196584b5e9cf69468d9067dc",
+      "size": 62365
+    },
+    {
+      "path": "소스/pdf_tools.py",
+      "sha": "67c74da7e6d81f46cbcd5b55aa79213413c5f4e6",
+      "size": 31802
+    },
+    {
+      "path": "소스/preview_panel.py",
+      "sha": "4e986c4eb945d61cc30ddce97f76452f17b24e5e",
+      "size": 6106
+    },
+    {
+      "path": "소스/requirements-lock.txt",
+      "sha": "049873f97354b787231e953239b3218a7f178c5d",
+      "size": 644
+    },
+    {
+      "path": "소스/studio_ui.py",
+      "sha": "0dfcadd8f581f302fb16c3dbb1ab84288729f7f6",
+      "size": 16400
+    },
+    {
+      "path": "소스/test_conversion_matrix.py",
+      "sha": "558a74ea2238e831e20362a760ae25dbfc056608",
+      "size": 16249
+    },
+    {
+      "path": "소스/test_engine.py",
+      "sha": "b11910a566d4c7ac472606b94373244da2c799df",
+      "size": 6669
+    },
+    {
+      "path": "소스/test_fixed_layout.py",
+      "sha": "4c911d3e6f75b731f2f6fefdadcdeaf28f3588f5",
+      "size": 16446
+    },
+    {
+      "path": "소스/test_gui.py",
+      "sha": "6a7af51df977acc8a0d5627ae73669acbe0c7d1e",
+      "size": 126342
+    },
+    {
+      "path": "소스/test_pdf_tools.py",
+      "sha": "5cf3469af329194d40bfc28851921c9838939b32",
+      "size": 25413
+    },
+    {
+      "path": "소스/test_pdf_workspace.py",
+      "sha": "d2e2bdc3dd7bd1e2f64856b299f3df13467711d6",
+      "size": 27600
+    },
+    {
+      "path": "소스/test_workbench.py",
+      "sha": "82c60447b95d04db151e1f97d420ef10e5077250",
+      "size": 23935
+    },
+    {
+      "path": "소스/ui_motion.py",
+      "sha": "7f6b0745743d447b2412bced54eb5119e1ff2b15",
+      "size": 38989
+    },
+    {
+      "path": "소스/빌드방법.md",
+      "sha": "1919f5e9ddbf060a6f4daaf4bc187231fd4c50cd",
+      "size": 10787
+    },
+    {
+      "path": "소스/사용안내.txt",
+      "sha": "6c15af58b2cae1268dbc1adcaf53b51b2acd203d",
+      "size": 7342
+    },
+    {
+      "path": "시작하기.txt",
+      "sha": "3ba79e9c163293bc6e71019ab40e6075130597f3",
+      "size": 3556
+    }
+  ],
+  "repository": "https://github.com/PUVKID/FlipRing-File-Converter-Project",
+  "remote_files": 320,
+  "all_git_blob_sha1_and_size_match": true,
+  "scope": "원격 GitHub 전체트리와 로컬 커밋 원본 blob320개의 크기·SHA1 일치. 체크아웃 줄끝 변환과 구분. GitHub 브라우저 렌더 직접 관찰은 미수행.",
+  "links": [
+    {
+      "path": "README.md",
+      "exists": true
+    },
+    {
+      "path": "history-table.md",
+      "exists": true
+    },
+    {
+      "path": "docs/versions/1.8.0.md",
+      "exists": true
+    },
+    {
+      "path": "docs/diffs/1.8.0.patch",
+      "exists": true
+    },
+    {
+      "path": "docs/changes/2026-10-30_1.8_고정창.md",
+      "exists": true
+    },
+    {
+      "path": "history/1.8.0/파일목록.json",
+      "exists": true
+    }
+  ]
+}

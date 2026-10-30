@@ -1,0 +1,15 @@
+{
+  "at_kst": "2026-10-24T20:15:31.015183+09:00",
+  "argv": [
+    "C:\\Users\\PUVKID\\AppData\\Local\\Programs\\FlipRing\\unins000.exe",
+    "/VERYSILENT",
+    "/SUPPRESSMSGBOXES",
+    "/NORESTART",
+    "/LOG=D:\\2026\\FilpRing Project\\work\\native-release-1.6\\old-uninstall.log"
+  ],
+  "cwd": "D:\\2026\\FilpRing Project",
+  "exit_code": 0,
+  "seconds": 15.938,
+  "stdout": "",
+  "stderr": ""
+}

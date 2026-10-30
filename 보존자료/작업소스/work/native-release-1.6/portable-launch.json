@@ -1,0 +1,10 @@
+{
+  "exe_sha256": "9922CB6A5798573CA49ED3F7A0CE9FA626BE8B212F9E5FBA3EE99A2B0FCF6415",
+  "pid": 39996,
+  "at_kst": "2026-10-24T19:27:27.2489541+09:00",
+  "argv": [
+    "--settings"
+  ],
+  "actual_window_observed": false,
+  "exe": "D:\\2026\\FilpRing Project\\프로그램\\FlipRing\\FlipRing.exe"
+}

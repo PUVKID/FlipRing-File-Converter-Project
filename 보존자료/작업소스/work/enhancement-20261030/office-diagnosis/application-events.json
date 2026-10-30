@@ -1,0 +1,42 @@
+[
+  {
+    "TimeCreated": "2026-10-30T08:33:20.3883492+09:00",
+    "Id": 1000,
+    "Message": "오류 있는 응용 프로그램 이름: soffice.bin, 버전: 26.8.1.1, 타임스탬프로: 0x6abc63f4\r\n오류 있는 모듈 이름: ucrtbase.dll, 버전: 10.0.26100.8875, 타임스탬프: 0x303b538a\r\n예외 코드: 0xc0000409\r\n오류 오프셋: 0x00000000000a527e\r\n오류 처리 ID: 0x5D2C\r\n오류 응용 프로그램 시작 시간: 0x1DD67FDE161B553\r\nFaulting 응용 프로그램 경로: C:\\Program Files\\LibreOffice\\program\\soffice.bin\r\nFaulting 모듈 경로: C:\\WINDOWS\\System32\\ucrtbase.dll\r\nReport Id: f32298aa-71b8-4de3-9ba4-caf023bda0b9\r\nFaulting 패키지 전체 이름: \r\nFaulting 패키지 상대 응용 프로그램 ID:  "
+  },
+  {
+    "TimeCreated": "2026-10-30T08:33:17.4857561+09:00",
+    "Id": 1001,
+    "Message": "오류 버킷 1909817393330619532, 유형 5\r\n이벤트 이름: BEX64\r\n응답: 사용할 수 없음\r\nCab ID: 0\r\n\r\n문제 서명:\r\nP1: soffice.bin\r\nP2: 26.8.1.1\r\nP3: 6abc63f4\r\nP4: ucrtbase.dll\r\nP5: 10.0.26100.8875\r\nP6: 303b538a\r\nP7: 00000000000a527e\r\nP8: c0000409\r\nP9: 0000000000000007\r\nP10: \r\n\r\n첨부 파일:\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.b4003631-4143-4df7-a652-d03360f50bbe.tmp.dmp\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.6b278f64-1aae-4a71-8373-179188bf6e0b.tmp.WERInternalMetadata.xml\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.c17446ff-e49c-4754-b8af-1329f290e8d9.tmp.csv\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.3be2a3c0-62a7-43d1-98c5-79266056da24.tmp.txt\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.3e00ce00-7594-40a8-bfac-4b870c529315.tmp.xml\r\n\r\n이 파일은 다음에서 사용할 수 있습니다.\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportArchive\\AppCrash_soffice.bin_f2c6a4c2167ab894292d2514fe4aad35f54be56_d4b733d7_1f063643-56b5-4e2d-a033-238afe679925\r\n\r\n분석 기호: \r\n해결 방법 재확인: 0\r\n보고서 ID: 1e59ec3f-197d-419c-b3d4-0a0050494812\r\n보고서 상태: 268435456\r\n해시된 패킷: b82797076da5c3b57a8108ccf355848c\r\nCab Guid: 0"
+  },
+  {
+    "TimeCreated": "2026-10-30T08:33:11.6092321+09:00",
+    "Id": 1000,
+    "Message": "오류 있는 응용 프로그램 이름: soffice.bin, 버전: 26.8.1.1, 타임스탬프로: 0x6abc63f4\r\n오류 있는 모듈 이름: ucrtbase.dll, 버전: 10.0.26100.8875, 타임스탬프: 0x303b538a\r\n예외 코드: 0xc0000409\r\n오류 오프셋: 0x00000000000a527e\r\n오류 처리 ID: 0x10208\r\n오류 응용 프로그램 시작 시간: 0x1DD67FDDBFB5F34\r\nFaulting 응용 프로그램 경로: C:\\Program Files\\LibreOffice\\program\\soffice.bin\r\nFaulting 모듈 경로: C:\\WINDOWS\\System32\\ucrtbase.dll\r\nReport Id: 1e59ec3f-197d-419c-b3d4-0a0050494812\r\nFaulting 패키지 전체 이름: \r\nFaulting 패키지 상대 응용 프로그램 ID:  "
+  },
+  {
+    "TimeCreated": "2026-10-30T08:33:08.334261+09:00",
+    "Id": 1001,
+    "Message": "오류 버킷 1909817393330619532, 유형 5\r\n이벤트 이름: BEX64\r\n응답: 사용할 수 없음\r\nCab ID: 0\r\n\r\n문제 서명:\r\nP1: soffice.bin\r\nP2: 26.8.1.1\r\nP3: 6abc63f4\r\nP4: ucrtbase.dll\r\nP5: 10.0.26100.8875\r\nP6: 303b538a\r\nP7: 00000000000a527e\r\nP8: c0000409\r\nP9: 0000000000000007\r\nP10: \r\n\r\n첨부 파일:\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.8c9ab2ed-2c93-4429-9e97-a021f679598f.tmp.dmp\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.255f2f1c-a071-4d1f-a951-cb8b17031468.tmp.WERInternalMetadata.xml\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.1ee32750-5ad6-4231-a45d-ddd56f47f937.tmp.csv\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.dc899805-c3aa-4767-86e9-4745d20be354.tmp.txt\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.88a479ff-f21a-4fca-9e2e-a7d0d385e876.tmp.xml\r\n\r\n이 파일은 다음에서 사용할 수 있습니다.\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportArchive\\AppCrash_soffice.bin_f2c6a4c2167ab894292d2514fe4aad35f54be56_d4b733d7_d655c170-6d94-48ed-ae30-29dcef5e1c6a\r\n\r\n분석 기호: \r\n해결 방법 재확인: 0\r\n보고서 ID: a36754c5-5f4d-4eba-990d-81a3a48bd3ce\r\n보고서 상태: 268435456\r\n해시된 패킷: b82797076da5c3b57a8108ccf355848c\r\nCab Guid: 0"
+  },
+  {
+    "TimeCreated": "2026-10-30T08:33:02.4469622+09:00",
+    "Id": 1000,
+    "Message": "오류 있는 응용 프로그램 이름: soffice.bin, 버전: 26.8.1.1, 타임스탬프로: 0x6abc63f4\r\n오류 있는 모듈 이름: ucrtbase.dll, 버전: 10.0.26100.8875, 타임스탬프: 0x303b538a\r\n예외 코드: 0xc0000409\r\n오류 오프셋: 0x00000000000a527e\r\n오류 처리 ID: 0x39C\r\n오류 응용 프로그램 시작 시간: 0x1DD67FDD6B2AFBF\r\nFaulting 응용 프로그램 경로: C:\\Program Files\\LibreOffice\\program\\soffice.bin\r\nFaulting 모듈 경로: C:\\WINDOWS\\System32\\ucrtbase.dll\r\nReport Id: a36754c5-5f4d-4eba-990d-81a3a48bd3ce\r\nFaulting 패키지 전체 이름: \r\nFaulting 패키지 상대 응용 프로그램 ID:  "
+  },
+  {
+    "TimeCreated": "2026-10-30T08:32:59.6897716+09:00",
+    "Id": 1001,
+    "Message": "오류 버킷 1909817393330619532, 유형 5\r\n이벤트 이름: BEX64\r\n응답: 사용할 수 없음\r\nCab ID: 0\r\n\r\n문제 서명:\r\nP1: soffice.bin\r\nP2: 26.8.1.1\r\nP3: 6abc63f4\r\nP4: ucrtbase.dll\r\nP5: 10.0.26100.8875\r\nP6: 303b538a\r\nP7: 00000000000a527e\r\nP8: c0000409\r\nP9: 0000000000000007\r\nP10: \r\n\r\n첨부 파일:\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.a4bad7ad-cc1e-4b30-aca5-db5af494073c.tmp.dmp\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.499061d5-97a3-4f53-88e7-c551302e48ff.tmp.WERInternalMetadata.xml\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.272f44da-2723-434c-a467-29af34658204.tmp.csv\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.1dca71d8-7cdf-4bbb-bd53-089491d09fc2.tmp.txt\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.200e07e5-0f39-4764-b1bb-c5d7bf0935d8.tmp.xml\r\n\r\n이 파일은 다음에서 사용할 수 있습니다.\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportArchive\\AppCrash_soffice.bin_f2c6a4c2167ab894292d2514fe4aad35f54be56_d4b733d7_ce8fbf65-1b95-4b56-99f3-4b00cc4dd06b\r\n\r\n분석 기호: \r\n해결 방법 재확인: 0\r\n보고서 ID: b65feb68-d053-422c-b16e-24f9ddbac507\r\n보고서 상태: 268435456\r\n해시된 패킷: b82797076da5c3b57a8108ccf355848c\r\nCab Guid: 0"
+  },
+  {
+    "TimeCreated": "2026-10-30T08:32:53.6364675+09:00",
+    "Id": 1000,
+    "Message": "오류 있는 응용 프로그램 이름: soffice.bin, 버전: 26.8.1.1, 타임스탬프로: 0x6abc63f4\r\n오류 있는 모듈 이름: ucrtbase.dll, 버전: 10.0.26100.8875, 타임스탬프: 0x303b538a\r\n예외 코드: 0xc0000409\r\n오류 오프셋: 0x00000000000a527e\r\n오류 처리 ID: 0x40F4\r\n오류 응용 프로그램 시작 시간: 0x1DD67FDD1771951\r\nFaulting 응용 프로그램 경로: C:\\Program Files\\LibreOffice\\program\\soffice.bin\r\nFaulting 모듈 경로: C:\\WINDOWS\\System32\\ucrtbase.dll\r\nReport Id: b65feb68-d053-422c-b16e-24f9ddbac507\r\nFaulting 패키지 전체 이름: \r\nFaulting 패키지 상대 응용 프로그램 ID:  "
+  },
+  {
+    "TimeCreated": "2026-10-30T08:32:50.2290733+09:00",
+    "Id": 1001,
+    "Message": "오류 버킷 1909817393330619532, 유형 5\r\n이벤트 이름: BEX64\r\n응답: 사용할 수 없음\r\nCab ID: 0\r\n\r\n문제 서명:\r\nP1: soffice.bin\r\nP2: 26.8.1.1\r\nP3: 6abc63f4\r\nP4: ucrtbase.dll\r\nP5: 10.0.26100.8875\r\nP6: 303b538a\r\nP7: 00000000000a527e\r\nP8: c0000409\r\nP9: 0000000000000007\r\nP10: \r\n\r\n첨부 파일:\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.4d514195-55e6-4b15-a1db-dc11dbf47721.tmp.dmp\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.db154af4-4991-4886-9bf3-c2756382db6e.tmp.WERInternalMetadata.xml\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.59fb0a2c-1929-44e3-a0d8-a6989fe2a898.tmp.csv\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.d011281c-4edb-40d1-ad8f-17697935c451.tmp.txt\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\Temp\\WER.5dab1d8d-5a4e-4952-b137-b6a07afaa08d.tmp.xml\r\n\r\n이 파일은 다음에서 사용할 수 있습니다.\r\n\\\\?\\C:\\ProgramData\\Microsoft\\Windows\\WER\\ReportArchive\\AppCrash_soffice.bin_f2c6a4c2167ab894292d2514fe4aad35f54be56_d4b733d7_26c7cbd1-2dd2-451e-97fa-ae49fe4d8845\r\n\r\n분석 기호: \r\n해결 방법 재확인: 0\r\n보고서 ID: 376c80f3-7616-40c3-bb99-beddffa8256c\r\n보고서 상태: 268435456\r\n해시된 패킷: b82797076da5c3b57a8108ccf355848c\r\nCab Guid: 0"
+  }
+]

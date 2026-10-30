@@ -1,0 +1,1242 @@
+[
+  {
+    "index": 0,
+    "delay": 0,
+    "events": [
+      {
+        "kind": "frame",
+        "ms": 0.04600000102072954,
+        "current": 0
+      },
+      {
+        "kind": "frame",
+        "ms": 11.226299917325377,
+        "current": 11
+      },
+      {
+        "kind": "frame",
+        "ms": 31.96419996675104,
+        "current": 32
+      },
+      {
+        "kind": "frame",
+        "ms": 42.44320001453161,
+        "current": 43
+      },
+      {
+        "kind": "frame",
+        "ms": 64.02409996371716,
+        "current": 64
+      },
+      {
+        "kind": "frame",
+        "ms": 85.1044999435544,
+        "current": 85
+      },
+      {
+        "kind": "frame",
+        "ms": 96.66989999823272,
+        "current": 97
+      },
+      {
+        "kind": "frame",
+        "ms": 107.15499997604638,
+        "current": 107
+      },
+      {
+        "kind": "frame",
+        "ms": 129.11029998213053,
+        "current": 129
+      },
+      {
+        "kind": "frame",
+        "ms": 140.08029992692173,
+        "current": 140
+      },
+      {
+        "kind": "frame",
+        "ms": 171.0482999915257,
+        "current": 171
+      },
+      {
+        "kind": "frame",
+        "ms": 192.02219997532666,
+        "current": 192
+      },
+      {
+        "kind": "frame",
+        "ms": 202.54699990618974,
+        "current": 203
+      },
+      {
+        "kind": "frame",
+        "ms": 223.21540000848472,
+        "current": 223
+      },
+      {
+        "kind": "frame",
+        "ms": 244.8560999473557,
+        "current": 245
+      },
+      {
+        "kind": "frame",
+        "ms": 256.204399978742,
+        "current": 256
+      },
+      {
+        "kind": "frame",
+        "ms": 267.17489992734045,
+        "current": 267
+      },
+      {
+        "kind": "frame",
+        "ms": 288.022099994123,
+        "current": 288
+      },
+      {
+        "kind": "frame",
+        "ms": 298.5637999372557,
+        "current": 299
+      },
+      {
+        "kind": "frame",
+        "ms": 320.57789992541075,
+        "current": 321
+      },
+      {
+        "kind": "frame",
+        "ms": 342.09059993736446,
+        "current": 342
+      },
+      {
+        "kind": "frame",
+        "ms": 352.6502000167966,
+        "current": 353
+      },
+      {
+        "kind": "frame",
+        "ms": 364.01849996764213,
+        "current": 364
+      },
+      {
+        "kind": "frame",
+        "ms": 385.38669992703944,
+        "current": 385
+      },
+      {
+        "kind": "frame",
+        "ms": 396.37029997538775,
+        "current": 396
+      },
+      {
+        "kind": "frame",
+        "ms": 407.7171999961138,
+        "current": 400
+      },
+      {
+        "kind": "timeout",
+        "ms": 407.7285999665037,
+        "current": 400
+      }
+    ],
+    "prewait_remaining": 400,
+    "wall_ms": 421.39739997219294,
+    "state": "Stopped",
+    "current": 400,
+    "timer_active": false,
+    "remaining": -1
+  },
+  {
+    "index": 1,
+    "delay": 50,
+    "events": [
+      {
+        "kind": "frame",
+        "ms": 0.06680004298686981,
+        "current": 0
+      },
+      {
+        "kind": "frame",
+        "ms": 71.98810006957501,
+        "current": 20
+      },
+      {
+        "kind": "frame",
+        "ms": 94.05060007702559,
+        "current": 43
+      },
+      {
+        "kind": "frame",
+        "ms": 104.46330008562654,
+        "current": 53
+      },
+      {
+        "kind": "frame",
+        "ms": 115.82469998393208,
+        "current": 64
+      },
+      {
+        "kind": "frame",
+        "ms": 138.12080002389848,
+        "current": 87
+      },
+      {
+        "kind": "frame",
+        "ms": 149.070700048469,
+        "current": 98
+      },
+      {
+        "kind": "frame",
+        "ms": 170.35090003628284,
+        "current": 119
+      },
+      {
+        "kind": "frame",
+        "ms": 180.92940002679825,
+        "current": 129
+      },
+      {
+        "kind": "frame",
+        "ms": 202.28680002037436,
+        "current": 151
+      },
+      {
+        "kind": "frame",
+        "ms": 213.51590007543564,
+        "current": 162
+      },
+      {
+        "kind": "frame",
+        "ms": 234.74670003633946,
+        "current": 183
+      },
+      {
+        "kind": "frame",
+        "ms": 246.16260000038892,
+        "current": 195
+      },
+      {
+        "kind": "frame",
+        "ms": 267.36250007525086,
+        "current": 216
+      },
+      {
+        "kind": "frame",
+        "ms": 277.9079000465572,
+        "current": 226
+      },
+      {
+        "kind": "frame",
+        "ms": 299.6893000090495,
+        "current": 248
+      },
+      {
+        "kind": "frame",
+        "ms": 311.31840008310974,
+        "current": 260
+      },
+      {
+        "kind": "frame",
+        "ms": 332.9038000665605,
+        "current": 281
+      },
+      {
+        "kind": "frame",
+        "ms": 343.66330003831536,
+        "current": 292
+      },
+      {
+        "kind": "frame",
+        "ms": 364.76700007915497,
+        "current": 313
+      },
+      {
+        "kind": "frame",
+        "ms": 376.1136999819428,
+        "current": 325
+      },
+      {
+        "kind": "frame",
+        "ms": 386.7969000712037,
+        "current": 335
+      },
+      {
+        "kind": "frame",
+        "ms": 408.4744000574574,
+        "current": 400
+      },
+      {
+        "kind": "timeout",
+        "ms": 408.48610003013164,
+        "current": 400
+      }
+    ],
+    "prewait_remaining": 349,
+    "wall_ms": 422.41900006774813,
+    "state": "Stopped",
+    "current": 400,
+    "timer_active": false,
+    "remaining": -1
+  },
+  {
+    "index": 2,
+    "delay": 100,
+    "events": [
+      {
+        "kind": "frame",
+        "ms": 0.0610999995842576,
+        "current": 0
+      },
+      {
+        "kind": "frame",
+        "ms": 122.11730005219579,
+        "current": 21
+      },
+      {
+        "kind": "frame",
+        "ms": 144.20990005601197,
+        "current": 43
+      },
+      {
+        "kind": "frame",
+        "ms": 155.52460006438196,
+        "current": 54
+      },
+      {
+        "kind": "frame",
+        "ms": 166.35740001220256,
+        "current": 65
+      },
+      {
+        "kind": "frame",
+        "ms": 187.96970008406788,
+        "current": 87
+      },
+      {
+        "kind": "frame",
+        "ms": 199.2345000617206,
+        "current": 98
+      },
+      {
+        "kind": "frame",
+        "ms": 220.27490008622408,
+        "current": 119
+      },
+      {
+        "kind": "frame",
+        "ms": 231.48380010388792,
+        "current": 130
+      },
+      {
+        "kind": "frame",
+        "ms": 252.37380003090948,
+        "current": 151
+      },
+      {
+        "kind": "frame",
+        "ms": 263.33109999541193,
+        "current": 162
+      },
+      {
+        "kind": "frame",
+        "ms": 284.5618000719696,
+        "current": 183
+      },
+      {
+        "kind": "frame",
+        "ms": 295.3663000371307,
+        "current": 194
+      },
+      {
+        "kind": "frame",
+        "ms": 316.10970001202077,
+        "current": 215
+      },
+      {
+        "kind": "frame",
+        "ms": 326.80030004121363,
+        "current": 225
+      },
+      {
+        "kind": "frame",
+        "ms": 347.5707999896258,
+        "current": 246
+      },
+      {
+        "kind": "frame",
+        "ms": 358.3747000666335,
+        "current": 257
+      },
+      {
+        "kind": "frame",
+        "ms": 380.7469999883324,
+        "current": 279
+      },
+      {
+        "kind": "frame",
+        "ms": 391.3232000777498,
+        "current": 290
+      },
+      {
+        "kind": "frame",
+        "ms": 402.0592001033947,
+        "current": 400
+      },
+      {
+        "kind": "timeout",
+        "ms": 402.0686000585556,
+        "current": 400
+      }
+    ],
+    "prewait_remaining": 300,
+    "wall_ms": 422.085800091736,
+    "state": "Stopped",
+    "current": 400,
+    "timer_active": false,
+    "remaining": -1
+  },
+  {
+    "index": 3,
+    "delay": 0,
+    "events": [
+      {
+        "kind": "frame",
+        "ms": 0.05579995922744274,
+        "current": 0
+      },
+      {
+        "kind": "frame",
+        "ms": 21.349399932660162,
+        "current": 20
+      },
+      {
+        "kind": "frame",
+        "ms": 42.48659999575466,
+        "current": 41
+      },
+      {
+        "kind": "frame",
+        "ms": 53.600599989295006,
+        "current": 53
+      },
+      {
+        "kind": "frame",
+        "ms": 75.27019991539419,
+        "current": 74
+      },
+      {
+        "kind": "frame",
+        "ms": 86.06889995280653,
+        "current": 85
+      },
+      {
+        "kind": "frame",
+        "ms": 96.84559993911535,
+        "current": 96
+      },
+      {
+        "kind": "frame",
+        "ms": 117.37699992954731,
+        "current": 116
+      },
+      {
+        "kind": "frame",
+        "ms": 138.25959991663694,
+        "current": 137
+      },
+      {
+        "kind": "frame",
+        "ms": 149.05129990074784,
+        "current": 148
+      },
+      {
+        "kind": "frame",
+        "ms": 170.1420999597758,
+        "current": 169
+      },
+      {
+        "kind": "frame",
+        "ms": 180.90669997036457,
+        "current": 180
+      },
+      {
+        "kind": "frame",
+        "ms": 202.52439996693283,
+        "current": 202
+      },
+      {
+        "kind": "frame",
+        "ms": 213.699399959296,
+        "current": 213
+      },
+      {
+        "kind": "frame",
+        "ms": 224.4148999452591,
+        "current": 223
+      },
+      {
+        "kind": "frame",
+        "ms": 246.22609990183264,
+        "current": 245
+      },
+      {
+        "kind": "frame",
+        "ms": 258.0887000076473,
+        "current": 257
+      },
+      {
+        "kind": "frame",
+        "ms": 280.1514999009669,
+        "current": 279
+      },
+      {
+        "kind": "frame",
+        "ms": 290.91589991003275,
+        "current": 290
+      },
+      {
+        "kind": "frame",
+        "ms": 312.9345999332145,
+        "current": 312
+      },
+      {
+        "kind": "frame",
+        "ms": 324.2364999605343,
+        "current": 323
+      },
+      {
+        "kind": "frame",
+        "ms": 345.54709994699806,
+        "current": 345
+      },
+      {
+        "kind": "frame",
+        "ms": 356.7081999499351,
+        "current": 356
+      },
+      {
+        "kind": "frame",
+        "ms": 378.1773999799043,
+        "current": 377
+      },
+      {
+        "kind": "frame",
+        "ms": 389.07679996918887,
+        "current": 388
+      },
+      {
+        "kind": "frame",
+        "ms": 411.09539999160916,
+        "current": 400
+      },
+      {
+        "kind": "timeout",
+        "ms": 411.1046999460086,
+        "current": 400
+      }
+    ],
+    "prewait_remaining": 400,
+    "wall_ms": 420.84669996984303,
+    "state": "Stopped",
+    "current": 400,
+    "timer_active": false,
+    "remaining": -1
+  },
+  {
+    "index": 4,
+    "delay": 50,
+    "events": [
+      {
+        "kind": "frame",
+        "ms": 0.06150000263005495,
+        "current": 0
+      },
+      {
+        "kind": "frame",
+        "ms": 72.31999991927296,
+        "current": 21
+      },
+      {
+        "kind": "frame",
+        "ms": 83.60509993508458,
+        "current": 32
+      },
+      {
+        "kind": "frame",
+        "ms": 105.25229992344975,
+        "current": 54
+      },
+      {
+        "kind": "frame",
+        "ms": 116.11059994902462,
+        "current": 65
+      },
+      {
+        "kind": "frame",
+        "ms": 139.00569989345968,
+        "current": 88
+      },
+      {
+        "kind": "frame",
+        "ms": 150.41959995869547,
+        "current": 99
+      },
+      {
+        "kind": "frame",
+        "ms": 171.49679991416633,
+        "current": 120
+      },
+      {
+        "kind": "frame",
+        "ms": 182.46319994796067,
+        "current": 131
+      },
+      {
+        "kind": "frame",
+        "ms": 203.98599992040545,
+        "current": 153
+      },
+      {
+        "kind": "frame",
+        "ms": 215.25939996354282,
+        "current": 164
+      },
+      {
+        "kind": "frame",
+        "ms": 237.1645999373868,
+        "current": 186
+      },
+      {
+        "kind": "frame",
+        "ms": 248.32499993499368,
+        "current": 197
+      },
+      {
+        "kind": "frame",
+        "ms": 259.1042999411002,
+        "current": 208
+      },
+      {
+        "kind": "frame",
+        "ms": 281.73089993651956,
+        "current": 230
+      },
+      {
+        "kind": "frame",
+        "ms": 292.58819995447993,
+        "current": 241
+      },
+      {
+        "kind": "frame",
+        "ms": 314.18139999732375,
+        "current": 263
+      },
+      {
+        "kind": "frame",
+        "ms": 325.5547999870032,
+        "current": 274
+      },
+      {
+        "kind": "frame",
+        "ms": 346.8017999548465,
+        "current": 295
+      },
+      {
+        "kind": "frame",
+        "ms": 357.38850000780076,
+        "current": 306
+      },
+      {
+        "kind": "frame",
+        "ms": 378.4841999877244,
+        "current": 327
+      },
+      {
+        "kind": "frame",
+        "ms": 389.18749999720603,
+        "current": 338
+      },
+      {
+        "kind": "frame",
+        "ms": 411.34989995043725,
+        "current": 400
+      },
+      {
+        "kind": "timeout",
+        "ms": 411.3599999109283,
+        "current": 400
+      }
+    ],
+    "prewait_remaining": 350,
+    "wall_ms": 421.65149992797524,
+    "state": "Stopped",
+    "current": 400,
+    "timer_active": false,
+    "remaining": -1
+  },
+  {
+    "index": 5,
+    "delay": 100,
+    "events": [
+      {
+        "kind": "frame",
+        "ms": 0.05659996531903744,
+        "current": 0
+      },
+      {
+        "kind": "frame",
+        "ms": 121.60249997396022,
+        "current": 20
+      },
+      {
+        "kind": "frame",
+        "ms": 142.9762999759987,
+        "current": 42
+      },
+      {
+        "kind": "frame",
+        "ms": 154.20290001202375,
+        "current": 53
+      },
+      {
+        "kind": "frame",
+        "ms": 165.59960006270558,
+        "current": 64
+      },
+      {
+        "kind": "frame",
+        "ms": 187.2902000322938,
+        "current": 86
+      },
+      {
+        "kind": "frame",
+        "ms": 198.43610003590584,
+        "current": 97
+      },
+      {
+        "kind": "frame",
+        "ms": 220.31450003851205,
+        "current": 119
+      },
+      {
+        "kind": "frame",
+        "ms": 231.1547000426799,
+        "current": 130
+      },
+      {
+        "kind": "frame",
+        "ms": 253.37649998255074,
+        "current": 152
+      },
+      {
+        "kind": "frame",
+        "ms": 263.9883999945596,
+        "current": 163
+      },
+      {
+        "kind": "frame",
+        "ms": 285.07550002541393,
+        "current": 184
+      },
+      {
+        "kind": "frame",
+        "ms": 296.5410000178963,
+        "current": 195
+      },
+      {
+        "kind": "frame",
+        "ms": 317.33680004253983,
+        "current": 216
+      },
+      {
+        "kind": "frame",
+        "ms": 327.89339998271316,
+        "current": 227
+      },
+      {
+        "kind": "frame",
+        "ms": 349.47330004069954,
+        "current": 248
+      },
+      {
+        "kind": "frame",
+        "ms": 360.18029996193945,
+        "current": 259
+      },
+      {
+        "kind": "frame",
+        "ms": 382.27429997641593,
+        "current": 281
+      },
+      {
+        "kind": "frame",
+        "ms": 393.5602999990806,
+        "current": 292
+      },
+      {
+        "kind": "frame",
+        "ms": 404.2745999759063,
+        "current": 400
+      },
+      {
+        "kind": "timeout",
+        "ms": 404.2849000543356,
+        "current": 400
+      }
+    ],
+    "prewait_remaining": 300,
+    "wall_ms": 421.22829996515065,
+    "state": "Stopped",
+    "current": 400,
+    "timer_active": false,
+    "remaining": -1
+  },
+  {
+    "index": 6,
+    "delay": 0,
+    "events": [
+      {
+        "kind": "frame",
+        "ms": 0.05740008782595396,
+        "current": 0
+      },
+      {
+        "kind": "frame",
+        "ms": 22.27880002465099,
+        "current": 21
+      },
+      {
+        "kind": "frame",
+        "ms": 33.310500090010464,
+        "current": 32
+      },
+      {
+        "kind": "frame",
+        "ms": 54.57650008611381,
+        "current": 54
+      },
+      {
+        "kind": "frame",
+        "ms": 65.45750005170703,
+        "current": 64
+      },
+      {
+        "kind": "frame",
+        "ms": 87.06330007407814,
+        "current": 86
+      },
+      {
+        "kind": "frame",
+        "ms": 98.3735000481829,
+        "current": 97
+      },
+      {
+        "kind": "frame",
+        "ms": 120.00350002199411,
+        "current": 119
+      },
+      {
+        "kind": "frame",
+        "ms": 130.74809999670833,
+        "current": 130
+      },
+      {
+        "kind": "frame",
+        "ms": 152.10240008309484,
+        "current": 151
+      },
+      {
+        "kind": "frame",
+        "ms": 163.00679999403656,
+        "current": 162
+      },
+      {
+        "kind": "frame",
+        "ms": 184.23180002719164,
+        "current": 183
+      },
+      {
+        "kind": "frame",
+        "ms": 194.91439999546856,
+        "current": 194
+      },
+      {
+        "kind": "frame",
+        "ms": 215.91830009128898,
+        "current": 215
+      },
+      {
+        "kind": "frame",
+        "ms": 227.3024000460282,
+        "current": 226
+      },
+      {
+        "kind": "frame",
+        "ms": 249.05930005479604,
+        "current": 248
+      },
+      {
+        "kind": "frame",
+        "ms": 259.57640004344285,
+        "current": 259
+      },
+      {
+        "kind": "frame",
+        "ms": 281.8252000724897,
+        "current": 281
+      },
+      {
+        "kind": "frame",
+        "ms": 292.6820000866428,
+        "current": 292
+      },
+      {
+        "kind": "frame",
+        "ms": 304.4600000139326,
+        "current": 303
+      },
+      {
+        "kind": "frame",
+        "ms": 326.1914000613615,
+        "current": 325
+      },
+      {
+        "kind": "frame",
+        "ms": 337.432200089097,
+        "current": 336
+      },
+      {
+        "kind": "frame",
+        "ms": 359.31369999889284,
+        "current": 358
+      },
+      {
+        "kind": "frame",
+        "ms": 370.1242000097409,
+        "current": 369
+      },
+      {
+        "kind": "frame",
+        "ms": 391.33450004737824,
+        "current": 390
+      },
+      {
+        "kind": "frame",
+        "ms": 401.75120008643717,
+        "current": 400
+      },
+      {
+        "kind": "timeout",
+        "ms": 401.7600000370294,
+        "current": 400
+      }
+    ],
+    "prewait_remaining": 400,
+    "wall_ms": 421.12990003079176,
+    "state": "Stopped",
+    "current": 400,
+    "timer_active": false,
+    "remaining": -1
+  },
+  {
+    "index": 7,
+    "delay": 50,
+    "events": [
+      {
+        "kind": "frame",
+        "ms": 0.05319993942975998,
+        "current": 0
+      },
+      {
+        "kind": "frame",
+        "ms": 145.63020004425198,
+        "current": 94
+      },
+      {
+        "kind": "frame",
+        "ms": 146.0908999433741,
+        "current": 95
+      },
+      {
+        "kind": "frame",
+        "ms": 156.82419994845986,
+        "current": 105
+      },
+      {
+        "kind": "frame",
+        "ms": 167.96390002127737,
+        "current": 116
+      },
+      {
+        "kind": "frame",
+        "ms": 189.87050000578165,
+        "current": 138
+      },
+      {
+        "kind": "frame",
+        "ms": 201.429900014773,
+        "current": 150
+      },
+      {
+        "kind": "frame",
+        "ms": 212.33170002233237,
+        "current": 161
+      },
+      {
+        "kind": "frame",
+        "ms": 233.3455999614671,
+        "current": 182
+      },
+      {
+        "kind": "frame",
+        "ms": 244.35699998866767,
+        "current": 193
+      },
+      {
+        "kind": "frame",
+        "ms": 266.23940002173185,
+        "current": 215
+      },
+      {
+        "kind": "frame",
+        "ms": 276.9291000440717,
+        "current": 225
+      },
+      {
+        "kind": "frame",
+        "ms": 299.0614000009373,
+        "current": 248
+      },
+      {
+        "kind": "frame",
+        "ms": 309.847499942407,
+        "current": 258
+      },
+      {
+        "kind": "frame",
+        "ms": 331.6947999410331,
+        "current": 280
+      },
+      {
+        "kind": "frame",
+        "ms": 342.7141000283882,
+        "current": 291
+      },
+      {
+        "kind": "frame",
+        "ms": 363.7598999775946,
+        "current": 312
+      },
+      {
+        "kind": "frame",
+        "ms": 374.3988999631256,
+        "current": 323
+      },
+      {
+        "kind": "frame",
+        "ms": 395.97820001654327,
+        "current": 344
+      },
+      {
+        "kind": "frame",
+        "ms": 406.94450004957616,
+        "current": 400
+      },
+      {
+        "kind": "timeout",
+        "ms": 406.9667999865487,
+        "current": 400
+      }
+    ],
+    "prewait_remaining": 350,
+    "wall_ms": 421.23860004357994,
+    "state": "Stopped",
+    "current": 400,
+    "timer_active": false,
+    "remaining": -1
+  },
+  {
+    "index": 8,
+    "delay": 100,
+    "events": [
+      {
+        "kind": "frame",
+        "ms": 0.07159996312111616,
+        "current": 0
+      },
+      {
+        "kind": "frame",
+        "ms": 122.77099990751594,
+        "current": 21
+      },
+      {
+        "kind": "frame",
+        "ms": 134.14489990100265,
+        "current": 32
+      },
+      {
+        "kind": "frame",
+        "ms": 215.43039998505265,
+        "current": 114
+      },
+      {
+        "kind": "frame",
+        "ms": 237.0427999412641,
+        "current": 135
+      },
+      {
+        "kind": "frame",
+        "ms": 247.9320999700576,
+        "current": 146
+      },
+      {
+        "kind": "frame",
+        "ms": 269.72699991893023,
+        "current": 168
+      },
+      {
+        "kind": "frame",
+        "ms": 280.7381999446079,
+        "current": 179
+      },
+      {
+        "kind": "frame",
+        "ms": 302.7986999368295,
+        "current": 201
+      },
+      {
+        "kind": "frame",
+        "ms": 313.95639991387725,
+        "current": 212
+      },
+      {
+        "kind": "frame",
+        "ms": 335.1708999834955,
+        "current": 233
+      },
+      {
+        "kind": "frame",
+        "ms": 345.8772999001667,
+        "current": 244
+      },
+      {
+        "kind": "frame",
+        "ms": 366.7967999354005,
+        "current": 265
+      },
+      {
+        "kind": "frame",
+        "ms": 377.7923999587074,
+        "current": 276
+      },
+      {
+        "kind": "frame",
+        "ms": 399.41679988987744,
+        "current": 297
+      },
+      {
+        "kind": "frame",
+        "ms": 410.2293999167159,
+        "current": 400
+      },
+      {
+        "kind": "timeout",
+        "ms": 410.23939999286085,
+        "current": 400
+      }
+    ],
+    "prewait_remaining": 299,
+    "wall_ms": 421.79239995311946,
+    "state": "Stopped",
+    "current": 400,
+    "timer_active": false,
+    "remaining": -1
+  },
+  {
+    "index": 9,
+    "delay": 0,
+    "events": [
+      {
+        "kind": "frame",
+        "ms": 0.06299989763647318,
+        "current": 0
+      },
+      {
+        "kind": "frame",
+        "ms": 21.381999948062003,
+        "current": 20
+      },
+      {
+        "kind": "frame",
+        "ms": 43.10719994828105,
+        "current": 42
+      },
+      {
+        "kind": "frame",
+        "ms": 53.98510000668466,
+        "current": 53
+      },
+      {
+        "kind": "frame",
+        "ms": 74.64689994230866,
+        "current": 74
+      },
+      {
+        "kind": "frame",
+        "ms": 85.59979998972267,
+        "current": 85
+      },
+      {
+        "kind": "frame",
+        "ms": 96.52349993120879,
+        "current": 95
+      },
+      {
+        "kind": "frame",
+        "ms": 117.88339994382113,
+        "current": 117
+      },
+      {
+        "kind": "frame",
+        "ms": 128.34279995877296,
+        "current": 127
+      },
+      {
+        "kind": "frame",
+        "ms": 270.5424999585375,
+        "current": 197
+      },
+      {
+        "kind": "frame",
+        "ms": 271.2941999780014,
+        "current": 270
+      },
+      {
+        "kind": "frame",
+        "ms": 282.5552999274805,
+        "current": 281
+      },
+      {
+        "kind": "frame",
+        "ms": 345.0556999305263,
+        "current": 344
+      },
+      {
+        "kind": "frame",
+        "ms": 347.4378999089822,
+        "current": 346
+      },
+      {
+        "kind": "frame",
+        "ms": 358.04449999704957,
+        "current": 357
+      }
+    ],
+    "prewait_remaining": 400,
+    "wall_ms": 420.5996999517083,
+    "state": "Running",
+    "current": 357,
+    "timer_active": true,
+    "remaining": 0
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "at_kst": "2026-10-24T20:15:51.334745+09:00",
+  "argv": [
+    "D:\\2026\\FilpRing Project\\설치파일\\FlipRing-Setup.exe",
+    "/VERYSILENT",
+    "/SUPPRESSMSGBOXES",
+    "/SP-",
+    "/NORESTART",
+    "/NOCLOSEAPPLICATIONS",
+    "/NOICONS",
+    "/TASKS=",
+    "/LANG=korean",
+    "/DIR=D:\\2026\\FilpRing Project\\work\\native-release-1.6\\installed",
+    "/LOG=D:\\2026\\FilpRing Project\\work\\native-release-1.6\\install.log"
+  ],
+  "cwd": "D:\\2026\\FilpRing Project",
+  "exit_code": 0,
+  "seconds": 20.312,
+  "stdout": "",
+  "stderr": ""
+}

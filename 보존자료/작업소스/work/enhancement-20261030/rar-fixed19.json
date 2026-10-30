@@ -1,0 +1,41 @@
+[
+  {
+    "format": "zip",
+    "payload": {
+      "уииоотивл.txt": "310a",
+      "𝐀𝐁𝐁𝐂.txt": "310a"
+    },
+    "crc": [
+      1733426259,
+      1733426259
+    ],
+    "source_sha256": "1d1d25ff7e1a4190055bda32a771a4a5e282ddd8078ce730ca44c45befcec176",
+    "independent_matrix_validate": true
+  },
+  {
+    "format": "tar",
+    "payload": {
+      "уииоотивл.txt": "310a",
+      "𝐀𝐁𝐁𝐂.txt": "310a"
+    },
+    "crc": [
+      1733426259,
+      1733426259
+    ],
+    "source_sha256": "1d1d25ff7e1a4190055bda32a771a4a5e282ddd8078ce730ca44c45befcec176",
+    "independent_matrix_validate": true
+  },
+  {
+    "format": "tar.gz",
+    "payload": {
+      "уииоотивл.txt": "310a",
+      "𝐀𝐁𝐁𝐂.txt": "310a"
+    },
+    "crc": [
+      1733426259,
+      1733426259
+    ],
+    "source_sha256": "1d1d25ff7e1a4190055bda32a771a4a5e282ddd8078ce730ca44c45befcec176",
+    "independent_matrix_validate": true
+  }
+]

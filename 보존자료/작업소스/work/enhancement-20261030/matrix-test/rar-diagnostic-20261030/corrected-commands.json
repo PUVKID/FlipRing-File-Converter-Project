@@ -1,0 +1,33 @@
+{
+  "time_kst": "2026-10-30T08:58:34.006510+09:00",
+  "cwd": "D:\\2026\\FilpRing Project",
+  "prior_invalid_argument": "diagnostic.json",
+  "commands": [
+    {
+      "argv": [
+        "C:\\WINDOWS\\System32\\tar.exe",
+        "-xOf",
+        "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar",
+        "--",
+        "уииоотивл.txt"
+      ],
+      "exit_code": 1,
+      "stdout_hex": "",
+      "stderr_hex": "7461722e6578653a2052415220736f6c6964206172636869766520737570706f727420756e617661696c61626c652e0d0a7461722e6578653a20ace5acdaacdaace0ace0ace4acdaacd3acdd2e7478743a204e6f7420666f756e6420696e20617263686976650d0a7461722e6578653a204572726f7220657869742064656c617965642066726f6d2070726576696f7573206572726f72732e0d0a",
+      "crc32": 0
+    },
+    {
+      "argv": [
+        "C:\\WINDOWS\\System32\\tar.exe",
+        "-xOf",
+        "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar",
+        "--",
+        "𝐀𝐁𝐁𝐂.txt"
+      ],
+      "exit_code": 1,
+      "stdout_hex": "",
+      "stderr_hex": "7461722e6578653a2052415220736f6c6964206172636869766520737570706f727420756e617661696c61626c652e0d0a7461722e6578653a203f3f3f3f3f3f3f3f2e7478743a204e6f7420666f756e6420696e20617263686976650d0a7461722e6578653a204572726f7220657869742064656c617965642066726f6d2070726576696f7573206572726f72732e0d0a",
+      "crc32": 0
+    }
+  ]
+}

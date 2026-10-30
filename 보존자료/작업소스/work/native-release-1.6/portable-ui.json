@@ -1,0 +1,14 @@
+{
+  "at_kst": "2026-10-24T20:15:13.0835288+09:00",
+  "actual_window_observed": true,
+  "scope": "부모의 실제 Sky 창 관찰이며 설치본 검증은 별도",
+  "conversion_tested": false,
+  "exe_sha256": "9922cb6a5798573ca49ed3f7a0ce9fa626be8b212f9e5fba3ee99a2b0fcf6415",
+  "observations": [
+    "실제 홈 화면 정상",
+    "공통 파일 선택창과 네 머리글·한글 라벨 정상",
+    "모션 종료 뒤 테두리 잔상 없이 정지 화면 정상"
+  ],
+  "pid": 50288,
+  "window_id": 1776196
+}

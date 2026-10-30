@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "C:/Program Files/LibreOffice/program/soffice.exe",
+    "-env:UserInstallation=file:///D:/2026/FilpRing%20Project/work/enhancement-20261030/office-diagnosis/profile-long/work/p/profile",
+    "--headless",
+    "--norestore",
+    "--convert-to",
+    "pdf",
+    "--outdir",
+    "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\office-diagnosis\\profile-long\\work\\out",
+    "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\office-diagnosis\\profile-long\\work\\input.docx"
+  ],
+  "cwd": "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\office-diagnosis\\profile-long\\work",
+  "only_changed_argument_index": 1,
+  "profile_chars": 95,
+  "exit_code": 0,
+  "stdout": "convert D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\office-diagnosis\\profile-long\\work\\input.docx as a Writer document -> D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\office-diagnosis\\profile-long\\work\\out\\input.pdf using filter : writer_pdf_Export\n",
+  "stderr": "Could not find platform independent libraries <prefix>\r\n",
+  "outputs": [
+    {
+      "name": "input.pdf",
+      "pages": 1,
+      "text": "FlipRing matrix 2026 한글 문서",
+      "sha256": "f507a71f4d27843f5e13042594c0c20f2b368a84ad9c84c3eb5add6f99de8cf0"
+    }
+  ]
+}

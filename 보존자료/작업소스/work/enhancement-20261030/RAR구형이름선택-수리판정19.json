@@ -1,0 +1,9 @@
+{
+  "cause": "Unicode표시가 없는 구형RAR3의 원시UTF8이름을 rarfile과Windows7Zip이 서로 다른 코드페이지로 읽어7Zip의개별파일선택이빈결과가됩니다.",
+  "new_observation": "동일7Zip명령에서 rarfile표시이름은빈stdout이고 이름생략은310a310a입니다. 공식26.05 RarItem.h는해당이름을CP_OEMCP로읽으며 GetOEMCP949를실측했습니다. 같은선택이름만동일규칙으로변환하고 -spd를추가하자각각exit0/정확2바이트310a가반환됐습니다.",
+  "method": "7Zip으로구형비UnicodeRAR3를읽을때만도구선택이름을공식OEM규칙에맞추고wildcard를금지합니다. 출력이름/CRC/원본은기존rarfile기준을유지하고모호한이름충돌은거부합니다. 참조검사는어댑터를재사용하지않는독립전체스트림/메타데이터CRC·크기검증등으로원래파일별바이트대조를유지합니다. Unicode표시RAR/RAR5/다른도구와취소·경로·링크검사는유지합니다.",
+  "selection_reason": "Astra가원본소스의OEM규칙과선택인자만바꾼실제반전으로원인을확정했으므로동일담당자가한정된어댑터를구현합니다. 별도Sol검증자가이름충돌·wildcard·CRC유지·전역hook복원을검토합니다.",
+  "role": "escalate",
+  "model": "gpt-6-astra",
+  "effort": "medium"
+}

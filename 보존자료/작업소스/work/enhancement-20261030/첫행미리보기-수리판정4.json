@@ -1,0 +1,12 @@
+{
+  "time_kst": "2026-10-30T07:45:10.966923+09:00",
+  "session": "01a15519-c86d-7880-a2e6-c9070f59067d",
+  "task": "workflow-enhancement-20261030",
+  "cause": "refresh_queue의QSignalBlocker안첫행선택뒤setCurrentRow(0)이동일값이어서미리보기선택신호가나오지않음",
+  "new_observation": "test_workbench.py94 기대30 × 20,실제파일을선택하세요. unittest FAILED1인데후속hash명령의shell종료0과구분해실패로보존",
+  "method": "set_files끝에서preview_selection을명시1회호출하고신규6검사재실행,기대값유지",
+  "selection_reason": "신호차단범위와첫행동일선택원인이확정돼현재UI를연결한동일Astra작업자가좁은수정",
+  "role": "escalate",
+  "model": "gpt-6-astra",
+  "effort": "medium"
+}

@@ -1,0 +1,146 @@
+[
+  {
+    "path": "app.py",
+    "status": "수정",
+    "before_bytes": 68810,
+    "after_bytes": 80169,
+    "before_sha256": "7938ccd3c4869cb272444689bd3fc01e8b0dac6b1645187b0a0fb371720902d6",
+    "after_sha256": "6ec539cfef7e3ca5a33be439dfdc1a9b6a87dce82ef738b43f22f7a282c17b30"
+  },
+  {
+    "path": "build.py",
+    "status": "수정",
+    "before_bytes": 6727,
+    "after_bytes": 7061,
+    "before_sha256": "25e913d6a311017f16c13ea70ee39e8e10f60454df2965f8e314edfcf6d6c33f",
+    "after_sha256": "ec419577705039dff18d05877c91867e20d18a864ad36b8c71dc00ed719b0e4d"
+  },
+  {
+    "path": "engine.py",
+    "status": "수정",
+    "before_bytes": 21519,
+    "after_bytes": 29743,
+    "before_sha256": "d76603d53e6a9ac26767aade92da53b5726c045a3b82bf07f7357449fb5b1c28",
+    "after_sha256": "c473f5b6b530e4dff94df5cc5166657776a8131fa9244588ff0f1bae7ac1e27a"
+  },
+  {
+    "path": "flipring_workflow.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 6873,
+    "before_sha256": null,
+    "after_sha256": "2959f12fe2b89498c5d29e3e1318f0da89ff96eaf06a52c628ad2e11a313398e"
+  },
+  {
+    "path": "i18n.py",
+    "status": "수정",
+    "before_bytes": 15469,
+    "after_bytes": 18782,
+    "before_sha256": "8f995eb33aa7e1b6fa753f451d8324dd6cc91802c33f2330f626d33aee102f19",
+    "after_sha256": "361614e32e0cf51746c9c60f8a0c2071c772e41bb523aed030011915e813b2da"
+  },
+  {
+    "path": "package.py",
+    "status": "수정",
+    "before_bytes": 7099,
+    "after_bytes": 9980,
+    "before_sha256": "977cbf0e820a3456f97035c7fc614d8a3e87723024ef793d10170dc0f9b48abe",
+    "after_sha256": "89f8a4e481f9a4891ef7917d2949e0bed88ba359a5d6d9406aa056f7e44a4fae"
+  },
+  {
+    "path": "pdf_lock.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 147,
+    "before_sha256": null,
+    "after_sha256": "886a099f8965ef6a9db14ddaea3dc5067ab8247d524482ff3cafc8ad78c62b0a"
+  },
+  {
+    "path": "pdf_pages.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 7563,
+    "before_sha256": null,
+    "after_sha256": "0eddd9a48630f382531e7019788de34a0a466e47b10bb3ab9a6c83564b746e2d"
+  },
+  {
+    "path": "pdf_panel.py",
+    "status": "수정",
+    "before_bytes": 25166,
+    "after_bytes": 60281,
+    "before_sha256": "955f89240c2963620a236a55513d35f81008358b5f500d154c1baa176feeed8d",
+    "after_sha256": "b461bec81fa302e8a9fbe4b6e774a4427607c4d7fe2ab07293002933e8308d51"
+  },
+  {
+    "path": "pdf_tools.py",
+    "status": "수정",
+    "before_bytes": 26630,
+    "after_bytes": 31802,
+    "before_sha256": "dffbfb2f945bf8830841d870407050fc4bf98025354b14a9ab1ef936251b8274",
+    "after_sha256": "5eb4dcc098c3d2a5b89de1f42a5262e25891d7c9df1319f045ae33d25c84830b"
+  },
+  {
+    "path": "preview_panel.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 5112,
+    "before_sha256": null,
+    "after_sha256": "d2cbc11562e43eb68929f775b69b8201c9545dc618b554192e4e07616d60d59e"
+  },
+  {
+    "path": "studio_ui.py",
+    "status": "수정",
+    "before_bytes": 15879,
+    "after_bytes": 15958,
+    "before_sha256": "fe088d87ddeb13836591bfea8ac0e0b1dbcc2cc662fbfec2e49a5ed3d279eaf1",
+    "after_sha256": "234a7850cd6d11a3c51dbfe457c2e975900c94f5711b4ac8a645cabe60bdda8a"
+  },
+  {
+    "path": "test_conversion_matrix.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 16249,
+    "before_sha256": null,
+    "after_sha256": "61c1ee5677fdea77b98868d919db90bfa8937409018969e41ddcdb83ba8970a9"
+  },
+  {
+    "path": "test_gui.py",
+    "status": "수정",
+    "before_bytes": 127149,
+    "after_bytes": 126341,
+    "before_sha256": "f27752075c05151ea54583b0b7aaf163fd4c28b64ce04ffbf17b44d66b196f9a",
+    "after_sha256": "13d3f04609c3cec929a70346068b5b334bf73ddd488e29cac281a7b3998c5018"
+  },
+  {
+    "path": "test_pdf_workspace.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 27600,
+    "before_sha256": null,
+    "after_sha256": "da16cf732b25a0c045c96a445e1cf3a551f5ed57accc884b0f23cbcdd044333d"
+  },
+  {
+    "path": "test_workbench.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 23935,
+    "before_sha256": null,
+    "after_sha256": "a9147d0b72067fffc1303397667eaa5cab62430d9658f76308a89b55f2b1c016"
+  },
+  {
+    "path": "ui_motion.py",
+    "status": "수정",
+    "before_bytes": 34662,
+    "after_bytes": 35633,
+    "before_sha256": "9522a89392bd8569b067f432450655ea406cb2c4ee45cc8d2b258f22f934f6d5",
+    "after_sha256": "fcc67d4503f205927c5122bc84dfc866fe2ae20bf53016e393bd02c3d625ac9a"
+  },
+  {
+    "path": "파일목록.json",
+    "status": "수정",
+    "before_bytes": 1924,
+    "after_bytes": 2923,
+    "before_sha256": "ab7221b204fdcd14616209fe7af1133ab9144acbdfe246c01ab8580fd7f2b390",
+    "after_sha256": "4100fd80ecc3506857d0421e095961b457fc533f1355a8061cd473934eb791a3"
+  }
+]

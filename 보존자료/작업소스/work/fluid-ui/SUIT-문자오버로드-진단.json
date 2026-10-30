@@ -1,0 +1,353 @@
+[
+  {
+    "style": "Regular",
+    "characters": [
+      {
+        "character": "플",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          10615
+        ]
+      },
+      {
+        "character": "립",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          3624
+        ]
+      },
+      {
+        "character": "링",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          3628
+        ]
+      },
+      {
+        "character": "한",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          10695
+        ]
+      },
+      {
+        "character": "국",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          472
+        ]
+      },
+      {
+        "character": "어",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          6687
+        ]
+      },
+      {
+        "character": "가",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          107
+        ]
+      },
+      {
+        "character": "나",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          1283
+        ]
+      },
+      {
+        "character": "다",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          1871
+        ]
+      },
+      {
+        "character": "한",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          10695
+        ]
+      },
+      {
+        "character": "글",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          619
+        ]
+      },
+      {
+        "character": "A",
+        "str_result": true,
+        "ucs4_result": true,
+        "glyph_indices": [
+          2
+        ]
+      },
+      {
+        "character": "b",
+        "str_result": true,
+        "ucs4_result": true,
+        "glyph_indices": [
+          30
+        ]
+      },
+      {
+        "character": "0",
+        "str_result": true,
+        "ucs4_result": true,
+        "glyph_indices": [
+          11279
+        ]
+      }
+    ]
+  },
+  {
+    "style": "Medium",
+    "characters": [
+      {
+        "character": "플",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          10615
+        ]
+      },
+      {
+        "character": "립",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          3624
+        ]
+      },
+      {
+        "character": "링",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          3628
+        ]
+      },
+      {
+        "character": "한",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          10695
+        ]
+      },
+      {
+        "character": "국",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          472
+        ]
+      },
+      {
+        "character": "어",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          6687
+        ]
+      },
+      {
+        "character": "가",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          107
+        ]
+      },
+      {
+        "character": "나",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          1283
+        ]
+      },
+      {
+        "character": "다",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          1871
+        ]
+      },
+      {
+        "character": "한",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          10695
+        ]
+      },
+      {
+        "character": "글",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          619
+        ]
+      },
+      {
+        "character": "A",
+        "str_result": true,
+        "ucs4_result": true,
+        "glyph_indices": [
+          2
+        ]
+      },
+      {
+        "character": "b",
+        "str_result": true,
+        "ucs4_result": true,
+        "glyph_indices": [
+          30
+        ]
+      },
+      {
+        "character": "0",
+        "str_result": true,
+        "ucs4_result": true,
+        "glyph_indices": [
+          11279
+        ]
+      }
+    ]
+  },
+  {
+    "style": "SemiBold",
+    "characters": [
+      {
+        "character": "플",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          10615
+        ]
+      },
+      {
+        "character": "립",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          3624
+        ]
+      },
+      {
+        "character": "링",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          3628
+        ]
+      },
+      {
+        "character": "한",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          10695
+        ]
+      },
+      {
+        "character": "국",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          472
+        ]
+      },
+      {
+        "character": "어",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          6687
+        ]
+      },
+      {
+        "character": "가",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          107
+        ]
+      },
+      {
+        "character": "나",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          1283
+        ]
+      },
+      {
+        "character": "다",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          1871
+        ]
+      },
+      {
+        "character": "한",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          10695
+        ]
+      },
+      {
+        "character": "글",
+        "str_result": false,
+        "ucs4_result": true,
+        "glyph_indices": [
+          619
+        ]
+      },
+      {
+        "character": "A",
+        "str_result": true,
+        "ucs4_result": true,
+        "glyph_indices": [
+          2
+        ]
+      },
+      {
+        "character": "b",
+        "str_result": true,
+        "ucs4_result": true,
+        "glyph_indices": [
+          30
+        ]
+      },
+      {
+        "character": "0",
+        "str_result": true,
+        "ucs4_result": true,
+        "glyph_indices": [
+          11279
+        ]
+      }
+    ]
+  }
+]

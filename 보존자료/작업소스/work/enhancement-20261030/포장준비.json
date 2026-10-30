@@ -1,0 +1,10 @@
+{
+  "release": "1.7.0",
+  "changed": [
+    "소스/build.py",
+    "소스/package.py"
+  ],
+  "syntax_passed": true,
+  "output_override": "--output-root, 기존1.6보존을위한빈stage폴더만사용",
+  "source_new_modules_required": true
+}

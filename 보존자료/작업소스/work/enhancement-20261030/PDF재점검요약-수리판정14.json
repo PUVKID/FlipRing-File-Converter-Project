@@ -1,0 +1,9 @@
+{
+  "cause": "PDF 실행 직후 여유 공간이 줄어 worker 재점검이 실패하면 오류 상태는 갱신되지만 준비량 요약은 제출 전의 오래된 수치를 표시합니다.",
+  "new_observation": "초기 여유10^12바이트에서 worker0바이트로 제어한 단일 검사에서 오류는 부족인데 요약은953674MiB로 남아1실패했습니다. repair12-recheck-red.json에 정확 argv와 원문을 보존했습니다.",
+  "method": "_on_error와_finish_workspace에서 새 preflight_checks를 요약에 반영하고 source와번역 근거를 보존합니다. 새 load/save 시작에서는 이전 실패 접두 상태를 초기화합니다. 경합 재현과29개 및 원문28개를 기준 불변으로 재검사합니다.",
+  "selection_reason": "사전 점검을 소유한 deep 담당자가 실제 오류 객체와 화면 요약 사이의 한정된 연결을 수정합니다. 실행을 허용하거나 공간 기준을 낮추지 않습니다.",
+  "role": "deep",
+  "model": "gpt-6.1-sol",
+  "effort": "xhigh"
+}

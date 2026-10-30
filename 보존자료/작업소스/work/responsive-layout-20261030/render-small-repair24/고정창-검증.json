@@ -1,0 +1,146 @@
+{
+  "tests": 7,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "observations": [
+    {
+      "size": [
+        636,
+        476
+      ],
+      "frame": [
+        0,
+        0,
+        640,
+        480
+      ],
+      "available": [
+        0,
+        0,
+        640,
+        480
+      ],
+      "dpr": 1.0
+    },
+    {
+      "image": "ko-page-0.png",
+      "tab_index": 0,
+      "page_title": "파일 변환",
+      "nav_checked": 0
+    },
+    {
+      "image": "ko-page-1.png",
+      "tab_index": 1,
+      "page_title": "외부 도우미",
+      "nav_checked": 1
+    },
+    {
+      "image": "ko-page-2.png",
+      "tab_index": 2,
+      "page_title": "기록",
+      "nav_checked": 2
+    },
+    {
+      "image": "ko-page-3.png",
+      "tab_index": 3,
+      "page_title": "정보",
+      "nav_checked": 3
+    },
+    {
+      "image": "ko-page-4.png",
+      "tab_index": 4,
+      "page_title": "PDF·OCR",
+      "nav_checked": 4
+    },
+    {
+      "image": "ko-page-5.png",
+      "tab_index": 5,
+      "page_title": "설정",
+      "nav_checked": 5
+    },
+    {
+      "language": "ko",
+      "preset_heading_gap": 21
+    },
+    {
+      "image": "en-page-0.png",
+      "tab_index": 0,
+      "page_title": "Convert files",
+      "nav_checked": 0
+    },
+    {
+      "image": "en-page-1.png",
+      "tab_index": 1,
+      "page_title": "Helper tools",
+      "nav_checked": 1
+    },
+    {
+      "image": "en-page-2.png",
+      "tab_index": 2,
+      "page_title": "History",
+      "nav_checked": 2
+    },
+    {
+      "image": "en-page-3.png",
+      "tab_index": 3,
+      "page_title": "About",
+      "nav_checked": 3
+    },
+    {
+      "image": "en-page-4.png",
+      "tab_index": 4,
+      "page_title": "PDF · OCR",
+      "nav_checked": 4
+    },
+    {
+      "image": "en-page-5.png",
+      "tab_index": 5,
+      "page_title": "Settings",
+      "nav_checked": 5
+    },
+    {
+      "language": "en",
+      "preset_heading_gap": 21
+    },
+    {
+      "picker": "ko-False",
+      "name_width": 180,
+      "name_text": "readable-name.png",
+      "horizontal_maximum": 173
+    },
+    {
+      "picker": "ko-True",
+      "name_width": 180,
+      "name_text": "읽기-원본",
+      "horizontal_maximum": 173
+    },
+    {
+      "picker": "en-False",
+      "name_width": 180,
+      "name_text": "readable-name.png",
+      "horizontal_maximum": 173
+    },
+    {
+      "picker": "en-True",
+      "name_width": 180,
+      "name_text": "읽기-원본",
+      "horizontal_maximum": 173
+    }
+  ],
+  "platform": "offscreen",
+  "scale_env": "1",
+  "scope": "실제 Qt offscreen 렌더와 제어 이벤트 시험. 실제 OS 화면 캡처·Windows 배율 변경 아님.",
+  "source_sha256": {
+    "app.py": "be1fb631debba94240f8d81549b7e14dd4d6c321c4963bf8d7ee6b99116a3ba8",
+    "studio_ui.py": "2b31eaf6ce3f22732190ca8e6e3ab78134dab382fc0b360c39b434fe97a506ba",
+    "ui_motion.py": "07eeb948add98e295ce6c64b02faa6a11decd14ac9bae3a7d0ab380f92b737d9",
+    "preview_panel.py": "fbaeb5e05627dd52a429c79e0c8a8d12dc071019969a94ab1178dfb8385d0f82",
+    "pdf_panel.py": "e9bb66310316715f856dfd4dbbf11118da2436680af9d8621550e9f2cc8e2840",
+    "i18n.py": "d3264e43e1b2008d2df6f6ee8ac9fa0044521bfff41433e927cda693bd0c3cab",
+    "fixed_viewport.py": "357b4f0a6ab3e95f1b655801f71e719ede4230d9c8ec91ff77c2d7cce01e1aa5",
+    "test_fixed_layout.py": "09a197267314a72957373cb8e3d17a9297ffa72cb69ec9124fda8b7ee2fcbba1",
+    "test_gui.py": "9a06e6c4cf76141bac8978abfb96aa0a83f4a1ab3aed144a9edde44494a9b70c"
+  },
+  "source_unchanged_during_run": true
+}

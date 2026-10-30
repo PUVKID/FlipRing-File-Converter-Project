@@ -1,0 +1,34 @@
+{
+  "time_kst": "2026-10-24T16:32:00.485739+09:00",
+  "exit_code": 0,
+  "syntax_count": 2,
+  "strict_utf8_files": 5,
+  "checks_untouched": true,
+  "files": [
+    {
+      "path": "소스\\FlipRing.spec",
+      "bytes": 1287,
+      "sha256": "e05a799e8cd588fe577af2bc1e97c5f91c7f4ff0c7ccd83531ad143a2d1e6d79"
+    },
+    {
+      "path": "소스\\build.py",
+      "bytes": 6727,
+      "sha256": "25e913d6a311017f16c13ea70ee39e8e10f60454df2965f8e314edfcf6d6c33f"
+    },
+    {
+      "path": "소스\\빌드방법.md",
+      "bytes": 8918,
+      "sha256": "d707f6ce43523b0ebd0d943ef11995212b5eb6432a2995c26ea9ebfae814dc52"
+    },
+    {
+      "path": "소스\\installer.iss",
+      "bytes": 1251,
+      "sha256": "530a9378c98c64e8fada22c5c03eb62212b259f63fc4b7d11a448cc507fad9fb"
+    },
+    {
+      "path": "소스\\사용안내.txt",
+      "bytes": 6226,
+      "sha256": "96ef653c8d22c29447f6e8d909a1e6f686b0feab3194d0b0fbdd250f9ea54fd7"
+    }
+  ]
+}

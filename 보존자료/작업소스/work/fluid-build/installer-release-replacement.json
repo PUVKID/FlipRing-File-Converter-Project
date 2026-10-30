@@ -1,0 +1,10 @@
+{
+  "time": "2026-10-21T05:12:50.568989+09:00",
+  "old_setup_sha256": "60429899af7913abd497e1529ebbb66bdc8a719d696b2d0e1098b93d572da97c",
+  "new_setup_sha256": "74cb063256daee03570b056952b164ecab321256073e6f9bd4565bce68497bf3",
+  "new_setup_bytes": 559899686,
+  "ProductVersion": "1.4.0",
+  "large_backup_created": false,
+  "same_volume_atomic_replace": true,
+  "free_bytes": 1250562048
+}

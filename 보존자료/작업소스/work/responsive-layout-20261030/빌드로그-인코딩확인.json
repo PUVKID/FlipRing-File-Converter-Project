@@ -1,0 +1,8 @@
+{
+  "time_kst": "2026-10-30T12:05:43.293321+09:00",
+  "path": "work\\responsive-layout-20261030\\build.stderr.log",
+  "raw_bytes": 10982,
+  "raw_sha256": "c169f81d42102a38de34beb108e1969ab7ec0ca16df109bc07123a5d05cd9fda",
+  "strict_decode_encoding": "cp949",
+  "scope": "진행중원문해석. 실제한글경로는정상이며앞선UTF8표시에서깨진로그구간을올바른인코딩으로재확인. 원본미변경."
+}

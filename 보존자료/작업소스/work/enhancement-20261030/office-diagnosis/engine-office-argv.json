@@ -1,0 +1,27 @@
+[
+  {
+    "argv": [
+      "C:\\Program Files\\LibreOffice\\program\\soffice.exe",
+      "-env:UserInstallation=file:///D:/2026/FilpRing%20Project/work/enhancement-20261030/office-diagnosis/engine-office/office-_gbztnxa/profile",
+      "--headless",
+      "--norestore",
+      "--convert-to",
+      "pdf",
+      "--outdir",
+      "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\office-diagnosis\\engine-office\\office-_gbztnxa",
+      "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\run-cd6dd5dc-fc33-4d86-9c22-9cfb469e5f87\\fixtures\\한글 입력 공백.docx"
+    ],
+    "kwargs": {
+      "cwd": "None",
+      "stdin": "-3",
+      "stdout": "-1",
+      "stderr": "-1",
+      "creationflags": "134217728",
+      "start_new_session": "False"
+    },
+    "dll_directory": {
+      "size": 0,
+      "directory": ""
+    }
+  }
+]

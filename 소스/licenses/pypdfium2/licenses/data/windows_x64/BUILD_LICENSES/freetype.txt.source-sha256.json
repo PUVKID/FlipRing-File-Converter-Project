@@ -1,0 +1,7 @@
+{
+  "original_sha256": "f4b133e25df1f86ad3ffea453aa0e613f0474f34778dbbb3e437e7b2724937d8",
+  "original_bytes": 6741,
+  "public_utf8_sha256": "4a9a548027a2c1d37788519dea833294c9c81f1ebc280e817f41f50d0c642d78",
+  "encoding_evidence": "ISO-8859-1: 비ASCII byte 0xA9 한 개는 라이선스의 copyright 기호",
+  "conversion": "문자 내용 유지 UTF-8 인코딩 변환"
+}

@@ -1,0 +1,2536 @@
+--- 비교대상없음/app.py
++++ 부드러운디자인-작업전/app.py
+@@ -0,0 +1,1131 @@
++"""플립링: 트레이와 원형 메뉴 중심의 무료 Windows 인터페이스."""
++from __future__ import annotations
++
++import ctypes
++from ctypes import wintypes
++from concurrent.futures import ThreadPoolExecutor
++from datetime import datetime
++import json
++import math
++import os
++from pathlib import Path
++import subprocess
++import sys
++import time
++import winreg
++
++from PySide6.QtCore import (
++    Qt, QTimer, Signal, QObject, QPointF, QRectF, QSettings, QLockFile,
++    QUrl, QVariantAnimation, QEasingCurve, QSignalBlocker, QTranslator,
++)
++from PySide6.QtGui import (
++    QColor, QPainter, QPen, QPainterPath, QFont, QFontDatabase,
++    QIcon, QPixmap, QCursor, QDesktopServices, QActionGroup, QPalette,
++)
++from PySide6.QtWidgets import (
++    QApplication, QWidget, QMainWindow, QVBoxLayout, QHBoxLayout, QLabel,
++    QPushButton, QFileDialog, QComboBox, QListWidget, QTabWidget, QCheckBox,
++    QSystemTrayIcon, QMenu, QMessageBox, QProgressBar,
++)
++import engine
++from i18n import tr, error_text, QT_KOREAN
++from pdf_panel import PdfToolsPanel
++
++VERSION = 3
++APPNAME = "플립링"
++AUTOSTART_NAME = "FlipRing"
++DATA = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "PUVKID" / "DragWheel"
++TRIGGER_KEYS = [
++    ("Shift", 0x10), ("Alt", 0x12), ("Ctrl", 0x11),
++    ("Windows", 0x5B), ("Space", 0x20), ("F8", 0x77), ("custom", -1),
++]
++USER32 = ctypes.WinDLL("user32", use_last_error=True)
++USER32.GetAsyncKeyState.argtypes = [ctypes.c_int]
++USER32.GetAsyncKeyState.restype = ctypes.c_short
++USER32.GetForegroundWindow.restype = wintypes.HWND
++USER32.GetClassNameW.argtypes = [wintypes.HWND, wintypes.LPWSTR, ctypes.c_int]
++OLE32 = ctypes.WinDLL("ole32", use_last_error=True)
++OLE32.CoInitializeEx.argtypes = [ctypes.c_void_p, wintypes.DWORD]
++OLE32.CoInitializeEx.restype = ctypes.c_int32
++OLE32.CoUninitialize.argtypes = []
++OLE32.CoUninitialize.restype = None
++OLE32.CoTaskMemFree.argtypes = [ctypes.c_void_p]
++OLE32.CoTaskMemFree.restype = None
++SHELL32 = ctypes.WinDLL("shell32", use_last_error=True)
++SHELL32.SHParseDisplayName.argtypes = [
++    wintypes.LPCWSTR, ctypes.c_void_p, ctypes.POINTER(ctypes.c_void_p),
++    wintypes.ULONG, ctypes.POINTER(wintypes.ULONG),
++]
++SHELL32.SHParseDisplayName.restype = ctypes.c_int32
++SHELL32.SHOpenFolderAndSelectItems.argtypes = [
++    ctypes.c_void_p, wintypes.UINT, ctypes.POINTER(ctypes.c_void_p), wintypes.DWORD,
++]
++SHELL32.SHOpenFolderAndSelectItems.restype = ctypes.c_int32
++EXPLORER_CLASSES = {"CabinetWClass", "ExploreWClass", "Progman", "WorkerW"}
++
++
++def select_in_explorer(path):
++    """파일을 실행하지 않고 탐색기에서 해당 파일을 선택한다."""
++    filename = str(Path(path).resolve())
++
++    def check(result, operation):
++        # HRESULT는 64비트 Windows에서도 부호 있는 32비트 값이다.
++        if ctypes.c_int32(result).value < 0:
++            raise OSError(f"{operation} (HRESULT 0x{result & 0xffffffff:08X})")
++
++    check(OLE32.CoInitializeEx(None, 0x2), "CoInitializeEx")
++    pidl = ctypes.c_void_p()
++    try:
++        check(SHELL32.SHParseDisplayName(filename, None, ctypes.byref(pidl), 0, None),
++              "SHParseDisplayName")
++        if not pidl.value:
++            raise OSError("SHParseDisplayName (HRESULT 0x80004005)")
++        # cidl=0에서는 전체 파일 PIDL 하나로 부모 폴더를 열고 그 파일을 선택한다.
++        check(SHELL32.SHOpenFolderAndSelectItems(pidl, 0, None, 0),
++              "SHOpenFolderAndSelectItems")
++    finally:
++        if pidl.value:
++            OLE32.CoTaskMemFree(pidl)
++        # S_OK와 S_FALSE를 포함한 성공 초기화마다 해제를 정확히 한 번 수행한다.
++        OLE32.CoUninitialize()
++
++
++def ui_font(size=10, weight=QFont.Normal):
++    # 운영체제 글꼴을 사용하며 글꼴 파일을 복제하거나 배포하지 않는다.
++    font = QFont()
++    font.setFamilies(["Segoe UI Variable", "Segoe UI", "Malgun Gothic", "맑은 고딕"])
++    font.setPointSize(size)
++    font.setWeight(weight)
++    return font
++
++
++def apply_application_style(application):
++    application.setStyle("Fusion")
++    application.setFont(ui_font())
++    palette = QPalette()
++    for role, value in {
++        QPalette.Window: "#fafafa", QPalette.WindowText: "#171717",
++        QPalette.Base: "#ffffff", QPalette.AlternateBase: "#f0f0f0",
++        QPalette.Text: "#171717", QPalette.Button: "#ffffff",
++        QPalette.ButtonText: "#171717", QPalette.Highlight: "#242424",
++        QPalette.HighlightedText: "#ffffff", QPalette.ToolTipBase: "#171717",
++        QPalette.ToolTipText: "#ffffff", QPalette.Link: "#404040",
++        QPalette.LinkVisited: "#606060", QPalette.PlaceholderText: "#777777",
++        QPalette.BrightText: "#ffffff", QPalette.Light: "#ffffff",
++        QPalette.Midlight: "#eeeeee", QPalette.Mid: "#bbbbbb",
++        QPalette.Dark: "#888888", QPalette.Shadow: "#333333",
++        QPalette.Accent: "#242424",
++    }.items():
++        palette.setColor(role, QColor(value))
++    for role in (QPalette.WindowText, QPalette.Text, QPalette.ButtonText):
++        palette.setColor(QPalette.Disabled, role, QColor("#999999"))
++    application.setPalette(palette)
++
++
++class DialogTranslator(QTranslator):
++    """앱에서 사용하는 Qt 표준 대화상자의 짧은 문구만 현지화한다."""
++
++    def isEmpty(self):
++        return False
++
++    def translate(self, context, sourceText, disambiguation=None, n=-1):
++        if context in {"QFileDialog", "QFileSystemModel", "QDialogButtonBox", "QMessageBox", "QLineEdit", "QPlatformTheme"}:
++            return QT_KOREAN.get(sourceText.replace("&", ""), sourceText)
++        # Python의 빈 문자열은 Qt에서 실제 빈 번역이므로 미지정 문구는 원문을 보존한다.
++        return sourceText
++
++
++def apply_language(language):
++    # 파일명·시스템 파일 형식·외부 진단은 사용자 데이터로 보존한다.
++    application = QApplication.instance()
++    previous = getattr(application, "_mono_translator", None)
++    if previous is not None:
++        application.removeTranslator(previous)
++        previous.deleteLater()
++    application._mono_translator = None
++    if language == "ko":
++        translator = DialogTranslator(application)
++        application.installTranslator(translator)
++        application._mono_translator = translator
++
++
++def down(vk):
++    # 최상위 비트만 사용한다. 하위 비트의 이전 호출 이후 상태는 신뢰하지 않는다.
++    return bool(USER32.GetAsyncKeyState(vk) & 0x8000)
++
++
++def icon(busy=False):
++    pix = QPixmap(64, 64)
++    pix.fill(Qt.transparent)
++    painter = QPainter(pix)
++    painter.setRenderHint(QPainter.Antialiasing)
++    painter.setPen(QPen(QColor("#ffffff" if busy else "#d9d9d9"), 5))
++    painter.setBrush(QColor("#202020"))
++    painter.drawEllipse(6, 6, 52, 52)
++    painter.setBrush(Qt.NoBrush)
++    painter.drawEllipse(22, 22, 20, 20)
++    if busy:
++        painter.setPen(QPen(QColor("#ffffff"), 6))
++        painter.drawArc(6, 6, 52, 52, 30 * 16, 110 * 16)
++    painter.end()
++    return QIcon(pix)
++
++
++def message_dialog(parent, title, message):
++    # 기본 정보/경고 아이콘의 유색 표시 대신 제목과 본문으로 상태를 전달한다.
++    dialog = QMessageBox(parent)
++    dialog.setWindowTitle(title)
++    dialog.setWindowIcon(icon())
++    dialog.setText(message)
++    dialog.setIcon(QMessageBox.NoIcon)
++    dialog.setStandardButtons(QMessageBox.Ok)
++    return dialog
++
++
++def file_urls(mime):
++    """드롭에 포함된 모든 항목이 존재하는 로컬 파일/폴더인지 확인한다."""
++    if not mime.hasUrls():
++        return []
++    urls = mime.urls()
++    if not urls or any(not url.isLocalFile() for url in urls):
++        return []
++    paths = [url.toLocalFile() for url in urls]
++    if any(not path or not Path(path).exists() for path in paths):
++        return []
++    return list(dict.fromkeys(str(Path(path)) for path in paths))
++
++
++class Bridge(QObject):
++    done = Signal(str, str, str)
++
++
++class HistoryList(QListWidget):
++    """결과 선택은 왼쪽 더블클릭으로만 실행한다."""
++
++    def mouseDoubleClickEvent(self, event):
++        if event.button() == Qt.LeftButton:
++            super().mouseDoubleClickEvent(event)
++        else:
++            event.ignore()
++
++
++class Wheel(QWidget):
++    chosen = Signal(list, str)
++    SIDE = 340
++    OUTER = 150
++    INNER = 52
++
++    def __init__(self, controller):
++        super().__init__(None, Qt.Tool | Qt.FramelessWindowHint |
++                         Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus)
++        self.controller = controller
++        self.setAttribute(Qt.WA_TranslucentBackground)
++        self.setAttribute(Qt.WA_ShowWithoutActivating)
++        self.setAcceptDrops(True)
++        self.setMouseTracking(True)
++        self.setFixedSize(self.SIDE, self.SIDE)
++        self.setWindowTitle(controller.text("wheel_title", app=controller.app_name()))
++        self.paths = []
++        self.options = []
++        self.reasons = {}
++        self.hover = -2
++        self.preview = False
++        self._closing = False
++        self._drop_consumed = False
++        self.reveal = 0.0
++        self.weights = {}
++        self._hover_from = {}
++        self._hover_to = -2
++        self.motion = QVariantAnimation(self)
++        self.motion.setEasingCurve(QEasingCurve.OutCubic)
++        self.motion.valueChanged.connect(self._motion_frame)
++        self.motion.finished.connect(self._motion_finished)
++        self.highlight = QVariantAnimation(self)
++        self.highlight.setDuration(100)
++        self.highlight.setStartValue(0.0)
++        self.highlight.setEndValue(1.0)
++        self.highlight.setEasingCurve(QEasingCurve.OutCubic)
++        self.highlight.valueChanged.connect(self._highlight_frame)
++
++    def _motion_frame(self, value):
++        self.reveal = float(value)
++        self.update()
++
++    def _motion_finished(self):
++        if self._closing and self.reveal <= 0.001:
++            self.hide()
++
++    def _highlight_frame(self, value):
++        progress = float(value)
++        keys = set(self._hover_from) | {self._hover_to}
++        self.weights = {
++            key: self._hover_from.get(key, 0.0) * (1.0 - progress)
++                 + (progress if key == self._hover_to else 0.0)
++            for key in keys if key != -2
++        }
++        self.update()
++
++    def set_hover(self, hit):
++        if hit == self.hover:
++            return
++        self.hover = hit
++        self.highlight.stop()
++        self._hover_from = self.weights.copy()
++        self._hover_to = hit
++        self.highlight.start()
++        self.update()
++
++    def display(self, pos, paths=None, preview=False):
++        self.motion.stop()
++        self.highlight.stop()
++        self._closing = False
++        self._drop_consumed = False
++        self.preview = preview
++        self.reveal = 0.0
++        self.hover = -1
++        self.weights = {-1: 1.0}
++        self.set_paths(paths or [])
++        self.setAcceptDrops(True)
++        screen = QApplication.screenAt(pos) or QApplication.primaryScreen()
++        bounds = screen.availableGeometry()
++        x = max(bounds.left(), min(pos.x() - self.width() // 2, bounds.right() + 1 - self.width()))
++        y = max(bounds.top(), min(pos.y() - self.height() // 2, bounds.bottom() + 1 - self.height()))
++        self.move(x, y)
++        self.show()
++        self.raise_()
++        self.motion.setDuration(150)
++        self.motion.setStartValue(0.0)
++        self.motion.setEndValue(1.0)
++        self.motion.start()
++
++    def dismiss(self):
++        if not self.isVisible() or self._closing:
++            return
++        self._closing = True
++        # 드롭을 확정한 뒤에는 퇴장 중인 그림이 새 드롭을 받아서는 안 된다.
++        self.setAcceptDrops(False)
++        self.motion.stop()
++        self.motion.setDuration(120)
++        self.motion.setStartValue(self.reveal)
++        self.motion.setEndValue(0.0)
++        self.motion.start()
++
++    def hideEvent(self, event):
++        self.motion.stop()
++        self.highlight.stop()
++        super().hideEvent(event)
++
++    def set_paths(self, paths):
++        self.paths = list(dict.fromkeys(str(Path(path)) for path in paths))
++        self.options = engine.targets(self.paths)
++        self.reasons = {}
++        for target in self.options:
++            self.reasons[target] = next(
++                (missing for path in self.paths if (missing := engine.requirement(path, target))), None)
++        # 드래그 대상 변경 시 이전 형식의 강조가 새 형식에 남지 않게 한다.
++        self.highlight.stop()
++        self.weights = {}
++        self.hover = -2
++        self.update()
++
++    def region(self, point):
++        dx = point.x() - self.width() / 2
++        dy = point.y() - self.height() / 2
++        radius = math.hypot(dx, dy)
++        if radius <= self.INNER:
++            return -1
++        if radius > self.OUTER or not self.options:
++            return -2
++        angle = math.atan2(dx, -dy) % (2 * math.pi)
++        return min(len(self.options) - 1, int(angle / (2 * math.pi) * len(self.options)))
++
++    def _valid_drop(self, event):
++        if self._closing or self._drop_consumed or not (event.possibleActions() & Qt.CopyAction):
++            return []
++        return file_urls(event.mimeData())
++
++    @staticmethod
++    def _accept_copy(event):
++        # Shift가 제안한 MoveAction 대신 CopyAction을 명시하여 원본 이동을 막는다.
++        event.setDropAction(Qt.CopyAction)
++        event.accept()
++
++    def dragEnterEvent(self, event):
++        paths = self._valid_drop(event)
++        if not paths:
++            event.ignore()
++            return
++        self.set_paths(paths)
++        self.set_hover(self.region(event.position()))
++        self._accept_copy(event)
++
++    def dragMoveEvent(self, event):
++        if not self._valid_drop(event):
++            event.ignore()
++            return
++        self.set_hover(self.region(event.position()))
++        # 중앙과 비활성 영역도 복사 드롭을 소비하며 변환하지 않는다.
++        self._accept_copy(event)
++
++    def dragLeaveEvent(self, event):
++        self.set_hover(-2)
++        event.accept()
++
++    def dropEvent(self, event):
++        paths = self._valid_drop(event)
++        if not paths:
++            event.ignore()
++            return
++        self.set_paths(paths)
++        hit = self.region(event.position())
++        self._accept_copy(event)
++        self._drop_consumed = True
++        self.dismiss()
++        if 0 <= hit < len(self.options):
++            target = self.options[hit]
++            if not self.reasons[target]:
++                self.chosen.emit(self.paths.copy(), target)
++            else:
++                self.controller.notify(self.controller.text("helper_title"),
++                                       self.controller.text("helper_message", tool=self.reasons[target]))
++
++    def mouseMoveEvent(self, event):
++        if self.preview and not self._closing:
++            self.set_hover(self.region(event.position()))
++
++    def mouseReleaseEvent(self, event):
++        if not self.preview or self._closing or event.button() != Qt.LeftButton:
++            return
++        hit = self.region(event.position())
++        self._drop_consumed = True
++        self.dismiss()
++        if 0 <= hit < len(self.options):
++            target = self.options[hit]
++            if not self.reasons[target]:
++                self.chosen.emit(self.paths.copy(), target)
++            else:
++                self.controller.notify(self.controller.text("helper_title"),
++                                       self.controller.text("helper_message", tool=self.reasons[target]))
++
++    @staticmethod
++    def _wedge(center, outer, inner, start, step):
++        path = QPainterPath()
++        rect = QRectF(center - outer, center - outer, outer * 2, outer * 2)
++        small = QRectF(center - inner, center - inner, inner * 2, inner * 2)
++        path.arcMoveTo(rect, 90 - start)
++        path.arcTo(rect, 90 - start, -step)
++        path.arcTo(small, 90 - start - step, step)
++        path.closeSubpath()
++        return path
++
++    def paintEvent(self, event):
++        painter = QPainter(self)
++        painter.setRenderHint(QPainter.Antialiasing)
++        center = self.width() / 2
++        # 창 좌표·크기·전체 opacity는 고정한다. 옅은 바탕은 모션 중에도 드롭 영역을 유지한다.
++        painter.setPen(Qt.NoPen)
++        painter.setBrush(QColor(24, 24, 24, 8))
++        painter.drawEllipse(QPointF(center, center), self.OUTER, self.OUTER)
++        painter.setOpacity(self.reveal)
++        scale = 0.94 + 0.06 * self.reveal
++        painter.translate(center, center)
++        painter.scale(scale, scale)
++        painter.translate(-center, -center)
++        painter.setBrush(QColor(25, 25, 25, 248))
++        painter.setPen(QPen(QColor(255, 255, 255, 42), 1))
++        painter.drawEllipse(QPointF(center, center), self.OUTER - 1, self.OUTER - 1)
++        count = len(self.options)
++        outer = self.OUTER - 5
++        inner = self.INNER + 6
++        for index, fmt in enumerate(self.options):
++            start = index * 360 / count
++            step = 360 / count
++            weight = self.weights.get(index, 0.0)
++            if weight > 0.001:
++                color = QColor("#ededed" if not self.reasons[fmt] else "#555555")
++                color.setAlphaF(0.86 * weight)
++                painter.fillPath(self._wedge(center, outer, inner, start, step), color)
++            if count > 1:
++                radians = math.radians(start)
++                painter.setPen(QPen(QColor(255, 255, 255, 28), 1))
++                painter.drawLine(
++                    QPointF(center + inner * math.sin(radians), center - inner * math.cos(radians)),
++                    QPointF(center + outer * math.sin(radians), center - outer * math.cos(radians)))
++            radians = math.radians(start + step / 2)
++            radius = (inner + outer) / 2 + 3 * weight
++            x = center + radius * math.sin(radians)
++            y = center - radius * math.cos(radians)
++            missing = self.reasons[fmt]
++            ink = 150 if missing else 242 - int(210 * weight)
++            painter.setPen(QColor(ink, ink, ink))
++            painter.setFont(ui_font(9 if count > 7 else 10, QFont.DemiBold))
++            painter.drawText(QRectF(x - 49, y - (19 if missing else 12), 98, 24), Qt.AlignCenter, fmt.upper())
++            if missing:
++                painter.setFont(ui_font(6))
++                painter.drawText(QRectF(x - 54, y + 4, 108, 20), Qt.AlignCenter,
++                                 self.controller.text("needs_tool", tool=missing))
++        cancel = self.weights.get(-1, 0.0)
++        painter.setPen(QPen(QColor(255, 255, 255, 40), 1))
++        shade = 43 + int(28 * cancel)
++        painter.setBrush(QColor(shade, shade, shade, 245))
++        painter.drawEllipse(QPointF(center, center), self.INNER, self.INNER)
++        if len(self.paths) > 1:
++            label = self.controller.text("file_count", count=len(self.paths))
++        elif self.paths and self.options:
++            label = engine.classify(self.paths[0])[1].upper()
++        else:
++            label = "FlipRing"
++        painter.setPen(QColor("#ababab"))
++        painter.setFont(ui_font(7))
++        painter.drawText(QRectF(center - 49, center - 35, 98, 20), Qt.AlignCenter, label)
++        active = 0 <= self.hover < count and not self.reasons[self.options[self.hover]]
++        painter.setPen(Qt.white)
++        painter.setFont(ui_font(12 if active else 18, QFont.Medium))
++        painter.drawText(QRectF(center - 51, center - 14, 102, 28), Qt.AlignCenter,
++                         "→ " + self.options[self.hover].upper() if active else "×")
++        painter.setPen(QColor("#c7c7c7"))
++        painter.setFont(ui_font(7))
++        painter.drawText(QRectF(center - 50, center + 17, 100, 21), Qt.AlignCenter,
++                         self.controller.text("drop_convert" if active else "cancel"))
++        if not self.options:
++            painter.drawText(QRectF(28, center + 83, self.width() - 56, 30), Qt.AlignCenter,
++                             self.controller.text("drag_inside"))
++        painter.end()
++
++
++class MainWindow(QMainWindow):
++    """상주 컨트롤러와 작은 설정창. 변환 선택은 원형 메뉴에서 수행한다."""
++
++    def __init__(self):
++        super().__init__()
++        DATA.mkdir(parents=True, exist_ok=True)
++        self.settings = QSettings(str(DATA / f"settings-{VERSION}.ini"), QSettings.IniFormat)
++        self.language = "en" if self.settings.value("language", "ko") == "en" else "ko"
++        apply_language(self.language)
++        self._translated_widgets = []
++        self.last_result = None
++        self.recorded_key = None
++        self.setWindowTitle(self.text("settings_title", app=self.app_name()))
++        self.setWindowIcon(icon())
++        self.setAcceptDrops(True)
++        self.resize(460, 600)
++        self.setMinimumSize(460, 570)
++        self.setFont(ui_font())
++        self.pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix="변환")
++        self.bridge = Bridge()
++        self.bridge.done.connect(self.finished)
++        self.pending = 0
++        self.paths = []
++        self.start_point = None
++        self.drag_fired = False
++        self.release_time = None
++        self.explorer_drag = False
++        self.recording = False
++        self.record_until = 0
++        self.wheel = Wheel(self)
++        self.wheel.chosen.connect(self.enqueue)
++        self.history_path = DATA / "history.json"
++        try:
++            records = json.loads(self.history_path.read_text(encoding="utf-8"))
++            if not isinstance(records, list) or any(
++                not isinstance(row, dict) or any(not isinstance(row.get(key), str)
++                                               for key in ("time", "source", "output", "error"))
++                for row in records
++            ):
++                raise ValueError("기록 형식 오류")
++            self.records = records[-200:]
++        except FileNotFoundError:
++            self.records = []
++        except (ValueError, OSError):
++            self.records = []
++            self.history_error = True
++
++        host = QWidget()
++        self.setCentralWidget(host)
++        layout = QVBoxLayout(host)
++        layout.setContentsMargins(20, 20, 20, 15)
++        self.brand = QLabel()
++        self.brand.setObjectName("brand")
++        layout.addWidget(self.brand)
++        self.subtitle = QLabel()
++        self.subtitle.setObjectName("muted")
++        self.subtitle.setWordWrap(True)
++        layout.addWidget(self.subtitle)
++        self.tabs = QTabWidget()
++        layout.addWidget(self.tabs, 1)
++        settings_page = QWidget()
++        settings_layout = QVBoxLayout(settings_page)
++        settings_layout.setContentsMargins(14, 16, 14, 12)
++        settings_layout.setSpacing(12)
++        language_row = QHBoxLayout()
++        language_row.addWidget(self.localized(QLabel(), "language"))
++        self.language_combo = QComboBox()
++        self.language_combo.addItem("한국어", "ko")
++        self.language_combo.addItem("English", "en")
++        self.language_combo.setCurrentIndex(self.language_combo.findData(self.language))
++        self.language_combo.currentIndexChanged.connect(self.language_changed)
++        language_row.addWidget(self.language_combo, 1)
++        settings_layout.addLayout(language_row)
++        settings_layout.addWidget(self.localized(QLabel(), "trigger_label"))
++        self.trigger = QComboBox()
++        for label, code in TRIGGER_KEYS:
++            self.trigger.addItem(self.text("custom") if code == -1 else label, code)
++        try:
++            saved = int(self.settings.value("trigger", 0x10))
++            self.custom_vk = int(self.settings.value("custom_vk", 0x77))
++        except (TypeError, ValueError):
++            saved, self.custom_vk = 0x10, 0x77
++        index = self.trigger.findData(saved)
++        self.trigger.setCurrentIndex(index if index >= 0 else 0)
++        self.trigger.currentIndexChanged.connect(self.trigger_changed)
++        settings_layout.addWidget(self.trigger)
++        self.record_button = self.button(self.text("record"), self.record_key)
++        settings_layout.addWidget(self.record_button)
++        self.auto = self.localized(QCheckBox(), "auto")
++        self.auto.setChecked(self.autostart_enabled())
++        self.auto.toggled.connect(self.autostart)
++        settings_layout.addWidget(self.auto)
++        self.reveal = self.localized(QCheckBox(), "reveal")
++        self.reveal.setChecked(self.settings.value("reveal", False, type=bool))
++        self.reveal.toggled.connect(lambda value: self.settings.setValue("reveal", value))
++        settings_layout.addWidget(self.reveal)
++        self.notifications = self.localized(QCheckBox(), "notifications")
++        self.notifications.setChecked(self.settings.value("notify", True, type=bool))
++        self.notifications.toggled.connect(lambda value: self.settings.setValue("notify", value))
++        settings_layout.addWidget(self.notifications)
++        note = self.localized(QLabel(), "original_note")
++        note.setObjectName("muted")
++        note.setWordWrap(True)
++        settings_layout.addWidget(note)
++        settings_layout.addStretch()
++        row = QHBoxLayout()
++        row.addWidget(self.localized(self.button("", self.pick_files), "pick_files"))
++        row.addWidget(self.localized(self.button("", self.pick_folder), "pick_folder"))
++        settings_layout.addLayout(row)
++        self.tabs.addTab(settings_page, self.text("settings"))
++
++        tools_page = QWidget()
++        tools_layout = QVBoxLayout(tools_page)
++        tools_layout.setSpacing(10)
++        self.tool_labels = {}
++        for name, (title, package, purpose) in engine.TOOLS.items():
++            row = QHBoxLayout()
++            row.addWidget(self.localized(QLabel(), "purpose_" + name, prefix=title + " · "), 1)
++            row.addWidget(self.localized(self.button("", lambda checked=False, pkg=package:
++                                      QApplication.clipboard().setText(self.install_command(pkg))), "install_command"))
++            tools_layout.addLayout(row)
++            status = QLabel()
++            status.setObjectName("muted")
++            status.setWordWrap(True)
++            self.tool_labels[name] = status
++            tools_layout.addWidget(status)
++        note = self.localized(QLabel(), "tools_note")
++        note.setWordWrap(True)
++        note.setObjectName("muted")
++        tools_layout.addWidget(note)
++        tools_layout.addWidget(self.localized(self.button("", self.refresh_tools), "refresh_tools"))
++        tools_layout.addStretch()
++        self.tabs.addTab(tools_page, self.text("tools"))
++
++        history_page = QWidget()
++        history_layout = QVBoxLayout(history_page)
++        self.history = HistoryList()
++        self.history.itemDoubleClicked.connect(self.open_history_result)
++        history_layout.addWidget(self.history)
++        history_layout.addWidget(self.localized(QLabel(), "recent_note"))
++        self.tabs.addTab(history_page, self.text("history"))
++        about_page = QWidget()
++        about_layout = QVBoxLayout(about_page)
++        about = self.localized(QLabel(), "about_text")
++        about.setWordWrap(True)
++        about_layout.addWidget(about)
++        about_layout.addWidget(self.localized(self.button("", self.open_licenses), "licenses"))
++        about_layout.addStretch()
++        self.tabs.addTab(about_page, self.text("about"))
++        self.pdf_panel = PdfToolsPanel(self.language, self)
++        self.pdf_panel.result_ready.connect(self.pdf_finished)
++        self.tabs.addTab(self.pdf_panel, self.text("pdf_tools"))
++        self.status = QLabel(self.text("ready"))
++        self.status.setObjectName("muted")
++        self.status.setWordWrap(True)
++        layout.addWidget(self.status)
++        self.progress = QProgressBar()
++        self.progress.setRange(0, 0)
++        self.progress.hide()
++        layout.addWidget(self.progress)
++        self.tray = QSystemTrayIcon(icon(), self)
++        self.tray_menu = QMenu()
++        self.tray_menu.aboutToShow.connect(self.update_tray_menu)
++        self.tray.setContextMenu(self.tray_menu)
++        self.tray.setToolTip(self.app_name())
++        self.tray.activated.connect(self.tray_activated)
++        self.update_tray_menu()
++        self.tray.show()
++        self.timer = QTimer(self)
++        self.timer.timeout.connect(self.poll)
++        self.timer.start(30)
++        self.refresh_tools()
++        self.refresh_history()
++        self.apply_style()
++        self.retranslate()
++
++    def text(self, message_id, **values):
++        return tr(self.language, message_id, **values)
++
++    def app_name(self):
++        return self.text("app")
++
++    def localized(self, widget, key, prefix=""):
++        self._translated_widgets.append((widget, key, prefix))
++        widget.setText(prefix + self.text(key, app=self.app_name()))
++        return widget
++
++    def language_changed(self):
++        self.set_language(self.language_combo.currentData())
++
++    def set_language(self, language):
++        language = "en" if language == "en" else "ko"
++        if self.language == language:
++            return
++        self.language = language
++        self.settings.setValue("language", language)
++        self.settings.sync()
++        self.retranslate()
++
++    def retranslate(self):
++        # 표시 문자열만 갱신한다. 항목 재생성·키 데이터 변경·자동 시작 토글은 하지 않는다.
++        apply_language(self.language)
++        with QSignalBlocker(self.language_combo):
++            self.language_combo.setCurrentIndex(self.language_combo.findData(self.language))
++        with QSignalBlocker(self.trigger):
++            self.trigger.setItemText(self.trigger.findData(-1), self.text("custom"))
++        self.setWindowTitle(self.text("settings_title", app=self.app_name()))
++        self.brand.setText(self.app_name())
++        self.wheel.setWindowTitle(self.text("wheel_title", app=self.app_name()))
++        for widget, key, prefix in self._translated_widgets:
++            widget.setText(prefix + self.text(key, app=self.app_name()))
++        for index, key in enumerate(("settings", "tools", "history", "about", "pdf_tools")):
++            self.tabs.setTabText(index, self.text(key))
++        self.pdf_panel.set_language(self.language)
++        self.update_record_label()
++        self.update_trigger_hint()
++        self.refresh_tools()
++        self.refresh_history()
++        self.update_status()
++        self.update_tray_menu()
++        self.wheel.update()
++
++    def update_record_label(self):
++        key = "record_wait" if self.recording else "recorded" if self.recorded_key is not None else "record"
++        self.record_button.setText(self.text(key, key=self.recorded_key))
++
++    def update_status(self):
++        if self.pending:
++            self.status.setText(self.text("queue", count=self.pending))
++            self.tray.setToolTip(self.app_name() + " · " + self.text("converting", count=self.pending))
++        elif self.last_result is not None:
++            output, error = self.last_result
++            self.status.setText(self.text("failed_status", error=error_text(self.language, error)[:90]) if error
++                                else self.text("done_status", name=Path(output).name))
++            self.tray.setToolTip(self.app_name())
++        else:
++            self.status.setText(self.text("ready"))
++            self.tray.setToolTip(self.app_name())
++
++    @staticmethod
++    def button(text, action):
++        button = QPushButton(text)
++        button.setMinimumHeight(32)
++        button.clicked.connect(action)
++        return button
++
++    @staticmethod
++    def install_command(package):
++        return f"winget install --id {package} -e --source winget --accept-package-agreements --accept-source-agreements"
++
++    def apply_style(self):
++        style = """
++        QWidget {font-family:'Segoe UI Variable','Segoe UI','Malgun Gothic';font-size:12px;font-weight:400;color:#171717;}
++        QMainWindow,QMenu {background:#fafafa;}
++        QLabel#brand {font-size:25px;font-weight:600;color:#111111;padding-bottom:2px;}
++        QLabel#muted {color:#777777;font-size:11px;}
++        QTabWidget::pane {border:1px solid #e0e0e0;border-radius:10px;background:#ffffff;}
++        QTabBar::tab {background:transparent;padding:11px 14px;color:#777777;}
++        QTabBar::tab:selected {color:#111111;font-weight:600;border-bottom:2px solid #171717;}
++        QPushButton {background:#ffffff;border:1px solid #d4d4d4;border-radius:7px;padding:6px 11px;}
++        QPushButton:hover {background:#eeeeee;border-color:#777777;}
++        QPushButton:pressed {background:#dedede;}
++        QPushButton:focus,QComboBox:focus {border-color:#171717;}
++        QListWidget,QComboBox {background:#ffffff;border:1px solid #d4d4d4;border-radius:7px;padding:7px;}
++        QListWidget::item {padding:8px;border-bottom:1px solid #eeeeee;}
++        QListWidget::item:selected {background:#eeeeee;color:#111111;}
++        QComboBox QAbstractItemView {background:#ffffff;color:#171717;selection-background-color:#242424;selection-color:#ffffff;}
++        QCheckBox {spacing:8px;padding:3px 0;}
++        QCheckBox::indicator {width:14px;height:14px;border:1px solid #aaaaaa;border-radius:3px;background:#ffffff;}
++        QCheckBox::indicator:checked {background:#242424;border-color:#242424;}
++        QCheckBox::indicator:hover {border-color:#171717;}
++        QMenu {border:1px solid #d4d4d4;padding:6px;}
++        QMenu::item {padding:8px 18px;}
++        QMenu::item:selected {background:#e8e8e8;border-radius:5px;}
++        QMenu::item:disabled {color:#888888;}
++        QProgressBar {max-height:3px;border:0;background:#e6e6e6;}
++        QProgressBar::chunk {background:#242424;}
++        QToolTip {background:#171717;color:#ffffff;border:0;padding:6px;}
++        """
++        self.setStyleSheet(style)
++        self.tray_menu.setStyleSheet(style)
++
++    def update_tray_menu(self):
++        menu = self.tray_menu
++        menu.clear()
++        title = menu.addAction(self.app_name())
++        title.setEnabled(False)
++        label = self.trigger.currentText()
++        if self.trigger.currentData() == -1:
++            label += f" ({self.custom_vk})"
++        hint = menu.addAction(self.text("tray_hint", key=label))
++        hint.setEnabled(False)
++        if self.pending:
++            status = menu.addAction(self.text("converting", count=self.pending))
++            status.setEnabled(False)
++        menu.addSeparator()
++        menu.addAction(self.text("pick_files_menu"), self.pick_files)
++        menu.addAction(self.text("pick_folder_menu"), self.pick_folder)
++        trigger_menu = menu.addMenu(self.text("drag_key"))
++        group = QActionGroup(trigger_menu)
++        group.setExclusive(True)
++        for index, (text, code) in enumerate(TRIGGER_KEYS):
++            action = trigger_menu.addAction(self.text("custom") if code == -1 else text)
++            action.setCheckable(True)
++            action.setChecked(code == self.trigger.currentData())
++            group.addAction(action)
++            if code == -1:
++                action.triggered.connect(lambda: (self.open_page(0), self.record_key()))
++            else:
++                action.triggered.connect(lambda checked=False, value=index: self.trigger.setCurrentIndex(value))
++        # 메뉴가 살아 있는 동안 배타적 선택 그룹도 유지한다.
++        trigger_menu._action_group = group
++        for key, checkbox in [("auto_menu", self.auto),
++                              ("reveal_menu", self.reveal), ("notify_menu", self.notifications)]:
++            action = menu.addAction(self.text(key))
++            action.setCheckable(True)
++            action.setChecked(checkbox.isChecked())
++            action.triggered.connect(checkbox.setChecked)
++        tools_menu = menu.addMenu(self.text("helpers"))
++        for name, (title, package, purpose) in engine.TOOLS.items():
++            installed = bool(engine.tool(name))
++            action = tools_menu.addAction(("✓ " if installed else "✗ ") + title + " · " + self.text("purpose_" + name))
++            action.setEnabled(False)
++            if not installed:
++                tools_menu.addAction(self.text("copy_install", tool=title), lambda checked=False, pkg=package:
++                                     QApplication.clipboard().setText(self.install_command(pkg)))
++        tools_menu.addAction(self.text("details"), lambda: self.open_page(1))
++        menu.addSeparator()
++        menu.addAction(self.text("history"), lambda: self.open_page(2))
++        menu.addAction(self.text("pdf_tools"), lambda: self.open_page(4))
++        menu.addAction(self.text("settings"), lambda: self.open_page(0))
++        menu.addAction(self.text("about"), lambda: self.open_page(3))
++        menu.addSeparator()
++        menu.addAction(self.text("quit"), self.quit)
++
++    def tray_activated(self, reason):
++        if reason == QSystemTrayIcon.DoubleClick:
++            self.open_page(0)
++
++    def trigger_changed(self):
++        self.settings.setValue("trigger", self.trigger.currentData())
++        self.update_trigger_hint()
++
++    def update_trigger_hint(self):
++        label = self.trigger.currentText()
++        if self.trigger.currentData() == -1:
++            label = self.text("custom_hint", key=self.custom_vk)
++        self.subtitle.setText(self.text("drag_hint", key=label))
++
++    def open_page(self, index):
++        self.tabs.setCurrentIndex(index)
++        if index == 1:
++            self.refresh_tools()
++        self.open_window()
++
++    def open_window(self):
++        self.showNormal()
++        self.raise_()
++        self.activateWindow()
++
++    def closeEvent(self, event):
++        event.ignore()
++        self.hide()
++
++    def quit(self):
++        if self.pending or self.pdf_panel.is_busy():
++            message_dialog(self, self.text("busy_title"), self.text("busy_message")).exec()
++            return
++        self.timer.stop()
++        self.wheel.hide()
++        self.pool.shutdown(wait=False)
++        self.tray.hide()
++        QApplication.quit()
++
++    def open_licenses(self):
++        folder = Path(sys.executable).parent / "licenses" if getattr(sys, "frozen", False) else Path(__file__).parent / "licenses"
++        QDesktopServices.openUrl(QUrl.fromLocalFile(str(folder)))
++
++    def refresh_tools(self):
++        for name, label in self.tool_labels.items():
++            path = engine.tool(name)
++            label.setText(self.text("available" if path else "not_installed"))
++            label.setToolTip(path or "")
++
++    def pick_files(self):
++        dialog = self.file_dialog(False)
++        if dialog.exec() == QFileDialog.Accepted:
++            self.set_files(dialog.selectedFiles())
++            self.preview()
++
++    def pick_folder(self):
++        dialog = self.file_dialog(True)
++        if dialog.exec() == QFileDialog.Accepted:
++            self.set_files(dialog.selectedFiles())
++            self.preview()
++
++    def file_dialog(self, folder):
++        dialog = QFileDialog(self, self.text("pick_folder_title" if folder else "pick_files_title"))
++        dialog.setOption(QFileDialog.DontUseNativeDialog, True)
++        dialog.setFileMode(QFileDialog.Directory if folder else QFileDialog.ExistingFiles)
++        if folder:
++            dialog.setOption(QFileDialog.ShowDirsOnly, True)
++        for role, key in ((QFileDialog.LookIn, "dialog_location"), (QFileDialog.FileName, "dialog_filename"),
++                          (QFileDialog.FileType, "dialog_filter"), (QFileDialog.Reject, "cancel"),
++                          (QFileDialog.Accept, "dialog_choose" if folder else "dialog_open")):
++            dialog.setLabelText(role, self.text(key))
++        return dialog
++
++    def set_files(self, paths):
++        self.paths = list(dict.fromkeys(str(Path(path)) for path in paths))
++
++    def dragEnterEvent(self, event):
++        if event.possibleActions() & Qt.CopyAction and file_urls(event.mimeData()):
++            Wheel._accept_copy(event)
++        else:
++            event.ignore()
++
++    def dragMoveEvent(self, event):
++        self.dragEnterEvent(event)
++
++    def dropEvent(self, event):
++        paths = file_urls(event.mimeData())
++        if not paths or not (event.possibleActions() & Qt.CopyAction):
++            event.ignore()
++            return
++        Wheel._accept_copy(event)
++        self.set_files(paths)
++        self.preview()
++
++    def preview(self):
++        if not self.paths or not engine.targets(self.paths):
++            self.notify(self.text("unsupported_title"), self.text("unsupported_message"))
++            return
++        self.wheel.display(QCursor.pos(), self.paths, preview=True)
++
++    def enqueue(self, paths, fmt):
++        if self.pdf_panel.is_busy():
++            # PDFium을 쓰는 두 작업 큐를 동시에 실행하지 않는다.
++            message_dialog(self, self.text("busy_title"), self.text("busy_message")).exec()
++            return
++        for path in paths:
++            self.pending += 1
++
++            def job(source=path, target=fmt):
++                try:
++                    self.bridge.done.emit(source, engine.convert(source, target), "")
++                except Exception as exc:
++                    self.bridge.done.emit(source, "", str(exc))
++
++            self.pool.submit(job)
++        self.progress.show()
++        self.update_status()
++        self.tray.setIcon(icon(busy=True))
++
++    def finished(self, source, output, error):
++        self.pending -= 1
++        self.append_record(source, output, error)
++        self.update_status()
++        if not self.pending:
++            self.progress.hide()
++            self.tray.setToolTip(self.app_name())
++            self.tray.setIcon(icon())
++
++    def pdf_finished(self, source, output, error):
++        # PDF 패널의 자체 작업 큐는 기존 파일 변환 pending에 합산하지 않는다.
++        self.append_record(source, output, error)
++        self.update_status()
++
++    def append_record(self, source, output, error):
++        """두 변환 경로의 결과를 기존 기록 스키마로 저장한다."""
++        record = {"time": datetime.now().isoformat(timespec="seconds"),
++                  "source": source, "output": output, "error": error}
++        self.records.append(record)
++        self.records = self.records[-200:]
++        try:
++            if not hasattr(self, "history_error"):
++                temp = self.history_path.with_suffix(".tmp")
++                temp.write_text(json.dumps(self.records, ensure_ascii=False, indent=2), encoding="utf-8")
++                temp.replace(self.history_path)
++        except OSError as exc:
++            self.notify(self.text("save_history_title"), error_text(self.language, str(exc)))
++        self.refresh_history()
++        self.last_result = (output, error)
++        if error:
++            self.notify(self.text("failed_title"), f"{Path(source).name}\n{error_text(self.language, error)}")
++        else:
++            self.notify(self.text("done_title"), Path(output).name)
++            if self.reveal.isChecked():
++                try:
++                    select_in_explorer(output)
++                except (OSError, ValueError) as exc:
++                    message_dialog(self, self.text("history_explorer_title"),
++                                   self.text("history_explorer_error", detail=str(exc))).exec()
++
++    def refresh_history(self):
++        self.history.clear()
++        for row in reversed(self.records):
++            self.history.addItem(row["time"].replace("T", "  ") + "   " + Path(row["source"]).name +
++                                 "\n" + (self.text("history_failed", error=error_text(self.language, row["error"]))
++                                         if row["error"] else "→ " + row["output"]))
++            item = self.history.item(self.history.count() - 1)
++            item.setData(Qt.UserRole, row["output"])
++            item.setData(Qt.UserRole + 1, row["error"])
++            item.setData(Qt.UserRole + 2, True)
++        if hasattr(self, "history_error"):
++            self.history.addItem(self.text("history_error"))
++
++    def open_history_result(self, item):
++        if item is None or item.data(Qt.UserRole + 2) is not True:
++            return
++        output = item.data(Qt.UserRole)
++        error = item.data(Qt.UserRole + 1)
++        if error:
++            message_dialog(self, self.text("history_no_result_title"),
++                           self.text("history_no_result")).exec()
++            return
++        try:
++            result = Path(output) if isinstance(output, str) and output else None
++            if result is None or not result.is_file():
++                message_dialog(self, self.text("history_missing_title"),
++                               self.text("history_missing_result")).exec()
++                return
++            select_in_explorer(result)
++        except (OSError, ValueError) as exc:
++            message_dialog(self, self.text("history_explorer_title"),
++                           self.text("history_explorer_error", detail=str(exc))).exec()
++
++    def notify(self, title, message):
++        if self.notifications.isChecked():
++            self.tray.showMessage(title, message, QSystemTrayIcon.Information, 5000)
++
++    def autostart_enabled(self):
++        try:
++            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run") as key:
++                return bool(winreg.QueryValueEx(key, AUTOSTART_NAME)[0])
++        except FileNotFoundError:
++            return False
++
++    def autostart(self, value):
++        try:
++            with winreg.CreateKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run") as key:
++                if value:
++                    command = subprocess.list2cmdline([sys.executable] +
++                              ([] if getattr(sys, "frozen", False) else [str(Path(__file__).resolve())]) + ["--tray"])
++                    winreg.SetValueEx(key, AUTOSTART_NAME, 0, winreg.REG_SZ, command)
++                else:
++                    try:
++                        winreg.DeleteValue(key, AUTOSTART_NAME)
++                    except FileNotFoundError:
++                        pass
++        except OSError as exc:
++            self.auto.blockSignals(True)
++            self.auto.setChecked(not value)
++            self.auto.blockSignals(False)
++            message_dialog(self, self.text("autostart_failed"), error_text(self.language, str(exc))).exec()
++
++    def record_key(self):
++        self.recording = True
++        self.record_until = time.monotonic() + 10
++        self.update_record_label()
++
++    def poll(self):
++        now = time.monotonic()
++        if self.recording:
++            if now > self.record_until or down(0x1B):
++                self.recording = False
++                self.update_record_label()
++                return
++            for vk in range(8, 255):
++                if vk != 0x1B and down(vk):
++                    self.custom_vk = vk
++                    self.settings.setValue("custom_vk", vk)
++                    self.trigger.setCurrentIndex(self.trigger.findData(-1))
++                    self.recording = False
++                    self.recorded_key = vk
++                    self.update_record_label()
++                    break
++            return
++        # 미리보기에서도 Esc가 닫히도록 마우스 버튼 분기 전에 검사한다.
++        if down(0x1B):
++            self.wheel.dismiss()
++            self.drag_fired = True
++        held = down(1)
++        pos = QCursor.pos()
++        if not held:
++            if self.start_point is not None:
++                self.release_time = now
++            self.start_point = None
++            self.drag_fired = False
++            self.explorer_drag = False
++            if (self.wheel.isVisible() and not self.wheel.preview and
++                    self.release_time is not None and now - self.release_time >= 0.35):
++                self.wheel.dismiss()
++            return
++        if self.start_point is None:
++            self.start_point = pos
++            self.release_time = None
++            hwnd = USER32.GetForegroundWindow()
++            name = ctypes.create_unicode_buffer(256)
++            USER32.GetClassNameW(hwnd, name, 256)
++            self.explorer_drag = name.value in EXPLORER_CLASSES
++        key = self.trigger.currentData()
++        key = self.custom_vk if key == -1 else key
++        if (self.explorer_drag and not self.drag_fired and not down(0x1B) and
++                down(key) and (pos - self.start_point).manhattanLength() > 10):
++            self.drag_fired = True
++            self.wheel.display(pos)
++
++
++def main():
++    application = QApplication(sys.argv)
++    application.setQuitOnLastWindowClosed(False)
++    application.setApplicationName(APPNAME)
++    application.setOrganizationName("PUVKID")
++    apply_application_style(application)
++    application.setWindowIcon(icon())
++    DATA.mkdir(parents=True, exist_ok=True)
++    lock = QLockFile(str(DATA / "running.lock"))
++    lock.setStaleLockTime(0)
++    if not lock.tryLock(100):
++        settings = QSettings(str(DATA / f"settings-{VERSION}.ini"), QSettings.IniFormat)
++        language = "en" if settings.value("language", "ko") == "en" else "ko"
++        apply_language(language)
++        message_dialog(None, tr(language, "app"), tr(language, "already_running")).exec()
++        return 0
++    window = MainWindow()
++    if "--settings" in sys.argv:
++        window.open_window()
++    elif not window.settings.value("welcomed", False, type=bool):
++        window.settings.setValue("welcomed", True)
++        window.notify(window.text("running_title"), window.text("running_message"))
++    return application.exec()
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+--- 비교대상없음/pdf_panel.py
++++ 부드러운디자인-작업전/pdf_panel.py
+@@ -0,0 +1,409 @@
++"""흑백 PDF/OCR 패널. 무거운 작업은 별도 스레드에서 로컬 처리한다."""
++from __future__ import annotations
++
++import threading
++from concurrent.futures import ThreadPoolExecutor
++from pathlib import Path
++
++from PySide6.QtCore import QObject, Signal, Slot, Qt, QCoreApplication
++from PySide6.QtWidgets import (
++    QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QComboBox,
++    QListWidget, QFileDialog, QLineEdit, QSpinBox, QCheckBox, QProgressBar,
++    QScrollArea, QFormLayout, QAbstractItemView,
++)
++import pdf_tools
++
++
++TEXT = {
++    "files": ("파일 · 위에서 아래 순서로 처리", "Files · Processed from top to bottom"),
++    "add": ("추가", "Add"), "remove": ("빼기", "Remove"),
++    "up": ("위로", "Up"), "down": ("아래로", "Down"),
++    "operation": ("작업", "Operation"),
++    "merge": ("PDF 합치기", "Merge PDFs"), "split": ("PDF 페이지별 분할", "Split PDF into pages"),
++    "extract": ("페이지 추출", "Extract pages"), "delete": ("페이지 삭제", "Delete pages"),
++    "rotate": ("페이지 회전", "Rotate pages"), "images_to_pdf": ("이미지 → PDF", "Images to PDF"),
++    "pdf_to_images": ("PDF → 이미지", "PDF to images"), "compress": ("PDF 압축", "Compress PDF"),
++    "recognize": ("문서·표 인식 / OCR", "Document / table recognition / OCR"),
++    "pages": ("페이지", "Pages"), "range_hint": ("전체 또는 예: 1,3-5", "All, or e.g. 1,3-5"),
++    "rotation": ("회전", "Rotation"), "compression": ("압축 방식", "Compression"),
++    "lossless": ("무손실 정리", "Lossless cleanup"),
++    "images": ("이미지 축소·재압축 (손실)", "Resize / recompress images (lossy)"),
++    "quality": ("이미지 품질", "Image quality"), "dpi": ("해상도 (DPI)", "Resolution (DPI)"),
++    "ocr_language": ("인식 언어", "Recognition language"),
++    "bilingual": ("한국어 + 영어", "Korean + English"), "korean": ("한국어", "Korean"),
++    "english": ("영어", "English"), "output": ("결과 형식", "Output format"),
++    "searchable": ("검색 가능한 PDF", "Searchable PDF"),
++    "text": ("텍스트 (TXT)", "Text (TXT)"), "word": ("Word 문서 (DOCX)", "Word document (DOCX)"),
++    "excel": ("Excel 표 (XLSX)", "Excel table (XLSX)"),
++    "layout": ("인식 배치", "Recognition layout"),
++    "automatic": ("자동", "Automatic"), "block": ("단일 블록", "Single block"),
++    "sparse": ("흩어진 글자", "Sparse text"),
++    "force": ("텍스트가 있는 PDF도 OCR로 다시 읽기", "OCR PDFs even if they already contain text"),
++    "start": ("실행", "Run"), "cancel": ("취소", "Cancel"),
++    "ready": ("원본을 보존하고 같은 폴더에 새 파일로 저장합니다.", "Originals are kept. New files go in the same folder."),
++    "working": ("처리 중 · {label}", "Processing · {label}"),
++    "cancelling": ("취소 중 · 현재 페이지 처리를 정리합니다.", "Cancelling · Finishing the current page safely."),
++    "done": ("완료 · {count}개 결과", "Done · {count} result(s)"),
++    "cancelled": ("취소했습니다. 앞서 완성한 결과는 유지합니다.", "Cancelled. Previously completed results are kept."),
++    "pick": ("PDF 또는 이미지 선택", "Choose PDFs or images"),
++    "empty": ("먼저 파일을 추가해 주세요.", "Add files first."),
++    "busy": ("다른 변환이 끝난 뒤 실행해 주세요.", "Wait for the other conversion to finish."),
++    "note": ("로컬 처리 · OCR은 흐림·기울기·복잡한 표에서 오인식할 수 있습니다.\nWord/Excel은 좌표로 행·열을 추론하며 원본 배치나 병합 셀을 완벽히 복원하지 않습니다.",
++             "Local processing · OCR can misread blur, skew and complex tables.\nWord/Excel infer rows and columns from positions; layout and merged cells may differ."),
++    "lossy_note": ("이미지 축소·재압축은 화질을 낮춥니다. 무손실 정리는 크기 감소를 보장하지 않습니다.",
++                   "Image resizing / recompression reduces quality. Lossless cleanup may not reduce file size."),
++    "pdf_note": ("검색 PDF는 페이지를 이미지로 다시 만들고 인식된 텍스트 층을 추가합니다.",
++                 "Searchable PDF rebuilds pages as images and adds a recognized text layer."),
++}
++
++ERRORS = {
++    "page_range": ("페이지 범위를 확인해 주세요. 예: 1,3-5. 삭제는 범위를 입력해야 합니다.", "Check the page range, e.g. 1,3-5. Deletion requires a range."),
++    "empty_pdf": ("페이지가 없는 PDF입니다.", "The PDF has no pages."),
++    "encrypted_pdf": ("암호화된 PDF는 지원하지 않습니다. 암호를 해제한 사본을 사용해 주세요.", "Encrypted PDFs are not supported. Use an unlocked copy."),
++    "invalid_pdf": ("PDF를 읽을 수 없습니다.", "The PDF could not be read."),
++    "all_pages_removed": ("모든 페이지를 삭제할 수는 없습니다.", "At least one page must remain."),
++    "ocr_missing": ("동봉 OCR 실행 파일 또는 언어 모델이 없습니다. 배포 파일을 확인해 주세요.", "The bundled OCR runtime or language model is missing. Check the distribution files."),
++    "ocr_timeout": ("페이지 OCR 제한 시간 3분을 초과했습니다.", "OCR exceeded the 3 minute limit for a page."),
++    "ocr_failed": ("OCR 처리에 실패했습니다.", "OCR processing failed."),
++    "ocr_language": ("지원하지 않는 인식 언어입니다.", "Unsupported recognition language."),
++    "page_too_large": ("선택한 해상도에서 페이지가 너무 큽니다. DPI를 낮춰 주세요.", "The page is too large at this resolution. Lower the DPI."),
++    "input_files": ("입력 파일을 확인해 주세요.", "Check the input files."),
++    "quality": ("해상도 또는 품질 값을 확인해 주세요.", "Check the resolution and quality values."),
++    "output_format": ("지원하지 않는 출력 형식입니다.", "Unsupported output format."),
++    "rotation": ("회전 각도를 확인해 주세요.", "Check the rotation angle."),
++    "compression": ("압축 방식을 확인해 주세요.", "Check the compression mode."),
++    "operation": ("지원하지 않는 작업입니다.", "Unsupported operation."),
++    "processing_failed": ("파일을 처리할 수 없습니다. 입력 파일과 저장 위치를 확인해 주세요.", "The file could not be processed. Check the input file and output location."),
++    "ocr_layout": ("인식 배치 설정을 확인해 주세요.", "Check the recognition layout setting."),
++    "output_name": ("새 출력 이름을 만들 수 없습니다.", "A new output filename could not be created."),
++}
++
++
++class _Bridge(QObject):
++    progress = Signal(int, int, str)
++    result = Signal(str, str, str)
++    finished = Signal(object)
++
++
++class PdfToolsPanel(QWidget):
++    result_ready = Signal(str, str, str)
++
++    def __init__(self, language, parent=None):
++        super().__init__(parent)
++        self.language = "en" if language == "en" else "ko"
++        self._pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix="FlipRing-PDF")
++        self._future = None
++        # 브리지는 GUI 스레드에 남겨 두고 Python 작업 스레드는 신호만 보낸다.
++        self._bridge = _Bridge(self)
++        self._bridge.progress.connect(self._on_progress, Qt.QueuedConnection)
++        self._bridge.result.connect(self._on_result, Qt.QueuedConnection)
++        self._bridge.finished.connect(self._finish, Qt.QueuedConnection)
++        application = QCoreApplication.instance()
++        if application is not None:
++            application.aboutToQuit.connect(self.shutdown)
++        self._busy = False
++        self._cancel = threading.Event()
++        self._results = 0
++        self._error = None
++        self._status_key = "ready"
++        self._status_values = {}
++        self._labels = {}
++        outer = QVBoxLayout(self)
++        outer.setContentsMargins(0, 0, 0, 0)
++        self.scroll = QScrollArea()
++        self.scroll.setWidgetResizable(True)
++        self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
++        outer.addWidget(self.scroll)
++        host = QWidget()
++        self.scroll.setWidget(host)
++        layout = QVBoxLayout(host)
++        layout.setContentsMargins(12, 12, 12, 12)
++        layout.setSpacing(9)
++        self.files_label = QLabel()
++        layout.addWidget(self.files_label)
++        self.files = QListWidget()
++        self.files.setSelectionMode(QAbstractItemView.ExtendedSelection)
++        self.files.setMinimumHeight(90)
++        self.files.setMaximumHeight(140)
++        layout.addWidget(self.files)
++        row = QHBoxLayout()
++        self.add_button = QPushButton()
++        self.remove_button = QPushButton()
++        self.up_button = QPushButton()
++        self.down_button = QPushButton()
++        for button in (self.add_button, self.remove_button, self.up_button, self.down_button):
++            row.addWidget(button)
++        self.add_button.clicked.connect(self.add_files)
++        self.remove_button.clicked.connect(self.remove_files)
++        self.up_button.clicked.connect(lambda: self.move_file(-1))
++        self.down_button.clicked.connect(lambda: self.move_file(1))
++        layout.addLayout(row)
++        self.form = QFormLayout()
++        self.form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
++        self.form.setRowWrapPolicy(QFormLayout.WrapLongRows)
++        self.operation = QComboBox()
++        for key in ("merge", "split", "extract", "delete", "rotate", "images_to_pdf", "pdf_to_images", "compress", "recognize"):
++            self.operation.addItem(key, key)
++        self._row("operation", self.operation)
++        self.pages = QLineEdit()
++        self._row("pages", self.pages)
++        self.rotation = QComboBox()
++        for angle in (90, 180, 270):
++            self.rotation.addItem(f"{angle}°", angle)
++        self._row("rotation", self.rotation)
++        self.compression = QComboBox()
++        for key in ("lossless", "images"):
++            self.compression.addItem(key, key)
++        self._row("compression", self.compression)
++        self.quality = QSpinBox()
++        self.quality.setRange(20, 95)
++        self.quality.setValue(80)
++        self._row("quality", self.quality)
++        self.dpi = QSpinBox()
++        self.dpi.setRange(60, 600)
++        self.dpi.setValue(200)
++        self.dpi.setSingleStep(25)
++        self._row("dpi", self.dpi)
++        self.ocr_language = QComboBox()
++        for label, code in (("bilingual", "kor+eng"), ("korean", "kor"), ("english", "eng")):
++            self.ocr_language.addItem(label, code)
++        self._row("ocr_language", self.ocr_language)
++        self.output = QComboBox()
++        self._row("output", self.output)
++        self.psm = QComboBox()
++        for label, code in (("automatic", 3), ("block", 6), ("sparse", 11)):
++            self.psm.addItem(label, code)
++        self._row("layout", self.psm)
++        layout.addLayout(self.form)
++        self.force = QCheckBox()
++        layout.addWidget(self.force)
++        self.lossy_note = QLabel()
++        self.lossy_note.setWordWrap(True)
++        self.lossy_note.setObjectName("muted")
++        layout.addWidget(self.lossy_note)
++        self.pdf_note = QLabel()
++        self.pdf_note.setWordWrap(True)
++        self.pdf_note.setObjectName("muted")
++        layout.addWidget(self.pdf_note)
++        self.note = QLabel()
++        self.note.setWordWrap(True)
++        self.note.setObjectName("muted")
++        layout.addWidget(self.note)
++        row = QHBoxLayout()
++        self.start_button = QPushButton()
++        self.cancel_button = QPushButton()
++        self.cancel_button.setEnabled(False)
++        self.start_button.clicked.connect(self.start)
++        self.cancel_button.clicked.connect(self.cancel)
++        row.addWidget(self.start_button)
++        row.addWidget(self.cancel_button)
++        layout.addLayout(row)
++        self.progress = QProgressBar()
++        self.progress.setRange(0, 100)
++        self.progress.setValue(0)
++        self.progress.hide()
++        layout.addWidget(self.progress)
++        self.status = QLabel()
++        self.status.setWordWrap(True)
++        layout.addWidget(self.status)
++        layout.addStretch()
++        self.operation.currentIndexChanged.connect(self._options_changed)
++        self.compression.currentIndexChanged.connect(self._options_changed)
++        self.output.currentIndexChanged.connect(self._notes_changed)
++        self.set_language(self.language)
++        self._options_changed()
++
++    def _row(self, key, widget):
++        label = QLabel()
++        self._labels[key] = (label, widget)
++        self.form.addRow(label, widget)
++
++    def tr_text(self, key, **values):
++        return TEXT[key][self.language == "en"].format(**values)
++
++    def set_language(self, language):
++        self.language = "en" if language == "en" else "ko"
++        for key, (label, _) in self._labels.items():
++            label.setText(self.tr_text(key))
++        self.files_label.setText(self.tr_text("files"))
++        for button, key in ((self.add_button, "add"), (self.remove_button, "remove"),
++                            (self.up_button, "up"), (self.down_button, "down"),
++                            (self.start_button, "start"), (self.cancel_button, "cancel")):
++            button.setText(self.tr_text(key))
++        for index in range(self.operation.count()):
++            self.operation.setItemText(index, self.tr_text(self.operation.itemData(index)))
++        for index, key in enumerate(("lossless", "images")):
++            self.compression.setItemText(index, self.tr_text(key))
++        for index, key in enumerate(("bilingual", "korean", "english")):
++            self.ocr_language.setItemText(index, self.tr_text(key))
++        for index, key in enumerate(("automatic", "block", "sparse")):
++            self.psm.setItemText(index, self.tr_text(key))
++        self.pages.setPlaceholderText(self.tr_text("range_hint"))
++        self.force.setText(self.tr_text("force"))
++        self.note.setText(self.tr_text("note"))
++        self.lossy_note.setText(self.tr_text("lossy_note"))
++        self.pdf_note.setText(self.tr_text("pdf_note"))
++        self._refresh_output_labels()
++        self._render_status()
++
++    def _refresh_output_labels(self):
++        names = {"pdf": "searchable", "txt": "text", "docx": "word", "xlsx": "excel"}
++        for index in range(self.output.count()):
++            key = self.output.itemData(index)
++            self.output.setItemText(index, self.tr_text(names[key]) if key in names else key.upper())
++
++    def _options_changed(self):
++        operation = self.operation.currentData()
++        visible = {
++            "pages": operation in {"split", "extract", "delete", "rotate", "pdf_to_images", "recognize"},
++            "rotation": operation == "rotate", "compression": operation == "compress",
++            "quality": operation == "pdf_to_images" or (operation == "compress" and self.compression.currentData() == "images"),
++            "dpi": operation in {"images_to_pdf", "pdf_to_images", "recognize"} or (operation == "compress" and self.compression.currentData() == "images"),
++            "ocr_language": operation == "recognize", "output": operation in {"pdf_to_images", "recognize"},
++            "layout": operation == "recognize",
++        }
++        for key, show in visible.items():
++            for widget in self._labels[key]:
++                widget.setVisible(show)
++        if operation != getattr(self, "_output_operation", None):
++            self.output.blockSignals(True)
++            self.output.clear()
++            for key in (("pdf", "txt", "docx", "xlsx") if operation == "recognize" else ("png", "jpg")):
++                self.output.addItem(key, key)
++            self.output.blockSignals(False)
++            self._output_operation = operation
++        self._refresh_output_labels()
++        self.force.setVisible(operation == "recognize")
++        self.note.setVisible(operation == "recognize")
++        self.lossy_note.setVisible(operation == "compress")
++        self._notes_changed()
++
++    def _notes_changed(self):
++        self.pdf_note.setVisible(self.operation.currentData() == "recognize" and self.output.currentData() == "pdf")
++
++    def add_files(self):
++        paths, _ = QFileDialog.getOpenFileNames(self, self.tr_text("pick"), "",
++                                               "PDF / Images (*.pdf *.png *.jpg *.jpeg *.tif *.tiff *.bmp *.webp *.heic *.gif)",
++                                               options=QFileDialog.DontUseNativeDialog)
++        self.set_files(self.input_paths() + paths)
++
++    def input_paths(self):
++        return [self.files.item(index).data(Qt.UserRole) for index in range(self.files.count())]
++
++    def set_files(self, paths):
++        if self._busy:
++            return
++        self.files.clear()
++        for path in dict.fromkeys(map(str, paths)):
++            self.files.addItem(Path(path).name)
++            item = self.files.item(self.files.count() - 1)
++            item.setData(Qt.UserRole, path)
++            item.setToolTip(path)
++
++    def remove_files(self):
++        for item in self.files.selectedItems():
++            self.files.takeItem(self.files.row(item))
++
++    def move_file(self, offset):
++        row = self.files.currentRow()
++        if 0 <= row + offset < self.files.count() and row >= 0:
++            item = self.files.takeItem(row)
++            self.files.insertItem(row + offset, item)
++            self.files.setCurrentRow(row + offset)
++
++    def is_busy(self):
++        return self._busy
++
++    def _set_busy(self, value):
++        self._busy = value
++        for widget in (self.files, self.add_button, self.remove_button, self.up_button, self.down_button,
++                       self.operation, self.pages, self.rotation, self.compression, self.quality, self.dpi,
++                       self.ocr_language, self.output, self.psm, self.force, self.start_button):
++            widget.setEnabled(not value)
++        self.cancel_button.setEnabled(value)
++        self.progress.setVisible(value)
++
++    def start(self):
++        if self._busy or self._pool is None:
++            return
++        if getattr(self.window(), "pending", 0):
++            self._set_status("busy")
++            return
++        paths = self.input_paths()
++        if not paths:
++            self._set_status("empty")
++            return
++        request = pdf_tools.Request(
++            self.operation.currentData(), paths, self.pages.text(), self.rotation.currentData(),
++            self.compression.currentData(), self.quality.value(), self.dpi.value(),
++            self.ocr_language.currentData(), self.output.currentData() or "pdf", self.force.isChecked(), self.psm.currentData())
++        self._cancel = threading.Event()
++        self._results = 0
++        self._error = None
++        self.progress.setValue(0)
++        self._set_busy(True)
++        self._set_status("working", label=Path(paths[0]).name)
++        bridge = self._bridge
++        self._future = self._pool.submit(pdf_tools.execute, request, self._cancel,
++                                         bridge.progress.emit, bridge.result.emit)
++        self._future.add_done_callback(bridge.finished.emit)
++
++    def cancel(self):
++        if self._busy:
++            self._cancel.set()
++            self.cancel_button.setEnabled(False)
++            self._set_status("cancelling")
++
++    @Slot(int, int, str)
++    def _on_progress(self, done, total, label):
++        if not self._cancel.is_set():
++            self.progress.setValue(int(done * 100 / max(total, 1)))
++            self._set_status("working", label=label)
++
++    @Slot(str, str, str)
++    def _on_result(self, source, output, error):
++        self._results += bool(output)
++        self.result_ready.emit(source, output, error)
++
++    @Slot(object)
++    def _on_error(self, error):
++        self._error = error
++        self._render_status()
++        if not isinstance(error, pdf_tools.Cancelled):
++            self.result_ready.emit(getattr(error, "source", ""), "", self.error_text(error))
++
++    def error_text(self, error):
++        code = getattr(error, "code", "")
++        if code == "cancelled":
++            return self.tr_text("cancelled")
++        base = ERRORS.get(code)
++        return base[self.language == "en"] if base else str(error)
++
++    def _set_status(self, key, **values):
++        self._status_key, self._status_values = key, values
++        self._render_status()
++
++    def _render_status(self):
++        self.status.setText(self.error_text(self._error) if self._error is not None else
++                            self.tr_text(self._status_key, **self._status_values))
++
++    @Slot(object)
++    def _finish(self, future):
++        # Future 완료 뒤에만 GUI 입력을 복구하므로 반복 실행과 종료 정리가 경합하지 않는다.
++        try:
++            future.result()
++        except Exception as error:
++            self._on_error(error)
++        self._set_busy(False)
++        if self._error is None:
++            self._set_status("cancelled" if self._cancel.is_set() else "done", count=self._results)
++        self._future = None
++
++    @Slot()
++    def shutdown(self, *, wait=False):
++        if self._busy:
++            return False
++        if self._pool is not None:
++            self._pool.shutdown(wait=wait, cancel_futures=True)
++            self._pool = None
++        return True
+--- 비교대상없음/test_gui.py
++++ 부드러운디자인-작업전/test_gui.py
+@@ -0,0 +1,967 @@
++"""Qt 드롭·모션·키 상태 회귀 시험. 실제 탐색기/물리 Shift 시험과 구분한다."""
++from __future__ import annotations
++
++import hashlib
++import json
++import os
++from pathlib import Path
++import re
++import string
++import subprocess
++import sys
++import time
++import unittest
++from unittest.mock import Mock, patch
++
++from PySide6.QtCore import Qt, QPoint, QPointF, QMimeData, QUrl
++from PySide6.QtGui import QFont, QFontDatabase, QPalette, QDragEnterEvent, QDragMoveEvent, QDropEvent, QMouseEvent
++from PySide6.QtTest import QTest, QSignalSpy
++from PySide6.QtWidgets import QApplication, QFileDialog, QDialogButtonBox, QMessageBox
++import app
++import i18n
++from pdf_panel import ERRORS as PDF_ERRORS
++from pdf_tools import PdfToolError
++
++
++ROOT = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else Path("gui-test-output").resolve()
++ROOT.mkdir(parents=True, exist_ok=True)
++SOURCE = ROOT / "원본보존-드롭시험.png"
++SOURCE2 = ROOT / "두번째.png"
++app.engine.Image.new("RGBA", (48, 32), (30, 130, 240, 140)).save(SOURCE)
++app.engine.Image.new("RGB", (32, 32), "orange").save(SOURCE2)
++ORIGINAL_HASH = hashlib.sha256(SOURCE.read_bytes()).hexdigest()
++app.DATA = ROOT / "격리설정"
++APPLICATION = QApplication([])
++APPLICATION.setQuitOnLastWindowClosed(False)
++REGISTERED_TEST_FONTS = {}
++if APPLICATION.platformName() == "offscreen":
++    # Windows의 offscreen 플러그인은 시스템 글꼴을 열거하지 않는다. 시험 프로세스에만 등록한다.
++    for name in ("segoeui.ttf", "seguisb.ttf", "malgun.ttf", "malgunbd.ttf"):
++        filename = Path(os.environ.get("WINDIR", "C:/Windows")) / "Fonts" / name
++        REGISTERED_TEST_FONTS[name] = QFontDatabase.addApplicationFont(str(filename))
++app.apply_application_style(APPLICATION)
++
++
++def mime_for(*urls):
++    mime = QMimeData()
++    mime.setUrls(list(urls) or [QUrl.fromLocalFile(str(SOURCE))])
++    return mime
++
++
++def drop_at(point, mime=None, actions=Qt.CopyAction | Qt.MoveAction):
++    mime = mime if mime is not None else mime_for()
++    event = QDropEvent(point, actions, mime, Qt.LeftButton, Qt.ShiftModifier)
++    # QDropEvent는 MIME 객체를 소유하지 않으므로 모의 이벤트가 끝날 때까지 참조를 유지한다.
++    event._mime_reference = mime
++    return event
++
++
++def settle(milliseconds=190):
++    QTest.qWait(milliseconds)
++    APPLICATION.processEvents()
++
++
++class GuiTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.window = app.MainWindow()
++        cls.window.timer.stop()
++        cls.window.notifications.setChecked(False)
++        cls.window.reveal.setChecked(False)
++        cls.wheel = cls.window.wheel
++        cls.wheel.chosen.disconnect()
++        cls.events = []
++        cls.wheel.chosen.connect(lambda files, target: cls.events.append((files, target)))
++
++    @classmethod
++    def tearDownClass(cls):
++        cls.window.timer.stop()
++        cls.wheel.hide()
++        cls.window.tray.hide()
++        cls.window.hide()
++        cls.window.pool.shutdown(wait=True)
++
++    def setUp(self):
++        self.events.clear()
++        self.wheel.hide()
++        self.window.start_point = None
++        self.window.drag_fired = False
++        self.window.explorer_drag = False
++        self.window.release_time = None
++        self.window.recording = False
++        self.window.trigger.setCurrentIndex(0)
++        self.window.set_language("ko")
++
++    def show_wheel(self, paths=None, preview=False):
++        self.wheel.display(QPoint(500, 380), paths or [str(SOURCE)], preview)
++        APPLICATION.processEvents()
++
++    def test_01_compact_settings_and_tray(self):
++        self.assertEqual(self.window.tabs.count(), 5)
++        self.assertEqual([self.window.tabs.tabText(i) for i in range(4)], ["설정", "도구", "기록", "정보"])
++        self.assertIs(self.window.tabs.widget(4), self.window.pdf_panel)
++        self.assertLessEqual(self.window.width(), 460)
++        self.assertFalse(hasattr(self.window, "list"))
++        self.window.update_tray_menu()
++        texts = [action.text() for action in self.window.tray_menu.actions()]
++        for text in ["파일 선택…", "폴더 선택…", "드래그 키", "로그인 시 시작", "결과 파일 선택", "변환 알림", "도우미 도구", "기록", "설정", "정보", "종료"]:
++            self.assertIn(text, texts)
++        self.window.show()
++        APPLICATION.processEvents()
++        self.assertTrue(self.window.grab().save(str(ROOT / "3차-간단설정.png")))
++        self.window.hide()
++
++    def test_02_common_formats_preserved(self):
++        self.show_wheel([str(SOURCE), str(SOURCE2), str(SOURCE)])
++        self.assertEqual(len(self.wheel.paths), 2)
++        self.assertEqual(self.wheel.options, ["jpg", "webp", "tiff", "avif", "bmp", "pdf"])
++        self.assertTrue(all(reason is None for reason in self.wheel.reasons.values()))
++        text = ROOT / "별도.txt"
++        text.write_text("한글", encoding="utf-8")
++        self.wheel.set_paths([str(SOURCE), str(text)])
++        self.assertEqual(self.wheel.options, ["jpg", "pdf"])
++
++    def test_03_copy_overrides_shift_move(self):
++        self.show_wheel()
++        mime = mime_for()
++        event = QDragEnterEvent(QPoint(170, 170), Qt.CopyAction | Qt.MoveAction,
++                                mime, Qt.LeftButton, Qt.ShiftModifier)
++        self.wheel.dragEnterEvent(event)
++        self.assertTrue(event.isAccepted())
++        self.assertEqual(event.dropAction(), Qt.CopyAction)
++        move = QDragMoveEvent(QPoint(220, 80), Qt.CopyAction | Qt.MoveAction,
++                              mime, Qt.LeftButton, Qt.ShiftModifier)
++        self.wheel.dragMoveEvent(move)
++        self.assertTrue(move.isAccepted())
++        self.assertEqual(move.dropAction(), Qt.CopyAction)
++
++    def test_04_center_cancel_consumes_without_conversion(self):
++        self.show_wheel()
++        event = drop_at(QPointF(170, 170))
++        self.wheel.dropEvent(event)
++        self.assertTrue(event.isAccepted())
++        self.assertEqual(event.dropAction(), Qt.CopyAction)
++        self.assertEqual(self.events, [])
++        settle()
++        self.assertFalse(self.wheel.isVisible())
++
++    def test_05_valid_sector_drop_once(self):
++        self.show_wheel()
++        point = QPointF(220, 80)
++        self.assertEqual(self.wheel.region(point), 0)
++        event = drop_at(point)
++        self.wheel.dropEvent(event)
++        self.assertTrue(event.isAccepted())
++        self.assertEqual(self.events, [([str(SOURCE)], "jpg")])
++        duplicate = drop_at(point)
++        self.wheel.dropEvent(duplicate)
++        self.assertFalse(duplicate.isAccepted())
++        self.assertEqual(len(self.events), 1)
++
++    def test_06_move_only_drag_is_rejected(self):
++        self.show_wheel()
++        mime = mime_for()
++        event = QDragEnterEvent(QPoint(220, 80), Qt.MoveAction, mime, Qt.LeftButton, Qt.ShiftModifier)
++        self.wheel.dragEnterEvent(event)
++        self.assertFalse(event.isAccepted())
++        drop = drop_at(QPointF(220, 80), mime, Qt.MoveAction)
++        self.wheel.dropEvent(drop)
++        self.assertFalse(drop.isAccepted())
++        self.assertEqual(self.events, [])
++
++    def test_07_remote_or_mixed_or_missing_urls_rejected(self):
++        self.show_wheel()
++        cases = [
++            mime_for(QUrl("https://example.invalid/input.png")),
++            mime_for(QUrl.fromLocalFile(str(SOURCE)), QUrl("https://example.invalid/input.png")),
++            mime_for(QUrl.fromLocalFile(str(ROOT / "없는파일.png"))),
++            QMimeData(),
++        ]
++        for mime in cases:
++            with self.subTest(urls=[url.toString() for url in mime.urls()]):
++                enter = QDragEnterEvent(QPoint(220, 80), Qt.CopyAction | Qt.MoveAction,
++                                        mime, Qt.LeftButton, Qt.ShiftModifier)
++                self.wheel.dragEnterEvent(enter)
++                self.assertFalse(enter.isAccepted())
++                event = drop_at(QPointF(220, 80), mime)
++                self.wheel.dropEvent(event)
++                self.assertFalse(event.isAccepted())
++        self.assertEqual(self.events, [])
++
++    def test_08_disabled_target_preserves_copy_and_no_job(self):
++        self.show_wheel()
++        audio = ROOT / "도구없는.wav"
++        audio.write_bytes(b"RIFF-test")
++        with patch.object(app.engine, "tool", return_value=None), patch.object(self.window, "notify") as notice:
++            self.wheel.set_paths([str(audio)])
++            event = drop_at(QPointF(220, 80), mime_for(QUrl.fromLocalFile(str(audio))))
++            self.wheel.dropEvent(event)
++            self.assertTrue(event.isAccepted())
++            self.assertEqual(event.dropAction(), Qt.CopyAction)
++            self.assertEqual(self.events, [])
++            notice.assert_called_once_with("도우미 도구 필요", "FFmpeg를 설치해 주세요.")
++
++    def test_09_outer_area_consumes_without_conversion(self):
++        self.show_wheel()
++        event = drop_at(QPointF(2, 2))
++        self.wheel.dropEvent(event)
++        self.assertEqual(event.dropAction(), Qt.CopyAction)
++        self.assertTrue(event.isAccepted())
++        self.assertEqual(self.events, [])
++
++    def test_10_motion_has_intermediate_frames_fixed_geometry(self):
++        self.show_wheel()
++        geometry = self.wheel.geometry()
++        settle(45)
++        self.assertGreater(self.wheel.reveal, 0)
++        self.assertLess(self.wheel.reveal, 1)
++        self.assertEqual(self.wheel.geometry(), geometry)
++        self.assertEqual(self.wheel.windowOpacity(), 1.0)
++        self.assertTrue(self.wheel.acceptDrops())
++        self.wheel.grab().save(str(ROOT / "3차-모션중간.png"))
++        settle(170)
++        self.assertAlmostEqual(self.wheel.reveal, 1)
++        self.wheel.set_hover(0)
++        settle(40)
++        self.assertGreater(self.wheel.weights.get(0, 0), 0)
++        self.assertLess(self.wheel.weights.get(0, 0), 1)
++        settle(100)
++        self.assertAlmostEqual(self.wheel.weights[0], 1)
++        self.wheel.grab().save(str(ROOT / "3차-원본형메뉴.png"))
++        self.wheel.dismiss()
++        settle(40)
++        self.assertTrue(self.wheel.isVisible())
++        self.assertGreater(self.wheel.reveal, 0)
++        self.assertLess(self.wheel.reveal, 1)
++        self.assertFalse(self.wheel.acceptDrops())
++        settle(140)
++        self.assertFalse(self.wheel.isVisible())
++
++    def test_11_reopen_interrupts_stale_close_animation(self):
++        self.show_wheel()
++        settle()
++        self.wheel.dismiss()
++        settle(35)
++        self.wheel.display(QPoint(600, 400), [str(SOURCE2)], True)
++        settle()
++        self.assertTrue(self.wheel.isVisible())
++        self.assertFalse(self.wheel._closing)
++        self.assertTrue(self.wheel.acceptDrops())
++        self.assertEqual(self.wheel.paths, [str(SOURCE2)])
++
++    def test_12_fast_drop_during_entrance(self):
++        self.show_wheel()
++        event = drop_at(QPointF(220, 80))
++        self.wheel.dropEvent(event)
++        self.assertTrue(event.isAccepted())
++        self.assertEqual(self.events[-1][1], "jpg")
++        settle()
++        self.assertFalse(self.wheel.isVisible())
++
++    def test_13_screen_edge_clamping(self):
++        bounds = APPLICATION.primaryScreen().availableGeometry()
++        for point in [bounds.topLeft(), bounds.bottomRight()]:
++            self.wheel.display(point, [str(SOURCE)])
++            self.assertTrue(bounds.contains(self.wheel.geometry()))
++
++    def test_14_preview_click_selects_and_right_click_does_not(self):
++        self.show_wheel(preview=True)
++        event = QMouseEvent(QMouseEvent.MouseButtonRelease, QPointF(220, 80),
++                            Qt.RightButton, Qt.NoButton, Qt.NoModifier)
++        self.wheel.mouseReleaseEvent(event)
++        self.assertEqual(self.events, [])
++        self.assertFalse(self.wheel._closing)
++        event = QMouseEvent(QMouseEvent.MouseButtonRelease, QPointF(220, 80),
++                            Qt.LeftButton, Qt.NoButton, Qt.NoModifier)
++        self.wheel.mouseReleaseEvent(event)
++        self.assertEqual(self.events, [([str(SOURCE)], "jpg")])
++
++    def test_15_preview_escape_without_mouse_button(self):
++        self.show_wheel(preview=True)
++        settle()
++        with patch.object(app, "down", side_effect=lambda vk: vk == 0x1B):
++            self.window.poll()
++        settle()
++        self.assertFalse(self.wheel.isVisible())
++
++    def test_16_explorer_trigger_after_real_threshold_model(self):
++        class Native:
++            @staticmethod
++            def GetForegroundWindow():
++                return 123
++
++            @staticmethod
++            def GetClassNameW(hwnd, buffer, length):
++                buffer.value = "CabinetWClass"
++
++        keys = {1, 0x10}
++        with patch.object(app, "USER32", Native()), patch.object(app, "down", side_effect=lambda vk: vk in keys), \
++                patch.object(app.QCursor, "pos", side_effect=[QPoint(100, 100), QPoint(104, 104), QPoint(140, 140), QPoint(180, 180)]):
++            self.window.poll()
++            self.assertFalse(self.window.drag_fired)
++            self.window.poll()
++            self.assertFalse(self.window.drag_fired)
++            self.window.poll()
++            self.assertTrue(self.window.drag_fired)
++            geometry = self.wheel.geometry()
++            self.window.poll()
++            self.assertEqual(self.wheel.geometry(), geometry)
++            self.assertTrue(self.wheel.isVisible())
++
++    def test_17_non_explorer_does_not_trigger_model(self):
++        class Native:
++            @staticmethod
++            def GetForegroundWindow():
++                return 456
++
++            @staticmethod
++            def GetClassNameW(hwnd, buffer, length):
++                buffer.value = "Notepad"
++
++        with patch.object(app, "USER32", Native()), patch.object(app, "down", side_effect=lambda vk: vk in {1, 0x10}), \
++                patch.object(app.QCursor, "pos", side_effect=[QPoint(100, 100), QPoint(180, 180)]):
++            self.window.poll()
++            self.window.poll()
++        self.assertFalse(self.window.drag_fired)
++        self.assertFalse(self.wheel.isVisible())
++
++    def test_18_release_grace_allows_queued_drop_model(self):
++        self.show_wheel()
++        settle()
++        self.window.start_point = QPoint(100, 100)
++        with patch.object(app, "down", return_value=False), patch.object(app.time, "monotonic", return_value=100):
++            self.window.poll()
++        self.assertEqual(self.window.release_time, 100)
++        self.assertFalse(self.wheel._closing)
++        with patch.object(app, "down", return_value=False), patch.object(app.time, "monotonic", return_value=100.34):
++            self.window.poll()
++        self.assertFalse(self.wheel._closing)
++        with patch.object(app, "down", return_value=False), patch.object(app.time, "monotonic", return_value=100.36):
++            self.window.poll()
++        self.assertTrue(self.wheel._closing)
++
++    def test_19_custom_key_recording_and_hint_model(self):
++        self.window.record_key()
++        with patch.object(app, "down", side_effect=lambda vk: vk == 0x77):
++            self.window.poll()
++        self.assertFalse(self.window.recording)
++        self.assertEqual(self.window.custom_vk, 0x77)
++        self.assertEqual(self.window.trigger.currentData(), -1)
++        self.assertIn("119", self.window.subtitle.text())
++        self.window.record_key()
++        with patch.object(app, "down", side_effect=lambda vk: vk == 0x1B):
++            self.window.poll()
++        self.assertFalse(self.window.recording)
++
++    def test_20_conversion_queue_history_and_original_hash(self):
++        self.window.enqueue([str(SOURCE)], "jpg")
++        deadline = time.monotonic() + 10
++        while self.window.pending and time.monotonic() < deadline:
++            settle(25)
++        self.assertEqual(self.window.pending, 0)
++        row = self.window.records[-1]
++        self.assertEqual(row["error"], "")
++        output = Path(row["output"])
++        self.assertTrue(output.is_file())
++        self.assertNotEqual(output, SOURCE)
++        self.assertEqual(output.parent, SOURCE.parent)
++        with app.engine.Image.open(output) as image:
++            image.verify()
++        self.assertEqual(hashlib.sha256(SOURCE.read_bytes()).hexdigest(), ORIGINAL_HASH)
++        self.assertTrue(self.window.history_path.is_file())
++        self.assertFalse(self.window.progress.isVisible())
++
++    def test_21_history_schema_error_preserves_bytes(self):
++        before = self.window.history_path.read_bytes() if self.window.history_path.exists() else None
++        broken = b'{"not":"a history list"}'
++        self.window.history_path.write_bytes(broken)
++        other = app.MainWindow()
++        other.timer.stop()
++        other.notifications.setChecked(False)
++        self.assertTrue(hasattr(other, "history_error"))
++        self.assertEqual(other.history_path.read_bytes(), broken)
++        other.tray.hide()
++        other.wheel.hide()
++        other.hide()
++        other.pool.shutdown(wait=True)
++        if before is not None:
++            self.window.history_path.write_bytes(before)
++
++    def test_22_settings_drop_opens_manual_wheel(self):
++        mime = mime_for()
++        enter = QDragEnterEvent(QPoint(100, 100), Qt.CopyAction | Qt.MoveAction,
++                                mime, Qt.LeftButton, Qt.ShiftModifier)
++        self.window.dragEnterEvent(enter)
++        self.assertTrue(enter.isAccepted())
++        self.assertEqual(enter.dropAction(), Qt.CopyAction)
++        event = drop_at(QPointF(100, 100), mime)
++        self.window.dropEvent(event)
++        self.assertTrue(event.isAccepted())
++        self.assertEqual(event.dropAction(), Qt.CopyAction)
++        self.assertTrue(self.wheel.isVisible())
++        self.assertTrue(self.wheel.preview)
++        self.assertEqual(self.wheel.paths, [str(SOURCE)])
++        self.assertEqual(self.events, [])
++        rejected = drop_at(QPointF(100, 100), mime, Qt.MoveAction)
++        self.window.dropEvent(rejected)
++        self.assertFalse(rejected.isAccepted())
++
++    def test_23_language_switch_preserves_trigger_and_wheel(self):
++        self.window.custom_vk = 65
++        self.window.settings.setValue("custom_vk", 65)
++        self.window.trigger.setCurrentIndex(self.window.trigger.findData(-1))
++        self.show_wheel()
++        geometry = self.wheel.geometry()
++        paths, options = self.wheel.paths.copy(), self.wheel.options.copy()
++        old_values = {key: self.window.settings.value(key) for key in ("trigger", "custom_vk", "notify", "reveal")}
++        changed = QSignalSpy(self.window.trigger.currentIndexChanged)
++        self.window.language_combo.setCurrentIndex(self.window.language_combo.findData("en"))
++        self.assertEqual(self.window.language, "en")
++        self.assertEqual(self.window.windowTitle(), "FlipRing Settings")
++        self.assertEqual(self.window.tabs.tabText(0), "Settings")
++        self.assertEqual(self.window.trigger.currentData(), -1)
++        self.assertEqual(self.window.custom_vk, 65)
++        self.assertEqual(self.window.trigger.currentText(), "Custom")
++        self.assertEqual(changed.count(), 0)
++        self.assertEqual({key: self.window.settings.value(key) for key in old_values}, old_values)
++        self.assertEqual(self.wheel.geometry(), geometry)
++        self.assertEqual(self.wheel.paths, paths)
++        self.assertEqual(self.wheel.options, options)
++        self.assertTrue(self.wheel.isVisible())
++        self.assertIn("Custom key (65)", self.window.subtitle.text())
++        self.assertIn("Choose files…", [action.text() for action in self.window.tray_menu.actions()])
++        self.window.show()
++        APPLICATION.processEvents()
++        self.assertTrue(self.window.grab().save(str(ROOT / "Mono-English-settings.png")))
++        self.window.hide()
++
++    def test_24_language_persists_when_window_recreated(self):
++        self.window.set_language("en")
++        self.window.settings.sync()
++        script = (
++            "import json,pathlib; from PySide6.QtWidgets import QApplication; import app; "
++            f"app.DATA=pathlib.Path({str(app.DATA)!r}); q=QApplication([]); w=app.MainWindow(); "
++            "w.timer.stop(); print(json.dumps({'language':w.language,'tab':w.tabs.tabText(0)})); "
++            "w.tray.hide(); w.wheel.hide(); w.pool.shutdown(wait=True)"
++        )
++        restarted = subprocess.run([sys.executable, "-B", "-X", "utf8", "-c", script],
++                                   cwd=Path(app.__file__).parent, capture_output=True, text=True,
++                                   encoding="utf-8", timeout=10, check=False)
++        self.assertEqual(restarted.returncode, 0, restarted.stderr)
++        self.assertEqual(json.loads(restarted.stdout), {"language": "en", "tab": "Settings"})
++        other = app.MainWindow()
++        try:
++            other.timer.stop()
++            self.assertEqual(other.language, "en")
++            self.assertEqual(other.language_combo.currentData(), "en")
++            self.assertEqual(other.tabs.tabText(2), "History")
++            self.assertEqual(other.settings.value("language"), "en")
++            self.assertEqual(other.settings.fileName(), self.window.settings.fileName())
++        finally:
++            other.timer.stop()
++            other.tray.hide()
++            other.wheel.hide()
++            other.hide()
++            other.pool.shutdown(wait=True)
++            self.window.set_language("ko")
++        self.window.show()
++        APPLICATION.processEvents()
++        self.assertTrue(self.window.grab().save(str(ROOT / "Mono-Korean-settings.png")))
++        self.window.hide()
++
++    def test_25_translation_placeholders_are_complete(self):
++        formatter = string.Formatter()
++        values = {"app": "FlipRing", "key": "F8", "tool": "FFmpeg", "count": 2,
++                  "name": "원본.jpg", "error": "Example", "detail": "OS diagnostic"}
++        for message_id, pair in i18n.TEXT.items():
++            with self.subTest(message_id=message_id):
++                fields = [{name for _, name, _, _ in formatter.parse(text) if name} for text in pair]
++                self.assertEqual(fields[0], fields[1])
++                for language in ("ko", "en"):
++                    self.assertNotIn("\ufffd", i18n.tr(language, message_id, **values))
++
++    def test_26_engine_errors_are_translated_without_mutating_records(self):
++        for korean, english in i18n.ERROR_TEXT.items():
++            self.assertEqual(i18n.error_text("en", korean), english)
++            self.assertEqual(i18n.error_text("ko", korean), korean)
++            self.assertIsNone(re.search("[가-힣]", english))
++        for korean, english in [
++            ("지원하지 않는 파일입니다: sample.foo", "Unsupported file: sample.foo"),
++            ("LibreOffice에서 PDF 결과를 만들지 못했습니다.", "LibreOffice did not produce a PDF result."),
++            ("FFmpeg 도구를 설치해 주세요. 설정에서 설치 명령을 복사할 수 있습니다.", "Install FFmpeg. You can copy the install command in Settings."),
++            ("ffmpeg 변환 실패 (2)\ncodec error", "ffmpeg conversion failed (2)\ncodec error"),
++        ]:
++            self.assertEqual(i18n.error_text("en", korean), english)
++        original = self.window.records.copy()
++        row = {"time": "2026-10-21T00:00:00", "source": str(SOURCE), "output": "",
++               "error": "지원하지 않는 변환입니다."}
++        self.window.records = [row]
++        self.window.last_result = ("", row["error"])
++        try:
++            self.window.set_language("en")
++            self.assertIn("Failed: This conversion is not supported.", self.window.history.item(0).text())
++            self.assertIn(SOURCE.name, self.window.history.item(0).text())
++            self.assertEqual(row["error"], "지원하지 않는 변환입니다.")
++            self.assertEqual(self.window.status.text(), "Failed · This conversion is not supported.")
++        finally:
++            self.window.records = original
++            self.window.last_result = None
++            self.window.set_language("ko")
++
++    def test_27_monochrome_palette_wheel_icons_and_system_font(self):
++        for color in re.findall(r"#[0-9a-fA-F]{6}", self.window.styleSheet()):
++            self.assertEqual(color[1:3], color[3:5])
++            self.assertEqual(color[3:5], color[5:7])
++        for role in (QPalette.Window, QPalette.WindowText, QPalette.Base, QPalette.Text,
++                     QPalette.Highlight, QPalette.Button, QPalette.ButtonText, QPalette.Accent):
++            color = APPLICATION.palette().color(role)
++            self.assertEqual(color.red(), color.green())
++            self.assertEqual(color.green(), color.blue())
++        self.assertEqual(app.ui_font().families()[:2], ["Segoe UI Variable", "Segoe UI"])
++        self.assertIn("Malgun Gothic", app.ui_font().families())
++        self.assertEqual(app.ui_font().weight(), QFont.Normal)
++        self.assertEqual(APPLICATION.font().weight(), QFont.Normal)
++        self.assertIn("Segoe UI", QFontDatabase.families())
++        self.assertIn("Malgun Gothic", QFontDatabase.families())
++        self.assertTrue(all(value >= 0 for value in REGISTERED_TEST_FONTS.values()))
++        self.show_wheel()
++        settle()
++        self.wheel.set_hover(0)
++        settle(120)
++        pixmaps = [app.icon(busy=False).pixmap(64, 64), app.icon(busy=True).pixmap(64, 64), self.wheel.grab()]
++        for pixmap in pixmaps:
++            image = pixmap.toImage()
++            for y in range(image.height()):
++                for x in range(image.width()):
++                    color = image.pixelColor(x, y)
++                    if color.alpha():
++                        self.assertEqual(color.red(), color.green())
++                        self.assertEqual(color.green(), color.blue())
++        self.assertTrue(self.wheel.grab().save(str(ROOT / "Mono-monochrome-wheel.png")))
++
++    def test_28_recording_and_busy_status_follow_language(self):
++        self.window.record_key()
++        self.window.set_language("en")
++        self.assertEqual(self.window.record_button.text(), "Press a key · Esc to cancel")
++        self.window.pending = 2
++        try:
++            self.window.update_status()
++            self.assertEqual(self.window.status.text(), "Converting · 2 remaining")
++            self.window.set_language("ko")
++            self.assertEqual(self.window.status.text(), "변환 중 · 2개 대기")
++            self.assertEqual(self.window.record_button.text(), "사용할 키를 누르세요 · Esc 취소")
++        finally:
++            self.window.pending = 0
++            self.window.recording = False
++            self.window.update_record_label()
++            self.window.update_status()
++
++    def test_29_dialog_labels_and_standard_buttons_follow_language(self):
++        for language, open_text, cancel_text in (("ko", "열기", "취소"), ("en", "Open", "Cancel")):
++            self.window.set_language(language)
++            notice = app.message_dialog(self.window, self.window.text("busy_title"), self.window.text("busy_message"))
++            self.assertEqual(notice.icon(), QMessageBox.NoIcon)
++            self.assertEqual(notice.button(QMessageBox.Ok).text().replace("&", ""), "확인" if language == "ko" else "OK")
++            notice.deleteLater()
++            dialog = self.window.file_dialog(False)
++            try:
++                self.assertTrue(dialog.testOption(QFileDialog.DontUseNativeDialog))
++                self.assertEqual(dialog.labelText(QFileDialog.Accept), open_text)
++                self.assertEqual(dialog.labelText(QFileDialog.Reject), cancel_text)
++                self.assertEqual(dialog.labelText(QFileDialog.FileName), self.window.text("dialog_filename"))
++                box = dialog.findChild(QDialogButtonBox)
++                self.assertIsNotNone(box)
++                self.assertEqual(box.button(QDialogButtonBox.Cancel).text().replace("&", ""), cancel_text)
++                self.assertEqual(QApplication.translate("QFileSystemModel", "Name"), "이름" if language == "ko" else "Name")
++                self.assertEqual(QApplication.translate("QFileDialog", "Unmapped diagnostic"), "Unmapped diagnostic")
++                dialog.resize(660, 430)
++                dialog.show()
++                APPLICATION.processEvents()
++                self.assertTrue(dialog.grab().save(str(ROOT / f"Mono-{language}-file-dialog.png")))
++            finally:
++                dialog.hide()
++                dialog.deleteLater()
++        self.window.set_language("ko")
++
++    def test_30_autostart_value_is_language_independent(self):
++        class Key:
++            def __enter__(self):
++                return self
++
++            def __exit__(self, *args):
++                return False
++
++        with patch.object(app.winreg, "CreateKey", return_value=Key()), \
++                patch.object(app.winreg, "SetValueEx") as write, \
++                patch.object(app.winreg, "DeleteValue") as delete:
++            self.window.set_language("en")
++            self.window.autostart(True)
++            self.assertEqual(write.call_args.args[1], "FlipRing")
++            self.window.set_language("ko")
++            self.window.autostart(False)
++            self.assertEqual(delete.call_args.args[1], "FlipRing")
++        self.assertEqual(app.DATA, ROOT / "격리설정")
++
++    def test_31_history_double_click_selects_result_without_running_it(self):
++        output = ROOT / "기록 & [선택] 한글.png"
++        output.write_bytes("결과 파일".encode("utf-8"))
++        self.window.records = [{"time": "2026-10-21T12:00:00", "source": str(SOURCE),
++                                "output": str(output), "error": ""}]
++        self.window.refresh_history()
++        item = self.window.history.item(0)
++        self.assertEqual(item.data(Qt.UserRole), str(output))
++        with patch.object(app, "select_in_explorer") as launch:
++            self.window.tabs.setCurrentIndex(2)
++            self.window.show()
++            APPLICATION.processEvents()
++            point = self.window.history.visualItemRect(item).center()
++            QTest.mouseClick(self.window.history.viewport(), Qt.LeftButton, pos=point)
++            launch.assert_not_called()
++            QTest.mouseDClick(self.window.history.viewport(), Qt.LeftButton, pos=point)
++            APPLICATION.processEvents()
++        launch.assert_called_once_with(output)
++        with patch.object(app, "select_in_explorer") as launch:
++            QTest.mouseDClick(self.window.history.viewport(), Qt.RightButton, pos=point)
++            APPLICATION.processEvents()
++            launch.assert_not_called()
++        self.window.hide()
++        output.unlink()
++
++    def test_32_history_failure_and_missing_result_show_bilingual_guidance(self):
++        rows = [
++            {"time": "2026-10-21T12:00:00", "source": str(SOURCE), "output": "",
++             "error": "지원하지 않는 변환입니다."},
++            {"time": "2026-10-21T12:01:00", "source": str(SOURCE),
++             "output": str(ROOT / "이동되었거나 삭제된 결과.png"), "error": ""},
++        ]
++        for language, expected in (
++                ("ko", ["실패한 변환 기록에는 선택할 결과 파일이 없습니다.", "결과 파일이 없거나 폴더입니다."]),
++                ("en", ["Failed conversions do not have a result file to select.",
++                        "The result is missing or is a folder."])):
++            self.window.records = rows
++            self.window.set_language(language)
++            self.window.refresh_history()
++            with patch.object(app, "select_in_explorer") as launch, \
++                    patch.object(app, "message_dialog", return_value=Mock()) as dialog:
++                self.window.open_history_result(self.window.history.item(1))
++                self.window.open_history_result(self.window.history.item(0))
++            self.assertEqual(dialog.call_count, 2)
++            self.assertIn(expected[0], dialog.call_args_list[0].args[2])
++            self.assertIn(expected[1], dialog.call_args_list[1].args[2])
++            launch.assert_not_called()
++        self.window.set_language("ko")
++        self.window.records = []
++        self.window.refresh_history()
++
++    def test_33_history_non_record_rows_and_directories_do_not_open_explorer(self):
++        directory = ROOT / "기록에 저장된 폴더"
++        directory.mkdir(exist_ok=True)
++        self.window.records = [{"time": "2026-10-21T12:00:00", "source": str(SOURCE),
++                                "output": str(directory), "error": ""}]
++        self.window.refresh_history()
++        self.window.history.addItem("기록 오류 안내")
++        with patch.object(app, "select_in_explorer") as launch, \
++                patch.object(app, "message_dialog", return_value=Mock()) as dialog:
++            self.window.open_history_result(self.window.history.item(0))
++            self.window.open_history_result(self.window.history.item(1))
++        launch.assert_not_called()
++        self.assertEqual(dialog.call_count, 1)
++        directory.rmdir()
++        self.window.records = []
++        self.window.refresh_history()
++        self.window.set_language("ko")
++
++    def test_34_history_explorer_failure_and_empty_output_are_explained(self):
++        output = ROOT / "선택 가능한 결과.png"
++        output.write_bytes(b"result")
++        original = self.window.records.copy()
++        try:
++            for language in ("ko", "en"):
++                self.window.set_language(language)
++                self.window.records = [{"time": "2026-10-21T12:00:00", "source": str(SOURCE),
++                                        "output": str(output), "error": ""}]
++                self.window.refresh_history()
++                with patch.object(app, "select_in_explorer", side_effect=OSError("Unavailable")), \
++                        patch.object(app, "message_dialog", return_value=Mock()) as dialog:
++                    self.window.open_history_result(self.window.history.item(0))
++                self.assertEqual(dialog.call_args.args[1], self.window.text("history_explorer_title"))
++                self.assertIn("Unavailable", dialog.call_args.args[2])
++                self.window.records[0]["output"] = ""
++                self.window.refresh_history()
++                with patch.object(app, "select_in_explorer") as launch, \
++                        patch.object(app, "message_dialog", return_value=Mock()) as dialog:
++                    self.window.open_history_result(self.window.history.item(0))
++                launch.assert_not_called()
++                self.assertEqual(dialog.call_args.args[1], self.window.text("history_missing_title"))
++        finally:
++            output.unlink()
++            self.window.records = original
++            self.window.set_language("ko")
++            self.window.refresh_history()
++
++    def test_35_pdf_panel_language_and_tab_contract(self):
++        self.assertEqual(self.window.tabs.count(), 5)
++        self.assertIs(self.window.tabs.widget(4), self.window.pdf_panel)
++        for language in ("en", "ko"):
++            with patch.object(self.window.pdf_panel, "set_language",
++                              wraps=self.window.pdf_panel.set_language) as change:
++                self.window.set_language(language)
++            change.assert_called_once_with(language)
++            self.assertEqual(self.window.tabs.tabText(4), self.window.text("pdf_tools"))
++            self.window.tabs.setCurrentIndex(4)
++            self.window.show()
++            APPLICATION.processEvents()
++            self.assertTrue(self.window.grab().save(str(ROOT / f"FlipRing-{language}-pdf-panel.png")))
++        self.window.hide()
++
++    def test_36_pdf_result_signal_uses_history_without_changing_queue(self):
++        output = ROOT / "PDF 패널 결과.pdf"
++        app.engine.Image.new("RGB", (20, 20), "white").save(output, "PDF")
++        pending = self.window.pending
++        self.window.pdf_panel.result_ready.emit(str(SOURCE), str(output), "")
++        APPLICATION.processEvents()
++        self.assertEqual(self.window.pending, pending)
++        row = self.window.records[-1]
++        self.assertEqual(set(row), {"time", "source", "output", "error"})
++        self.assertEqual(row["output"], str(output))
++        self.assertEqual(row["source"], str(SOURCE))
++        self.assertEqual(row["error"], "")
++        self.assertEqual(self.window.history.item(0).data(Qt.UserRole), str(output))
++        self.assertEqual(json.loads(self.window.history_path.read_text(encoding="utf-8"))[-1], row)
++        self.assertEqual(hashlib.sha256(SOURCE.read_bytes()).hexdigest(), ORIGINAL_HASH)
++
++    def test_37_pdf_busy_blocks_quit(self):
++        with patch.object(self.window.pdf_panel, "is_busy", return_value=True), \
++                patch.object(app, "message_dialog", return_value=Mock()) as dialog, \
++                patch.object(self.window.pool, "shutdown") as shutdown, \
++                patch.object(app.QApplication, "quit") as quitting:
++            self.window.quit()
++        self.assertEqual(dialog.call_args.args[1], self.window.text("busy_title"))
++        shutdown.assert_not_called()
++        quitting.assert_not_called()
++
++    def test_38_pdf_busy_blocks_other_conversion_queue(self):
++        pending, records = self.window.pending, self.window.records.copy()
++        with patch.object(self.window.pdf_panel, "is_busy", return_value=True), \
++                patch.object(app, "message_dialog", return_value=Mock()) as dialog, \
++                patch.object(self.window.pool, "submit") as submit:
++            self.window.enqueue([str(SOURCE)], "jpg")
++        self.assertEqual(dialog.call_args.args[1], self.window.text("busy_title"))
++        submit.assert_not_called()
++        self.assertEqual(self.window.pending, pending)
++        self.assertEqual(self.window.records, records)
++
++    def test_39_pdf_standard_error_pairs_follow_current_language(self):
++        for code, pair in PDF_ERRORS.items():
++            for stored in pair:
++                with self.subTest(code=code, stored=stored):
++                    self.assertEqual(i18n.error_text("ko", stored), pair[0])
++                    self.assertEqual(i18n.error_text("en", stored), pair[1])
++        self.assertEqual(i18n.error_text("ko", "Unrecognized OS diagnostic"), "Unrecognized OS diagnostic")
++        self.assertEqual(i18n.error_text("en", "Unrecognized OS diagnostic"),
++                         "External tool or system error: Unrecognized OS diagnostic")
++
++    def test_40_pdf_error_history_status_and_notifications_switch_both_ways(self):
++        records, last_result = self.window.records.copy(), self.window.last_result
++        old_error = self.window.pdf_panel._error
++        before = self.window.history_path.read_bytes() if self.window.history_path.exists() else None
++        pending = self.window.pending
++        try:
++            for origin, destination in (("ko", "en"), ("en", "ko")):
++                for code, pair in PDF_ERRORS.items():
++                    with self.subTest(origin=origin, destination=destination, code=code):
++                        self.window.set_language(origin)
++                        with patch.object(self.window, "notify") as notice:
++                            self.window.pdf_panel._on_error(PdfToolError(code, source=str(SOURCE)))
++                        stored = pair[origin == "en"]
++                        self.assertEqual(self.window.records[-1]["error"], stored)
++                        notice.assert_called_once_with(self.window.text("failed_title"), SOURCE.name + "\n" + stored)
++                        self.window.set_language(destination)
++                        expected = pair[destination == "en"]
++                        self.assertIn(expected, self.window.history.item(0).text())
++                        self.assertEqual(self.window.status.text(), self.window.text("failed_status", error=expected[:90]))
++                        self.assertEqual(self.window.records[-1]["error"], stored)
++                        saved = json.loads(self.window.history_path.read_text(encoding="utf-8"))[-1]
++                        self.assertEqual(saved["error"], stored)
++                        self.assertEqual(set(saved), {"time", "source", "output", "error"})
++                        with patch.object(self.window, "notify") as notice:
++                            self.window.pdf_finished(str(SOURCE), "", stored)
++                        notice.assert_called_once_with(self.window.text("failed_title"), SOURCE.name + "\n" + expected)
++                        self.assertEqual(self.window.pending, pending)
++                        if code == "invalid_pdf":
++                            self.window.tabs.setCurrentIndex(2)
++                            self.window.show()
++                            APPLICATION.processEvents()
++                            self.assertTrue(self.window.grab().save(str(ROOT / f"FlipRing-{destination}-pdf-error-history.png")))
++                            self.window.hide()
++        finally:
++            self.window.records, self.window.last_result = records, last_result
++            self.window.pdf_panel._error = old_error
++            self.window.set_language("ko")
++            self.window.refresh_history()
++            self.window.update_status()
++            if before is not None:
++                self.window.history_path.write_bytes(before)
++
++    def shell_mocks(self, initialize=0, parse=0, select=0, pointer=0x12345678ABCDEF00):
++        # 실제 탐색기나 운영체제 COM 상태를 변경하지 않는 계약 시험 대역이다.
++        ole, shell = Mock(), Mock()
++        ole.CoInitializeEx.return_value = initialize
++
++        def parse_name(filename, binding, result, flags, attributes):
++            app.ctypes.cast(result, app.ctypes.POINTER(app.ctypes.c_void_p))[0] = pointer
++            return parse
++
++        shell.SHParseDisplayName.side_effect = parse_name
++        shell.SHOpenFolderAndSelectItems.return_value = select
++        return ole, shell
++
++    def test_41_shell_api_uses_signed_hresult_and_pointer_sized_pidls(self):
++        self.assertEqual(app.ctypes.sizeof(app.ctypes.c_int32), 4)
++        self.assertEqual(app.ctypes.sizeof(app.ctypes.c_void_p), 8)
++        for function in (app.OLE32.CoInitializeEx, app.SHELL32.SHParseDisplayName,
++                         app.SHELL32.SHOpenFolderAndSelectItems):
++            self.assertIs(function.restype, app.ctypes.c_int32)
++        self.assertEqual(app.OLE32.CoInitializeEx.argtypes, [app.ctypes.c_void_p, app.wintypes.DWORD])
++        self.assertEqual(app.SHELL32.SHParseDisplayName.argtypes,
++                         [app.wintypes.LPCWSTR, app.ctypes.c_void_p,
++                          app.ctypes.POINTER(app.ctypes.c_void_p), app.wintypes.ULONG,
++                          app.ctypes.POINTER(app.wintypes.ULONG)])
++        self.assertEqual(app.SHELL32.SHOpenFolderAndSelectItems.argtypes,
++                         [app.ctypes.c_void_p, app.wintypes.UINT,
++                          app.ctypes.POINTER(app.ctypes.c_void_p), app.wintypes.DWORD])
++        self.assertEqual(app.OLE32.CoTaskMemFree.argtypes, [app.ctypes.c_void_p])
++        self.assertIsNone(app.OLE32.CoTaskMemFree.restype)
++        self.assertEqual(app.OLE32.CoUninitialize.argtypes, [])
++        self.assertIsNone(app.OLE32.CoUninitialize.restype)
++
++    def test_42_shell_selects_full_unicode_file_pidl_and_balances_both_com_successes(self):
++        filename = ROOT / "한글 공백 & [선택] 결과.pdf"
++        for initialized in (0, 1):
++            with self.subTest(initialized=initialized):
++                ole, shell = self.shell_mocks(initialize=initialized)
++                calls = Mock()
++                for name, function in (("initialize", ole.CoInitializeEx),
++                                       ("parse", shell.SHParseDisplayName),
++                                       ("select", shell.SHOpenFolderAndSelectItems),
++                                       ("free", ole.CoTaskMemFree),
++                                       ("uninitialize", ole.CoUninitialize)):
++                    calls.attach_mock(function, name)
++                with patch.object(app, "OLE32", ole), patch.object(app, "SHELL32", shell):
++                    app.select_in_explorer(filename)
++                ole.CoInitializeEx.assert_called_once_with(None, 0x2)
++                parsed = shell.SHParseDisplayName.call_args.args
++                self.assertEqual(parsed[:2], (str(filename.resolve()), None))
++                self.assertEqual(parsed[3:], (0, None))
++                selected = shell.SHOpenFolderAndSelectItems.call_args.args
++                self.assertEqual(selected[0].value, 0x12345678ABCDEF00)
++                self.assertEqual(selected[1:], (0, None, 0))
++                ole.CoTaskMemFree.assert_called_once_with(selected[0])
++                ole.CoUninitialize.assert_called_once_with()
++                self.assertEqual([entry[0] for entry in calls.mock_calls],
++                                 ["initialize", "parse", "select", "free", "uninitialize"])
++
++    def test_43_shell_com_failure_preserves_existing_com_and_reports_signed_hresult(self):
++        for result in (0x80010106, app.ctypes.c_int32(0x80010106).value):
++            with self.subTest(result=result):
++                ole, shell = self.shell_mocks(initialize=result)
++                with patch.object(app, "OLE32", ole), patch.object(app, "SHELL32", shell):
++                    with self.assertRaisesRegex(OSError, r"CoInitializeEx.*0x80010106"):
++                        app.select_in_explorer(SOURCE)
++                shell.SHParseDisplayName.assert_not_called()
++                shell.SHOpenFolderAndSelectItems.assert_not_called()
++                ole.CoTaskMemFree.assert_not_called()
++                ole.CoUninitialize.assert_not_called()
++
++    def test_44_shell_parse_failure_releases_any_returned_memory_and_com(self):
++        for pointer in (None, 0x12345678ABCDEF00):
++            with self.subTest(pointer=pointer):
++                ole, shell = self.shell_mocks(parse=0x80070002, pointer=pointer)
++                with patch.object(app, "OLE32", ole), patch.object(app, "SHELL32", shell):
++                    with self.assertRaisesRegex(OSError, r"SHParseDisplayName.*0x80070002"):
++                        app.select_in_explorer(SOURCE)
++                shell.SHOpenFolderAndSelectItems.assert_not_called()
++                if pointer is None:
++                    ole.CoTaskMemFree.assert_not_called()
++                else:
++                    self.assertEqual(ole.CoTaskMemFree.call_args.args[0].value, pointer)
++                    self.assertEqual(ole.CoTaskMemFree.call_count, 1)
++                ole.CoUninitialize.assert_called_once_with()
++
++    def test_45_shell_selection_failure_releases_pidl_and_com(self):
++        ole, shell = self.shell_mocks(select=app.ctypes.c_int32(0x80004005).value)
++        with patch.object(app, "OLE32", ole), patch.object(app, "SHELL32", shell):
++            with self.assertRaisesRegex(OSError, r"SHOpenFolderAndSelectItems.*0x80004005"):
++                app.select_in_explorer(SOURCE)
++        self.assertEqual(ole.CoTaskMemFree.call_args.args[0].value, 0x12345678ABCDEF00)
++        self.assertEqual(ole.CoTaskMemFree.call_count, 1)
++        ole.CoUninitialize.assert_called_once_with()
++
++    def test_46_shell_empty_pidl_does_not_open_a_folder(self):
++        ole, shell = self.shell_mocks(pointer=None)
++        with patch.object(app, "OLE32", ole), patch.object(app, "SHELL32", shell):
++            with self.assertRaisesRegex(OSError, r"SHParseDisplayName.*0x80004005"):
++                app.select_in_explorer(SOURCE)
++        shell.SHOpenFolderAndSelectItems.assert_not_called()
++        ole.CoTaskMemFree.assert_not_called()
++        ole.CoUninitialize.assert_called_once_with()
++
++    def test_47_optional_result_reveal_uses_same_api_and_keeps_conversion_success(self):
++        records, last_result = self.window.records.copy(), self.window.last_result
++        reveal = self.window.reveal.isChecked()
++        before = self.window.history_path.read_bytes() if self.window.history_path.exists() else None
++        output = ROOT / "완료 후 선택 결과.png"
++        output.write_bytes(b"result")
++        try:
++            self.window.reveal.setChecked(True)
++            with patch.object(app, "select_in_explorer") as select:
++                self.window.append_record(str(SOURCE), str(output), "")
++            select.assert_called_once_with(str(output))
++            for language in ("ko", "en"):
++                self.window.set_language(language)
++                with patch.object(app, "select_in_explorer", side_effect=OSError("HRESULT 0x80004005")), \
++                        patch.object(app, "message_dialog", return_value=Mock()) as dialog:
++                    self.window.append_record(str(SOURCE), str(output), "")
++                self.assertEqual(dialog.call_args.args[1], self.window.text("history_explorer_title"))
++                self.assertEqual(dialog.call_args.args[2],
++                                 self.window.text("history_explorer_error", detail="HRESULT 0x80004005"))
++                self.assertEqual(self.window.records[-1]["error"], "")
++                self.assertEqual(self.window.last_result, (str(output), ""))
++        finally:
++            self.window.reveal.setChecked(reveal)
++            self.window.records, self.window.last_result = records, last_result
++            self.window.set_language("ko")
++            self.window.refresh_history()
++            self.window.update_status()
++            if before is not None:
++                self.window.history_path.write_bytes(before)
++            output.unlink()
++
++
++def main():
++    suite = unittest.defaultTestLoader.loadTestsFromTestCase(GuiTests)
++    result = unittest.TextTestRunner(verbosity=2, failfast=True).run(suite)
++    report = {
++        "version": app.VERSION,
++        "tests": result.testsRun,
++        "passed": result.testsRun - len(result.failures) - len(result.errors),
++        "failures": [{"test": str(test), "detail": detail} for test, detail in result.failures],
++        "errors": [{"test": str(test), "detail": detail} for test, detail in result.errors],
++        "original_sha256": ORIGINAL_HASH,
++        "original_preserved": hashlib.sha256(SOURCE.read_bytes()).hexdigest() == ORIGINAL_HASH,
++        "qt_platform": APPLICATION.platformName(),
++        "scope": "Qt 위젯·그리기·애니메이션·이벤트 전달·이미지 변환과 모형 키 상태 시험. offscreen 플랫폼이면 창은 화면에 표시하지 않습니다. 실제 Windows 탐색기 OLE 드래그 및 물리 Shift 키는 별도 미검증입니다.",
++        "os_input_injected": False,
++        "registry_writes_tested": False,
++        "registered_test_fonts": REGISTERED_TEST_FONTS,
++        "font_files_copied_or_redistributed": False,
++        "shell_selection_api_tested_with_mocks": True,
++        "actual_explorer_file_selection_tested": False,
++    }
++    (ROOT / "Mono-Qt검증.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
++    print(json.dumps({key: value for key, value in report.items() if key not in ("failures", "errors")}, ensure_ascii=False))
++    return 0 if result.wasSuccessful() else 1
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+--- 비교대상없음/파일목록.json
++++ 부드러운디자인-작업전/파일목록.json
+@@ -0,0 +1,17 @@
++[
++  {
++    "path": "app.py",
++    "bytes": 50164,
++    "sha256": "faf4c9e0b4f018b1a33004c1609ef4aff2201f320e6bf452fe55f9a6a93e1f5e"
++  },
++  {
++    "path": "pdf_panel.py",
++    "bytes": 21137,
++    "sha256": "65e08796aa43be0f4b1935da14489455766d919970c02097315c16491aa478b1"
++  },
++  {
++    "path": "test_gui.py",
++    "bytes": 51626,
++    "sha256": "6bd734ca52ede83fc3b2b982420f2bc4fd8bdc4edbe28788cc9150e5bcd2370c"
++  }
++]

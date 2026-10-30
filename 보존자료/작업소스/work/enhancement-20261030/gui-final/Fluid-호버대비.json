@@ -1,0 +1,92 @@
+[
+  {
+    "animation_position": 0,
+    "actual_weight": 0.0,
+    "foreground_core": [
+      242,
+      242,
+      242,
+      255
+    ],
+    "background": [
+      25,
+      25,
+      25,
+      248
+    ],
+    "contrast_on_white": 14.670558769738612,
+    "glyph_core_pixels": 12
+  },
+  {
+    "animation_position": 0.25,
+    "actual_weight": 0.15016832974331729,
+    "foreground_core": [
+      242,
+      242,
+      242,
+      255
+    ],
+    "background": [
+      34,
+      34,
+      34,
+      249
+    ],
+    "contrast_on_white": 13.309026443086788,
+    "glyph_core_pixels": 12
+  },
+  {
+    "animation_position": 0.5,
+    "actual_weight": 0.49999999999999994,
+    "foreground_core": [
+      242,
+      242,
+      242,
+      255
+    ],
+    "background": [
+      56,
+      56,
+      56,
+      251
+    ],
+    "contrast_on_white": 9.98747095971868,
+    "glyph_core_pixels": 12
+  },
+  {
+    "animation_position": 0.75,
+    "actual_weight": 0.8498316702566827,
+    "foreground_core": [
+      242,
+      242,
+      242,
+      255
+    ],
+    "background": [
+      77,
+      77,
+      77,
+      253
+    ],
+    "contrast_on_white": 7.386691537361577,
+    "glyph_core_pixels": 13
+  },
+  {
+    "animation_position": 1,
+    "actual_weight": 1.0,
+    "foreground_core": [
+      242,
+      242,
+      242,
+      255
+    ],
+    "background": [
+      86,
+      86,
+      86,
+      254
+    ],
+    "contrast_on_white": 6.488767636958584,
+    "glyph_core_pixels": 13
+  }
+]

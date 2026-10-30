@@ -1,0 +1,23 @@
+{
+  "time": "2026-10-21T04:58:10.026784+09:00",
+  "argv": [
+    "C:\\Users\\PUVKID\\Desktop\\플립링\\work\\venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "PyInstaller",
+    "--noconfirm",
+    "--distpath",
+    "C:\\Users\\PUVKID\\Desktop\\플립링\\work\\fluid-build\\dist",
+    "--workpath",
+    "C:\\Users\\PUVKID\\Desktop\\플립링\\소스\\build-cache",
+    "C:\\Users\\PUVKID\\Desktop\\플립링\\work\\fluid-build\\FlipRing.spec"
+  ],
+  "cwd": "C:\\Users\\PUVKID\\Desktop\\플립링\\소스",
+  "exit_code": 0,
+  "seconds": 26.25,
+  "free_bytes": 1344483328,
+  "actual_exe": "C:\\Users\\PUVKID\\Desktop\\플립링\\소스\\build-cache\\FlipRing\\FlipRing.exe",
+  "log": "C:\\Users\\PUVKID\\Desktop\\플립링\\work\\fluid-build\\PyInstaller.log"
+}

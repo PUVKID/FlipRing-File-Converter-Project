@@ -1,0 +1,40 @@
+[
+  {
+    "argv": [
+      "D:\\2026\\FilpRing Project\\소스\\vendor\\7zip\\7z.exe",
+      "l",
+      "-slt",
+      "-sccUTF-8",
+      "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar"
+    ],
+    "exit": 0,
+    "stdout": "\r\n7-Zip 26.05 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-10-21\r\n\r\nScanning the drive for archives:\r\n1 file, 163 bytes (1 KiB)\r\n\r\nListing archive: D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar\r\n\r\n--\r\nPath = D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar\r\nType = Rar\r\nPhysical Size = 163\r\nCharacteristics = Solid\r\nSolid = +\r\nBlocks = 1\r\nMultivolume = -\r\nVolumes = 1\r\n\r\n----------\r\nPath = ?龜龜棘棘?龜勻剋.txt\r\nFolder = -\r\nSize = 2\r\nPacked Size = 17\r\nModified = 2011-07-06 16:48:04.0000000\r\nCreated = \r\nAccessed = \r\nAttributes =  -rw-r--r--\r\nEncrypted = -\r\nSolid = -\r\nCommented = -\r\nSplit Before = -\r\nSplit After = -\r\nCRC = 6751FC53\r\nHost OS = Unix\r\nMethod = m5:20\r\nVersion = 29\r\nVolume Index = \r\n\r\nPath = ???릟?릟?릠.txt\r\nFolder = -\r\nSize = 2\r\nPacked Size = 13\r\nModified = 2011-07-06 16:48:04.0000000\r\nCreated = \r\nAccessed = \r\nAttributes =  -rw-r--r--\r\nEncrypted = -\r\nSolid = +\r\nCommented = -\r\nSplit Before = -\r\nSplit After = -\r\nCRC = 6751FC53\r\nHost OS = Unix\r\nMethod = m5:20\r\nVersion = 29\r\nVolume Index = \r\n\r\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "D:\\2026\\FilpRing Project\\소스\\vendor\\7zip\\7z.exe",
+      "l",
+      "-slt",
+      "-sccUTF-8",
+      "-mcp=UTF-8",
+      "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar"
+    ],
+    "exit": 0,
+    "stdout": "\r\n7-Zip 26.05 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-10-21\r\n\r\nScanning the drive for archives:\r\n1 file, 163 bytes (1 KiB)\r\n\r\nListing archive: D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar\r\n\r\n--\r\nPath = D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar\r\nType = Rar\r\nPhysical Size = 163\r\nCharacteristics = Solid\r\nSolid = +\r\nBlocks = 1\r\nMultivolume = -\r\nVolumes = 1\r\n\r\n----------\r\nPath = ?龜龜棘棘?龜勻剋.txt\r\nFolder = -\r\nSize = 2\r\nPacked Size = 17\r\nModified = 2011-07-06 16:48:04.0000000\r\nCreated = \r\nAccessed = \r\nAttributes =  -rw-r--r--\r\nEncrypted = -\r\nSolid = -\r\nCommented = -\r\nSplit Before = -\r\nSplit After = -\r\nCRC = 6751FC53\r\nHost OS = Unix\r\nMethod = m5:20\r\nVersion = 29\r\nVolume Index = \r\n\r\nPath = ???릟?릟?릠.txt\r\nFolder = -\r\nSize = 2\r\nPacked Size = 13\r\nModified = 2011-07-06 16:48:04.0000000\r\nCreated = \r\nAccessed = \r\nAttributes =  -rw-r--r--\r\nEncrypted = -\r\nSolid = +\r\nCommented = -\r\nSplit Before = -\r\nSplit After = -\r\nCRC = 6751FC53\r\nHost OS = Unix\r\nMethod = m5:20\r\nVersion = 29\r\nVolume Index = \r\n\r\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "D:\\2026\\FilpRing Project\\소스\\vendor\\7zip\\7z.exe",
+      "l",
+      "-slt",
+      "-sccUTF-8",
+      "-mcp=65001",
+      "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar"
+    ],
+    "exit": 0,
+    "stdout": "\r\n7-Zip 26.05 (x64) : Copyright (c) 1999-2026 Igor Pavlov : 2026-10-21\r\n\r\nScanning the drive for archives:\r\n1 file, 163 bytes (1 KiB)\r\n\r\nListing archive: D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar\r\n\r\n--\r\nPath = D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar\r\nType = Rar\r\nPhysical Size = 163\r\nCharacteristics = Solid\r\nSolid = +\r\nBlocks = 1\r\nMultivolume = -\r\nVolumes = 1\r\n\r\n----------\r\nPath = ?龜龜棘棘?龜勻剋.txt\r\nFolder = -\r\nSize = 2\r\nPacked Size = 17\r\nModified = 2011-07-06 16:48:04.0000000\r\nCreated = \r\nAccessed = \r\nAttributes =  -rw-r--r--\r\nEncrypted = -\r\nSolid = -\r\nCommented = -\r\nSplit Before = -\r\nSplit After = -\r\nCRC = 6751FC53\r\nHost OS = Unix\r\nMethod = m5:20\r\nVersion = 29\r\nVolume Index = \r\n\r\nPath = ???릟?릟?릠.txt\r\nFolder = -\r\nSize = 2\r\nPacked Size = 13\r\nModified = 2011-07-06 16:48:04.0000000\r\nCreated = \r\nAccessed = \r\nAttributes =  -rw-r--r--\r\nEncrypted = -\r\nSolid = +\r\nCommented = -\r\nSplit Before = -\r\nSplit After = -\r\nCRC = 6751FC53\r\nHost OS = Unix\r\nMethod = m5:20\r\nVersion = 29\r\nVolume Index = \r\n\r\n",
+    "stderr": ""
+  }
+]

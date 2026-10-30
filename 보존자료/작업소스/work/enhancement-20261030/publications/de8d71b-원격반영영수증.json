@@ -1,0 +1,27 @@
+{
+  "time_kst": "2026-10-30T11:23:54.833292+09:00",
+  "commit": "de8d71beef115c6cf88a123ac29304628dbe1c8f",
+  "branch": "main",
+  "repository": "https://github.com/PUVKID/FlipRing-File-Converter-Project",
+  "remote_head_match": true,
+  "remote_tree_source": "GitHub connector git/trees GET",
+  "files": [
+    {
+      "path": "docs/changes/2026-10-30_1.7_실제조작확인.md",
+      "size": 2458,
+      "git_blob_sha1": "b5aaefece92dab4f299b43f1bf09d742baadc3c6",
+      "sha256": "0df9e32cb67e061da379908cbff5c319305f75789ef281aa5946ad68d4eb32a5",
+      "remote_tree_match": true,
+      "public_copy_match": true
+    },
+    {
+      "path": "docs/versions/1.7.0.md",
+      "size": 9096,
+      "git_blob_sha1": "152a2a46e7008260dbd254bac889a71008f9e43f",
+      "sha256": "5420b1fd5300afd0a7924a7bd17d91ca7cec01d740dde72b4cb30099329f4dce",
+      "remote_tree_match": true,
+      "public_copy_match": true
+    }
+  ],
+  "scope": "문서 두 파일의 커밋·원격 개체·원문 대조. GitHub 브라우저 렌더 직접 확인은 도구 제한으로 미수행."
+}

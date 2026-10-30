@@ -1,0 +1,47 @@
+{
+  "model_repository": "tesseract-ocr/tessdata_fast",
+  "model_commit": "87416418657359cb625c412a48b6e1d6d41c29bd",
+  "models": [
+    {
+      "path": "tessdata\\eng.traineddata",
+      "sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+      "bytes": 4113088
+    },
+    {
+      "path": "tessdata\\kor.traineddata",
+      "sha256": "6b85e11d9bbf07863b97b3523b1b112844c43e713df8b66418a081fd1060b3b2",
+      "bytes": 1677415
+    },
+    {
+      "path": "tessdata\\osd.traineddata",
+      "sha256": "9cf5d576fcc47564f11265841e5ca839001e7e6f38ff7f7aacf46d15a96b00ff",
+      "bytes": 10562727
+    }
+  ],
+  "executions": [
+    {
+      "argv": [
+        "tesseract.exe",
+        "--version"
+      ],
+      "cwd": "C:\\Users\\PUVKID\\Desktop\\드래그 휠 Mono\\소스\\vendor\\tesseract",
+      "exit_code": 0,
+      "stdout": "tesseract v5.5.3.20260724\n leptonica-1.87.0\n  libgif 5.2.2 : libjpeg 8d (libjpeg-turbo 3.1.3) : libpng 1.6.58 : libtiff 4.7.2 : zlib 1.3.1 : libwebp 1.6.0 : libopenjp2 2.5.4\n Found AVX2\n Found AVX\n Found FMA\n Found SSE4.1\n Found libarchive 3.8.8 zlib/1.3.2 liblzma/5.8.3 bz2lib/1.0.8 liblz4/1.10.0 libzstd/1.5.7 expat/expat_2.8.2 cng/1.0 libb2/system\n Found libcurl/8.21.0 Schannel zlib/1.3.2 brotli/1.2.0 zstd/1.5.7 libidn2/2.3.8 libpsl/0.21.5 libssh2/1.11.1 WinLDAP\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "tesseract.exe",
+        "--tessdata-dir",
+        "tessdata",
+        "--list-langs"
+      ],
+      "cwd": "C:\\Users\\PUVKID\\Desktop\\드래그 휠 Mono\\소스\\vendor\\tesseract",
+      "exit_code": 0,
+      "stdout": "List of available languages in \"tessdata/\" (3):\neng\nkor\nosd\n",
+      "stderr": ""
+    }
+  ],
+  "unicode_absolute_tessdata_failed": true,
+  "ascii_relative_tessdata_passed": true
+}

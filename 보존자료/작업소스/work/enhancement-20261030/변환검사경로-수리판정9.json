@@ -1,0 +1,9 @@
+{
+  "cause": "변환 검사기 자식 cwd가 소스인데 상대 root를 그대로 전달해 fixture 생성 경로와 부모에서 읽는 경로가 달라집니다.",
+  "new_observation": "수정후 최초 재실행은 FileNotFoundError로 종료했고 fixture는 소스/work에 생성됐습니다. 실패-02.json에 실제 argv와 원문을 보존했습니다.",
+  "method": "test_conversion_matrix.py에서 부모의 root 인자를 mkdir과 자식 전달 전에 절대 경로로 확정합니다. 상대 CLI 계약과 원래266쌍 수락 기준을 유지하며 새 폴더에서 전체 재실행합니다.",
+  "selection_reason": "검사기의 입력 경로 처리 한 곳으로 원인이 확정됐으므로 같은 Astra 구현자가 기존 두 호출 수정을 이어 보완합니다. Terra는 수정 소스의 실제 변환 시험만 수행합니다.",
+  "role": "escalate",
+  "model": "gpt-6-astra",
+  "effort": "medium"
+}

@@ -1,0 +1,15 @@
+{
+  "cause": "PowerShell에서 Python -c 인자의 중첩 큰따옴표가 분리되어 Python 구문 오류가 발생했습니다.",
+  "new_observation": "2026-10-30 11:24 한국 시각 출력의 SyntaxError: '(' was never closed. 원본 prepare_validation.py는 정상 파일이며 생성할 파일은 저장되지 않았습니다. 뒤의 조회 명령 때문에 셸 최종 종료 코드는 0이었습니다.",
+  "method": "작업 폴더에 UTF-8 Python 파일로 동일한 문자열 치환을 저장하고 파일 argv로 실행합니다. 검사 기대값과 제품 코드는 바꾸지 않습니다.",
+  "selection_reason": "명확한 셸 인용 오류이므로 부모가 동일 구현 역할로 인자 전달만 보정합니다.",
+  "role": "build",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "before_argv": ["python.exe", "-B", "-X", "utf8", "-c", "from pathlib import Path; 문자열 치환 명령은 도구 원문에 보존"],
+  "after_argv": ["work/venv/Scripts/python.exe", "-B", "-X", "utf8", "work/responsive-layout-20261030/prepare_validation_tools18.py"],
+  "cwd": "D:/2026/FilpRing Project",
+  "repair_used_before": 22,
+  "input_fix_used_before": 3,
+  "source_changes": "앞서 적용한 부모 소유 포장·가상 화면 구성만 변경됨. 실패한 생성 명령은 파일 미생성."
+}

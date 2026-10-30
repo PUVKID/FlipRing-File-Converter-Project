@@ -1,0 +1,82 @@
+[
+  {
+    "path": "LICENSE.txt",
+    "status": "이전만 존재",
+    "before_bytes": 1396,
+    "after_bytes": null,
+    "before_sha256": "8c7b2363b1bd25e3428416587833dbe61098d211f30420582879ec4810cbf52f",
+    "after_sha256": null
+  },
+  {
+    "path": "app.py",
+    "status": "수정",
+    "before_bytes": 57554,
+    "after_bytes": 65789,
+    "before_sha256": "4fde31515627bed86258d01251fb653767800005b22297c6a552f4efcb09fc3b",
+    "after_sha256": "db66ffd7a6f6e6b1f47589e2ed5c8f9a6d1df3c8855286960cd1e27d237e9944"
+  },
+  {
+    "path": "build.py",
+    "status": "수정",
+    "before_bytes": 6727,
+    "after_bytes": 6727,
+    "before_sha256": "514bf3e3ca1599dee5d8bc54dac4d55bb3cd22740512f3bf095ac7a61344f00a",
+    "after_sha256": "50ddb1a6c1759b30d10150f5d44738edb72ee53b139e54975c9ec0ab45193a0c"
+  },
+  {
+    "path": "i18n.py",
+    "status": "수정",
+    "before_bytes": 12995,
+    "after_bytes": 14757,
+    "before_sha256": "242abd4700912d2d7b8505a521d9c3d90c7ec6c6442f14b2cadd1a551cd2f580",
+    "after_sha256": "9de696a5036297c4c45419272084544e53d4713a479617ae64245b5437cd780b"
+  },
+  {
+    "path": "package.py",
+    "status": "수정",
+    "before_bytes": 6573,
+    "after_bytes": 7083,
+    "before_sha256": "2100e60ab0205719d500784c774a6eebbf9573164055ae77a46fdbd6acc899b0",
+    "after_sha256": "c03bfbc2f6f188e76a4187bcd72e9bcee200eadb91f8e294d25f18fa8d4bbd0b"
+  },
+  {
+    "path": "pdf_panel.py",
+    "status": "수정",
+    "before_bytes": 21137,
+    "after_bytes": 23908,
+    "before_sha256": "65e08796aa43be0f4b1935da14489455766d919970c02097315c16491aa478b1",
+    "after_sha256": "24a6ea470567446e5a44b340ffc2e5b1298fd071171e888ef6196a5886f08342"
+  },
+  {
+    "path": "requirements-lock.txt",
+    "status": "이전만 존재",
+    "before_bytes": 644,
+    "after_bytes": null,
+    "before_sha256": "57a5e9a4c46e8212dccdab7557b87f6bc44047a55958afdb6d899a6f3c4feecb",
+    "after_sha256": null
+  },
+  {
+    "path": "studio_ui.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 15640,
+    "before_sha256": null,
+    "after_sha256": "3a1413904c3e9eba337eace67fab2b6c9575e89b1ed95bc796da48a43a4d6d89"
+  },
+  {
+    "path": "test_gui.py",
+    "status": "수정",
+    "before_bytes": 80013,
+    "after_bytes": 102408,
+    "before_sha256": "6d153d00d3bee713381584d602096653dd0aa8eeb64bd14b4dcae810144dd71a",
+    "after_sha256": "3e87d95d9da8c60fbf4a0b09b1bd48a6671481de4cef5b1f3fd6883e1446bdde"
+  },
+  {
+    "path": "파일목록.json",
+    "status": "수정",
+    "before_bytes": 1647,
+    "after_bytes": 1505,
+    "before_sha256": "d38ffb9a9b9055956f629a77dc80a0fac9239350f4c41105cd4ee08387dff06d",
+    "after_sha256": "11164c57837619f05fad9cfdea09cf757fb403e4051410c6d07849512cf50615"
+  }
+]

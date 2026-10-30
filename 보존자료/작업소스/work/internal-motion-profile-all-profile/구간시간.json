@@ -1,0 +1,220 @@
+{
+  "started_kst": "2026-10-24T18:54:48.175906+09:00",
+  "argv": [
+    "D:\\2026\\FilpRing Project\\work\\venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "work\\internal-motion-profile-all.py",
+    "all-profile"
+  ],
+  "cwd": "D:\\2026\\FilpRing Project",
+  "mode": "all-profile",
+  "diagnostic_only": true,
+  "source_change": false,
+  "elapsed": 48.82799999997951,
+  "tests": 50,
+  "success": false,
+  "rows": [
+    {
+      "test": "test_01_studio_workspace_and_tray (test_gui.GuiTests.test_01_studio_workspace_and_tray)",
+      "seconds": 0.28099999998812564
+    },
+    {
+      "test": "test_02_common_formats_preserved (test_gui.GuiTests.test_02_common_formats_preserved)",
+      "seconds": 0.01600000000325963
+    },
+    {
+      "test": "test_03_copy_overrides_shift_move (test_gui.GuiTests.test_03_copy_overrides_shift_move)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_04_center_cancel_consumes_without_conversion (test_gui.GuiTests.test_04_center_cancel_consumes_without_conversion)",
+      "seconds": 0.1879999999946449
+    },
+    {
+      "test": "test_05_valid_sector_drop_once (test_gui.GuiTests.test_05_valid_sector_drop_once)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_06_move_only_drag_is_rejected (test_gui.GuiTests.test_06_move_only_drag_is_rejected)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_07_remote_or_mixed_or_missing_urls_rejected (test_gui.GuiTests.test_07_remote_or_mixed_or_missing_urls_rejected)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_08_disabled_target_preserves_copy_and_no_job (test_gui.GuiTests.test_08_disabled_target_preserves_copy_and_no_job)",
+      "seconds": 0.015000000013969839
+    },
+    {
+      "test": "test_09_outer_area_consumes_without_conversion (test_gui.GuiTests.test_09_outer_area_consumes_without_conversion)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_10_motion_has_intermediate_frames_fixed_geometry (test_gui.GuiTests.test_10_motion_has_intermediate_frames_fixed_geometry)",
+      "seconds": 0.6879999999946449
+    },
+    {
+      "test": "test_11_reopen_interrupts_stale_close_animation (test_gui.GuiTests.test_11_reopen_interrupts_stale_close_animation)",
+      "seconds": 0.42199999999138527
+    },
+    {
+      "test": "test_12_fast_drop_during_entrance (test_gui.GuiTests.test_12_fast_drop_during_entrance)",
+      "seconds": 0.1870000000053551
+    },
+    {
+      "test": "test_13_screen_edge_clamping (test_gui.GuiTests.test_13_screen_edge_clamping)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_14_preview_click_selects_and_right_click_does_not (test_gui.GuiTests.test_14_preview_click_selects_and_right_click_does_not)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_15_preview_escape_without_mouse_button (test_gui.GuiTests.test_15_preview_escape_without_mouse_button)",
+      "seconds": 0.39100000000325963
+    },
+    {
+      "test": "test_16_explorer_trigger_after_real_threshold_model (test_gui.GuiTests.test_16_explorer_trigger_after_real_threshold_model)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_17_non_explorer_does_not_trigger_model (test_gui.GuiTests.test_17_non_explorer_does_not_trigger_model)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_18_release_grace_allows_queued_drop_model (test_gui.GuiTests.test_18_release_grace_allows_queued_drop_model)",
+      "seconds": 0.1870000000053551
+    },
+    {
+      "test": "test_19_custom_key_recording_and_hint_model (test_gui.GuiTests.test_19_custom_key_recording_and_hint_model)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_20_conversion_queue_history_and_original_hash (test_gui.GuiTests.test_20_conversion_queue_history_and_original_hash)",
+      "seconds": 0.8129999999946449
+    },
+    {
+      "test": "test_21_history_schema_error_preserves_bytes (test_gui.GuiTests.test_21_history_schema_error_preserves_bytes)",
+      "seconds": 1.062000000005355
+    },
+    {
+      "test": "test_22_settings_drop_opens_manual_wheel (test_gui.GuiTests.test_22_settings_drop_opens_manual_wheel)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_23_language_switch_preserves_trigger_and_wheel (test_gui.GuiTests.test_23_language_switch_preserves_trigger_and_wheel)",
+      "seconds": 0.46899999998277053
+    },
+    {
+      "test": "test_24_language_persists_when_window_recreated (test_gui.GuiTests.test_24_language_persists_when_window_recreated)",
+      "seconds": 3.75
+    },
+    {
+      "test": "test_25_translation_placeholders_are_complete (test_gui.GuiTests.test_25_translation_placeholders_are_complete)",
+      "seconds": 0.01600000000325963
+    },
+    {
+      "test": "test_26_engine_errors_are_translated_without_mutating_records (test_gui.GuiTests.test_26_engine_errors_are_translated_without_mutating_records)",
+      "seconds": 0.5150000000139698
+    },
+    {
+      "test": "test_27_monochrome_palette_wheel_icons_and_bundled_font (test_gui.GuiTests.test_27_monochrome_palette_wheel_icons_and_bundled_font)",
+      "seconds": 0.4529999999795109
+    },
+    {
+      "test": "test_28_recording_and_busy_status_follow_language (test_gui.GuiTests.test_28_recording_and_busy_status_follow_language)",
+      "seconds": 0.735000000015134
+    },
+    {
+      "test": "test_29_dialog_labels_and_standard_buttons_follow_language (test_gui.GuiTests.test_29_dialog_labels_and_standard_buttons_follow_language)",
+      "seconds": 1.139999999984866
+    },
+    {
+      "test": "test_30_autostart_value_is_language_independent (test_gui.GuiTests.test_30_autostart_value_is_language_independent)",
+      "seconds": 0.5940000000118744
+    },
+    {
+      "test": "test_31_history_double_click_selects_result_without_running_it (test_gui.GuiTests.test_31_history_double_click_selects_result_without_running_it)",
+      "seconds": 0.09399999998277053
+    },
+    {
+      "test": "test_32_history_failure_and_missing_result_show_bilingual_guidance (test_gui.GuiTests.test_32_history_failure_and_missing_result_show_bilingual_guidance)",
+      "seconds": 0.7970000000204891
+    },
+    {
+      "test": "test_33_history_non_record_rows_and_directories_do_not_open_explorer (test_gui.GuiTests.test_33_history_non_record_rows_and_directories_do_not_open_explorer)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_34_history_explorer_failure_and_empty_output_are_explained (test_gui.GuiTests.test_34_history_explorer_failure_and_empty_output_are_explained)",
+      "seconds": 0.9839999999967404
+    },
+    {
+      "test": "test_35_pdf_panel_language_and_tab_contract (test_gui.GuiTests.test_35_pdf_panel_language_and_tab_contract)",
+      "seconds": 1.062999999994645
+    },
+    {
+      "test": "test_36_pdf_result_signal_uses_history_without_changing_queue (test_gui.GuiTests.test_36_pdf_result_signal_uses_history_without_changing_queue)",
+      "seconds": 0.125
+    },
+    {
+      "test": "test_37_pdf_busy_blocks_quit (test_gui.GuiTests.test_37_pdf_busy_blocks_quit)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_38_pdf_busy_blocks_other_conversion_queue (test_gui.GuiTests.test_38_pdf_busy_blocks_other_conversion_queue)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_39_pdf_standard_error_pairs_follow_current_language (test_gui.GuiTests.test_39_pdf_standard_error_pairs_follow_current_language)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_40_pdf_error_history_status_and_notifications_switch_both_ways (test_gui.GuiTests.test_40_pdf_error_history_status_and_notifications_switch_both_ways)",
+      "seconds": 32.062000000005355
+    },
+    {
+      "test": "test_41_shell_api_uses_signed_hresult_and_pointer_sized_pidls (test_gui.GuiTests.test_41_shell_api_uses_signed_hresult_and_pointer_sized_pidls)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_42_shell_selects_full_unicode_file_pidl_and_balances_both_com_successes (test_gui.GuiTests.test_42_shell_selects_full_unicode_file_pidl_and_balances_both_com_successes)",
+      "seconds": 0.030999999988125637
+    },
+    {
+      "test": "test_43_shell_com_failure_preserves_existing_com_and_reports_signed_hresult (test_gui.GuiTests.test_43_shell_com_failure_preserves_existing_com_and_reports_signed_hresult)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_44_shell_parse_failure_releases_any_returned_memory_and_com (test_gui.GuiTests.test_44_shell_parse_failure_releases_any_returned_memory_and_com)",
+      "seconds": 0.01600000000325963
+    },
+    {
+      "test": "test_45_shell_selection_failure_releases_pidl_and_com (test_gui.GuiTests.test_45_shell_selection_failure_releases_pidl_and_com)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_46_shell_empty_pidl_does_not_open_a_folder (test_gui.GuiTests.test_46_shell_empty_pidl_does_not_open_a_folder)",
+      "seconds": 0.0
+    },
+    {
+      "test": "test_47_optional_result_reveal_uses_same_api_and_keeps_conversion_success (test_gui.GuiTests.test_47_optional_result_reveal_uses_same_api_and_keeps_conversion_success)",
+      "seconds": 0.9530000000086147
+    },
+    {
+      "test": "test_48_wheel_reentry_preserves_rendered_progress_and_hit_regions (test_gui.GuiTests.test_48_wheel_reentry_preserves_rendered_progress_and_hit_regions)",
+      "seconds": 0.030999999988125637
+    },
+    {
+      "test": "test_49_fast_hover_retargets_current_weights_and_refreshes_helper_state (test_gui.GuiTests.test_49_fast_hover_retargets_current_weights_and_refreshes_helper_state)",
+      "seconds": 0.09400000001187436
+    },
+    {
+      "test": "test_50_button_hover_frames_preserve_clicks_geometry_and_idle_state (test_gui.GuiTests.test_50_button_hover_frames_preserve_clicks_geometry_and_idle_state)",
+      "seconds": 0.030999999988125637
+    }
+  ]
+}

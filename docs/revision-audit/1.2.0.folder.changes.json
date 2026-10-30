@@ -1,0 +1,106 @@
+[
+  {
+    "path": "LICENSE.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1396,
+    "before_sha256": null,
+    "after_sha256": "8c7b2363b1bd25e3428416587833dbe61098d211f30420582879ec4810cbf52f"
+  },
+  {
+    "path": "app.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 47990,
+    "before_sha256": null,
+    "after_sha256": "f3df0916e5886eb91f81ae833c4e387fadac40c9fde60acb826e101fc7c9b650"
+  },
+  {
+    "path": "build.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 6727,
+    "before_sha256": null,
+    "after_sha256": "e5b70b63a77614ba9a7187ba76b4fdb9c30d0c98376423f061ae05094ec7b879"
+  },
+  {
+    "path": "engine.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 21519,
+    "before_sha256": null,
+    "after_sha256": "d76603d53e6a9ac26767aade92da53b5726c045a3b82bf07f7357449fb5b1c28"
+  },
+  {
+    "path": "i18n.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 12995,
+    "before_sha256": null,
+    "after_sha256": "242abd4700912d2d7b8505a521d9c3d90c7ec6c6442f14b2cadd1a551cd2f580"
+  },
+  {
+    "path": "package.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 6058,
+    "before_sha256": null,
+    "after_sha256": "9af2833452e52400c1035e66f5988f9b9db43d992590e7f3feceb2cc0d58b61c"
+  },
+  {
+    "path": "pdf_panel.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 21137,
+    "before_sha256": null,
+    "after_sha256": "65e08796aa43be0f4b1935da14489455766d919970c02097315c16491aa478b1"
+  },
+  {
+    "path": "pdf_tools.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 26630,
+    "before_sha256": null,
+    "after_sha256": "dffbfb2f945bf8830841d870407050fc4bf98025354b14a9ab1ef936251b8274"
+  },
+  {
+    "path": "requirements-lock.txt",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 644,
+    "before_sha256": null,
+    "after_sha256": "57a5e9a4c46e8212dccdab7557b87f6bc44047a55958afdb6d899a6f3c4feecb"
+  },
+  {
+    "path": "test_engine.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 6669,
+    "before_sha256": null,
+    "after_sha256": "7111c87a4899343e7766a9e82cbd81df80177094280a1ec937b46f579407e3a3"
+  },
+  {
+    "path": "test_gui.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 43194,
+    "before_sha256": null,
+    "after_sha256": "44d2df1690121b1820ae47c95769a3f04aaad236866622cadc4ce3192a3bb10c"
+  },
+  {
+    "path": "test_pdf_tools.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 25413,
+    "before_sha256": null,
+    "after_sha256": "58032cfc269c038d9190c5e9cca9e9a2fd0436162c587b063147ada9f8dd8df7"
+  },
+  {
+    "path": "파일목록.json",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 1647,
+    "before_sha256": null,
+    "after_sha256": "0a6d681a1fc83d8556d3fed2bc93df0e8a9bf93ebc663a70335bf28ac696effd"
+  }
+]

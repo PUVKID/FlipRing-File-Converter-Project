@@ -1,0 +1,292 @@
+{
+  "platform": "offscreen",
+  "styles": [
+    "Medium",
+    "Regular",
+    "SemiBold"
+  ],
+  "rows": [
+    {
+      "style": "Regular",
+      "font_family": "SUIT",
+      "font_style": "Regular",
+      "font_weight": 400,
+      "raw_valid": true,
+      "raw_family": "SUIT",
+      "raw_style": "Regular",
+      "missing": [
+        {
+          "char": "플",
+          "code": "U+D50C"
+        },
+        {
+          "char": "립",
+          "code": "U+B9BD"
+        },
+        {
+          "char": "링",
+          "code": "U+B9C1"
+        },
+        {
+          "char": "한",
+          "code": "U+D55C"
+        },
+        {
+          "char": "국",
+          "code": "U+AD6D"
+        },
+        {
+          "char": "어",
+          "code": "U+C5B4"
+        },
+        {
+          "char": "가",
+          "code": "U+AC00"
+        },
+        {
+          "char": "나",
+          "code": "U+B098"
+        },
+        {
+          "char": "다",
+          "code": "U+B2E4"
+        },
+        {
+          "char": "글",
+          "code": "U+AE00"
+        }
+      ],
+      "direct_valid": true,
+      "direct_missing": [
+        {
+          "char": "플",
+          "code": "U+D50C"
+        },
+        {
+          "char": "립",
+          "code": "U+B9BD"
+        },
+        {
+          "char": "링",
+          "code": "U+B9C1"
+        },
+        {
+          "char": "한",
+          "code": "U+D55C"
+        },
+        {
+          "char": "국",
+          "code": "U+AD6D"
+        },
+        {
+          "char": "어",
+          "code": "U+C5B4"
+        },
+        {
+          "char": "가",
+          "code": "U+AC00"
+        },
+        {
+          "char": "나",
+          "code": "U+B098"
+        },
+        {
+          "char": "다",
+          "code": "U+B2E4"
+        },
+        {
+          "char": "글",
+          "code": "U+AE00"
+        }
+      ]
+    },
+    {
+      "style": "Medium",
+      "font_family": "SUIT",
+      "font_style": "Medium",
+      "font_weight": 500,
+      "raw_valid": true,
+      "raw_family": "SUIT",
+      "raw_style": "Medium",
+      "missing": [
+        {
+          "char": "플",
+          "code": "U+D50C"
+        },
+        {
+          "char": "립",
+          "code": "U+B9BD"
+        },
+        {
+          "char": "링",
+          "code": "U+B9C1"
+        },
+        {
+          "char": "한",
+          "code": "U+D55C"
+        },
+        {
+          "char": "국",
+          "code": "U+AD6D"
+        },
+        {
+          "char": "어",
+          "code": "U+C5B4"
+        },
+        {
+          "char": "가",
+          "code": "U+AC00"
+        },
+        {
+          "char": "나",
+          "code": "U+B098"
+        },
+        {
+          "char": "다",
+          "code": "U+B2E4"
+        },
+        {
+          "char": "글",
+          "code": "U+AE00"
+        }
+      ],
+      "direct_valid": true,
+      "direct_missing": [
+        {
+          "char": "플",
+          "code": "U+D50C"
+        },
+        {
+          "char": "립",
+          "code": "U+B9BD"
+        },
+        {
+          "char": "링",
+          "code": "U+B9C1"
+        },
+        {
+          "char": "한",
+          "code": "U+D55C"
+        },
+        {
+          "char": "국",
+          "code": "U+AD6D"
+        },
+        {
+          "char": "어",
+          "code": "U+C5B4"
+        },
+        {
+          "char": "가",
+          "code": "U+AC00"
+        },
+        {
+          "char": "나",
+          "code": "U+B098"
+        },
+        {
+          "char": "다",
+          "code": "U+B2E4"
+        },
+        {
+          "char": "글",
+          "code": "U+AE00"
+        }
+      ]
+    },
+    {
+      "style": "SemiBold",
+      "font_family": "SUIT",
+      "font_style": "SemiBold",
+      "font_weight": 600,
+      "raw_valid": true,
+      "raw_family": "SUIT",
+      "raw_style": "SemiBold",
+      "missing": [
+        {
+          "char": "플",
+          "code": "U+D50C"
+        },
+        {
+          "char": "립",
+          "code": "U+B9BD"
+        },
+        {
+          "char": "링",
+          "code": "U+B9C1"
+        },
+        {
+          "char": "한",
+          "code": "U+D55C"
+        },
+        {
+          "char": "국",
+          "code": "U+AD6D"
+        },
+        {
+          "char": "어",
+          "code": "U+C5B4"
+        },
+        {
+          "char": "가",
+          "code": "U+AC00"
+        },
+        {
+          "char": "나",
+          "code": "U+B098"
+        },
+        {
+          "char": "다",
+          "code": "U+B2E4"
+        },
+        {
+          "char": "글",
+          "code": "U+AE00"
+        }
+      ],
+      "direct_valid": true,
+      "direct_missing": [
+        {
+          "char": "플",
+          "code": "U+D50C"
+        },
+        {
+          "char": "립",
+          "code": "U+B9BD"
+        },
+        {
+          "char": "링",
+          "code": "U+B9C1"
+        },
+        {
+          "char": "한",
+          "code": "U+D55C"
+        },
+        {
+          "char": "국",
+          "code": "U+AD6D"
+        },
+        {
+          "char": "어",
+          "code": "U+C5B4"
+        },
+        {
+          "char": "가",
+          "code": "U+AC00"
+        },
+        {
+          "char": "나",
+          "code": "U+B098"
+        },
+        {
+          "char": "다",
+          "code": "U+B2E4"
+        },
+        {
+          "char": "글",
+          "code": "U+AE00"
+        }
+      ]
+    }
+  ]
+}

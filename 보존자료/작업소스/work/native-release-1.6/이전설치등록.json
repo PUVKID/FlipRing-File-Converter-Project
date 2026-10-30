@@ -1,0 +1,7 @@
+{
+  "DisplayName": "FlipRing 버전 1.5.0",
+  "DisplayVersion": "1.5.0",
+  "InstallLocation": "C:\\Users\\PUVKID\\AppData\\Local\\Programs\\FlipRing\\",
+  "UninstallString": "\"C:\\Users\\PUVKID\\AppData\\Local\\Programs\\FlipRing\\unins000.exe\"",
+  "QuietUninstallString": "\"C:\\Users\\PUVKID\\AppData\\Local\\Programs\\FlipRing\\unins000.exe\" /SILENT"
+}

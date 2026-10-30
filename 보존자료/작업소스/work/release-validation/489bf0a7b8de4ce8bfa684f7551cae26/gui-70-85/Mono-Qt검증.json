@@ -1,0 +1,29 @@
+{
+  "version": 3,
+  "tests": 16,
+  "passed": 16,
+  "failures": [],
+  "errors": [],
+  "original_sha256": "0b5260602ec1d4c447186c1e97db8b44d1ba0d61f2db5851769f024d0a3a236b",
+  "original_preserved": true,
+  "qt_platform": "offscreen",
+  "scope": "Qt 위젯·그리기·애니메이션·이벤트 전달·이미지 변환과 모형 키 상태 시험. offscreen 플랫폼이면 창은 화면에 표시하지 않습니다. 실제 Windows 탐색기 OLE 드래그 및 물리 Shift 키는 별도 미검증입니다.",
+  "os_input_injected": false,
+  "registry_writes_tested": false,
+  "registered_test_fonts": {
+    "segoeui.ttf": 0,
+    "seguisb.ttf": 1,
+    "malgun.ttf": 2,
+    "malgunbd.ttf": 3
+  },
+  "windows_system_font_files_copied_or_redistributed": false,
+  "bundled_ui_font_files": [
+    "SUIT-Regular.ttf",
+    "SUIT-Medium.ttf",
+    "SUIT-SemiBold.ttf"
+  ],
+  "shell_selection_api_tested_with_mocks": true,
+  "actual_explorer_file_selection_tested": false,
+  "bundled_ui_font": "SUIT Regular 400 / Medium 500 / SemiBold 600",
+  "motion_scope": "실제 Qt 중간 프레임·재진입 연속성·호버 재지정·탭 전환·고정 드롭 영역을 검사했습니다. 실제 화면 프레임 속도는 별도 확인 범위입니다."
+}

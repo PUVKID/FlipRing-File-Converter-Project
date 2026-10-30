@@ -1,0 +1,44 @@
+{
+  "headers": [
+    {
+      "column": 0,
+      "label": "이름",
+      "header_label": "이름",
+      "width": 338,
+      "hidden": false,
+      "resize_mode": "ResizeMode.Interactive"
+    },
+    {
+      "column": 1,
+      "label": "크기",
+      "header_label": "크기",
+      "width": 117,
+      "hidden": false,
+      "resize_mode": "ResizeMode.Interactive"
+    },
+    {
+      "column": 2,
+      "label": "종류",
+      "header_label": "종류",
+      "width": 117,
+      "hidden": false,
+      "resize_mode": "ResizeMode.Interactive"
+    },
+    {
+      "column": 3,
+      "label": "수정한 날짜",
+      "header_label": "수정한 날짜",
+      "width": 208,
+      "hidden": false,
+      "resize_mode": "ResizeMode.Interactive"
+    }
+  ],
+  "header_visible": true,
+  "header_geometry": "PySide6.QtCore.QRect(9, 9, 661, 39)",
+  "header_viewport": "PySide6.QtCore.QRect(0, 0, 661, 39)",
+  "tree_geometry": "PySide6.QtCore.QRect(0, 0, 686, 313)",
+  "style": "QHeaderView {padding:0;border:0;border-radius:0;}",
+  "font": "SUIT",
+  "foreground": "#262626",
+  "root_directory": "D:/2026/FilpRing Project/소스"
+}

@@ -1,0 +1,9 @@
+{
+  "cause": "기존 GUI85 검사의 탭 수와 설정 위치가 승인된 전용 설정 화면 및 큰 장식 제거 이전 구조를 기준으로 하고 있습니다.",
+  "new_observation": "불변 원문85 전체 관측은 79통과·5FAIL·1ERROR이며 test01/23/24/35의 탭 위치, test25 새 번역 필드 fixture, test63 숨긴 장식 grab 좌표가 불일치합니다.",
+  "method": "원문과 실패 로그를 보존하고 탭6·설정index5를 명시 검증합니다. 번역 fixture에 needed/free를 추가하며 test63은 독립적으로 표시한 OrbitVisual에서 기존 중간프레임·유한·재진입·고정좌표·숨김정지 기준을 유지합니다. 나머지 기능 기준을 유지하여 전체85를 재실행합니다.",
+  "selection_reason": "구조 변경을 직접 구현한 담당자가 한정된 검사 구조만 실제 승인 명세와 맞추며 기존 기능 기대값을 낮추지 않습니다.",
+  "role": "escalate",
+  "model": "gpt-6-astra",
+  "effort": "medium"
+}

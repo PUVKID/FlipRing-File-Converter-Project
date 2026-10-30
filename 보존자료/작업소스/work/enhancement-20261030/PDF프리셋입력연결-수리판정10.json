@@ -1,0 +1,9 @@
+{
+  "cause": "일반 파일 변환에서 PDF 프리셋 적용 시 선택한 입력 파일을 PDF 패널에 전달하지 않습니다. 새 검사의 조회 메서드도 실제 input_paths 대신 file_paths로 잘못 작성했습니다.",
+  "new_observation": "정식GUI85는 종료0/12.586초이나 요구대조에서 app.apply_selected_preset에 경로 전달이 없음을 확인했고 새검사 AttributeError 원문은 preset-files-red.log에 보존했습니다.",
+  "method": "프리셋 apply 성공 후 선택 파일이 있으면 PDF 패널 set_files에 전달합니다. 검사는 실제 input_paths로 읽어 선택 입력 동일성과 자동실행 없음을 검증합니다. 원래 프리셋 경로 저장 금지·옵션 검증과 엔진은 유지합니다.",
+  "selection_reason": "메인과 PDF 패널 사이의 명시 적용 연결로 한정되어 해당 apply 함수를 소유한 같은 Astra 구현자가 수정하고 관련 전체 검사를 재실행합니다.",
+  "role": "escalate",
+  "model": "gpt-6-astra",
+  "effort": "medium"
+}

@@ -1,0 +1,16 @@
+{
+  "hash_argv_identical": true,
+  "hash_argv_sha256": "54b65cadccd04307cde693a4ab40dcc3d6b54740e62d67c85f7b980f04131f9a",
+  "pdf_argv_template": [
+    "D:\\2026\\FilpRing Project\\work\\venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-c",
+    "import os,sys,runpy;os.environ[\"QT_QPA_PLATFORM\"]=\"offscreen\";sys.argv=[\"소스/test_pdf_tools.py\",\"work/pdf-ocr-check\",\"--ocr\",\"--gui\"];sys.path.insert(0,\"소스\");runpy.run_path(\"소스/test_pdf_tools.py\",run_name=\"__main__\")"
+  ],
+  "pdf_template_sha256": "c68122859ae6e22ec87c0176d6f457f1f3f1754f4d8ff18da97d944579f0a383",
+  "active_spec_sha256": "e1e0dac0d19053361c4b6061131d6df96fcf69e0498e3f610ef6e365cb915850",
+  "gui_source_sha256": "f27752075c05151ea54583b0b7aaf163fd4c28b64ce04ffbf17b44d66b196f9a",
+  "pdf_source_sha256": "58032cfc269c038d9190c5e9cca9e9a2fd0436162c587b063147ada9f8dd8df7"
+}

@@ -1,0 +1,18 @@
+{
+  "time_kst": "2026-10-30T08:59:07.046832+09:00",
+  "cwd": "D:\\2026\\FilpRing Project",
+  "argv_calls": [
+    [
+      "C:\\WINDOWS\\System32\\tar.exe",
+      "-x",
+      "--to-stdout",
+      "-f",
+      "--",
+      "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar",
+      "уииоотивл.txt"
+    ]
+  ],
+  "exception": "Traceback (most recent call last):\n  File \"<stdin>\", line 10, in <module>\n  File \"D:\\2026\\FilpRing Project\\work\\venv\\Lib\\site-packages\\rarfile.py\", line 2390, in read\n    self._check()\n  File \"D:\\2026\\FilpRing Project\\work\\venv\\Lib\\site-packages\\rarfile.py\", line 2406, in _check\n    raise BadRarFile(\"Corrupt file - CRC check failed: %s - exp=%r got=%r\" % (\nrarfile.BadRarFile: Corrupt file - CRC check failed: уииоотивл.txt - exp=1733426259 got=809500611\n",
+  "source_sha256": "1d1d25ff7e1a4190055bda32a771a4a5e282ddd8078ce730ca44c45befcec176",
+  "note": "rarfile의 도구 호출 인자만 기록했으며 라이브러리 동작은 바꾸지 않았습니다."
+}

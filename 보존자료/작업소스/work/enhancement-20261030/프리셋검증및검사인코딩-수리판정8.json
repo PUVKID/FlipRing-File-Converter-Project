@@ -1,0 +1,9 @@
+{
+  "cause": "일반 프리셋 저장 검증이 PDF 옵션 키만 확인하여 잘못된 operation을 저장하며 변환 검사기 자식 출력은 CP949인데 UTF-8로 읽습니다.",
+  "new_observation": "preset-validation-red.log에서 operation missing이 예외 없이 저장되어 두 assert 실패했습니다. 별도 동일 조건 자식의 stdout cp949와 한글 0xc7 디코드 오류를 재현했고 중앙 도구는 Terra 역할을 거부했습니다.",
+  "method": "workflow의 PDF 옵션 값·숫자·bool·페이지 문법·출력·경로유입을 검증하고 invalid 사례별 고유이름으로 중복명 가림을 제거합니다. 동결 대기 중인 test_conversion_matrix.py의 두 자식 명령에 -B -X utf8을 명시하고 fixture raw stdout/stderr를 디코드 전 보존합니다. 검사 기대 기준과 엔진은 유지합니다.",
+  "selection_reason": "프리셋 검증을 소유한 기존 Astra 구현자가 한정된 검사기 두 호출도 맡습니다. 중앙 역할표를 우회하거나 Terra 실행을 다른 모델로 기록하지 않고 수정 후 Terra가 실제266쌍을 재실행합니다.",
+  "role": "escalate",
+  "model": "gpt-6-astra",
+  "effort": "medium"
+}

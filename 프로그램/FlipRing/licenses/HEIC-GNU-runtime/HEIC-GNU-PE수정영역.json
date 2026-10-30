@@ -1,0 +1,152 @@
+[
+  {
+    "wheel_dll": "libgcc_s_seh-1-7ae6ef6cd308b2641d26e0f0ad54de8d.dll",
+    "canonical": "libgcc_s_seh-1.dll",
+    "imports_normalized_identical": true,
+    "wheel_imports": [
+      "KERNEL32.dll",
+      "msvcrt.dll",
+      "libwinpthread-1-2da71960a872bd1e59b60377f798f285.dll"
+    ],
+    "original_imports": [
+      "KERNEL32.dll",
+      "msvcrt.dll",
+      "libwinpthread-1.dll"
+    ],
+    "sections": [
+      {
+        "section": ".text",
+        "wheel_sha256": "f0ca925949042c34c5c3b0ca3ef5ee081e53a434180deff2a0bcc95c76904160",
+        "original_sha256": "f0ca925949042c34c5c3b0ca3ef5ee081e53a434180deff2a0bcc95c76904160",
+        "identical": true
+      },
+      {
+        "section": ".data",
+        "wheel_sha256": "84e5adf77f2af52ed8808226b8c479375b27ccb737bdb9f5e6a89071374c2085",
+        "original_sha256": "a43fd1a841fc345d02cd21b9ee62907e5e35f585634bbb9935d1a6b0c0138044",
+        "identical": false
+      },
+      {
+        "section": ".rdata",
+        "wheel_sha256": "e1cb5210ab51a6fa918e72c7faca4551a755e7459e75ab899cc6feb2240199cd",
+        "original_sha256": "e1cb5210ab51a6fa918e72c7faca4551a755e7459e75ab899cc6feb2240199cd",
+        "identical": true
+      },
+      {
+        "section": ".pdata",
+        "wheel_sha256": "46465e08190ed4a996d59be036a0fa2560ae643e3902e6168727578b1ae0a9a6",
+        "original_sha256": "46465e08190ed4a996d59be036a0fa2560ae643e3902e6168727578b1ae0a9a6",
+        "identical": true
+      },
+      {
+        "section": ".xdata",
+        "wheel_sha256": "c2037b2c6a7417e31c369d44979d1c1fcef772200155b817cff05a8dc7f47a45",
+        "original_sha256": "c2037b2c6a7417e31c369d44979d1c1fcef772200155b817cff05a8dc7f47a45",
+        "identical": true
+      },
+      {
+        "section": ".bss",
+        "wheel_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "identical": true
+      },
+      {
+        "section": ".edata",
+        "wheel_sha256": "315645c983c58ea23e40b7edefed6a14c4417ee5f24eb7d6c38ab7eb676dc517",
+        "original_sha256": "315645c983c58ea23e40b7edefed6a14c4417ee5f24eb7d6c38ab7eb676dc517",
+        "identical": true
+      },
+      {
+        "section": ".idata",
+        "wheel_sha256": "e9fbb3b8999529951a2d9198877983ca9de33d157e7edbe0c8d4fecb7616aea3",
+        "original_sha256": "c5d26a9735b361ac3c21cc4e0f5e4fd8f5867aaf98d857d8c44dbcf348589b81",
+        "identical": false
+      },
+      {
+        "section": ".reloc",
+        "wheel_sha256": "7f05ee1e4ad488095a86b5692123b0f5486eaca598bce0e59986172705e76118",
+        "original_sha256": "7f05ee1e4ad488095a86b5692123b0f5486eaca598bce0e59986172705e76118",
+        "identical": true
+      }
+    ]
+  },
+  {
+    "wheel_dll": "libstdc++-6-713bd0e402b4c0182869d2240ab08467.dll",
+    "canonical": "libstdc++-6.dll",
+    "imports_normalized_identical": true,
+    "wheel_imports": [
+      "libgcc_s_seh-1-7ae6ef6cd308b2641d26e0f0ad54de8d.dll",
+      "KERNEL32.dll",
+      "msvcrt.dll",
+      "libwinpthread-1-2da71960a872bd1e59b60377f798f285.dll"
+    ],
+    "original_imports": [
+      "libgcc_s_seh-1.dll",
+      "KERNEL32.dll",
+      "msvcrt.dll",
+      "libwinpthread-1.dll"
+    ],
+    "sections": [
+      {
+        "section": ".text",
+        "wheel_sha256": "4417e5191cdaac65146e4db6c6eac76b4f98e30b3d6ff7f91e3ace5cb07f5c54",
+        "original_sha256": "4417e5191cdaac65146e4db6c6eac76b4f98e30b3d6ff7f91e3ace5cb07f5c54",
+        "identical": true
+      },
+      {
+        "section": ".data",
+        "wheel_sha256": "452c260fe2b256f8f196924821429fef89405a8f2d34bd6e40333f0292101e3b",
+        "original_sha256": "f34ee1335111f439e43b7c30c3f05384bb7395a4ec257baac5ccf143d52ad928",
+        "identical": false
+      },
+      {
+        "section": ".rdata",
+        "wheel_sha256": "dae3c23faded11fd288456d6ce6dfe02c92f3993d1fe9e1609e00b623917e799",
+        "original_sha256": "dae3c23faded11fd288456d6ce6dfe02c92f3993d1fe9e1609e00b623917e799",
+        "identical": true
+      },
+      {
+        "section": ".pdata",
+        "wheel_sha256": "96aa5bef875197dfaede2727c0fc009bb54a606a0d0f642678299551e3043314",
+        "original_sha256": "96aa5bef875197dfaede2727c0fc009bb54a606a0d0f642678299551e3043314",
+        "identical": true
+      },
+      {
+        "section": ".xdata",
+        "wheel_sha256": "6674dfb957890b0b7df43976da2199ef026475046a6a82ef255cc16df5770341",
+        "original_sha256": "6674dfb957890b0b7df43976da2199ef026475046a6a82ef255cc16df5770341",
+        "identical": true
+      },
+      {
+        "section": ".bss",
+        "wheel_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "identical": true
+      },
+      {
+        "section": ".edata",
+        "wheel_sha256": "6bcb517f0e70c03c5298065dbc10b0aa91c017398197882951d05e7b296da699",
+        "original_sha256": "6bcb517f0e70c03c5298065dbc10b0aa91c017398197882951d05e7b296da699",
+        "identical": true
+      },
+      {
+        "section": ".idata",
+        "wheel_sha256": "8df8865a88dc6f16edb2007aed01a3dc5d41e0b4a18f9914c2f3a994a95c1ab7",
+        "original_sha256": "39a04b1d832d1f5ea9befdee7a396b9e31b644b71fc4e97c2663f93d77a50772",
+        "identical": false
+      },
+      {
+        "section": ".tls",
+        "wheel_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+        "original_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+        "identical": true
+      },
+      {
+        "section": ".reloc",
+        "wheel_sha256": "fd5af0b572c9f29d6a85914871cdd79240b942241ea20f4e0cf8a5715ea9c49a",
+        "original_sha256": "fd5af0b572c9f29d6a85914871cdd79240b942241ea20f4e0cf8a5715ea9c49a",
+        "identical": true
+      }
+    ]
+  }
+]

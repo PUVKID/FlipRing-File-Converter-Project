@@ -1,0 +1,121 @@
+{
+  "scope": "HEIC GNU runtime supplementary sources and notices",
+  "files": [
+    {
+      "path": "GCC-PKGINFO.txt",
+      "size": 1291,
+      "sha256": "2c9818f60ae5c6f4eee075cacf82424f8ee2e6d948786e332490535e854ee00d"
+    },
+    {
+      "path": "GCC-원문고지/gcc-libs/COPYING.LIB",
+      "size": 26527,
+      "sha256": "a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861"
+    },
+    {
+      "path": "GCC-원문고지/gcc-libs/COPYING.RUNTIME",
+      "size": 3324,
+      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+    },
+    {
+      "path": "GCC-원문고지/gcc-libs/COPYING3",
+      "size": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    {
+      "path": "GCC-원문고지/gcc-libs/README",
+      "size": 236,
+      "sha256": "33400d067fa3e2bd670a0868dcdb60c9486e8f559b675cf9ff1ff55d4e0d06ab"
+    },
+    {
+      "path": "HEIC-GNU-GCC대조.json",
+      "size": 1872,
+      "sha256": "241751dc6e8f683f03e52218bcc5531c61ff3ab20b979e8db6487d980cecdc53"
+    },
+    {
+      "path": "HEIC-GNU-PE수정영역.json",
+      "size": 5993,
+      "sha256": "e9d1d2d5d7ffe916444c3ec84b2dc78f2ee846dd4e398496d38ab7df0dd4b1c8"
+    },
+    {
+      "path": "HEIC-GNU-WINPTHREAD대조.json",
+      "size": 1120,
+      "sha256": "e63d37d228f0d4ac551faf0843aff4f6d9bb6416be1a39234c7e440925be15d6"
+    },
+    {
+      "path": "HEIC-GNU-소스확보.json",
+      "size": 434,
+      "sha256": "7acec12aefc960b7dfcc0251b81a549fe6bccac8556e3ffd1b823d83738b8c35"
+    },
+    {
+      "path": "mingw-w64-gcc-16.2.0-3.src.tar.zst",
+      "size": 107228430,
+      "sha256": "eb3479a8b0b23810fbbbc25ef76879e867e88d09960a40145d73f5505fda4da0"
+    },
+    {
+      "path": "mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1.src.tar.zst",
+      "size": 54173752,
+      "sha256": "7bf513784ae0bc4f1a413e1f787f7a3ba2bd7ec0503980ea4d17ddf0e4796c87"
+    },
+    {
+      "path": "pi-heif-원본빌드방법/libheif/windows/mingw-w64-libheif/PKGBUILD",
+      "size": 2484,
+      "sha256": "216f26f9dfa169b467af26001c9da6864054bb17f433d7612bb109cf4e17b7b1"
+    },
+    {
+      "path": "pi-heif-원본빌드방법/pyproject.toml",
+      "size": 3033,
+      "sha256": "a5cb5be4340e98bb35776130f9df8bae845da5ab8b0160490b8e7bece36aa075"
+    },
+    {
+      "path": "pi-heif-원본빌드방법/setup.py",
+      "size": 12778,
+      "sha256": "4b7786c05de87319ffc380265c91d776917f5a2d4fe31f3beb63cfe2c178c6f8"
+    },
+    {
+      "path": "WINPTHREAD-PKGINFO.txt",
+      "size": 787,
+      "sha256": "0a7379d06cec37d3dc5283e2cbcccec35706175ba8a8eee743fc7acaf94d5746"
+    },
+    {
+      "path": "WINPTHREAD-원문고지/libwinpthread/COPYING",
+      "size": 2883,
+      "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177"
+    },
+    {
+      "path": "읽어주세요.md",
+      "size": 3330,
+      "sha256": "280d93a25999fce85879a23f36c73264ade0de631b89aa2d710b95766c724411"
+    },
+    {
+      "path": "패키지-빌드방법/mingw-w64-gcc-16.2.0-3/.SRCINFO",
+      "size": 8081,
+      "sha256": "460257cf5496b17611ed36c01272e42fb41ae06cfc404374b1a2538970dc8158"
+    },
+    {
+      "path": "패키지-빌드방법/mingw-w64-gcc-16.2.0-3/PKGBUILD",
+      "size": 25852,
+      "sha256": "226e4b4d6a5786b66eaf260181b5260934a77ee1d6548ef9d1f735ebaae30f1d"
+    },
+    {
+      "path": "패키지-빌드방법/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1/.SRCINFO",
+      "size": 1390,
+      "sha256": "7c7488d882e286b56785565ba11d2982092bb62e96008e2ee535e94f0b1174c1"
+    },
+    {
+      "path": "패키지-빌드방법/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1/PKGBUILD",
+      "size": 4484,
+      "sha256": "7e5cec4463bd044cddeeb584dc6aab3e91dee5afd088d382e90c6232d0dd4e17"
+    },
+    {
+      "path": "프로그램-DLL목록.json",
+      "size": 919,
+      "sha256": "2b8414f075aec3f6584eea7ba4b1726bc47a778a608642f24cf77f14a3cbbb67"
+    }
+  ],
+  "include_metadata": [
+    "출하목록.json"
+  ],
+  "binary_modified": false,
+  "compiler_rebuild_tested": false,
+  "pgp_signature_verified": false
+}

@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "total_timeout_seconds": 45,
+  "checks": [
+    {
+      "id": "구문-UTF8",
+      "cwd": ".",
+      "timeout_seconds": 3,
+      "argv": [
+        "C:\\Users\\PUVKID\\Desktop\\드래그 휠\\work\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import ast,pathlib; fs=list(pathlib.Path(\"소스\").glob(\"*.py\")); assert fs; [(ast.parse(p.read_text(encoding=\"utf-8\")),p) for p in fs]; assert all(chr(0xfffd) not in p.read_text(encoding=\"utf-8\") for p in fs);print(\"구문 UTF8\",len(fs))"
+      ]
+    },
+    {
+      "id": "Qt-언어-기록-통합",
+      "cwd": ".",
+      "timeout_seconds": 15,
+      "argv": [
+        "C:\\Users\\PUVKID\\Desktop\\드래그 휠\\work\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import os,sys,runpy;os.environ[\"QT_QPA_PLATFORM\"]=\"offscreen\";sys.argv=[\"소스/test_gui.py\",\"work/gui\"];sys.path.insert(0,\"소스\");runpy.run_path(\"소스/test_gui.py\",run_name=\"__main__\")"
+      ]
+    },
+    {
+      "id": "PDF-OCR-실제-패널",
+      "cwd": ".",
+      "timeout_seconds": 20,
+      "argv": [
+        "C:\\Users\\PUVKID\\Desktop\\드래그 휠\\work\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import os,sys,runpy;os.environ[\"QT_QPA_PLATFORM\"]=\"offscreen\";sys.argv=[\"소스/test_pdf_tools.py\",\"work/pdf-ocr-check\",\"--ocr\",\"--gui\"];sys.path.insert(0,\"소스\");runpy.run_path(\"소스/test_pdf_tools.py\",run_name=\"__main__\")"
+      ]
+    },
+    {
+      "id": "배포-설치-해시",
+      "cwd": ".",
+      "timeout_seconds": 7,
+      "argv": [
+        "C:\\Users\\PUVKID\\Desktop\\드래그 휠\\work\\venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "import pathlib,json,hashlib;r=pathlib.Path(\".\");o=json.loads((r/\"evidence/배포검증.json\").read_text(encoding=\"utf-8\"));assert o[\"installer_exit_code\"]==0 and o[\"actual_launch_passed\"];assert o[\"files\"] and {\"프로그램/FlipRing/FlipRing.exe\",\"설치파일/FlipRing-Setup.exe\",\"소스/app.py\",\"소스/빌드방법.md\"}<={x[\"path\"] for x in o[\"files\"]};assert all(hashlib.file_digest((r/x[\"path\"]).open(\"rb\"),\"sha256\").hexdigest()==x[\"sha256\"] for x in o[\"files\"]);print(\"배포 검증 통과\")"
+      ]
+    }
+  ]
+}

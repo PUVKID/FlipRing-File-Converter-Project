@@ -1,0 +1,10 @@
+{
+  "sha256": "d0d8e2e600d2d22b74d754d4c0964e17accd78f0b05419eede2256766e04dc81",
+  "expected": [
+    "한글",
+    "FlipRing",
+    "2026"
+  ],
+  "path": "D:\\2026\\FilpRing Project\\work\\native-release-1.6\\한영-OCR시험.png",
+  "source": "D:\\2026\\FilpRing Project\\work\\internal-motion-final-pdf17\\results\\한영-스캔.png"
+}

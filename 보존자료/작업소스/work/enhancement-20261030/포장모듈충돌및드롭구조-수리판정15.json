@@ -1,0 +1,9 @@
+{
+  "cause": "프로젝트의 workflow 모듈명이 다른 배포판용 PyInstaller hook-workflow와 충돌합니다. 격리 GUI61 검사는 승인된 빈 상태에서 파일 목록으로의 축소 전환 뒤에도 옛 전체 카드 크기를 기대합니다.",
+  "new_observation": "build-stage.log에 copy_metadata(workflow)의 PackageNotFoundError와 hook ImportError 원문이 보존됐습니다. 첫 병렬 검사에서 나머지7그룹은 통과했고 GUI61은 선택 후카드80높이와 이전210높이 불일치로 실패했습니다. 단일85에서는 이전선택상태가 이 경로를 가려 통과했습니다.",
+  "method": "자체 모듈을 flipring_workflow.py로 명확히 이름 바꾸고 실제 import와 검사 patch 대상을 갱신합니다. 외부 hook을 비우거나 오류를 숨기지 않습니다. GUI61은 빈 상태를 명시 준비하고 드래그 중 고정 영역·복사·단일 전달을 유지하며 수락 후 축소 및 이후 고정 영역을 별도 검증합니다. 기존 원문과 실패는 보존하고15+85를 재검사한 뒤 새 빌드를 실행합니다.",
+  "selection_reason": "Astra가 해당 모듈·메인·GUI 검사를 소유했으므로 동일 담당자가 명칭과 승인된 상태 전환의 검사만 수정합니다. 엔진과 변환 검사 소스는 동결해 진행 중인266시험에 영향을 주지 않습니다.",
+  "role": "escalate",
+  "model": "gpt-6-astra",
+  "effort": "medium"
+}

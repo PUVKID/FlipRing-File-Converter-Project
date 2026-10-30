@@ -1,0 +1,18 @@
+{
+  "time_kst": "2026-10-30T08:59:14.473558+09:00",
+  "cwd": "D:\\2026\\FilpRing Project",
+  "argv": [
+    "C:\\WINDOWS\\System32\\tar.exe",
+    "-x",
+    "--to-stdout",
+    "-f",
+    "--",
+    "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar",
+    "уииоотивл.txt"
+  ],
+  "exit_code": 1,
+  "merged_raw_hex": "7461722e6578653a204572726f72206f70656e696e6720617263686976653a204661696c656420746f206f70656e20272d2d270d0a",
+  "crc32": 343059573,
+  "expected_crc32": 1733426259,
+  "source_sha256": "1d1d25ff7e1a4190055bda32a771a4a5e282ddd8078ce730ca44c45befcec176"
+}

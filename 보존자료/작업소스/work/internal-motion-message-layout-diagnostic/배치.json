@@ -1,0 +1,61 @@
+{
+  "dialog_geometry": "PySide6.QtCore.QRect(200, 268, 400, 265)",
+  "items": [
+    {
+      "position": [
+        0,
+        0,
+        1,
+        2
+      ],
+      "widget": "QWidget",
+      "name": "",
+      "geometry": "PySide6.QtCore.QRect(24, 24, 352, 60)",
+      "size_hint": "PySide6.QtCore.QSize(182, 60)",
+      "spacer": false
+    },
+    {
+      "position": [
+        1,
+        0,
+        2,
+        1
+      ],
+      "widget": null,
+      "name": null,
+      "geometry": "PySide6.QtCore.QRect(24, 98, 169, 94)",
+      "size_hint": "PySide6.QtCore.QSize(15, 1)",
+      "spacer": true
+    },
+    {
+      "position": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "widget": "QLabel",
+      "name": "qt_msgbox_label",
+      "geometry": "PySide6.QtCore.QRect(207, 98, 169, 80)",
+      "size_hint": "PySide6.QtCore.QSize(164, 80)",
+      "spacer": false
+    },
+    {
+      "position": [
+        3,
+        0,
+        1,
+        2
+      ],
+      "widget": "QDialogButtonBox",
+      "name": "qt_msgbox_buttonbox",
+      "geometry": "PySide6.QtCore.QRect(24, 206, 352, 39)",
+      "size_hint": "PySide6.QtCore.QSize(71, 39)",
+      "spacer": false
+    }
+  ],
+  "stretches": [
+    0,
+    0
+  ]
+}

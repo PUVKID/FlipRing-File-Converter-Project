@@ -1,0 +1,74 @@
+[
+  {
+    "path": "app.py",
+    "status": "수정",
+    "before_bytes": 57554,
+    "after_bytes": 68810,
+    "before_sha256": "4fde31515627bed86258d01251fb653767800005b22297c6a552f4efcb09fc3b",
+    "after_sha256": "7938ccd3c4869cb272444689bd3fc01e8b0dac6b1645187b0a0fb371720902d6"
+  },
+  {
+    "path": "build.py",
+    "status": "수정",
+    "before_bytes": 6727,
+    "after_bytes": 6727,
+    "before_sha256": "514bf3e3ca1599dee5d8bc54dac4d55bb3cd22740512f3bf095ac7a61344f00a",
+    "after_sha256": "25e913d6a311017f16c13ea70ee39e8e10f60454df2965f8e314edfcf6d6c33f"
+  },
+  {
+    "path": "i18n.py",
+    "status": "수정",
+    "before_bytes": 12995,
+    "after_bytes": 15469,
+    "before_sha256": "242abd4700912d2d7b8505a521d9c3d90c7ec6c6442f14b2cadd1a551cd2f580",
+    "after_sha256": "8f995eb33aa7e1b6fa753f451d8324dd6cc91802c33f2330f626d33aee102f19"
+  },
+  {
+    "path": "package.py",
+    "status": "수정",
+    "before_bytes": 6573,
+    "after_bytes": 7099,
+    "before_sha256": "2100e60ab0205719d500784c774a6eebbf9573164055ae77a46fdbd6acc899b0",
+    "after_sha256": "977cbf0e820a3456f97035c7fc614d8a3e87723024ef793d10170dc0f9b48abe"
+  },
+  {
+    "path": "pdf_panel.py",
+    "status": "수정",
+    "before_bytes": 21137,
+    "after_bytes": 25166,
+    "before_sha256": "65e08796aa43be0f4b1935da14489455766d919970c02097315c16491aa478b1",
+    "after_sha256": "955f89240c2963620a236a55513d35f81008358b5f500d154c1baa176feeed8d"
+  },
+  {
+    "path": "studio_ui.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 15879,
+    "before_sha256": null,
+    "after_sha256": "fe088d87ddeb13836591bfea8ac0e0b1dbcc2cc662fbfec2e49a5ed3d279eaf1"
+  },
+  {
+    "path": "test_gui.py",
+    "status": "수정",
+    "before_bytes": 80013,
+    "after_bytes": 127149,
+    "before_sha256": "6d153d00d3bee713381584d602096653dd0aa8eeb64bd14b4dcae810144dd71a",
+    "after_sha256": "f27752075c05151ea54583b0b7aaf163fd4c28b64ce04ffbf17b44d66b196f9a"
+  },
+  {
+    "path": "ui_motion.py",
+    "status": "추가",
+    "before_bytes": null,
+    "after_bytes": 34662,
+    "before_sha256": null,
+    "after_sha256": "9522a89392bd8569b067f432450655ea406cb2c4ee45cc8d2b258f22f934f6d5"
+  },
+  {
+    "path": "파일목록.json",
+    "status": "수정",
+    "before_bytes": 1647,
+    "after_bytes": 1924,
+    "before_sha256": "d38ffb9a9b9055956f629a77dc80a0fac9239350f4c41105cd4ee08387dff06d",
+    "after_sha256": "ab7221b204fdcd14616209fe7af1133ab9144acbdfe246c01ab8580fd7f2b390"
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "time": "2026-10-21T04:58:52.125602+09:00",
+  "runtime_files": 344,
+  "existing_files_unchanged": 340,
+  "allowed_additions": [
+    "assets/fonts/SUIT-Regular.ttf",
+    "assets/fonts/SUIT-Medium.ttf",
+    "assets/fonts/SUIT-SemiBold.ttf",
+    "assets/combo-chevron.svg"
+  ],
+  "exe_sha256": "7990cc40c04242aa4b12d97ad62db705edfbd8c9a434e5d8593b22e7a2359d10",
+  "source_and_program_SUIT_license_identical": true,
+  "free_bytes": 1338785792
+}

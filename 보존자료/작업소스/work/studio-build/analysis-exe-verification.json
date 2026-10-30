@@ -1,0 +1,32 @@
+{
+  "time_kst": "2026-10-21T06:14:15.418443+09:00",
+  "baseline_runtime": 344,
+  "analysis_filtered": 356,
+  "added": [
+    "assets/lucide/arrow-left-right.svg",
+    "assets/lucide/arrow-up-right.svg",
+    "assets/lucide/check.svg",
+    "assets/lucide/file-up.svg",
+    "assets/lucide/file.svg",
+    "assets/lucide/folder-open.svg",
+    "assets/lucide/info.svg",
+    "assets/lucide/plus.svg",
+    "assets/lucide/rotate-ccw-clock.svg",
+    "assets/lucide/scan-text.svg",
+    "assets/lucide/sliders-horizontal.svg",
+    "assets/lucide/x.svg"
+  ],
+  "changed_existing": [
+    "base_library.zip"
+  ],
+  "base_library_entries": 155,
+  "base_library_contents_identical": true,
+  "runtime_baseline_hashes_preserved": true,
+  "exe": "C:\\Users\\PUVKID\\Desktop\\플립링\\소스\\build-cache\\FlipRing\\FlipRing.exe",
+  "exe_size": 6917304,
+  "exe_sha256": "8f20ff752a85e20e1cecc945949486ae3332d78ebcddaac68ee06c7c6ff4bb77",
+  "embedded_app_equals_source": true,
+  "source_app_sha256": "5e90ff97c0050e2db504fa37bd6a9f467cde6806da1183c1aa781c0be1d9edf4",
+  "new_dlls": [],
+  "free_bytes": 1039048704
+}

@@ -1,0 +1,10 @@
+{
+  "tests": 28,
+  "ocr_enabled": true,
+  "gui_enabled": true,
+  "passed": 28,
+  "skipped": [],
+  "failures": [],
+  "errors": [],
+  "scope": "생성한 PDF/이미지의 로컬 편집·원본해시·좌표표·외부프로세스 취소/시간제한. OCR활성시 실제 portable Tesseract 한영/검색PDF/DOCX표/XLSX셀 검증."
+}

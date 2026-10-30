@@ -1,0 +1,6 @@
+{
+  "url": "https://github.com/tesseract-ocr/tesseract/releases/download/5.5.3/tesseract-ocr-w64-setup-5.5.3.20260724.exe",
+  "sha256": "bee9e3434bd94fd65387d9be28cd467a41f61b1275383b55b0f59a1331270ae4",
+  "expected_source": "winget show tesseract-ocr.tesseract 5.5.3",
+  "bytes": 26573224
+}
