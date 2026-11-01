@@ -1,0 +1,12 @@
+{
+  "capture_original_sha256": "0ad1cee45fbd4eaeba1989e168f337c6cd0b2e732176501361940938f4f9c67f",
+  "capture_public_sha256": "0ad1cee45fbd4eaeba1989e168f337c6cd0b2e732176501361940938f4f9c67f",
+  "capture_byte_identical": true,
+  "test_original_sha256": "013d04f5e429ddd64d3770cbba62f9909518cf46fed6468d18e4fcb32fa436e6",
+  "test_public_sha256": "f91dafa805ee111ceeff286eea8572505c36db4923496907d1fcdb55219e0f59",
+  "test_change": "시험 기록의 기본 저장 위치를 특정 개발 폴더에서 운영체제 임시 폴더 또는 FLIPRING_CAPTURE_TEST_OUTPUT 지정 폴더로 일반화했습니다.",
+  "all_other_ast_identical": true,
+  "test_count": 13,
+  "original_source": "프로젝트 로컬 검증 도구",
+  "scope": "공개 사본은 실행 기록과 개인 지침·실행 식별자를 포함하지 않습니다."
+}

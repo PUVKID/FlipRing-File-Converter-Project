@@ -2090,6 +2090,8 @@ class GuiTests(unittest.TestCase):
         APPLICATION.processEvents()
         panel.status_mark.respond("complete")
         QTest.qWait(420)
+        # 420ms 대기 뒤 현재 큐를 한 번 처리한 시점에서 완료 상태를 관찰한다.
+        APPLICATION.processEvents()
         self.assertEqual(panel.status_mark.animation.state(), QAbstractAnimation.Stopped)
         self.assertAlmostEqual(panel.status_mark.phase, 1)
         self.window.last_result = None
