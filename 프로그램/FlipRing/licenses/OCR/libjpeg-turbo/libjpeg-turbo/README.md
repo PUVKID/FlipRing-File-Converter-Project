@@ -53,7 +53,7 @@ Refer to [LICENSE.md](LICENSE.md) for a roll-up of license terms.
 Building libjpeg-turbo
 ======================
 
-Refer to [BUILDING.md](BUILDING.md) for complete instructions.
+Refer to [BUILDING.md](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/BUILDING.md) for complete instructions.
 
 
 Using libjpeg-turbo
@@ -69,10 +69,10 @@ JPEG images:
   generating planar YUV images and performing multiple simultaneous lossless
   transforms on an image.  The Java interface for libjpeg-turbo is written on
   top of the TurboJPEG API.  The TurboJPEG API is recommended for first-time
-  users of libjpeg-turbo.  Refer to [tjcomp.c](src/tjcomp.c),
-  [tjdecomp.c](src/tjdecomp.c), [tjtran.c](src/tjtran.c),
-  [TJComp.java](java/TJComp.java), [TJDecomp.java](java/TJDecomp.java), and
-  [TJTran.java](java/TJTran.java) for examples of its usage and to
+  users of libjpeg-turbo.  Refer to [tjcomp.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjcomp.c),
+  [tjdecomp.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjdecomp.c), [tjtran.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjtran.c),
+  [TJComp.java](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJComp.java), [TJDecomp.java](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJDecomp.java), and
+  [TJTran.java](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJTran.java) for examples of its usage and to
   <https://libjpeg-turbo.org/Documentation/Documentation> for API
   documentation.
 
@@ -82,8 +82,8 @@ JPEG images:
   more powerful.  The libjpeg API implementation in libjpeg-turbo is both
   API/ABI-compatible and mathematically compatible with libjpeg v6b.  It can
   also optionally be configured to be API/ABI-compatible with libjpeg v7 and v8
-  (see below.)  Refer to [cjpeg.c](src/cjpeg.c) and [djpeg.c](src/djpeg.c) for
-  examples of its usage and to [libjpeg.txt](doc/libjpeg.txt) for API
+  (see below.)  Refer to [cjpeg.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/cjpeg.c) and [djpeg.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/djpeg.c) for
+  examples of its usage and to [libjpeg.txt](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/doc/libjpeg.txt) for API
   documentation.
 
 There is no significant performance advantage to either API when both are used
@@ -136,7 +136,7 @@ extensions at compile time with:
 
     #ifdef JCS_ALPHA_EXTENSIONS
 
-[jcstest.c](src/jcstest.c), located in the libjpeg-turbo source tree,
+[jcstest.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/jcstest.c), located in the libjpeg-turbo source tree,
 demonstrates how to check for the existence of the colorspace extensions at
 compile time and run time.
 

@@ -1,0 +1,906 @@
+{
+  "schema_version": 1,
+  "baseline_commit": "7aa40ae0e52510645280913ed1054ea7313b5edd",
+  "upstream": {
+    "repository": "libjpeg-turbo/libjpeg-turbo",
+    "tag": "3.1.3",
+    "commit": "af9c1c268520a29adf98cad5138dafe612b3d318",
+    "archive_readme_sha256": "c553459fc4ea1f69526f0edf0c8ff6c4002fda5b76094abefabdc3de1ee62c10",
+    "official_readme_sha256": "c553459fc4ea1f69526f0edf0c8ff6c4002fda5b76094abefabdc3de1ee62c10",
+    "archive_readme_equal": true,
+    "target_files": [
+      {
+        "url": "https://raw.githubusercontent.com/libjpeg-turbo/libjpeg-turbo/af9c1c268520a29adf98cad5138dafe612b3d318/BUILDING.md",
+        "status": 200,
+        "bytes": 24841,
+        "sha256": "8d2c93157e3294e66e686ec133c704bc13ccfdb2895a85403198510e52ffffa9",
+        "observed_at": "2026-11-02T01:53:46.368454+09:00"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/libjpeg-turbo/libjpeg-turbo/af9c1c268520a29adf98cad5138dafe612b3d318/doc/libjpeg.txt",
+        "status": 200,
+        "bytes": 177182,
+        "sha256": "e22ea2053f7e9b846d174a62e4cce4398bbd49ddd6888463df9884bb0edc7d85",
+        "observed_at": "2026-11-02T01:53:46.651412+09:00"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/libjpeg-turbo/libjpeg-turbo/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJComp.java",
+        "status": 200,
+        "bytes": 12642,
+        "sha256": "f24c3b9425238368769ceecd6bad14f79495c0966efa465af272ad99bef2d91c",
+        "observed_at": "2026-11-02T01:53:46.898893+09:00"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/libjpeg-turbo/libjpeg-turbo/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJDecomp.java",
+        "status": 200,
+        "bytes": 13846,
+        "sha256": "45fe416aa7af592f9077c6501a1eccb341e81656f97f87ec8b2c76e400d172a9",
+        "observed_at": "2026-11-02T01:53:47.142744+09:00"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/libjpeg-turbo/libjpeg-turbo/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJTran.java",
+        "status": 200,
+        "bytes": 15345,
+        "sha256": "7a1c50ca45f9dcee6e3e1df96642270a9519fd6b953debe12610b5df12dc29a8",
+        "observed_at": "2026-11-02T01:53:47.380363+09:00"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/libjpeg-turbo/libjpeg-turbo/af9c1c268520a29adf98cad5138dafe612b3d318/src/cjpeg.c",
+        "status": 200,
+        "bytes": 27276,
+        "sha256": "eb83f472fe61d84aadd1943e29693f337fa6845775a29dd909e669bee212631e",
+        "observed_at": "2026-11-02T01:53:47.646380+09:00"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/libjpeg-turbo/libjpeg-turbo/af9c1c268520a29adf98cad5138dafe612b3d318/src/djpeg.c",
+        "status": 200,
+        "bytes": 33468,
+        "sha256": "29998a3c259783b3233d890993a5bd2055bb0c7beac9565e9a52a6fe5060143c",
+        "observed_at": "2026-11-02T01:53:47.907499+09:00"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/libjpeg-turbo/libjpeg-turbo/af9c1c268520a29adf98cad5138dafe612b3d318/src/jcstest.c",
+        "status": 200,
+        "bytes": 3857,
+        "sha256": "34863e4d64e971e7024844d5012060efc34100837f311c62d50c25e3ef182abf",
+        "observed_at": "2026-11-02T01:53:48.147219+09:00"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/libjpeg-turbo/libjpeg-turbo/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjcomp.c",
+        "status": 200,
+        "bytes": 13474,
+        "sha256": "a06f05bd03fbafb3e41cd80a68e7f9920851dd27925f511115782d416d783443",
+        "observed_at": "2026-11-02T01:53:48.418944+09:00"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/libjpeg-turbo/libjpeg-turbo/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjdecomp.c",
+        "status": 200,
+        "bytes": 13757,
+        "sha256": "2560fe6eba6ce751794eb781ee08997a08f82ab7c904d918d1a8d3cb6e383410",
+        "observed_at": "2026-11-02T01:53:48.698044+09:00"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/libjpeg-turbo/libjpeg-turbo/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjtran.c",
+        "status": 200,
+        "bytes": 14997,
+        "sha256": "88d904b37f417c7e287d8c2a75e0069261228a9a5553bf8c8cdb4ebe71edc41f",
+        "observed_at": "2026-11-02T01:53:48.947690+09:00"
+      }
+    ]
+  },
+  "documents": [
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/README.md",
+      "original_bytes": 15543,
+      "original_sha256": "38ff4669ab90f61e2e52dd9ea271951a37858b115ac639a25e7906b103e53f53",
+      "public_bytes": 15955,
+      "public_sha256": "1af3e6604914e97477d1a0d720386f7262a3f5b5f006ca6d8ecb201b4ac901c5",
+      "href_changes": [
+        {
+          "before": "소스/1.8-화면안내.md",
+          "after": "../../../../../소스/1.8-화면안내.md",
+          "original_byte_offset": 940,
+          "public_byte_offset": 940
+        },
+        {
+          "before": "소스/1.7-새기능안내.md",
+          "after": "../../../../../소스/1.7-새기능안내.md",
+          "original_byte_offset": 1673,
+          "public_byte_offset": 1688
+        },
+        {
+          "before": "docs/versions/%EA%B8%B0%EB%B3%B8.md",
+          "after": "../../../../../docs/versions/기본.md",
+          "original_byte_offset": 2811,
+          "public_byte_offset": 2841
+        },
+        {
+          "before": "history/1.2.0/",
+          "after": "../../../../../history/1.2.0",
+          "original_byte_offset": 3145,
+          "public_byte_offset": 3178
+        },
+        {
+          "before": "history/부드러운디자인-작업전/",
+          "after": "../../../../../history/부드러운디자인-작업전",
+          "original_byte_offset": 3347,
+          "public_byte_offset": 3394
+        },
+        {
+          "before": "history/버튼모션-작업전/",
+          "after": "../../../../../history/버튼모션-작업전",
+          "original_byte_offset": 3580,
+          "public_byte_offset": 3641
+        },
+        {
+          "before": "history/콤보-작업전/",
+          "after": "../../../../../history/콤보-작업전",
+          "original_byte_offset": 3789,
+          "public_byte_offset": 3864
+        },
+        {
+          "before": "history/탭잔상-작업전/",
+          "after": "../../../../../history/탭잔상-작업전",
+          "original_byte_offset": 3989,
+          "public_byte_offset": 4078
+        },
+        {
+          "before": "history/호버대비-작업전/",
+          "after": "../../../../../history/호버대비-작업전",
+          "original_byte_offset": 4198,
+          "public_byte_offset": 4301
+        },
+        {
+          "before": "history/1.4.0/",
+          "after": "../../../../../history/1.4.0",
+          "original_byte_offset": 4437,
+          "public_byte_offset": 4554
+        },
+        {
+          "before": "docs/diffs/1.4.0.patch",
+          "after": "../../../../../docs/diffs/1.4.0.patch",
+          "original_byte_offset": 4520,
+          "public_byte_offset": 4651
+        },
+        {
+          "before": "history/내부모션-작업전/",
+          "after": "../../../../../history/내부모션-작업전",
+          "original_byte_offset": 4640,
+          "public_byte_offset": 4786
+        },
+        {
+          "before": "docs/diffs/내부모션-작업전.patch",
+          "after": "../../../../../docs/diffs/내부모션-작업전.patch",
+          "original_byte_offset": 4757,
+          "public_byte_offset": 4917
+        },
+        {
+          "before": "history/1.6.0/",
+          "after": "../../../../../history/1.6.0",
+          "original_byte_offset": 4897,
+          "public_byte_offset": 5072
+        },
+        {
+          "before": "docs/diffs/1.6.0.patch",
+          "after": "../../../../../docs/diffs/1.6.0.patch",
+          "original_byte_offset": 4980,
+          "public_byte_offset": 5169
+        },
+        {
+          "before": "history/1.7.0/",
+          "after": "../../../../../history/1.7.0",
+          "original_byte_offset": 5130,
+          "public_byte_offset": 5334
+        },
+        {
+          "before": "docs/diffs/1.7.0.patch",
+          "after": "../../../../../docs/diffs/1.7.0.patch",
+          "original_byte_offset": 5213,
+          "public_byte_offset": 5431
+        },
+        {
+          "before": "history/1.8.0/",
+          "after": "../../../../../history/1.8.0",
+          "original_byte_offset": 5309,
+          "public_byte_offset": 5542
+        },
+        {
+          "before": "docs/diffs/1.8.0.patch",
+          "after": "../../../../../docs/diffs/1.8.0.patch",
+          "original_byte_offset": 5392,
+          "public_byte_offset": 5639
+        },
+        {
+          "before": "assets/screenshot-1.8-settings.png",
+          "after": "../../../../../assets/screenshot-1.8-settings.png",
+          "original_byte_offset": 5798,
+          "public_byte_offset": 6060
+        },
+        {
+          "before": "소스/app.py",
+          "after": "../../../../../소스/app.py",
+          "original_byte_offset": 8260,
+          "public_byte_offset": 8537
+        },
+        {
+          "before": "소스/engine.py",
+          "after": "../../../../../소스/engine.py",
+          "original_byte_offset": 8294,
+          "public_byte_offset": 8586
+        },
+        {
+          "before": "소스/pdf_tools.py",
+          "after": "../../../../../소스/pdf_tools.py",
+          "original_byte_offset": 8329,
+          "public_byte_offset": 8636
+        },
+        {
+          "before": "소스/pdf_panel.py",
+          "after": "../../../../../소스/pdf_panel.py",
+          "original_byte_offset": 8366,
+          "public_byte_offset": 8688
+        },
+        {
+          "before": "소스/requirements-lock.txt",
+          "after": "../../../../../소스/requirements-lock.txt",
+          "original_byte_offset": 8410,
+          "public_byte_offset": 8747
+        },
+        {
+          "before": "소스/LICENSE.txt",
+          "after": "../../../../../소스/LICENSE.txt",
+          "original_byte_offset": 8463,
+          "public_byte_offset": 8815
+        },
+        {
+          "before": "소스/test_engine.py",
+          "after": "../../../../../소스/test_engine.py",
+          "original_byte_offset": 14065,
+          "public_byte_offset": 14432
+        },
+        {
+          "before": "소스/test_pdf_tools.py",
+          "after": "../../../../../소스/test_pdf_tools.py",
+          "original_byte_offset": 14177,
+          "public_byte_offset": 14559
+        },
+        {
+          "before": "소스/LICENSE.txt",
+          "after": "../../../../../소스/LICENSE.txt",
+          "original_byte_offset": 15315,
+          "public_byte_offset": 15712
+        }
+      ],
+      "restored_original_sha256": "38ff4669ab90f61e2e52dd9ea271951a37858b115ac639a25e7906b103e53f53",
+      "href_only_original_restoration": true
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/VERSIONS.md",
+      "original_bytes": 2744,
+      "original_sha256": "778d1eb12cc9e851554fcab8f7d1c427ed3891c0db7b8885298bd581366cf32e",
+      "public_bytes": 3013,
+      "public_sha256": "866dcd323d6299f413ec373152693d077c65e1b9f77c74e15acf7321ecba6977",
+      "href_changes": [
+        {
+          "before": "../history/1.2.0/",
+          "after": "../../../../../../history/1.2.0",
+          "original_byte_offset": 225,
+          "public_byte_offset": 225
+        },
+        {
+          "before": "../history/부드러운디자인-작업전/",
+          "after": "../../../../../../history/부드러운디자인-작업전",
+          "original_byte_offset": 425,
+          "public_byte_offset": 439
+        },
+        {
+          "before": "../history/버튼모션-작업전/",
+          "after": "../../../../../../history/버튼모션-작업전",
+          "original_byte_offset": 656,
+          "public_byte_offset": 684
+        },
+        {
+          "before": "../history/콤보-작업전/",
+          "after": "../../../../../../history/콤보-작업전",
+          "original_byte_offset": 863,
+          "public_byte_offset": 905
+        },
+        {
+          "before": "../history/탭잔상-작업전/",
+          "after": "../../../../../../history/탭잔상-작업전",
+          "original_byte_offset": 1061,
+          "public_byte_offset": 1117
+        },
+        {
+          "before": "../history/호버대비-작업전/",
+          "after": "../../../../../../history/호버대비-작업전",
+          "original_byte_offset": 1268,
+          "public_byte_offset": 1338
+        },
+        {
+          "before": "../history/1.4.0/",
+          "after": "../../../../../../history/1.4.0",
+          "original_byte_offset": 1505,
+          "public_byte_offset": 1589
+        },
+        {
+          "before": "diffs/1.4.0.patch",
+          "after": "../../../../../../docs/diffs/1.4.0.patch",
+          "original_byte_offset": 1586,
+          "public_byte_offset": 1684
+        },
+        {
+          "before": "../history/내부모션-작업전/",
+          "after": "../../../../../../history/내부모션-작업전",
+          "original_byte_offset": 1701,
+          "public_byte_offset": 1822
+        },
+        {
+          "before": "diffs/내부모션-작업전.patch",
+          "after": "../../../../../../docs/diffs/내부모션-작업전.patch",
+          "original_byte_offset": 1816,
+          "public_byte_offset": 1951
+        },
+        {
+          "before": "../history/1.6.0/",
+          "after": "../../../../../../history/1.6.0",
+          "original_byte_offset": 1951,
+          "public_byte_offset": 2109
+        },
+        {
+          "before": "diffs/1.6.0.patch",
+          "after": "../../../../../../docs/diffs/1.6.0.patch",
+          "original_byte_offset": 2032,
+          "public_byte_offset": 2204
+        },
+        {
+          "before": "../history/1.7.0/",
+          "after": "../../../../../../history/1.7.0",
+          "original_byte_offset": 2177,
+          "public_byte_offset": 2372
+        },
+        {
+          "before": "diffs/1.7.0.patch",
+          "after": "../../../../../../docs/diffs/1.7.0.patch",
+          "original_byte_offset": 2258,
+          "public_byte_offset": 2467
+        },
+        {
+          "before": "diffs/1.8.0.patch",
+          "after": "../../../../../../docs/diffs/1.8.0.patch",
+          "original_byte_offset": 2685,
+          "public_byte_offset": 2917
+        },
+        {
+          "before": "../history/1.8.0/",
+          "after": "../../../../../../history/1.8.0",
+          "original_byte_offset": 2723,
+          "public_byte_offset": 2978
+        }
+      ],
+      "restored_original_sha256": "778d1eb12cc9e851554fcab8f7d1c427ed3891c0db7b8885298bd581366cf32e",
+      "href_only_original_restoration": true
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/1.2.0.md",
+      "original_bytes": 1348,
+      "original_sha256": "576ad9b91553fcace710640a79a831e592498a7fdcd7452d22cabecd77a7aaa2",
+      "public_bytes": 1377,
+      "public_sha256": "f598fd3607eaff04e0de4d4b815f25929ebf184ec717375ce30f1249435ec694",
+      "href_changes": [
+        {
+          "before": "../../history/1.2.0/",
+          "after": "../../../../../../../history/1.2.0",
+          "original_byte_offset": 640,
+          "public_byte_offset": 640
+        },
+        {
+          "before": "../../history/1.2.0/파일목록.json",
+          "after": "../../../../../../../history/1.2.0/파일목록.json",
+          "original_byte_offset": 690,
+          "public_byte_offset": 704
+        }
+      ],
+      "restored_original_sha256": "576ad9b91553fcace710640a79a831e592498a7fdcd7452d22cabecd77a7aaa2",
+      "href_only_original_restoration": true
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/1.4.0.md",
+      "original_bytes": 5556,
+      "original_sha256": "9d2c9e5eb91d352f2e389465bf7bc78afb3dc8a12f4e069f63a7328241ef1331",
+      "public_bytes": 5608,
+      "public_sha256": "a643fed3a0aa4639ad551bfcc19320854642a19edda1cf567e98affd9774f3ed",
+      "href_changes": [
+        {
+          "before": "../../history/1.4.0/",
+          "after": "../../../../../../../history/1.4.0",
+          "original_byte_offset": 758,
+          "public_byte_offset": 758
+        },
+        {
+          "before": "../../history/1.4.0/파일목록.json",
+          "after": "../../../../../../../history/1.4.0/파일목록.json",
+          "original_byte_offset": 808,
+          "public_byte_offset": 822
+        },
+        {
+          "before": "../diffs/1.4.0.patch",
+          "after": "../../../../../../../docs/diffs/1.4.0.patch",
+          "original_byte_offset": 1243,
+          "public_byte_offset": 1272
+        }
+      ],
+      "restored_original_sha256": "9d2c9e5eb91d352f2e389465bf7bc78afb3dc8a12f4e069f63a7328241ef1331",
+      "href_only_original_restoration": true
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/1.6.0.md",
+      "original_bytes": 6234,
+      "original_sha256": "9109520c6668e0b4b78d25c48577199a24ede9b3c20776c608a6b850419e44ef",
+      "public_bytes": 6286,
+      "public_sha256": "f2f6f19bf1b12d8c44a549ce4d1ee3b0021d0cc9dbe7ecab3fc347fba4a3bed1",
+      "href_changes": [
+        {
+          "before": "../../history/1.6.0/",
+          "after": "../../../../../../../history/1.6.0",
+          "original_byte_offset": 735,
+          "public_byte_offset": 735
+        },
+        {
+          "before": "../../history/1.6.0/파일목록.json",
+          "after": "../../../../../../../history/1.6.0/파일목록.json",
+          "original_byte_offset": 785,
+          "public_byte_offset": 799
+        },
+        {
+          "before": "../diffs/1.6.0.patch",
+          "after": "../../../../../../../docs/diffs/1.6.0.patch",
+          "original_byte_offset": 1220,
+          "public_byte_offset": 1249
+        }
+      ],
+      "restored_original_sha256": "9109520c6668e0b4b78d25c48577199a24ede9b3c20776c608a6b850419e44ef",
+      "href_only_original_restoration": true
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/1.7.0.md",
+      "original_bytes": 9096,
+      "original_sha256": "5420b1fd5300afd0a7924a7bd17d91ca7cec01d740dde72b4cb30099329f4dce",
+      "public_bytes": 9206,
+      "public_sha256": "1200ae5c187dc844cbdeb4f9aa3fcb1ec09f4a3f85c535f83ff10390202b5231",
+      "href_changes": [
+        {
+          "before": "../../history/1.7.0/",
+          "after": "../../../../../../../history/1.7.0",
+          "original_byte_offset": 1368,
+          "public_byte_offset": 1368
+        },
+        {
+          "before": "../../history/1.7.0/파일목록.json",
+          "after": "../../../../../../../history/1.7.0/파일목록.json",
+          "original_byte_offset": 1418,
+          "public_byte_offset": 1432
+        },
+        {
+          "before": "../diffs/1.7.0.patch",
+          "after": "../../../../../../../docs/diffs/1.7.0.patch",
+          "original_byte_offset": 1853,
+          "public_byte_offset": 1882
+        },
+        {
+          "before": "../changes/2026-10-30_1.7_실제조작확인.md",
+          "after": "../../../../../../../docs/changes/2026-10-30_1.7_실제조작확인.md",
+          "original_byte_offset": 8656,
+          "public_byte_offset": 8708
+        },
+        {
+          "before": "배포파일-크기와해시.json",
+          "after": "../../../../../../../docs/versions/배포파일-크기와해시.json",
+          "original_byte_offset": 8968,
+          "public_byte_offset": 9043
+        }
+      ],
+      "restored_original_sha256": "5420b1fd5300afd0a7924a7bd17d91ca7cec01d740dde72b4cb30099329f4dce",
+      "href_only_original_restoration": true
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/1.8.0.md",
+      "original_bytes": 9414,
+      "original_sha256": "a299dd2fea9170a6c3813e17dcc64388e36256d33e60495a77fe7c9fc7dd52aa",
+      "public_bytes": 9516,
+      "public_sha256": "3b548fcb09da789b59154b825c000c48c5e0b1279745243855651b1bd0c1c51f",
+      "href_changes": [
+        {
+          "before": "../../history/1.8.0/",
+          "after": "../../../../../../../history/1.8.0",
+          "original_byte_offset": 751,
+          "public_byte_offset": 751
+        },
+        {
+          "before": "../../history/1.8.0/파일목록.json",
+          "after": "../../../../../../../history/1.8.0/파일목록.json",
+          "original_byte_offset": 792,
+          "public_byte_offset": 806
+        },
+        {
+          "before": "../diffs/1.8.0.patch",
+          "after": "../../../../../../../docs/diffs/1.8.0.patch",
+          "original_byte_offset": 904,
+          "public_byte_offset": 933
+        },
+        {
+          "before": "../../소스/1.8-화면안내.md",
+          "after": "../../../../../../../소스/1.8-화면안내.md",
+          "original_byte_offset": 945,
+          "public_byte_offset": 997
+        },
+        {
+          "before": "배포파일-크기와해시.json",
+          "after": "../../../../../../../docs/versions/배포파일-크기와해시.json",
+          "original_byte_offset": 8199,
+          "public_byte_offset": 8266
+        }
+      ],
+      "restored_original_sha256": "a299dd2fea9170a6c3813e17dcc64388e36256d33e60495a77fe7c9fc7dd52aa",
+      "href_only_original_restoration": true
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/내부모션-작업전.md",
+      "original_bytes": 4826,
+      "original_sha256": "991eca69efe48599469938007398a0a3c5237be2f6f4404e89163027e65e1bb8",
+      "public_bytes": 4878,
+      "public_sha256": "005c3d3573f53f185b0dfd944e8b66e61e8efaaa2bc4e044f64f1905e55e562c",
+      "href_changes": [
+        {
+          "before": "../../history/내부모션-작업전/",
+          "after": "../../../../../../../history/내부모션-작업전",
+          "original_byte_offset": 631,
+          "public_byte_offset": 631
+        },
+        {
+          "before": "../../history/내부모션-작업전/파일목록.json",
+          "after": "../../../../../../../history/내부모션-작업전/파일목록.json",
+          "original_byte_offset": 698,
+          "public_byte_offset": 712
+        },
+        {
+          "before": "../diffs/내부모션-작업전.patch",
+          "after": "../../../../../../../docs/diffs/내부모션-작업전.patch",
+          "original_byte_offset": 1150,
+          "public_byte_offset": 1179
+        }
+      ],
+      "restored_original_sha256": "991eca69efe48599469938007398a0a3c5237be2f6f4404e89163027e65e1bb8",
+      "href_only_original_restoration": true
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/버튼모션-작업전.md",
+      "original_bytes": 1059,
+      "original_sha256": "dda7e30a1a5edb4697352a94493b5bc8a2a0db4c8174155cc1433f4a510b2609",
+      "public_bytes": 1088,
+      "public_sha256": "58e8993370f6ccba53ad0dfbdd37e8bbcb5a021fd62baa4704a6f410157ecebd",
+      "href_changes": [
+        {
+          "before": "../../history/버튼모션-작업전/",
+          "after": "../../../../../../../history/버튼모션-작업전",
+          "original_byte_offset": 317,
+          "public_byte_offset": 317
+        },
+        {
+          "before": "../../history/버튼모션-작업전/파일목록.json",
+          "after": "../../../../../../../history/버튼모션-작업전/파일목록.json",
+          "original_byte_offset": 384,
+          "public_byte_offset": 398
+        }
+      ],
+      "restored_original_sha256": "dda7e30a1a5edb4697352a94493b5bc8a2a0db4c8174155cc1433f4a510b2609",
+      "href_only_original_restoration": true
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/부드러운디자인-작업전.md",
+      "original_bytes": 1098,
+      "original_sha256": "f3318a6c304dcfcebe7a1954f0087f8ab24703043212e6a6ad5f11ba648443d5",
+      "public_bytes": 1127,
+      "public_sha256": "d3328e7b3f256bdd9e87da2aaf7fc9d4e4ed93613a0e320f5f0688775841fe73",
+      "href_changes": [
+        {
+          "before": "../../history/부드러운디자인-작업전/",
+          "after": "../../../../../../../history/부드러운디자인-작업전",
+          "original_byte_offset": 338,
+          "public_byte_offset": 338
+        },
+        {
+          "before": "../../history/부드러운디자인-작업전/파일목록.json",
+          "after": "../../../../../../../history/부드러운디자인-작업전/파일목록.json",
+          "original_byte_offset": 414,
+          "public_byte_offset": 428
+        }
+      ],
+      "restored_original_sha256": "f3318a6c304dcfcebe7a1954f0087f8ab24703043212e6a6ad5f11ba648443d5",
+      "href_only_original_restoration": true
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/콤보-작업전.md",
+      "original_bytes": 1041,
+      "original_sha256": "e6acff3cc4e8f26f254dbdcfb7180ccd0f9dd5bde3d1331260f29aa6182efa80",
+      "public_bytes": 1070,
+      "public_sha256": "168004121b80f074baea1f505925cb31af20aa8758a49981c07d761b016154d7",
+      "href_changes": [
+        {
+          "before": "../../history/콤보-작업전/",
+          "after": "../../../../../../../history/콤보-작업전",
+          "original_byte_offset": 311,
+          "public_byte_offset": 311
+        },
+        {
+          "before": "../../history/콤보-작업전/파일목록.json",
+          "after": "../../../../../../../history/콤보-작업전/파일목록.json",
+          "original_byte_offset": 372,
+          "public_byte_offset": 386
+        }
+      ],
+      "restored_original_sha256": "e6acff3cc4e8f26f254dbdcfb7180ccd0f9dd5bde3d1331260f29aa6182efa80",
+      "href_only_original_restoration": true
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/탭잔상-작업전.md",
+      "original_bytes": 1050,
+      "original_sha256": "b1fe50b9262223f60868b6c80c65278846710927664b8f337d1320452b62769d",
+      "public_bytes": 1079,
+      "public_sha256": "c6cc0e7486df9373d9993a4c59981ec2d934f6e999572aea27ef25fa11c9f88b",
+      "href_changes": [
+        {
+          "before": "../../history/탭잔상-작업전/",
+          "after": "../../../../../../../history/탭잔상-작업전",
+          "original_byte_offset": 314,
+          "public_byte_offset": 314
+        },
+        {
+          "before": "../../history/탭잔상-작업전/파일목록.json",
+          "after": "../../../../../../../history/탭잔상-작업전/파일목록.json",
+          "original_byte_offset": 378,
+          "public_byte_offset": 392
+        }
+      ],
+      "restored_original_sha256": "b1fe50b9262223f60868b6c80c65278846710927664b8f337d1320452b62769d",
+      "href_only_original_restoration": true
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/호버대비-작업전.md",
+      "original_bytes": 1059,
+      "original_sha256": "c62d7a6fdac523ebdf47522b03d087d9105a504ffc88095ec3376e0f61417a43",
+      "public_bytes": 1088,
+      "public_sha256": "ba87672e7ecc112e76111b99802a0a77efb1dd43a9d24a6e476ab10ad0eee210",
+      "href_changes": [
+        {
+          "before": "../../history/호버대비-작업전/",
+          "after": "../../../../../../../history/호버대비-작업전",
+          "original_byte_offset": 317,
+          "public_byte_offset": 317
+        },
+        {
+          "before": "../../history/호버대비-작업전/파일목록.json",
+          "after": "../../../../../../../history/호버대비-작업전/파일목록.json",
+          "original_byte_offset": 384,
+          "public_byte_offset": 398
+        }
+      ],
+      "restored_original_sha256": "c62d7a6fdac523ebdf47522b03d087d9105a504ffc88095ec3376e0f61417a43",
+      "href_only_original_restoration": true
+    },
+    {
+      "path": "소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md",
+      "original_bytes": 17784,
+      "original_sha256": "c553459fc4ea1f69526f0edf0c8ff6c4002fda5b76094abefabdc3de1ee62c10",
+      "public_bytes": 18807,
+      "public_sha256": "bd9afea98b72467fb1b44f90caca6914ccc802afa89500a221973880b87e753a",
+      "href_changes": [
+        {
+          "before": "BUILDING.md",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/BUILDING.md",
+          "original_byte_offset": 2454,
+          "public_byte_offset": 2454
+        },
+        {
+          "before": "src/tjcomp.c",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjcomp.c",
+          "original_byte_offset": 3160,
+          "public_byte_offset": 3253
+        },
+        {
+          "before": "src/tjdecomp.c",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjdecomp.c",
+          "original_byte_offset": 3190,
+          "public_byte_offset": 3376
+        },
+        {
+          "before": "src/tjtran.c",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjtran.c",
+          "original_byte_offset": 3218,
+          "public_byte_offset": 3497
+        },
+        {
+          "before": "java/TJComp.java",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJComp.java",
+          "original_byte_offset": 3249,
+          "public_byte_offset": 3621
+        },
+        {
+          "before": "java/TJDecomp.java",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJDecomp.java",
+          "original_byte_offset": 3284,
+          "public_byte_offset": 3749
+        },
+        {
+          "before": "java/TJTran.java",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJTran.java",
+          "original_byte_offset": 3325,
+          "public_byte_offset": 3883
+        },
+        {
+          "before": "src/cjpeg.c",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/cjpeg.c",
+          "original_byte_offset": 3903,
+          "public_byte_offset": 4554
+        },
+        {
+          "before": "src/djpeg.c",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/djpeg.c",
+          "original_byte_offset": 3930,
+          "public_byte_offset": 4674
+        },
+        {
+          "before": "doc/libjpeg.txt",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/doc/libjpeg.txt",
+          "original_byte_offset": 3992,
+          "public_byte_offset": 4829
+        },
+        {
+          "before": "src/jcstest.c",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/jcstest.c",
+          "original_byte_offset": 6173,
+          "public_byte_offset": 7103
+        }
+      ],
+      "restored_original_sha256": "c553459fc4ea1f69526f0edf0c8ff6c4002fda5b76094abefabdc3de1ee62c10",
+      "href_only_original_restoration": true
+    },
+    {
+      "path": "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
+      "original_bytes": 5755,
+      "original_sha256": "be2b2b5ab168bce87bc3e31f2a5c5adba4b7f6e9e51d618e958d1d46972ebd95",
+      "public_bytes": 5762,
+      "public_sha256": "388b9b47f302c61fef8f23043cc436931d86486f515a205da5dbe8b7e5637854",
+      "href_changes": [
+        {
+          "before": "README.ijg",
+          "after": "libjpeg_turbo.ijg",
+          "original_byte_offset": 206,
+          "public_byte_offset": 206
+        }
+      ],
+      "restored_original_sha256": "be2b2b5ab168bce87bc3e31f2a5c5adba4b7f6e9e51d618e958d1d46972ebd95",
+      "href_only_original_restoration": true
+    },
+    {
+      "path": "프로그램/FlipRing/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md",
+      "original_bytes": 17784,
+      "original_sha256": "c553459fc4ea1f69526f0edf0c8ff6c4002fda5b76094abefabdc3de1ee62c10",
+      "public_bytes": 18807,
+      "public_sha256": "bd9afea98b72467fb1b44f90caca6914ccc802afa89500a221973880b87e753a",
+      "href_changes": [
+        {
+          "before": "BUILDING.md",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/BUILDING.md",
+          "original_byte_offset": 2454,
+          "public_byte_offset": 2454
+        },
+        {
+          "before": "src/tjcomp.c",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjcomp.c",
+          "original_byte_offset": 3160,
+          "public_byte_offset": 3253
+        },
+        {
+          "before": "src/tjdecomp.c",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjdecomp.c",
+          "original_byte_offset": 3190,
+          "public_byte_offset": 3376
+        },
+        {
+          "before": "src/tjtran.c",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjtran.c",
+          "original_byte_offset": 3218,
+          "public_byte_offset": 3497
+        },
+        {
+          "before": "java/TJComp.java",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJComp.java",
+          "original_byte_offset": 3249,
+          "public_byte_offset": 3621
+        },
+        {
+          "before": "java/TJDecomp.java",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJDecomp.java",
+          "original_byte_offset": 3284,
+          "public_byte_offset": 3749
+        },
+        {
+          "before": "java/TJTran.java",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJTran.java",
+          "original_byte_offset": 3325,
+          "public_byte_offset": 3883
+        },
+        {
+          "before": "src/cjpeg.c",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/cjpeg.c",
+          "original_byte_offset": 3903,
+          "public_byte_offset": 4554
+        },
+        {
+          "before": "src/djpeg.c",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/djpeg.c",
+          "original_byte_offset": 3930,
+          "public_byte_offset": 4674
+        },
+        {
+          "before": "doc/libjpeg.txt",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/doc/libjpeg.txt",
+          "original_byte_offset": 3992,
+          "public_byte_offset": 4829
+        },
+        {
+          "before": "src/jcstest.c",
+          "after": "https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/jcstest.c",
+          "original_byte_offset": 6173,
+          "public_byte_offset": 7103
+        }
+      ],
+      "restored_original_sha256": "c553459fc4ea1f69526f0edf0c8ff6c4002fda5b76094abefabdc3de1ee62c10",
+      "href_only_original_restoration": true
+    },
+    {
+      "path": "프로그램/FlipRing/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
+      "original_bytes": 5755,
+      "original_sha256": "be2b2b5ab168bce87bc3e31f2a5c5adba4b7f6e9e51d618e958d1d46972ebd95",
+      "public_bytes": 5762,
+      "public_sha256": "388b9b47f302c61fef8f23043cc436931d86486f515a205da5dbe8b7e5637854",
+      "href_changes": [
+        {
+          "before": "README.ijg",
+          "after": "libjpeg_turbo.ijg",
+          "original_byte_offset": 206,
+          "public_byte_offset": 206
+        }
+      ],
+      "restored_original_sha256": "be2b2b5ab168bce87bc3e31f2a5c5adba4b7f6e9e51d618e958d1d46972ebd95",
+      "href_only_original_restoration": true
+    }
+  ],
+  "freetype_encoding": [
+    {
+      "source": "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt",
+      "published_path": "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt",
+      "original_sha256": "f4b133e25df1f86ad3ffea453aa0e613f0474f34778dbbb3e437e7b2724937d8",
+      "public_sha256": "4a9a548027a2c1d37788519dea833294c9c81f1ebc280e817f41f50d0c642d78",
+      "conversion": "ISO-8859-1 → UTF-8; 원문 문자 동일",
+      "decoded_characters_equal": true
+    },
+    {
+      "source": "프로그램/FlipRing/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt",
+      "published_path": "프로그램/FlipRing/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt",
+      "original_sha256": "f4b133e25df1f86ad3ffea453aa0e613f0474f34778dbbb3e437e7b2724937d8",
+      "public_sha256": "4a9a548027a2c1d37788519dea833294c9c81f1ebc280e817f41f50d0c642d78",
+      "conversion": "ISO-8859-1 → UTF-8; 원문 문자 동일",
+      "decoded_characters_equal": true
+    },
+    {
+      "source": "work/enhancement-20261030/previous-release-before17/프로그램/FlipRing/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt",
+      "published_path": "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt",
+      "original_sha256": "f4b133e25df1f86ad3ffea453aa0e613f0474f34778dbbb3e437e7b2724937d8",
+      "public_sha256": "4a9a548027a2c1d37788519dea833294c9c81f1ebc280e817f41f50d0c642d78",
+      "conversion": "ISO-8859-1 → UTF-8; 원문 문자 동일",
+      "decoded_characters_equal": true
+    }
+  ]
+}

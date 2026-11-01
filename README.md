@@ -14,6 +14,8 @@
 
 [핵심 구성](#input-processing-output)
 
+[🗂️ 전체 차수·원본 비교](docs/REVISION_INDEX.md) · [공개 상태 재확인](docs/2026-11-02_공개반영재개검증.md)
+
 </div>
 
 <a name="overview"></a>
@@ -190,7 +192,7 @@ python -m venv .venv
 .\.venv\Scripts\python -m pip install -r requirements-lock.txt
 ```
 
-앱 실행에는 코드가 참조하는 `assets/`의 글꼴·화면 자산이 필요합니다. OCR에는 `vendor/tesseract/tesseract.exe`와 `tessdata/`가 필요합니다. 이 공개 사본에는 해당 실행 자산과 OCR·7-Zip 바이너리가 포함되어 있지 않으므로, 소스만 내려받아 바로 배포 앱처럼 실행할 수는 없습니다.
+이 공개 사본에는 `소스/assets/fonts/`의 SUIT Regular·Medium·SemiBold 글꼴과 `소스/assets/NanumGothicBold.ttf`, 일부 화면 자산 및 `소스/vendor/tesseract/tessdata/`의 eng·kor·osd 언어 자료가 포함되어 있습니다. OCR·압축 기능에 필요한 `tesseract.exe`와 7-Zip 실행 바이너리는 포함되어 있지 않습니다. 필요한 실행 환경과 기능별 도구를 따로 준비해야 하며, 소스만으로 배포 앱과 동일한 실행이나 재빌드를 보장하지 않습니다.
 
 필요한 자산을 정당한 배포 원본에서 준비한 개발 환경의 진입점은 다음과 같습니다.
 
@@ -233,7 +235,7 @@ PDF 작업은 암호화된 PDF를 거부합니다. 이미지 PDF에서 텍스트
 | 실행했지만 창이 보이지 않음 | 트레이 메뉴 또는 `app.py --settings` |
 | 종료가 거부됨 | 일반 변환·PDF 작업 완료 여부 |
 | OCR 구성 누락 | Tesseract 실행 파일과 언어 자료 |
-| 글꼴·화면 자산 오류 | 공개 사본에 없는 `assets/`의 필수 입력 |
+| 글꼴·화면 자산 오류 | 동봉된 `assets/` 글꼴·자산의 실제 경로와 필수 파일 누락 여부 |
 | PDF 페이지 범위 오류 | 1부터 시작하는 범위와 실제 페이지 수 |
 | PDF가 거부됨 | 암호화·빈 문서·손상 여부 |
 | 압축 변환이 거부됨 | 절대 경로·상위 경로·심볼릭 링크 포함 여부 |
@@ -267,7 +269,7 @@ PDF 작업은 암호화된 PDF를 거부합니다. 이미지 PDF에서 텍스트
 | 1.7.0 | [📁 22개](history/1.7.0) | [기능·검증 설명](docs/versions/1.7.0.md) | [🔍 전체 차이·해시](docs/revision-audit/1.7.0.md) |
 | 1.8.0 | [📁 24개](history/1.8.0) | [기능·검증 설명](docs/versions/1.8.0.md) | [🔍 전체 차이·해시](docs/revision-audit/1.8.0.md) |
 | 현행소스 | [📁 308개](%EC%86%8C%EC%8A%A4) | [보관 범위](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md) | [🔍 전체 차이·해시](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md) |
-| 고유 작업 코드·문서 | [📁 622개](보존자료/작업소스/) | [원본 제품자료 목록](docs/SOURCE_MATERIALS.md) | 원래 차수·경로와 파일별 SHA-256 유지 |
+| 고유 작업 코드·문서 | [📁 622개](보존자료/작업소스/) | [원본 제품자료 목록](docs/SOURCE_MATERIALS.md) | [초기 비교 기준·원본 해시](docs/2026-11-02_공개반영재개검증.md#작업-원본의-비교-기준) |
 
 
 <!-- flipring-supported-input -->
