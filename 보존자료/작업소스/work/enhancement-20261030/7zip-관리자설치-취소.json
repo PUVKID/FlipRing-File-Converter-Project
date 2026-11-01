@@ -2,7 +2,7 @@
   "session": "01a15519-c86d-7880-a2e6-c9070f59067d",
   "task": "workflow-enhancement-20261030",
   "argv": ["winget", "install", "--id", "7zip.7zip", "--exact", "--silent", "--accept-package-agreements", "--accept-source-agreements", "--disable-interactivity"],
-  "cwd": "D:\\2026\\FilpRing Project",
+  "cwd": ".",
   "started_kst": "2026-10-30T08:59:32+09:00",
   "exit_code": -2147023673,
   "error": "0x800704c7 : The operation was canceled by the user.",

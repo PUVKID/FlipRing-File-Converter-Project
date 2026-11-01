@@ -40,5 +40,5 @@
   "style": "QHeaderView {padding:0;border:0;border-radius:0;}",
   "font": "SUIT",
   "foreground": "#262626",
-  "root_directory": "D:/2026/FilpRing Project/소스"
+  "root_directory": "./소스"
 }

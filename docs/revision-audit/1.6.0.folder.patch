@@ -633,7 +633,7 @@
  AppName=FlipRing
 -AppVersion=1.4.0
 +AppVersion=1.6.0
- AppPublisher=PUVKID
+ AppPublisher=제작자
  DefaultDirName={{localappdata}}\\Programs\\FlipRing
  DefaultGroupName=FlipRing
 --- 1.4.0/i18n.py
@@ -643,7 +643,7 @@
      "running_message": ("파일을 끌며 Shift를 누르세요. 설정은 트레이 아이콘에 있습니다.", "Hold Shift while dragging a file. Settings are in the system tray."),
      "external_error": ("외부 도구 또는 시스템 오류: {detail}", "External tool or system error: {detail}"),
 +    "studio_workspace": ("파일을 위한 작업 공간", "A workspace for your files"),
-+    "studio_maker": ("PUVKID 제작", "Made by PUVKID"),
++    "studio_maker": ("프로젝트 제작자", "Made by the developer"),
 +    "studio_local": ("무료 · 내 컴퓨터에서 처리", "Free · Processed on your PC"),
 +    "studio_convert": ("파일 변환", "Convert files"),
 +    "studio_helpers": ("외부 도우미", "Helper tools"),

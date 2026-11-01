@@ -1,9 +1,9 @@
-﻿; PUVKID 무료 배포판 설치 구성
+﻿; 제작자 무료 배포판 설치 구성
 [Setup]
 AppId=PUVKID.FlipRing
 AppName=FlipRing
 AppVersion=1.8.0
-AppPublisher=PUVKID
+AppPublisher=제작자
 DefaultDirName={localappdata}\Programs\FlipRing
 DefaultGroupName=FlipRing
 PrivilegesRequired=lowest

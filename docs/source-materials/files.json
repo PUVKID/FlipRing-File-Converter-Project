@@ -18,26 +18,32 @@
   {
     "path": "docs/2026-10-30_작업흐름확장.md",
     "source": "docs/2026-10-30_작업흐름확장.md",
-    "kind": "원본 파일",
-    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
-    "bytes": 6032,
-    "sha256": "397a47a86f8dd9ebca443362ed82e1116ad7f93baaf202ddd5b575006c442ce5"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 6035,
+    "sha256": "c2ddf73be8333354554ad2d4a34c2819028ab407fe5c044674f1ec76e918d542",
+    "source_sha256": "397a47a86f8dd9ebca443362ed82e1116ad7f93baaf202ddd5b575006c442ce5",
+    "source_bytes": 6032
   },
   {
     "path": "docs/요구사항.md",
     "source": "docs/요구사항.md",
-    "kind": "원본 파일",
-    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
-    "bytes": 5082,
-    "sha256": "c1130591b6c24f88a049b5f3305e0ea624ca053c912a24c68c6c4b60595a8613"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 4901,
+    "sha256": "2edacad2388504517fffce463356e07006d8f6042f2c62121d92c7b9f7134cf5",
+    "source_sha256": "c1130591b6c24f88a049b5f3305e0ea624ca053c912a24c68c6c4b60595a8613",
+    "source_bytes": 5082
   },
   {
     "path": "docs/이동재개.md",
     "source": "docs/이동재개.md",
-    "kind": "원본 파일",
-    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
-    "bytes": 2234,
-    "sha256": "d2f53904a9f35434cf76af1a6c936115aa2c85ee006905f11f9233c9b451dafc"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 2179,
+    "sha256": "daa9ef7ed85dfa2cedae7d4f6a6e6243226912dbf7906c6c0f8a7d1adc4926d1",
+    "source_sha256": "d2f53904a9f35434cf76af1a6c936115aa2c85ee006905f11f9233c9b451dafc",
+    "source_bytes": 2234
   },
   {
     "path": "offscreen-monitor.json",
@@ -64,36 +70,44 @@
     "sha256": "7ec3ce4c97ce02a2f5d25d1a5df8d1c8f28bfb8847931404f0f6ea73c56f2541"
   },
   {
-    "path": "보존자료/작업소스/work/d-migration/before/소스/FlipRing.spec",
+    "path": "보존자료/작업소스/work/d-migration/before/소스/FlipRing.spec.PUBLIC-NOTE.md",
     "source": "work/d-migration/before/소스/FlipRing.spec",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1342,
-    "sha256": "fa6d75fcfb45df9d804462775b8779350fb0438ceedfafd8f45d48e234b03732"
+    "kind": "공개 보류 안내",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 390,
+    "sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774",
+    "source_sha256": "fa6d75fcfb45df9d804462775b8779350fb0438ceedfafd8f45d48e234b03732",
+    "source_bytes": 1342
   },
   {
     "path": "보존자료/작업소스/work/d-migration/before/소스/빌드방법.md",
     "source": "work/d-migration/before/소스/빌드방법.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 7906,
-    "sha256": "059e5aa9118dad3bec231b1a76022474623c99db842404570dae42aad711f429"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 7909,
+    "sha256": "8e3f56b5fca11b545ab843184042769cbe4c81570834df1a607bbe8fed36738d",
+    "source_sha256": "059e5aa9118dad3bec231b1a76022474623c99db842404570dae42aad711f429",
+    "source_bytes": 7906
   },
   {
-    "path": "보존자료/작업소스/work/d-migration/document-ui-motion.py",
+    "path": "보존자료/작업소스/work/d-migration/document-ui-motion.py.PUBLIC-NOTE.md",
     "source": "work/d-migration/document-ui-motion.py",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 2057,
-    "sha256": "72cafe2313ca39ab258520469245cbc7f14bd02dbfae359a93445028bd939716"
+    "kind": "공개 보류 안내",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 390,
+    "sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774",
+    "source_sha256": "72cafe2313ca39ab258520469245cbc7f14bd02dbfae359a93445028bd939716",
+    "source_bytes": 2057
   },
   {
-    "path": "보존자료/작업소스/work/d-migration/package-path-migration.py",
+    "path": "보존자료/작업소스/work/d-migration/package-path-migration.py.PUBLIC-NOTE.md",
     "source": "work/d-migration/package-path-migration.py",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 4033,
-    "sha256": "fcc3e97482206f2092775c5e4b71e68e0f0f80865bffa091dfad3aa6260cbe5e"
+    "kind": "공개 보류 안내",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 390,
+    "sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774",
+    "source_sha256": "fcc3e97482206f2092775c5e4b71e68e0f0f80865bffa091dfad3aa6260cbe5e",
+    "source_bytes": 4033
   },
   {
     "path": "보존자료/작업소스/work/d-migration/package-preparation/FlipRing.spec",
@@ -106,26 +120,32 @@
   {
     "path": "보존자료/작업소스/work/d-migration/package-preparation/빌드방법-ui_motion추가전.md",
     "source": "work/d-migration/package-preparation/빌드방법-ui_motion추가전.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 8918,
-    "sha256": "d707f6ce43523b0ebd0d943ef11995212b5eb6432a2995c26ea9ebfae814dc52"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 8852,
+    "sha256": "4e08712d343eae623acd7791a605d4fff2769e0b4a0d7c9adfc27b1876c82721",
+    "source_sha256": "d707f6ce43523b0ebd0d943ef11995212b5eb6432a2995c26ea9ebfae814dc52",
+    "source_bytes": 8918
   },
   {
-    "path": "보존자료/작업소스/work/d-migration/prepare-package.py",
+    "path": "보존자료/작업소스/work/d-migration/prepare-package.py.PUBLIC-NOTE.md",
     "source": "work/d-migration/prepare-package.py",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 3410,
-    "sha256": "1f9785c7c445e1ea1fb0e23d4d10f464cbb9a350e0a1483c7102296eee15458f"
+    "kind": "공개 보류 안내",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 390,
+    "sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774",
+    "source_sha256": "1f9785c7c445e1ea1fb0e23d4d10f464cbb9a350e0a1483c7102296eee15458f",
+    "source_bytes": 3410
   },
   {
-    "path": "보존자료/작업소스/work/d-migration/repair10-package.py",
+    "path": "보존자료/작업소스/work/d-migration/repair10-package.py.PUBLIC-NOTE.md",
     "source": "work/d-migration/repair10-package.py",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 5501,
-    "sha256": "951e50552df88522903f5beed5dfab97dcd85488dbf829550d39e9063041d4ed"
+    "kind": "공개 보류 안내",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 390,
+    "sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774",
+    "source_sha256": "951e50552df88522903f5beed5dfab97dcd85488dbf829550d39e9063041d4ed",
+    "source_bytes": 5501
   },
   {
     "path": "보존자료/작업소스/work/d-migration/기계경로검사.json",
@@ -138,10 +158,12 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/7zip-preparation/extract.json",
     "source": "work/enhancement-20261030/7zip-preparation/extract.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 2551,
-    "sha256": "d0fddad4ba547b5245861c09cfb8d6e0ebb8619e8818d7b777ae72e35ba99df7"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 2451,
+    "sha256": "8223dcdb54ae3c26404b5171f5360ead0f3a19e2b2dd379f94ee86840a3d1b6f",
+    "source_sha256": "d0fddad4ba547b5245861c09cfb8d6e0ebb8619e8818d7b777ae72e35ba99df7",
+    "source_bytes": 2551
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/7zip-preparation/payload/History.txt",
@@ -914,10 +936,12 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/7zip-관리자설치-취소.json",
     "source": "work/enhancement-20261030/7zip-관리자설치-취소.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1061,
-    "sha256": "56238b129e5e7d21c4c2cf58b6352953291f8a692d919d49edf6ba4b3cffb49c"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1036,
+    "sha256": "40ee1efc2c48807d7c14ce3a90512104d5d49014215bce2a670fd1638b602a7c",
+    "source_sha256": "56238b129e5e7d21c4c2cf58b6352953291f8a692d919d49edf6ba4b3cffb49c",
+    "source_bytes": 1061
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/7zip고지구분-수리판정18.json",
@@ -954,10 +978,12 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/PDF-기록시각-수리판정1.json",
     "source": "work/enhancement-20261030/PDF-기록시각-수리판정1.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 909,
-    "sha256": "532b35f65e7ad05eadf6d85db9bc36abc7a25846dc29b619db3a398d2b9dd6a0"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 884,
+    "sha256": "750dae73215ab0cc6446c597f4a7e3c936d4399881c1e0db137b1bfc03335dfe",
+    "source_sha256": "532b35f65e7ad05eadf6d85db9bc36abc7a25846dc29b619db3a398d2b9dd6a0",
+    "source_bytes": 909
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/PDF-드롭연결-수리판정3.json",
@@ -1026,42 +1052,52 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/baseline-source/installer.iss",
     "source": "work/enhancement-20261030/baseline-source/installer.iss",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1251,
-    "sha256": "530a9378c98c64e8fada22c5c03eb62212b259f63fc4b7d11a448cc507fad9fb"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1257,
+    "sha256": "9a66ca36a368f4db92d2e0c711711158912ccb766eb191e23e84eeee4c5ff73a",
+    "source_sha256": "530a9378c98c64e8fada22c5c03eb62212b259f63fc4b7d11a448cc507fad9fb",
+    "source_bytes": 1251
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/baseline-source/검토기록.md",
     "source": "work/enhancement-20261030/baseline-source/검토기록.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 10871,
-    "sha256": "d448a738382f8cb30d3edb4824a16d700e243119190b9f058ae01b81f148a95e"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 10886,
+    "sha256": "3cc03bf0cb702a7485edd0c388cb83ba352f50f48e7fe4aec60dbc983b97d11c",
+    "source_sha256": "d448a738382f8cb30d3edb4824a16d700e243119190b9f058ae01b81f148a95e",
+    "source_bytes": 10871
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/baseline-source/빌드방법.md",
     "source": "work/enhancement-20261030/baseline-source/빌드방법.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 9243,
-    "sha256": "bf180b18653adf75a420ffa46c107841af99ef10bcbc4a5fc501f239b6af03bf"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 9177,
+    "sha256": "43ff545b72a9e6dfc3a5ddaa05c7ead3de89cc664238118aa9b5287f35db1250",
+    "source_sha256": "bf180b18653adf75a420ffa46c107841af99ef10bcbc4a5fc501f239b6af03bf",
+    "source_bytes": 9243
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/baseline-source/사용안내.txt",
     "source": "work/enhancement-20261030/baseline-source/사용안내.txt",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 6226,
-    "sha256": "96ef653c8d22c29447f6e8d909a1e6f686b0feab3194d0b0fbdd250f9ea54fd7"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 6242,
+    "sha256": "7a6add3863f4c7792e23441dc848ae51cc43f7fc0b4a66bf2e4a22406ced3c90",
+    "source_sha256": "96ef653c8d22c29447f6e8d909a1e6f686b0feab3194d0b0fbdd250f9ea54fd7",
+    "source_bytes": 6226
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/begin-실패원문.json",
     "source": "work/enhancement-20261030/begin-실패원문.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 544,
-    "sha256": "010f8dcf5c0a5c222152050b4a7d3c5efc5d04f1a5cd2f68fe4980c3cf193dc4"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 519,
+    "sha256": "d0250361ee6fd34f3e25c35b7a2eeaebf3ad82ab6c8ed6a914f7c90e53bd84e9",
+    "source_sha256": "010f8dcf5c0a5c222152050b4a7d3c5efc5d04f1a5cd2f68fe4980c3cf193dc4",
+    "source_bytes": 544
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/gui-final/Fluid-호버대비.json",
@@ -1082,10 +1118,12 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/gui-final/격리설정/history.json",
     "source": "work/enhancement-20261030/gui-final/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 289,
-    "sha256": "9a87bad5e085a1145f990c462ea1d932cce8ff4fe9fb5f6ff70a7211c357b7fb"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 239,
+    "sha256": "60f20d8461c536738434595ea8fbd69373700776ee751c209e46e9fe397e727b",
+    "source_sha256": "9a87bad5e085a1145f990c462ea1d932cce8ff4fe9fb5f6ff70a7211c357b7fb",
+    "source_bytes": 289
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/gui-final/별도.txt",
@@ -1098,82 +1136,102 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/gui-final11/격리설정/history.json",
     "source": "work/enhancement-20261030/gui-final11/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 293,
-    "sha256": "60c7e8a345ab69c35990c1b46f7d8c3d4230ec71964a4595bb8f778dcccc6fad"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 243,
+    "sha256": "806527de389943ebd9a077d9e8afc17246bac82e91da2fea99de82e700f77c5a",
+    "source_sha256": "60c7e8a345ab69c35990c1b46f7d8c3d4230ec71964a4595bb8f778dcccc6fad",
+    "source_bytes": 293
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/gui-final13/격리설정/history.json",
     "source": "work/enhancement-20261030/gui-final13/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 293,
-    "sha256": "083cdd7f7eea9f2287e3de774db2440bff59a8ebd84217a160a042110bf9cbcb"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 243,
+    "sha256": "af32a9393f2bbb442a6f402c3f4f44d5737e0ebb12d44405b142935cd0ca81c2",
+    "source_sha256": "083cdd7f7eea9f2287e3de774db2440bff59a8ebd84217a160a042110bf9cbcb",
+    "source_bytes": 293
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/gui-final15/격리설정/history.json",
     "source": "work/enhancement-20261030/gui-final15/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 293,
-    "sha256": "7766c1df39640f92f324df0f7f042591118b563e7a7cd596766e086e44bc58cb"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 243,
+    "sha256": "5e038d0cc9471d3606d99cacd61dac4b48b207587f96712a6733b40704c2f3d6",
+    "source_sha256": "7766c1df39640f92f324df0f7f042591118b563e7a7cd596766e086e44bc58cb",
+    "source_bytes": 293
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/gui-final16/격리설정/history.json",
     "source": "work/enhancement-20261030/gui-final16/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 293,
-    "sha256": "19496dcdda2f9d65f7d331887ca26b02daec24b4cd22bb0f964408026dbf995c"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 243,
+    "sha256": "ccb68a5af966cc9cd9e051f8caaae64756be4e68729a60c59a53eeec2e65bc2b",
+    "source_sha256": "19496dcdda2f9d65f7d331887ca26b02daec24b4cd22bb0f964408026dbf995c",
+    "source_bytes": 293
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/gui-final19/격리설정/history.json",
     "source": "work/enhancement-20261030/gui-final19/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 293,
-    "sha256": "6754088380a59f4b6c4cf7cf3318e816d118166c8b6760934a985a3e97860199"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 243,
+    "sha256": "fa0a2c40807b9172292fc1bc85e879c4baa2412fe2b10ee8da5d162fa8fb2bcf",
+    "source_sha256": "6754088380a59f4b6c4cf7cf3318e816d118166c8b6760934a985a3e97860199",
+    "source_bytes": 293
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/gui-workflow-all/격리설정/history.json",
     "source": "work/enhancement-20261030/gui-workflow-all/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 303,
-    "sha256": "9b62989835f368ed24cbfcf00ce3afa2df89a93a913f0267e9d12d474a63065c"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 253,
+    "sha256": "b83861bf8b82501438d75bfa9dbd11c67004427aa198b4e8b42aed6e047a1c48",
+    "source_sha256": "9b62989835f368ed24cbfcf00ce3afa2df89a93a913f0267e9d12d474a63065c",
+    "source_bytes": 303
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/gui-workflow-first/Mono-Qt검증.json",
     "source": "work/enhancement-20261030/gui-workflow-first/Mono-Qt검증.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1628,
-    "sha256": "fd4f7eb4584dc275f5c4652dcc26ea7f929c736a56346d863a01c34f7610085c"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1603,
+    "sha256": "d8eee38ad8bb09f781d2afd548b6e5ddc783519f8f5c977af9ec0359ea370f0f",
+    "source_sha256": "fd4f7eb4584dc275f5c4652dcc26ea7f929c736a56346d863a01c34f7610085c",
+    "source_bytes": 1628
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/gui-workflow-structure5/Mono-Qt검증.json",
     "source": "work/enhancement-20261030/gui-workflow-structure5/Mono-Qt검증.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1812,
-    "sha256": "49519da9ded0da7dc67a32425ac98d214a4b19fb8ccb9db87ae76f23a67bb2d9"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1787,
+    "sha256": "ea7c79d40dddb8e22d568ac8028b7346884fab26cf78fdb68663dd3af913d8da",
+    "source_sha256": "49519da9ded0da7dc67a32425ac98d214a4b19fb8ccb9db87ae76f23a67bb2d9",
+    "source_bytes": 1812
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/gui-workflow-structure5/격리설정/history.json",
     "source": "work/enhancement-20261030/gui-workflow-structure5/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 317,
-    "sha256": "1e1e54da372fdadebccfc7161fd6f4c59d6660f0456ee6c5823bf8cacbfec518"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 267,
+    "sha256": "c3ad40fa164df2499ca361ec81a4fbc2110769a0b03d9692cc258c4d3f44b4d5",
+    "source_sha256": "1e1e54da372fdadebccfc7161fd6f4c59d6660f0456ee6c5823bf8cacbfec518",
+    "source_bytes": 317
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/gui85-timing/격리설정/history.json",
     "source": "work/enhancement-20261030/gui85-timing/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 295,
-    "sha256": "a3ab145ebf59131df026201878fb8dcf0e931ace518acb8c7ea59b357fdeb9f9"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 245,
+    "sha256": "bdb96a65885da7149d772983ff7bc62c4965ef315c3a6be5dce01bbf6fb7a610",
+    "source_sha256": "a3ab145ebf59131df026201878fb8dcf0e931ace518acb8c7ea59b357fdeb9f9",
+    "source_bytes": 295
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/helper-before-repair15.py",
@@ -1194,26 +1252,32 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/rar-diagnostic-20261030/corrected-commands.json",
     "source": "work/enhancement-20261030/matrix-test/rar-diagnostic-20261030/corrected-commands.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1432,
-    "sha256": "f3eb7e0336097626cc1ea01900b86a3e44454610612a3d5d8c89abf5b2acb555"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1357,
+    "sha256": "0f2dd575fc6c492ad551e1d10ff0131468e54b0f47ef12970f0f0ee88c9b930c",
+    "source_sha256": "f3eb7e0336097626cc1ea01900b86a3e44454610612a3d5d8c89abf5b2acb555",
+    "source_bytes": 1432
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/rar-diagnostic-20261030/rarfile-call.json",
     "source": "work/enhancement-20261030/matrix-test/rar-diagnostic-20261030/rarfile-call.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1079,
-    "sha256": "3fed3892188e92e21add9a5f11ed2b20132704662ddf2de5f1c85cfcb969c1f3"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 979,
+    "sha256": "a45d674ea987e9e120691fc2f152dba7e73136c89bb16f4c8ab2d5010e0a1dfb",
+    "source_sha256": "3fed3892188e92e21add9a5f11ed2b20132704662ddf2de5f1c85cfcb969c1f3",
+    "source_bytes": 1079
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/rar-diagnostic-20261030/same-command.json",
     "source": "work/enhancement-20261030/matrix-test/rar-diagnostic-20261030/same-command.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 618,
-    "sha256": "4079cf6c03ccf22ffab97f30259f428427d9c5461eb852fcdae518251e802590"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 568,
+    "sha256": "dc5c649eb3345f2aebfa8abb5b80713a2574ca3a7719222257333b42db9fa77f",
+    "source_sha256": "4079cf6c03ccf22ffab97f30259f428427d9c5461eb852fcdae518251e802590",
+    "source_bytes": 618
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 입력 공백 10.txt",
@@ -1442,10 +1506,12 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/report.json",
     "source": "work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/report.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 413092,
-    "sha256": "0ba66c705fe8e58f3ba5be41e7d4e1ede1103983910fc825e971a2a1f4d39d3c"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 386492,
+    "sha256": "a7563f86509d86839cda4e3c9ad9244bac03eb86e3934b08f1e5b170156e0e22",
+    "source_sha256": "0ba66c705fe8e58f3ba5be41e7d4e1ede1103983910fc825e971a2a1f4d39d3c",
+    "source_bytes": 413092
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-c0cc5f8f-5e63-4c82-bcca-bf60b9e10117/fixtures/한글 입력 공백 2.csv",
@@ -1530,10 +1596,12 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-c0cc5f8f-5e63-4c82-bcca-bf60b9e10117/report.json",
     "source": "work/enhancement-20261030/matrix-test/run-c0cc5f8f-5e63-4c82-bcca-bf60b9e10117/report.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 420304,
-    "sha256": "55db65e55161dc6195aa810a3a0549600c952dc362ae059db1f8d1ba980c7fa4"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 392756,
+    "sha256": "4ac40fb9aa21779aae63123243654b1629bedca23af2b10c437cf00c30a7467e",
+    "source_sha256": "55db65e55161dc6195aa810a3a0549600c952dc362ae059db1f8d1ba980c7fa4",
+    "source_bytes": 420304
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-cd6dd5dc-fc33-4d86-9c22-9cfb469e5f87/fixtures/한글 입력 공백 2.csv",
@@ -1594,10 +1662,12 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-cd6dd5dc-fc33-4d86-9c22-9cfb469e5f87/report.json",
     "source": "work/enhancement-20261030/matrix-test/run-cd6dd5dc-fc33-4d86-9c22-9cfb469e5f87/report.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 461495,
-    "sha256": "5c24c8ac0e8c0538206e2eeca9d1f600e9b40dd5cd449307aea24e673611be11"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 428695,
+    "sha256": "c71fcac7852788a26e7bcf20de4713367b08856461f3bbab673987a959c90459",
+    "source_sha256": "5c24c8ac0e8c0538206e2eeca9d1f600e9b40dd5cd449307aea24e673611be11",
+    "source_bytes": 461495
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/office-diagnosis/application-events.json",
@@ -1746,10 +1816,12 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/office-diagnosis/engine-office-argv.json",
     "source": "work/enhancement-20261030/office-diagnosis/engine-office-argv.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 878,
-    "sha256": "0f924f88ff082840467c24ab8a6209a286aaf6a3f260df2854efbe0bb0e8b714"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 828,
+    "sha256": "aa765862f7379de4b3f7b7fe6649cf94a16ee6723d2117690e7b74357f0238db",
+    "source_sha256": "0f924f88ff082840467c24ab8a6209a286aaf6a3f260df2854efbe0bb0e8b714",
+    "source_bytes": 878
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/office-diagnosis/engine-office-probe.py",
@@ -1826,10 +1898,12 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/office-diagnosis/profile-reversal.json",
     "source": "work/enhancement-20261030/office-diagnosis/profile-reversal.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1300,
-    "sha256": "da286d7b728a4a26c5c2e2efddc85bdbf72c844d8142ff2aec899d9d939ff873"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1175,
+    "sha256": "cfa326c1e5ad99c6e65b0af43fec722a549ae78bb596f4877bd2ac4607860102",
+    "source_sha256": "da286d7b728a4a26c5c2e2efddc85bdbf72c844d8142ff2aec899d9d939ff873",
+    "source_bytes": 1300
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/office-diagnosis/profile-short/work/p/profile/cache/opencl_profile.xml",
@@ -2010,18 +2084,22 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/pdf-implementation/초기읽기-상태1-사후기록.json",
     "source": "work/enhancement-20261030/pdf-implementation/초기읽기-상태1-사후기록.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1579,
-    "sha256": "8f6c1472cfbdf3a41b385c9e7287c9ff4064cf1165549ed740c725cb83d6327e"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1529,
+    "sha256": "cbf87b462baa8a7827a31a4e162fc9c78aaf34f0244b0c7914fc58143d32c263",
+    "source_sha256": "8f6c1472cfbdf3a41b385c9e7287c9ff4064cf1165549ed740c725cb83d6327e",
+    "source_bytes": 1579
   },
   {
-    "path": "보존자료/작업소스/work/enhancement-20261030/prepare_7zip.py",
+    "path": "보존자료/작업소스/work/enhancement-20261030/prepare_7zip.py.PUBLIC-NOTE.md",
     "source": "work/enhancement-20261030/prepare_7zip.py",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 2141,
-    "sha256": "368df30e3a66c006c3f6834d28ef74194efb66450b6b8b051ad6a258a0c151ad"
+    "kind": "공개 보류 안내",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 390,
+    "sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774",
+    "source_sha256": "368df30e3a66c006c3f6834d28ef74194efb66450b6b8b051ad6a258a0c151ad",
+    "source_bytes": 2141
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/prepare_public_history.py",
@@ -2058,106 +2136,132 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/public/README.md",
     "source": "work/enhancement-20261030/public/README.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 15543,
-    "sha256": "38ff4669ab90f61e2e52dd9ea271951a37858b115ac639a25e7906b103e53f53"
+    "kind": "공개 사본의 문서 링크 정리",
+    "reason": "중첩 문서의 상대링크를 확인한 실제 공개 경로에 연결하거나 미공개 대상의 라벨·파일명만 보존했습니다. 원본 기준 해시는 source_sha256/source_bytes로 유지합니다.",
+    "bytes": 15955,
+    "sha256": "1af3e6604914e97477d1a0d720386f7262a3f5b5f006ca6d8ecb201b4ac901c5",
+    "source_sha256": "38ff4669ab90f61e2e52dd9ea271951a37858b115ac639a25e7906b103e53f53",
+    "source_bytes": 15543
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/VERSIONS.md",
     "source": "work/enhancement-20261030/public/docs/VERSIONS.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 2744,
-    "sha256": "778d1eb12cc9e851554fcab8f7d1c427ed3891c0db7b8885298bd581366cf32e"
+    "kind": "공개 사본의 문서 링크 정리",
+    "reason": "중첩 문서의 상대링크를 확인한 실제 공개 경로에 연결하거나 미공개 대상의 라벨·파일명만 보존했습니다. 원본 기준 해시는 source_sha256/source_bytes로 유지합니다.",
+    "bytes": 3013,
+    "sha256": "866dcd323d6299f413ec373152693d077c65e1b9f77c74e15acf7321ecba6977",
+    "source_sha256": "778d1eb12cc9e851554fcab8f7d1c427ed3891c0db7b8885298bd581366cf32e",
+    "source_bytes": 2744
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/1.2.0.md",
     "source": "work/enhancement-20261030/public/docs/versions/1.2.0.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1348,
-    "sha256": "576ad9b91553fcace710640a79a831e592498a7fdcd7452d22cabecd77a7aaa2"
+    "kind": "공개 사본의 문서 링크 정리",
+    "reason": "중첩 문서의 상대링크를 확인한 실제 공개 경로에 연결하거나 미공개 대상의 라벨·파일명만 보존했습니다. 원본 기준 해시는 source_sha256/source_bytes로 유지합니다.",
+    "bytes": 1377,
+    "sha256": "f598fd3607eaff04e0de4d4b815f25929ebf184ec717375ce30f1249435ec694",
+    "source_sha256": "576ad9b91553fcace710640a79a831e592498a7fdcd7452d22cabecd77a7aaa2",
+    "source_bytes": 1348
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/1.4.0.md",
     "source": "work/enhancement-20261030/public/docs/versions/1.4.0.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 5556,
-    "sha256": "9d2c9e5eb91d352f2e389465bf7bc78afb3dc8a12f4e069f63a7328241ef1331"
+    "kind": "공개 사본의 문서 링크 정리",
+    "reason": "중첩 문서의 상대링크를 확인한 실제 공개 경로에 연결하거나 미공개 대상의 라벨·파일명만 보존했습니다. 원본 기준 해시는 source_sha256/source_bytes로 유지합니다.",
+    "bytes": 5608,
+    "sha256": "a643fed3a0aa4639ad551bfcc19320854642a19edda1cf567e98affd9774f3ed",
+    "source_sha256": "9d2c9e5eb91d352f2e389465bf7bc78afb3dc8a12f4e069f63a7328241ef1331",
+    "source_bytes": 5556
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/1.6.0.md",
     "source": "work/enhancement-20261030/public/docs/versions/1.6.0.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 6234,
-    "sha256": "9109520c6668e0b4b78d25c48577199a24ede9b3c20776c608a6b850419e44ef"
+    "kind": "공개 사본의 문서 링크 정리",
+    "reason": "중첩 문서의 상대링크를 확인한 실제 공개 경로에 연결하거나 미공개 대상의 라벨·파일명만 보존했습니다. 원본 기준 해시는 source_sha256/source_bytes로 유지합니다.",
+    "bytes": 6286,
+    "sha256": "f2f6f19bf1b12d8c44a549ce4d1ee3b0021d0cc9dbe7ecab3fc347fba4a3bed1",
+    "source_sha256": "9109520c6668e0b4b78d25c48577199a24ede9b3c20776c608a6b850419e44ef",
+    "source_bytes": 6234
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/1.7.0.md",
     "source": "work/enhancement-20261030/public/docs/versions/1.7.0.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 9096,
-    "sha256": "5420b1fd5300afd0a7924a7bd17d91ca7cec01d740dde72b4cb30099329f4dce"
+    "kind": "공개 사본의 문서 링크 정리",
+    "reason": "중첩 문서의 상대링크를 확인한 실제 공개 경로에 연결하거나 미공개 대상의 라벨·파일명만 보존했습니다. 원본 기준 해시는 source_sha256/source_bytes로 유지합니다.",
+    "bytes": 9206,
+    "sha256": "1200ae5c187dc844cbdeb4f9aa3fcb1ec09f4a3f85c535f83ff10390202b5231",
+    "source_sha256": "5420b1fd5300afd0a7924a7bd17d91ca7cec01d740dde72b4cb30099329f4dce",
+    "source_bytes": 9096
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/1.8.0.md",
     "source": "work/enhancement-20261030/public/docs/versions/1.8.0.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 9414,
-    "sha256": "a299dd2fea9170a6c3813e17dcc64388e36256d33e60495a77fe7c9fc7dd52aa"
+    "kind": "공개 사본의 문서 링크 정리",
+    "reason": "중첩 문서의 상대링크를 확인한 실제 공개 경로에 연결하거나 미공개 대상의 라벨·파일명만 보존했습니다. 원본 기준 해시는 source_sha256/source_bytes로 유지합니다.",
+    "bytes": 9516,
+    "sha256": "3b548fcb09da789b59154b825c000c48c5e0b1279745243855651b1bd0c1c51f",
+    "source_sha256": "a299dd2fea9170a6c3813e17dcc64388e36256d33e60495a77fe7c9fc7dd52aa",
+    "source_bytes": 9414
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/내부모션-작업전.md",
     "source": "work/enhancement-20261030/public/docs/versions/내부모션-작업전.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 4826,
-    "sha256": "991eca69efe48599469938007398a0a3c5237be2f6f4404e89163027e65e1bb8"
+    "kind": "공개 사본의 문서 링크 정리",
+    "reason": "중첩 문서의 상대링크를 확인한 실제 공개 경로에 연결하거나 미공개 대상의 라벨·파일명만 보존했습니다. 원본 기준 해시는 source_sha256/source_bytes로 유지합니다.",
+    "bytes": 4878,
+    "sha256": "005c3d3573f53f185b0dfd944e8b66e61e8efaaa2bc4e044f64f1905e55e562c",
+    "source_sha256": "991eca69efe48599469938007398a0a3c5237be2f6f4404e89163027e65e1bb8",
+    "source_bytes": 4826
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/버튼모션-작업전.md",
     "source": "work/enhancement-20261030/public/docs/versions/버튼모션-작업전.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1059,
-    "sha256": "dda7e30a1a5edb4697352a94493b5bc8a2a0db4c8174155cc1433f4a510b2609"
+    "kind": "공개 사본의 문서 링크 정리",
+    "reason": "중첩 문서의 상대링크를 확인한 실제 공개 경로에 연결하거나 미공개 대상의 라벨·파일명만 보존했습니다. 원본 기준 해시는 source_sha256/source_bytes로 유지합니다.",
+    "bytes": 1088,
+    "sha256": "58e8993370f6ccba53ad0dfbdd37e8bbcb5a021fd62baa4704a6f410157ecebd",
+    "source_sha256": "dda7e30a1a5edb4697352a94493b5bc8a2a0db4c8174155cc1433f4a510b2609",
+    "source_bytes": 1059
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/부드러운디자인-작업전.md",
     "source": "work/enhancement-20261030/public/docs/versions/부드러운디자인-작업전.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1098,
-    "sha256": "f3318a6c304dcfcebe7a1954f0087f8ab24703043212e6a6ad5f11ba648443d5"
+    "kind": "공개 사본의 문서 링크 정리",
+    "reason": "중첩 문서의 상대링크를 확인한 실제 공개 경로에 연결하거나 미공개 대상의 라벨·파일명만 보존했습니다. 원본 기준 해시는 source_sha256/source_bytes로 유지합니다.",
+    "bytes": 1127,
+    "sha256": "d3328e7b3f256bdd9e87da2aaf7fc9d4e4ed93613a0e320f5f0688775841fe73",
+    "source_sha256": "f3318a6c304dcfcebe7a1954f0087f8ab24703043212e6a6ad5f11ba648443d5",
+    "source_bytes": 1098
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/콤보-작업전.md",
     "source": "work/enhancement-20261030/public/docs/versions/콤보-작업전.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1041,
-    "sha256": "e6acff3cc4e8f26f254dbdcfb7180ccd0f9dd5bde3d1331260f29aa6182efa80"
+    "kind": "공개 사본의 문서 링크 정리",
+    "reason": "중첩 문서의 상대링크를 확인한 실제 공개 경로에 연결하거나 미공개 대상의 라벨·파일명만 보존했습니다. 원본 기준 해시는 source_sha256/source_bytes로 유지합니다.",
+    "bytes": 1070,
+    "sha256": "168004121b80f074baea1f505925cb31af20aa8758a49981c07d761b016154d7",
+    "source_sha256": "e6acff3cc4e8f26f254dbdcfb7180ccd0f9dd5bde3d1331260f29aa6182efa80",
+    "source_bytes": 1041
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/탭잔상-작업전.md",
     "source": "work/enhancement-20261030/public/docs/versions/탭잔상-작업전.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1050,
-    "sha256": "b1fe50b9262223f60868b6c80c65278846710927664b8f337d1320452b62769d"
+    "kind": "공개 사본의 문서 링크 정리",
+    "reason": "중첩 문서의 상대링크를 확인한 실제 공개 경로에 연결하거나 미공개 대상의 라벨·파일명만 보존했습니다. 원본 기준 해시는 source_sha256/source_bytes로 유지합니다.",
+    "bytes": 1079,
+    "sha256": "c6cc0e7486df9373d9993a4c59981ec2d934f6e999572aea27ef25fa11c9f88b",
+    "source_sha256": "b1fe50b9262223f60868b6c80c65278846710927664b8f337d1320452b62769d",
+    "source_bytes": 1050
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/호버대비-작업전.md",
     "source": "work/enhancement-20261030/public/docs/versions/호버대비-작업전.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1059,
-    "sha256": "c62d7a6fdac523ebdf47522b03d087d9105a504ffc88095ec3376e0f61417a43"
+    "kind": "공개 사본의 문서 링크 정리",
+    "reason": "중첩 문서의 상대링크를 확인한 실제 공개 경로에 연결하거나 미공개 대상의 라벨·파일명만 보존했습니다. 원본 기준 해시는 source_sha256/source_bytes로 유지합니다.",
+    "bytes": 1088,
+    "sha256": "ba87672e7ecc112e76111b99802a0a77efb1dd43a9d24a6e476ab10ad0eee210",
+    "source_sha256": "c62d7a6fdac523ebdf47522b03d087d9105a504ffc88095ec3376e0f61417a43",
+    "source_bytes": 1059
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/publications/de8d71b-원격반영영수증.json",
@@ -2170,10 +2274,12 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/rar-argv18.json",
     "source": "work/enhancement-20261030/rar-argv18.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 2992,
-    "sha256": "d4e73c12848e0f5b4c290f1041641e2e2bebdcf374eb88a9568701376a07bad3"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 2792,
+    "sha256": "88e92afe4a004d670453ee7256d4c80a30199c3892d3fa92137fc721d094de79",
+    "source_sha256": "d4e73c12848e0f5b4c290f1041641e2e2bebdcf374eb88a9568701376a07bad3",
+    "source_bytes": 2992
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/rar-fixed19.json",
@@ -2186,34 +2292,42 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/rar-name-reversal18.json",
     "source": "work/enhancement-20261030/rar-name-reversal18.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 979,
-    "sha256": "65376e4ffbe08da988d85151691f58498d8d99cf34f9814b63353b85e4fa441e"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 879,
+    "sha256": "fa60c8bbac14723341e2254a300444a9305390afe335a46ce6c04b846ed4343f",
+    "source_sha256": "65376e4ffbe08da988d85151691f58498d8d99cf34f9814b63353b85e4fa441e",
+    "source_bytes": 979
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/rar-name18.json",
     "source": "work/enhancement-20261030/rar-name18.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 4545,
-    "sha256": "e56fe5cfa305de105d567c806932faa535fffda55244cd3d505b1d1dc8b6fc7e"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 4245,
+    "sha256": "71fdd3480861b2731461c6ed6bfcb9ca37ed580d68f680d6ffec793d173f37f8",
+    "source_sha256": "e56fe5cfa305de105d567c806932faa535fffda55244cd3d505b1d1dc8b6fc7e",
+    "source_bytes": 4545
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/rar-old-oracle19.txt",
     "source": "work/enhancement-20261030/rar-old-oracle19.txt",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 987,
-    "sha256": "aa59335fa572109f9615f4094e9a6681cd7644017abc86abef0544b9cd8e6226"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 872,
+    "sha256": "6554b08e75eb467adbce8185d1aa636fa4c7e6bcbe71028e6b3baefd7009f163",
+    "source_sha256": "aa59335fa572109f9615f4094e9a6681cd7644017abc86abef0544b9cd8e6226",
+    "source_bytes": 987
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/release-stage2/프로그램/FlipRing/사용안내.txt",
     "source": "work/enhancement-20261030/release-stage2/프로그램/FlipRing/사용안내.txt",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 7031,
-    "sha256": "c7309613206aff37fe528d8bef5a882760b82f26122e9b7a74a08a5633923b52"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 7047,
+    "sha256": "1fcadb22f96cd0f6881452f9e82bcb124cf09063efefd93ffe765e7fe4db2ab3",
+    "source_sha256": "c7309613206aff37fe528d8bef5a882760b82f26122e9b7a74a08a5633923b52",
+    "source_bytes": 7031
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/release_artifacts_check-before-repair20.py",
@@ -2354,58 +2468,72 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/부모-검사도구추정경로-조회실패.json",
     "source": "work/enhancement-20261030/부모-검사도구추정경로-조회실패.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 834,
-    "sha256": "67eb7b3854ea08ccec817c129381270101188cae80ade815c636b84fe09ee197"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 809,
+    "sha256": "0f4bf276ff98509c93459da98af3b7da4cadb750ac631b951f22fbd7c9b3c72c",
+    "source_sha256": "67eb7b3854ea08ccec817c129381270101188cae80ade815c636b84fe09ee197",
+    "source_bytes": 834
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/새사용자요구-판정.json",
     "source": "work/enhancement-20261030/새사용자요구-판정.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
     "bytes": 554,
-    "sha256": "3c35810a6218dfed9b5a6002fb0a7b095c6c8816180e10dc9b1e8d7243baaf8d"
+    "sha256": "d4a44a48cf5416898f3934b6aa5015f1232b59d4713c25917d70bdbff143a1b7",
+    "source_sha256": "3c35810a6218dfed9b5a6002fb0a7b095c6c8816180e10dc9b1e8d7243baaf8d",
+    "source_bytes": 554
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/실제시험-원본.json",
     "source": "work/enhancement-20261030/실제시험-원본.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 535,
-    "sha256": "097dd722656a2ed827fb8a8b831a7dbf3c675f79a85c04442c4fa39ddfe6113d"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 485,
+    "sha256": "40c6422f0e3f07b80acf052dde5b860894d5d20dffa3e9a3e45daea639ce5f6c",
+    "source_sha256": "097dd722656a2ed827fb8a8b831a7dbf3c675f79a85c04442c4fa39ddfe6113d",
+    "source_bytes": 535
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/작업자cwd-입력보정1.json",
     "source": "work/enhancement-20261030/작업자cwd-입력보정1.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1807,
-    "sha256": "8463cff15e09fcdc20717d7955b70634af26d4eb6602fb7fe6e84769da5990ea"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1597,
+    "sha256": "51126d9a14d040ca3fa74c49e555443c320ce9c2b21e9b2467cf9947a6b47461",
+    "source_sha256": "8463cff15e09fcdc20717d7955b70634af26d4eb6602fb7fe6e84769da5990ea",
+    "source_bytes": 1807
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/재개및분류.json",
     "source": "work/enhancement-20261030/재개및분류.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 2261,
-    "sha256": "0d57ff1d129c326593a7e452b23b65e8d9f50d8a069830e95b5578c8f6def394"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 2070,
+    "sha256": "df64241e2ba1b4f9c1f55a491bd8d3085e2688bde29f2f17ad3841aa29eafa02",
+    "source_sha256": "0d57ff1d129c326593a7e452b23b65e8d9f50d8a069830e95b5578c8f6def394",
+    "source_bytes": 2261
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/재개점검-최신지침.json",
     "source": "work/enhancement-20261030/재개점검-최신지침.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 2005,
-    "sha256": "67ef2f83465fd9a57176a689fc3a2c4d1391d6e34726dcc58062d947d682dbca"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1814,
+    "sha256": "d9763b0d02a612fafe7b6b02e165fdeec0e620cd1d5f345cd7e20c9894f83e10",
+    "source_sha256": "67ef2f83465fd9a57176a689fc3a2c4d1391d6e34726dcc58062d947d682dbca",
+    "source_bytes": 2005
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/중앙역할표-거부원문.json",
     "source": "work/enhancement-20261030/중앙역할표-거부원문.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 994,
-    "sha256": "cf2717942af9cbe25bdb07a7c5f8c058e6972034d369825dc8ce2c487943cb5a"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 969,
+    "sha256": "9b076947a79472b5b99a6c0169d62e573df1e1dc257363fcd71f0456de668e31",
+    "source_sha256": "cf2717942af9cbe25bdb07a7c5f8c058e6972034d369825dc8ce2c487943cb5a",
+    "source_bytes": 994
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/지원불가입력안내-수리판정11.json",
@@ -2442,10 +2570,12 @@
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/추가디자인요청-시작읽기.json",
     "source": "work/enhancement-20261030/추가디자인요청-시작읽기.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1774,
-    "sha256": "f2bb4de7c9d005db82cd1d98ebb32fbd0ed2733a2f74634ebb3d154f710fd0b3"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1583,
+    "sha256": "a409d07990876a806e706f65093301847231257b3c54c157505a64bb4693b260",
+    "source_sha256": "f2bb4de7c9d005db82cd1d98ebb32fbd0ed2733a2f74634ebb3d154f710fd0b3",
+    "source_bytes": 1774
   },
   {
     "path": "보존자료/작업소스/work/enhancement-20261030/포장모듈충돌및드롭구조-수리판정15.json",
@@ -2472,12 +2602,14 @@
     "sha256": "532fbc2ad32f1133a73bc76eadd83b888792c8568452a6934a156f8f38efbb5a"
   },
   {
-    "path": "보존자료/작업소스/work/exe-only-rebuild/FlipRing.spec",
+    "path": "보존자료/작업소스/work/exe-only-rebuild/FlipRing.spec.PUBLIC-NOTE.md",
     "source": "work/exe-only-rebuild/FlipRing.spec",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1259,
-    "sha256": "b362819bb62ee79bc91224db8c8d361d0a90bad2950e353872939a665cd5c581"
+    "kind": "공개 보류 안내",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 390,
+    "sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774",
+    "source_sha256": "b362819bb62ee79bc91224db8c8d361d0a90bad2950e353872939a665cd5c581",
+    "source_bytes": 1259
   },
   {
     "path": "보존자료/작업소스/work/final-timeout20-diagnostic.py",
@@ -2490,18 +2622,22 @@
   {
     "path": "보존자료/작업소스/work/final-timeout20-gui/results/격리설정/history.json",
     "source": "work/final-timeout20-gui/results/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 14967,
-    "sha256": "619cebfee81e30b04868f59c85703bda1d08e7ca4a83f87989a106e90ff07ca2"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 13417,
+    "sha256": "0140c1a5bfbf0ab91a94bba12fd93d8389bbf1ea2a63c1c009c201233d3003fd",
+    "source_sha256": "619cebfee81e30b04868f59c85703bda1d08e7ca4a83f87989a106e90ff07ca2",
+    "source_bytes": 14967
   },
   {
     "path": "보존자료/작업소스/work/final-timeout20-io-gui/results/격리설정/history.json",
     "source": "work/final-timeout20-io-gui/results/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 18623,
-    "sha256": "3d880afa4edf753cf2ef07afff7daa21b839d630fafc5fd4df6dc94994732141"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 16723,
+    "sha256": "4cefec6f90512eee86e3da62b1749c1c4aa544b9fbe8b08fa1374c50ce02dbe4",
+    "source_sha256": "3d880afa4edf753cf2ef07afff7daa21b839d630fafc5fd4df6dc94994732141",
+    "source_bytes": 18623
   },
   {
     "path": "보존자료/작업소스/work/final-timeout20-io.py",
@@ -2514,10 +2650,12 @@
   {
     "path": "보존자료/작업소스/work/final-timeout20-prefix-io-gui/results/격리설정/history.json",
     "source": "work/final-timeout20-prefix-io-gui/results/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 303,
-    "sha256": "2364b25ece6f1dcbd85fe4e4f802ab269a187c5fbbcaf86d53320da6ce0c8618"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 253,
+    "sha256": "cb9977c6952ba5e4fc2dd012e5e9caa4129fda4ee89e0c6396d3128b530ea771",
+    "source_sha256": "2364b25ece6f1dcbd85fe4e4f802ab269a187c5fbbcaf86d53320da6ce0c8618",
+    "source_bytes": 303
   },
   {
     "path": "보존자료/작업소스/work/final-timeout20-prefix-io.py",
@@ -2538,18 +2676,22 @@
   {
     "path": "보존자료/작업소스/work/fluid-build/InnoSetup-command.json",
     "source": "work/fluid-build/InnoSetup-command.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 515,
-    "sha256": "95fbd07ad38ade7d1abbbf3146e5e26267b35a7bc913896d90f1e021285b497d"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 355,
+    "sha256": "85e4cf60cce548e97b1d0f71289ea161948822582867c80b19ab6fdcc154a0cd",
+    "source_sha256": "95fbd07ad38ade7d1abbbf3146e5e26267b35a7bc913896d90f1e021285b497d",
+    "source_bytes": 515
   },
   {
     "path": "보존자료/작업소스/work/fluid-build/PyInstaller-command.json",
     "source": "work/fluid-build/PyInstaller-command.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 807,
-    "sha256": "2593fb16cc475c153f84601fff175183e4b0d3111c4d6375572d782c7b5dd35d"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 555,
+    "sha256": "1196aed0beffe651808ede791bf8c2b1a8d0d0ea7a8e14dfe930466669725ddd",
+    "source_sha256": "2593fb16cc475c153f84601fff175183e4b0d3111c4d6375572d782c7b5dd35d",
+    "source_bytes": 807
   },
   {
     "path": "보존자료/작업소스/work/fluid-build/installer-release-replacement.json",
@@ -2578,26 +2720,32 @@
   {
     "path": "보존자료/작업소스/work/fluid-buttons/격리설정/history.json",
     "source": "work/fluid-buttons/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 275,
-    "sha256": "cd02a779cb3bcd3bda86b56ee08a7d32dfdf0f5a72124b442889e6422d438ad0"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 203,
+    "sha256": "8ef7dfe624f501f7d3e62ce225289b6dccaa5da2cef588095fef2341282715c1",
+    "source_sha256": "cd02a779cb3bcd3bda86b56ee08a7d32dfdf0f5a72124b442889e6422d438ad0",
+    "source_bytes": 275
   },
   {
     "path": "보존자료/작업소스/work/fluid-combo-final/Mono-Qt검증.json",
     "source": "work/fluid-combo-final/Mono-Qt검증.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1762,
-    "sha256": "09a46fee85b996a640d50808407930472541c5869330dda2956a5937d00aa8cc"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1726,
+    "sha256": "66fb389bb0e3918e16251c1e9bbc718266d277bad637fdf097d7238f80b8ef3e",
+    "source_sha256": "09a46fee85b996a640d50808407930472541c5869330dda2956a5937d00aa8cc",
+    "source_bytes": 1762
   },
   {
     "path": "보존자료/작업소스/work/fluid-combo-final/격리설정/history.json",
     "source": "work/fluid-combo-final/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 283,
-    "sha256": "3b279a3cbd79bef90906b14802a80b10b85a99bcf8ae138ed8a268c7d24a2229"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 211,
+    "sha256": "4187dfa198b7fded319b6d5e67aef144994bd3133097f3cec964e4a73c193f4d",
+    "source_sha256": "3b279a3cbd79bef90906b14802a80b10b85a99bcf8ae138ed8a268c7d24a2229",
+    "source_bytes": 283
   },
   {
     "path": "보존자료/작업소스/work/fluid-final-gui/Mono-Qt검증.json",
@@ -2610,10 +2758,12 @@
   {
     "path": "보존자료/작업소스/work/fluid-final-gui/격리설정/history.json",
     "source": "work/fluid-final-gui/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 279,
-    "sha256": "200b5990eb6fd274427cf36d1609428830059607df0fe499447e51cf7adebbe1"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 207,
+    "sha256": "cae0bcd836267327305e1f2498e1cc9c0cdced431cc23a40fccea20223064cf3",
+    "source_sha256": "200b5990eb6fd274427cf36d1609428830059607df0fe499447e51cf7adebbe1",
+    "source_bytes": 279
   },
   {
     "path": "보존자료/작업소스/work/fluid-ready-gui/Mono-Qt검증.json",
@@ -2626,26 +2776,32 @@
   {
     "path": "보존자료/작업소스/work/fluid-ready-gui/격리설정/history.json",
     "source": "work/fluid-ready-gui/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 279,
-    "sha256": "fc04560b438bada40f92a74f19afbda776e56a7a0275c2b2f57509869f925567"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 207,
+    "sha256": "65758471498d4438c00e264ca944ca832ad40f4e84dd512c9a993b3aaad89ad4",
+    "source_sha256": "fc04560b438bada40f92a74f19afbda776e56a7a0275c2b2f57509869f925567",
+    "source_bytes": 279
   },
   {
     "path": "보존자료/작업소스/work/fluid-repair/gui/Mono-Qt검증.json",
     "source": "work/fluid-repair/gui/Mono-Qt검증.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1900,
-    "sha256": "d9c7d6b8f36e7ba1fd6d817d45ff79f576dc6b94967d979b9f5b5df9dcb4fad0"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1864,
+    "sha256": "e0643edfd7ddcdddefc54fc5a85199ab47457d8b7c359e6362f0ce66b54f836e",
+    "source_sha256": "d9c7d6b8f36e7ba1fd6d817d45ff79f576dc6b94967d979b9f5b5df9dcb4fad0",
+    "source_bytes": 1900
   },
   {
     "path": "보존자료/작업소스/work/fluid-repair/gui/격리설정/history.json",
     "source": "work/fluid-repair/gui/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 283,
-    "sha256": "a05039a4429e65a4720574033776814d8774a80355b106c604fda4fcdd16e5ce"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 211,
+    "sha256": "542ceecd0eddae6571c00fe88dfd33eb98a045c6b62197f496dcb476d5ffbc34",
+    "source_sha256": "a05039a4429e65a4720574033776814d8774a80355b106c604fda4fcdd16e5ce",
+    "source_bytes": 283
   },
   {
     "path": "보존자료/작업소스/work/fluid-repair/test_gui.before.py",
@@ -2658,10 +2814,12 @@
   {
     "path": "보존자료/작업소스/work/fluid-ui/Mono-Qt검증.json",
     "source": "work/fluid-ui/Mono-Qt검증.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1779,
-    "sha256": "97ae2b3139e4adeb17ae1532d697decbd97835134dd9d4a78593b416359d07da"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1743,
+    "sha256": "733780397c9395f12fbe43e3095cac3fa9fbc2e2159cb8186cdc490f0f666ef7",
+    "source_sha256": "97ae2b3139e4adeb17ae1532d697decbd97835134dd9d4a78593b416359d07da",
+    "source_bytes": 1779
   },
   {
     "path": "보존자료/작업소스/work/fluid-ui/SUIT-offscreen-진단.json",
@@ -2690,18 +2848,22 @@
   {
     "path": "보존자료/작업소스/work/fluid-ui/격리설정/history.json",
     "source": "work/fluid-ui/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 265,
-    "sha256": "2d2fbecf54704e944c7edce4d1e48317bdb3023db6ddfc74121910db08eb6939"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 193,
+    "sha256": "e9799ca373dbf14671a1059672167a8eb3ae6b197b3f7fda59a97234c0998570",
+    "source_sha256": "2d2fbecf54704e944c7edce4d1e48317bdb3023db6ddfc74121910db08eb6939",
+    "source_bytes": 265
   },
   {
     "path": "보존자료/작업소스/work/gui/격리설정/history.json",
     "source": "work/gui/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 233,
-    "sha256": "30ae7ee6d5f3b8b2271b9ed19f04dd60accb6425e91a4cf3a83c0d326663125f"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 183,
+    "sha256": "8d78de1aaf111a5e5dc91a102fbbbc984da9a1082da9b347e01c61e020670627",
+    "source_sha256": "30ae7ee6d5f3b8b2271b9ed19f04dd60accb6425e91a4cf3a83c0d326663125f",
+    "source_bytes": 233
   },
   {
     "path": "보존자료/작업소스/work/history-shell-api/Mono-Qt검증.json",
@@ -2714,10 +2876,12 @@
   {
     "path": "보존자료/작업소스/work/history-shell-api/격리설정/history.json",
     "source": "work/history-shell-api/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 283,
-    "sha256": "79e9ca75a8b2194c79971d2a771b1e57dad538672220b8bf838cbd914a7d1c27"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 211,
+    "sha256": "43194346d4fa67ba426db2eb0100da0bdede0c648bd007bf34e913ef312af030",
+    "source_sha256": "79e9ca75a8b2194c79971d2a771b1e57dad538672220b8bf838cbd914a7d1c27",
+    "source_bytes": 283
   },
   {
     "path": "보존자료/작업소스/work/internal-motion-baseline/보존목록.json",
@@ -2730,18 +2894,22 @@
   {
     "path": "보존자료/작업소스/work/internal-motion-complete-first/gui/Mono-Qt검증.json",
     "source": "work/internal-motion-complete-first/gui/Mono-Qt검증.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 16406,
-    "sha256": "eb6bae66385a77eb8e0acaf6eae355f383ecdc5659b2f30d9e46cf14ff2ff17b"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 16381,
+    "sha256": "17191fea1fb893eec0575fede223ffedf688604e557615dc0a4e7a0ef26283a2",
+    "source_sha256": "eb6bae66385a77eb8e0acaf6eae355f383ecdc5659b2f30d9e46cf14ff2ff17b",
+    "source_bytes": 16406
   },
   {
     "path": "보존자료/작업소스/work/internal-motion-complete-first/gui/격리설정/history.json",
     "source": "work/internal-motion-complete-first/gui/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 297,
-    "sha256": "ed495dbd351eefc1de69f7ffcb86ccfb706100d1bcda519c8e7de8552393e07b"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 247,
+    "sha256": "50210fac5e4161be0fd3b908fd240a483fc5e5571d26f90cdbcc873e8707ce5d",
+    "source_sha256": "ed495dbd351eefc1de69f7ffcb86ccfb706100d1bcda519c8e7de8552393e07b",
+    "source_bytes": 297
   },
   {
     "path": "보존자료/작업소스/work/internal-motion-environment/빌드준비.json",
@@ -2754,18 +2922,22 @@
   {
     "path": "보존자료/작업소스/work/internal-motion-final-gui/gui/격리설정/history.json",
     "source": "work/internal-motion-final-gui/gui/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 287,
-    "sha256": "227e53140e4f380012eadfceacd4f73873cf06dd56891d80efc00cdcdb6bc178"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 237,
+    "sha256": "ca21ea60fee536f9cd4e1d49052673024940fa71b67cfee6bee159ebca384e48",
+    "source_sha256": "227e53140e4f380012eadfceacd4f73873cf06dd56891d80efc00cdcdb6bc178",
+    "source_bytes": 287
   },
   {
     "path": "보존자료/작업소스/work/internal-motion-final-gui17/gui/격리설정/history.json",
     "source": "work/internal-motion-final-gui17/gui/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 291,
-    "sha256": "c5a0d5981554778abdbd17d6ab777c8e54ee44fba03f28a316a147f001d6ab8d"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 241,
+    "sha256": "5c41261472a20fd99579b5b8c920be0ba5962c5f041a7284edb4a30ad68935f1",
+    "source_sha256": "c5a0d5981554778abdbd17d6ab777c8e54ee44fba03f28a316a147f001d6ab8d",
+    "source_bytes": 291
   },
   {
     "path": "보존자료/작업소스/work/internal-motion-header-diagnostic.py",
@@ -2778,18 +2950,22 @@
   {
     "path": "보존자료/작업소스/work/internal-motion-header-diagnostic/모델-배치.json",
     "source": "work/internal-motion-header-diagnostic/모델-배치.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1165,
-    "sha256": "c912272426cea3d16447fdddc525fa1ac620af1fea0fb5e953fcf96b4084ed13"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1142,
+    "sha256": "cd8a9baabfdd510fa3fc23b50ffb2c9173320f04cc2188f3b37eec1be45e459d",
+    "source_sha256": "c912272426cea3d16447fdddc525fa1ac620af1fea0fb5e953fcf96b4084ed13",
+    "source_bytes": 1165
   },
   {
     "path": "보존자료/작업소스/work/internal-motion-helper-green/gui/격리설정/history.json",
     "source": "work/internal-motion-helper-green/gui/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 18775,
-    "sha256": "53283d657d1682e5a0de04c34b04a41987466e56382e1c7bfc4308e2ca19814b"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 16875,
+    "sha256": "7496577d36b5f76bbea79614117ebecd2a22c413f7fb6cdea5a2b0c983fb5874",
+    "source_sha256": "53283d657d1682e5a0de04c34b04a41987466e56382e1c7bfc4308e2ca19814b",
+    "source_bytes": 18775
   },
   {
     "path": "보존자료/작업소스/work/internal-motion-label-box-diagnostic.py",
@@ -2962,18 +3138,22 @@
   {
     "path": "보존자료/작업소스/work/internal-motion-profile-all-profile/gui/격리설정/history.json",
     "source": "work/internal-motion-profile-all-profile/gui/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 307,
-    "sha256": "3757d38bd1eca2f9e195f79d239081dd2d950bf709cf4f07b383deee3112b938"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 257,
+    "sha256": "cb0945ebc4192022a4a591d486b168449a05042da502df9953287bda7769df14",
+    "source_sha256": "3757d38bd1eca2f9e195f79d239081dd2d950bf709cf4f07b383deee3112b938",
+    "source_bytes": 307
   },
   {
     "path": "보존자료/작업소스/work/internal-motion-profile-all-profile/구간시간.json",
     "source": "work/internal-motion-profile-all-profile/구간시간.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 9861,
-    "sha256": "7675c5f13b35ed8fc87796a54b18586ef6fce9973094bc49d205188f1d0c9045"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 9811,
+    "sha256": "3214190679f17e2a8c85882cfa9d0ab2390b6ca47281a3c3075517c7bd88cdb2",
+    "source_sha256": "7675c5f13b35ed8fc87796a54b18586ef6fce9973094bc49d205188f1d0c9045",
+    "source_bytes": 9861
   },
   {
     "path": "보존자료/작업소스/work/internal-motion-profile-all.py",
@@ -2986,18 +3166,22 @@
   {
     "path": "보존자료/작업소스/work/internal-motion-profile-current/구간시간.json",
     "source": "work/internal-motion-profile-current/구간시간.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1299,
-    "sha256": "3b7cbcc248794db69e4c4f1d768d347087a54a444f42da2e1f460cc7e3d2c6f4"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1249,
+    "sha256": "87bc75f11415e5f2a28b9a51d1649cd56534f1e6c143d8f1deeb4f75ae82c1f9",
+    "source_sha256": "3b7cbcc248794db69e4c4f1d768d347087a54a444f42da2e1f460cc7e3d2c6f4",
+    "source_bytes": 1299
   },
   {
     "path": "보존자료/작업소스/work/internal-motion-profile-without-global-filter/구간시간.json",
     "source": "work/internal-motion-profile-without-global-filter/구간시간.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1310,
-    "sha256": "fd8ac30ee26a53dfd4961c34505530f13adf15927a008fb5f530d66d62f4dee7"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1260,
+    "sha256": "29ce1b8276050a99d95f32d5653e1610bff8c08a2a32b0764b120347b3779ea4",
+    "source_sha256": "fd8ac30ee26a53dfd4961c34505530f13adf15927a008fb5f530d66d62f4dee7",
+    "source_bytes": 1310
   },
   {
     "path": "보존자료/작업소스/work/internal-motion-profile.py",
@@ -3018,10 +3202,12 @@
   {
     "path": "보존자료/작업소스/work/internal-motion-profile40/gui/격리설정/history.json",
     "source": "work/internal-motion-profile40/gui/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 18547,
-    "sha256": "dd2679f66d7e9acfa5dfc12e44f52c93f2fbe4d4d94980b68d51ac193e467dc5"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 16647,
+    "sha256": "9adbb97c04a54d0383192faf6dcce276433a44f9bb1078d4542e620624ba0ab7",
+    "source_sha256": "dd2679f66d7e9acfa5dfc12e44f52c93f2fbe4d4d94980b68d51ac193e467dc5",
+    "source_bytes": 18547
   },
   {
     "path": "보존자료/작업소스/work/internal-motion-profile40/함수비용.txt",
@@ -3042,10 +3228,12 @@
   {
     "path": "보존자료/작업소스/work/internal-motion-reentry-diagnostic/data/history.json",
     "source": "work/internal-motion-reentry-diagnostic/data/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 208,
-    "sha256": "ef8e9bd6bab200abcd2e5a5a03e99a762379d685c36cd7d7627e6ebb9e02c2ef"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 183,
+    "sha256": "49eff97d6872f816e85b4b84fcac880be839620e98704a4fb16c90b70c323c23",
+    "source_sha256": "ef8e9bd6bab200abcd2e5a5a03e99a762379d685c36cd7d7627e6ebb9e02c2ef",
+    "source_bytes": 208
   },
   {
     "path": "보존자료/작업소스/work/internal-motion-reentry-diagnostic/관측.json",
@@ -3058,10 +3246,12 @@
   {
     "path": "보존자료/작업소스/work/internal-motion-repair14-green/gui/격리설정/history.json",
     "source": "work/internal-motion-repair14-green/gui/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 575,
-    "sha256": "d2d0acf40dfc262051ed44037f9a801091eda06750d2dfcba4ea7a81c5f0a724"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 475,
+    "sha256": "74d74e3b25689a407de59376957ffaf7e02a8b8f20802bdf605b71e44e5f2676",
+    "source_sha256": "d2d0acf40dfc262051ed44037f9a801091eda06750d2dfcba4ea7a81c5f0a724",
+    "source_bytes": 575
   },
   {
     "path": "보존자료/작업소스/work/internal-motion-run.py",
@@ -3072,52 +3262,64 @@
     "sha256": "7b4ab363cf4b92fea4317c3ae797def677f4ce3ee4ab74ea17e45d8a1f49703e"
   },
   {
-    "path": "보존자료/작업소스/work/internal-motion-source-audit.py",
+    "path": "보존자료/작업소스/work/internal-motion-source-audit.py.PUBLIC-NOTE.md",
     "source": "work/internal-motion-source-audit.py",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 2630,
-    "sha256": "f2a6c84f79956bef1ceae782caef0a59f6f66d07ffee1b45654c4388610fd194"
+    "kind": "공개 보류 안내",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 390,
+    "sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774",
+    "source_sha256": "f2a6c84f79956bef1ceae782caef0a59f6f66d07ffee1b45654c4388610fd194",
+    "source_bytes": 2630
   },
   {
-    "path": "보존자료/작업소스/work/internal-motion-source-freeze17.py",
+    "path": "보존자료/작업소스/work/internal-motion-source-freeze17.py.PUBLIC-NOTE.md",
     "source": "work/internal-motion-source-freeze17.py",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 6827,
-    "sha256": "790bf0b3b2cbe453753c12e6f6915c654c51b9448ec1f9d9e302abdbe6beeeb6"
+    "kind": "공개 보류 안내",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 390,
+    "sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774",
+    "source_sha256": "790bf0b3b2cbe453753c12e6f6915c654c51b9448ec1f9d9e302abdbe6beeeb6",
+    "source_bytes": 6827
   },
   {
-    "path": "보존자료/작업소스/work/native-release-1.6/install-test.py",
+    "path": "보존자료/작업소스/work/native-release-1.6/install-test.py.PUBLIC-NOTE.md",
     "source": "work/native-release-1.6/install-test.py",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 3166,
-    "sha256": "211a9026c7de76c16b34fffc6a7de7b96df1f892f2b4a4b98d12545c5080aed6"
+    "kind": "공개 보류 안내",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 390,
+    "sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774",
+    "source_sha256": "211a9026c7de76c16b34fffc6a7de7b96df1f892f2b4a4b98d12545c5080aed6",
+    "source_bytes": 3166
   },
   {
     "path": "보존자료/작업소스/work/native-release-1.6/installed-launch.json",
     "source": "work/native-release-1.6/installed-launch.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 321,
-    "sha256": "e8d7020634b0ab139ebcf5876cecddec4ec86606db0be419841db5fca4f1b449"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 296,
+    "sha256": "879e143e041ff24b146b2865e81baf498c26e8d2e7cd0d14ce3e6c9e666449ec",
+    "source_sha256": "e8d7020634b0ab139ebcf5876cecddec4ec86606db0be419841db5fca4f1b449",
+    "source_bytes": 321
   },
   {
     "path": "보존자료/작업소스/work/native-release-1.6/language-restart.json",
     "source": "work/native-release-1.6/language-restart.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 372,
-    "sha256": "94a1a52614fa3cf2cd96c07a8f13ef6b24366c55b4cbc9374a0513f0435dd553"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 347,
+    "sha256": "deccc784811a496a0ba007d78e226cd4c21ebf812f647f80476d890059a3c895",
+    "source_sha256": "94a1a52614fa3cf2cd96c07a8f13ef6b24366c55b4cbc9374a0513f0435dd553",
+    "source_bytes": 372
   },
   {
     "path": "보존자료/작업소스/work/native-release-1.6/portable-launch.json",
     "source": "work/native-release-1.6/portable-launch.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 308,
-    "sha256": "848043bce01297b2075aeee88dbf7dc447fcf8db42a6188d592d1bd82dca04e5"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 283,
+    "sha256": "a900db7095665d9a9ddf9849fb3c2e52ebfd609a9011682dd3983cbc09743ffe",
+    "source_sha256": "848043bce01297b2075aeee88dbf7dc447fcf8db42a6188d592d1bd82dca04e5",
+    "source_bytes": 308
   },
   {
     "path": "보존자료/작업소스/work/native-release-1.6/portable-ui.json",
@@ -3130,58 +3332,72 @@
   {
     "path": "보존자료/작업소스/work/native-release-1.6/새설치-실행.json",
     "source": "work/native-release-1.6/새설치-실행.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 573,
-    "sha256": "3518162e5d14e5fbecd5648b5a1725c23bea856e2c870c89e631e558982f03ba"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 473,
+    "sha256": "1b11d25152e45354b8459a7d7467efed51a53e480f2bcca982810f4e96580a2d",
+    "source_sha256": "3518162e5d14e5fbecd5648b5a1725c23bea856e2c870c89e631e558982f03ba",
+    "source_bytes": 573
   },
   {
     "path": "보존자료/작업소스/work/native-release-1.6/설치파일-전수대조.json",
     "source": "work/native-release-1.6/설치파일-전수대조.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 392,
-    "sha256": "4dee9288d2aa5f6a47016f82c6fa8e5a27736e283ca14ad1a76c472ed3d3d15b"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 367,
+    "sha256": "258769c603eca5705012395b0d14cc3fef7eb7b88369c4dc10acb2a8c180f105",
+    "source_sha256": "4dee9288d2aa5f6a47016f82c6fa8e5a27736e283ca14ad1a76c472ed3d3d15b",
+    "source_bytes": 392
   },
   {
     "path": "보존자료/작업소스/work/native-release-1.6/원본-준비.json",
     "source": "work/native-release-1.6/원본-준비.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 475,
-    "sha256": "9af004f6268b0fb17436882984325c6f6b37ae929261eb82dba5491d38646926"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 450,
+    "sha256": "75e280002e7504f2f3d87ac50a193a52aca6b55222e997aea23a6abcd9d0e76c",
+    "source_sha256": "9af004f6268b0fb17436882984325c6f6b37ae929261eb82dba5491d38646926",
+    "source_bytes": 475
   },
   {
     "path": "보존자료/작업소스/work/native-release-1.6/이전설치-표준제거.json",
     "source": "work/native-release-1.6/이전설치-표준제거.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 413,
-    "sha256": "024ec98383a9f8e9ddbc3afe991ebed6e7f69d2adb48285ff953f6d2bbd85d15"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 347,
+    "sha256": "34fc9d1c05fa601d14fd5166f0f572fe5388b2857d71c3f4d1a7da24742afa21",
+    "source_sha256": "024ec98383a9f8e9ddbc3afe991ebed6e7f69d2adb48285ff953f6d2bbd85d15",
+    "source_bytes": 413
   },
   {
     "path": "보존자료/작업소스/work/native-release-1.6/이전설치등록.json",
     "source": "work/native-release-1.6/이전설치등록.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 366,
-    "sha256": "8cb1a517d73b698e5b3dc269b58c3009c3be746a2fa492cfc69e1a2d362166c5"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 318,
+    "sha256": "f736619f24170957ede0849118cf73f2dae4c37cec002dff4f32c9d336bd992e",
+    "source_sha256": "8cb1a517d73b698e5b3dc269b58c3009c3be746a2fa492cfc69e1a2d362166c5",
+    "source_bytes": 366
   },
   {
     "path": "보존자료/작업소스/work/native-release-1.6/탐색기시험-준비.json",
     "source": "work/native-release-1.6/탐색기시험-준비.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 386,
-    "sha256": "72a1227ecf987726affa367edffd58882151172e83d59576a0161af5d45d2d82"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 361,
+    "sha256": "1efc5a63e67960cfd00ba5001571a6546a68f906342484e16081669b8a178200",
+    "source_sha256": "72a1227ecf987726affa367edffd58882151172e83d59576a0161af5d45d2d82",
+    "source_bytes": 386
   },
   {
     "path": "보존자료/작업소스/work/native-release-1.6/한영-OCR시험-원본.json",
     "source": "work/native-release-1.6/한영-OCR시험-원본.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 348,
-    "sha256": "a6be9d2eea477af44de96254fd94f456f90ca7e8f0e315ddc0fa30049ad1ac62"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 298,
+    "sha256": "e98ebf6f231837695d2158714feaf26a15e87fa71c3b6595af32a04a413c1771",
+    "source_sha256": "a6be9d2eea477af44de96254fd94f456f90ca7e8f0e315ddc0fa30049ad1ac62",
+    "source_bytes": 348
   },
   {
     "path": "보존자료/작업소스/work/prepare-release-check-budget.py",
@@ -3194,10 +3410,12 @@
   {
     "path": "보존자료/작업소스/work/release-check-budget-1.6/동시검사-실행결과.json",
     "source": "work/release-check-budget-1.6/동시검사-실행결과.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 5788,
-    "sha256": "33d7b3f09359e6048d13edaf46bb3d6babf81e31f6243207d1e8ff64ac7ca57e"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 5688,
+    "sha256": "82f9eb9b5eb61ac797cf5f2f4f632508226edeecc8f43ba5f2ef7d6ed07fb52c",
+    "source_sha256": "33d7b3f09359e6048d13edaf46bb3d6babf81e31f6243207d1e8ff64ac7ca57e",
+    "source_bytes": 5788
   },
   {
     "path": "보존자료/작업소스/work/release-check-budget-1.6/준비검증.json",
@@ -3226,10 +3444,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/31042a9df62a48a0bee7f2eb93438f39/gui-01-23/격리설정/history.json",
     "source": "work/release-validation/31042a9df62a48a0bee7f2eb93438f39/gui-01-23/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 361,
-    "sha256": "f833c157a4326cafdb6e7ecbbe6c8cdb1a356e9abb548a6f806f39ecf3a09c0d"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 311,
+    "sha256": "ac8eddf01512b2c5812dad6c1f135120cf4653e81e8e440bc5a5941db3556a92",
+    "source_sha256": "f833c157a4326cafdb6e7ecbbe6c8cdb1a356e9abb548a6f806f39ecf3a09c0d",
+    "source_bytes": 361
   },
   {
     "path": "보존자료/작업소스/work/release-validation/31042a9df62a48a0bee7f2eb93438f39/gui-24/Mono-Qt검증.json",
@@ -3266,10 +3486,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/31042a9df62a48a0bee7f2eb93438f39/gui-25-49/격리설정/history.json",
     "source": "work/release-validation/31042a9df62a48a0bee7f2eb93438f39/gui-25-49/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 353,
-    "sha256": "655c42b9a33fc5cf610dc8dfe2e11218f1a9624acb82118149b92589d1bb2896"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 303,
+    "sha256": "c7dcd8e939268fb6d5615520b4d7e24919169b72b9e85c32f5fea3d7249969d4",
+    "source_sha256": "655c42b9a33fc5cf610dc8dfe2e11218f1a9624acb82118149b92589d1bb2896",
+    "source_bytes": 353
   },
   {
     "path": "보존자료/작업소스/work/release-validation/31042a9df62a48a0bee7f2eb93438f39/gui-50-69/Fluid-호버대비.json",
@@ -3322,10 +3544,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/489bf0a7b8de4ce8bfa684f7551cae26/gui-01-23/격리설정/history.json",
     "source": "work/release-validation/489bf0a7b8de4ce8bfa684f7551cae26/gui-01-23/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 361,
-    "sha256": "0da5281fa764a72f7a72132c89f53daa6ff70d927f572a6230785a0fe9033447"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 311,
+    "sha256": "330505c08368d741e3413cc8083cc8fce90698ed10acbb2e6c49d2f8a4744013",
+    "source_sha256": "0da5281fa764a72f7a72132c89f53daa6ff70d927f572a6230785a0fe9033447",
+    "source_bytes": 361
   },
   {
     "path": "보존자료/작업소스/work/release-validation/489bf0a7b8de4ce8bfa684f7551cae26/gui-24/gui-shard.json",
@@ -3346,10 +3570,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/489bf0a7b8de4ce8bfa684f7551cae26/gui-25-49/격리설정/history.json",
     "source": "work/release-validation/489bf0a7b8de4ce8bfa684f7551cae26/gui-25-49/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 353,
-    "sha256": "d85e106453b153418eecf046bc0ad8a5cfbb5052a6cf1c33a3c626d97b4dff3c"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 303,
+    "sha256": "d2804c55d2dc2b06e848386fca4f787ed7f69387ce4a636cef987dc0e85e9f38",
+    "source_sha256": "d85e106453b153418eecf046bc0ad8a5cfbb5052a6cf1c33a3c626d97b4dff3c",
+    "source_bytes": 353
   },
   {
     "path": "보존자료/작업소스/work/release-validation/489bf0a7b8de4ce8bfa684f7551cae26/gui-50-69/gui-shard.json",
@@ -3378,10 +3604,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/489bf0a7b8de4ce8bfa684f7551cae26/gui-70-85/격리설정/history.json",
     "source": "work/release-validation/489bf0a7b8de4ce8bfa684f7551cae26/gui-70-85/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 687,
-    "sha256": "e33337973274d36e05258c7bdaeb5c6a8eacc8e67dd5cdbad4372077deb57466"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 587,
+    "sha256": "1215e6217ccc4c1f521515aa3bd4b5cc24aa824fea4f7d51ecfb6cf8d222a357",
+    "source_sha256": "e33337973274d36e05258c7bdaeb5c6a8eacc8e67dd5cdbad4372077deb57466",
+    "source_bytes": 687
   },
   {
     "path": "보존자료/작업소스/work/release-validation/4a6ca849be324d298605c857830383f9/gui-01-23/Mono-Qt검증.json",
@@ -3426,10 +3654,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/4a6ca849be324d298605c857830383f9/gui-25-49/격리설정/history.json",
     "source": "work/release-validation/4a6ca849be324d298605c857830383f9/gui-25-49/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 353,
-    "sha256": "7c10e04d5a4baddeb1e674731c899ede4d1a5d91ca2a5a5e6d8d53d23c202341"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 303,
+    "sha256": "185afe33e9bf5e4f0f44c54a84527466dbbece1722051870f805eb33e75911b6",
+    "source_sha256": "7c10e04d5a4baddeb1e674731c899ede4d1a5d91ca2a5a5e6d8d53d23c202341",
+    "source_bytes": 353
   },
   {
     "path": "보존자료/작업소스/work/release-validation/4a6ca849be324d298605c857830383f9/gui-50-69/gui-shard.json",
@@ -3450,10 +3680,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/4a6ca849be324d298605c857830383f9/gui-70-85/격리설정/history.json",
     "source": "work/release-validation/4a6ca849be324d298605c857830383f9/gui-70-85/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 687,
-    "sha256": "77d3d5397a8c629cb7017215477330d1df9a5be54ef44d653eb1fd13bb502458"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 587,
+    "sha256": "ca0d6cb3f2fac9c8d4000c02fb35a36c13a1a108dc1f5c5c51d43bf0f4cac915",
+    "source_sha256": "77d3d5397a8c629cb7017215477330d1df9a5be54ef44d653eb1fd13bb502458",
+    "source_bytes": 687
   },
   {
     "path": "보존자료/작업소스/work/release-validation/4d616c9edc64418a8f73653e14859e5e/gui-01-23/gui-shard.json",
@@ -3466,10 +3698,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/4d616c9edc64418a8f73653e14859e5e/gui-01-23/격리설정/history.json",
     "source": "work/release-validation/4d616c9edc64418a8f73653e14859e5e/gui-01-23/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 361,
-    "sha256": "0a268ff3131d58ba71ed95b9d2d15210141843444514182742feb27de859e348"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 311,
+    "sha256": "c012b6d89aeba3ca684e6b561a522f4924267e2e4ed82f6f46855a51336fe8b6",
+    "source_sha256": "0a268ff3131d58ba71ed95b9d2d15210141843444514182742feb27de859e348",
+    "source_bytes": 361
   },
   {
     "path": "보존자료/작업소스/work/release-validation/4d616c9edc64418a8f73653e14859e5e/gui-24/gui-shard.json",
@@ -3490,10 +3724,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/4d616c9edc64418a8f73653e14859e5e/gui-25-49/격리설정/history.json",
     "source": "work/release-validation/4d616c9edc64418a8f73653e14859e5e/gui-25-49/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 353,
-    "sha256": "b3f81ccd2f2d2f2ef68bd877deeb2459b66b96929e01f00fb71370f12a9e6302"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 303,
+    "sha256": "fb90b37afe6b568d5c406f0f4ffdd85d9bf54aa39166fc06d2a7f1c440810056",
+    "source_sha256": "b3f81ccd2f2d2f2ef68bd877deeb2459b66b96929e01f00fb71370f12a9e6302",
+    "source_bytes": 353
   },
   {
     "path": "보존자료/작업소스/work/release-validation/4d616c9edc64418a8f73653e14859e5e/gui-50-69/gui-shard.json",
@@ -3514,10 +3750,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/4d616c9edc64418a8f73653e14859e5e/gui-70-85/격리설정/history.json",
     "source": "work/release-validation/4d616c9edc64418a8f73653e14859e5e/gui-70-85/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 687,
-    "sha256": "5a42d105e2f8b626d3cc368c6b3e0a5b20ab31f12a74a417c18cc4568face1ca"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 587,
+    "sha256": "c5c723abf516e3dd6de4cb759229b210d5448cd379356896848671a367d95e8f",
+    "source_sha256": "5a42d105e2f8b626d3cc368c6b3e0a5b20ab31f12a74a417c18cc4568face1ca",
+    "source_bytes": 687
   },
   {
     "path": "보존자료/작업소스/work/release-validation/519159b6f24649c680e50dd723ba1ee2/gui-01-23/gui-shard.json",
@@ -3530,10 +3768,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/519159b6f24649c680e50dd723ba1ee2/gui-01-23/격리설정/history.json",
     "source": "work/release-validation/519159b6f24649c680e50dd723ba1ee2/gui-01-23/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 361,
-    "sha256": "e959c336ea4f3db8f6eb31966634d4f5fdc59eb3efb8a10719718a4a6065ec72"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 311,
+    "sha256": "76424829195966b2a11c50f5ae3073a076aabd9263b1fa7a0fd1240c99658c68",
+    "source_sha256": "e959c336ea4f3db8f6eb31966634d4f5fdc59eb3efb8a10719718a4a6065ec72",
+    "source_bytes": 361
   },
   {
     "path": "보존자료/작업소스/work/release-validation/519159b6f24649c680e50dd723ba1ee2/gui-24/gui-shard.json",
@@ -3554,10 +3794,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/519159b6f24649c680e50dd723ba1ee2/gui-25-49/격리설정/history.json",
     "source": "work/release-validation/519159b6f24649c680e50dd723ba1ee2/gui-25-49/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 353,
-    "sha256": "deb69ecb6c564abe0027e0155c9eef10a2f9b859cc72117e3078bc34a19032b8"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 303,
+    "sha256": "cedc697325c67b6e14cb564681daba2c8aaa386f44b601d735108705d2c434e0",
+    "source_sha256": "deb69ecb6c564abe0027e0155c9eef10a2f9b859cc72117e3078bc34a19032b8",
+    "source_bytes": 353
   },
   {
     "path": "보존자료/작업소스/work/release-validation/519159b6f24649c680e50dd723ba1ee2/gui-50-69/gui-shard.json",
@@ -3578,10 +3820,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/519159b6f24649c680e50dd723ba1ee2/gui-70-85/격리설정/history.json",
     "source": "work/release-validation/519159b6f24649c680e50dd723ba1ee2/gui-70-85/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 687,
-    "sha256": "9d07ba6176a1892c2c64b45e44b8e19d8f077cf001afc700001bf6369eeed0eb"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 587,
+    "sha256": "5f43b70910de0e9709537a4e0aaf29d91292245d4ff205af0da595b4e876ec44",
+    "source_sha256": "9d07ba6176a1892c2c64b45e44b8e19d8f077cf001afc700001bf6369eeed0eb",
+    "source_bytes": 687
   },
   {
     "path": "보존자료/작업소스/work/release-validation/52048f6ff03c44a488ae09724d1662b0/gui-01-23/gui-shard.json",
@@ -3594,10 +3838,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/52048f6ff03c44a488ae09724d1662b0/gui-01-23/격리설정/history.json",
     "source": "work/release-validation/52048f6ff03c44a488ae09724d1662b0/gui-01-23/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 361,
-    "sha256": "8c36a33ac32606568c3de2170ef00922ca693766f7967f8c8b2e87480897dfec"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 311,
+    "sha256": "aca079e597bb4b5243fda7be19ebaa32adf961d1c6d789d850fc433f3bd04867",
+    "source_sha256": "8c36a33ac32606568c3de2170ef00922ca693766f7967f8c8b2e87480897dfec",
+    "source_bytes": 361
   },
   {
     "path": "보존자료/작업소스/work/release-validation/52048f6ff03c44a488ae09724d1662b0/gui-24/gui-shard.json",
@@ -3618,10 +3864,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/52048f6ff03c44a488ae09724d1662b0/gui-25-49/격리설정/history.json",
     "source": "work/release-validation/52048f6ff03c44a488ae09724d1662b0/gui-25-49/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 353,
-    "sha256": "035d5c9327c346829c29557cd2a1aab0cbbcc32508e909705007f23522b803dc"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 303,
+    "sha256": "60c78b1688450156ff1649a813fed1abb4684c46d5132a8b78a42e4ace35b91d",
+    "source_sha256": "035d5c9327c346829c29557cd2a1aab0cbbcc32508e909705007f23522b803dc",
+    "source_bytes": 353
   },
   {
     "path": "보존자료/작업소스/work/release-validation/52048f6ff03c44a488ae09724d1662b0/gui-50-69/gui-shard.json",
@@ -3642,10 +3890,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/52048f6ff03c44a488ae09724d1662b0/gui-70-85/격리설정/history.json",
     "source": "work/release-validation/52048f6ff03c44a488ae09724d1662b0/gui-70-85/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 687,
-    "sha256": "b3144a64aa087e59fda3025bcee3f6fd368381856908462f2f4427e63f8ccc04"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 587,
+    "sha256": "2f4e3186eb222af9fc83f4d1bec5ca74ba83dd1ec9afad643c5c5b4ad76d4a7f",
+    "source_sha256": "b3144a64aa087e59fda3025bcee3f6fd368381856908462f2f4427e63f8ccc04",
+    "source_bytes": 687
   },
   {
     "path": "보존자료/작업소스/work/release-validation/6ead5c8db4fc438a9ccded96d7f08ab3/gui-01-23/gui-shard.json",
@@ -3658,10 +3908,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/6ead5c8db4fc438a9ccded96d7f08ab3/gui-01-23/격리설정/history.json",
     "source": "work/release-validation/6ead5c8db4fc438a9ccded96d7f08ab3/gui-01-23/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 361,
-    "sha256": "5c058190e074a338848c50f4dbbaafb49de3b468787ce93ff395e3118f3968c9"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 311,
+    "sha256": "9dabfdb547d58e8fce12f8d157d87c8ab2e85a8ae0338bd8f086450067aef1eb",
+    "source_sha256": "5c058190e074a338848c50f4dbbaafb49de3b468787ce93ff395e3118f3968c9",
+    "source_bytes": 361
   },
   {
     "path": "보존자료/작업소스/work/release-validation/6ead5c8db4fc438a9ccded96d7f08ab3/gui-24/gui-shard.json",
@@ -3682,10 +3934,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/6ead5c8db4fc438a9ccded96d7f08ab3/gui-25-49/격리설정/history.json",
     "source": "work/release-validation/6ead5c8db4fc438a9ccded96d7f08ab3/gui-25-49/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 353,
-    "sha256": "7db0df10f4c4c5383b3bacbb8cec3c084e20853edeeba5b474a1145588428fa6"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 303,
+    "sha256": "5f6b04faff2b13efc8ea971bbe08557479ea7335c947ff09ddece42fbcbe035d",
+    "source_sha256": "7db0df10f4c4c5383b3bacbb8cec3c084e20853edeeba5b474a1145588428fa6",
+    "source_bytes": 353
   },
   {
     "path": "보존자료/작업소스/work/release-validation/6ead5c8db4fc438a9ccded96d7f08ab3/gui-50-69/gui-shard.json",
@@ -3706,10 +3960,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/6ead5c8db4fc438a9ccded96d7f08ab3/gui-70-85/격리설정/history.json",
     "source": "work/release-validation/6ead5c8db4fc438a9ccded96d7f08ab3/gui-70-85/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 687,
-    "sha256": "e71c20391a9a53c9991a756328eab6b8a88e2364724ae89aff183312db21039e"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 587,
+    "sha256": "8e1937d8ef2971d0b8978a0424688920274f649a64020987788f1db88a4f65df",
+    "source_sha256": "e71c20391a9a53c9991a756328eab6b8a88e2364724ae89aff183312db21039e",
+    "source_bytes": 687
   },
   {
     "path": "보존자료/작업소스/work/release-validation/8c0b9a5f5d6f4575afc6a1a9d61b2749/gui-01-23/gui-shard.json",
@@ -3722,10 +3978,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/8c0b9a5f5d6f4575afc6a1a9d61b2749/gui-01-23/격리설정/history.json",
     "source": "work/release-validation/8c0b9a5f5d6f4575afc6a1a9d61b2749/gui-01-23/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 361,
-    "sha256": "edbca9346bbadbae3f2782e13589644d133b5388a62cbd14ed0b240121447b83"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 311,
+    "sha256": "e2f9ecce22b6238ccfbbcc3733a4af918da4ba0021664f8a40935c25a7dded55",
+    "source_sha256": "edbca9346bbadbae3f2782e13589644d133b5388a62cbd14ed0b240121447b83",
+    "source_bytes": 361
   },
   {
     "path": "보존자료/작업소스/work/release-validation/8c0b9a5f5d6f4575afc6a1a9d61b2749/gui-24/gui-shard.json",
@@ -3746,10 +4004,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/8c0b9a5f5d6f4575afc6a1a9d61b2749/gui-25-49/격리설정/history.json",
     "source": "work/release-validation/8c0b9a5f5d6f4575afc6a1a9d61b2749/gui-25-49/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 353,
-    "sha256": "c1f3d6ff0fe10d9fed5293477831fdab3f1e442a998d9eeff4b1739702a028b0"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 303,
+    "sha256": "a5b33115d8024422f217395352cb4dde5b20d89f123f59bbb39fa27250f7fa17",
+    "source_sha256": "c1f3d6ff0fe10d9fed5293477831fdab3f1e442a998d9eeff4b1739702a028b0",
+    "source_bytes": 353
   },
   {
     "path": "보존자료/작업소스/work/release-validation/8c0b9a5f5d6f4575afc6a1a9d61b2749/gui-50-69/Mono-Qt검증.json",
@@ -3778,10 +4038,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/8c0b9a5f5d6f4575afc6a1a9d61b2749/gui-70-85/격리설정/history.json",
     "source": "work/release-validation/8c0b9a5f5d6f4575afc6a1a9d61b2749/gui-70-85/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 687,
-    "sha256": "a4438ca802f0b0745c395c3f79ac526ca589d0b904dfe46f6986cf8c233b5c84"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 587,
+    "sha256": "8ace3ded92d98cfe2f06fad456be201c43370f863b0f1e122aac17f472ea3909",
+    "source_sha256": "a4438ca802f0b0745c395c3f79ac526ca589d0b904dfe46f6986cf8c233b5c84",
+    "source_bytes": 687
   },
   {
     "path": "보존자료/작업소스/work/release-validation/8f359dc3db2942d39a975094d803667d/gui-01-23/gui-shard.json",
@@ -3794,10 +4056,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/8f359dc3db2942d39a975094d803667d/gui-01-23/격리설정/history.json",
     "source": "work/release-validation/8f359dc3db2942d39a975094d803667d/gui-01-23/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 361,
-    "sha256": "c506a70db4826ad38e912db82001e64208693881f282e27d67e489d8674fa1b4"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 311,
+    "sha256": "93a4f2812dd7baa47450059be0ea161ad55741eba0128d54fd8cc9365e46b032",
+    "source_sha256": "c506a70db4826ad38e912db82001e64208693881f282e27d67e489d8674fa1b4",
+    "source_bytes": 361
   },
   {
     "path": "보존자료/작업소스/work/release-validation/8f359dc3db2942d39a975094d803667d/gui-24/gui-shard.json",
@@ -3818,10 +4082,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/8f359dc3db2942d39a975094d803667d/gui-25-49/격리설정/history.json",
     "source": "work/release-validation/8f359dc3db2942d39a975094d803667d/gui-25-49/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 353,
-    "sha256": "9875a309532e83ccbb52fe11d38d2972b8a58d545a146a396e9c8336a085097b"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 303,
+    "sha256": "06d3ad164a6c21e07a810038f10120bae4b6f2a9ecae566270b3c7138dc3ecba",
+    "source_sha256": "9875a309532e83ccbb52fe11d38d2972b8a58d545a146a396e9c8336a085097b",
+    "source_bytes": 353
   },
   {
     "path": "보존자료/작업소스/work/release-validation/8f359dc3db2942d39a975094d803667d/gui-50-69/gui-shard.json",
@@ -3842,10 +4108,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/8f359dc3db2942d39a975094d803667d/gui-70-85/격리설정/history.json",
     "source": "work/release-validation/8f359dc3db2942d39a975094d803667d/gui-70-85/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 687,
-    "sha256": "2de24ede9f97e258353bfa6ba179084e7e6c288b7671370c60999b9896a4417a"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 587,
+    "sha256": "52602903275732c2efc5022c6c27be83f82f19b60f7466eb77e3edf5b432a721",
+    "source_sha256": "2de24ede9f97e258353bfa6ba179084e7e6c288b7671370c60999b9896a4417a",
+    "source_bytes": 687
   },
   {
     "path": "보존자료/작업소스/work/release-validation/99146dd96ba04b37baa06fcf33208d33/gui-01-23/gui-shard.json",
@@ -3858,10 +4126,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/99146dd96ba04b37baa06fcf33208d33/gui-01-23/격리설정/history.json",
     "source": "work/release-validation/99146dd96ba04b37baa06fcf33208d33/gui-01-23/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 361,
-    "sha256": "26ac43ba7ce2c46b7580431a7c6bf81068e8e6af64e78c6532471400ba48c60e"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 311,
+    "sha256": "655269db8ea1b3c4ad7d2a1219cd3131467f9cef8ad55c6ce6bf24fc8a339d3d",
+    "source_sha256": "26ac43ba7ce2c46b7580431a7c6bf81068e8e6af64e78c6532471400ba48c60e",
+    "source_bytes": 361
   },
   {
     "path": "보존자료/작업소스/work/release-validation/99146dd96ba04b37baa06fcf33208d33/gui-24/gui-shard.json",
@@ -3882,10 +4152,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/99146dd96ba04b37baa06fcf33208d33/gui-25-49/격리설정/history.json",
     "source": "work/release-validation/99146dd96ba04b37baa06fcf33208d33/gui-25-49/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 353,
-    "sha256": "f7aba4e5d63b57c431873d15cfcd3503a5812b6c681b7d7795b1f32b9da70f34"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 303,
+    "sha256": "614d589cf65c25ffea630f9cc90b69c7a645352ac7c3ce90f36a63188d641c9d",
+    "source_sha256": "f7aba4e5d63b57c431873d15cfcd3503a5812b6c681b7d7795b1f32b9da70f34",
+    "source_bytes": 353
   },
   {
     "path": "보존자료/작업소스/work/release-validation/99146dd96ba04b37baa06fcf33208d33/gui-50-69/gui-shard.json",
@@ -3906,10 +4178,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/99146dd96ba04b37baa06fcf33208d33/gui-70-85/격리설정/history.json",
     "source": "work/release-validation/99146dd96ba04b37baa06fcf33208d33/gui-70-85/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 687,
-    "sha256": "2e2aec7fc095a932d7f0e5da080f760ff157b6c223b41f2ab8a47c64e6a777a3"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 587,
+    "sha256": "22d8148d3c52546d48e9885056e3b4d54156c4391663abdced6b6de844447840",
+    "source_sha256": "2e2aec7fc095a932d7f0e5da080f760ff157b6c223b41f2ab8a47c64e6a777a3",
+    "source_bytes": 687
   },
   {
     "path": "보존자료/작업소스/work/release-validation/9d7d2fe10aef474b8ca79aaed8c6d5a1/gui-01-23/gui-shard.json",
@@ -3922,10 +4196,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/9d7d2fe10aef474b8ca79aaed8c6d5a1/gui-01-23/격리설정/history.json",
     "source": "work/release-validation/9d7d2fe10aef474b8ca79aaed8c6d5a1/gui-01-23/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 361,
-    "sha256": "d93971285fd0b5a5687ce994840bb4773301a7c7e2a5c58fbf93a9b930ed34a1"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 311,
+    "sha256": "8db06aebd0e209dc0b16e14f354fe139c8ee7a09d3566672b5c858e8b9f04b1f",
+    "source_sha256": "d93971285fd0b5a5687ce994840bb4773301a7c7e2a5c58fbf93a9b930ed34a1",
+    "source_bytes": 361
   },
   {
     "path": "보존자료/작업소스/work/release-validation/9d7d2fe10aef474b8ca79aaed8c6d5a1/gui-24/gui-shard.json",
@@ -3946,10 +4222,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/9d7d2fe10aef474b8ca79aaed8c6d5a1/gui-25-49/격리설정/history.json",
     "source": "work/release-validation/9d7d2fe10aef474b8ca79aaed8c6d5a1/gui-25-49/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 353,
-    "sha256": "c3e623cc7325fc0a2c586f3a080e4a49a72ac0418da2febca4916c7004606993"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 303,
+    "sha256": "413c75a32179e30fe44352b8fa8ec48817d5023f3e911575d339556540e54358",
+    "source_sha256": "c3e623cc7325fc0a2c586f3a080e4a49a72ac0418da2febca4916c7004606993",
+    "source_bytes": 353
   },
   {
     "path": "보존자료/작업소스/work/release-validation/9d7d2fe10aef474b8ca79aaed8c6d5a1/gui-50-69/gui-shard.json",
@@ -3970,10 +4248,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/9d7d2fe10aef474b8ca79aaed8c6d5a1/gui-70-85/격리설정/history.json",
     "source": "work/release-validation/9d7d2fe10aef474b8ca79aaed8c6d5a1/gui-70-85/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 687,
-    "sha256": "c41135589f3a78a927ca5d773e38f44790569b738c375ce1702729e81eecdb21"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 587,
+    "sha256": "cf4c8e4eae95392fd2598591fc81f6be296570036bc39afbb9d74f6882e55af9",
+    "source_sha256": "c41135589f3a78a927ca5d773e38f44790569b738c375ce1702729e81eecdb21",
+    "source_bytes": 687
   },
   {
     "path": "보존자료/작업소스/work/release-validation/c066d53f9f93442f9f18855693865a26/gui-01-23/gui-shard.json",
@@ -3986,10 +4266,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/c066d53f9f93442f9f18855693865a26/gui-01-23/격리설정/history.json",
     "source": "work/release-validation/c066d53f9f93442f9f18855693865a26/gui-01-23/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 361,
-    "sha256": "7a1ab26e3b730478fe5759f6347679ce35df2996f80a16013f0f7e9522b4050e"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 311,
+    "sha256": "1067c3af906e7b69a45d629fcfa8e54c62ef6badea29a90f18c88e7fc5d71160",
+    "source_sha256": "7a1ab26e3b730478fe5759f6347679ce35df2996f80a16013f0f7e9522b4050e",
+    "source_bytes": 361
   },
   {
     "path": "보존자료/작업소스/work/release-validation/c066d53f9f93442f9f18855693865a26/gui-24/gui-shard.json",
@@ -4010,10 +4292,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/c066d53f9f93442f9f18855693865a26/gui-25-49/격리설정/history.json",
     "source": "work/release-validation/c066d53f9f93442f9f18855693865a26/gui-25-49/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 353,
-    "sha256": "811c49857ad3fd61ddf8888c1b1db59cb0ffad4a8731501eed10785f92053503"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 303,
+    "sha256": "2f671e42b663ed1ff554068a28c4aae1185df79a36f5ce0aa204026128579958",
+    "source_sha256": "811c49857ad3fd61ddf8888c1b1db59cb0ffad4a8731501eed10785f92053503",
+    "source_bytes": 353
   },
   {
     "path": "보존자료/작업소스/work/release-validation/c066d53f9f93442f9f18855693865a26/gui-50-69/gui-shard.json",
@@ -4034,10 +4318,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/c066d53f9f93442f9f18855693865a26/gui-70-85/격리설정/history.json",
     "source": "work/release-validation/c066d53f9f93442f9f18855693865a26/gui-70-85/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 687,
-    "sha256": "b57f6ebed59152ed6fb8283888d1adf2cc9695ab4a70268ec0b46dfa8277b9b5"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 587,
+    "sha256": "cfe0f2fbe6b4dde18a1f91b1b96050f3955320d60df46ce0ed9a27b2c220003b",
+    "source_sha256": "b57f6ebed59152ed6fb8283888d1adf2cc9695ab4a70268ec0b46dfa8277b9b5",
+    "source_bytes": 687
   },
   {
     "path": "보존자료/작업소스/work/release-validation/c3554f752f0547939dd2009aadb38036/gui-01-23/gui-shard.json",
@@ -4050,10 +4336,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/c3554f752f0547939dd2009aadb38036/gui-01-23/격리설정/history.json",
     "source": "work/release-validation/c3554f752f0547939dd2009aadb38036/gui-01-23/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 361,
-    "sha256": "3ff4a8c98758b7bac69b96bb5c2821581418f347a41fd641394eb34e9d321898"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 311,
+    "sha256": "a8075db0576691740437b8517530d30bb68b1358da4a9539cdf7190fcd7131ec",
+    "source_sha256": "3ff4a8c98758b7bac69b96bb5c2821581418f347a41fd641394eb34e9d321898",
+    "source_bytes": 361
   },
   {
     "path": "보존자료/작업소스/work/release-validation/c3554f752f0547939dd2009aadb38036/gui-24/gui-shard.json",
@@ -4074,10 +4362,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/c3554f752f0547939dd2009aadb38036/gui-25-49/격리설정/history.json",
     "source": "work/release-validation/c3554f752f0547939dd2009aadb38036/gui-25-49/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 353,
-    "sha256": "719d10d2bb81eb46ffc261e52ff2ce209f679776a982e2d70f0a5155d51b0559"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 303,
+    "sha256": "bab415176df04c69124621345018b2f740a50b3569df4565fdbb19125100e02f",
+    "source_sha256": "719d10d2bb81eb46ffc261e52ff2ce209f679776a982e2d70f0a5155d51b0559",
+    "source_bytes": 353
   },
   {
     "path": "보존자료/작업소스/work/release-validation/c3554f752f0547939dd2009aadb38036/gui-50-69/gui-shard.json",
@@ -4098,10 +4388,12 @@
   {
     "path": "보존자료/작업소스/work/release-validation/c3554f752f0547939dd2009aadb38036/gui-70-85/격리설정/history.json",
     "source": "work/release-validation/c3554f752f0547939dd2009aadb38036/gui-70-85/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 687,
-    "sha256": "8a28b954d9c97d857b2bf922001bef67461d91c4085f6b3c552c66a1750e7b8b"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 587,
+    "sha256": "6181d18d06832f11b9e0c97dc63e198c2d748270009d09874f7c8784b0e07781",
+    "source_sha256": "8a28b954d9c97d857b2bf922001bef67461d91c4085f6b3c552c66a1750e7b8b",
+    "source_bytes": 687
   },
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/GitHub-1.8-원격반영영수증.json",
@@ -4114,18 +4406,22 @@
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/actual-install.json",
     "source": "work/responsive-layout-20261030/actual-install.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 498,
-    "sha256": "20b4fab525ec9e8132c948d7dd60d66871bb9817c892753b2f51d6725d34a281"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 457,
+    "sha256": "6edb789e02b51cf714a957d9815fc52729f2eb5f07a7b6d8aa6fbd7249a381b9",
+    "source_sha256": "20b4fab525ec9e8132c948d7dd60d66871bb9817c892753b2f51d6725d34a281",
+    "source_bytes": 498
   },
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/baseline-1.7/installer.iss",
     "source": "work/responsive-layout-20261030/baseline-1.7/installer.iss",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1377,
-    "sha256": "960ec600fddb59da6b2c6240aa3cca46aee899b6fb68a76330a36326913bb5d4"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1383,
+    "sha256": "f5bfdc57db6422eaabed3d40843509dffc0e0f1703da3a62cd0ed1af10407f2e",
+    "source_sha256": "960ec600fddb59da6b2c6240aa3cca46aee899b6fb68a76330a36326913bb5d4",
+    "source_bytes": 1377
   },
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/baseline-1.7/release_artifacts_check.py",
@@ -4146,18 +4442,22 @@
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/baseline-1.7/빌드방법.md",
     "source": "work/responsive-layout-20261030/baseline-1.7/빌드방법.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 10753,
-    "sha256": "e69e8a5ce0de7f1b74f5fdf6b582bf1993a88c44aa91381e08e2ea8c6123cf01"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 10687,
+    "sha256": "39e41a310ea24b1d78cb6e4e409a6b60124479b5e9f7a9e75749af200ff2a1fc",
+    "source_sha256": "e69e8a5ce0de7f1b74f5fdf6b582bf1993a88c44aa91381e08e2ea8c6123cf01",
+    "source_bytes": 10753
   },
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/baseline-1.7/사용안내.txt",
     "source": "work/responsive-layout-20261030/baseline-1.7/사용안내.txt",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 7107,
-    "sha256": "a45831a8fe342c7e06fe9befd3823ac51a52c14b917ecf530064f6ccd42a629d"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 7123,
+    "sha256": "50c00db01edb5ad539f5c7a5e4244687e78d84ec2946963978fbae05b43ffd0d",
+    "source_sha256": "a45831a8fe342c7e06fe9befd3823ac51a52c14b917ecf530064f6ccd42a629d",
+    "source_bytes": 7107
   },
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/compare_installed18.py",
@@ -4218,18 +4518,22 @@
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/picker-icon-after24.json",
     "source": "work/responsive-layout-20261030/picker-icon-after24.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1231,
-    "sha256": "98d1c5d3eca9e251c4cc21b798acfee3936a28a72a8ba93186fea82f5836a2be"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1031,
+    "sha256": "9c81dd4a0084ce2d683ffc191e884aa21fada76024d1235c6b5f94e8b6714e83",
+    "source_sha256": "98d1c5d3eca9e251c4cc21b798acfee3936a28a72a8ba93186fea82f5836a2be",
+    "source_bytes": 1231
   },
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/picker-icon-before24.json",
     "source": "work/responsive-layout-20261030/picker-icon-before24.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1229,
-    "sha256": "fdbe3d12065b00197289a502ca2ecc5fb18cd316ba1be1df88d6159ec6477495"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1029,
+    "sha256": "563ba53e59d318689dc11a2de832adda7336381f44ccd45b5cf3302dba67e91c",
+    "source_sha256": "fdbe3d12065b00197289a502ca2ecc5fb18cd316ba1be1df88d6159ec6477495",
+    "source_bytes": 1229
   },
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/place18.ps1",
@@ -4288,20 +4592,24 @@
     "sha256": "441d08ccee6e1105ff8877c38608d51dbe9071dd9cd88c0c76934c7059cc3736"
   },
   {
-    "path": "보존자료/작업소스/work/responsive-layout-20261030/record_public_diff18.py",
+    "path": "보존자료/작업소스/work/responsive-layout-20261030/record_public_diff18.py.PUBLIC-NOTE.md",
     "source": "work/responsive-layout-20261030/record_public_diff18.py",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 4619,
-    "sha256": "b499afe4b6d7f7b82eb6a34e6f3ea5421c55478b2658c2a9b4487f93299ead7b"
+    "kind": "공개 보류 안내",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 390,
+    "sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774",
+    "source_sha256": "b499afe4b6d7f7b82eb6a34e6f3ea5421c55478b2658c2a9b4487f93299ead7b",
+    "source_bytes": 4619
   },
   {
-    "path": "보존자료/작업소스/work/responsive-layout-20261030/record_publication.py",
+    "path": "보존자료/작업소스/work/responsive-layout-20261030/record_publication.py.PUBLIC-NOTE.md",
     "source": "work/responsive-layout-20261030/record_publication.py",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1942,
-    "sha256": "082fdd67045727c66039580192bb030511cf8eb8698762c2036cabdd6fe21ace"
+    "kind": "공개 보류 안내",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 390,
+    "sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774",
+    "source_sha256": "082fdd67045727c66039580192bb030511cf8eb8698762c2036cabdd6fe21ace",
+    "source_bytes": 1942
   },
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/render-100-final/고정창-검증.json",
@@ -4528,12 +4836,14 @@
     "sha256": "070087a7703d1789bf4496a9177ecf555037a8032f8ce428f0e90be384692215"
   },
   {
-    "path": "보존자료/작업소스/work/responsive-layout-20261030/verify_remote_git18.py",
+    "path": "보존자료/작업소스/work/responsive-layout-20261030/verify_remote_git18.py.PUBLIC-NOTE.md",
     "source": "work/responsive-layout-20261030/verify_remote_git18.py",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1690,
-    "sha256": "4b8e8ad7e42152ecf60cadcd6d7dc69c7d5909a8ce618af97550a3f5066ded88"
+    "kind": "공개 보류 안내",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 390,
+    "sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774",
+    "source_sha256": "4b8e8ad7e42152ecf60cadcd6d7dc69c7d5909a8ce618af97550a3f5066ded88",
+    "source_bytes": 1690
   },
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/검증결합-수리25.json",
@@ -4562,10 +4872,12 @@
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/공개이미지-입력보정5.json",
     "source": "work/responsive-layout-20261030/공개이미지-입력보정5.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1415,
-    "sha256": "2fa8aa9c63a90736ae568f97088887db0edea1893eb6ec1f018e4078866fe0ae"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1392,
+    "sha256": "654d03cd42f464470e23601d3e2b7feba322cf586cfc22801c9a67d941b67c68",
+    "source_sha256": "2fa8aa9c63a90736ae568f97088887db0edea1893eb6ec1f018e4078866fe0ae",
+    "source_bytes": 1415
   },
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/공개이미지준비-수리26.json",
@@ -4658,26 +4970,32 @@
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/입력보정4.json",
     "source": "work/responsive-layout-20261030/입력보정4.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1312,
-    "sha256": "672c02c0cd6b51c647d85234ab89a5fc244066ffa56fde98c596d1886c6fd2d6"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1289,
+    "sha256": "67efa26e3a811c3906c3789e5252e694c04f6e08de38c28d87c1fc954fd55bcd",
+    "source_sha256": "672c02c0cd6b51c647d85234ab89a5fc244066ffa56fde98c596d1886c6fd2d6",
+    "source_bytes": 1312
   },
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/재개-지침경계확인.json",
     "source": "work/responsive-layout-20261030/재개-지침경계확인.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 2463,
-    "sha256": "cda6c3d0e890b83c50f3514a7222c93aa9fc7a6181d79b8e780ec2d899aa8c5b"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 2247,
+    "sha256": "27979ee406cb3c3430301a2d6dcbefcde520186e1f3b561fd2571ae38a66ab49",
+    "source_sha256": "cda6c3d0e890b83c50f3514a7222c93aa9fc7a6181d79b8e780ec2d899aa8c5b",
+    "source_bytes": 2463
   },
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/조사원본해시.json",
     "source": "work/responsive-layout-20261030/조사원본해시.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1716,
-    "sha256": "57dee46f22ed27fc561017de5c44fe13754d1a9114f42eab342fc648735f9ddb"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1691,
+    "sha256": "26eb2898daf0dba7cc87fa5dc6ae23ad2c23f6256c6a85b6c0b9c3a426a5e586",
+    "source_sha256": "57dee46f22ed27fc561017de5c44fe13754d1a9114f42eab342fc648735f9ddb",
+    "source_bytes": 1716
   },
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/주석정확성-동등성.json",
@@ -4690,10 +5008,12 @@
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/최신지침-13차확인.json",
     "source": "work/responsive-layout-20261030/최신지침-13차확인.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 405,
-    "sha256": "3b3cea0f90c0c6dd6bedcf306b43637883dfac9b2e555bf4e3d6cc501037b0e9"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 389,
+    "sha256": "235c6f5ac51f09d4b9689ea42929541a4e6551a377116e9a37063074e6d71cf7",
+    "source_sha256": "3b3cea0f90c0c6dd6bedcf306b43637883dfac9b2e555bf4e3d6cc501037b0e9",
+    "source_bytes": 405
   },
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/최종-실제호출근거.json",
@@ -4714,10 +5034,12 @@
   {
     "path": "보존자료/작업소스/work/responsive-layout-20261030/화면구분_반응형_읽기전용조사.md",
     "source": "work/responsive-layout-20261030/화면구분_반응형_읽기전용조사.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 14485,
-    "sha256": "bab8505a5d1d0e828f29a1e3fff35dcbfb613c53bea0da31b550e3862b78f5c4"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 14462,
+    "sha256": "55d96a4af7c56e01f062c1bc616b3804cbfe54048665716e2f1d6878da360ffa",
+    "source_sha256": "bab8505a5d1d0e828f29a1e3fff35dcbfb613c53bea0da31b550e3862b78f5c4",
+    "source_bytes": 14485
   },
   {
     "path": "보존자료/작업소스/work/studio-baseline/Lucide-경로조사.json",
@@ -4738,82 +5060,102 @@
   {
     "path": "보존자료/작업소스/work/studio-baseline/docs/스튜디오재설계.md",
     "source": "work/studio-baseline/docs/스튜디오재설계.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 3888,
-    "sha256": "4fba2d166a072eba3fa0d35febbefd0d171ebd380e6d51c095a1c85c282255c0"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 3904,
+    "sha256": "37d088bd07a70bfeb0d18ad18603446decd7e940c6c92512819aa72f6b1037e7",
+    "source_sha256": "4fba2d166a072eba3fa0d35febbefd0d171ebd380e6d51c095a1c85c282255c0",
+    "source_bytes": 3888
   },
   {
     "path": "보존자료/작업소스/work/studio-baseline/소스/installer.iss",
     "source": "work/studio-baseline/소스/installer.iss",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1251,
-    "sha256": "0f32841438990b3b614de7ea20db48ebd88bf783c7c299d44bc344beca5daf7c"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1257,
+    "sha256": "5dd1d3031aaf45b627347b2b15cbe367b8916d43c7976a3df5ecac492c9df2ae",
+    "source_sha256": "0f32841438990b3b614de7ea20db48ebd88bf783c7c299d44bc344beca5daf7c",
+    "source_bytes": 1251
   },
   {
     "path": "보존자료/작업소스/work/studio-baseline/소스/검토기록.md",
     "source": "work/studio-baseline/소스/검토기록.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 8933,
-    "sha256": "f34fdc793624f9f3f9ebc6805b58e7cf36d9e64076e2f3f7225dc2bafed0b4ff"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 8971,
+    "sha256": "2f4edbfd24baf7a6157263340b8ee7fe9421b171f375ee62f587411b233c221b",
+    "source_sha256": "f34fdc793624f9f3f9ebc6805b58e7cf36d9e64076e2f3f7225dc2bafed0b4ff",
+    "source_bytes": 8933
   },
   {
     "path": "보존자료/작업소스/work/studio-baseline/소스/빌드방법.md",
     "source": "work/studio-baseline/소스/빌드방법.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 7375,
-    "sha256": "91f20de9d24838aba9812576b30cc280d20e8040771aef38465c6810bf0d8108"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 7378,
+    "sha256": "3ad24a15202f3a902575e8c62a54ebeb061b6f5a8f6e3d1a33017c7bc740b1b0",
+    "source_sha256": "91f20de9d24838aba9812576b30cc280d20e8040771aef38465c6810bf0d8108",
+    "source_bytes": 7375
   },
   {
     "path": "보존자료/작업소스/work/studio-baseline/소스/사용안내.txt",
     "source": "work/studio-baseline/소스/사용안내.txt",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 5959,
-    "sha256": "f665b451dc210bec26329f5160990949c6bbd01b9b022a4fce1f7694eeda54ec"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 5975,
+    "sha256": "1db969870a2f254a32489b9d4611aedb02e417eb48ca44ee4ebf170714219aab",
+    "source_sha256": "f665b451dc210bec26329f5160990949c6bbd01b9b022a4fce1f7694eeda54ec",
+    "source_bytes": 5959
   },
   {
     "path": "보존자료/작업소스/work/studio-baseline/시작하기.txt",
     "source": "work/studio-baseline/시작하기.txt",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 2469,
-    "sha256": "f483559db9bdee2fd7b517e9ddbb0826c5dcc233197e9dc6a6fc2a149d313eb8"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 2472,
+    "sha256": "ddc7e68e763c43d5004275336e35089081db7f952aefc135ed00f5474440d93a",
+    "source_sha256": "f483559db9bdee2fd7b517e9ddbb0826c5dcc233197e9dc6a6fc2a149d313eb8",
+    "source_bytes": 2469
   },
   {
     "path": "보존자료/작업소스/work/studio-build/analysis-exe-verification.json",
     "source": "work/studio-build/analysis-exe-verification.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1124,
-    "sha256": "295df5dfc9f1d75f637cb4be0698bfb72511bd8cff326eb8f1427eb03619a235"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1088,
+    "sha256": "e77f0ef50197f5545f20e29397116d63b8b5b105954f0b788fc930ebd554f7cc",
+    "source_sha256": "295df5dfc9f1d75f637cb4be0698bfb72511bd8cff326eb8f1427eb03619a235",
+    "source_bytes": 1124
   },
   {
     "path": "보존자료/작업소스/work/studio-build/installer-product-version.json",
     "source": "work/studio-build/installer-product-version.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 232,
-    "sha256": "a11c608fe17891231b4353096016a779adb30073d7aff6c59dd302535aab0ff2"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 196,
+    "sha256": "dede233dfd8df228f510d90f5154a7e45ea9670bac72a474c2885d4a1478c896",
+    "source_sha256": "a11c608fe17891231b4353096016a779adb30073d7aff6c59dd302535aab0ff2",
+    "source_bytes": 232
   },
   {
     "path": "보존자료/작업소스/work/studio-build/installer-release-replacement.json",
     "source": "work/studio-build/installer-release-replacement.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 395,
-    "sha256": "6cbe122a57a2db961b181f88b5c2370f4e39bfc1f552da4b2355343db8adf9d4"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 359,
+    "sha256": "f8614fe740a4ffcfc886cdf2c3b0bebc9ed3ae84eaa1c707e29995258c95fb80",
+    "source_sha256": "6cbe122a57a2db961b181f88b5c2370f4e39bfc1f552da4b2355343db8adf9d4",
+    "source_bytes": 395
   },
   {
     "path": "보존자료/작업소스/work/studio-build/portable-update.json",
     "source": "work/studio-build/portable-update.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 363,
-    "sha256": "dc57380563a9c720341c37317c94965707548a4248147e7b056efbf915473cd1"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 327,
+    "sha256": "d334ccab8a57916bc0519e933702255223ad84fc1b6276e94a7b7f29df8908bb",
+    "source_sha256": "dc57380563a9c720341c37317c94965707548a4248147e7b056efbf915473cd1",
+    "source_bytes": 363
   },
   {
     "path": "보존자료/작업소스/work/studio-build/source-hashes.json",
@@ -4842,34 +5184,42 @@
   {
     "path": "보존자료/작업소스/work/studio-gui-final/격리설정/history.json",
     "source": "work/studio-gui-final/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 281,
-    "sha256": "10b6e5dc26493f464683a06723e09e1ea4e8e4a907aefa66a7b548a03ad592af"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 209,
+    "sha256": "e4a9d403fd3e12e00a6955c8694b8f2f844a381691ee14820594f9b566935b09",
+    "source_sha256": "10b6e5dc26493f464683a06723e09e1ea4e8e4a907aefa66a7b548a03ad592af",
+    "source_bytes": 281
   },
   {
     "path": "보존자료/작업소스/work/studio-gui-fixed/격리설정/history.json",
     "source": "work/studio-gui-fixed/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 281,
-    "sha256": "e00ce35970b70ea9585411c13e569e14586f7cfe1161a098c905440a5f0aec06"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 209,
+    "sha256": "aeef984d7a44349a92ea65f39fc89229ccbf2febdb4f5ce8bc7f5cc5aa49d676",
+    "source_sha256": "e00ce35970b70ea9585411c13e569e14586f7cfe1161a098c905440a5f0aec06",
+    "source_bytes": 281
   },
   {
     "path": "보존자료/작업소스/work/studio-gui/Mono-Qt검증.json",
     "source": "work/studio-gui/Mono-Qt검증.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 1759,
-    "sha256": "3bd50363e28c1c4af2649729bcc0a5bb32d9a95c5421a94b884702686423adea"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1723,
+    "sha256": "5448fe1cb28b47dbe681874a85e494716b8a489ffc87c42aade53fde1c1de214",
+    "source_sha256": "3bd50363e28c1c4af2649729bcc0a5bb32d9a95c5421a94b884702686423adea",
+    "source_bytes": 1759
   },
   {
     "path": "보존자료/작업소스/work/studio-gui/격리설정/history.json",
     "source": "work/studio-gui/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 269,
-    "sha256": "4f107d133fe5129252f47a7da480c9e8921223747c537f12ca82d5caa8266a90"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 197,
+    "sha256": "19a22f461e1cd3f1fc831003500b490a2cb301637d49a4277511bf532c0d8890",
+    "source_sha256": "4f107d133fe5129252f47a7da480c9e8921223747c537f12ca82d5caa8266a90",
+    "source_bytes": 269
   },
   {
     "path": "보존자료/작업소스/work/studio-motion-preview.py",
@@ -4882,10 +5232,12 @@
   {
     "path": "보존자료/작업소스/work/studio-native-audit/검토기록.md",
     "source": "work/studio-native-audit/검토기록.md",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 6741,
-    "sha256": "aa989c6ec881348e7d2d1ee77f2a658a405e50edad703801335b19059d620c09"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 7051,
+    "sha256": "496ad7ddb520cda65c9c890ebd21bbae51ee078b799363a792eb442cd2ecf9b2",
+    "source_sha256": "aa989c6ec881348e7d2d1ee77f2a658a405e50edad703801335b19059d620c09",
+    "source_bytes": 6741
   },
   {
     "path": "보존자료/작업소스/work/studio-native-preview.py",
@@ -4906,18 +5258,22 @@
   {
     "path": "보존자료/작업소스/work/studio-tooltip-repair8/installer-product-version.json",
     "source": "work/studio-tooltip-repair8/installer-product-version.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 190,
-    "sha256": "3d480c4af2b01480b894524d1beebf9538300c5b9bfb4a736e7be0a5befe1a08"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 154,
+    "sha256": "7fde257dc89c1629284ab153e4aa073577259b47d278e4e6d822897ae3295391",
+    "source_sha256": "3d480c4af2b01480b894524d1beebf9538300c5b9bfb4a736e7be0a5befe1a08",
+    "source_bytes": 190
   },
   {
     "path": "보존자료/작업소스/work/studio-tooltip-repair8/installer-replacement.json",
     "source": "work/studio-tooltip-repair8/installer-replacement.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 395,
-    "sha256": "7078c33fc1d3fdadcb5667964603b13a3daebaa1e8209deb3605289aae12656a"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 359,
+    "sha256": "97b66c8cc9683b8480a2ccd0cb5ae68de45293a8bfa269d7266b1beaa5da5c81",
+    "source_sha256": "7078c33fc1d3fdadcb5667964603b13a3daebaa1e8209deb3605289aae12656a",
+    "source_bytes": 395
   },
   {
     "path": "보존자료/작업소스/work/studio-tooltip-repair8/source-hashes.json",
@@ -4938,10 +5294,12 @@
   {
     "path": "보존자료/작업소스/work/studio-wheel-route-repair6/gui/격리설정/history.json",
     "source": "work/studio-wheel-route-repair6/gui/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 311,
-    "sha256": "7374bf673a0321f6abd61006176b461667aad753ae4d570c3ebb3e414c1c0a0b"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 239,
+    "sha256": "d73a6dc8fe548caf6bba16da4135fd95796c57f854cfc294a30cc3474222960a",
+    "source_sha256": "7374bf673a0321f6abd61006176b461667aad753ae4d570c3ebb3e414c1c0a0b",
+    "source_bytes": 311
   },
   {
     "path": "보존자료/작업소스/work/studio-wheel-route-repair6/동결해시.json",
@@ -4962,10 +5320,12 @@
   {
     "path": "보존자료/작업소스/work/tab-clean-gui/격리설정/history.json",
     "source": "work/tab-clean-gui/격리설정/history.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 275,
-    "sha256": "6900810865a8875cb4a6c8ff62e0cb243b5815d0aa0564f92b66f4461fe879d9"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 203,
+    "sha256": "ee974757312d5159bcb8c22833e1530648d477efe6328012e0d5119be851dc66",
+    "source_sha256": "6900810865a8875cb4a6c8ff62e0cb243b5815d0aa0564f92b66f4461fe879d9",
+    "source_bytes": 275
   },
   {
     "path": "보존자료/작업소스/work/validation21-candidate/run-candidate.py",
@@ -4978,10 +5338,12 @@
   {
     "path": "보존자료/작업소스/work/validation21-candidate/원문대조.json",
     "source": "work/validation21-candidate/원문대조.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 882,
-    "sha256": "9b10425f9a3ee91184b411f57fefde52348575039ddfb6553e217bf79c2cb2d7"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 857,
+    "sha256": "59f94be6783f38ded295c7858046ce33d7ec8cda1f945489406fb71d4ec6f8a5",
+    "source_sha256": "9b10425f9a3ee91184b411f57fefde52348575039ddfb6553e217bf79c2cb2d7",
+    "source_bytes": 882
   },
   {
     "path": "보존자료/작업소스/work/validation21-contract-tests.py",
@@ -5002,10 +5364,12 @@
   {
     "path": "보존자료/작업소스/work/검사명세.json",
     "source": "work/검사명세.json",
-    "kind": "원본 파일",
-    "reason": "작업 경로의 고유 코드·설계·사용법·실험 노트 원문 보존(독립 배포본 아님)",
-    "bytes": 2454,
-    "sha256": "b123208b117bafd789c342507b57971bda4737c297f06fdce929426448d38f88"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 2294,
+    "sha256": "facef107521b0829b1673dc336c2908112137a02656e1398a2f25d98d7d4c56a",
+    "source_sha256": "b123208b117bafd789c342507b57971bda4737c297f06fdce929426448d38f88",
+    "source_bytes": 2454
   },
   {
     "path": "보존자료/작업소스/work/설치파일대조.py",
@@ -5194,10 +5558,12 @@
   {
     "path": "소스/installer.iss",
     "source": "소스/installer.iss",
-    "kind": "원본 파일",
-    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
-    "bytes": 1389,
-    "sha256": "8a81aae55de34176cfd65773a9e5dbf47e9bfbd6e47ae1778e51890591f213ce"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1395,
+    "sha256": "d1cdb5776f6f206e575b1a45a444d159558a863a699f12867762b3664a5aa421",
+    "source_sha256": "8a81aae55de34176cfd65773a9e5dbf47e9bfbd6e47ae1778e51890591f213ce",
+    "source_bytes": 1389
   },
   {
     "path": "소스/licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/libheif/windows/mingw-w64-libheif/PKGBUILD",
@@ -5394,10 +5760,12 @@
   {
     "path": "소스/licenses/OCR/모델과실행.json",
     "source": "work/enhancement-20261030/previous-release-before17/프로그램/FlipRing/licenses/OCR/모델과실행.json",
-    "kind": "원본 파일",
-    "reason": "공개 파일과 실제 내용 동일한 작업 복제(BOM·CRLF/LF 구분)",
-    "bytes": 1839,
-    "sha256": "05953162f92df56876b1ec900fb2ec4040fc475bfbd2c0bdaa2edced40c8c0fc"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1749,
+    "sha256": "33a3ce19ede5a85639cff12dd6b6ee0b8a5214a5e8d6ff9eaac95220822776c6",
+    "source_sha256": "05953162f92df56876b1ec900fb2ec4040fc475bfbd2c0bdaa2edced40c8c0fc",
+    "source_bytes": 1839
   },
   {
     "path": "소스/licenses/Pillow/METADATA",
@@ -5618,10 +5986,12 @@
   {
     "path": "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
     "source": "work/enhancement-20261030/previous-release-before17/프로그램/FlipRing/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
-    "kind": "원본 파일",
-    "reason": "공개 파일과 실제 내용 동일한 작업 복제(BOM·CRLF/LF 구분)",
-    "bytes": 5755,
-    "sha256": "be2b2b5ab168bce87bc3e31f2a5c5adba4b7f6e9e51d618e958d1d46972ebd95"
+    "kind": "공개 사본의 문서 링크 정리",
+    "reason": "중첩 문서의 상대링크를 확인한 실제 공개 경로에 연결하거나 미공개 대상의 라벨·파일명만 보존했습니다. 원본 기준 해시는 source_sha256/source_bytes로 유지합니다.",
+    "bytes": 5762,
+    "sha256": "388b9b47f302c61fef8f23043cc436931d86486f515a205da5dbe8b7e5637854",
+    "source_sha256": "be2b2b5ab168bce87bc3e31f2a5c5adba4b7f6e9e51d618e958d1d46972ebd95",
+    "source_bytes": 5755
   },
   {
     "path": "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libopenjpeg.txt",
@@ -6114,10 +6484,12 @@
   {
     "path": "소스/검토기록.md",
     "source": "work/responsive-layout-20261030/baseline-1.7/검토기록.md",
-    "kind": "원본 파일",
-    "reason": "공개 파일과 실제 내용 동일한 작업 복제(BOM·CRLF/LF 구분)",
-    "bytes": 12686,
-    "sha256": "2a26395dae1c82ec728ac513fb05fd02dc50b37a5795fe036d999b25864090ac"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 12701,
+    "sha256": "56046aa519af63aa6a2a6be3bce5f53f4dcbc7e4027a700fa93c1b0b4f3ff6fc",
+    "source_sha256": "2a26395dae1c82ec728ac513fb05fd02dc50b37a5795fe036d999b25864090ac",
+    "source_bytes": 12686
   },
   {
     "path": "프로그램/FlipRing/LICENSE.txt",
@@ -6674,10 +7046,12 @@
   {
     "path": "프로그램/FlipRing/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md",
     "source": "프로그램/FlipRing/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md",
-    "kind": "원본 파일",
-    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
-    "bytes": 17784,
-    "sha256": "c553459fc4ea1f69526f0edf0c8ff6c4002fda5b76094abefabdc3de1ee62c10"
+    "kind": "공개 사본의 문서 링크 정리",
+    "reason": "중첩 문서의 상대링크를 확인한 실제 공개 경로에 연결하거나 미공개 대상의 라벨·파일명만 보존했습니다. 원본 기준 해시는 source_sha256/source_bytes로 유지합니다.",
+    "bytes": 18807,
+    "sha256": "bd9afea98b72467fb1b44f90caca6914ccc802afa89500a221973880b87e753a",
+    "source_sha256": "c553459fc4ea1f69526f0edf0c8ff6c4002fda5b76094abefabdc3de1ee62c10",
+    "source_bytes": 17784
   },
   {
     "path": "프로그램/FlipRing/licenses/OCR/libjpeg-turbo/libjpeg-turbo/simd/jsimdext.inc",
@@ -7066,18 +7440,22 @@
   {
     "path": "프로그램/FlipRing/licenses/OCR/모델과실행.json",
     "source": "프로그램/FlipRing/licenses/OCR/모델과실행.json",
-    "kind": "원본 파일",
-    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
-    "bytes": 1839,
-    "sha256": "05953162f92df56876b1ec900fb2ec4040fc475bfbd2c0bdaa2edced40c8c0fc"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 1749,
+    "sha256": "33a3ce19ede5a85639cff12dd6b6ee0b8a5214a5e8d6ff9eaac95220822776c6",
+    "source_sha256": "05953162f92df56876b1ec900fb2ec4040fc475bfbd2c0bdaa2edced40c8c0fc",
+    "source_bytes": 1839
   },
   {
     "path": "프로그램/FlipRing/licenses/OCR/읽어주세요.md",
     "source": "프로그램/FlipRing/licenses/OCR/읽어주세요.md",
-    "kind": "원본 파일",
-    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
-    "bytes": 3217,
-    "sha256": "bfa34f798177e0f419b3caea6f608ddfbfa3f22e99e7e45747c62be95832c47f"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 3220,
+    "sha256": "3478a3345fdf47c1da97c840d0a2d6f3e4793583186f8e925d5d5c9bd18c230c",
+    "source_sha256": "bfa34f798177e0f419b3caea6f608ddfbfa3f22e99e7e45747c62be95832c47f",
+    "source_bytes": 3217
   },
   {
     "path": "프로그램/FlipRing/licenses/OpenSSL-LICENSE.txt",
@@ -7514,10 +7892,12 @@
   {
     "path": "프로그램/FlipRing/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
     "source": "프로그램/FlipRing/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
-    "kind": "원본 파일",
-    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
-    "bytes": 5755,
-    "sha256": "be2b2b5ab168bce87bc3e31f2a5c5adba4b7f6e9e51d618e958d1d46972ebd95"
+    "kind": "공개 사본의 문서 링크 정리",
+    "reason": "중첩 문서의 상대링크를 확인한 실제 공개 경로에 연결하거나 미공개 대상의 라벨·파일명만 보존했습니다. 원본 기준 해시는 source_sha256/source_bytes로 유지합니다.",
+    "bytes": 5762,
+    "sha256": "388b9b47f302c61fef8f23043cc436931d86486f515a205da5dbe8b7e5637854",
+    "source_sha256": "be2b2b5ab168bce87bc3e31f2a5c5adba4b7f6e9e51d618e958d1d46972ebd95",
+    "source_bytes": 5755
   },
   {
     "path": "프로그램/FlipRing/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libopenjpeg.txt",
@@ -7810,9 +8190,11 @@
   {
     "path": "프로그램/FlipRing/사용안내.txt",
     "source": "프로그램/FlipRing/사용안내.txt",
-    "kind": "원본 파일",
-    "reason": "원문 바이트 공개 추가: 제품 코드·설정·설계·사용법·라이선스·리소스·검증/실험 자료 내용 확인",
-    "bytes": 7342,
-    "sha256": "72b6b6050e2ffe4a7234c0190311f7b5a8c323f30eb410ad393236296f7fac1d"
+    "kind": "공개 사본 정리",
+    "reason": "개인 경로·표시 정리 또는 과거 환경 도구의 비공개 보류. 원본 바이트와 현재 공개 사본을 구분합니다.",
+    "bytes": 7358,
+    "sha256": "870d780b4bb6d350cb2e62ecf51a05f43349aba93bc8b4d0c0420785a6bc26a9",
+    "source_sha256": "72b6b6050e2ffe4a7234c0190311f7b5a8c323f30eb410ad393236296f7fac1d",
+    "source_bytes": 7342
   }
 ]

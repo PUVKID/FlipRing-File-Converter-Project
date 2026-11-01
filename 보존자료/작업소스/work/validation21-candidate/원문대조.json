@@ -2,7 +2,7 @@
   "hash_argv_identical": true,
   "hash_argv_sha256": "54b65cadccd04307cde693a4ab40dcc3d6b54740e62d67c85f7b980f04131f9a",
   "pdf_argv_template": [
-    "D:\\2026\\FilpRing Project\\work\\venv\\Scripts\\python.exe",
+    ".\\work\\venv\\Scripts\\python.exe",
     "-B",
     "-X",
     "utf8",

@@ -5,7 +5,7 @@
   "failures": [
     {
       "test": "test_49_fast_hover_retargets_current_weights_and_refreshes_helper_state (__main__.GuiTests.test_49_fast_hover_retargets_current_weights_and_refreshes_helper_state)",
-      "detail": "Traceback (most recent call last):\n  File \"C:\\Users\\PUVKID\\Desktop\\플립링\\소스\\test_gui.py\", line 986, in test_49_fast_hover_retargets_current_weights_and_refreshes_helper_state\n    self.assertEqual(self.wheel.weights, before)\nAssertionError: {0: 0.4477357683661733, 1: 0.0} != {0: 0.4477357683661733}\n- {0: 0.4477357683661733, 1: 0.0}\n?                       --------\n\n+ {0: 0.4477357683661733}\n"
+      "detail": "Traceback (most recent call last):\n  File \".\\소스\\test_gui.py\", line 986, in test_49_fast_hover_retargets_current_weights_and_refreshes_helper_state\n    self.assertEqual(self.wheel.weights, before)\nAssertionError: {0: 0.4477357683661733, 1: 0.0} != {0: 0.4477357683661733}\n- {0: 0.4477357683661733, 1: 0.0}\n?                       --------\n\n+ {0: 0.4477357683661733}\n"
     }
   ],
   "errors": [],

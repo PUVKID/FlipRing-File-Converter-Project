@@ -515,7 +515,7 @@
  AppName=FlipRing
 -AppVersion=1.3.0
 +AppVersion=1.4.0
- AppPublisher=PUVKID
+ AppPublisher=제작자
  DefaultDirName={{localappdata}}\\Programs\\FlipRing
  DefaultGroupName=FlipRing
 --- 1.2.0/package.py

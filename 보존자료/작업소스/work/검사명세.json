@@ -7,7 +7,7 @@
       "cwd": ".",
       "timeout_seconds": 3,
       "argv": [
-        "C:\\Users\\PUVKID\\Desktop\\드래그 휠\\work\\venv\\Scripts\\python.exe",
+        ".\\work\\venv\\Scripts\\python.exe",
         "-B",
         "-X",
         "utf8",
@@ -20,7 +20,7 @@
       "cwd": ".",
       "timeout_seconds": 15,
       "argv": [
-        "C:\\Users\\PUVKID\\Desktop\\드래그 휠\\work\\venv\\Scripts\\python.exe",
+        ".\\work\\venv\\Scripts\\python.exe",
         "-B",
         "-X",
         "utf8",
@@ -33,7 +33,7 @@
       "cwd": ".",
       "timeout_seconds": 20,
       "argv": [
-        "C:\\Users\\PUVKID\\Desktop\\드래그 휠\\work\\venv\\Scripts\\python.exe",
+        ".\\work\\venv\\Scripts\\python.exe",
         "-B",
         "-X",
         "utf8",
@@ -46,7 +46,7 @@
       "cwd": ".",
       "timeout_seconds": 7,
       "argv": [
-        "C:\\Users\\PUVKID\\Desktop\\드래그 휠\\work\\venv\\Scripts\\python.exe",
+        ".\\work\\venv\\Scripts\\python.exe",
         "-B",
         "-X",
         "utf8",

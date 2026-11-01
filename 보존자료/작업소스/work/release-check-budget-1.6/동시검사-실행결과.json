@@ -2,14 +2,14 @@
   {
     "id": "구문-UTF8-배포987해시",
     "argv": [
-      "D:\\2026\\FilpRing Project\\work\\venv\\Scripts\\python.exe",
+      ".\\work\\venv\\Scripts\\python.exe",
       "-B",
       "-X",
       "utf8",
       "-c",
       "exec('import ast,pathlib; fs=list(pathlib.Path(\"소스\").glob(\"*.py\")); assert fs; [(ast.parse(p.read_text(encoding=\"utf-8\")),p) for p in fs]; assert all(chr(0xfffd) not in p.read_text(encoding=\"utf-8\") for p in fs);print(\"구문 UTF8\",len(fs))');exec('import pathlib,json,hashlib;r=pathlib.Path(\".\");o=json.loads((r/\"evidence/배포검증.json\").read_text(encoding=\"utf-8\"));assert o[\"installer_exit_code\"]==0 and o[\"actual_launch_passed\"];assert o[\"files\"] and {\"프로그램/FlipRing/FlipRing.exe\",\"설치파일/FlipRing-Setup.exe\",\"소스/app.py\",\"소스/빌드방법.md\"}<={x[\"path\"] for x in o[\"files\"]};assert all(hashlib.file_digest((r/x[\"path\"]).open(\"rb\"),\"sha256\").hexdigest()==x[\"sha256\"] for x in o[\"files\"]);print(\"배포 검증 통과\")')"
     ],
-    "cwd": "D:\\2026\\FilpRing Project",
+    "cwd": ".",
     "timeout_seconds": 6,
     "exit_code": 0,
     "status": "passed",
@@ -26,14 +26,14 @@
   {
     "id": "PDF-OCR-실제-패널",
     "argv": [
-      "D:\\2026\\FilpRing Project\\work\\venv\\Scripts\\python.exe",
+      ".\\work\\venv\\Scripts\\python.exe",
       "-B",
       "-X",
       "utf8",
       "-c",
       "import os,sys,runpy;os.environ[\"QT_QPA_PLATFORM\"]=\"offscreen\";sys.argv=[\"소스/test_pdf_tools.py\",\"work/pdf-ocr-check\",\"--ocr\",\"--gui\"];sys.path.insert(0,\"소스\");runpy.run_path(\"소스/test_pdf_tools.py\",run_name=\"__main__\")"
     ],
-    "cwd": "D:\\2026\\FilpRing Project",
+    "cwd": ".",
     "timeout_seconds": 17.7,
     "exit_code": 0,
     "status": "passed",

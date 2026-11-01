@@ -3,7 +3,7 @@
 @@ -0,0 +1,44 @@
 +# 플립링 1.7 작업 흐름
 +
-+제작: PUVKID. 무료 배포판입니다. 실행 프로그램, 설치 파일, 전체 소스, 빌드 방법과 라이선스 자료를 프로젝트 폴더 하나에 보관합니다.
++제작: 프로젝트 제작자. 무료 배포판입니다. 실행 프로그램, 설치 파일, 전체 소스, 빌드 방법과 라이선스 자료를 프로젝트 폴더 하나에 보관합니다.
 +
 +## 파일 변환
 +
@@ -442,12 +442,12 @@
 --- 1.8.0/installer.iss
 +++ 현행소스/installer.iss
 @@ -0,0 +1,35 @@
-+; PUVKID 무료 배포판 설치 구성
++; 제작자 무료 배포판 설치 구성
 +[Setup]
 +AppId=PUVKID.FlipRing
 +AppName=FlipRing
 +AppVersion=1.8.0
-+AppPublisher=PUVKID
++AppPublisher=제작자
 +DefaultDirName={localappdata}\Programs\FlipRing
 +DefaultGroupName=FlipRing
 +PrivilegesRequired=lowest
@@ -13303,7 +13303,7 @@
 +Building libjpeg-turbo
 +======================
 +
-+Refer to [BUILDING.md](BUILDING.md) for complete instructions.
++Refer to [BUILDING.md](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/BUILDING.md) for complete instructions.
 +
 +
 +Using libjpeg-turbo
@@ -13319,10 +13319,10 @@
 +  generating planar YUV images and performing multiple simultaneous lossless
 +  transforms on an image.  The Java interface for libjpeg-turbo is written on
 +  top of the TurboJPEG API.  The TurboJPEG API is recommended for first-time
-+  users of libjpeg-turbo.  Refer to [tjcomp.c](src/tjcomp.c),
-+  [tjdecomp.c](src/tjdecomp.c), [tjtran.c](src/tjtran.c),
-+  [TJComp.java](java/TJComp.java), [TJDecomp.java](java/TJDecomp.java), and
-+  [TJTran.java](java/TJTran.java) for examples of its usage and to
++  users of libjpeg-turbo.  Refer to [tjcomp.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjcomp.c),
++  [tjdecomp.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjdecomp.c), [tjtran.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjtran.c),
++  [TJComp.java](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJComp.java), [TJDecomp.java](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJDecomp.java), and
++  [TJTran.java](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJTran.java) for examples of its usage and to
 +  <https://libjpeg-turbo.org/Documentation/Documentation> for API
 +  documentation.
 +
@@ -13332,8 +13332,8 @@
 +  more powerful.  The libjpeg API implementation in libjpeg-turbo is both
 +  API/ABI-compatible and mathematically compatible with libjpeg v6b.  It can
 +  also optionally be configured to be API/ABI-compatible with libjpeg v7 and v8
-+  (see below.)  Refer to [cjpeg.c](src/cjpeg.c) and [djpeg.c](src/djpeg.c) for
-+  examples of its usage and to [libjpeg.txt](doc/libjpeg.txt) for API
++  (see below.)  Refer to [cjpeg.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/cjpeg.c) and [djpeg.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/djpeg.c) for
++  examples of its usage and to [libjpeg.txt](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/doc/libjpeg.txt) for API
 +  documentation.
 +
 +There is no significant performance advantage to either API when both are used
@@ -13386,7 +13386,7 @@
 +
 +    #ifdef JCS_ALPHA_EXTENSIONS
 +
-+[jcstest.c](src/jcstest.c), located in the libjpeg-turbo source tree,
++[jcstest.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/jcstest.c), located in the libjpeg-turbo source tree,
 +demonstrates how to check for the existence of the colorspace extensions at
 +compile time and run time.
 +
@@ -42654,7 +42654,7 @@
 +        "tesseract.exe",
 +        "--version"
 +      ],
-+      "cwd": "C:\\Users\\PUVKID\\Desktop\\드래그 휠 Mono\\소스\\vendor\\tesseract",
++      "cwd": ".\\소스\\vendor\\tesseract",
 +      "exit_code": 0,
 +      "stdout": "tesseract v5.5.3.20260724\n leptonica-1.87.0\n  libgif 5.2.2 : libjpeg 8d (libjpeg-turbo 3.1.3) : libpng 1.6.58 : libtiff 4.7.2 : zlib 1.3.1 : libwebp 1.6.0 : libopenjp2 2.5.4\n Found AVX2\n Found AVX\n Found FMA\n Found SSE4.1\n Found libarchive 3.8.8 zlib/1.3.2 liblzma/5.8.3 bz2lib/1.0.8 liblz4/1.10.0 libzstd/1.5.7 expat/expat_2.8.2 cng/1.0 libb2/system\n Found libcurl/8.21.0 Schannel zlib/1.3.2 brotli/1.2.0 zstd/1.5.7 libidn2/2.3.8 libpsl/0.21.5 libssh2/1.11.1 WinLDAP\n",
 +      "stderr": ""
@@ -42666,7 +42666,7 @@
 +        "tessdata",
 +        "--list-langs"
 +      ],
-+      "cwd": "C:\\Users\\PUVKID\\Desktop\\드래그 휠 Mono\\소스\\vendor\\tesseract",
++      "cwd": ".\\소스\\vendor\\tesseract",
 +      "exit_code": 0,
 +      "stdout": "List of available languages in \"tessdata/\" (3):\neng\nkor\nosd\n",
 +      "stderr": ""
@@ -42679,7 +42679,7 @@
 @@ -0,0 +1,26 @@
 +# OCR 구성요소와 소스
 +
-+플립링의 OCR은 Tesseract를 별도 프로세스로 실행합니다. PUVKID가 OCR 엔진의 원저작자라고 주장하지 않습니다.
++플립링의 OCR은 Tesseract를 별도 프로세스로 실행합니다. 제작자이 OCR 엔진의 원저작자라고 주장하지 않습니다.
 +Tesseract 5.5.3.20260724 공식 Windows 실행 파일과 필요한 DLL만 원본 그대로 동봉합니다. 별도 관리자 설치는 필요하지 않습니다.
 +Tesseract 자체의 Apache-2.0 원문은 vendor/tesseract/doc/LICENSE에 있고 원본 저자 목록도 같은 doc에 있습니다.
 +libjbig의 원본 소스 jbig.c는 GPL 버전 2 또는 이후 버전 선택을 허용합니다. 이 OCR 결합 구성의 배포에는 GPL 버전 3을 선택하며 GPL-3.0.txt를 동봉합니다. Apache-2.0과 각 의존성의 원문 고지도 그대로 유지합니다.
@@ -53240,7 +53240,7 @@
 +libjpeg-turbo is covered by two compatible BSD-style open source licenses:
 +
 +- The IJG (Independent JPEG Group) License, which is listed in
-+  [README.ijg](README.ijg)
++  [README.ijg](libjpeg_turbo.ijg)
 +
 +  This license applies to the libjpeg API library and associated programs,
 +  including any code inherited from libjpeg and any modifications to that
@@ -57417,12 +57417,12 @@
 @@ -0,0 +1,104 @@
 +# 플립링 구현 검토
 +
-+확인일: 2026-10-21. 제작자: PUVKID. 무료 배포판입니다.
++확인일: 2026-10-21. 제작자: 프로젝트 제작자. 무료 배포판입니다.
 +
 +원본 기능과 변환 표는 기존 검토 결과 및 `engine.TABLE`을 기준으로 유지합니다.
 +원본 저장소 https://github.com/statewarrior483/DragWheel 의 `RadialMenu.swift`와 `AppDelegate.swift`는 동작과 화면 구성 확인에만 사용했습니다.
 +라이선스가 없는 원본의 코드·이미지·실행 파일은 복사하거나 고객 배포물에 넣지 않습니다.
-+PUVKID가 작성한 기존 Python 엔진은 변경하지 않았습니다.
++제작자이 작성한 기존 Python 엔진은 변경하지 않았습니다.
 +
 +## 요구 사항과 구현
 +
@@ -57431,7 +57431,7 @@
 +- 수동 파일·폴더 선택 기능은 트레이와 설정창에 남기며 선택 후 원형 메뉴에서 형식을 고릅니다.
 +- 설정창 자체에도 파일·폴더 드롭을 유지하며 드롭 후 원형 메뉴를 엽니다.
 +- 원형 메뉴는 어두운 원·부채꼴 출력·중앙 취소·비활성 도구 설명으로 구성합니다.
-+- UI는 동봉한 SUIT Regular·Medium·SemiBold 정적 TTF를 사용합니다. 공식 고정 커밋의 원본을 유지하고 `licenses/SUIT`에 SIL Open Font License 1.1 원문과 출처·해시를 보관합니다. Windows 글꼴 파일은 재배포하지 않습니다. PDF 엔진용 나눔고딕 Bold 파일과 OFL은 유지합니다. 제작자는 PUVKID로 표시합니다.
++- UI는 동봉한 SUIT Regular·Medium·SemiBold 정적 TTF를 사용합니다. 공식 고정 커밋의 원본을 유지하고 `licenses/SUIT`에 SIL Open Font License 1.1 원문과 출처·해시를 보관합니다. Windows 글꼴 파일은 재배포하지 않습니다. PDF 엔진용 나눔고딕 Bold 파일과 OFL은 유지합니다. 제작자는 제작자로 표시합니다.
 +- 등장 150ms, 퇴장 120ms, 선택 강조 100ms 모션은 Qt 타이머의 실제 프레임으로 그립니다.
 +- 창 크기·좌표·전체 투명도는 모션 중 고정합니다. 창 내부의 그림만 변화시킵니다.
 +- 기존 변환 분류 10개, 다중 파일 공통 형식, 도구 탐색, 순차 변환, 기록·알림·자동 시작은 유지합니다.
@@ -57466,7 +57466,7 @@
 +## Mono 배포 변경
 +
 +사용자 요청으로 앱 정보 화면에서 공개 기능 참고·새 Windows 앱·원본 제작자·원본 코드 이미지 미포함 안내 네 줄을 제거했습니다.
-+제작자 PUVKID, 무료 배포, 라이브러리 라이선스 폴더와 필수 법적 고지는 유지합니다.
++제작자 프로젝트 제작자, 무료 배포, 라이브러리 라이선스 폴더와 필수 법적 고지는 유지합니다.
 +표시명은 플립링 / FlipRing이며 실행·설치 파일명은 `FlipRing.exe`, `FlipRing-Setup.exe`입니다.
 +설치 AppId는 `PUVKID.FlipRing`, 기본 설치 경로는 `%LOCALAPPDATA%\Programs\FlipRing`로 분리합니다. 기존 정상 설치를 덮어쓰거나 제거하지 않습니다.
 +내부 설정 버전·기록·실행 잠금 공유는 유지하므로 기존 제품과 동시 실행하지 않습니다.
@@ -57510,7 +57510,7 @@
 +
 +파일·폴더 선택과 PDF 파일 추가에 공통 선택창을 적용했습니다. 내부 메시지·메뉴·도움말·목록·입력·버튼·토글·작업 상태의 흑백 스타일과 유한 모션을 통일합니다. 전체40개 표면과 함수·회귀 대응은 상위 evidence/내부모션-적용목록.md에 있습니다. 클릭·드롭 좌표와 즉시 수락·취소 의미를 유지하며 실제 진행 신호만 표시합니다.
 +
-+현재 검증은 D:\2026\FilpRing Project에서 진행합니다. 소스 검사·Qt 렌더와 새 실행물의 Windows 설치·화면·물리 Shift 시험은 별개이며, 새 버전의 최종 완료 범위는 최신 배포·독립 검증 기록으로 확인합니다. 과거 실패와 이전 버전의 실제 시험을 이번 버전의 성공으로 대신하지 않습니다.
++현재 검증은 .에서 진행합니다. 소스 검사·Qt 렌더와 새 실행물의 Windows 설치·화면·물리 Shift 시험은 별개이며, 새 버전의 최종 완료 범위는 최신 배포·독립 검증 기록으로 확인합니다. 과거 실패와 이전 버전의 실제 시험을 이번 버전의 성공으로 대신하지 않습니다.
 +
 +## 1.7.0 파일별 작업 흐름과 PDF 시각 편집
 +
@@ -57528,7 +57528,7 @@
 +현재 빌드 대상 릴리스는 1.8.0입니다. 설정·기록 데이터의 기존 스키마와 저장 위치는 변경하지 않습니다.
 +공통 파일·폴더 선택창과 내부 조작 피드백을 담당하는 `ui_motion.py`도 전체 소스 복사 시 반드시 포함하세요. 앱에서 직접 가져오는 모듈이므로 위 기본 `build.py` 명령의 PyInstaller Analysis에 자동으로 포함되며 별도 빌드 명령은 필요하지 않습니다.
 +스튜디오 UI 모듈 `studio_ui.py`와 `assets/lucide`의 원본 SVG 12개를 전체 소스에 함께 보관합니다. Lucide 고정 커밋·파일별 해시와 원문 ISC·Feather MIT 고지는 `licenses/Lucide`에 있으며 실행 폴더의 `licenses`에도 동봉합니다. `package.py`는 소스와 실행 폴더 양쪽의 아이콘·고지가 빠지면 포장을 거부합니다.
-+앱 표시명은 한국어에서 플립링, 영어에서 FlipRing이며 제작자는 PUVKID입니다.
++앱 표시명은 한국어에서 플립링, 영어에서 FlipRing이며 제작자는 제작자입니다.
 +실행 파일은 `프로그램/FlipRing/FlipRing.exe`, 설치 파일은 `설치파일/FlipRing-Setup.exe`입니다.
 +프로그램·설치 파일·전체 소스는 플립링 폴더 하나에 보관합니다.
 +설치 AppId는 `PUVKID.FlipRing`, 기본 설치 위치는 `%LOCALAPPDATA%\Programs\FlipRing`입니다.
@@ -57608,14 +57608,14 @@
 +
 +## D드라이브 이동 후 현재 작업 위치
 +
-+2026-10-24에 실제 프로젝트를 `D:\2026\FilpRing Project`에서 확인했습니다. 현재 빌드 작업의 기준 폴더는 `D:\2026\FilpRing Project\소스`이며 위 상대 경로 명령은 같은 방식으로 사용할 수 있습니다. 프로그램·설치 파일·전체 소스·빌드 방법·라이선스는 이 프로젝트 한 폴더에 보관합니다.
++2026-10-24에 실제 프로젝트를 `.`에서 확인했습니다. 현재 빌드 작업의 기준 폴더는 `.\소스`이며 위 상대 경로 명령은 같은 방식으로 사용할 수 있습니다. 프로그램·설치 파일·전체 소스·빌드 방법·라이선스는 이 프로젝트 한 폴더에 보관합니다.
 +
-+이동한 개발 환경은 `D:\2026\FilpRing Project\work\venv\Scripts\python.exe`입니다. 해당 가상환경의 기본 Python은 현재 존재하는 C드라이브의 공용 Codex 런타임을 사용합니다. 가상환경 자체가 Python을 모두 포함하는 것은 아니므로 다른 PC에서는 위 신규 환경 생성 절차를 사용하세요. `pyvenv.cfg`의 기본 런타임이나 과거 검증 기록의 C경로를 임의로 D경로로 치환하지 마세요. 활성 검사 명세와 PyInstaller 명세의 현재 프로젝트 경로만 D 위치에 맞추었습니다.
++이동한 개발 환경은 `.\work\venv\Scripts\python.exe`입니다. 해당 가상환경의 기본 Python은 현재 존재하는 C드라이브의 공용 Codex 런타임을 사용합니다. 가상환경 자체가 Python을 모두 포함하는 것은 아니므로 다른 PC에서는 위 신규 환경 생성 절차를 사용하세요. `pyvenv.cfg`의 기본 런타임이나 과거 검증 기록의 C경로를 임의로 D경로로 치환하지 마세요. 활성 검사 명세와 PyInstaller 명세의 현재 프로젝트 경로만 D 위치에 맞추었습니다.
 --- 1.8.0/사용안내.txt
 +++ 현행소스/사용안내.txt
 @@ -0,0 +1,86 @@
 +플립링 / FlipRing · 무료 배포판
-+제작자: PUVKID
++제작자: 프로젝트 제작자
 +
 +Windows 10/11 64비트에서 실행합니다. 고객 PC에는 Python이 필요하지 않습니다.
 +앱은 Windows 트레이에 상주하며, 트레이 아이콘을 두 번 클릭하면 작업 창이 열립니다.

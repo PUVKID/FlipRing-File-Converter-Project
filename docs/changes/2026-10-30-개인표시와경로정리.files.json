@@ -1,0 +1,1876 @@
+{
+  "scope": "개인 원래 값·원래 사용자 경로는 포함하지 않는 공개 파일별 변경 목록",
+  "comparison": "이전 보관 사본 대비 현재 공개 경로의 추가·수정·공개 제외. 원래 값이 포함된 전후 텍스트 패치는 공개하지 않습니다.",
+  "self_reference_exclusions": [
+    "docs/changes/2026-10-30-개인표시와경로정리.files.json",
+    "docs/changes/2026-10-30-개인표시와경로정리.md",
+    "docs/publication-review/공개파일변경.json"
+  ],
+  "records": [
+    {
+      "path": "CHANGELOG.md",
+      "status": "수정",
+      "current_bytes": 5703,
+      "current_sha256": "f58fcd1192022953659c1e4fbc7705e3d92248bc3905d9a87fd72217fa59d6d4"
+    },
+    {
+      "path": "README.md",
+      "status": "수정",
+      "current_bytes": 20644,
+      "current_sha256": "8fbc2b38b6d03b0f6ff7852523c2bd29ed31b9a6f66f3251f5d0323c164d9739"
+    },
+    {
+      "path": "시작하기.txt",
+      "status": "수정",
+      "current_bytes": 3559,
+      "current_sha256": "5488aab37e83aa33fa51499a4ac7c1083556cfaf9eacaf7a1a404af7a62fc77f"
+    },
+    {
+      "path": "docs/2026-10-30_작업흐름확장.md",
+      "status": "수정",
+      "current_bytes": 6035,
+      "current_sha256": "c2ddf73be8333354554ad2d4a34c2819028ab407fe5c044674f1ec76e918d542"
+    },
+    {
+      "path": "docs/2026-11-02_공개반영재개검증.md",
+      "status": "추가",
+      "current_bytes": 8537,
+      "current_sha256": "00de0321e0c3e8551576f685352b580a5370979e1452f672aab310f7885b2e74"
+    },
+    {
+      "path": "docs/navigation-provenance.json",
+      "status": "추가",
+      "current_bytes": 38688,
+      "current_sha256": "42f831987f30e414f353df9e3b66a121e0996a0f7a25c9300966967508649816"
+    },
+    {
+      "path": "docs/PRIVACY_PUBLIC_COPY.md",
+      "status": "추가",
+      "current_bytes": 1630,
+      "current_sha256": "e6bc42efbb875ef00127c0058f39fe455c4890ac9841aa784ff446fb125a8b06"
+    },
+    {
+      "path": "docs/REVISION_INDEX.md",
+      "status": "수정",
+      "current_bytes": 4406,
+      "current_sha256": "b3c2592c9f5c9c943b82416d97be958a5af276f477200d65e83ce1e747cd3a3d"
+    },
+    {
+      "path": "docs/SOURCE_MATERIALS.md",
+      "status": "수정",
+      "current_bytes": 2577,
+      "current_sha256": "7634e9c8e2b38deb0a67bbc54f85b05b996c4ef65874962abe1ea345db9c57fb"
+    },
+    {
+      "path": "docs/내부모션.md",
+      "status": "수정",
+      "current_bytes": 3455,
+      "current_sha256": "e9d6e93575bbaf98913d1acb5e8b8fea8a93928aec70b81fcd240f3b453c31d3"
+    },
+    {
+      "path": "docs/부드러운디자인.md",
+      "status": "수정",
+      "current_bytes": 3655,
+      "current_sha256": "569e65c2aa2365dfdd4416aa6358a38e4f3d18df0d6bf6d6ea2a79262d2770ae"
+    },
+    {
+      "path": "docs/스튜디오재설계.md",
+      "status": "수정",
+      "current_bytes": 5770,
+      "current_sha256": "325e724bde9f62ff84dda4b5629bdb3a6a0936de971b186b9e1a5135b9ace57c"
+    },
+    {
+      "path": "docs/요구사항.md",
+      "status": "수정",
+      "current_bytes": 4901,
+      "current_sha256": "2edacad2388504517fffce463356e07006d8f6042f2c62121d92c7b9f7134cf5"
+    },
+    {
+      "path": "docs/이동재개.md",
+      "status": "수정",
+      "current_bytes": 2179,
+      "current_sha256": "daa9ef7ed85dfa2cedae7d4f6a6e6243226912dbf7906c6c0f8a7d1adc4926d1"
+    },
+    {
+      "path": "소스/1.7-새기능안내.md",
+      "status": "수정",
+      "current_bytes": 4696,
+      "current_sha256": "e5448a06902439ac868072655d8f6328897b0b78f63a13707c3d04e3530d731a"
+    },
+    {
+      "path": "소스/build.py",
+      "status": "수정",
+      "current_bytes": 7067,
+      "current_sha256": "e449624880643b9a0250e22c7120dde9d4405352863d444d84f78bd622248dc8"
+    },
+    {
+      "path": "소스/engine.py",
+      "status": "수정",
+      "current_bytes": 29746,
+      "current_sha256": "b06100438c938f7c380f89caae50610c8ef3b8963ead13bf9ff07485777e7b4d"
+    },
+    {
+      "path": "소스/i18n.py",
+      "status": "수정",
+      "current_bytes": 19141,
+      "current_sha256": "3782b9e67be6af694e2e3622730f3aa29fdff9735d696ceb07b1c70035fdf9da"
+    },
+    {
+      "path": "소스/installer.iss",
+      "status": "수정",
+      "current_bytes": 1395,
+      "current_sha256": "d1cdb5776f6f206e575b1a45a444d159558a863a699f12867762b3664a5aa421"
+    },
+    {
+      "path": "소스/검토기록.md",
+      "status": "수정",
+      "current_bytes": 12701,
+      "current_sha256": "56046aa519af63aa6a2a6be3bce5f53f4dcbc7e4027a700fa93c1b0b4f3ff6fc"
+    },
+    {
+      "path": "소스/빌드방법.md",
+      "status": "수정",
+      "current_bytes": 10721,
+      "current_sha256": "8ad81bdc4eba3fcb9dccdbe44215dc6e8475c7135f5a7acc02ad9585f1086e70"
+    },
+    {
+      "path": "소스/사용안내.txt",
+      "status": "수정",
+      "current_bytes": 7358,
+      "current_sha256": "870d780b4bb6d350cb2e62ecf51a05f43349aba93bc8b4d0c0420785a6bc26a9"
+    },
+    {
+      "path": "docs/changes/2026-10-30-공개자료정리.md",
+      "status": "추가",
+      "current_bytes": 870,
+      "current_sha256": "52cf8faf43fd60b0cf6ed794091d62286da20a410fb6e9d4b2d7e1956894584b"
+    },
+    {
+      "path": "docs/changes/2026-10-30-자료와차수정리.md",
+      "status": "수정",
+      "current_bytes": 466840,
+      "current_sha256": "c8ba356f8b2512ef61af8c54e898e14f8b9ade2d9a9c9348a9adb9e03ba7dc7c"
+    },
+    {
+      "path": "docs/changes/2026-10-30_1.8_공개전체.patch",
+      "status": "수정",
+      "current_bytes": 304,
+      "current_sha256": "00aec12baa82c96d9563b3ea3928f88e63f8a6578805cc78b75d5d84777936fa"
+    },
+    {
+      "path": "docs/changes/2026-10-31-문서링크정리.md",
+      "status": "추가",
+      "current_bytes": 861,
+      "current_sha256": "fc176dd9b5400dcf699f8ca3ad925ad1ecee2147369e01eca1481c0ea5cbede4"
+    },
+    {
+      "path": "docs/diffs/1.4.0.patch",
+      "status": "수정",
+      "current_bytes": 72139,
+      "current_sha256": "7fe746bfe9f7a902c73d7bd336d8ccdfbc3978c7607903cdc618a63e04f5fadc"
+    },
+    {
+      "path": "docs/diffs/1.6.0.patch",
+      "status": "수정",
+      "current_bytes": 154312,
+      "current_sha256": "7015604368503dd8f28debf6f6041819d32131ab99497b20bf9cafcdfb73ec93"
+    },
+    {
+      "path": "docs/diffs/1.7.0.patch",
+      "status": "수정",
+      "current_bytes": 586034,
+      "current_sha256": "88030e5af42a32b22ad49d1aa44a6e09e7254b6c127bb62da08bb7815e72e821"
+    },
+    {
+      "path": "docs/diffs/1.8.0.patch",
+      "status": "수정",
+      "current_bytes": 243627,
+      "current_sha256": "6cf294bf8af4c364bcd705ea84129831e38dbd06ce15113a12923ab1c90e266c"
+    },
+    {
+      "path": "docs/diffs/내부모션-작업전.patch",
+      "status": "수정",
+      "current_bytes": 80520,
+      "current_sha256": "9bbb5dd47e6eefa090a033aea84dca7fa7f7b6e48aaec85fa6f9e7a2098e5b9f"
+    },
+    {
+      "path": "docs/publication-review/item-1.md",
+      "status": "추가",
+      "current_bytes": 725,
+      "current_sha256": "694a8663558e51aa507d3c8259a4434de558a21b7af88a27834b61f97791cd20"
+    },
+    {
+      "path": "docs/revision-audit/1.2.0.files.json",
+      "status": "수정",
+      "current_bytes": 1789,
+      "current_sha256": "9c2f9f50d04cbd53f981fca0fa8d66f96670a5c595fe8f371f9da6bf3a9c4c4c"
+    },
+    {
+      "path": "docs/revision-audit/1.2.0.folder.changes.json",
+      "status": "수정",
+      "current_bytes": 2946,
+      "current_sha256": "3b0cfdf925b17ab8e4ebfdd38cd9d9a2aa722641c69bec56ef78eb16ea40b912"
+    },
+    {
+      "path": "docs/revision-audit/1.2.0.folder.files.json",
+      "status": "수정",
+      "current_bytes": 1789,
+      "current_sha256": "9c2f9f50d04cbd53f981fca0fa8d66f96670a5c595fe8f371f9da6bf3a9c4c4c"
+    },
+    {
+      "path": "docs/revision-audit/1.2.0.folder.patch",
+      "status": "수정",
+      "current_bytes": 227599,
+      "current_sha256": "9f3df972685d739161ca6c44839a1641eb4a182a90ca065fc2a5799e53b1ceed"
+    },
+    {
+      "path": "docs/revision-audit/1.2.0.md",
+      "status": "수정",
+      "current_bytes": 3350,
+      "current_sha256": "b3c8712c84a299fd0d8c2d5fe4b7f9788cf920e656473e891f751fb6f5e593c8"
+    },
+    {
+      "path": "docs/revision-audit/1.2.0.patch",
+      "status": "수정",
+      "current_bytes": 227599,
+      "current_sha256": "9f3df972685d739161ca6c44839a1641eb4a182a90ca065fc2a5799e53b1ceed"
+    },
+    {
+      "path": "docs/revision-audit/1.4.0.files.json",
+      "status": "수정",
+      "current_bytes": 1789,
+      "current_sha256": "65cad9290f93a008395483cb0854f8adec143f253b8bbc9f6531a90dfce0e800"
+    },
+    {
+      "path": "docs/revision-audit/1.4.0.folder.changes.json",
+      "status": "수정",
+      "current_bytes": 1439,
+      "current_sha256": "36b8af741daca852f6083d1fa5d99e2665a97dc07d2a3ebb3321e2e00fe93da0"
+    },
+    {
+      "path": "docs/revision-audit/1.4.0.folder.files.json",
+      "status": "수정",
+      "current_bytes": 1789,
+      "current_sha256": "65cad9290f93a008395483cb0854f8adec143f253b8bbc9f6531a90dfce0e800"
+    },
+    {
+      "path": "docs/revision-audit/1.4.0.folder.patch",
+      "status": "수정",
+      "current_bytes": 72139,
+      "current_sha256": "7fe746bfe9f7a902c73d7bd336d8ccdfbc3978c7607903cdc618a63e04f5fadc"
+    },
+    {
+      "path": "docs/revision-audit/1.4.0.md",
+      "status": "수정",
+      "current_bytes": 2554,
+      "current_sha256": "ac25ed9c067143ceedb768435959325b76094272fcaa34f3f4451c6668613333"
+    },
+    {
+      "path": "docs/revision-audit/1.4.0.patch",
+      "status": "수정",
+      "current_bytes": 72139,
+      "current_sha256": "7fe746bfe9f7a902c73d7bd336d8ccdfbc3978c7607903cdc618a63e04f5fadc"
+    },
+    {
+      "path": "docs/revision-audit/1.6.0.files.json",
+      "status": "수정",
+      "current_bytes": 2066,
+      "current_sha256": "7e190536312e8f1cdbe954cb63dcff21ea2315e60d12ecc185743049b74b0a32"
+    },
+    {
+      "path": "docs/revision-audit/1.6.0.folder.changes.json",
+      "status": "수정",
+      "current_bytes": 2469,
+      "current_sha256": "c90d2d628065af2c484ce8129a8d537ca8c5eb043b3d1fa3094948da277ec3a4"
+    },
+    {
+      "path": "docs/revision-audit/1.6.0.folder.files.json",
+      "status": "수정",
+      "current_bytes": 2066,
+      "current_sha256": "7e190536312e8f1cdbe954cb63dcff21ea2315e60d12ecc185743049b74b0a32"
+    },
+    {
+      "path": "docs/revision-audit/1.6.0.folder.patch",
+      "status": "수정",
+      "current_bytes": 154312,
+      "current_sha256": "7015604368503dd8f28debf6f6041819d32131ab99497b20bf9cafcdfb73ec93"
+    },
+    {
+      "path": "docs/revision-audit/1.6.0.md",
+      "status": "수정",
+      "current_bytes": 2925,
+      "current_sha256": "62a67629f5a2694711289735a5e4e58bdb822e573a640104b196e098063855a4"
+    },
+    {
+      "path": "docs/revision-audit/1.6.0.patch",
+      "status": "수정",
+      "current_bytes": 154312,
+      "current_sha256": "7015604368503dd8f28debf6f6041819d32131ab99497b20bf9cafcdfb73ec93"
+    },
+    {
+      "path": "docs/revision-audit/1.7.0.files.json",
+      "status": "수정",
+      "current_bytes": 3065,
+      "current_sha256": "ad908a7c4770d7f98e255bdd03a4527b81e1a3d8c67acb4a502121d72760f614"
+    },
+    {
+      "path": "docs/revision-audit/1.7.0.folder.changes.json",
+      "status": "수정",
+      "current_bytes": 4795,
+      "current_sha256": "318f2101d1deba8d0a918c13838b7d763ac1c2440513a6e7e0053cd190fc7dfc"
+    },
+    {
+      "path": "docs/revision-audit/1.7.0.folder.files.json",
+      "status": "수정",
+      "current_bytes": 3065,
+      "current_sha256": "ad908a7c4770d7f98e255bdd03a4527b81e1a3d8c67acb4a502121d72760f614"
+    },
+    {
+      "path": "docs/revision-audit/1.7.0.folder.patch",
+      "status": "수정",
+      "current_bytes": 586034,
+      "current_sha256": "88030e5af42a32b22ad49d1aa44a6e09e7254b6c127bb62da08bb7815e72e821"
+    },
+    {
+      "path": "docs/revision-audit/1.7.0.md",
+      "status": "수정",
+      "current_bytes": 3846,
+      "current_sha256": "0fe45d567f21ea40e0bf22bbb766d2d1fb34c23d3dbc7683a5cf18b2ca0cc9bd"
+    },
+    {
+      "path": "docs/revision-audit/1.7.0.patch",
+      "status": "수정",
+      "current_bytes": 586034,
+      "current_sha256": "88030e5af42a32b22ad49d1aa44a6e09e7254b6c127bb62da08bb7815e72e821"
+    },
+    {
+      "path": "docs/revision-audit/1.8.0.files.json",
+      "status": "수정",
+      "current_bytes": 3354,
+      "current_sha256": "051749e0feb81c37e8ac4aafa3ad8fa3c5b8dec7328a637fa342311bcb6aa3e5"
+    },
+    {
+      "path": "docs/revision-audit/1.8.0.folder.changes.json",
+      "status": "수정",
+      "current_bytes": 3355,
+      "current_sha256": "086324e86f5bd203a0d12d722b47b65273ab6b8a816362ea78a052a6b19edcd7"
+    },
+    {
+      "path": "docs/revision-audit/1.8.0.folder.files.json",
+      "status": "수정",
+      "current_bytes": 3354,
+      "current_sha256": "051749e0feb81c37e8ac4aafa3ad8fa3c5b8dec7328a637fa342311bcb6aa3e5"
+    },
+    {
+      "path": "docs/revision-audit/1.8.0.md",
+      "status": "수정",
+      "current_bytes": 3242,
+      "current_sha256": "483f4d4356488645eb7fefc74cdb6d437ad2c2dd63b2d9731baaea3d19899b23"
+    },
+    {
+      "path": "docs/revision-audit/내부모션-작업전.files.json",
+      "status": "수정",
+      "current_bytes": 1647,
+      "current_sha256": "d06646525ce2bd8ed17dd45febf79b54c3e6e1c7334302188b60ac41757298e0"
+    },
+    {
+      "path": "docs/revision-audit/내부모션-작업전.folder.changes.json",
+      "status": "수정",
+      "current_bytes": 2721,
+      "current_sha256": "dd6939c255ed8924bb46a8f6c719930520fa5ec68543ac78fac9116b8bc6c8f4"
+    },
+    {
+      "path": "docs/revision-audit/내부모션-작업전.folder.files.json",
+      "status": "수정",
+      "current_bytes": 1647,
+      "current_sha256": "d06646525ce2bd8ed17dd45febf79b54c3e6e1c7334302188b60ac41757298e0"
+    },
+    {
+      "path": "docs/revision-audit/내부모션-작업전.folder.patch",
+      "status": "수정",
+      "current_bytes": 80520,
+      "current_sha256": "9bbb5dd47e6eefa090a033aea84dca7fa7f7b6e48aaec85fa6f9e7a2098e5b9f"
+    },
+    {
+      "path": "docs/revision-audit/내부모션-작업전.md",
+      "status": "수정",
+      "current_bytes": 3910,
+      "current_sha256": "e17667b90223b06c3d19752343b08f2981aa238353427696df70aee8feaf0e0c"
+    },
+    {
+      "path": "docs/revision-audit/내부모션-작업전.patch",
+      "status": "수정",
+      "current_bytes": 80520,
+      "current_sha256": "9bbb5dd47e6eefa090a033aea84dca7fa7f7b6e48aaec85fa6f9e7a2098e5b9f"
+    },
+    {
+      "path": "docs/revision-audit/버튼모션-작업전.files.json",
+      "status": "수정",
+      "current_bytes": 413,
+      "current_sha256": "8735d830237a822439aa933d406aeafdb465d94e6d3e825e824e7d563c4bc851"
+    },
+    {
+      "path": "docs/revision-audit/버튼모션-작업전.folder.files.json",
+      "status": "수정",
+      "current_bytes": 413,
+      "current_sha256": "8735d830237a822439aa933d406aeafdb465d94e6d3e825e824e7d563c4bc851"
+    },
+    {
+      "path": "docs/revision-audit/버튼모션-작업전.md",
+      "status": "수정",
+      "current_bytes": 2968,
+      "current_sha256": "08bfac55a22277807a74eed3caa0e3f89ae24028f35fc202075e6d1f2233f851"
+    },
+    {
+      "path": "docs/revision-audit/부드러운디자인-작업전.files.json",
+      "status": "수정",
+      "current_bytes": 551,
+      "current_sha256": "d85c68def6fba0734677931e55cfb68973985582a536d9c7e7c5c3cb87438a32"
+    },
+    {
+      "path": "docs/revision-audit/부드러운디자인-작업전.folder.files.json",
+      "status": "수정",
+      "current_bytes": 551,
+      "current_sha256": "d85c68def6fba0734677931e55cfb68973985582a536d9c7e7c5c3cb87438a32"
+    },
+    {
+      "path": "docs/revision-audit/부드러운디자인-작업전.md",
+      "status": "수정",
+      "current_bytes": 3409,
+      "current_sha256": "27dbb10118a4a2413920567e4b94400a5007884d372e86fe6e0f0bc4817a94ec"
+    },
+    {
+      "path": "docs/revision-audit/콤보-작업전.files.json",
+      "status": "수정",
+      "current_bytes": 413,
+      "current_sha256": "53c40237a0a81f5eea69855954a5d73434e5a282597def01c1fa3eedac2dd4b8"
+    },
+    {
+      "path": "docs/revision-audit/콤보-작업전.folder.files.json",
+      "status": "수정",
+      "current_bytes": 413,
+      "current_sha256": "53c40237a0a81f5eea69855954a5d73434e5a282597def01c1fa3eedac2dd4b8"
+    },
+    {
+      "path": "docs/revision-audit/콤보-작업전.md",
+      "status": "수정",
+      "current_bytes": 2794,
+      "current_sha256": "cd550a80a420872cc4e0e90f10e379ed5974c287972d382257db46aa5d0c2190"
+    },
+    {
+      "path": "docs/revision-audit/탭잔상-작업전.files.json",
+      "status": "수정",
+      "current_bytes": 413,
+      "current_sha256": "e82f896f7b94c7cb441a1abecff5d066d1e31c208dea6f37ca37c106e8446661"
+    },
+    {
+      "path": "docs/revision-audit/탭잔상-작업전.folder.files.json",
+      "status": "수정",
+      "current_bytes": 413,
+      "current_sha256": "e82f896f7b94c7cb441a1abecff5d066d1e31c208dea6f37ca37c106e8446661"
+    },
+    {
+      "path": "docs/revision-audit/탭잔상-작업전.md",
+      "status": "수정",
+      "current_bytes": 2881,
+      "current_sha256": "aeca3a8eb5d6c13a73095b975fd86d019833092c6e3c82b7d6bdb4107ff570e9"
+    },
+    {
+      "path": "docs/revision-audit/현행소스.files.json",
+      "status": "수정",
+      "current_bytes": 50146,
+      "current_sha256": "75fe76028c5aaede904ba97ccda57704694237e81f726afc5f2234fc28dc9142"
+    },
+    {
+      "path": "docs/revision-audit/현행소스.folder.changes.json",
+      "status": "수정",
+      "current_bytes": 72543,
+      "current_sha256": "180c3cd65b89644eced42e04b50c01b85d8edd8ea85f25379795d04743ef3dab"
+    },
+    {
+      "path": "docs/revision-audit/현행소스.folder.files.json",
+      "status": "수정",
+      "current_bytes": 50146,
+      "current_sha256": "75fe76028c5aaede904ba97ccda57704694237e81f726afc5f2234fc28dc9142"
+    },
+    {
+      "path": "docs/revision-audit/현행소스.folder.patch",
+      "status": "수정",
+      "current_bytes": 2742830,
+      "current_sha256": "cc5d64662c123967adddf91aa0a83d1730f610eae191b5ab30a694fe03139ede"
+    },
+    {
+      "path": "docs/revision-audit/현행소스.md",
+      "status": "수정",
+      "current_bytes": 47449,
+      "current_sha256": "01ec04affbcb69aa1443ed96748e960be17ff72babbee6e4f78f2c1724afe190"
+    },
+    {
+      "path": "docs/revision-audit/현행소스.patch",
+      "status": "수정",
+      "current_bytes": 2742830,
+      "current_sha256": "cc5d64662c123967adddf91aa0a83d1730f610eae191b5ab30a694fe03139ede"
+    },
+    {
+      "path": "docs/revision-audit/호버대비-작업전.files.json",
+      "status": "수정",
+      "current_bytes": 413,
+      "current_sha256": "3fbd656ebe4ca91afa39db3ad7826de8961075fb752d9bcdc3970b42ba1532cd"
+    },
+    {
+      "path": "docs/revision-audit/호버대비-작업전.folder.files.json",
+      "status": "수정",
+      "current_bytes": 413,
+      "current_sha256": "3fbd656ebe4ca91afa39db3ad7826de8961075fb752d9bcdc3970b42ba1532cd"
+    },
+    {
+      "path": "docs/revision-audit/호버대비-작업전.md",
+      "status": "수정",
+      "current_bytes": 2968,
+      "current_sha256": "92b447e9e0fc206773a641cfacc8b817affddaa4d9db145b7488efb9a06cce44"
+    },
+    {
+      "path": "docs/source-materials/001.md",
+      "status": "수정",
+      "current_bytes": 89004,
+      "current_sha256": "235390c2c0eb8d1821316f8c09f6745593f2a63e9d6a99148b8abe9eaafd9c66"
+    },
+    {
+      "path": "docs/source-materials/002.md",
+      "status": "수정",
+      "current_bytes": 89262,
+      "current_sha256": "9ef977d4e629dee3e76880dbad4b31c03da67ffccf5700e7d63e68aeae1a3c20"
+    },
+    {
+      "path": "docs/source-materials/003.md",
+      "status": "수정",
+      "current_bytes": 90117,
+      "current_sha256": "574f037659be6270ca57b27ecf6985385a20afb16a104b1bb969a2ba6adac98e"
+    },
+    {
+      "path": "docs/source-materials/004.md",
+      "status": "수정",
+      "current_bytes": 61388,
+      "current_sha256": "a6467a1a912d94bf44199c0d623ea5cbf300b167330c23ff85002d655ab9907f"
+    },
+    {
+      "path": "docs/source-materials/005.md",
+      "status": "수정",
+      "current_bytes": 57263,
+      "current_sha256": "2f29a7bae77cba4913b8e5a4d72e9b5454fb33c6c6f31cf9900f8c569617654c"
+    },
+    {
+      "path": "docs/source-materials/archive-members.json",
+      "status": "수정",
+      "current_bytes": 13777,
+      "current_sha256": "ab8f196d7c6fd483ea02afa763653db629e3972bd892c5a6e7c9276e527125b5"
+    },
+    {
+      "path": "docs/source-materials/files.json",
+      "status": "수정",
+      "current_bytes": 480316,
+      "current_sha256": "6b5f7be83776556946c39b0577a69aedf14cb721041566274abf4bccad0438e3"
+    },
+    {
+      "path": "history/1.2.0/build.py",
+      "status": "수정",
+      "current_bytes": 6733,
+      "current_sha256": "8b3d4c93ecba8061dd678b132d04c2d19cf342f0297d9dc09a55328e4acc1cff"
+    },
+    {
+      "path": "history/1.2.0/engine.py",
+      "status": "수정",
+      "current_bytes": 21522,
+      "current_sha256": "a6a577ebb3bd870efb4df0d5567a3694001f8b650c4b348b63b100463efb12f6"
+    },
+    {
+      "path": "history/1.2.0/i18n.py",
+      "status": "수정",
+      "current_bytes": 13018,
+      "current_sha256": "8f4b6c0365f4bbf48b6d788cb622c1800876cacfd9ea774774eee4d86a541370"
+    },
+    {
+      "path": "history/1.4.0/build.py",
+      "status": "수정",
+      "current_bytes": 6733,
+      "current_sha256": "60703cae3a0a7223ccf5e7b17c8b1f183068cfea113cd01aa96ff69df1cda7be"
+    },
+    {
+      "path": "history/1.4.0/engine.py",
+      "status": "수정",
+      "current_bytes": 21522,
+      "current_sha256": "a6a577ebb3bd870efb4df0d5567a3694001f8b650c4b348b63b100463efb12f6"
+    },
+    {
+      "path": "history/1.4.0/i18n.py",
+      "status": "수정",
+      "current_bytes": 13018,
+      "current_sha256": "8f4b6c0365f4bbf48b6d788cb622c1800876cacfd9ea774774eee4d86a541370"
+    },
+    {
+      "path": "history/1.6.0/build.py",
+      "status": "수정",
+      "current_bytes": 6733,
+      "current_sha256": "fbe1b98464199e9ddca2ac6228185051d2a344372d2e962caf44c82a4aad741d"
+    },
+    {
+      "path": "history/1.6.0/engine.py",
+      "status": "수정",
+      "current_bytes": 21522,
+      "current_sha256": "a6a577ebb3bd870efb4df0d5567a3694001f8b650c4b348b63b100463efb12f6"
+    },
+    {
+      "path": "history/1.6.0/i18n.py",
+      "status": "수정",
+      "current_bytes": 15508,
+      "current_sha256": "7d8ef6749e2ed714e0910c51742b80f79165e64a4479c04d6c1d286f7571152e"
+    },
+    {
+      "path": "history/1.7.0/build.py",
+      "status": "수정",
+      "current_bytes": 7067,
+      "current_sha256": "1a29ddff83d89f56fae1ccc5518338046782cf33a5bc2949f8988077c5b3db29"
+    },
+    {
+      "path": "history/1.7.0/engine.py",
+      "status": "수정",
+      "current_bytes": 29746,
+      "current_sha256": "b06100438c938f7c380f89caae50610c8ef3b8963ead13bf9ff07485777e7b4d"
+    },
+    {
+      "path": "history/1.7.0/i18n.py",
+      "status": "수정",
+      "current_bytes": 18821,
+      "current_sha256": "7633feb34c72289bce4705fb16357997802592c36f454ec2c18aeda7292d8bfb"
+    },
+    {
+      "path": "history/1.8.0/build.py",
+      "status": "수정",
+      "current_bytes": 7067,
+      "current_sha256": "e449624880643b9a0250e22c7120dde9d4405352863d444d84f78bd622248dc8"
+    },
+    {
+      "path": "history/1.8.0/engine.py",
+      "status": "수정",
+      "current_bytes": 29746,
+      "current_sha256": "b06100438c938f7c380f89caae50610c8ef3b8963ead13bf9ff07485777e7b4d"
+    },
+    {
+      "path": "history/1.8.0/i18n.py",
+      "status": "수정",
+      "current_bytes": 19141,
+      "current_sha256": "3782b9e67be6af694e2e3622730f3aa29fdff9735d696ceb07b1c70035fdf9da"
+    },
+    {
+      "path": "history/내부모션-작업전/build.py",
+      "status": "수정",
+      "current_bytes": 6733,
+      "current_sha256": "b6aedee776cc63bd83553561374968627e3805d94381fd57d63e13a796312a35"
+    },
+    {
+      "path": "history/내부모션-작업전/engine.py",
+      "status": "수정",
+      "current_bytes": 21522,
+      "current_sha256": "a6a577ebb3bd870efb4df0d5567a3694001f8b650c4b348b63b100463efb12f6"
+    },
+    {
+      "path": "history/내부모션-작업전/i18n.py",
+      "status": "수정",
+      "current_bytes": 14796,
+      "current_sha256": "d443f4c3b546aea43c21c5385809eaac08b119e89803fce2a8a8f3915a2cc3b5"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-source-audit.py.PUBLIC-NOTE.md",
+      "status": "추가",
+      "current_bytes": 390,
+      "current_sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-source-freeze17.py.PUBLIC-NOTE.md",
+      "status": "추가",
+      "current_bytes": 390,
+      "current_sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774"
+    },
+    {
+      "path": "보존자료/작업소스/work/검사명세.json",
+      "status": "수정",
+      "current_bytes": 2294,
+      "current_sha256": "facef107521b0829b1673dc336c2908112137a02656e1398a2f25d98d7d4c56a"
+    },
+    {
+      "path": "보존자료/작업소스/work/d-migration/document-ui-motion.py.PUBLIC-NOTE.md",
+      "status": "추가",
+      "current_bytes": 390,
+      "current_sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774"
+    },
+    {
+      "path": "보존자료/작업소스/work/d-migration/package-path-migration.py.PUBLIC-NOTE.md",
+      "status": "추가",
+      "current_bytes": 390,
+      "current_sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774"
+    },
+    {
+      "path": "보존자료/작업소스/work/d-migration/prepare-package.py.PUBLIC-NOTE.md",
+      "status": "추가",
+      "current_bytes": 390,
+      "current_sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774"
+    },
+    {
+      "path": "보존자료/작업소스/work/d-migration/repair10-package.py.PUBLIC-NOTE.md",
+      "status": "추가",
+      "current_bytes": 390,
+      "current_sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/7zip-관리자설치-취소.json",
+      "status": "수정",
+      "current_bytes": 1036,
+      "current_sha256": "40ee1efc2c48807d7c14ce3a90512104d5d49014215bce2a670fd1638b602a7c"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/begin-실패원문.json",
+      "status": "수정",
+      "current_bytes": 519,
+      "current_sha256": "d0250361ee6fd34f3e25c35b7a2eeaebf3ad82ab6c8ed6a914f7c90e53bd84e9"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/PDF-기록시각-수리판정1.json",
+      "status": "수정",
+      "current_bytes": 884,
+      "current_sha256": "750dae73215ab0cc6446c597f4a7e3c936d4399881c1e0db137b1bfc03335dfe"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/prepare_7zip.py.PUBLIC-NOTE.md",
+      "status": "추가",
+      "current_bytes": 390,
+      "current_sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/rar-argv18.json",
+      "status": "수정",
+      "current_bytes": 2792,
+      "current_sha256": "88e92afe4a004d670453ee7256d4c80a30199c3892d3fa92137fc721d094de79"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/rar-name-reversal18.json",
+      "status": "수정",
+      "current_bytes": 879,
+      "current_sha256": "fa60c8bbac14723341e2254a300444a9305390afe335a46ce6c04b846ed4343f"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/rar-name18.json",
+      "status": "수정",
+      "current_bytes": 4245,
+      "current_sha256": "71fdd3480861b2731461c6ed6bfcb9ca37ed580d68f680d6ffec793d173f37f8"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/rar-old-oracle19.txt",
+      "status": "수정",
+      "current_bytes": 872,
+      "current_sha256": "6554b08e75eb467adbce8185d1aa636fa4c7e6bcbe71028e6b3baefd7009f163"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/부모-검사도구추정경로-조회실패.json",
+      "status": "수정",
+      "current_bytes": 809,
+      "current_sha256": "0f4bf276ff98509c93459da98af3b7da4cadb750ac631b951f22fbd7c9b3c72c"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/새사용자요구-판정.json",
+      "status": "수정",
+      "current_bytes": 554,
+      "current_sha256": "d4a44a48cf5416898f3934b6aa5015f1232b59d4713c25917d70bdbff143a1b7"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/실제시험-원본.json",
+      "status": "수정",
+      "current_bytes": 485,
+      "current_sha256": "40c6422f0e3f07b80acf052dde5b860894d5d20dffa3e9a3e45daea639ce5f6c"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/작업자cwd-입력보정1.json",
+      "status": "수정",
+      "current_bytes": 1597,
+      "current_sha256": "51126d9a14d040ca3fa74c49e555443c320ce9c2b21e9b2467cf9947a6b47461"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/재개및분류.json",
+      "status": "수정",
+      "current_bytes": 2070,
+      "current_sha256": "df64241e2ba1b4f9c1f55a491bd8d3085e2688bde29f2f17ad3841aa29eafa02"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/재개점검-최신지침.json",
+      "status": "수정",
+      "current_bytes": 1814,
+      "current_sha256": "d9763b0d02a612fafe7b6b02e165fdeec0e620cd1d5f345cd7e20c9894f83e10"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/중앙역할표-거부원문.json",
+      "status": "수정",
+      "current_bytes": 969,
+      "current_sha256": "9b076947a79472b5b99a6c0169d62e573df1e1dc257363fcd71f0456de668e31"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/추가디자인요청-시작읽기.json",
+      "status": "수정",
+      "current_bytes": 1583,
+      "current_sha256": "a409d07990876a806e706f65093301847231257b3c54c157505a64bb4693b260"
+    },
+    {
+      "path": "보존자료/작업소스/work/exe-only-rebuild/FlipRing.spec.PUBLIC-NOTE.md",
+      "status": "추가",
+      "current_bytes": 390,
+      "current_sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774"
+    },
+    {
+      "path": "보존자료/작업소스/work/fluid-build/InnoSetup-command.json",
+      "status": "수정",
+      "current_bytes": 355,
+      "current_sha256": "85e4cf60cce548e97b1d0f71289ea161948822582867c80b19ab6fdcc154a0cd"
+    },
+    {
+      "path": "보존자료/작업소스/work/fluid-build/PyInstaller-command.json",
+      "status": "수정",
+      "current_bytes": 555,
+      "current_sha256": "1196aed0beffe651808ede791bf8c2b1a8d0d0ea7a8e14dfe930466669725ddd"
+    },
+    {
+      "path": "보존자료/작업소스/work/fluid-combo-final/Mono-Qt검증.json",
+      "status": "수정",
+      "current_bytes": 1726,
+      "current_sha256": "66fb389bb0e3918e16251c1e9bbc718266d277bad637fdf097d7238f80b8ef3e"
+    },
+    {
+      "path": "보존자료/작업소스/work/fluid-ui/Mono-Qt검증.json",
+      "status": "수정",
+      "current_bytes": 1743,
+      "current_sha256": "733780397c9395f12fbe43e3095cac3fa9fbc2e2159cb8186cdc490f0f666ef7"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-header-diagnostic/모델-배치.json",
+      "status": "수정",
+      "current_bytes": 1142,
+      "current_sha256": "cd8a9baabfdd510fa3fc23b50ffb2c9173320f04cc2188f3b37eec1be45e459d"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-profile-all-profile/구간시간.json",
+      "status": "수정",
+      "current_bytes": 9811,
+      "current_sha256": "3214190679f17e2a8c85882cfa9d0ab2390b6ca47281a3c3075517c7bd88cdb2"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-profile-current/구간시간.json",
+      "status": "수정",
+      "current_bytes": 1249,
+      "current_sha256": "87bc75f11415e5f2a28b9a51d1649cd56534f1e6c143d8f1deeb4f75ae82c1f9"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-profile-without-global-filter/구간시간.json",
+      "status": "수정",
+      "current_bytes": 1260,
+      "current_sha256": "29ce1b8276050a99d95f32d5653e1610bff8c08a2a32b0764b120347b3779ea4"
+    },
+    {
+      "path": "보존자료/작업소스/work/native-release-1.6/install-test.py.PUBLIC-NOTE.md",
+      "status": "추가",
+      "current_bytes": 390,
+      "current_sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774"
+    },
+    {
+      "path": "보존자료/작업소스/work/native-release-1.6/installed-launch.json",
+      "status": "수정",
+      "current_bytes": 296,
+      "current_sha256": "879e143e041ff24b146b2865e81baf498c26e8d2e7cd0d14ce3e6c9e666449ec"
+    },
+    {
+      "path": "보존자료/작업소스/work/native-release-1.6/language-restart.json",
+      "status": "수정",
+      "current_bytes": 347,
+      "current_sha256": "deccc784811a496a0ba007d78e226cd4c21ebf812f647f80476d890059a3c895"
+    },
+    {
+      "path": "보존자료/작업소스/work/native-release-1.6/portable-launch.json",
+      "status": "수정",
+      "current_bytes": 283,
+      "current_sha256": "a900db7095665d9a9ddf9849fb3c2e52ebfd609a9011682dd3983cbc09743ffe"
+    },
+    {
+      "path": "보존자료/작업소스/work/native-release-1.6/새설치-실행.json",
+      "status": "수정",
+      "current_bytes": 473,
+      "current_sha256": "1b11d25152e45354b8459a7d7467efed51a53e480f2bcca982810f4e96580a2d"
+    },
+    {
+      "path": "보존자료/작업소스/work/native-release-1.6/설치파일-전수대조.json",
+      "status": "수정",
+      "current_bytes": 367,
+      "current_sha256": "258769c603eca5705012395b0d14cc3fef7eb7b88369c4dc10acb2a8c180f105"
+    },
+    {
+      "path": "보존자료/작업소스/work/native-release-1.6/원본-준비.json",
+      "status": "수정",
+      "current_bytes": 450,
+      "current_sha256": "75e280002e7504f2f3d87ac50a193a52aca6b55222e997aea23a6abcd9d0e76c"
+    },
+    {
+      "path": "보존자료/작업소스/work/native-release-1.6/이전설치-표준제거.json",
+      "status": "수정",
+      "current_bytes": 347,
+      "current_sha256": "34fc9d1c05fa601d14fd5166f0f572fe5388b2857d71c3f4d1a7da24742afa21"
+    },
+    {
+      "path": "보존자료/작업소스/work/native-release-1.6/이전설치등록.json",
+      "status": "수정",
+      "current_bytes": 318,
+      "current_sha256": "f736619f24170957ede0849118cf73f2dae4c37cec002dff4f32c9d336bd992e"
+    },
+    {
+      "path": "보존자료/작업소스/work/native-release-1.6/탐색기시험-준비.json",
+      "status": "수정",
+      "current_bytes": 361,
+      "current_sha256": "1efc5a63e67960cfd00ba5001571a6546a68f906342484e16081669b8a178200"
+    },
+    {
+      "path": "보존자료/작업소스/work/native-release-1.6/한영-OCR시험-원본.json",
+      "status": "수정",
+      "current_bytes": 298,
+      "current_sha256": "e98ebf6f231837695d2158714feaf26a15e87fa71c3b6595af32a04a413c1771"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-check-budget-1.6/동시검사-실행결과.json",
+      "status": "수정",
+      "current_bytes": 5688,
+      "current_sha256": "82f9eb9b5eb61ac797cf5f2f4f632508226edeecc8f43ba5f2ef7d6ed07fb52c"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/actual-install.json",
+      "status": "수정",
+      "current_bytes": 457,
+      "current_sha256": "6edb789e02b51cf714a957d9815fc52729f2eb5f07a7b6d8aa6fbd7249a381b9"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/picker-icon-after24.json",
+      "status": "수정",
+      "current_bytes": 1031,
+      "current_sha256": "9c81dd4a0084ce2d683ffc191e884aa21fada76024d1235c6b5f94e8b6714e83"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/picker-icon-before24.json",
+      "status": "수정",
+      "current_bytes": 1029,
+      "current_sha256": "563ba53e59d318689dc11a2de832adda7336381f44ccd45b5cf3302dba67e91c"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/record_publication.py.PUBLIC-NOTE.md",
+      "status": "추가",
+      "current_bytes": 390,
+      "current_sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/record_public_diff18.py.PUBLIC-NOTE.md",
+      "status": "추가",
+      "current_bytes": 390,
+      "current_sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/verify_remote_git18.py.PUBLIC-NOTE.md",
+      "status": "추가",
+      "current_bytes": 390,
+      "current_sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/공개이미지-입력보정5.json",
+      "status": "수정",
+      "current_bytes": 1392,
+      "current_sha256": "654d03cd42f464470e23601d3e2b7feba322cf586cfc22801c9a67d941b67c68"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/입력보정4.json",
+      "status": "수정",
+      "current_bytes": 1289,
+      "current_sha256": "67efa26e3a811c3906c3789e5252e694c04f6e08de38c28d87c1fc954fd55bcd"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/재개-지침경계확인.json",
+      "status": "수정",
+      "current_bytes": 2247,
+      "current_sha256": "27979ee406cb3c3430301a2d6dcbefcde520186e1f3b561fd2571ae38a66ab49"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/조사원본해시.json",
+      "status": "수정",
+      "current_bytes": 1691,
+      "current_sha256": "26eb2898daf0dba7cc87fa5dc6ae23ad2c23f6256c6a85b6c0b9c3a426a5e586"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/최신지침-13차확인.json",
+      "status": "수정",
+      "current_bytes": 389,
+      "current_sha256": "235c6f5ac51f09d4b9689ea42929541a4e6551a377116e9a37063074e6d71cf7"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/화면구분_반응형_읽기전용조사.md",
+      "status": "수정",
+      "current_bytes": 14462,
+      "current_sha256": "55d96a4af7c56e01f062c1bc616b3804cbfe54048665716e2f1d6878da360ffa"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-baseline/시작하기.txt",
+      "status": "수정",
+      "current_bytes": 2472,
+      "current_sha256": "ddc7e68e763c43d5004275336e35089081db7f952aefc135ed00f5474440d93a"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-build/analysis-exe-verification.json",
+      "status": "수정",
+      "current_bytes": 1088,
+      "current_sha256": "e77f0ef50197f5545f20e29397116d63b8b5b105954f0b788fc930ebd554f7cc"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-build/installer-product-version.json",
+      "status": "수정",
+      "current_bytes": 196,
+      "current_sha256": "dede233dfd8df228f510d90f5154a7e45ea9670bac72a474c2885d4a1478c896"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-build/installer-release-replacement.json",
+      "status": "수정",
+      "current_bytes": 359,
+      "current_sha256": "f8614fe740a4ffcfc886cdf2c3b0bebc9ed3ae84eaa1c707e29995258c95fb80"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-build/portable-update.json",
+      "status": "수정",
+      "current_bytes": 327,
+      "current_sha256": "d334ccab8a57916bc0519e933702255223ad84fc1b6276e94a7b7f29df8908bb"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-gui/Mono-Qt검증.json",
+      "status": "수정",
+      "current_bytes": 1723,
+      "current_sha256": "5448fe1cb28b47dbe681874a85e494716b8a489ffc87c42aade53fde1c1de214"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-native-audit/검토기록.md",
+      "status": "수정",
+      "current_bytes": 7051,
+      "current_sha256": "496ad7ddb520cda65c9c890ebd21bbae51ee078b799363a792eb442cd2ecf9b2"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-tooltip-repair8/installer-product-version.json",
+      "status": "수정",
+      "current_bytes": 154,
+      "current_sha256": "7fde257dc89c1629284ab153e4aa073577259b47d278e4e6d822897ae3295391"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-tooltip-repair8/installer-replacement.json",
+      "status": "수정",
+      "current_bytes": 359,
+      "current_sha256": "97b66c8cc9683b8480a2ccd0cb5ae68de45293a8bfa269d7266b1beaa5da5c81"
+    },
+    {
+      "path": "보존자료/작업소스/work/validation21-candidate/원문대조.json",
+      "status": "수정",
+      "current_bytes": 857,
+      "current_sha256": "59f94be6783f38ded295c7858046ce33d7ec8cda1f945489406fb71d4ec6f8a5"
+    },
+    {
+      "path": "보존자료/작업소스/work/d-migration/package-preparation/빌드방법-ui_motion추가전.md",
+      "status": "수정",
+      "current_bytes": 8852,
+      "current_sha256": "4e08712d343eae623acd7791a605d4fff2769e0b4a0d7c9adfc27b1876c82721"
+    },
+    {
+      "path": "보존자료/작업소스/work/d-migration/before/소스/FlipRing.spec.PUBLIC-NOTE.md",
+      "status": "추가",
+      "current_bytes": 390,
+      "current_sha256": "466d16fbb803f85bdf598010e73107ff45b526e0d72879c43533d9799c8a5774"
+    },
+    {
+      "path": "보존자료/작업소스/work/d-migration/before/소스/빌드방법.md",
+      "status": "수정",
+      "current_bytes": 7909,
+      "current_sha256": "8e3f56b5fca11b545ab843184042769cbe4c81570834df1a607bbe8fed36738d"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/7zip-preparation/extract.json",
+      "status": "수정",
+      "current_bytes": 2451,
+      "current_sha256": "8223dcdb54ae3c26404b5171f5360ead0f3a19e2b2dd379f94ee86840a3d1b6f"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/baseline-source/installer.iss",
+      "status": "수정",
+      "current_bytes": 1257,
+      "current_sha256": "9a66ca36a368f4db92d2e0c711711158912ccb766eb191e23e84eeee4c5ff73a"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/baseline-source/검토기록.md",
+      "status": "수정",
+      "current_bytes": 10886,
+      "current_sha256": "3cc03bf0cb702a7485edd0c388cb83ba352f50f48e7fe4aec60dbc983b97d11c"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/baseline-source/빌드방법.md",
+      "status": "수정",
+      "current_bytes": 9177,
+      "current_sha256": "43ff545b72a9e6dfc3a5ddaa05c7ead3de89cc664238118aa9b5287f35db1250"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/baseline-source/사용안내.txt",
+      "status": "수정",
+      "current_bytes": 6242,
+      "current_sha256": "7a6add3863f4c7792e23441dc848ae51cc43f7fc0b4a66bf2e4a22406ced3c90"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/gui-workflow-first/Mono-Qt검증.json",
+      "status": "수정",
+      "current_bytes": 1603,
+      "current_sha256": "d8eee38ad8bb09f781d2afd548b6e5ddc783519f8f5c977af9ec0359ea370f0f"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/gui-workflow-structure5/Mono-Qt검증.json",
+      "status": "수정",
+      "current_bytes": 1787,
+      "current_sha256": "ea7c79d40dddb8e22d568ac8028b7346884fab26cf78fdb68663dd3af913d8da"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/office-diagnosis/engine-office-argv.json",
+      "status": "수정",
+      "current_bytes": 828,
+      "current_sha256": "aa765862f7379de4b3f7b7fe6649cf94a16ee6723d2117690e7b74357f0238db"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/office-diagnosis/profile-reversal.json",
+      "status": "수정",
+      "current_bytes": 1175,
+      "current_sha256": "cfa326c1e5ad99c6e65b0af43fec722a549ae78bb596f4877bd2ac4607860102"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/pdf-implementation/초기읽기-상태1-사후기록.json",
+      "status": "수정",
+      "current_bytes": 1529,
+      "current_sha256": "cbf87b462baa8a7827a31a4e162fc9c78aaf34f0244b0c7914fc58143d32c263"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/README.md",
+      "status": "수정",
+      "current_bytes": 15955,
+      "current_sha256": "1af3e6604914e97477d1a0d720386f7262a3f5b5f006ca6d8ecb201b4ac901c5"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/gui-final/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 239,
+      "current_sha256": "60f20d8461c536738434595ea8fbd69373700776ee751c209e46e9fe397e727b"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/gui-final11/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 243,
+      "current_sha256": "806527de389943ebd9a077d9e8afc17246bac82e91da2fea99de82e700f77c5a"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/gui-final13/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 243,
+      "current_sha256": "af32a9393f2bbb442a6f402c3f4f44d5737e0ebb12d44405b142935cd0ca81c2"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/gui-final15/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 243,
+      "current_sha256": "5e038d0cc9471d3606d99cacd61dac4b48b207587f96712a6733b40704c2f3d6"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/gui-final16/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 243,
+      "current_sha256": "ccb68a5af966cc9cd9e051f8caaae64756be4e68729a60c59a53eeec2e65bc2b"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/gui-final19/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 243,
+      "current_sha256": "fa0a2c40807b9172292fc1bc85e879c4baa2412fe2b10ee8da5d162fa8fb2bcf"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/gui-workflow-all/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 253,
+      "current_sha256": "b83861bf8b82501438d75bfa9dbd11c67004427aa198b4e8b42aed6e047a1c48"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/gui-workflow-structure5/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 267,
+      "current_sha256": "c3ad40fa164df2499ca361ec81a4fbc2110769a0b03d9692cc258c4d3f44b4d5"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/gui85-timing/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 245,
+      "current_sha256": "bdb96a65885da7149d772983ff7bc62c4965ef315c3a6be5dce01bbf6fb7a610"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/rar-diagnostic-20261030/corrected-commands.json",
+      "status": "수정",
+      "current_bytes": 1357,
+      "current_sha256": "0f2dd575fc6c492ad551e1d10ff0131468e54b0f47ef12970f0f0ee88c9b930c"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/rar-diagnostic-20261030/rarfile-call.json",
+      "status": "수정",
+      "current_bytes": 979,
+      "current_sha256": "a45d674ea987e9e120691fc2f152dba7e73136c89bb16f4c8ab2d5010e0a1dfb"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/rar-diagnostic-20261030/same-command.json",
+      "status": "수정",
+      "current_bytes": 568,
+      "current_sha256": "dc5c649eb3345f2aebfa8abb5b80713a2574ca3a7719222257333b42db9fa77f"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/report.json",
+      "status": "수정",
+      "current_bytes": 386492,
+      "current_sha256": "a7563f86509d86839cda4e3c9ad9244bac03eb86e3934b08f1e5b170156e0e22"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-c0cc5f8f-5e63-4c82-bcca-bf60b9e10117/report.json",
+      "status": "수정",
+      "current_bytes": 392756,
+      "current_sha256": "4ac40fb9aa21779aae63123243654b1629bedca23af2b10c437cf00c30a7467e"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-cd6dd5dc-fc33-4d86-9c22-9cfb469e5f87/report.json",
+      "status": "수정",
+      "current_bytes": 428695,
+      "current_sha256": "c71fcac7852788a26e7bcf20de4713367b08856461f3bbab673987a959c90459"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/VERSIONS.md",
+      "status": "수정",
+      "current_bytes": 3013,
+      "current_sha256": "866dcd323d6299f413ec373152693d077c65e1b9f77c74e15acf7321ecba6977"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/1.2.0.md",
+      "status": "수정",
+      "current_bytes": 1377,
+      "current_sha256": "f598fd3607eaff04e0de4d4b815f25929ebf184ec717375ce30f1249435ec694"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/1.4.0.md",
+      "status": "수정",
+      "current_bytes": 5608,
+      "current_sha256": "a643fed3a0aa4639ad551bfcc19320854642a19edda1cf567e98affd9774f3ed"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/1.6.0.md",
+      "status": "수정",
+      "current_bytes": 6286,
+      "current_sha256": "f2f6f19bf1b12d8c44a549ce4d1ee3b0021d0cc9dbe7ecab3fc347fba4a3bed1"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/1.7.0.md",
+      "status": "수정",
+      "current_bytes": 9206,
+      "current_sha256": "1200ae5c187dc844cbdeb4f9aa3fcb1ec09f4a3f85c535f83ff10390202b5231"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/1.8.0.md",
+      "status": "수정",
+      "current_bytes": 9516,
+      "current_sha256": "3b548fcb09da789b59154b825c000c48c5e0b1279745243855651b1bd0c1c51f"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/내부모션-작업전.md",
+      "status": "수정",
+      "current_bytes": 4878,
+      "current_sha256": "005c3d3573f53f185b0dfd944e8b66e61e8efaaa2bc4e044f64f1905e55e562c"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/버튼모션-작업전.md",
+      "status": "수정",
+      "current_bytes": 1088,
+      "current_sha256": "58e8993370f6ccba53ad0dfbdd37e8bbcb5a021fd62baa4704a6f410157ecebd"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/부드러운디자인-작업전.md",
+      "status": "수정",
+      "current_bytes": 1127,
+      "current_sha256": "d3328e7b3f256bdd9e87da2aaf7fc9d4e4ed93613a0e320f5f0688775841fe73"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/콤보-작업전.md",
+      "status": "수정",
+      "current_bytes": 1070,
+      "current_sha256": "168004121b80f074baea1f505925cb31af20aa8758a49981c07d761b016154d7"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/탭잔상-작업전.md",
+      "status": "수정",
+      "current_bytes": 1079,
+      "current_sha256": "c6cc0e7486df9373d9993a4c59981ec2d934f6e999572aea27ef25fa11c9f88b"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/public/docs/versions/호버대비-작업전.md",
+      "status": "수정",
+      "current_bytes": 1088,
+      "current_sha256": "ba87672e7ecc112e76111b99802a0a77efb1dd43a9d24a6e476ab10ad0eee210"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/release-stage2/프로그램/FlipRing/사용안내.txt",
+      "status": "수정",
+      "current_bytes": 7047,
+      "current_sha256": "1fcadb22f96cd0f6881452f9e82bcb124cf09063efefd93ffe765e7fe4db2ab3"
+    },
+    {
+      "path": "보존자료/작업소스/work/final-timeout20-gui/results/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 13417,
+      "current_sha256": "0140c1a5bfbf0ab91a94bba12fd93d8389bbf1ea2a63c1c009c201233d3003fd"
+    },
+    {
+      "path": "보존자료/작업소스/work/final-timeout20-io-gui/results/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 16723,
+      "current_sha256": "4cefec6f90512eee86e3da62b1749c1c4aa544b9fbe8b08fa1374c50ce02dbe4"
+    },
+    {
+      "path": "보존자료/작업소스/work/final-timeout20-prefix-io-gui/results/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 253,
+      "current_sha256": "cb9977c6952ba5e4fc2dd012e5e9caa4129fda4ee89e0c6396d3128b530ea771"
+    },
+    {
+      "path": "보존자료/작업소스/work/fluid-buttons/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 203,
+      "current_sha256": "8ef7dfe624f501f7d3e62ce225289b6dccaa5da2cef588095fef2341282715c1"
+    },
+    {
+      "path": "보존자료/작업소스/work/fluid-combo-final/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 211,
+      "current_sha256": "4187dfa198b7fded319b6d5e67aef144994bd3133097f3cec964e4a73c193f4d"
+    },
+    {
+      "path": "보존자료/작업소스/work/fluid-final-gui/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 207,
+      "current_sha256": "cae0bcd836267327305e1f2498e1cc9c0cdced431cc23a40fccea20223064cf3"
+    },
+    {
+      "path": "보존자료/작업소스/work/fluid-ready-gui/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 207,
+      "current_sha256": "65758471498d4438c00e264ca944ca832ad40f4e84dd512c9a993b3aaad89ad4"
+    },
+    {
+      "path": "보존자료/작업소스/work/fluid-repair/gui/Mono-Qt검증.json",
+      "status": "수정",
+      "current_bytes": 1864,
+      "current_sha256": "e0643edfd7ddcdddefc54fc5a85199ab47457d8b7c359e6362f0ce66b54f836e"
+    },
+    {
+      "path": "보존자료/작업소스/work/fluid-repair/gui/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 211,
+      "current_sha256": "542ceecd0eddae6571c00fe88dfd33eb98a045c6b62197f496dcb476d5ffbc34"
+    },
+    {
+      "path": "보존자료/작업소스/work/fluid-ui/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 193,
+      "current_sha256": "e9799ca373dbf14671a1059672167a8eb3ae6b197b3f7fda59a97234c0998570"
+    },
+    {
+      "path": "보존자료/작업소스/work/gui/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 183,
+      "current_sha256": "8d78de1aaf111a5e5dc91a102fbbbc984da9a1082da9b347e01c61e020670627"
+    },
+    {
+      "path": "보존자료/작업소스/work/history-shell-api/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 211,
+      "current_sha256": "43194346d4fa67ba426db2eb0100da0bdede0c648bd007bf34e913ef312af030"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-complete-first/gui/Mono-Qt검증.json",
+      "status": "수정",
+      "current_bytes": 16381,
+      "current_sha256": "17191fea1fb893eec0575fede223ffedf688604e557615dc0a4e7a0ef26283a2"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-complete-first/gui/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 247,
+      "current_sha256": "50210fac5e4161be0fd3b908fd240a483fc5e5571d26f90cdbcc873e8707ce5d"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-final-gui/gui/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 237,
+      "current_sha256": "ca21ea60fee536f9cd4e1d49052673024940fa71b67cfee6bee159ebca384e48"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-final-gui17/gui/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 241,
+      "current_sha256": "5c41261472a20fd99579b5b8c920be0ba5962c5f041a7284edb4a30ad68935f1"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-helper-green/gui/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 16875,
+      "current_sha256": "7496577d36b5f76bbea79614117ebecd2a22c413f7fb6cdea5a2b0c983fb5874"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-profile-all-profile/gui/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 257,
+      "current_sha256": "cb0945ebc4192022a4a591d486b168449a05042da502df9953287bda7769df14"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-profile40/gui/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 16647,
+      "current_sha256": "9adbb97c04a54d0383192faf6dcce276433a44f9bb1078d4542e620624ba0ab7"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-reentry-diagnostic/data/history.json",
+      "status": "수정",
+      "current_bytes": 183,
+      "current_sha256": "49eff97d6872f816e85b4b84fcac880be839620e98704a4fb16c90b70c323c23"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-repair14-green/gui/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 475,
+      "current_sha256": "74d74e3b25689a407de59376957ffaf7e02a8b8f20802bdf605b71e44e5f2676"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/31042a9df62a48a0bee7f2eb93438f39/gui-01-23/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 311,
+      "current_sha256": "ac8eddf01512b2c5812dad6c1f135120cf4653e81e8e440bc5a5941db3556a92"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/31042a9df62a48a0bee7f2eb93438f39/gui-25-49/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 303,
+      "current_sha256": "c7dcd8e939268fb6d5615520b4d7e24919169b72b9e85c32f5fea3d7249969d4"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/489bf0a7b8de4ce8bfa684f7551cae26/gui-01-23/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 311,
+      "current_sha256": "330505c08368d741e3413cc8083cc8fce90698ed10acbb2e6c49d2f8a4744013"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/489bf0a7b8de4ce8bfa684f7551cae26/gui-25-49/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 303,
+      "current_sha256": "d2804c55d2dc2b06e848386fca4f787ed7f69387ce4a636cef987dc0e85e9f38"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/489bf0a7b8de4ce8bfa684f7551cae26/gui-70-85/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 587,
+      "current_sha256": "1215e6217ccc4c1f521515aa3bd4b5cc24aa824fea4f7d51ecfb6cf8d222a357"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/4a6ca849be324d298605c857830383f9/gui-25-49/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 303,
+      "current_sha256": "185afe33e9bf5e4f0f44c54a84527466dbbece1722051870f805eb33e75911b6"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/4a6ca849be324d298605c857830383f9/gui-70-85/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 587,
+      "current_sha256": "ca0d6cb3f2fac9c8d4000c02fb35a36c13a1a108dc1f5c5c51d43bf0f4cac915"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/4d616c9edc64418a8f73653e14859e5e/gui-01-23/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 311,
+      "current_sha256": "c012b6d89aeba3ca684e6b561a522f4924267e2e4ed82f6f46855a51336fe8b6"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/4d616c9edc64418a8f73653e14859e5e/gui-25-49/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 303,
+      "current_sha256": "fb90b37afe6b568d5c406f0f4ffdd85d9bf54aa39166fc06d2a7f1c440810056"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/4d616c9edc64418a8f73653e14859e5e/gui-70-85/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 587,
+      "current_sha256": "c5c723abf516e3dd6de4cb759229b210d5448cd379356896848671a367d95e8f"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/519159b6f24649c680e50dd723ba1ee2/gui-01-23/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 311,
+      "current_sha256": "76424829195966b2a11c50f5ae3073a076aabd9263b1fa7a0fd1240c99658c68"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/519159b6f24649c680e50dd723ba1ee2/gui-25-49/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 303,
+      "current_sha256": "cedc697325c67b6e14cb564681daba2c8aaa386f44b601d735108705d2c434e0"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/519159b6f24649c680e50dd723ba1ee2/gui-70-85/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 587,
+      "current_sha256": "5f43b70910de0e9709537a4e0aaf29d91292245d4ff205af0da595b4e876ec44"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/52048f6ff03c44a488ae09724d1662b0/gui-01-23/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 311,
+      "current_sha256": "aca079e597bb4b5243fda7be19ebaa32adf961d1c6d789d850fc433f3bd04867"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/52048f6ff03c44a488ae09724d1662b0/gui-25-49/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 303,
+      "current_sha256": "60c78b1688450156ff1649a813fed1abb4684c46d5132a8b78a42e4ace35b91d"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/52048f6ff03c44a488ae09724d1662b0/gui-70-85/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 587,
+      "current_sha256": "2f4e3186eb222af9fc83f4d1bec5ca74ba83dd1ec9afad643c5c5b4ad76d4a7f"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/6ead5c8db4fc438a9ccded96d7f08ab3/gui-01-23/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 311,
+      "current_sha256": "9dabfdb547d58e8fce12f8d157d87c8ab2e85a8ae0338bd8f086450067aef1eb"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/6ead5c8db4fc438a9ccded96d7f08ab3/gui-25-49/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 303,
+      "current_sha256": "5f6b04faff2b13efc8ea971bbe08557479ea7335c947ff09ddece42fbcbe035d"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/6ead5c8db4fc438a9ccded96d7f08ab3/gui-70-85/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 587,
+      "current_sha256": "8e1937d8ef2971d0b8978a0424688920274f649a64020987788f1db88a4f65df"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/8c0b9a5f5d6f4575afc6a1a9d61b2749/gui-01-23/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 311,
+      "current_sha256": "e2f9ecce22b6238ccfbbcc3733a4af918da4ba0021664f8a40935c25a7dded55"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/8c0b9a5f5d6f4575afc6a1a9d61b2749/gui-25-49/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 303,
+      "current_sha256": "a5b33115d8024422f217395352cb4dde5b20d89f123f59bbb39fa27250f7fa17"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/8c0b9a5f5d6f4575afc6a1a9d61b2749/gui-70-85/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 587,
+      "current_sha256": "8ace3ded92d98cfe2f06fad456be201c43370f863b0f1e122aac17f472ea3909"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/8f359dc3db2942d39a975094d803667d/gui-01-23/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 311,
+      "current_sha256": "93a4f2812dd7baa47450059be0ea161ad55741eba0128d54fd8cc9365e46b032"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/8f359dc3db2942d39a975094d803667d/gui-25-49/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 303,
+      "current_sha256": "06d3ad164a6c21e07a810038f10120bae4b6f2a9ecae566270b3c7138dc3ecba"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/8f359dc3db2942d39a975094d803667d/gui-70-85/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 587,
+      "current_sha256": "52602903275732c2efc5022c6c27be83f82f19b60f7466eb77e3edf5b432a721"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/99146dd96ba04b37baa06fcf33208d33/gui-01-23/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 311,
+      "current_sha256": "655269db8ea1b3c4ad7d2a1219cd3131467f9cef8ad55c6ce6bf24fc8a339d3d"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/99146dd96ba04b37baa06fcf33208d33/gui-25-49/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 303,
+      "current_sha256": "614d589cf65c25ffea630f9cc90b69c7a645352ac7c3ce90f36a63188d641c9d"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/99146dd96ba04b37baa06fcf33208d33/gui-70-85/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 587,
+      "current_sha256": "22d8148d3c52546d48e9885056e3b4d54156c4391663abdced6b6de844447840"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/9d7d2fe10aef474b8ca79aaed8c6d5a1/gui-01-23/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 311,
+      "current_sha256": "8db06aebd0e209dc0b16e14f354fe139c8ee7a09d3566672b5c858e8b9f04b1f"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/9d7d2fe10aef474b8ca79aaed8c6d5a1/gui-25-49/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 303,
+      "current_sha256": "413c75a32179e30fe44352b8fa8ec48817d5023f3e911575d339556540e54358"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/9d7d2fe10aef474b8ca79aaed8c6d5a1/gui-70-85/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 587,
+      "current_sha256": "cf4c8e4eae95392fd2598591fc81f6be296570036bc39afbb9d74f6882e55af9"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/c066d53f9f93442f9f18855693865a26/gui-01-23/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 311,
+      "current_sha256": "1067c3af906e7b69a45d629fcfa8e54c62ef6badea29a90f18c88e7fc5d71160"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/c066d53f9f93442f9f18855693865a26/gui-25-49/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 303,
+      "current_sha256": "2f671e42b663ed1ff554068a28c4aae1185df79a36f5ce0aa204026128579958"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/c066d53f9f93442f9f18855693865a26/gui-70-85/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 587,
+      "current_sha256": "cfe0f2fbe6b4dde18a1f91b1b96050f3955320d60df46ce0ed9a27b2c220003b"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/c3554f752f0547939dd2009aadb38036/gui-01-23/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 311,
+      "current_sha256": "a8075db0576691740437b8517530d30bb68b1358da4a9539cdf7190fcd7131ec"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/c3554f752f0547939dd2009aadb38036/gui-25-49/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 303,
+      "current_sha256": "bab415176df04c69124621345018b2f740a50b3569df4565fdbb19125100e02f"
+    },
+    {
+      "path": "보존자료/작업소스/work/release-validation/c3554f752f0547939dd2009aadb38036/gui-70-85/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 587,
+      "current_sha256": "6181d18d06832f11b9e0c97dc63e198c2d748270009d09874f7c8784b0e07781"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/baseline-1.7/installer.iss",
+      "status": "수정",
+      "current_bytes": 1383,
+      "current_sha256": "f5bfdc57db6422eaabed3d40843509dffc0e0f1703da3a62cd0ed1af10407f2e"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/baseline-1.7/빌드방법.md",
+      "status": "수정",
+      "current_bytes": 10687,
+      "current_sha256": "39e41a310ea24b1d78cb6e4e409a6b60124479b5e9f7a9e75749af200ff2a1fc"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/baseline-1.7/사용안내.txt",
+      "status": "수정",
+      "current_bytes": 7123,
+      "current_sha256": "50c00db01edb5ad539f5c7a5e4244687e78d84ec2946963978fbae05b43ffd0d"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-baseline/docs/스튜디오재설계.md",
+      "status": "수정",
+      "current_bytes": 3904,
+      "current_sha256": "37d088bd07a70bfeb0d18ad18603446decd7e940c6c92512819aa72f6b1037e7"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-baseline/소스/installer.iss",
+      "status": "수정",
+      "current_bytes": 1257,
+      "current_sha256": "5dd1d3031aaf45b627347b2b15cbe367b8916d43c7976a3df5ecac492c9df2ae"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-baseline/소스/검토기록.md",
+      "status": "수정",
+      "current_bytes": 8971,
+      "current_sha256": "2f4edbfd24baf7a6157263340b8ee7fe9421b171f375ee62f587411b233c221b"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-baseline/소스/빌드방법.md",
+      "status": "수정",
+      "current_bytes": 7378,
+      "current_sha256": "3ad24a15202f3a902575e8c62a54ebeb061b6f5a8f6e3d1a33017c7bc740b1b0"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-baseline/소스/사용안내.txt",
+      "status": "수정",
+      "current_bytes": 5975,
+      "current_sha256": "1db969870a2f254a32489b9d4611aedb02e417eb48ca44ee4ebf170714219aab"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-gui/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 197,
+      "current_sha256": "19a22f461e1cd3f1fc831003500b490a2cb301637d49a4277511bf532c0d8890"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-gui-final/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 209,
+      "current_sha256": "e4a9d403fd3e12e00a6955c8694b8f2f844a381691ee14820594f9b566935b09"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-gui-fixed/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 209,
+      "current_sha256": "aeef984d7a44349a92ea65f39fc89229ccbf2febdb4f5ce8bc7f5cc5aa49d676"
+    },
+    {
+      "path": "보존자료/작업소스/work/studio-wheel-route-repair6/gui/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 239,
+      "current_sha256": "d73a6dc8fe548caf6bba16da4135fd95796c57f854cfc294a30cc3474222960a"
+    },
+    {
+      "path": "보존자료/작업소스/work/tab-clean-gui/격리설정/history.json",
+      "status": "수정",
+      "current_bytes": 203,
+      "current_sha256": "ee974757312d5159bcb8c22833e1530648d477efe6328012e0d5119be851dc66"
+    },
+    {
+      "path": "소스/licenses/OCR/모델과실행.json",
+      "status": "수정",
+      "current_bytes": 1749,
+      "current_sha256": "33a3ce19ede5a85639cff12dd6b6ee0b8a5214a5e8d6ff9eaac95220822776c6"
+    },
+    {
+      "path": "소스/licenses/OCR/읽어주세요.md",
+      "status": "수정",
+      "current_bytes": 3220,
+      "current_sha256": "3478a3345fdf47c1da97c840d0a2d6f3e4793583186f8e925d5d5c9bd18c230c"
+    },
+    {
+      "path": "소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md",
+      "status": "수정",
+      "current_bytes": 18807,
+      "current_sha256": "bd9afea98b72467fb1b44f90caca6914ccc802afa89500a221973880b87e753a"
+    },
+    {
+      "path": "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
+      "status": "수정",
+      "current_bytes": 5762,
+      "current_sha256": "388b9b47f302c61fef8f23043cc436931d86486f515a205da5dbe8b7e5637854"
+    },
+    {
+      "path": "프로그램/FlipRing/사용안내.txt",
+      "status": "수정",
+      "current_bytes": 7358,
+      "current_sha256": "870d780b4bb6d350cb2e62ecf51a05f43349aba93bc8b4d0c0420785a6bc26a9"
+    },
+    {
+      "path": "프로그램/FlipRing/licenses/OCR/모델과실행.json",
+      "status": "수정",
+      "current_bytes": 1749,
+      "current_sha256": "33a3ce19ede5a85639cff12dd6b6ee0b8a5214a5e8d6ff9eaac95220822776c6"
+    },
+    {
+      "path": "프로그램/FlipRing/licenses/OCR/읽어주세요.md",
+      "status": "수정",
+      "current_bytes": 3220,
+      "current_sha256": "3478a3345fdf47c1da97c840d0a2d6f3e4793583186f8e925d5d5c9bd18c230c"
+    },
+    {
+      "path": "프로그램/FlipRing/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md",
+      "status": "수정",
+      "current_bytes": 18807,
+      "current_sha256": "bd9afea98b72467fb1b44f90caca6914ccc802afa89500a221973880b87e753a"
+    },
+    {
+      "path": "프로그램/FlipRing/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
+      "status": "수정",
+      "current_bytes": 5762,
+      "current_sha256": "388b9b47f302c61fef8f23043cc436931d86486f515a205da5dbe8b7e5637854"
+    },
+    {
+      "path": "보존자료/작업소스/work/d-migration/before/소스/FlipRing.spec.PUBLIC-NOTE.md",
+      "status": "과거 환경 도구 비공개 보류",
+      "note": "실제 원문과 해시는 비공개에 보존"
+    },
+    {
+      "path": "보존자료/작업소스/work/d-migration/document-ui-motion.py.PUBLIC-NOTE.md",
+      "status": "과거 환경 도구 비공개 보류",
+      "note": "실제 원문과 해시는 비공개에 보존"
+    },
+    {
+      "path": "보존자료/작업소스/work/d-migration/package-path-migration.py.PUBLIC-NOTE.md",
+      "status": "과거 환경 도구 비공개 보류",
+      "note": "실제 원문과 해시는 비공개에 보존"
+    },
+    {
+      "path": "보존자료/작업소스/work/d-migration/prepare-package.py.PUBLIC-NOTE.md",
+      "status": "과거 환경 도구 비공개 보류",
+      "note": "실제 원문과 해시는 비공개에 보존"
+    },
+    {
+      "path": "보존자료/작업소스/work/d-migration/repair10-package.py.PUBLIC-NOTE.md",
+      "status": "과거 환경 도구 비공개 보류",
+      "note": "실제 원문과 해시는 비공개에 보존"
+    },
+    {
+      "path": "보존자료/작업소스/work/enhancement-20261030/prepare_7zip.py.PUBLIC-NOTE.md",
+      "status": "과거 환경 도구 비공개 보류",
+      "note": "실제 원문과 해시는 비공개에 보존"
+    },
+    {
+      "path": "보존자료/작업소스/work/exe-only-rebuild/FlipRing.spec.PUBLIC-NOTE.md",
+      "status": "과거 환경 도구 비공개 보류",
+      "note": "실제 원문과 해시는 비공개에 보존"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-source-audit.py.PUBLIC-NOTE.md",
+      "status": "과거 환경 도구 비공개 보류",
+      "note": "실제 원문과 해시는 비공개에 보존"
+    },
+    {
+      "path": "보존자료/작업소스/work/internal-motion-source-freeze17.py.PUBLIC-NOTE.md",
+      "status": "과거 환경 도구 비공개 보류",
+      "note": "실제 원문과 해시는 비공개에 보존"
+    },
+    {
+      "path": "보존자료/작업소스/work/native-release-1.6/install-test.py.PUBLIC-NOTE.md",
+      "status": "과거 환경 도구 비공개 보류",
+      "note": "실제 원문과 해시는 비공개에 보존"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/record_public_diff18.py.PUBLIC-NOTE.md",
+      "status": "과거 환경 도구 비공개 보류",
+      "note": "실제 원문과 해시는 비공개에 보존"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/record_publication.py.PUBLIC-NOTE.md",
+      "status": "과거 환경 도구 비공개 보류",
+      "note": "실제 원문과 해시는 비공개에 보존"
+    },
+    {
+      "path": "보존자료/작업소스/work/responsive-layout-20261030/verify_remote_git18.py.PUBLIC-NOTE.md",
+      "status": "과거 환경 도구 비공개 보류",
+      "note": "실제 원문과 해시는 비공개에 보존"
+    }
+  ]
+}

@@ -515,7 +515,7 @@
  AppName=FlipRing
 -AppVersion=1.3.0
 +AppVersion=1.4.0
- AppPublisher=PUVKID
+ AppPublisher=제작자
  DefaultDirName={{localappdata}}\\Programs\\FlipRing
  DefaultGroupName=FlipRing
 --- 1.2.0/package.py
@@ -1309,3 +1309,44 @@
      }
      (ROOT / "Mono-Qt검증.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
      print(json.dumps({key: value for key, value in report.items() if key not in ("failures", "errors")}, ensure_ascii=False))
+--- 1.2.0/파일목록.json
++++ 1.4.0/파일목록.json
+@@ -1,13 +1,13 @@
+ [
+   {
+     "path": "app.py",
+-    "bytes": 47990,
+-    "sha256": "f3df0916e5886eb91f81ae833c4e387fadac40c9fde60acb826e101fc7c9b650"
++    "bytes": 57554,
++    "sha256": "4fde31515627bed86258d01251fb653767800005b22297c6a552f4efcb09fc3b"
+   },
+   {
+     "path": "build.py",
+     "bytes": 6727,
+-    "sha256": "e5b70b63a77614ba9a7187ba76b4fdb9c30d0c98376423f061ae05094ec7b879"
++    "sha256": "514bf3e3ca1599dee5d8bc54dac4d55bb3cd22740512f3bf095ac7a61344f00a"
+   },
+   {
+     "path": "engine.py",
+@@ -26,8 +26,8 @@
+   },
+   {
+     "path": "package.py",
+-    "bytes": 6058,
+-    "sha256": "9af2833452e52400c1035e66f5988f9b9db43d992590e7f3feceb2cc0d58b61c"
++    "bytes": 6573,
++    "sha256": "2100e60ab0205719d500784c774a6eebbf9573164055ae77a46fdbd6acc899b0"
+   },
+   {
+     "path": "pdf_panel.py",
+@@ -51,8 +51,8 @@
+   },
+   {
+     "path": "test_gui.py",
+-    "bytes": 43194,
+-    "sha256": "44d2df1690121b1820ae47c95769a3f04aaad236866622cadc4ce3192a3bb10c"
++    "bytes": 80013,
++    "sha256": "6d153d00d3bee713381584d602096653dd0aa8eeb64bd14b4dcae810144dd71a"
+   },
+   {
+     "path": "test_pdf_tools.py",

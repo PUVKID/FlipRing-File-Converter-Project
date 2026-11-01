@@ -5,7 +5,7 @@
   "failures": [
     {
       "test": "test_78_status_motion_tracks_real_states_and_stops_on_hide_and_reentry (__main__.GuiTests.test_78_status_motion_tracks_real_states_and_stops_on_hide_and_reentry)",
-      "detail": "Traceback (most recent call last):\n  File \"D:\\2026\\FilpRing Project\\소스\\test_gui.py\", line 2073, in test_78_status_motion_tracks_real_states_and_stops_on_hide_and_reentry\n    self.assertEqual(panel.status_mark.animation.state(), QAbstractAnimation.Stopped)\nAssertionError: <State.Running: 2> != <State.Stopped: 0>\n"
+      "detail": "Traceback (most recent call last):\n  File \".\\소스\\test_gui.py\", line 2073, in test_78_status_motion_tracks_real_states_and_stops_on_hide_and_reentry\n    self.assertEqual(panel.status_mark.animation.state(), QAbstractAnimation.Stopped)\nAssertionError: <State.Running: 2> != <State.Stopped: 0>\n"
     }
   ],
   "errors": [],

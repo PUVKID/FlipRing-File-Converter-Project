@@ -1,4 +1,4 @@
-"""PUVKID의 Windows 파일 변환 엔진. 원본은 읽기만 하고 결과를 새 이름으로 저장한다."""
+"""제작자의 Windows 파일 변환 엔진. 원본은 읽기만 하고 결과를 새 이름으로 저장한다."""
 from __future__ import annotations
 
 import csv

@@ -1,13 +1,13 @@
 {
   "argv": [
-    "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\7zip-preparation\\7zr.exe",
+    ".\\work\\enhancement-20261030\\7zip-preparation\\7zr.exe",
     "x",
-    "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\7zip-preparation\\7z2605-x64.exe",
-    "-oD:\\2026\\FilpRing Project\\work\\enhancement-20261030\\7zip-preparation\\payload",
+    ".\\work\\enhancement-20261030\\7zip-preparation\\7z2605-x64.exe",
+    "-o.\\work\\enhancement-20261030\\7zip-preparation\\payload",
     "-y"
   ],
   "exit_code": 0,
-  "cwd": "D:\\2026\\FilpRing Project",
+  "cwd": ".",
   "files": [
     "7-zip.chm",
     "7-zip.dll",

@@ -1,14 +1,14 @@
 [
   {
     "argv": [
-      "D:\\2026\\FilpRing Project\\소스\\vendor\\7zip\\7z.exe",
+      ".\\소스\\vendor\\7zip\\7z.exe",
       "e",
       "-so",
       "-bb0",
       "-spd",
       "-p",
       "--",
-      "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar",
+      ".\\work\\enhancement-20261030\\matrix-test\\fixture.rar",
       "?龜龜棘棘?龜勻剋.txt"
     ],
     "oem_codepage": 949,
@@ -20,14 +20,14 @@
   },
   {
     "argv": [
-      "D:\\2026\\FilpRing Project\\소스\\vendor\\7zip\\7z.exe",
+      ".\\소스\\vendor\\7zip\\7z.exe",
       "e",
       "-so",
       "-bb0",
       "-spd",
       "-p",
       "--",
-      "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar",
+      ".\\work\\enhancement-20261030\\matrix-test\\fixture.rar",
       "???릟?릟?릠.txt"
     ],
     "oem_codepage": 949,

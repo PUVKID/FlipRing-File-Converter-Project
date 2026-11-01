@@ -5,7 +5,7 @@
   "failures": [
     {
       "test": "test_50_button_hover_frames_preserve_clicks_geometry_and_idle_state (__main__.GuiTests.test_50_button_hover_frames_preserve_clicks_geometry_and_idle_state)",
-      "detail": "Traceback (most recent call last):\n  File \"C:\\Users\\PUVKID\\Desktop\\플립링\\소스\\test_gui.py\", line 1059, in test_50_button_hover_frames_preserve_clicks_geometry_and_idle_state\n    self.assertEqual({id(item.button) for item in self.window._button_motions},\nAssertionError: Items in the second set but not the first:\n2570889995776\n2570867427328\n2570867807296\n2570864351040\n2570890430400\n2570867718272\n"
+      "detail": "Traceback (most recent call last):\n  File \".\\소스\\test_gui.py\", line 1059, in test_50_button_hover_frames_preserve_clicks_geometry_and_idle_state\n    self.assertEqual({id(item.button) for item in self.window._button_motions},\nAssertionError: Items in the second set but not the first:\n2570889995776\n2570867427328\n2570867807296\n2570864351040\n2570890430400\n2570867718272\n"
     }
   ],
   "errors": [],

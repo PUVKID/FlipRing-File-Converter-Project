@@ -5,7 +5,7 @@
   "failures": [
     {
       "test": "test_63_center_ring_has_distinct_finite_frames_and_continuous_drag_retarget (__main__.GuiTests.test_63_center_ring_has_distinct_finite_frames_and_continuous_drag_retarget)",
-      "detail": "Traceback (most recent call last):\n  File \"C:\\Users\\PUVKID\\Desktop\\플립링\\소스\\test_gui.py\", line 238, in test_63_center_ring_has_distinct_finite_frames_and_continuous_drag_retarget\n    self.assertEqual(len(set(images)), 3)\nAssertionError: 2 != 3\n"
+      "detail": "Traceback (most recent call last):\n  File \".\\소스\\test_gui.py\", line 238, in test_63_center_ring_has_distinct_finite_frames_and_continuous_drag_retarget\n    self.assertEqual(len(set(images)), 3)\nAssertionError: 2 != 3\n"
     }
   ],
   "errors": [],

@@ -22,7 +22,7 @@
   "base_library_entries": 155,
   "base_library_contents_identical": true,
   "runtime_baseline_hashes_preserved": true,
-  "exe": "C:\\Users\\PUVKID\\Desktop\\플립링\\소스\\build-cache\\FlipRing\\FlipRing.exe",
+  "exe": ".\\소스\\build-cache\\FlipRing\\FlipRing.exe",
   "exe_size": 6917304,
   "exe_sha256": "8f20ff752a85e20e1cecc945949486ae3332d78ebcddaac68ee06c7c6ff4bb77",
   "embedded_app_equals_source": true,

@@ -451,7 +451,7 @@
  AppName=FlipRing
 -AppVersion=1.4.0
 +AppVersion=1.5.0
- AppPublisher=PUVKID
+ AppPublisher=제작자
  DefaultDirName={{localappdata}}\\Programs\\FlipRing
  DefaultGroupName=FlipRing
 --- 1.4.0/i18n.py
@@ -461,7 +461,7 @@
      "running_message": ("파일을 끌며 Shift를 누르세요. 설정은 트레이 아이콘에 있습니다.", "Hold Shift while dragging a file. Settings are in the system tray."),
      "external_error": ("외부 도구 또는 시스템 오류: {detail}", "External tool or system error: {detail}"),
 +    "studio_workspace": ("파일을 위한 작업 공간", "A workspace for your files"),
-+    "studio_maker": ("PUVKID 제작", "Made by PUVKID"),
++    "studio_maker": ("프로젝트 제작자", "Made by the developer"),
 +    "studio_local": ("무료 · 내 컴퓨터에서 처리", "Free · Processed on your PC"),
 +    "studio_convert": ("파일 변환", "Convert files"),
 +    "studio_helpers": ("외부 도우미", "Helper tools"),
@@ -1581,3 +1581,76 @@
  
      def test_02_common_formats_preserved(self):
          self.show_wheel([str(SOURCE), str(SOURCE2), str(SOURCE)])
+--- 1.4.0/파일목록.json
++++ 내부모션-작업전/파일목록.json
+@@ -1,13 +1,13 @@
+ [
+   {
+     "path": "app.py",
+-    "bytes": 57554,
+-    "sha256": "4fde31515627bed86258d01251fb653767800005b22297c6a552f4efcb09fc3b"
++    "bytes": 65789,
++    "sha256": "db66ffd7a6f6e6b1f47589e2ed5c8f9a6d1df3c8855286960cd1e27d237e9944"
+   },
+   {
+     "path": "build.py",
+     "bytes": 6727,
+-    "sha256": "514bf3e3ca1599dee5d8bc54dac4d55bb3cd22740512f3bf095ac7a61344f00a"
++    "sha256": "50ddb1a6c1759b30d10150f5d44738edb72ee53b139e54975c9ec0ab45193a0c"
+   },
+   {
+     "path": "engine.py",
+@@ -16,23 +16,18 @@
+   },
+   {
+     "path": "i18n.py",
+-    "bytes": 12995,
+-    "sha256": "242abd4700912d2d7b8505a521d9c3d90c7ec6c6442f14b2cadd1a551cd2f580"
+-  },
+-  {
+-    "path": "LICENSE.txt",
+-    "bytes": 1396,
+-    "sha256": "8c7b2363b1bd25e3428416587833dbe61098d211f30420582879ec4810cbf52f"
++    "bytes": 14757,
++    "sha256": "9de696a5036297c4c45419272084544e53d4713a479617ae64245b5437cd780b"
+   },
+   {
+     "path": "package.py",
+-    "bytes": 6573,
+-    "sha256": "2100e60ab0205719d500784c774a6eebbf9573164055ae77a46fdbd6acc899b0"
++    "bytes": 7083,
++    "sha256": "c03bfbc2f6f188e76a4187bcd72e9bcee200eadb91f8e294d25f18fa8d4bbd0b"
+   },
+   {
+     "path": "pdf_panel.py",
+-    "bytes": 21137,
+-    "sha256": "65e08796aa43be0f4b1935da14489455766d919970c02097315c16491aa478b1"
++    "bytes": 23908,
++    "sha256": "24a6ea470567446e5a44b340ffc2e5b1298fd071171e888ef6196a5886f08342"
+   },
+   {
+     "path": "pdf_tools.py",
+@@ -40,9 +35,9 @@
+     "sha256": "dffbfb2f945bf8830841d870407050fc4bf98025354b14a9ab1ef936251b8274"
+   },
+   {
+-    "path": "requirements-lock.txt",
+-    "bytes": 644,
+-    "sha256": "57a5e9a4c46e8212dccdab7557b87f6bc44047a55958afdb6d899a6f3c4feecb"
++    "path": "studio_ui.py",
++    "bytes": 15640,
++    "sha256": "3a1413904c3e9eba337eace67fab2b6c9575e89b1ed95bc796da48a43a4d6d89"
+   },
+   {
+     "path": "test_engine.py",
+@@ -51,8 +46,8 @@
+   },
+   {
+     "path": "test_gui.py",
+-    "bytes": 80013,
+-    "sha256": "6d153d00d3bee713381584d602096653dd0aa8eeb64bd14b4dcae810144dd71a"
++    "bytes": 102408,
++    "sha256": "3e87d95d9da8c60fbf4a0b09b1bd48a6671481de4cef5b1f3fd6883e1446bdde"
+   },
+   {
+     "path": "test_pdf_tools.py",

@@ -3,9 +3,9 @@
     "path": "1.7-새기능안내.md",
     "status": "추가",
     "before_bytes": null,
-    "after_bytes": 4680,
+    "after_bytes": 4696,
     "before_sha256": null,
-    "after_sha256": "6c812afba5f4d2ff99fdb4cac4b58466368d62ec7bba26b3d9815e5f5e774fb7"
+    "after_sha256": "e5448a06902439ac868072655d8f6328897b0b78f63a13707c3d04e3530d731a"
   },
   {
     "path": "1.8-화면안내.md",
@@ -179,9 +179,9 @@
     "path": "installer.iss",
     "status": "추가",
     "before_bytes": null,
-    "after_bytes": 1389,
+    "after_bytes": 1395,
     "before_sha256": null,
-    "after_sha256": "8a81aae55de34176cfd65773a9e5dbf47e9bfbd6e47ae1778e51890591f213ce"
+    "after_sha256": "d1cdb5776f6f206e575b1a45a444d159558a863a699f12867762b3664a5aa421"
   },
   {
     "path": "licenses/7Zip/LGPL-2.1.txt",
@@ -771,9 +771,9 @@
     "path": "licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md",
     "status": "추가",
     "before_bytes": null,
-    "after_bytes": 17784,
+    "after_bytes": 18807,
     "before_sha256": null,
-    "after_sha256": "c553459fc4ea1f69526f0edf0c8ff6c4002fda5b76094abefabdc3de1ee62c10"
+    "after_sha256": "bd9afea98b72467fb1b44f90caca6914ccc802afa89500a221973880b87e753a"
   },
   {
     "path": "licenses/OCR/libjpeg-turbo/libjpeg-turbo/simd/jsimdext.inc",
@@ -1171,17 +1171,17 @@
     "path": "licenses/OCR/모델과실행.json",
     "status": "추가",
     "before_bytes": null,
-    "after_bytes": 1839,
+    "after_bytes": 1749,
     "before_sha256": null,
-    "after_sha256": "05953162f92df56876b1ec900fb2ec4040fc475bfbd2c0bdaa2edced40c8c0fc"
+    "after_sha256": "33a3ce19ede5a85639cff12dd6b6ee0b8a5214a5e8d6ff9eaac95220822776c6"
   },
   {
     "path": "licenses/OCR/읽어주세요.md",
     "status": "추가",
     "before_bytes": null,
-    "after_bytes": 3217,
+    "after_bytes": 3220,
     "before_sha256": null,
-    "after_sha256": "bfa34f798177e0f419b3caea6f608ddfbfa3f22e99e7e45747c62be95832c47f"
+    "after_sha256": "3478a3345fdf47c1da97c840d0a2d6f3e4793583186f8e925d5d5c9bd18c230c"
   },
   {
     "path": "licenses/OpenSSL-LICENSE.txt",
@@ -1619,9 +1619,9 @@
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
     "status": "추가",
     "before_bytes": null,
-    "after_bytes": 5755,
+    "after_bytes": 5762,
     "before_sha256": null,
-    "after_sha256": "be2b2b5ab168bce87bc3e31f2a5c5adba4b7f6e9e51d618e958d1d46972ebd95"
+    "after_sha256": "388b9b47f302c61fef8f23043cc436931d86486f515a205da5dbe8b7e5637854"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libopenjpeg.txt",
@@ -2259,25 +2259,25 @@
     "path": "검토기록.md",
     "status": "추가",
     "before_bytes": null,
-    "after_bytes": 12686,
+    "after_bytes": 12701,
     "before_sha256": null,
-    "after_sha256": "2a26395dae1c82ec728ac513fb05fd02dc50b37a5795fe036d999b25864090ac"
+    "after_sha256": "56046aa519af63aa6a2a6be3bce5f53f4dcbc7e4027a700fa93c1b0b4f3ff6fc"
   },
   {
     "path": "빌드방법.md",
     "status": "추가",
     "before_bytes": null,
-    "after_bytes": 10787,
+    "after_bytes": 10721,
     "before_sha256": null,
-    "after_sha256": "9fccbb5f22203ccaaa9996528351113c011f28806e5223eb0416899a83cc91df"
+    "after_sha256": "8ad81bdc4eba3fcb9dccdbe44215dc6e8475c7135f5a7acc02ad9585f1086e70"
   },
   {
     "path": "사용안내.txt",
     "status": "추가",
     "before_bytes": null,
-    "after_bytes": 7342,
+    "after_bytes": 7358,
     "before_sha256": null,
-    "after_sha256": "72b6b6050e2ffe4a7234c0190311f7b5a8c323f30eb410ad393236296f7fac1d"
+    "after_sha256": "870d780b4bb6d350cb2e62ecf51a05f43349aba93bc8b4d0c0420785a6bc26a9"
   },
   {
     "path": "파일목록.json",

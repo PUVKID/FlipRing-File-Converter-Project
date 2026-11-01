@@ -1,4 +1,4 @@
-플립링 (FlipRing) — 제작 PUVKID
+플립링 (FlipRing) — 제작 제작자
 
 실행: 프로그램\FlipRing\FlipRing.exe
 설치: 설치파일\FlipRing-Setup.exe

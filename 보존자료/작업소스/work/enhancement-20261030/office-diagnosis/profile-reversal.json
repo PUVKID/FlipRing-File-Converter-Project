@@ -7,14 +7,14 @@
     "--convert-to",
     "pdf",
     "--outdir",
-    "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\office-diagnosis\\profile-long\\work\\out",
-    "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\office-diagnosis\\profile-long\\work\\input.docx"
+    ".\\work\\enhancement-20261030\\office-diagnosis\\profile-long\\work\\out",
+    ".\\work\\enhancement-20261030\\office-diagnosis\\profile-long\\work\\input.docx"
   ],
-  "cwd": "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\office-diagnosis\\profile-long\\work",
+  "cwd": ".\\work\\enhancement-20261030\\office-diagnosis\\profile-long\\work",
   "only_changed_argument_index": 1,
   "profile_chars": 95,
   "exit_code": 0,
-  "stdout": "convert D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\office-diagnosis\\profile-long\\work\\input.docx as a Writer document -> D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\office-diagnosis\\profile-long\\work\\out\\input.pdf using filter : writer_pdf_Export\n",
+  "stdout": "convert .\\work\\enhancement-20261030\\office-diagnosis\\profile-long\\work\\input.docx as a Writer document -> .\\work\\enhancement-20261030\\office-diagnosis\\profile-long\\work\\out\\input.pdf using filter : writer_pdf_Export\n",
   "stderr": "Could not find platform independent libraries <prefix>\r\n",
   "outputs": [
     {

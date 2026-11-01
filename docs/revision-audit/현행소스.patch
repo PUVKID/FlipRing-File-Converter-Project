@@ -1,9 +1,9 @@
---- 1.8.0 부분 보관/1.7-새기능안내.md
+--- 1.8.0/1.7-새기능안내.md
 +++ 현행소스/1.7-새기능안내.md
 @@ -0,0 +1,44 @@
 +# 플립링 1.7 작업 흐름
 +
-+제작: PUVKID. 무료 배포판입니다. 실행 프로그램, 설치 파일, 전체 소스, 빌드 방법과 라이선스 자료를 프로젝트 폴더 하나에 보관합니다.
++제작: 프로젝트 제작자. 무료 배포판입니다. 실행 프로그램, 설치 파일, 전체 소스, 빌드 방법과 라이선스 자료를 프로젝트 폴더 하나에 보관합니다.
 +
 +## 파일 변환
 +
@@ -45,7 +45,7 @@
 +변환 조합 검사는 외부 도우미와 각 입력 형식의 시험 자료를 사용합니다. 성공·실패·도우미 부재·입력 자료 부재를 구분한 보고서를 확인해야 합니다. 검사 통과와 실제 Windows 탐색기에서의 Shift/OLE 입력 확인은 별개입니다. 오프스크린 Qt 검사를 실제 화면 조작으로 표현하지 않습니다.
 +
 +RAR 입력은 사용 권한을 확인한 별도 RAR 파일을 `--rar-fixture 파일경로`로 지정합니다. 지정하지 않으면 해당 입력은 시험 자료 부재로 기록하며 통과로 취급하지 않습니다. 이번 개발에서 사용한 자료는 ISC 고지가 있는 `markokr/rarfile` 저장소의 `test/files/unicode.rar`이며 자료·출처·해시는 개발 검증 폴더에 보존합니다. 고객 프로그램에는 이 외부 시험 파일을 포함하지 않습니다.
---- 1.8.0 부분 보관/1.8-화면안내.md
+--- 1.8.0/1.8-화면안내.md
 +++ 현행소스/1.8-화면안내.md
 @@ -0,0 +1,19 @@
 +# 플립링 1.8 화면 안내
@@ -67,7 +67,7 @@
 +Remove-Item Env:QT_SCALE_FACTOR
 +Remove-Item Env:QT_QPA_PLATFORM
 +```
---- 1.8.0 부분 보관/FlipRing.spec
+--- 1.8.0/FlipRing.spec
 +++ 현행소스/FlipRing.spec
 @@ -0,0 +1,14 @@
 +# Windows 배포에 필요한 Qt 기본 모듈만 포함한다.
@@ -84,7 +84,7 @@
 +pyz = PYZ(a.pure)
 +exe = EXE(pyz, a.scripts, [], exclude_binaries=True, name='FlipRing', debug=False, bootloader_ignore_signals=False, strip=False, upx=False, console=False, icon='D:\\2026\\FilpRing Project\\소스\\assets\\app.ico')
 +coll = COLLECT(exe, a.binaries, a.datas, strip=False, upx=False, name='FlipRing')
---- 1.8.0 부분 보관/assets/NanumGothic-OFL.txt
+--- 1.8.0/assets/NanumGothic-OFL.txt
 +++ 현행소스/assets/NanumGothic-OFL.txt
 @@ -0,0 +1,126 @@
 +Nanum Gothic Bold — Copyright (c) 2010, NAVER Corporation. SIL Open Font License 1.1
@@ -213,13 +213,13 @@
 +Copyright: 2018, Changwoo Ryu
 +License: CC0-1.0
 + See /usr/share/common-licenses/CC0-1.0 for the full license.
---- 1.8.0 부분 보관/assets/combo-chevron.svg
+--- 1.8.0/assets/combo-chevron.svg
 +++ 현행소스/assets/combo-chevron.svg
 @@ -0,0 +1,3 @@
 +<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8">
 +  <path d="M2 2 L6 6 L10 2" fill="none" stroke="#737373" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
 +</svg>
---- 1.8.0 부분 보관/assets/lucide/arrow-left-right.svg
+--- 1.8.0/assets/lucide/arrow-left-right.svg
 +++ 현행소스/assets/lucide/arrow-left-right.svg
 @@ -0,0 +1,16 @@
 +<svg
@@ -238,7 +238,7 @@
 +  <path d="m16 21 4-4-4-4" />
 +  <path d="M20 17H4" />
 +</svg>
---- 1.8.0 부분 보관/assets/lucide/arrow-up-right.svg
+--- 1.8.0/assets/lucide/arrow-up-right.svg
 +++ 현행소스/assets/lucide/arrow-up-right.svg
 @@ -0,0 +1,14 @@
 +<svg
@@ -255,7 +255,7 @@
 +  <path d="M7 7h10v10" />
 +  <path d="M7 17 17 7" />
 +</svg>
---- 1.8.0 부분 보관/assets/lucide/check.svg
+--- 1.8.0/assets/lucide/check.svg
 +++ 현행소스/assets/lucide/check.svg
 @@ -0,0 +1,13 @@
 +<svg
@@ -271,7 +271,7 @@
 +>
 +  <path d="M20 6 9 17l-5-5" />
 +</svg>
---- 1.8.0 부분 보관/assets/lucide/file-up.svg
+--- 1.8.0/assets/lucide/file-up.svg
 +++ 현행소스/assets/lucide/file-up.svg
 @@ -0,0 +1,16 @@
 +<svg
@@ -290,7 +290,7 @@
 +  <path d="M12 12v6" />
 +  <path d="m15 15-3-3-3 3" />
 +</svg>
---- 1.8.0 부분 보관/assets/lucide/file.svg
+--- 1.8.0/assets/lucide/file.svg
 +++ 현행소스/assets/lucide/file.svg
 @@ -0,0 +1,14 @@
 +<svg
@@ -307,7 +307,7 @@
 +  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
 +  <path d="M14 2v5a1 1 0 0 0 1 1h5" />
 +</svg>
---- 1.8.0 부분 보관/assets/lucide/folder-open.svg
+--- 1.8.0/assets/lucide/folder-open.svg
 +++ 현행소스/assets/lucide/folder-open.svg
 @@ -0,0 +1,13 @@
 +<svg
@@ -323,7 +323,7 @@
 +>
 +  <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" />
 +</svg>
---- 1.8.0 부분 보관/assets/lucide/info.svg
+--- 1.8.0/assets/lucide/info.svg
 +++ 현행소스/assets/lucide/info.svg
 @@ -0,0 +1,15 @@
 +<svg
@@ -341,7 +341,7 @@
 +  <path d="M12 16v-4" />
 +  <path d="M12 8h.01" />
 +</svg>
---- 1.8.0 부분 보관/assets/lucide/plus.svg
+--- 1.8.0/assets/lucide/plus.svg
 +++ 현행소스/assets/lucide/plus.svg
 @@ -0,0 +1,14 @@
 +<svg
@@ -358,7 +358,7 @@
 +  <path d="M5 12h14" />
 +  <path d="M12 5v14" />
 +</svg>
---- 1.8.0 부분 보관/assets/lucide/rotate-ccw-clock.svg
+--- 1.8.0/assets/lucide/rotate-ccw-clock.svg
 +++ 현행소스/assets/lucide/rotate-ccw-clock.svg
 @@ -0,0 +1,15 @@
 +<svg
@@ -376,7 +376,7 @@
 +  <path d="M3 3v5h5" />
 +  <path d="M12 7v5l4 2" />
 +</svg>
---- 1.8.0 부분 보관/assets/lucide/scan-text.svg
+--- 1.8.0/assets/lucide/scan-text.svg
 +++ 현행소스/assets/lucide/scan-text.svg
 @@ -0,0 +1,19 @@
 +<svg
@@ -398,7 +398,7 @@
 +  <path d="M7 12h10" />
 +  <path d="M7 16h6" />
 +</svg>
---- 1.8.0 부분 보관/assets/lucide/sliders-horizontal.svg
+--- 1.8.0/assets/lucide/sliders-horizontal.svg
 +++ 현행소스/assets/lucide/sliders-horizontal.svg
 @@ -0,0 +1,21 @@
 +<svg
@@ -422,7 +422,7 @@
 +  <path d="M8 10v4" />
 +  <path d="M8 12H3" />
 +</svg>
---- 1.8.0 부분 보관/assets/lucide/x.svg
+--- 1.8.0/assets/lucide/x.svg
 +++ 현행소스/assets/lucide/x.svg
 @@ -0,0 +1,14 @@
 +<svg
@@ -439,15 +439,15 @@
 +  <path d="M18 6 6 18" />
 +  <path d="m6 6 12 12" />
 +</svg>
---- 1.8.0 부분 보관/installer.iss
+--- 1.8.0/installer.iss
 +++ 현행소스/installer.iss
 @@ -0,0 +1,35 @@
-+; PUVKID 무료 배포판 설치 구성
++; 제작자 무료 배포판 설치 구성
 +[Setup]
 +AppId=PUVKID.FlipRing
 +AppName=FlipRing
 +AppVersion=1.8.0
-+AppPublisher=PUVKID
++AppPublisher=제작자
 +DefaultDirName={localappdata}\Programs\FlipRing
 +DefaultGroupName=FlipRing
 +PrivilegesRequired=lowest
@@ -477,7 +477,7 @@
 +Name: "{autodesktop}\FlipRing"; Filename: "{app}\FlipRing.exe"; Tasks: desktopicon
 +[Registry]
 +Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueName: "FlipRing"; Flags: uninsdeletevalue
---- 1.8.0 부분 보관/licenses/7Zip/LGPL-2.1.txt
+--- 1.8.0/licenses/7Zip/LGPL-2.1.txt
 +++ 현행소스/licenses/7Zip/LGPL-2.1.txt
 @@ -0,0 +1,511 @@
 +                  GNU LESSER GENERAL PUBLIC LICENSE
@@ -982,7 +982,7 @@
 +  Ty Coon, President of Vice
 +
 +That's all there is to it!
---- 1.8.0 부분 보관/licenses/7Zip/License.txt
+--- 1.8.0/licenses/7Zip/License.txt
 +++ 현행소스/licenses/7Zip/License.txt
 @@ -0,0 +1,146 @@
 +  7-Zip
@@ -1131,7 +1131,7 @@
 +  not be used to develop a RAR (WinRAR) compatible archiver.
 +
 +--
---- 1.8.0 부분 보관/licenses/7Zip/Source-License.txt
+--- 1.8.0/licenses/7Zip/Source-License.txt
 +++ 현행소스/licenses/7Zip/Source-License.txt
 @@ -0,0 +1,151 @@
 +  7-Zip source code
@@ -1285,7 +1285,7 @@
 +  not be used to develop a RAR (WinRAR) compatible archiver.
 +
 +--
---- 1.8.0 부분 보관/licenses/7Zip/unRarLicense.txt
+--- 1.8.0/licenses/7Zip/unRarLicense.txt
 +++ 현행소스/licenses/7Zip/unRarLicense.txt
 @@ -0,0 +1,41 @@
 + ******    *****   ******   unRAR - free utility for RAR archives
@@ -1328,7 +1328,7 @@
 +      Thank you for your interest in RAR and unRAR.
 +
 +
-+                                            Alexander L. Roshal--- 1.8.0 부분 보관/licenses/7Zip/출하목록.json
++                                            Alexander L. Roshal--- 1.8.0/licenses/7Zip/출하목록.json
 +++ 현행소스/licenses/7Zip/출하목록.json
 @@ -0,0 +1,75 @@
 +{
@@ -1406,7 +1406,7 @@
 +    "셸 확장"
 +  ]
 +}
---- 1.8.0 부분 보관/licenses/GCC-RUNTIME-EXCEPTION.txt
+--- 1.8.0/licenses/GCC-RUNTIME-EXCEPTION.txt
 +++ 현행소스/licenses/GCC-RUNTIME-EXCEPTION.txt
 @@ -0,0 +1,73 @@
 +GCC RUNTIME LIBRARY EXCEPTION
@@ -1482,7 +1482,7 @@
 +presumption that third-party software is unaffected by the copyleft
 +requirements of the license of GCC.
 +
---- 1.8.0 부분 보관/licenses/GPL-3.0.txt
+--- 1.8.0/licenses/GPL-3.0.txt
 +++ 현행소스/licenses/GPL-3.0.txt
 @@ -0,0 +1,674 @@
 +                    GNU GENERAL PUBLIC LICENSE
@@ -2159,7 +2159,7 @@
 +the library.  If this is what you want to do, use the GNU Lesser General
 +Public License instead of this License.  But first, please read
 +<https://www.gnu.org/licenses/why-not-lgpl.html>.
---- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/GCC-PKGINFO.txt
+--- 1.8.0/licenses/HEIC-GNU-runtime/GCC-PKGINFO.txt
 +++ 현행소스/licenses/HEIC-GNU-runtime/GCC-PKGINFO.txt
 @@ -0,0 +1,34 @@
 +# Generated by makepkg 6.1.0
@@ -2196,7 +2196,7 @@
 +makedepend = mingw-w64-x86_64-winpthreads
 +makedepend = mingw-w64-x86_64-zlib
 +makedepend = mingw-w64-x86_64-zstd
---- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.LIB
+--- 1.8.0/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.LIB
 +++ 현행소스/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.LIB
 @@ -0,0 +1,519 @@
 +
@@ -2709,7 +2709,7 @@
 +That's all there is to it!
 +
 +
---- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.RUNTIME
+--- 1.8.0/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.RUNTIME
 +++ 현행소스/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.RUNTIME
 @@ -0,0 +1,73 @@
 +GCC RUNTIME LIBRARY EXCEPTION
@@ -2785,7 +2785,7 @@
 +presumption that third-party software is unaffected by the copyleft
 +requirements of the license of GCC.
 +
---- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING3
+--- 1.8.0/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING3
 +++ 현행소스/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING3
 @@ -0,0 +1,674 @@
 +                    GNU GENERAL PUBLIC LICENSE
@@ -3462,13 +3462,13 @@
 +the library.  If this is what you want to do, use the GNU Lesser General
 +Public License instead of this License.  But first, please read
 +<http://www.gnu.org/philosophy/why-not-lgpl.html>.
---- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/README
+--- 1.8.0/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/README
 +++ 현행소스/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/README
 @@ -0,0 +1,3 @@
 +The libgcc, libstdc++, libgomp and libatomic libraries are covered by
 +GPL-3.0-or-later with GCC-exception-3.1. The libquadmath library is covered
 +by LGPL-2.1-or-later. The package as a whole can be redistributed under GPL-3.0-or-later.
---- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/HEIC-GNU-GCC대조.json
+--- 1.8.0/licenses/HEIC-GNU-runtime/HEIC-GNU-GCC대조.json
 +++ 현행소스/licenses/HEIC-GNU-runtime/HEIC-GNU-GCC대조.json
 @@ -0,0 +1,36 @@
 +{
@@ -3506,7 +3506,7 @@
 +      "text_match": true
 +    }
 +  ]
-+}--- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/HEIC-GNU-PE수정영역.json
++}--- 1.8.0/licenses/HEIC-GNU-runtime/HEIC-GNU-PE수정영역.json
 +++ 현행소스/licenses/HEIC-GNU-runtime/HEIC-GNU-PE수정영역.json
 @@ -0,0 +1,152 @@
 +[
@@ -3660,7 +3660,7 @@
 +      }
 +    ]
 +  }
-+]--- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/HEIC-GNU-WINPTHREAD대조.json
++]--- 1.8.0/licenses/HEIC-GNU-runtime/HEIC-GNU-WINPTHREAD대조.json
 +++ 현행소스/licenses/HEIC-GNU-runtime/HEIC-GNU-WINPTHREAD대조.json
 @@ -0,0 +1,24 @@
 +{
@@ -3686,7 +3686,7 @@
 +    "provides": "mingw-w64-x86_64-libwinpthread-git",
 +    "makedepend": "git"
 +  }
-+}--- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/HEIC-GNU-소스확보.json
++}--- 1.8.0/licenses/HEIC-GNU-runtime/HEIC-GNU-소스확보.json
 +++ 현행소스/licenses/HEIC-GNU-runtime/HEIC-GNU-소스확보.json
 @@ -0,0 +1,12 @@
 +[
@@ -3700,7 +3700,7 @@
 +    "size": 54173752,
 +    "sha256": "7bf513784ae0bc4f1a413e1f787f7a3ba2bd7ec0503980ea4d17ddf0e4796c87"
 +  }
-+]--- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/WINPTHREAD-PKGINFO.txt
++]--- 1.8.0/licenses/HEIC-GNU-runtime/WINPTHREAD-PKGINFO.txt
 +++ 현행소스/licenses/HEIC-GNU-runtime/WINPTHREAD-PKGINFO.txt
 @@ -0,0 +1,21 @@
 +# Generated by makepkg 6.1.0
@@ -3724,7 +3724,7 @@
 +makedepend = mingw-w64-x86_64-crt
 +makedepend = mingw-w64-x86_64-headers
 +makedepend = git
---- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/WINPTHREAD-원문고지/libwinpthread/COPYING
+--- 1.8.0/licenses/HEIC-GNU-runtime/WINPTHREAD-원문고지/libwinpthread/COPYING
 +++ 현행소스/licenses/HEIC-GNU-runtime/WINPTHREAD-원문고지/libwinpthread/COPYING
 @@ -0,0 +1,57 @@
 +Copyright (c) 2011 mingw-w64 project
@@ -3784,7 +3784,7 @@
 + * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 + * OF THE POSSIBILITY OF SUCH DAMAGE.
 + */
---- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/libheif/windows/mingw-w64-libheif/PKGBUILD
+--- 1.8.0/licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/libheif/windows/mingw-w64-libheif/PKGBUILD
 +++ 현행소스/licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/libheif/windows/mingw-w64-libheif/PKGBUILD
 @@ -0,0 +1,76 @@
 +# Contributor: Edward E. <develinthedetail@gmail.com>
@@ -3863,7 +3863,7 @@
 +
 +  DESTDIR="${pkgdir}" ${MINGW_PREFIX}/bin/cmake --install .
 +}
---- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/pyproject.toml
+--- 1.8.0/licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/pyproject.toml
 +++ 현행소스/licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/pyproject.toml
 @@ -0,0 +1,180 @@
 +[build-system]
@@ -4046,7 +4046,7 @@
 +  "pragma: no cover",
 +  "raise NotImplementedError",
 +]
---- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/setup.py
+--- 1.8.0/licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/setup.py
 +++ 현행소스/licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/setup.py
 @@ -0,0 +1,300 @@
 +#!/usr/bin/env python
@@ -4349,7 +4349,7 @@
 +"""
 +    sys.stderr.write(MSG)
 +    raise RequiredDependencyException(MSG) from None
---- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/읽어주세요.md
+--- 1.8.0/licenses/HEIC-GNU-runtime/읽어주세요.md
 +++ 현행소스/licenses/HEIC-GNU-runtime/읽어주세요.md
 @@ -0,0 +1,24 @@
 +# HEIC 디코더의 GNU 런타임 자료
@@ -4376,7 +4376,7 @@
 +
 +원본 배포 패키지의 DLL과 실제 설치된 wheel·프로그램 DLL을 직접 비교했습니다. MSYS2 소스 아카이브 다운로드 해시는 로컬에서 계산했으며 원격 PGP 서명 검증이나 컴파일러 재빌드는 수행하지 않았습니다.
 +수입 이름의 해시 정규화와 실행 코드 섹션 동일성을 근거로 원본 패키지를 대응했으며, libgcc/libstdc++의 전체 바이트가 같다고 주장하지 않습니다. 원문 라이선스가 이 설명보다 우선합니다.
---- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/출하목록.json
+--- 1.8.0/licenses/HEIC-GNU-runtime/출하목록.json
 +++ 현행소스/licenses/HEIC-GNU-runtime/출하목록.json
 @@ -0,0 +1,121 @@
 +{
@@ -4499,7 +4499,7 @@
 +  "binary_modified": false,
 +  "compiler_rebuild_tested": false,
 +  "pgp_signature_verified": false
-+}--- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-gcc-16.2.0-3/.SRCINFO
++}--- 1.8.0/licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-gcc-16.2.0-3/.SRCINFO
 +++ 현행소스/licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-gcc-16.2.0-3/.SRCINFO
 @@ -0,0 +1,173 @@
 +# Generated by makepkg 6.1.0
@@ -4675,7 +4675,7 @@
 +	depends = mingw-w64-ucrt-x86_64-mpfr
 +	depends = mingw-w64-ucrt-x86_64-zlib
 +	depends = mingw-w64-ucrt-x86_64-zstd
---- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-gcc-16.2.0-3/PKGBUILD
+--- 1.8.0/licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-gcc-16.2.0-3/PKGBUILD
 +++ 현행소스/licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-gcc-16.2.0-3/PKGBUILD
 @@ -0,0 +1,627 @@
 +# Maintainer:  Alexey Pavlov <alexpux@gmail.com>
@@ -5305,7 +5305,7 @@
 +  eval "${_func/#${_short}/package_${_name}}"
 +done
 +# template end;
---- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1/.SRCINFO
+--- 1.8.0/licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1/.SRCINFO
 +++ 현행소스/licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1/.SRCINFO
 @@ -0,0 +1,32 @@
 +# Generated by makepkg 6.1.0
@@ -5340,7 +5340,7 @@
 +	provides = mingw-w64-ucrt-x86_64-libwinpthread-git
 +	conflicts = mingw-w64-ucrt-x86_64-libwinpthread-git
 +	replaces = mingw-w64-ucrt-x86_64-libwinpthread-git
---- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1/PKGBUILD
+--- 1.8.0/licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1/PKGBUILD
 +++ 현행소스/licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1/PKGBUILD
 @@ -0,0 +1,127 @@
 +# Maintainer: Alexey Pavlov <alexpux@gmail.com>
@@ -5470,7 +5470,7 @@
 +# template end;
 +
 +# [1] https://locklessinc.com/articles/pthreads_on_windows/
---- 1.8.0 부분 보관/licenses/HEIC-GNU-runtime/프로그램-DLL목록.json
+--- 1.8.0/licenses/HEIC-GNU-runtime/프로그램-DLL목록.json
 +++ 현행소스/licenses/HEIC-GNU-runtime/프로그램-DLL목록.json
 @@ -0,0 +1,26 @@
 +[
@@ -5498,7 +5498,7 @@
 +    "size": 63840,
 +    "installed_wheel_and_built_program_identical": true
 +  }
-+]--- 1.8.0 부분 보관/licenses/Inno-Setup-LICENSE.txt
++]--- 1.8.0/licenses/Inno-Setup-LICENSE.txt
 +++ 현행소스/licenses/Inno-Setup-LICENSE.txt
 @@ -0,0 +1,32 @@
 +Inno Setup License
@@ -5532,7 +5532,7 @@
 +
 +Jordan Russell
 +jr-2020 AT jrsoftware.org
-+https://jrsoftware.org/--- 1.8.0 부분 보관/licenses/LGPL-3.0.txt
++https://jrsoftware.org/--- 1.8.0/licenses/LGPL-3.0.txt
 +++ 현행소스/licenses/LGPL-3.0.txt
 @@ -0,0 +1,165 @@
 +                   GNU LESSER GENERAL PUBLIC LICENSE
@@ -5700,7 +5700,7 @@
 +apply, that proxy's public statement of acceptance of any version is
 +permanent authorization for you to choose that version for the
 +Library.
---- 1.8.0 부분 보관/licenses/Lucide/LICENSE
+--- 1.8.0/licenses/Lucide/LICENSE
 +++ 현행소스/licenses/Lucide/LICENSE
 @@ -0,0 +1,43 @@
 +ISC License
@@ -5746,7 +5746,7 @@
 +LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 +OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 +SOFTWARE.
---- 1.8.0 부분 보관/licenses/Lucide/원본출처.json
+--- 1.8.0/licenses/Lucide/원본출처.json
 +++ 현행소스/licenses/Lucide/원본출처.json
 @@ -0,0 +1,131 @@
 +{
@@ -5879,7 +5879,7 @@
 +    }
 +  ],
 +  "svg_security": "12개 XML 구조 검사: script/foreignObject/이벤트 속성/href/DTD/entity 없음; 원문 바이트 보존"
-+}--- 1.8.0 부분 보관/licenses/Mesa-LICENSE.html
++}--- 1.8.0/licenses/Mesa-LICENSE.html
 +++ 현행소스/licenses/Mesa-LICENSE.html
 @@ -0,0 +1,317 @@
 +<!DOCTYPE html>
@@ -6198,7 +6198,7 @@
 +  </script>
 +
 +  </body>
-+</html>--- 1.8.0 부분 보관/licenses/NanumGothic-OFL.txt
++</html>--- 1.8.0/licenses/NanumGothic-OFL.txt
 +++ 현행소스/licenses/NanumGothic-OFL.txt
 @@ -0,0 +1,126 @@
 +Nanum Gothic Bold — Copyright (c) 2010, NAVER Corporation. SIL Open Font License 1.1
@@ -6327,7 +6327,7 @@
 +Copyright: 2018, Changwoo Ryu
 +License: CC0-1.0
 + See /usr/share/common-licenses/CC0-1.0 for the full license.
---- 1.8.0 부분 보관/licenses/OCR/GPL-3.0.txt
+--- 1.8.0/licenses/OCR/GPL-3.0.txt
 +++ 현행소스/licenses/OCR/GPL-3.0.txt
 @@ -0,0 +1,674 @@
 +                    GNU GENERAL PUBLIC LICENSE
@@ -7004,7 +7004,7 @@
 +the library.  If this is what you want to do, use the GNU Lesser General
 +Public License instead of this License.  But first, please read
 +<https://www.gnu.org/licenses/why-not-lgpl.html>.
---- 1.8.0 부분 보관/licenses/OCR/MSYS2-구성요소.json
+--- 1.8.0/licenses/OCR/MSYS2-구성요소.json
 +++ 현행소스/licenses/OCR/MSYS2-구성요소.json
 @@ -0,0 +1,1792 @@
 +{
@@ -8798,7 +8798,7 @@
 +    }
 +  ],
 +  "explanation": "giflib/libjpeg-turbo는 허용 라이선스이며 Tesseract가 선언한 동일 버전의 원문 고지와 소스를 제공한다. 바이너리 SHA 동일성은 확인하지 못했으며 확인한 것으로 표시하지 않는다."
-+}--- 1.8.0 부분 보관/licenses/OCR/Tesseract-소스다운로드.json
++}--- 1.8.0/licenses/OCR/Tesseract-소스다운로드.json
 +++ 현행소스/licenses/OCR/Tesseract-소스다운로드.json
 @@ -0,0 +1,12 @@
 +[
@@ -8812,7 +8812,7 @@
 +    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
 +    "bytes": 35149
 +  }
-+]--- 1.8.0 부분 보관/licenses/OCR/Tesseract-원본다운로드.json
++]--- 1.8.0/licenses/OCR/Tesseract-원본다운로드.json
 +++ 현행소스/licenses/OCR/Tesseract-원본다운로드.json
 @@ -0,0 +1,6 @@
 +{
@@ -8820,7 +8820,7 @@
 +  "sha256": "bee9e3434bd94fd65387d9be28cd467a41f61b1275383b55b0f59a1331270ae4",
 +  "expected_source": "winget show tesseract-ocr.tesseract 5.5.3",
 +  "bytes": 26573224
-+}--- 1.8.0 부분 보관/licenses/OCR/brotli/PKGINFO.txt
++}--- 1.8.0/licenses/OCR/brotli/PKGINFO.txt
 +++ 현행소스/licenses/OCR/brotli/PKGINFO.txt
 @@ -0,0 +1,15 @@
 +# Generated by makepkg 6.1.0
@@ -8838,7 +8838,7 @@
 +makedepend = mingw-w64-x86_64-cc
 +makedepend = mingw-w64-x86_64-cmake
 +makedepend = mingw-w64-x86_64-ninja
---- 1.8.0 부분 보관/licenses/OCR/brotli/brotli/LICENSE
+--- 1.8.0/licenses/OCR/brotli/brotli/LICENSE
 +++ 현행소스/licenses/OCR/brotli/brotli/LICENSE
 @@ -0,0 +1,19 @@
 +Copyright (c) 2009, 2010, 2013-2016 by the Brotli Authors.
@@ -8860,7 +8860,7 @@
 +LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 +OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 +THE SOFTWARE.
---- 1.8.0 부분 보관/licenses/OCR/bzip2/PKGINFO.txt
+--- 1.8.0/licenses/OCR/bzip2/PKGINFO.txt
 +++ 현행소스/licenses/OCR/bzip2/PKGINFO.txt
 @@ -0,0 +1,14 @@
 +# Generated by makepkg 6.0.2
@@ -8877,7 +8877,7 @@
 +depend = mingw-w64-x86_64-gcc-libs
 +makedepend = mingw-w64-x86_64-cc
 +makedepend = mingw-w64-x86_64-autotools
---- 1.8.0 부분 보관/licenses/OCR/bzip2/bzip2/LICENSE
+--- 1.8.0/licenses/OCR/bzip2/bzip2/LICENSE
 +++ 현행소스/licenses/OCR/bzip2/bzip2/LICENSE
 @@ -0,0 +1,42 @@
 +
@@ -8922,7 +8922,7 @@
 +bzip2/libbzip2 version 1.0.8 of 13 July 2019
 +
 +--------------------------------------------------------------------------
---- 1.8.0 부분 보관/licenses/OCR/curl-winssl/PKGINFO.txt
+--- 1.8.0/licenses/OCR/curl-winssl/PKGINFO.txt
 +++ 현행소스/licenses/OCR/curl-winssl/PKGINFO.txt
 @@ -0,0 +1,38 @@
 +# Generated by makepkg 6.1.0
@@ -8963,7 +8963,7 @@
 +makedepend = mingw-w64-x86_64-nghttp2
 +makedepend = mingw-w64-x86_64-nghttp3
 +makedepend = mingw-w64-x86_64-ngtcp2
---- 1.8.0 부분 보관/licenses/OCR/curl-winssl/curl/LICENSE
+--- 1.8.0/licenses/OCR/curl-winssl/curl/LICENSE
 +++ 현행소스/licenses/OCR/curl-winssl/curl/LICENSE
 @@ -0,0 +1,22 @@
 +COPYRIGHT AND PERMISSION NOTICE
@@ -8988,7 +8988,7 @@
 +Except as contained in this notice, the name of a copyright holder shall not
 +be used in advertising or otherwise to promote the sale, use or other dealings
 +in this Software without prior written authorization of the copyright holder.
---- 1.8.0 부분 보관/licenses/OCR/expat/PKGINFO.txt
+--- 1.8.0/licenses/OCR/expat/PKGINFO.txt
 +++ 현행소스/licenses/OCR/expat/PKGINFO.txt
 @@ -0,0 +1,15 @@
 +# Generated by makepkg 6.1.0
@@ -9006,7 +9006,7 @@
 +makedepend = mingw-w64-x86_64-cc
 +makedepend = mingw-w64-x86_64-cmake
 +makedepend = mingw-w64-x86_64-ninja
---- 1.8.0 부분 보관/licenses/OCR/expat/expat/COPYING
+--- 1.8.0/licenses/OCR/expat/expat/COPYING
 +++ 현행소스/licenses/OCR/expat/expat/COPYING
 @@ -0,0 +1,21 @@
 +Copyright (c) 1998-2000 Thai Open Source Software Center Ltd and Clark Cooper
@@ -9030,7 +9030,7 @@
 +CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 +TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 +SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
---- 1.8.0 부분 보관/licenses/OCR/gettext-runtime/PKGINFO.txt
+--- 1.8.0/licenses/OCR/gettext-runtime/PKGINFO.txt
 +++ 현행소스/licenses/OCR/gettext-runtime/PKGINFO.txt
 @@ -0,0 +1,20 @@
 +# Generated by makepkg 6.1.0
@@ -9053,7 +9053,7 @@
 +makedepend = mingw-w64-x86_64-ncurses
 +makedepend = mingw-w64-x86_64-libiconv
 +makedepend = groff
---- 1.8.0 부분 보관/licenses/OCR/gettext-runtime/gettext-runtime/COPYING
+--- 1.8.0/licenses/OCR/gettext-runtime/gettext-runtime/COPYING
 +++ 현행소스/licenses/OCR/gettext-runtime/gettext-runtime/COPYING
 @@ -0,0 +1,13 @@
 +The gettext-runtime package is partially under the LGPL and partially under
@@ -9069,7 +9069,7 @@
 +directory:
 +  - the _programs_ gettext, ngettext, envsubst,
 +  - the documentation.
---- 1.8.0 부분 보관/licenses/OCR/gettext-runtime/gettext-runtime/intl/COPYING.LIB
+--- 1.8.0/licenses/OCR/gettext-runtime/gettext-runtime/intl/COPYING.LIB
 +++ 현행소스/licenses/OCR/gettext-runtime/gettext-runtime/intl/COPYING.LIB
 @@ -0,0 +1,510 @@
 +                  GNU LESSER GENERAL PUBLIC LICENSE
@@ -9573,11 +9573,11 @@
 +  Moe Ghoul, President of Vice
 +
 +That's all there is to it!
---- 1.8.0 부분 보관/licenses/OCR/gettext-runtime/gettext-runtime/libasprintf/COPYING
+--- 1.8.0/licenses/OCR/gettext-runtime/gettext-runtime/libasprintf/COPYING
 +++ 현행소스/licenses/OCR/gettext-runtime/gettext-runtime/libasprintf/COPYING
 @@ -0,0 +1 @@
 +The libasprintf package is under the LGPL, see file COPYING.LIB.
---- 1.8.0 부분 보관/licenses/OCR/gettext-runtime/gettext-runtime/libasprintf/COPYING.LIB
+--- 1.8.0/licenses/OCR/gettext-runtime/gettext-runtime/libasprintf/COPYING.LIB
 +++ 현행소스/licenses/OCR/gettext-runtime/gettext-runtime/libasprintf/COPYING.LIB
 @@ -0,0 +1,510 @@
 +                  GNU LESSER GENERAL PUBLIC LICENSE
@@ -10081,7 +10081,7 @@
 +  Moe Ghoul, President of Vice
 +
 +That's all there is to it!
---- 1.8.0 부분 보관/licenses/OCR/giflib/PKGINFO.txt
+--- 1.8.0/licenses/OCR/giflib/PKGINFO.txt
 +++ 현행소스/licenses/OCR/giflib/PKGINFO.txt
 @@ -0,0 +1,14 @@
 +# Generated by makepkg 6.0.2
@@ -10098,7 +10098,7 @@
 +depend = mingw-w64-x86_64-gcc-libs
 +makedepend = mingw-w64-x86_64-cc
 +makedepend = xmlto
---- 1.8.0 부분 보관/licenses/OCR/jbigkit/PKGINFO.txt
+--- 1.8.0/licenses/OCR/jbigkit/PKGINFO.txt
 +++ 현행소스/licenses/OCR/jbigkit/PKGINFO.txt
 @@ -0,0 +1,14 @@
 +# Generated by makepkg 6.0.2
@@ -10115,7 +10115,7 @@
 +depend = mingw-w64-x86_64-gcc-libs
 +makedepend = mingw-w64-x86_64-cc
 +makedepend = mingw-w64-x86_64-libtool
---- 1.8.0 부분 보관/licenses/OCR/jbigkit/jbigkit/COPYING
+--- 1.8.0/licenses/OCR/jbigkit/jbigkit/COPYING
 +++ 현행소스/licenses/OCR/jbigkit/jbigkit/COPYING
 @@ -0,0 +1,344 @@
 +		    GNU GENERAL PUBLIC LICENSE
@@ -10457,7 +10457,7 @@
 +consider it more useful to permit linking proprietary applications with the
 +library.  If this is what you want to do, use the GNU Library General
 +Public License instead of this License.
---- 1.8.0 부분 보관/licenses/OCR/leptonica/PKGINFO.txt
+--- 1.8.0/licenses/OCR/leptonica/PKGINFO.txt
 +++ 현행소스/licenses/OCR/leptonica/PKGINFO.txt
 @@ -0,0 +1,23 @@
 +# Generated by makepkg 6.1.0
@@ -10483,7 +10483,7 @@
 +makedepend = mingw-w64-x86_64-cmake
 +makedepend = mingw-w64-x86_64-ninja
 +checkdepend = mingw-w64-x86_64-gnuplot
---- 1.8.0 부분 보관/licenses/OCR/leptonica/leptonica/LICENSE
+--- 1.8.0/licenses/OCR/leptonica/leptonica/LICENSE
 +++ 현행소스/licenses/OCR/leptonica/leptonica/LICENSE
 @@ -0,0 +1,26 @@
 +/*====================================================================*
@@ -10512,7 +10512,7 @@
 + -  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 + *====================================================================*/
 +
---- 1.8.0 부분 보관/licenses/OCR/lerc/PKGINFO.txt
+--- 1.8.0/licenses/OCR/lerc/PKGINFO.txt
 +++ 현행소스/licenses/OCR/lerc/PKGINFO.txt
 @@ -0,0 +1,16 @@
 +# Generated by makepkg 6.1.0
@@ -10531,7 +10531,7 @@
 +makedepend = mingw-w64-x86_64-cc
 +makedepend = mingw-w64-x86_64-cmake
 +makedepend = mingw-w64-x86_64-ninja
---- 1.8.0 부분 보관/licenses/OCR/lerc/lerc/LICENSE
+--- 1.8.0/licenses/OCR/lerc/lerc/LICENSE
 +++ 현행소스/licenses/OCR/lerc/lerc/LICENSE
 @@ -0,0 +1,101 @@
 +Apache License - 2.0
@@ -10634,7 +10634,7 @@
 +to indemnify, defend, and hold each Contributor harmless for any liability incurred by, or claims asserted against, such Contributor by reason of your
 +accepting any such warranty or additional liability.
 +
-+END OF TERMS AND CONDITIONS--- 1.8.0 부분 보관/licenses/OCR/libarchive/PKGINFO.txt
++END OF TERMS AND CONDITIONS--- 1.8.0/licenses/OCR/libarchive/PKGINFO.txt
 +++ 현행소스/licenses/OCR/libarchive/PKGINFO.txt
 @@ -0,0 +1,26 @@
 +# Generated by makepkg 6.1.0
@@ -10663,7 +10663,7 @@
 +makedepend = mingw-w64-x86_64-cc
 +makedepend = mingw-w64-x86_64-cmake
 +makedepend = mingw-w64-x86_64-ninja
---- 1.8.0 부분 보관/licenses/OCR/libarchive/libarchive/LICENSE
+--- 1.8.0/licenses/OCR/libarchive/libarchive/LICENSE
 +++ 현행소스/licenses/OCR/libarchive/libarchive/LICENSE
 @@ -0,0 +1,65 @@
 +The libarchive distribution as a whole is Copyright by Tim Kientzle
@@ -10731,7 +10731,7 @@
 +THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 +(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 +THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
---- 1.8.0 부분 보관/licenses/OCR/libb2/PKGINFO.txt
+--- 1.8.0/licenses/OCR/libb2/PKGINFO.txt
 +++ 현행소스/licenses/OCR/libb2/PKGINFO.txt
 @@ -0,0 +1,15 @@
 +# Generated by makepkg 6.1.0
@@ -10749,7 +10749,7 @@
 +depend = mingw-w64-x86_64-cc-libs
 +makedepend = mingw-w64-x86_64-autotools
 +makedepend = mingw-w64-x86_64-cc
---- 1.8.0 부분 보관/licenses/OCR/libb2/libb2/LICENSE
+--- 1.8.0/licenses/OCR/libb2/libb2/LICENSE
 +++ 현행소스/licenses/OCR/libb2/libb2/LICENSE
 @@ -0,0 +1,117 @@
 +CC0 1.0 Universal
@@ -10869,7 +10869,7 @@
 +For more information, please see
 +<http://creativecommons.org/publicdomain/zero/1.0/>
 +
---- 1.8.0 부분 보관/licenses/OCR/libdeflate/PKGINFO.txt
+--- 1.8.0/licenses/OCR/libdeflate/PKGINFO.txt
 +++ 현행소스/licenses/OCR/libdeflate/PKGINFO.txt
 @@ -0,0 +1,15 @@
 +# Generated by makepkg 6.1.0
@@ -10887,7 +10887,7 @@
 +makedepend = mingw-w64-x86_64-cc
 +makedepend = mingw-w64-x86_64-cmake
 +makedepend = mingw-w64-x86_64-ninja
---- 1.8.0 부분 보관/licenses/OCR/libdeflate/libdeflate/COPYING
+--- 1.8.0/licenses/OCR/libdeflate/libdeflate/COPYING
 +++ 현행소스/licenses/OCR/libdeflate/libdeflate/COPYING
 @@ -0,0 +1,22 @@
 +Copyright 2016 Eric Biggers
@@ -10912,7 +10912,7 @@
 +ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 +CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 +SOFTWARE.
---- 1.8.0 부분 보관/licenses/OCR/libiconv/PKGINFO.txt
+--- 1.8.0/licenses/OCR/libiconv/PKGINFO.txt
 +++ 현행소스/licenses/OCR/libiconv/PKGINFO.txt
 @@ -0,0 +1,17 @@
 +# Generated by makepkg 6.1.0
@@ -10932,7 +10932,7 @@
 +makedepend = mingw-w64-x86_64-autotools
 +makedepend = mingw-w64-x86_64-gettext-tools
 +makedepend = mingw-w64-x86_64-gperf
---- 1.8.0 부분 보관/licenses/OCR/libiconv/libiconv/COPYING
+--- 1.8.0/licenses/OCR/libiconv/libiconv/COPYING
 +++ 현행소스/licenses/OCR/libiconv/libiconv/COPYING
 @@ -0,0 +1,674 @@
 +                    GNU GENERAL PUBLIC LICENSE
@@ -11609,7 +11609,7 @@
 +the library.  If this is what you want to do, use the GNU Lesser General
 +Public License instead of this License.  But first, please read
 +<http://www.gnu.org/philosophy/why-not-lgpl.html>.
---- 1.8.0 부분 보관/licenses/OCR/libiconv/libiconv/COPYING.LIB
+--- 1.8.0/licenses/OCR/libiconv/libiconv/COPYING.LIB
 +++ 현행소스/licenses/OCR/libiconv/libiconv/COPYING.LIB
 @@ -0,0 +1,510 @@
 +                  GNU LESSER GENERAL PUBLIC LICENSE
@@ -12113,7 +12113,7 @@
 +  Moe Ghoul, President of Vice
 +
 +That's all there is to it!
---- 1.8.0 부분 보관/licenses/OCR/libiconv/libiconv/README
+--- 1.8.0/licenses/OCR/libiconv/libiconv/README
 +++ 현행소스/licenses/OCR/libiconv/libiconv/README
 @@ -0,0 +1,178 @@
 +            GNU LIBICONV - character set conversion library
@@ -12294,7 +12294,7 @@
 +
 +
 +Bruno Haible <bruno@clisp.org>
---- 1.8.0 부분 보관/licenses/OCR/libiconv/libiconv/libcharset/COPYING.LIB
+--- 1.8.0/licenses/OCR/libiconv/libiconv/libcharset/COPYING.LIB
 +++ 현행소스/licenses/OCR/libiconv/libiconv/libcharset/COPYING.LIB
 @@ -0,0 +1,510 @@
 +                  GNU LESSER GENERAL PUBLIC LICENSE
@@ -12798,7 +12798,7 @@
 +  Moe Ghoul, President of Vice
 +
 +That's all there is to it!
---- 1.8.0 부분 보관/licenses/OCR/libidn2/PKGINFO.txt
+--- 1.8.0/licenses/OCR/libidn2/PKGINFO.txt
 +++ 현행소스/licenses/OCR/libidn2/PKGINFO.txt
 @@ -0,0 +1,20 @@
 +# Generated by makepkg 6.1.0
@@ -12821,7 +12821,7 @@
 +makedepend = mingw-w64-x86_64-autotools
 +makedepend = mingw-w64-x86_64-gettext-tools
 +makedepend = mingw-w64-x86_64-gtk-doc
---- 1.8.0 부분 보관/licenses/OCR/libjpeg-turbo/PKGINFO.txt
+--- 1.8.0/licenses/OCR/libjpeg-turbo/PKGINFO.txt
 +++ 현행소스/licenses/OCR/libjpeg-turbo/PKGINFO.txt
 @@ -0,0 +1,20 @@
 +# Generated by makepkg 6.1.0
@@ -12844,7 +12844,7 @@
 +makedepend = mingw-w64-x86_64-cmake
 +makedepend = mingw-w64-x86_64-ninja
 +makedepend = mingw-w64-x86_64-nasm
---- 1.8.0 부분 보관/licenses/OCR/libjpeg-turbo/libjpeg-turbo/LICENSE.md
+--- 1.8.0/licenses/OCR/libjpeg-turbo/libjpeg-turbo/LICENSE.md
 +++ 현행소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/LICENSE.md
 @@ -0,0 +1,135 @@
 +libjpeg-turbo Licenses
@@ -12982,7 +12982,7 @@
 +attribution and endorsement protections to other entities.  Thus, it was
 +desirable to choose a license that granted us the same protections for new code
 +that were granted to the IJG for code derived from their software.
---- 1.8.0 부분 보관/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.ijg
+--- 1.8.0/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.ijg
 +++ 현행소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.ijg
 @@ -0,0 +1,260 @@
 +libjpeg-turbo note:  This file has been modified by The libjpeg-turbo Project
@@ -13245,7 +13245,7 @@
 +=====
 +
 +Please send bug reports, offers of help, etc. to jpeg-info@jpegclub.org.
---- 1.8.0 부분 보관/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md
+--- 1.8.0/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md
 +++ 현행소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md
 @@ -0,0 +1,375 @@
 +Background
@@ -13303,7 +13303,7 @@
 +Building libjpeg-turbo
 +======================
 +
-+Refer to [BUILDING.md](BUILDING.md) for complete instructions.
++Refer to [BUILDING.md](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/BUILDING.md) for complete instructions.
 +
 +
 +Using libjpeg-turbo
@@ -13319,10 +13319,10 @@
 +  generating planar YUV images and performing multiple simultaneous lossless
 +  transforms on an image.  The Java interface for libjpeg-turbo is written on
 +  top of the TurboJPEG API.  The TurboJPEG API is recommended for first-time
-+  users of libjpeg-turbo.  Refer to [tjcomp.c](src/tjcomp.c),
-+  [tjdecomp.c](src/tjdecomp.c), [tjtran.c](src/tjtran.c),
-+  [TJComp.java](java/TJComp.java), [TJDecomp.java](java/TJDecomp.java), and
-+  [TJTran.java](java/TJTran.java) for examples of its usage and to
++  users of libjpeg-turbo.  Refer to [tjcomp.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjcomp.c),
++  [tjdecomp.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjdecomp.c), [tjtran.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/tjtran.c),
++  [TJComp.java](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJComp.java), [TJDecomp.java](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJDecomp.java), and
++  [TJTran.java](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/java/TJTran.java) for examples of its usage and to
 +  <https://libjpeg-turbo.org/Documentation/Documentation> for API
 +  documentation.
 +
@@ -13332,8 +13332,8 @@
 +  more powerful.  The libjpeg API implementation in libjpeg-turbo is both
 +  API/ABI-compatible and mathematically compatible with libjpeg v6b.  It can
 +  also optionally be configured to be API/ABI-compatible with libjpeg v7 and v8
-+  (see below.)  Refer to [cjpeg.c](src/cjpeg.c) and [djpeg.c](src/djpeg.c) for
-+  examples of its usage and to [libjpeg.txt](doc/libjpeg.txt) for API
++  (see below.)  Refer to [cjpeg.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/cjpeg.c) and [djpeg.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/djpeg.c) for
++  examples of its usage and to [libjpeg.txt](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/doc/libjpeg.txt) for API
 +  documentation.
 +
 +There is no significant performance advantage to either API when both are used
@@ -13386,7 +13386,7 @@
 +
 +    #ifdef JCS_ALPHA_EXTENSIONS
 +
-+[jcstest.c](src/jcstest.c), located in the libjpeg-turbo source tree,
++[jcstest.c](https://github.com/libjpeg-turbo/libjpeg-turbo/blob/af9c1c268520a29adf98cad5138dafe612b3d318/src/jcstest.c), located in the libjpeg-turbo source tree,
 +demonstrates how to check for the existence of the colorspace extensions at
 +compile time and run time.
 +
@@ -13623,7 +13623,7 @@
 +to `cmake` when configuring the build or by setting the environment variable
 +`JSIMD_FORCENONE` to `1` at run time, when testing libjpeg-turbo with Valgrind,
 +MSan, or other memory debuggers.
---- 1.8.0 부분 보관/licenses/OCR/libjpeg-turbo/libjpeg-turbo/simd/jsimdext.inc
+--- 1.8.0/licenses/OCR/libjpeg-turbo/libjpeg-turbo/simd/jsimdext.inc
 +++ 현행소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/simd/jsimdext.inc
 @@ -0,0 +1,545 @@
 +;
@@ -14171,7 +14171,7 @@
 +%include "jsimdcfg.inc"
 +
 +; --------------------------------------------------------------------------
---- 1.8.0 부분 보관/licenses/OCR/libpng/PKGINFO.txt
+--- 1.8.0/licenses/OCR/libpng/PKGINFO.txt
 +++ 현행소스/licenses/OCR/libpng/PKGINFO.txt
 @@ -0,0 +1,16 @@
 +# Generated by makepkg 6.1.0
@@ -14190,7 +14190,7 @@
 +depend = mingw-w64-x86_64-zlib
 +makedepend = mingw-w64-x86_64-cc
 +makedepend = mingw-w64-x86_64-autotools
---- 1.8.0 부분 보관/licenses/OCR/libpng/libpng/LICENSE
+--- 1.8.0/licenses/OCR/libpng/libpng/LICENSE
 +++ 현행소스/licenses/OCR/libpng/libpng/LICENSE
 @@ -0,0 +1,134 @@
 +COPYRIGHT NOTICE, DISCLAIMER, and LICENSE
@@ -14327,7 +14327,7 @@
 +to supporting the PNG file format in commercial products.  If you use
 +this source code in a product, acknowledgment is not required but would
 +be appreciated.
---- 1.8.0 부분 보관/licenses/OCR/libpsl/PKGINFO.txt
+--- 1.8.0/licenses/OCR/libpsl/PKGINFO.txt
 +++ 현행소스/licenses/OCR/libpsl/PKGINFO.txt
 @@ -0,0 +1,22 @@
 +# Generated by makepkg 6.1.0
@@ -14352,7 +14352,7 @@
 +makedepend = mingw-w64-x86_64-pkgconf
 +makedepend = mingw-w64-x86_64-python
 +makedepend = mingw-w64-x86_64-gettext-tools
---- 1.8.0 부분 보관/licenses/OCR/libpsl/libpsl/COPYING
+--- 1.8.0/licenses/OCR/libpsl/libpsl/COPYING
 +++ 현행소스/licenses/OCR/libpsl/libpsl/COPYING
 @@ -0,0 +1,19 @@
 +Copyright (C) 2014-2024 Tim Rühsen
@@ -14374,7 +14374,7 @@
 +LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 +FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 +DEALINGS IN THE SOFTWARE.
---- 1.8.0 부분 보관/licenses/OCR/libssh2-wincng/PKGINFO.txt
+--- 1.8.0/licenses/OCR/libssh2-wincng/PKGINFO.txt
 +++ 현행소스/licenses/OCR/libssh2-wincng/PKGINFO.txt
 @@ -0,0 +1,19 @@
 +# Generated by makepkg 6.1.0
@@ -14396,7 +14396,7 @@
 +makedepend = mingw-w64-x86_64-autotools
 +makedepend = mingw-w64-x86_64-openssl
 +makedepend = mingw-w64-x86_64-zlib
---- 1.8.0 부분 보관/licenses/OCR/libssh2-wincng/libssh2/LICENSE
+--- 1.8.0/licenses/OCR/libssh2-wincng/libssh2/LICENSE
 +++ 현행소스/licenses/OCR/libssh2-wincng/libssh2/LICENSE
 @@ -0,0 +1,43 @@
 +/* Copyright (C) 2004-2007 Sara Golemon <sarag@libssh2.org>
@@ -14442,7 +14442,7 @@
 + * USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 + * OF SUCH DAMAGE.
 + */
---- 1.8.0 부분 보관/licenses/OCR/libtiff/PKGINFO.txt
+--- 1.8.0/licenses/OCR/libtiff/PKGINFO.txt
 +++ 현행소스/licenses/OCR/libtiff/PKGINFO.txt
 @@ -0,0 +1,24 @@
 +# Generated by makepkg 6.1.0
@@ -14469,7 +14469,7 @@
 +makedepend = mingw-w64-x86_64-cc
 +makedepend = mingw-w64-x86_64-autotools
 +makedepend = mingw-w64-x86_64-python-sphinx
---- 1.8.0 부분 보관/licenses/OCR/libtiff/libtiff/LICENSE.md
+--- 1.8.0/licenses/OCR/libtiff/libtiff/LICENSE.md
 +++ 현행소스/licenses/OCR/libtiff/libtiff/LICENSE.md
 @@ -0,0 +1,49 @@
 +# LibTIFF license
@@ -14521,7 +14521,7 @@
 +THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
 +IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
 +WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
---- 1.8.0 부분 보관/licenses/OCR/libunistring/PKGINFO.txt
+--- 1.8.0/licenses/OCR/libunistring/PKGINFO.txt
 +++ 현행소스/licenses/OCR/libunistring/PKGINFO.txt
 @@ -0,0 +1,15 @@
 +# Generated by makepkg 6.1.0
@@ -14539,7 +14539,7 @@
 +depend = mingw-w64-x86_64-libiconv
 +makedepend = mingw-w64-x86_64-cc
 +makedepend = mingw-w64-x86_64-autotools
---- 1.8.0 부분 보관/licenses/OCR/libunistring/libunistring/LICENSE
+--- 1.8.0/licenses/OCR/libunistring/libunistring/LICENSE
 +++ 현행소스/licenses/OCR/libunistring/libunistring/LICENSE
 @@ -0,0 +1,674 @@
 +                    GNU GENERAL PUBLIC LICENSE
@@ -15216,7 +15216,7 @@
 +the library.  If this is what you want to do, use the GNU Lesser General
 +Public License instead of this License.  But first, please read
 +<https://www.gnu.org/licenses/why-not-lgpl.html>.
---- 1.8.0 부분 보관/licenses/OCR/libunistring/libunistring/LICENSE.LIB
+--- 1.8.0/licenses/OCR/libunistring/libunistring/LICENSE.LIB
 +++ 현행소스/licenses/OCR/libunistring/libunistring/LICENSE.LIB
 @@ -0,0 +1,165 @@
 +		   GNU LESSER GENERAL PUBLIC LICENSE
@@ -15384,7 +15384,7 @@
 +apply, that proxy's public statement of acceptance of any version is
 +permanent authorization for you to choose that version for the
 +Library.
---- 1.8.0 부분 보관/licenses/OCR/libwebp/PKGINFO.txt
+--- 1.8.0/licenses/OCR/libwebp/PKGINFO.txt
 +++ 현행소스/licenses/OCR/libwebp/PKGINFO.txt
 @@ -0,0 +1,20 @@
 +# Generated by makepkg 6.1.0
@@ -15407,7 +15407,7 @@
 +makedepend = mingw-w64-x86_64-cc
 +makedepend = mingw-w64-x86_64-cmake
 +makedepend = mingw-w64-x86_64-ninja
---- 1.8.0 부분 보관/licenses/OCR/libwebp/libwebp/COPYING
+--- 1.8.0/licenses/OCR/libwebp/libwebp/COPYING
 +++ 현행소스/licenses/OCR/libwebp/libwebp/COPYING
 @@ -0,0 +1,30 @@
 +Copyright (c) 2010, Google Inc. All rights reserved.
@@ -15440,7 +15440,7 @@
 +(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 +OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 +
---- 1.8.0 부분 보관/licenses/OCR/libwinpthread/PKGINFO.txt
+--- 1.8.0/licenses/OCR/libwinpthread/PKGINFO.txt
 +++ 현행소스/licenses/OCR/libwinpthread/PKGINFO.txt
 @@ -0,0 +1,21 @@
 +# Generated by makepkg 6.1.0
@@ -15464,7 +15464,7 @@
 +makedepend = mingw-w64-x86_64-crt
 +makedepend = mingw-w64-x86_64-headers
 +makedepend = git
---- 1.8.0 부분 보관/licenses/OCR/libwinpthread/libwinpthread/COPYING
+--- 1.8.0/licenses/OCR/libwinpthread/libwinpthread/COPYING
 +++ 현행소스/licenses/OCR/libwinpthread/libwinpthread/COPYING
 @@ -0,0 +1,57 @@
 +Copyright (c) 2011 mingw-w64 project
@@ -15524,7 +15524,7 @@
 + * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 + * OF THE POSSIBILITY OF SUCH DAMAGE.
 + */
---- 1.8.0 부분 보관/licenses/OCR/lz4/PKGINFO.txt
+--- 1.8.0/licenses/OCR/lz4/PKGINFO.txt
 +++ 현행소스/licenses/OCR/lz4/PKGINFO.txt
 @@ -0,0 +1,15 @@
 +# Generated by makepkg 6.1.0
@@ -15542,7 +15542,7 @@
 +license = GPL2
 +makedepend = mingw-w64-x86_64-cc
 +checkdepend = diffutils
---- 1.8.0 부분 보관/licenses/OCR/openjpeg2/PKGINFO.txt
+--- 1.8.0/licenses/OCR/openjpeg2/PKGINFO.txt
 +++ 현행소스/licenses/OCR/openjpeg2/PKGINFO.txt
 @@ -0,0 +1,20 @@
 +# Generated by makepkg 6.1.0
@@ -15565,7 +15565,7 @@
 +makedepend = mingw-w64-x86_64-cc
 +makedepend = mingw-w64-x86_64-cmake
 +makedepend = mingw-w64-x86_64-ninja
---- 1.8.0 부분 보관/licenses/OCR/openjpeg2/openjpeg/LICENSE
+--- 1.8.0/licenses/OCR/openjpeg2/openjpeg/LICENSE
 +++ 현행소스/licenses/OCR/openjpeg2/openjpeg/LICENSE
 @@ -0,0 +1,39 @@
 +/*
@@ -15607,7 +15607,7 @@
 + * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 + * POSSIBILITY OF SUCH DAMAGE.
 + */
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/COPYING.RUNTIME.txt
+--- 1.8.0/licenses/OCR/ubuntu-gcc/COPYING.RUNTIME.txt
 +++ 현행소스/licenses/OCR/ubuntu-gcc/COPYING.RUNTIME.txt
 @@ -0,0 +1,73 @@
 +GCC RUNTIME LIBRARY EXCEPTION
@@ -15683,7 +15683,7 @@
 +presumption that third-party software is unaffected by the copyleft
 +requirements of the license of GCC.
 +
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/COPYING.txt
+--- 1.8.0/licenses/OCR/ubuntu-gcc/COPYING.txt
 +++ 현행소스/licenses/OCR/ubuntu-gcc/COPYING.txt
 @@ -0,0 +1,345 @@
 +		    GNU GENERAL PUBLIC LICENSE
@@ -16026,7 +16026,7 @@
 +consider it more useful to permit linking proprietary applications with the
 +library.  If this is what you want to do, use the GNU Library General
 +Public License instead of this License.
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/COPYING3.txt
+--- 1.8.0/licenses/OCR/ubuntu-gcc/COPYING3.txt
 +++ 현행소스/licenses/OCR/ubuntu-gcc/COPYING3.txt
 @@ -0,0 +1,674 @@
 +                    GNU GENERAL PUBLIC LICENSE
@@ -16703,7 +16703,7 @@
 +the library.  If this is what you want to do, use the GNU Lesser General
 +Public License instead of this License.  But first, please read
 +<http://www.gnu.org/philosophy/why-not-lgpl.html>.
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/README.md
+--- 1.8.0/licenses/OCR/ubuntu-gcc/README.md
 +++ 현행소스/licenses/OCR/ubuntu-gcc/README.md
 @@ -0,0 +1,55 @@
 +# GCC 런타임의 라이선스와 상응 소스
@@ -16761,7 +16761,7 @@
 +```
 +
 +`출하목록.json`과 `SHA256SUMS.txt`가 필요한 고지·상응 소스 파일을 지정합니다. 조사용 `*.deb`, `*-data.tar.*`, Ubuntu 13 후보 자료, 실패 기록은 배포 대상이 아닙니다. Ubuntu `13.2.0-6ubuntu1+26.1` 후보의 두 DLL은 제품과 일치하지 않았으므로 실제 출처로 쓰지 않습니다.
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/SHA256SUMS.txt
+--- 1.8.0/licenses/OCR/ubuntu-gcc/SHA256SUMS.txt
 +++ 현행소스/licenses/OCR/ubuntu-gcc/SHA256SUMS.txt
 @@ -0,0 +1,28 @@
 +48d0f8f4862710e2eb722a6c50343c1a91b9279fbc900ef68da2a874e7eefeb9  README.md
@@ -16792,7 +16792,7 @@
 +a1eb8891796e436cb467bada79f3eaf071700e63c56b7d94d398c9bf4401d178  gcc-14_14.2.0.orig.tar.gz.origin.json
 +fcedb9982c31b5e69c0fc136e0cbf4233fdb531eb41773d2e8253ed0c3389a7f  gcc-14_14.2.0-19.debian.tar.xz.origin.json
 +4920f4808e536d872b11b4c3cb74f687770902a0514744176a25281b72874304  gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb.origin.json
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/debian-gcc14/README.source
+--- 1.8.0/licenses/OCR/ubuntu-gcc/debian-gcc14/README.source
 +++ 현행소스/licenses/OCR/ubuntu-gcc/debian-gcc14/README.source
 @@ -0,0 +1,29 @@
 +Patches applied to the Debian version of GCC
@@ -16824,7 +16824,7 @@
 +     RUNTESTFLAGS="guality.exp=pr54519-2.c" make -e check-gcc
 +   The test name is just the base name, but might be the path relative
 +   from gcc/testsuite for C++ tests.
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/debian-gcc14/changelog
+--- 1.8.0/licenses/OCR/ubuntu-gcc/debian-gcc14/changelog
 +++ 현행소스/licenses/OCR/ubuntu-gcc/debian-gcc14/changelog
 @@ -0,0 +1,17589 @@
 +gcc-14 (14.2.0-19) unstable; urgency=medium
@@ -34416,7 +34416,7 @@
 +  * Added latest Objective-C patches for GNUstep people (fixes bug #4657)
 +
 + -- Galen Hazelwood <galenh@micron.net>  Sun, 5 Jan 1997 09:57:36 -0700
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/debian-gcc14/copyright
+--- 1.8.0/licenses/OCR/ubuntu-gcc/debian-gcc14/copyright
 +++ 현행소스/licenses/OCR/ubuntu-gcc/debian-gcc14/copyright
 @@ -0,0 +1,1532 @@
 +This is the Debian GNU/Linux prepackaged version of the GNU compiler
@@ -35951,7 +35951,7 @@
 +# You should have received a copy of the GNU Lesser General Public
 +# License along with the GNU C Library; if not, see
 +# <https://www.gnu.org/licenses/>.
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/debian-gcc14/rules
+--- 1.8.0/licenses/OCR/ubuntu-gcc/debian-gcc14/rules
 +++ 현행소스/licenses/OCR/ubuntu-gcc/debian-gcc14/rules
 @@ -0,0 +1,100 @@
 +#! /usr/bin/make -f
@@ -36054,7 +36054,7 @@
 +
 +.NOTPARALLEL:
 +.PHONY: build clean binary-indep binary-arch binary release
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/debian14-runtime-control.txt
+--- 1.8.0/licenses/OCR/ubuntu-gcc/debian14-runtime-control.txt
 +++ 현행소스/licenses/OCR/ubuntu-gcc/debian14-runtime-control.txt
 @@ -0,0 +1,21 @@
 +Package: gcc-mingw-w64-x86-64-posix-runtime
@@ -36078,7 +36078,7 @@
 + Its purpose is both to provide the DLLs used during builds, and to
 + allow packages shipping Windows programs to depend on those DLLs
 + without pulling in the complete toolchain.
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/debian27/changelog
+--- 1.8.0/licenses/OCR/ubuntu-gcc/debian27/changelog
 +++ 현행소스/licenses/OCR/ubuntu-gcc/debian27/changelog
 @@ -0,0 +1,761 @@
 +gcc-mingw-w64 (27) unstable; urgency=medium
@@ -36842,7 +36842,7 @@
 +  * Initial release (Closes: #602997).
 +
 + -- Stephen Kitt <steve@sk2.org>  Tue, 16 Nov 2010 12:52:08 +0100
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/debian27/control
+--- 1.8.0/licenses/OCR/ubuntu-gcc/debian27/control
 +++ 현행소스/licenses/OCR/ubuntu-gcc/debian27/control
 @@ -0,0 +1,925 @@
 +# This file is generated using debian/rules control, do not edit
@@ -37770,7 +37770,7 @@
 + This empty package contains the documentation common to all
 + gcc-mingw-w64 packages.
 +Build-Profiles: <!stage1>
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/debian27/copyright
+--- 1.8.0/licenses/OCR/ubuntu-gcc/debian27/copyright
 +++ 현행소스/licenses/OCR/ubuntu-gcc/debian27/copyright
 @@ -0,0 +1,1714 @@
 +This work was packaged for Debian by:
@@ -39487,7 +39487,7 @@
 +    Copyright © 2010-2024 Stephen Kitt <skitt@debian.org>
 +
 +and is licensed under the GPL version 3 or later, see above.
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/debian27/rules
+--- 1.8.0/licenses/OCR/ubuntu-gcc/debian27/rules
 +++ 현행소스/licenses/OCR/ubuntu-gcc/debian27/rules
 @@ -0,0 +1,447 @@
 +#!/usr/bin/make -f
@@ -39937,7 +39937,7 @@
 +	find $(top_dir)/debian -name \*.ali -exec chmod 444 {} +
 +
 +.PHONY: mingw-w64-patch
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/download_one.py
+--- 1.8.0/licenses/OCR/ubuntu-gcc/download_one.py
 +++ 현행소스/licenses/OCR/ubuntu-gcc/download_one.py
 @@ -0,0 +1,34 @@
 +"""확인된 공식 URL의 원본 자료를 수집하며 실패 시 즉시 기록하고 종료한다."""
@@ -39974,7 +39974,7 @@
 +log.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 +print(json.dumps(report, ensure_ascii=False))
 +sys.exit(report["exit_code"])
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/finalize_sources.py
+--- 1.8.0/licenses/OCR/ubuntu-gcc/finalize_sources.py
 +++ 현행소스/licenses/OCR/ubuntu-gcc/finalize_sources.py
 @@ -0,0 +1,88 @@
 +"""확정된 상응 소스와 고지의 출하 목록을 검증해 기록한다."""
@@ -40065,7 +40065,7 @@
 +evidence.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 +print(json.dumps(report, ensure_ascii=False))
 +sys.exit(report["exit_code"])
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0-19.dsc
+--- 1.8.0/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0-19.dsc
 +++ 현행소스/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0-19.dsc
 @@ -0,0 +1,508 @@
 +-----BEGIN PGP SIGNED MESSAGE-----
@@ -40576,7 +40576,7 @@
 +YGqCuQSP/A==
 +=XM/C
 +-----END PGP SIGNATURE-----
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.dsc
+--- 1.8.0/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.dsc
 +++ 현행소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.dsc
 @@ -0,0 +1,95 @@
 +-----BEGIN PGP SIGNED MESSAGE-----
@@ -40674,7 +40674,7 @@
 +Rn8MhS8cajyEKb82tG65rnwrjwOUFn+g0nJfTLTZvTyoyCQvNEI=
 +=0n8y
 +-----END PGP SIGNATURE-----
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/inspect_runtime.py
+--- 1.8.0/licenses/OCR/ubuntu-gcc/inspect_runtime.py
 +++ 현행소스/licenses/OCR/ubuntu-gcc/inspect_runtime.py
 @@ -0,0 +1,60 @@
 +"""공식 DEB의 두 DLL과 원본 DLL을 비교하고 패키징 원문을 읽는다."""
@@ -40737,7 +40737,7 @@
 +(root / (prefix + "-runtime-comparison.json")).write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 +print(json.dumps({key: value for key, value in report.items() if key != "runtime_members"}, ensure_ascii=False))
 +sys.exit(report["exit_code"])
---- 1.8.0 부분 보관/licenses/OCR/ubuntu-gcc/출하목록.json
+--- 1.8.0/licenses/OCR/ubuntu-gcc/출하목록.json
 +++ 현행소스/licenses/OCR/ubuntu-gcc/출하목록.json
 @@ -0,0 +1,161 @@
 +{
@@ -40900,7 +40900,7 @@
 +  "vendor_modified": false,
 +  "compiler_rebuild_tested": false,
 +  "pgp_signature_verified": false
-+}--- 1.8.0 부분 보관/licenses/OCR/xz/PKGINFO.txt
++}--- 1.8.0/licenses/OCR/xz/PKGINFO.txt
 +++ 현행소스/licenses/OCR/xz/PKGINFO.txt
 @@ -0,0 +1,18 @@
 +# Generated by makepkg 6.1.0
@@ -40921,7 +40921,7 @@
 +makedepend = mingw-w64-x86_64-gettext-tools
 +makedepend = mingw-w64-x86_64-doxygen
 +makedepend = po4a
---- 1.8.0 부분 보관/licenses/OCR/xz/xz/COPYING
+--- 1.8.0/licenses/OCR/xz/xz/COPYING
 +++ 현행소스/licenses/OCR/xz/xz/COPYING
 @@ -0,0 +1,70 @@
 +
@@ -40994,7 +40994,7 @@
 +    If you have questions, don't hesitate to ask for more information.
 +    The contact information is in the README file.
 +
---- 1.8.0 부분 보관/licenses/OCR/xz/xz/COPYING.0BSD
+--- 1.8.0/licenses/OCR/xz/xz/COPYING.0BSD
 +++ 현행소스/licenses/OCR/xz/xz/COPYING.0BSD
 @@ -0,0 +1,11 @@
 +Permission to use, copy, modify, and/or distribute this
@@ -41008,7 +41008,7 @@
 +LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
 +NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 +CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
---- 1.8.0 부분 보관/licenses/OCR/xz/xz/COPYING.GPLv2
+--- 1.8.0/licenses/OCR/xz/xz/COPYING.GPLv2
 +++ 현행소스/licenses/OCR/xz/xz/COPYING.GPLv2
 @@ -0,0 +1,338 @@
 +                    GNU GENERAL PUBLIC LICENSE
@@ -41349,7 +41349,7 @@
 +consider it more useful to permit linking proprietary applications with the
 +library.  If this is what you want to do, use the GNU Lesser General
 +Public License instead of this License.
---- 1.8.0 부분 보관/licenses/OCR/xz/xz/COPYING.GPLv3
+--- 1.8.0/licenses/OCR/xz/xz/COPYING.GPLv3
 +++ 현행소스/licenses/OCR/xz/xz/COPYING.GPLv3
 @@ -0,0 +1,674 @@
 +                    GNU GENERAL PUBLIC LICENSE
@@ -42026,7 +42026,7 @@
 +the library.  If this is what you want to do, use the GNU Lesser General
 +Public License instead of this License.  But first, please read
 +<https://www.gnu.org/licenses/why-not-lgpl.html>.
---- 1.8.0 부분 보관/licenses/OCR/xz/xz/COPYING.LGPLv2.1
+--- 1.8.0/licenses/OCR/xz/xz/COPYING.LGPLv2.1
 +++ 현행소스/licenses/OCR/xz/xz/COPYING.LGPLv2.1
 @@ -0,0 +1,510 @@
 +                  GNU LESSER GENERAL PUBLIC LICENSE
@@ -42530,7 +42530,7 @@
 +  Moe Ghoul, President of Vice
 +
 +That's all there is to it!
---- 1.8.0 부분 보관/licenses/OCR/zlib/PKGINFO.txt
+--- 1.8.0/licenses/OCR/zlib/PKGINFO.txt
 +++ 현행소스/licenses/OCR/zlib/PKGINFO.txt
 @@ -0,0 +1,15 @@
 +# Generated by makepkg 6.1.0
@@ -42548,7 +42548,7 @@
 +makedepend = mingw-w64-x86_64-cc
 +makedepend = mingw-w64-x86_64-autotools
 +makedepend = mingw-w64-x86_64-bzip2
---- 1.8.0 부분 보관/licenses/OCR/zlib/zlib/LICENSE
+--- 1.8.0/licenses/OCR/zlib/zlib/LICENSE
 +++ 현행소스/licenses/OCR/zlib/zlib/LICENSE
 @@ -0,0 +1,22 @@
 +Copyright notice:
@@ -42573,7 +42573,7 @@
 +
 +  Jean-loup Gailly        Mark Adler
 +  jloup@gzip.org          madler@alumni.caltech.edu
---- 1.8.0 부분 보관/licenses/OCR/zstd/PKGINFO.txt
+--- 1.8.0/licenses/OCR/zstd/PKGINFO.txt
 +++ 현행소스/licenses/OCR/zstd/PKGINFO.txt
 @@ -0,0 +1,16 @@
 +# Generated by makepkg 6.1.0
@@ -42592,7 +42592,7 @@
 +makedepend = mingw-w64-x86_64-cc
 +makedepend = mingw-w64-x86_64-cmake
 +makedepend = mingw-w64-x86_64-ninja
---- 1.8.0 부분 보관/licenses/OCR/zstd/zstd/LICENSE
+--- 1.8.0/licenses/OCR/zstd/zstd/LICENSE
 +++ 현행소스/licenses/OCR/zstd/zstd/LICENSE
 @@ -0,0 +1,30 @@
 +BSD License
@@ -42625,7 +42625,7 @@
 +ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 +(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 +SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
---- 1.8.0 부분 보관/licenses/OCR/모델과실행.json
+--- 1.8.0/licenses/OCR/모델과실행.json
 +++ 현행소스/licenses/OCR/모델과실행.json
 @@ -0,0 +1,47 @@
 +{
@@ -42654,7 +42654,7 @@
 +        "tesseract.exe",
 +        "--version"
 +      ],
-+      "cwd": "C:\\Users\\PUVKID\\Desktop\\드래그 휠 Mono\\소스\\vendor\\tesseract",
++      "cwd": ".\\소스\\vendor\\tesseract",
 +      "exit_code": 0,
 +      "stdout": "tesseract v5.5.3.20260724\n leptonica-1.87.0\n  libgif 5.2.2 : libjpeg 8d (libjpeg-turbo 3.1.3) : libpng 1.6.58 : libtiff 4.7.2 : zlib 1.3.1 : libwebp 1.6.0 : libopenjp2 2.5.4\n Found AVX2\n Found AVX\n Found FMA\n Found SSE4.1\n Found libarchive 3.8.8 zlib/1.3.2 liblzma/5.8.3 bz2lib/1.0.8 liblz4/1.10.0 libzstd/1.5.7 expat/expat_2.8.2 cng/1.0 libb2/system\n Found libcurl/8.21.0 Schannel zlib/1.3.2 brotli/1.2.0 zstd/1.5.7 libidn2/2.3.8 libpsl/0.21.5 libssh2/1.11.1 WinLDAP\n",
 +      "stderr": ""
@@ -42666,7 +42666,7 @@
 +        "tessdata",
 +        "--list-langs"
 +      ],
-+      "cwd": "C:\\Users\\PUVKID\\Desktop\\드래그 휠 Mono\\소스\\vendor\\tesseract",
++      "cwd": ".\\소스\\vendor\\tesseract",
 +      "exit_code": 0,
 +      "stdout": "List of available languages in \"tessdata/\" (3):\neng\nkor\nosd\n",
 +      "stderr": ""
@@ -42674,12 +42674,12 @@
 +  ],
 +  "unicode_absolute_tessdata_failed": true,
 +  "ascii_relative_tessdata_passed": true
-+}--- 1.8.0 부분 보관/licenses/OCR/읽어주세요.md
++}--- 1.8.0/licenses/OCR/읽어주세요.md
 +++ 현행소스/licenses/OCR/읽어주세요.md
 @@ -0,0 +1,26 @@
 +# OCR 구성요소와 소스
 +
-+플립링의 OCR은 Tesseract를 별도 프로세스로 실행합니다. PUVKID가 OCR 엔진의 원저작자라고 주장하지 않습니다.
++플립링의 OCR은 Tesseract를 별도 프로세스로 실행합니다. 제작자이 OCR 엔진의 원저작자라고 주장하지 않습니다.
 +Tesseract 5.5.3.20260724 공식 Windows 실행 파일과 필요한 DLL만 원본 그대로 동봉합니다. 별도 관리자 설치는 필요하지 않습니다.
 +Tesseract 자체의 Apache-2.0 원문은 vendor/tesseract/doc/LICENSE에 있고 원본 저자 목록도 같은 doc에 있습니다.
 +libjbig의 원본 소스 jbig.c는 GPL 버전 2 또는 이후 버전 선택을 허용합니다. 이 OCR 결합 구성의 배포에는 GPL 버전 3을 선택하며 GPL-3.0.txt를 동봉합니다. Apache-2.0과 각 의존성의 원문 고지도 그대로 유지합니다.
@@ -42703,7 +42703,7 @@
 +eng·kor·osd는 tesseract-ocr/tessdata_fast의 고정 커밋 87416418657359cb625c412a48b6e1d6d41c29bd에서 내려받았습니다. 모델과실행.json에 SHA-256이 있습니다.
 +언어 자료의 Apache-2.0 원문은 vendor/tesseract/doc/tessdata_fast-LICENSE에 있습니다.
 +Windows 글꼴 파일은 동봉하지 않습니다. OCR용 tessdata/pdf.ttf는 공식 Tesseract 배포 자료이며 UI 시스템 글꼴과 별개입니다.
---- 1.8.0 부분 보관/licenses/OpenSSL-LICENSE.txt
+--- 1.8.0/licenses/OpenSSL-LICENSE.txt
 +++ 현행소스/licenses/OpenSSL-LICENSE.txt
 @@ -0,0 +1,177 @@
 +
@@ -42883,7 +42883,7 @@
 +      of your accepting any such warranty or additional liability.
 +
 +   END OF TERMS AND CONDITIONS
---- 1.8.0 부분 보관/licenses/Pillow/METADATA
+--- 1.8.0/licenses/Pillow/METADATA
 +++ 현행소스/licenses/Pillow/METADATA
 @@ -0,0 +1,182 @@
 +Metadata-Version: 2.4
@@ -43068,7 +43068,7 @@
 +If you cannot use GitHub, use the [Tidelift security contact](https://tidelift.com/security). Tidelift will coordinate the fix and disclosure.
 +
 +DO NOT report sensitive vulnerability information in public.
---- 1.8.0 부분 보관/licenses/Pillow/licenses/LICENSE
+--- 1.8.0/licenses/Pillow/licenses/LICENSE
 +++ 현행소스/licenses/Pillow/licenses/LICENSE
 @@ -0,0 +1,1634 @@
 +The Python Imaging Library (PIL) is
@@ -44700,7 +44700,7 @@
 +   misrepresented as being the original software.
 +
 +3. This notice may not be removed or altered from any source distribution.
---- 1.8.0 부분 보관/licenses/PySide6/METADATA
+--- 1.8.0/licenses/PySide6/METADATA
 +++ 현행소스/licenses/PySide6/METADATA
 @@ -0,0 +1,144 @@
 +Metadata-Version: 2.4
@@ -44847,7 +44847,7 @@
 +license. Using PyPi is the recommended installation source, because the
 +content of the wheels is valid for both cases. For more information, refer to
 +the [Qt Licensing page](https://www.qt.io/licensing/).
---- 1.8.0 부분 보관/licenses/PySide6/licenses/LicenseRef-Qt-Commercial.txt
+--- 1.8.0/licenses/PySide6/licenses/LicenseRef-Qt-Commercial.txt
 +++ 현행소스/licenses/PySide6/licenses/LicenseRef-Qt-Commercial.txt
 @@ -0,0 +1,8 @@
 +Licensees holding valid commercial Qt licenses may use this software in
@@ -44858,7 +44858,7 @@
 +
 +For the latest licensing terms and conditions, see https://www.qt.io/terms-conditions.
 +For further information use the contact form at https://www.qt.io/contact-us.
---- 1.8.0 부분 보관/licenses/PySide6_Addons/METADATA
+--- 1.8.0/licenses/PySide6_Addons/METADATA
 +++ 현행소스/licenses/PySide6_Addons/METADATA
 @@ -0,0 +1,121 @@
 +Metadata-Version: 2.4
@@ -44982,7 +44982,7 @@
 +license. Using PyPi is the recommended installation source, because the
 +content of the wheels is valid for both cases. For more information, refer to
 +the [Qt Licensing page](https://www.qt.io/licensing/).
---- 1.8.0 부분 보관/licenses/PySide6_Addons/licenses/LicenseRef-Qt-Commercial.txt
+--- 1.8.0/licenses/PySide6_Addons/licenses/LicenseRef-Qt-Commercial.txt
 +++ 현행소스/licenses/PySide6_Addons/licenses/LicenseRef-Qt-Commercial.txt
 @@ -0,0 +1,8 @@
 +Licensees holding valid commercial Qt licenses may use this software in
@@ -44993,7 +44993,7 @@
 +
 +For the latest licensing terms and conditions, see https://www.qt.io/terms-conditions.
 +For further information use the contact form at https://www.qt.io/contact-us.
---- 1.8.0 부분 보관/licenses/PySide6_Essentials/METADATA
+--- 1.8.0/licenses/PySide6_Essentials/METADATA
 +++ 현행소스/licenses/PySide6_Essentials/METADATA
 @@ -0,0 +1,103 @@
 +Metadata-Version: 2.4
@@ -45099,7 +45099,7 @@
 +license. Using PyPi is the recommended installation source, because the
 +content of the wheels is valid for both cases. For more information, refer to
 +the [Qt Licensing page](https://www.qt.io/licensing/).
---- 1.8.0 부분 보관/licenses/PySide6_Essentials/licenses/LicenseRef-Qt-Commercial.txt
+--- 1.8.0/licenses/PySide6_Essentials/licenses/LicenseRef-Qt-Commercial.txt
 +++ 현행소스/licenses/PySide6_Essentials/licenses/LicenseRef-Qt-Commercial.txt
 @@ -0,0 +1,8 @@
 +Licensees holding valid commercial Qt licenses may use this software in
@@ -45110,7 +45110,7 @@
 +
 +For the latest licensing terms and conditions, see https://www.qt.io/terms-conditions.
 +For further information use the contact form at https://www.qt.io/contact-us.
---- 1.8.0 부분 보관/licenses/PySide6_Pdf/METADATA
+--- 1.8.0/licenses/PySide6_Pdf/METADATA
 +++ 현행소스/licenses/PySide6_Pdf/METADATA
 @@ -0,0 +1,81 @@
 +Metadata-Version: 2.4
@@ -45194,7 +45194,7 @@
 +license. Using PyPi is the recommended installation source, because the
 +content of the wheels is valid for both cases. For more information, refer to
 +the [Qt Licensing page](https://www.qt.io/licensing/).
---- 1.8.0 부분 보관/licenses/PySide6_Pdf/licenses/LicenseRef-Qt-Commercial.txt
+--- 1.8.0/licenses/PySide6_Pdf/licenses/LicenseRef-Qt-Commercial.txt
 +++ 현행소스/licenses/PySide6_Pdf/licenses/LicenseRef-Qt-Commercial.txt
 @@ -0,0 +1,8 @@
 +Licensees holding valid commercial Qt licenses may use this software in
@@ -45205,7 +45205,7 @@
 +
 +For the latest licensing terms and conditions, see https://www.qt.io/terms-conditions.
 +For further information use the contact form at https://www.qt.io/contact-us.
---- 1.8.0 부분 보관/licenses/PySide6_WebEngine/METADATA
+--- 1.8.0/licenses/PySide6_WebEngine/METADATA
 +++ 현행소스/licenses/PySide6_WebEngine/METADATA
 @@ -0,0 +1,83 @@
 +Metadata-Version: 2.4
@@ -45291,7 +45291,7 @@
 +license. Using PyPi is the recommended installation source, because the
 +content of the wheels is valid for both cases. For more information, refer to
 +the [Qt Licensing page](https://www.qt.io/licensing/).
---- 1.8.0 부분 보관/licenses/PySide6_WebEngine/licenses/LicenseRef-Qt-Commercial.txt
+--- 1.8.0/licenses/PySide6_WebEngine/licenses/LicenseRef-Qt-Commercial.txt
 +++ 현행소스/licenses/PySide6_WebEngine/licenses/LicenseRef-Qt-Commercial.txt
 @@ -0,0 +1,8 @@
 +Licensees holding valid commercial Qt licenses may use this software in
@@ -45302,7 +45302,7 @@
 +
 +For the latest licensing terms and conditions, see https://www.qt.io/terms-conditions.
 +For further information use the contact form at https://www.qt.io/contact-us.
---- 1.8.0 부분 보관/licenses/Python-LICENSE.txt
+--- 1.8.0/licenses/Python-LICENSE.txt
 +++ 현행소스/licenses/Python-LICENSE.txt
 @@ -0,0 +1,502 @@
 +A. HISTORY OF THE SOFTWARE
@@ -45807,7 +45807,7 @@
 +the HTML Library software distribution is included in the file
 +docs/license.html_lib.
 +
---- 1.8.0 부분 보관/licenses/SUIT/OFL.txt
+--- 1.8.0/licenses/SUIT/OFL.txt
 +++ 현행소스/licenses/SUIT/OFL.txt
 @@ -0,0 +1,94 @@
 +Copyright (c) 2022, SUNN (http://sun.fo/suit),
@@ -45903,7 +45903,7 @@
 +INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
 +DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 +FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
-+OTHER DEALINGS IN THE FONT SOFTWARE.--- 1.8.0 부분 보관/licenses/SUIT/원본출처.json
++OTHER DEALINGS IN THE FONT SOFTWARE.--- 1.8.0/licenses/SUIT/원본출처.json
 +++ 현행소스/licenses/SUIT/원본출처.json
 @@ -0,0 +1,61 @@
 +{
@@ -45966,7 +45966,7 @@
 +    "previous_str_overload_test": "이 환경에서 한글 거짓 음성; 바인딩 내부 변환 원인은 단정하지 않음",
 +    "scope": "부모와 별도 deep 진단 근거를 기록했으며 본 기록 작성자가 추가 렌더링 시험을 실행한 것은 아님"
 +  }
-+}--- 1.8.0 부분 보관/licenses/altgraph/LICENSE
++}--- 1.8.0/licenses/altgraph/LICENSE
 +++ 현행소스/licenses/altgraph/LICENSE
 @@ -0,0 +1,18 @@
 +Copyright (c) 2004 Istvan Albert unless otherwise noted.
@@ -45987,7 +45987,7 @@
 +LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 +FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 +IN THE SOFTWARE.
---- 1.8.0 부분 보관/licenses/altgraph/METADATA
+--- 1.8.0/licenses/altgraph/METADATA
 +++ 현행소스/licenses/altgraph/METADATA
 @@ -0,0 +1,307 @@
 +Metadata-Version: 2.1
@@ -46297,7 +46297,7 @@
 +- It is now possible to run tests using 'python setup.py test'
 +
 +  (The actual testsuite is still very minimal though)
---- 1.8.0 부분 보관/licenses/charset-normalizer/METADATA
+--- 1.8.0/licenses/charset-normalizer/METADATA
 +++ 현행소스/licenses/charset-normalizer/METADATA
 @@ -0,0 +1,892 @@
 +Metadata-Version: 2.4
@@ -47192,7 +47192,7 @@
 +LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 +OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 +SOFTWARE.
---- 1.8.0 부분 보관/licenses/charset-normalizer/licenses/LICENSE
+--- 1.8.0/licenses/charset-normalizer/licenses/LICENSE
 +++ 현행소스/licenses/charset-normalizer/licenses/LICENSE
 @@ -0,0 +1,21 @@
 +MIT License
@@ -47216,7 +47216,7 @@
 +LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 +OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 +SOFTWARE.
---- 1.8.0 부분 보관/licenses/cssselect2/METADATA
+--- 1.8.0/licenses/cssselect2/METADATA
 +++ 현행소스/licenses/cssselect2/METADATA
 @@ -0,0 +1,64 @@
 +Metadata-Version: 2.5
@@ -47283,7 +47283,7 @@
 +3-clause license, without any additional terms or conditions. For full
 +authorship information, see the version control history.
 +
---- 1.8.0 부분 보관/licenses/cssselect2/licenses/LICENSE
+--- 1.8.0/licenses/cssselect2/licenses/LICENSE
 +++ 현행소스/licenses/cssselect2/licenses/LICENSE
 @@ -0,0 +1,29 @@
 +BSD 3-Clause License
@@ -47315,7 +47315,7 @@
 +CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 +OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 +OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
---- 1.8.0 부분 보관/licenses/et_xmlfile/METADATA
+--- 1.8.0/licenses/et_xmlfile/METADATA
 +++ 현행소스/licenses/et_xmlfile/METADATA
 @@ -0,0 +1,51 @@
 +Metadata-Version: 2.1
@@ -47369,7 +47369,7 @@
 +
 +The code was not developed with performance in mind, but turned out to be faster than the existing SAX-based implementation but is generally slower than lxml's xmlfile.
 +There is one area where an optimisation for lxml may negatively affect the performance of et_xmfile and that is when using the `.element()` method on the xmlfile context manager. It is, therefore, recommended simply to create Elements write these directly, as in the sample code.
---- 1.8.0 부분 보관/licenses/lxml/METADATA
+--- 1.8.0/licenses/lxml/METADATA
 +++ 현행소스/licenses/lxml/METADATA
 @@ -0,0 +1,89 @@
 +Metadata-Version: 2.4
@@ -47461,7 +47461,7 @@
 +  Issue found by Tomer Fichman.
 +
 +
---- 1.8.0 부분 보관/licenses/lxml/licenses/LICENSE.txt
+--- 1.8.0/licenses/lxml/licenses/LICENSE.txt
 +++ 현행소스/licenses/lxml/licenses/LICENSE.txt
 @@ -0,0 +1,31 @@
 +BSD 3-Clause License
@@ -47495,7 +47495,7 @@
 +LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 +NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 +SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
---- 1.8.0 부분 보관/licenses/lxml/licenses/LICENSES.txt
+--- 1.8.0/licenses/lxml/licenses/LICENSES.txt
 +++ 현행소스/licenses/lxml/licenses/LICENSES.txt
 @@ -0,0 +1,127 @@
 +lxml is copyright Infrae and distributed under the BSD license (see
@@ -47625,7 +47625,7 @@
 +Except as contained in this notice, the name of the authors shall not
 +be used in advertising or otherwise to promote the sale, use or other deal-
 +ings in this Software without prior written authorization from him.
---- 1.8.0 부분 보관/licenses/openpyxl/METADATA
+--- 1.8.0/licenses/openpyxl/METADATA
 +++ 현행소스/licenses/openpyxl/METADATA
 @@ -0,0 +1,86 @@
 +Metadata-Version: 2.1
@@ -47714,7 +47714,7 @@
 +* instructions for contributing
 +
 +Release notes: https://openpyxl.readthedocs.io/en/stable/changes.html
---- 1.8.0 부분 보관/licenses/packaging/METADATA
+--- 1.8.0/licenses/packaging/METADATA
 +++ 현행소스/licenses/packaging/METADATA
 @@ -0,0 +1,112 @@
 +Metadata-Version: 2.4
@@ -47829,13 +47829,13 @@
 +
 +.. _`Changelog documentation`: https://packaging.pypa.io/en/latest/changelog/
 +
---- 1.8.0 부분 보관/licenses/packaging/licenses/LICENSE
+--- 1.8.0/licenses/packaging/licenses/LICENSE
 +++ 현행소스/licenses/packaging/licenses/LICENSE
 @@ -0,0 +1,3 @@
 +This software is made available under the terms of *either* of the licenses
 +found in LICENSE.APACHE or LICENSE.BSD. Contributions to this software is made
 +under the terms of *both* these licenses.
---- 1.8.0 부분 보관/licenses/packaging/licenses/LICENSE.APACHE
+--- 1.8.0/licenses/packaging/licenses/LICENSE.APACHE
 +++ 현행소스/licenses/packaging/licenses/LICENSE.APACHE
 @@ -0,0 +1,177 @@
 +
@@ -48015,7 +48015,7 @@
 +      of your accepting any such warranty or additional liability.
 +
 +   END OF TERMS AND CONDITIONS
---- 1.8.0 부분 보관/licenses/packaging/licenses/LICENSE.BSD
+--- 1.8.0/licenses/packaging/licenses/LICENSE.BSD
 +++ 현행소스/licenses/packaging/licenses/LICENSE.BSD
 @@ -0,0 +1,23 @@
 +Copyright (c) Donald Stufft and individual contributors.
@@ -48041,7 +48041,7 @@
 +CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 +OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 +OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
---- 1.8.0 부분 보관/licenses/pefile/LICENSE
+--- 1.8.0/licenses/pefile/LICENSE
 +++ 현행소스/licenses/pefile/LICENSE
 @@ -0,0 +1,21 @@
 +The MIT License (MIT)
@@ -48065,7 +48065,7 @@
 +LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 +OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 +SOFTWARE.
---- 1.8.0 부분 보관/licenses/pefile/METADATA
+--- 1.8.0/licenses/pefile/METADATA
 +++ 현행소스/licenses/pefile/METADATA
 @@ -0,0 +1,34 @@
 +Metadata-Version: 2.1
@@ -48102,7 +48102,7 @@
 +gracefully.
 +
 +Copyright (c) 2005-2024 Ero Carrera <ero.carrera@gmail.com>
---- 1.8.0 부분 보관/licenses/pi-heif-decoder/METADATA
+--- 1.8.0/licenses/pi-heif-decoder/METADATA
 +++ 현행소스/licenses/pi-heif-decoder/METADATA
 @@ -0,0 +1,178 @@
 +Metadata-Version: 2.4
@@ -48283,7 +48283,7 @@
 +LGPL-3.0 libheif and libde265. Source and license locations for the bundled
 +libraries are recorded in `LICENSES_bundled.txt` inside the distribution.
 +No GPL components (x265, x264, …) are built or shipped.
---- 1.8.0 부분 보관/licenses/pi-heif-decoder/licenses/LICENSE.txt
+--- 1.8.0/licenses/pi-heif-decoder/licenses/LICENSE.txt
 +++ 현행소스/licenses/pi-heif-decoder/licenses/LICENSE.txt
 @@ -0,0 +1,30 @@
 +Copyright (c) 2021-2023, Pillow-Heif contributors.
@@ -48316,7 +48316,7 @@
 +THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 +(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 +OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
---- 1.8.0 부분 보관/licenses/pi-heif-decoder/licenses/LICENSES_bundled.txt
+--- 1.8.0/licenses/pi-heif-decoder/licenses/LICENSES_bundled.txt
 +++ 현행소스/licenses/pi-heif-decoder/licenses/LICENSES_bundled.txt
 @@ -0,0 +1,7 @@
 +This wheel bundles decoder-only libheif 1.23.4 and libde265. Both libraries
@@ -48326,7 +48326,7 @@
 +https://github.com/strukturag/libde265
 +
 +No x265, x264, AOM, dav1d, OpenH264, or encoder plugins are built or shipped.
---- 1.8.0 부분 보관/licenses/pyinstaller-hooks-contrib/METADATA
+--- 1.8.0/licenses/pyinstaller-hooks-contrib/METADATA
 +++ 현행소스/licenses/pyinstaller-hooks-contrib/METADATA
 @@ -0,0 +1,373 @@
 +Metadata-Version: 2.4
@@ -48702,7 +48702,7 @@
 +
 +If you plan to contribute frequently or are interested in becoming a developer,
 +send an email to `legorooj@protonmail.com` to let us know.
---- 1.8.0 부분 보관/licenses/pyinstaller-hooks-contrib/licenses/LICENSE
+--- 1.8.0/licenses/pyinstaller-hooks-contrib/licenses/LICENSE
 +++ 현행소스/licenses/pyinstaller-hooks-contrib/licenses/LICENSE
 @@ -0,0 +1,521 @@
 +============================================
@@ -49226,7 +49226,7 @@
 +   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 +   See the License for the specific language governing permissions and
 +   limitations under the License.
---- 1.8.0 부분 보관/licenses/pyinstaller/METADATA
+--- 1.8.0/licenses/pyinstaller/METADATA
 +++ 현행소스/licenses/pyinstaller/METADATA
 @@ -0,0 +1,213 @@
 +Metadata-Version: 2.4
@@ -49442,7 +49442,7 @@
 +
 +.. _`manual`: https://pyinstaller.org/en/v6.22.3/
 +.. _`Changelog`: https://pyinstaller.org/en/v6.22.3/CHANGES.html
---- 1.8.0 부분 보관/licenses/pyinstaller/licenses/COPYING.txt
+--- 1.8.0/licenses/pyinstaller/licenses/COPYING.txt
 +++ 현행소스/licenses/pyinstaller/licenses/COPYING.txt
 @@ -0,0 +1,648 @@
 +================================
@@ -50093,7 +50093,7 @@
 +LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 +OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 +SOFTWARE.
---- 1.8.0 부분 보관/licenses/pypdf/METADATA
+--- 1.8.0/licenses/pypdf/METADATA
 +++ 현행소스/licenses/pypdf/METADATA
 @@ -0,0 +1,182 @@
 +Metadata-Version: 2.5
@@ -50278,7 +50278,7 @@
 +========== 232 passed, 1 xfailed, 1 warning in 4.52s ==========
 +```
 +
---- 1.8.0 부분 보관/licenses/pypdf/licenses/LICENSE
+--- 1.8.0/licenses/pypdf/licenses/LICENSE
 +++ 현행소스/licenses/pypdf/licenses/LICENSE
 @@ -0,0 +1,29 @@
 +Copyright (c) 2006-2008, Mathieu Fenniak
@@ -50310,7 +50310,7 @@
 +CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 +ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 +POSSIBILITY OF SUCH DAMAGE.
---- 1.8.0 부분 보관/licenses/pypdfium2/METADATA
+--- 1.8.0/licenses/pypdfium2/METADATA
 +++ 현행소스/licenses/pypdfium2/METADATA
 @@ -0,0 +1,1065 @@
 +Metadata-Version: 2.4
@@ -51378,7 +51378,7 @@
 +* Convenience support models that wrap the raw PDFium/ctypes API
 +* Test code
 +* A script to build PDFium from source
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/LICENSES/Apache-2.0.txt
+--- 1.8.0/licenses/pypdfium2/licenses/LICENSES/Apache-2.0.txt
 +++ 현행소스/licenses/pypdfium2/licenses/LICENSES/Apache-2.0.txt
 @@ -0,0 +1,202 @@
 +
@@ -51583,7 +51583,7 @@
 +   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 +   See the License for the specific language governing permissions and
 +   limitations under the License.
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/LICENSES/BSD-3-Clause.txt
+--- 1.8.0/licenses/pypdfium2/licenses/LICENSES/BSD-3-Clause.txt
 +++ 현행소스/licenses/pypdfium2/licenses/LICENSES/BSD-3-Clause.txt
 @@ -0,0 +1,26 @@
 +Copyright (c) <year> <owner>.
@@ -51612,7 +51612,7 @@
 +ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 +(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 +SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/LICENSES/CC-BY-4.0.txt
+--- 1.8.0/licenses/pypdfium2/licenses/LICENSES/CC-BY-4.0.txt
 +++ 현행소스/licenses/pypdfium2/licenses/LICENSES/CC-BY-4.0.txt
 @@ -0,0 +1,317 @@
 +Creative Commons Attribution 4.0 International Public License
@@ -51932,7 +51932,7 @@
 +     as a limitation upon, or waiver of, any privileges and immunities
 +     that apply to the Licensor or You, including from the legal
 +     processes of any jurisdiction or authority.
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/abseil.txt
+--- 1.8.0/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/abseil.txt
 +++ 현행소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/abseil.txt
 @@ -0,0 +1,203 @@
 +
@@ -52138,7 +52138,7 @@
 +   See the License for the specific language governing permissions and
 +   limitations under the License.
 +
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/agg23.txt
+--- 1.8.0/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/agg23.txt
 +++ 현행소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/agg23.txt
 @@ -0,0 +1,14 @@
 +//----------------------------------------------------------------------------
@@ -52155,7 +52155,7 @@
 +//          mcseemagg@yahoo.com
 +//          http://www.antigrain.com
 +//----------------------------------------------------------------------------
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/fast_float.txt
+--- 1.8.0/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/fast_float.txt
 +++ 현행소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/fast_float.txt
 @@ -0,0 +1,27 @@
 +MIT License
@@ -52185,7 +52185,7 @@
 +OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
 +IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 +DEALINGS IN THE SOFTWARE.
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt
+--- 1.8.0/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt
 +++ 현행소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt
 @@ -0,0 +1,169 @@
 +                    The FreeType Project LICENSE
@@ -52357,7 +52357,7 @@
 +
 +
 +--- end of FTL.TXT ---
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt.source-sha256.json
+--- 1.8.0/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt.source-sha256.json
 +++ 현행소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt.source-sha256.json
 @@ -0,0 +1,7 @@
 +{
@@ -52367,7 +52367,7 @@
 +  "encoding_evidence": "ISO-8859-1: 비ASCII byte 0xA9 한 개는 라이선스의 copyright 기호",
 +  "conversion": "문자 내용 유지 UTF-8 인코딩 변환"
 +}
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/icu.txt
+--- 1.8.0/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/icu.txt
 +++ 현행소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/icu.txt
 @@ -0,0 +1,568 @@
 +UNICODE LICENSE V3
@@ -52938,7 +52938,7 @@
 +LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 +OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 +SOFTWARE.
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/lcms.txt
+--- 1.8.0/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/lcms.txt
 +++ 현행소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/lcms.txt
 @@ -0,0 +1,27 @@
 +//---------------------------------------------------------------------------------
@@ -52968,7 +52968,7 @@
 +//
 +// Version 2.19
 +//
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.ijg
+--- 1.8.0/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.ijg
 +++ 현행소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.ijg
 @@ -0,0 +1,260 @@
 +libjpeg-turbo note:  This file has been modified by The libjpeg-turbo Project
@@ -53231,7 +53231,7 @@
 +=====
 +
 +Please send bug reports, offers of help, etc. to jpeg-info@jpegclub.org.
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md
+--- 1.8.0/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md
 +++ 현행소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md
 @@ -0,0 +1,135 @@
 +libjpeg-turbo Licenses
@@ -53240,7 +53240,7 @@
 +libjpeg-turbo is covered by two compatible BSD-style open source licenses:
 +
 +- The IJG (Independent JPEG Group) License, which is listed in
-+  [README.ijg](README.ijg)
++  [README.ijg](libjpeg_turbo.ijg)
 +
 +  This license applies to the libjpeg API library and associated programs,
 +  including any code inherited from libjpeg and any modifications to that
@@ -53369,7 +53369,7 @@
 +attribution and endorsement protections to other entities.  Thus, it was
 +desirable to choose a license that granted us the same protections for new code
 +that were granted to the IJG for code derived from their software.
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libopenjpeg.txt
+--- 1.8.0/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libopenjpeg.txt
 +++ 현행소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libopenjpeg.txt
 @@ -0,0 +1,32 @@
 +/*
@@ -53404,7 +53404,7 @@
 + * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 + * POSSIBILITY OF SUCH DAMAGE.
 + */
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libpng.txt
+--- 1.8.0/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libpng.txt
 +++ 현행소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libpng.txt
 @@ -0,0 +1,134 @@
 +COPYRIGHT NOTICE, DISCLAIMER, and LICENSE
@@ -53541,7 +53541,7 @@
 +to supporting the PNG file format in commercial products.  If you use
 +this source code in a product, acknowledgment is not required but would
 +be appreciated.
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/llvm-libc.txt
+--- 1.8.0/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/llvm-libc.txt
 +++ 현행소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/llvm-libc.txt
 @@ -0,0 +1,278 @@
 +==============================================================================
@@ -53822,7 +53822,7 @@
 +LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 +OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS WITH THE
 +SOFTWARE.
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium-binaries.txt
+--- 1.8.0/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium-binaries.txt
 +++ 현행소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium-binaries.txt
 @@ -0,0 +1,9 @@
 +Copyright 2014-2025 Benoit Blanchon
@@ -53834,7 +53834,7 @@
 +THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 +
 +This package also includes third-party software. See the licenses/ directory for their respective licenses.
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium.txt
+--- 1.8.0/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium.txt
 +++ 현행소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium.txt
 @@ -0,0 +1,230 @@
 +Copyright 2014 The PDFium Authors
@@ -54067,7 +54067,7 @@
 +   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 +   See the License for the specific language governing permissions and
 +   limitations under the License.
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/simdutf.txt
+--- 1.8.0/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/simdutf.txt
 +++ 현행소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/simdutf.txt
 @@ -0,0 +1,18 @@
 +Copyright 2021 The simdutf authors
@@ -54088,7 +54088,7 @@
 +COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 +IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 +CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
---- 1.8.0 부분 보관/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/zlib.txt
+--- 1.8.0/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/zlib.txt
 +++ 현행소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/zlib.txt
 @@ -0,0 +1,29 @@
 +/* zlib.h -- interface of the 'zlib' general purpose compression library
@@ -54120,7 +54120,7 @@
 +  Comments) 1950 to 1952 at https://datatracker.ietf.org/doc/html/rfc1950
 +  (zlib format), rfc1951 (deflate format) and rfc1952 (gzip format).
 +*/
---- 1.8.0 부분 보관/licenses/python-docx/METADATA
+--- 1.8.0/licenses/python-docx/METADATA
 +++ 현행소스/licenses/python-docx/METADATA
 @@ -0,0 +1,58 @@
 +Metadata-Version: 2.4
@@ -54181,7 +54181,7 @@
 +```
 +
 +More information is available in the [python-docx documentation](https://python-docx.readthedocs.org/en/latest/)
---- 1.8.0 부분 보관/licenses/python-docx/licenses/LICENSE
+--- 1.8.0/licenses/python-docx/licenses/LICENSE
 +++ 현행소스/licenses/python-docx/licenses/LICENSE
 @@ -0,0 +1,20 @@
 +The MIT License (MIT)
@@ -54204,7 +54204,7 @@
 +LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 +OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 +THE SOFTWARE.
---- 1.8.0 부분 보관/licenses/python-pptx/LICENSE
+--- 1.8.0/licenses/python-pptx/LICENSE
 +++ 현행소스/licenses/python-pptx/LICENSE
 @@ -0,0 +1,20 @@
 +The MIT License (MIT)
@@ -54227,7 +54227,7 @@
 +LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 +OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 +THE SOFTWARE.
---- 1.8.0 부분 보관/licenses/python-pptx/METADATA
+--- 1.8.0/licenses/python-pptx/METADATA
 +++ 현행소스/licenses/python-pptx/METADATA
 @@ -0,0 +1,58 @@
 +Metadata-Version: 2.1
@@ -54288,7 +54288,7 @@
 +
 +.. _`examples with screenshots`:
 +   https://python-pptx.readthedocs.org/en/latest/user/quickstart.html
---- 1.8.0 부분 보관/licenses/pywin32-ctypes/LICENSE.txt
+--- 1.8.0/licenses/pywin32-ctypes/LICENSE.txt
 +++ 현행소스/licenses/pywin32-ctypes/LICENSE.txt
 @@ -0,0 +1,28 @@
 +This software is OSI Certified Open Source Software.
@@ -54319,7 +54319,7 @@
 +ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 +(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 +SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
---- 1.8.0 부분 보관/licenses/pywin32-ctypes/METADATA
+--- 1.8.0/licenses/pywin32-ctypes/METADATA
 +++ 현행소스/licenses/pywin32-ctypes/METADATA
 @@ -0,0 +1,134 @@
 +Metadata-Version: 2.1
@@ -54456,7 +54456,7 @@
 +- Add travis-ci integration using wine! (#2)
 +- Support basic library and resource loading (#1)
 +- mini_pywin32 is born
---- 1.8.0 부분 보관/licenses/rarfile/METADATA
+--- 1.8.0/licenses/rarfile/METADATA
 +++ 현행소스/licenses/rarfile/METADATA
 @@ -0,0 +1,97 @@
 +Metadata-Version: 2.4
@@ -54556,7 +54556,7 @@
 +.. _Git: https://github.com/markokr/rarfile
 +.. _Downloads: https://pypi.org/project/rarfile/#files
 +.. _Documentation: https://rarfile.readthedocs.io/
---- 1.8.0 부분 보관/licenses/rarfile/licenses/LICENSE
+--- 1.8.0/licenses/rarfile/licenses/LICENSE
 +++ 현행소스/licenses/rarfile/licenses/LICENSE
 @@ -0,0 +1,15 @@
 +
@@ -54574,7 +54574,7 @@
 +ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 +OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 +
---- 1.8.0 부분 보관/licenses/reportlab/METADATA
+--- 1.8.0/licenses/reportlab/METADATA
 +++ 현행소스/licenses/reportlab/METADATA
 @@ -0,0 +1,45 @@
 +Metadata-Version: 2.4
@@ -54622,7 +54622,7 @@
 +Dynamic: summary
 +
 +The ReportLab Toolkit. An Open Source Python library for generating PDFs and graphics.
---- 1.8.0 부분 보관/licenses/reportlab/licenses/LICENSE
+--- 1.8.0/licenses/reportlab/licenses/LICENSE
 +++ 현행소스/licenses/reportlab/licenses/LICENSE
 @@ -0,0 +1,29 @@
 +#####################################################################################
@@ -54654,7 +54654,7 @@
 +#	SUCH DAMAGE.
 +#
 +#####################################################################################
---- 1.8.0 부분 보관/licenses/setuptools/LICENSE
+--- 1.8.0/licenses/setuptools/LICENSE
 +++ 현행소스/licenses/setuptools/LICENSE
 @@ -0,0 +1,17 @@
 +Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -54674,7 +54674,7 @@
 +LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 +FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 +IN THE SOFTWARE.
---- 1.8.0 부분 보관/licenses/setuptools/METADATA
+--- 1.8.0/licenses/setuptools/METADATA
 +++ 현행소스/licenses/setuptools/METADATA
 @@ -0,0 +1,106 @@
 +Metadata-Version: 2.4
@@ -54783,7 +54783,7 @@
 +This project and the maintainers of thousands of other packages are working with Tidelift to deliver one enterprise subscription that covers all of the open source you use.
 +
 +`Learn more <https://tidelift.com/subscription/pkg/pypi-zipp?utm_source=pypi-zipp&utm_medium=referral&utm_campaign=github>`_.
---- 1.8.0 부분 보관/licenses/setuptools/licenses/LICENSE
+--- 1.8.0/licenses/setuptools/licenses/LICENSE
 +++ 현행소스/licenses/setuptools/licenses/LICENSE
 @@ -0,0 +1,18 @@
 +MIT License
@@ -54804,7 +54804,7 @@
 +EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 +IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 +USE OR OTHER DEALINGS IN THE SOFTWARE.
---- 1.8.0 부분 보관/licenses/setuptools/licenses/LICENSE.APACHE
+--- 1.8.0/licenses/setuptools/licenses/LICENSE.APACHE
 +++ 현행소스/licenses/setuptools/licenses/LICENSE.APACHE
 @@ -0,0 +1,177 @@
 +
@@ -54984,7 +54984,7 @@
 +      of your accepting any such warranty or additional liability.
 +
 +   END OF TERMS AND CONDITIONS
---- 1.8.0 부분 보관/licenses/setuptools/licenses/LICENSE.BSD
+--- 1.8.0/licenses/setuptools/licenses/LICENSE.BSD
 +++ 현행소스/licenses/setuptools/licenses/LICENSE.BSD
 @@ -0,0 +1,23 @@
 +Copyright (c) Donald Stufft and individual contributors.
@@ -55010,7 +55010,7 @@
 +CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 +OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 +OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
---- 1.8.0 부분 보관/licenses/setuptools/licenses/LICENSE.txt
+--- 1.8.0/licenses/setuptools/licenses/LICENSE.txt
 +++ 현행소스/licenses/setuptools/licenses/LICENSE.txt
 @@ -0,0 +1,21 @@
 +MIT License
@@ -55034,7 +55034,7 @@
 +OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 +ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 +OTHER DEALINGS IN THE SOFTWARE.
---- 1.8.0 부분 보관/licenses/shiboken6/METADATA
+--- 1.8.0/licenses/shiboken6/METADATA
 +++ 현행소스/licenses/shiboken6/METADATA
 @@ -0,0 +1,56 @@
 +Metadata-Version: 2.4
@@ -55093,7 +55093,7 @@
 +
 +More information on the available functions can be found
 +in our [official documentation](https://doc.qt.io/qtforpython/shiboken6/shibokenmodule.html)
---- 1.8.0 부분 보관/licenses/shiboken6/licenses/LicenseRef-Qt-Commercial.txt
+--- 1.8.0/licenses/shiboken6/licenses/LicenseRef-Qt-Commercial.txt
 +++ 현행소스/licenses/shiboken6/licenses/LicenseRef-Qt-Commercial.txt
 @@ -0,0 +1,8 @@
 +Licensees holding valid commercial Qt licenses may use this software in
@@ -55104,7 +55104,7 @@
 +
 +For the latest licensing terms and conditions, see https://www.qt.io/terms-conditions.
 +For further information use the contact form at https://www.qt.io/contact-us.
---- 1.8.0 부분 보관/licenses/svglib/METADATA
+--- 1.8.0/licenses/svglib/METADATA
 +++ 현행소스/licenses/svglib/METADATA
 @@ -0,0 +1,364 @@
 +Metadata-Version: 2.5
@@ -55471,7 +55471,7 @@
 +on GitHub (pull requests are also appreciated)!
 +If necessary, please include information about the operating system, as
 +well as the versions of `svglib`, ReportLab and Python being used!
---- 1.8.0 부분 보관/licenses/svglib/licenses/LICENSE.txt
+--- 1.8.0/licenses/svglib/licenses/LICENSE.txt
 +++ 현행소스/licenses/svglib/licenses/LICENSE.txt
 @@ -0,0 +1,165 @@
 +		   GNU LESSER GENERAL PUBLIC LICENSE
@@ -55639,7 +55639,7 @@
 +apply, that proxy's public statement of acceptance of any version is
 +permanent authorization for you to choose that version for the
 +Library.
---- 1.8.0 부분 보관/licenses/tinycss2/METADATA
+--- 1.8.0/licenses/tinycss2/METADATA
 +++ 현행소스/licenses/tinycss2/METADATA
 @@ -0,0 +1,66 @@
 +Metadata-Version: 2.4
@@ -55708,7 +55708,7 @@
 +3-clause license, without any additional terms or conditions. For full
 +authorship information, see the version control history.
 +
---- 1.8.0 부분 보관/licenses/tinycss2/licenses/LICENSE
+--- 1.8.0/licenses/tinycss2/licenses/LICENSE
 +++ 현행소스/licenses/tinycss2/licenses/LICENSE
 @@ -0,0 +1,29 @@
 +BSD 3-Clause License
@@ -55740,7 +55740,7 @@
 +CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 +OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 +OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
---- 1.8.0 부분 보관/licenses/typing_extensions/METADATA
+--- 1.8.0/licenses/typing_extensions/METADATA
 +++ 현행소스/licenses/typing_extensions/METADATA
 @@ -0,0 +1,73 @@
 +Metadata-Version: 2.4
@@ -55816,7 +55816,7 @@
 +See [CONTRIBUTING.md](https://github.com/python/typing_extensions/blob/main/CONTRIBUTING.md)
 +for how to contribute to `typing_extensions`.
 +
---- 1.8.0 부분 보관/licenses/typing_extensions/licenses/LICENSE
+--- 1.8.0/licenses/typing_extensions/licenses/LICENSE
 +++ 현행소스/licenses/typing_extensions/licenses/LICENSE
 @@ -0,0 +1,279 @@
 +A. HISTORY OF THE SOFTWARE
@@ -56098,7 +56098,7 @@
 +LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 +OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 +PERFORMANCE OF THIS SOFTWARE.
---- 1.8.0 부분 보관/licenses/webencodings/METADATA
+--- 1.8.0/licenses/webencodings/METADATA
 +++ 현행소스/licenses/webencodings/METADATA
 @@ -0,0 +1,71 @@
 +Metadata-Version: 2.5
@@ -56172,7 +56172,7 @@
 +without any additional terms or conditions. For full authorship information, see the
 +version control history.
 +
---- 1.8.0 부분 보관/licenses/webencodings/licenses/LICENSE
+--- 1.8.0/licenses/webencodings/licenses/LICENSE
 +++ 현행소스/licenses/webencodings/licenses/LICENSE
 @@ -0,0 +1,29 @@
 +BSD 3-Clause License
@@ -56204,7 +56204,7 @@
 +CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 +OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 +OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
---- 1.8.0 부분 보관/licenses/xlsxwriter/LICENSE.txt
+--- 1.8.0/licenses/xlsxwriter/LICENSE.txt
 +++ 현행소스/licenses/xlsxwriter/LICENSE.txt
 @@ -0,0 +1,25 @@
 +BSD 2-Clause License
@@ -56232,7 +56232,7 @@
 +CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 +OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 +OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
---- 1.8.0 부분 보관/licenses/xlsxwriter/METADATA
+--- 1.8.0/licenses/xlsxwriter/METADATA
 +++ 현행소스/licenses/xlsxwriter/METADATA
 @@ -0,0 +1,95 @@
 +Metadata-Version: 2.2
@@ -56330,7 +56330,7 @@
 +
 +Release notes: https://xlsxwriter.readthedocs.io/changes.html
 +
---- 1.8.0 부분 보관/licenses/구성요소.json
+--- 1.8.0/licenses/구성요소.json
 +++ 현행소스/licenses/구성요소.json
 @@ -0,0 +1,188 @@
 +[
@@ -56520,11 +56520,11 @@
 +    "homepage": "https://github.com/jmcnamara/XlsxWriter",
 +    "license": "BSD-2-Clause"
 +  }
-+]--- 1.8.0 부분 보관/offscreen-monitor.json
++]--- 1.8.0/offscreen-monitor.json
 +++ 현행소스/offscreen-monitor.json
 @@ -0,0 +1 @@
 +{"screens":[{"name":"릴리스 검증 가상 화면","x":0,"y":0,"width":2560,"height":1600,"logicalDpi":96,"logicalBaseDpi":96,"dpr":1.0}]}
---- 1.8.0 부분 보관/vendor/tesseract/doc/AUTHORS
+--- 1.8.0/vendor/tesseract/doc/AUTHORS
 +++ 현행소스/vendor/tesseract/doc/AUTHORS
 @@ -0,0 +1,51 @@
 +Ray Smith (lead developer) <theraysmith@gmail.com>
@@ -56578,7 +56578,7 @@
 +Stefan Weil
 +Nick White
 +Alexander Zaitsev
---- 1.8.0 부분 보관/vendor/tesseract/doc/LICENSE
+--- 1.8.0/vendor/tesseract/doc/LICENSE
 +++ 현행소스/vendor/tesseract/doc/LICENSE
 @@ -0,0 +1,202 @@
 +
@@ -56783,7 +56783,7 @@
 +   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 +   See the License for the specific language governing permissions and
 +   limitations under the License.
---- 1.8.0 부분 보관/vendor/tesseract/doc/README.md
+--- 1.8.0/vendor/tesseract/doc/README.md
 +++ 현행소스/vendor/tesseract/doc/README.md
 @@ -0,0 +1,132 @@
 +# Tesseract OCR
@@ -56918,7 +56918,7 @@
 +For the latest online version of the README.md see:
 +
 +<https://github.com/tesseract-ocr/tesseract/blob/main/README.md>
---- 1.8.0 부분 보관/vendor/tesseract/doc/tessdata_fast-LICENSE
+--- 1.8.0/vendor/tesseract/doc/tessdata_fast-LICENSE
 +++ 현행소스/vendor/tesseract/doc/tessdata_fast-LICENSE
 @@ -0,0 +1,202 @@
 +
@@ -57123,7 +57123,7 @@
 +   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 +   See the License for the specific language governing permissions and
 +   limitations under the License.
---- 1.8.0 부분 보관/vendor/tesseract/doc/tessdata_fast-README.md
+--- 1.8.0/vendor/tesseract/doc/tessdata_fast-README.md
 +++ 현행소스/vendor/tesseract/doc/tessdata_fast-README.md
 @@ -0,0 +1,63 @@
 +# tessdata_fast – Fast integer versions of trained models
@@ -57189,11 +57189,11 @@
 +
 +All data in the repository are licensed under the
 +Apache-2.0 License, see file [LICENSE](LICENSE).
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/alto
+--- 1.8.0/vendor/tesseract/tessdata/configs/alto
 +++ 현행소스/vendor/tesseract/tessdata/configs/alto
 @@ -0,0 +1 @@
 +tessedit_create_alto 1
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/ambigs.train
+--- 1.8.0/vendor/tesseract/tessdata/configs/ambigs.train
 +++ 현행소스/vendor/tesseract/tessdata/configs/ambigs.train
 @@ -0,0 +1,7 @@
 +tessedit_ambigs_training	1
@@ -57203,11 +57203,11 @@
 +load_number_dawg	0
 +ambigs_debug_level	3
 +load_fixed_length_dawgs	0
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/api_config
+--- 1.8.0/vendor/tesseract/tessdata/configs/api_config
 +++ 현행소스/vendor/tesseract/tessdata/configs/api_config
 @@ -0,0 +1 @@
 +tessedit_zero_rejection T
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/bigram
+--- 1.8.0/vendor/tesseract/tessdata/configs/bigram
 +++ 현행소스/vendor/tesseract/tessdata/configs/bigram
 @@ -0,0 +1,5 @@
 +load_bigram_dawg	True
@@ -57215,7 +57215,7 @@
 +tessedit_bigram_debug	3
 +save_raw_choices	True
 +save_alt_choices	True
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/box.train
+--- 1.8.0/vendor/tesseract/tessdata/configs/box.train
 +++ 현행소스/vendor/tesseract/tessdata/configs/box.train
 @@ -0,0 +1,12 @@
 +disable_character_fragments T
@@ -57230,7 +57230,7 @@
 +tessedit_resegment_from_boxes T
 +tessedit_train_from_boxes T
 +textord_no_rejects T
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/box.train.stderr
+--- 1.8.0/vendor/tesseract/tessdata/configs/box.train.stderr
 +++ 현행소스/vendor/tesseract/tessdata/configs/box.train.stderr
 @@ -0,0 +1,13 @@
 +file_type .bl
@@ -57246,41 +57246,41 @@
 +tessedit_train_from_boxes T
 +#textord_repeat_extraction F
 +textord_no_rejects T
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/digits
+--- 1.8.0/vendor/tesseract/tessdata/configs/digits
 +++ 현행소스/vendor/tesseract/tessdata/configs/digits
 @@ -0,0 +1 @@
 +tessedit_char_whitelist 0123456789-.
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/get.images
+--- 1.8.0/vendor/tesseract/tessdata/configs/get.images
 +++ 현행소스/vendor/tesseract/tessdata/configs/get.images
 @@ -0,0 +1 @@
 +tessedit_write_images T
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/hocr
+--- 1.8.0/vendor/tesseract/tessdata/configs/hocr
 +++ 현행소스/vendor/tesseract/tessdata/configs/hocr
 @@ -0,0 +1,2 @@
 +tessedit_create_hocr 1
 +hocr_font_info 0
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/inter
+--- 1.8.0/vendor/tesseract/tessdata/configs/inter
 +++ 현행소스/vendor/tesseract/tessdata/configs/inter
 @@ -0,0 +1,2 @@
 +interactive_display_mode				T
 +tessedit_display_outwords		T
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/kannada
+--- 1.8.0/vendor/tesseract/tessdata/configs/kannada
 +++ 현행소스/vendor/tesseract/tessdata/configs/kannada
 @@ -0,0 +1,4 @@
 +textord_skewsmooth_offset 8
 +textord_skewsmooth_offset2 8
 +textord_merge_desc 0.5
 +textord_no_rejects 1
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/linebox
+--- 1.8.0/vendor/tesseract/tessdata/configs/linebox
 +++ 현행소스/vendor/tesseract/tessdata/configs/linebox
 @@ -0,0 +1,2 @@
 +tessedit_resegment_from_line_boxes 1
 +tessedit_make_boxes_from_boxes 1
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/logfile
+--- 1.8.0/vendor/tesseract/tessdata/configs/logfile
 +++ 현행소스/vendor/tesseract/tessdata/configs/logfile
 @@ -0,0 +1 @@
 +debug_file tesseract.log
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/lstm.train
+--- 1.8.0/vendor/tesseract/tessdata/configs/lstm.train
 +++ 현행소스/vendor/tesseract/tessdata/configs/lstm.train
 @@ -0,0 +1,11 @@
 +file_type                   .bl
@@ -57294,41 +57294,41 @@
 +tessedit_train_line_recognizer T
 +textord_no_rejects T
 +tessedit_init_config_only T
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/lstmbox
+--- 1.8.0/vendor/tesseract/tessdata/configs/lstmbox
 +++ 현행소스/vendor/tesseract/tessdata/configs/lstmbox
 @@ -0,0 +1 @@
 +tessedit_create_lstmbox 1
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/lstmdebug
+--- 1.8.0/vendor/tesseract/tessdata/configs/lstmdebug
 +++ 현행소스/vendor/tesseract/tessdata/configs/lstmdebug
 @@ -0,0 +1,4 @@
 +stopper_debug_level 1
 +classify_debug_level 1
 +segsearch_debug_level 1
 +language_model_debug_level 3
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/makebox
+--- 1.8.0/vendor/tesseract/tessdata/configs/makebox
 +++ 현행소스/vendor/tesseract/tessdata/configs/makebox
 @@ -0,0 +1 @@
 +tessedit_create_boxfile 1
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/page
+--- 1.8.0/vendor/tesseract/tessdata/configs/page
 +++ 현행소스/vendor/tesseract/tessdata/configs/page
 @@ -0,0 +1,3 @@
 +tessedit_create_page_xml 1
 +# page_xml_polygon 1
 +# page_xml_level 0
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/pdf
+--- 1.8.0/vendor/tesseract/tessdata/configs/pdf
 +++ 현행소스/vendor/tesseract/tessdata/configs/pdf
 @@ -0,0 +1 @@
 +tessedit_create_pdf 1
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/quiet
+--- 1.8.0/vendor/tesseract/tessdata/configs/quiet
 +++ 현행소스/vendor/tesseract/tessdata/configs/quiet
 @@ -0,0 +1 @@
 +debug_file /dev/null
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/rebox
+--- 1.8.0/vendor/tesseract/tessdata/configs/rebox
 +++ 현행소스/vendor/tesseract/tessdata/configs/rebox
 @@ -0,0 +1,2 @@
 +tessedit_resegment_from_boxes 1
 +tessedit_make_boxes_from_boxes 1
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/strokewidth
+--- 1.8.0/vendor/tesseract/tessdata/configs/strokewidth
 +++ 현행소스/vendor/tesseract/tessdata/configs/strokewidth
 @@ -0,0 +1,12 @@
 +textord_show_blobs 0
@@ -57343,35 +57343,35 @@
 +textord_tabfind_show_vlines 0
 +textord_tabfind_show_images 1
 +tessedit_dump_pageseg_images 0
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/tsv
+--- 1.8.0/vendor/tesseract/tessdata/configs/tsv
 +++ 현행소스/vendor/tesseract/tessdata/configs/tsv
 @@ -0,0 +1 @@
 +tessedit_create_tsv 1
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/txt
+--- 1.8.0/vendor/tesseract/tessdata/configs/txt
 +++ 현행소스/vendor/tesseract/tessdata/configs/txt
 @@ -0,0 +1,3 @@
 +# This config file should be used with other config files which create renderers.
 +# usage example: tesseract eurotext.tif eurotext txt hocr pdf
 +tessedit_create_txt 1
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/unlv
+--- 1.8.0/vendor/tesseract/tessdata/configs/unlv
 +++ 현행소스/vendor/tesseract/tessdata/configs/unlv
 @@ -0,0 +1,2 @@
 +tessedit_write_unlv 1
 +unlv_tilde_crunching T
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/configs/wordstrbox
+--- 1.8.0/vendor/tesseract/tessdata/configs/wordstrbox
 +++ 현행소스/vendor/tesseract/tessdata/configs/wordstrbox
 @@ -0,0 +1 @@
 +tessedit_create_wordstrbox 1
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/tessconfigs/batch
+--- 1.8.0/vendor/tesseract/tessdata/tessconfigs/batch
 +++ 현행소스/vendor/tesseract/tessdata/tessconfigs/batch
 @@ -0,0 +1 @@
 +# No content needed as all defaults are correct.
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/tessconfigs/batch.nochop
+--- 1.8.0/vendor/tesseract/tessdata/tessconfigs/batch.nochop
 +++ 현행소스/vendor/tesseract/tessdata/tessconfigs/batch.nochop
 @@ -0,0 +1,2 @@
 +chop_enable 0
 +wordrec_enable_assoc 0
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/tessconfigs/matdemo
+--- 1.8.0/vendor/tesseract/tessdata/tessconfigs/matdemo
 +++ 현행소스/vendor/tesseract/tessdata/tessconfigs/matdemo
 @@ -0,0 +1,7 @@
 +#################################################
@@ -57381,7 +57381,7 @@
 +classify_enable_adaptive_debugger   1
 +matcher_debug_flags         6
 +matcher_debug_level       1
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/tessconfigs/msdemo
+--- 1.8.0/vendor/tesseract/tessdata/tessconfigs/msdemo
 +++ 현행소스/vendor/tesseract/tessdata/tessconfigs/msdemo
 @@ -0,0 +1,12 @@
 +#################################################
@@ -57396,11 +57396,11 @@
 +wordrec_display_all_blobs       1
 +wordrec_display_segmentations   2
 +classify_debug_level		1
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/tessconfigs/nobatch
+--- 1.8.0/vendor/tesseract/tessdata/tessconfigs/nobatch
 +++ 현행소스/vendor/tesseract/tessdata/tessconfigs/nobatch
 @@ -0,0 +1 @@
 +
---- 1.8.0 부분 보관/vendor/tesseract/tessdata/tessconfigs/segdemo
+--- 1.8.0/vendor/tesseract/tessdata/tessconfigs/segdemo
 +++ 현행소스/vendor/tesseract/tessdata/tessconfigs/segdemo
 @@ -0,0 +1,9 @@
 +#################################################
@@ -57412,17 +57412,17 @@
 +wordrec_display_segmentations   2
 +classify_debug_level		1
 +stopper_debug_level 1
---- 1.8.0 부분 보관/검토기록.md
+--- 1.8.0/검토기록.md
 +++ 현행소스/검토기록.md
 @@ -0,0 +1,104 @@
 +# 플립링 구현 검토
 +
-+확인일: 2026-10-21. 제작자: PUVKID. 무료 배포판입니다.
++확인일: 2026-10-21. 제작자: 프로젝트 제작자. 무료 배포판입니다.
 +
 +원본 기능과 변환 표는 기존 검토 결과 및 `engine.TABLE`을 기준으로 유지합니다.
 +원본 저장소 https://github.com/statewarrior483/DragWheel 의 `RadialMenu.swift`와 `AppDelegate.swift`는 동작과 화면 구성 확인에만 사용했습니다.
 +라이선스가 없는 원본의 코드·이미지·실행 파일은 복사하거나 고객 배포물에 넣지 않습니다.
-+PUVKID가 작성한 기존 Python 엔진은 변경하지 않았습니다.
++제작자이 작성한 기존 Python 엔진은 변경하지 않았습니다.
 +
 +## 요구 사항과 구현
 +
@@ -57431,7 +57431,7 @@
 +- 수동 파일·폴더 선택 기능은 트레이와 설정창에 남기며 선택 후 원형 메뉴에서 형식을 고릅니다.
 +- 설정창 자체에도 파일·폴더 드롭을 유지하며 드롭 후 원형 메뉴를 엽니다.
 +- 원형 메뉴는 어두운 원·부채꼴 출력·중앙 취소·비활성 도구 설명으로 구성합니다.
-+- UI는 동봉한 SUIT Regular·Medium·SemiBold 정적 TTF를 사용합니다. 공식 고정 커밋의 원본을 유지하고 `licenses/SUIT`에 SIL Open Font License 1.1 원문과 출처·해시를 보관합니다. Windows 글꼴 파일은 재배포하지 않습니다. PDF 엔진용 나눔고딕 Bold 파일과 OFL은 유지합니다. 제작자는 PUVKID로 표시합니다.
++- UI는 동봉한 SUIT Regular·Medium·SemiBold 정적 TTF를 사용합니다. 공식 고정 커밋의 원본을 유지하고 `licenses/SUIT`에 SIL Open Font License 1.1 원문과 출처·해시를 보관합니다. Windows 글꼴 파일은 재배포하지 않습니다. PDF 엔진용 나눔고딕 Bold 파일과 OFL은 유지합니다. 제작자는 제작자로 표시합니다.
 +- 등장 150ms, 퇴장 120ms, 선택 강조 100ms 모션은 Qt 타이머의 실제 프레임으로 그립니다.
 +- 창 크기·좌표·전체 투명도는 모션 중 고정합니다. 창 내부의 그림만 변화시킵니다.
 +- 기존 변환 분류 10개, 다중 파일 공통 형식, 도구 탐색, 순차 변환, 기록·알림·자동 시작은 유지합니다.
@@ -57466,7 +57466,7 @@
 +## Mono 배포 변경
 +
 +사용자 요청으로 앱 정보 화면에서 공개 기능 참고·새 Windows 앱·원본 제작자·원본 코드 이미지 미포함 안내 네 줄을 제거했습니다.
-+제작자 PUVKID, 무료 배포, 라이브러리 라이선스 폴더와 필수 법적 고지는 유지합니다.
++제작자 프로젝트 제작자, 무료 배포, 라이브러리 라이선스 폴더와 필수 법적 고지는 유지합니다.
 +표시명은 플립링 / FlipRing이며 실행·설치 파일명은 `FlipRing.exe`, `FlipRing-Setup.exe`입니다.
 +설치 AppId는 `PUVKID.FlipRing`, 기본 설치 경로는 `%LOCALAPPDATA%\Programs\FlipRing`로 분리합니다. 기존 정상 설치를 덮어쓰거나 제거하지 않습니다.
 +내부 설정 버전·기록·실행 잠금 공유는 유지하므로 기존 제품과 동시 실행하지 않습니다.
@@ -57510,7 +57510,7 @@
 +
 +파일·폴더 선택과 PDF 파일 추가에 공통 선택창을 적용했습니다. 내부 메시지·메뉴·도움말·목록·입력·버튼·토글·작업 상태의 흑백 스타일과 유한 모션을 통일합니다. 전체40개 표면과 함수·회귀 대응은 상위 evidence/내부모션-적용목록.md에 있습니다. 클릭·드롭 좌표와 즉시 수락·취소 의미를 유지하며 실제 진행 신호만 표시합니다.
 +
-+현재 검증은 D:\2026\FilpRing Project에서 진행합니다. 소스 검사·Qt 렌더와 새 실행물의 Windows 설치·화면·물리 Shift 시험은 별개이며, 새 버전의 최종 완료 범위는 최신 배포·독립 검증 기록으로 확인합니다. 과거 실패와 이전 버전의 실제 시험을 이번 버전의 성공으로 대신하지 않습니다.
++현재 검증은 .에서 진행합니다. 소스 검사·Qt 렌더와 새 실행물의 Windows 설치·화면·물리 Shift 시험은 별개이며, 새 버전의 최종 완료 범위는 최신 배포·독립 검증 기록으로 확인합니다. 과거 실패와 이전 버전의 실제 시험을 이번 버전의 성공으로 대신하지 않습니다.
 +
 +## 1.7.0 파일별 작업 흐름과 PDF 시각 편집
 +
@@ -57519,7 +57519,7 @@
 +2026-10-30 독립 검증의 GUI 85·기존 PDF/OCR 28·일반 작업 20·신규 PDF 편집 30, 합계 163개가 24.484초에 종료0입니다. 자식27초·외부30초 제한은 유지했습니다. 앞서 두 검사 묶음과 변환표를 중복 실행했을 때의 시간 초과는 보존하며, 같은 소스가 경합 제거 조건에서 통과한 결과와 구분합니다. 소스가 모든 부하에서 같은 시간에 끝난다는 보장은 아닙니다.
 +
 +전체 변환표는 266/266 통과, 누락·중복·차단0이며 추가 안전 검사3도 통과했습니다. 실행 전후 변환 엔진·검사 코드·RAR 입력·7-Zip 해시는 동일합니다. 새 EXE의 주요 모듈11개를 소스와 코드 객체로 대조했습니다. 실제 설치 종료0과 설치 파일624개의 배포 폴더 일치, 같은 새 프로세스의 Windows 창 생성도 확인했습니다. 첫4초 창 확인 실패와 후속 창 확인은 별도 원문으로 보존합니다. 이 기록은 새 설치본의 물리 Shift/OLE와 사용자 PDF 조작 확인을 대신하지 않으며, 그 결과는 별도 최신 배포·사용자 확인 기록을 따릅니다.
---- 1.8.0 부분 보관/빌드방법.md
+--- 1.8.0/빌드방법.md
 +++ 현행소스/빌드방법.md
 @@ -0,0 +1,89 @@
 +# 플립링 빌드
@@ -57528,7 +57528,7 @@
 +현재 빌드 대상 릴리스는 1.8.0입니다. 설정·기록 데이터의 기존 스키마와 저장 위치는 변경하지 않습니다.
 +공통 파일·폴더 선택창과 내부 조작 피드백을 담당하는 `ui_motion.py`도 전체 소스 복사 시 반드시 포함하세요. 앱에서 직접 가져오는 모듈이므로 위 기본 `build.py` 명령의 PyInstaller Analysis에 자동으로 포함되며 별도 빌드 명령은 필요하지 않습니다.
 +스튜디오 UI 모듈 `studio_ui.py`와 `assets/lucide`의 원본 SVG 12개를 전체 소스에 함께 보관합니다. Lucide 고정 커밋·파일별 해시와 원문 ISC·Feather MIT 고지는 `licenses/Lucide`에 있으며 실행 폴더의 `licenses`에도 동봉합니다. `package.py`는 소스와 실행 폴더 양쪽의 아이콘·고지가 빠지면 포장을 거부합니다.
-+앱 표시명은 한국어에서 플립링, 영어에서 FlipRing이며 제작자는 PUVKID입니다.
++앱 표시명은 한국어에서 플립링, 영어에서 FlipRing이며 제작자는 제작자입니다.
 +실행 파일은 `프로그램/FlipRing/FlipRing.exe`, 설치 파일은 `설치파일/FlipRing-Setup.exe`입니다.
 +프로그램·설치 파일·전체 소스는 플립링 폴더 하나에 보관합니다.
 +설치 AppId는 `PUVKID.FlipRing`, 기본 설치 위치는 `%LOCALAPPDATA%\Programs\FlipRing`입니다.
@@ -57608,14 +57608,14 @@
 +
 +## D드라이브 이동 후 현재 작업 위치
 +
-+2026-10-24에 실제 프로젝트를 `D:\2026\FilpRing Project`에서 확인했습니다. 현재 빌드 작업의 기준 폴더는 `D:\2026\FilpRing Project\소스`이며 위 상대 경로 명령은 같은 방식으로 사용할 수 있습니다. 프로그램·설치 파일·전체 소스·빌드 방법·라이선스는 이 프로젝트 한 폴더에 보관합니다.
++2026-10-24에 실제 프로젝트를 `.`에서 확인했습니다. 현재 빌드 작업의 기준 폴더는 `.\소스`이며 위 상대 경로 명령은 같은 방식으로 사용할 수 있습니다. 프로그램·설치 파일·전체 소스·빌드 방법·라이선스는 이 프로젝트 한 폴더에 보관합니다.
 +
-+이동한 개발 환경은 `D:\2026\FilpRing Project\work\venv\Scripts\python.exe`입니다. 해당 가상환경의 기본 Python은 현재 존재하는 C드라이브의 공용 Codex 런타임을 사용합니다. 가상환경 자체가 Python을 모두 포함하는 것은 아니므로 다른 PC에서는 위 신규 환경 생성 절차를 사용하세요. `pyvenv.cfg`의 기본 런타임이나 과거 검증 기록의 C경로를 임의로 D경로로 치환하지 마세요. 활성 검사 명세와 PyInstaller 명세의 현재 프로젝트 경로만 D 위치에 맞추었습니다.
---- 1.8.0 부분 보관/사용안내.txt
++이동한 개발 환경은 `.\work\venv\Scripts\python.exe`입니다. 해당 가상환경의 기본 Python은 현재 존재하는 C드라이브의 공용 Codex 런타임을 사용합니다. 가상환경 자체가 Python을 모두 포함하는 것은 아니므로 다른 PC에서는 위 신규 환경 생성 절차를 사용하세요. `pyvenv.cfg`의 기본 런타임이나 과거 검증 기록의 C경로를 임의로 D경로로 치환하지 마세요. 활성 검사 명세와 PyInstaller 명세의 현재 프로젝트 경로만 D 위치에 맞추었습니다.
+--- 1.8.0/사용안내.txt
 +++ 현행소스/사용안내.txt
 @@ -0,0 +1,86 @@
 +플립링 / FlipRing · 무료 배포판
-+제작자: PUVKID
++제작자: 프로젝트 제작자
 +
 +Windows 10/11 64비트에서 실행합니다. 고객 PC에는 Python이 필요하지 않습니다.
 +앱은 Windows 트레이에 상주하며, 트레이 아이콘을 두 번 클릭하면 작업 창이 열립니다.
@@ -57700,7 +57700,7 @@
 +PDF 압축은 문서에 따라 용량이 줄지 않을 수 있습니다.
 +변환 기록 항목을 마우스 왼쪽 버튼으로 두 번 클릭하면 결과 파일을 탐색기에서 선택합니다.
 +OCR 구성요소의 라이선스와 상응 소스는 licenses\OCR에 있습니다.
---- 1.8.0 부분 보관/파일목록.json
+--- 1.8.0/파일목록.json
 +++ 현행소스/파일목록.json
 @@ -1,117 +0,0 @@
 -[

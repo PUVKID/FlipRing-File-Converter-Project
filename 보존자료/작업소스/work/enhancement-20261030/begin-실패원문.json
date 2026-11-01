@@ -4,7 +4,7 @@
     "routing_state.py",
     "begin",
     "--root",
-    "D:\\2026\\FilpRing Project",
+    ".",
     "--session",
     "01a15519-c86d-7880-a2e6-c9070f59067d",
     "--task",

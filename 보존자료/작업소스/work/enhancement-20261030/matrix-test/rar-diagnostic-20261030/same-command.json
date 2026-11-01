@@ -1,13 +1,13 @@
 {
   "time_kst": "2026-10-30T08:59:14.473558+09:00",
-  "cwd": "D:\\2026\\FilpRing Project",
+  "cwd": ".",
   "argv": [
     "C:\\WINDOWS\\System32\\tar.exe",
     "-x",
     "--to-stdout",
     "-f",
     "--",
-    "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar",
+    ".\\work\\enhancement-20261030\\matrix-test\\fixture.rar",
     "уииоотивл.txt"
   ],
   "exit_code": 1,

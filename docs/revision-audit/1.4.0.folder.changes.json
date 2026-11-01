@@ -10,10 +10,10 @@
   {
     "path": "build.py",
     "status": "수정",
-    "before_bytes": 6727,
-    "after_bytes": 6727,
-    "before_sha256": "e5b70b63a77614ba9a7187ba76b4fdb9c30d0c98376423f061ae05094ec7b879",
-    "after_sha256": "514bf3e3ca1599dee5d8bc54dac4d55bb3cd22740512f3bf095ac7a61344f00a"
+    "before_bytes": 6733,
+    "after_bytes": 6733,
+    "before_sha256": "8b3d4c93ecba8061dd678b132d04c2d19cf342f0297d9dc09a55328e4acc1cff",
+    "after_sha256": "60703cae3a0a7223ccf5e7b17c8b1f183068cfea113cd01aa96ff69df1cda7be"
   },
   {
     "path": "package.py",

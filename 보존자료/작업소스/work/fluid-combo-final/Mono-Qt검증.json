@@ -5,7 +5,7 @@
   "failures": [
     {
       "test": "test_56_combo_has_flat_frame_visible_arrow_and_unchanged_native_selection (__main__.GuiTests.test_56_combo_has_flat_frame_visible_arrow_and_unchanged_native_selection)",
-      "detail": "Traceback (most recent call last):\n  File \"C:\\Users\\PUVKID\\Desktop\\플립링\\소스\\test_gui.py\", line 1279, in test_56_combo_has_flat_frame_visible_arrow_and_unchanged_native_selection\n    self.assertEqual(combo.currentData(), 0x10)\nAssertionError: 18 != 16\n"
+      "detail": "Traceback (most recent call last):\n  File \".\\소스\\test_gui.py\", line 1279, in test_56_combo_has_flat_frame_visible_arrow_and_unchanged_native_selection\n    self.assertEqual(combo.currentData(), 0x10)\nAssertionError: 18 != 16\n"
     }
   ],
   "errors": [],

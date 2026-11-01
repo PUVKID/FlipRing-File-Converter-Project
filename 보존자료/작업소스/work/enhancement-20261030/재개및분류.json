@@ -7,42 +7,42 @@
   "previous_counters_preserved": "repair21/input9/vf1/stop0",
   "reads": [
     {
-      "path": "C:\\Users\\PUVKID\\.codex\\AGENTS.md",
+      "path": ".\\.codex\\AGENTS.md",
       "bytes": 35911,
       "sha256": "b453a447bb4bf05f615581fd13ae1730a6fb8ddc8d6e988d53ba17a05aa9f488"
     },
     {
-      "path": "D:\\2026\\FilpRing Project\\docs\\2026-10-30_작업흐름확장.md",
+      "path": ".\\docs\\2026-10-30_작업흐름확장.md",
       "bytes": 5864,
       "sha256": "7d8d7e7ec35f313788eb13efb8030eb96dfd8ac8ed9f1178d1e77349d29d0110"
     },
     {
-      "path": "D:\\2026\\FilpRing Project\\docs\\내부모션.md",
+      "path": ".\\docs\\내부모션.md",
       "bytes": 3439,
       "sha256": "4b03b9977ea4a48410d6e93e292b2c4a18ad213a121a5160e5147370afef941b"
     },
     {
-      "path": "D:\\2026\\FilpRing Project\\docs\\부드러운디자인.md",
+      "path": ".\\docs\\부드러운디자인.md",
       "bytes": 3639,
       "sha256": "bcb128918fca555fe9e243a24396611d5a608382a8797efb53c174c81a062831"
     },
     {
-      "path": "D:\\2026\\FilpRing Project\\docs\\스튜디오재설계.md",
+      "path": ".\\docs\\스튜디오재설계.md",
       "bytes": 5754,
       "sha256": "ed8c5422a20bfb57049eb61fe643962d1d84cd59884d487a1e8004107b0cad0b"
     },
     {
-      "path": "D:\\2026\\FilpRing Project\\docs\\요구사항.md",
+      "path": ".\\docs\\요구사항.md",
       "bytes": 5082,
       "sha256": "c1130591b6c24f88a049b5f3305e0ea624ca053c912a24c68c6c4b60595a8613"
     },
     {
-      "path": "D:\\2026\\FilpRing Project\\docs\\이동재개.md",
+      "path": ".\\docs\\이동재개.md",
       "bytes": 2234,
       "sha256": "d2f53904a9f35434cf76af1a6c936115aa2c85ee006905f11f9233c9b451dafc"
     },
     {
-      "path": "D:\\2026\\FilpRing Project\\ROUTING-LESSONS.md",
+      "path": ".\\ROUTING-LESSONS.md",
       "bytes": 28183,
       "sha256": "8879bacbf67db8690ead9144abd1e7af283c371518712c31c7219e3e726df3c3"
     },

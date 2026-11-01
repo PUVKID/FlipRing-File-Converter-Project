@@ -1,14 +1,14 @@
 {
   "started_kst": "2026-10-24T18:54:48.175906+09:00",
   "argv": [
-    "D:\\2026\\FilpRing Project\\work\\venv\\Scripts\\python.exe",
+    ".\\work\\venv\\Scripts\\python.exe",
     "-B",
     "-X",
     "utf8",
     "work\\internal-motion-profile-all.py",
     "all-profile"
   ],
-  "cwd": "D:\\2026\\FilpRing Project",
+  "cwd": ".",
   "mode": "all-profile",
   "diagnostic_only": true,
   "source_change": false,

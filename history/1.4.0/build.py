@@ -68,12 +68,12 @@ shutil.copytree(licenses, output / name / "licenses", dirs_exist_ok=True)
 shutil.copy2(ROOT / "LICENSE.txt", output / name / "LICENSE.txt")
 shutil.copy2(ROOT / "사용안내.txt", output / name / "사용안내.txt")
 iss = ROOT / "installer.iss"
-iss.write_text(f'''; PUVKID 무료 배포판 설치 구성
+iss.write_text(f'''; 제작자 무료 배포판 설치 구성
 [Setup]
 AppId=PUVKID.FlipRing
 AppName=FlipRing
 AppVersion=1.4.0
-AppPublisher=PUVKID
+AppPublisher=제작자
 DefaultDirName={{localappdata}}\\Programs\\FlipRing
 DefaultGroupName=FlipRing
 PrivilegesRequired=lowest

@@ -1,6 +1,6 @@
 [
   {
-    "path": "D:\\2026\\FilpRing Project\\소스\\app.py",
+    "path": ".\\소스\\app.py",
     "requested_dpr": 1.0,
     "size": [
       24,
@@ -9,7 +9,7 @@
     "dpr": 1.0
   },
   {
-    "path": "D:\\2026\\FilpRing Project\\소스\\app.py",
+    "path": ".\\소스\\app.py",
     "requested_dpr": 1.25,
     "size": [
       30,
@@ -18,7 +18,7 @@
     "dpr": 1.25
   },
   {
-    "path": "D:\\2026\\FilpRing Project\\소스\\app.py",
+    "path": ".\\소스\\app.py",
     "requested_dpr": 1.5,
     "size": [
       36,
@@ -27,7 +27,7 @@
     "dpr": 1.5
   },
   {
-    "path": "D:\\2026\\FilpRing Project\\소스\\app.py",
+    "path": ".\\소스\\app.py",
     "requested_dpr": 2.0,
     "size": [
       48,
@@ -36,7 +36,7 @@
     "dpr": 2.0
   },
   {
-    "path": "D:\\2026\\FilpRing Project\\소스",
+    "path": ".\\소스",
     "requested_dpr": 1.0,
     "size": [
       24,
@@ -45,7 +45,7 @@
     "dpr": 1.0
   },
   {
-    "path": "D:\\2026\\FilpRing Project\\소스",
+    "path": ".\\소스",
     "requested_dpr": 1.25,
     "size": [
       30,
@@ -54,7 +54,7 @@
     "dpr": 1.25
   },
   {
-    "path": "D:\\2026\\FilpRing Project\\소스",
+    "path": ".\\소스",
     "requested_dpr": 1.5,
     "size": [
       36,
@@ -63,7 +63,7 @@
     "dpr": 1.5
   },
   {
-    "path": "D:\\2026\\FilpRing Project\\소스",
+    "path": ".\\소스",
     "requested_dpr": 2.0,
     "size": [
       48,

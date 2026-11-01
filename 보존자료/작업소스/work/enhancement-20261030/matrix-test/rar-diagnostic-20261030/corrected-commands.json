@@ -1,13 +1,13 @@
 {
   "time_kst": "2026-10-30T08:58:34.006510+09:00",
-  "cwd": "D:\\2026\\FilpRing Project",
+  "cwd": ".",
   "prior_invalid_argument": "diagnostic.json",
   "commands": [
     {
       "argv": [
         "C:\\WINDOWS\\System32\\tar.exe",
         "-xOf",
-        "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar",
+        ".\\work\\enhancement-20261030\\matrix-test\\fixture.rar",
         "--",
         "уииоотивл.txt"
       ],
@@ -20,7 +20,7 @@
       "argv": [
         "C:\\WINDOWS\\System32\\tar.exe",
         "-xOf",
-        "D:\\2026\\FilpRing Project\\work\\enhancement-20261030\\matrix-test\\fixture.rar",
+        ".\\work\\enhancement-20261030\\matrix-test\\fixture.rar",
         "--",
         "𝐀𝐁𝐁𝐂.txt"
       ],

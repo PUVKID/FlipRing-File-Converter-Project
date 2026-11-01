@@ -8,7 +8,7 @@
   "effort": "medium",
   "before_argv": ["python.exe", "-B", "-X", "utf8", "-c", "from pathlib import Path; 문자열 치환 명령은 도구 원문에 보존"],
   "after_argv": ["work/venv/Scripts/python.exe", "-B", "-X", "utf8", "work/responsive-layout-20261030/prepare_validation_tools18.py"],
-  "cwd": "D:/2026/FilpRing Project",
+  "cwd": ".",
   "repair_used_before": 22,
   "input_fix_used_before": 3,
   "source_changes": "앞서 적용한 부모 소유 포장·가상 화면 구성만 변경됨. 실패한 생성 명령은 파일 미생성."

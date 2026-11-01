@@ -18,18 +18,18 @@
   {
     "path": "build.py",
     "status": "수정",
-    "before_bytes": 6727,
-    "after_bytes": 6727,
-    "before_sha256": "514bf3e3ca1599dee5d8bc54dac4d55bb3cd22740512f3bf095ac7a61344f00a",
-    "after_sha256": "50ddb1a6c1759b30d10150f5d44738edb72ee53b139e54975c9ec0ab45193a0c"
+    "before_bytes": 6733,
+    "after_bytes": 6733,
+    "before_sha256": "60703cae3a0a7223ccf5e7b17c8b1f183068cfea113cd01aa96ff69df1cda7be",
+    "after_sha256": "b6aedee776cc63bd83553561374968627e3805d94381fd57d63e13a796312a35"
   },
   {
     "path": "i18n.py",
     "status": "수정",
-    "before_bytes": 12995,
-    "after_bytes": 14757,
-    "before_sha256": "242abd4700912d2d7b8505a521d9c3d90c7ec6c6442f14b2cadd1a551cd2f580",
-    "after_sha256": "9de696a5036297c4c45419272084544e53d4713a479617ae64245b5437cd780b"
+    "before_bytes": 13018,
+    "after_bytes": 14796,
+    "before_sha256": "8f4b6c0365f4bbf48b6d788cb622c1800876cacfd9ea774774eee4d86a541370",
+    "after_sha256": "d443f4c3b546aea43c21c5385809eaac08b119e89803fce2a8a8f3915a2cc3b5"
   },
   {
     "path": "package.py",

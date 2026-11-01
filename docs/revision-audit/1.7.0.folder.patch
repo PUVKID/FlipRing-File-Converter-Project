@@ -3269,7 +3269,7 @@
  AppName=FlipRing
 -AppVersion=1.6.0
 +AppVersion={release_version}
- AppPublisher=PUVKID
+ AppPublisher=제작자
  DefaultDirName={{localappdata}}\\Programs\\FlipRing
  DefaultGroupName=FlipRing
 @@ -80,7 +86,7 @@

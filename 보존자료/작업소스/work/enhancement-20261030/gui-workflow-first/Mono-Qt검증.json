@@ -5,7 +5,7 @@
   "failures": [
     {
       "test": "test_01_studio_workspace_and_tray (__main__.GuiTests.test_01_studio_workspace_and_tray)",
-      "detail": "Traceback (most recent call last):\n  File \"D:\\2026\\FilpRing Project\\소스\\test_gui.py\", line 102, in test_01_studio_workspace_and_tray\n    self.assertEqual(self.window.tabs.count(), 5)\nAssertionError: 6 != 5\n"
+      "detail": "Traceback (most recent call last):\n  File \".\\소스\\test_gui.py\", line 102, in test_01_studio_workspace_and_tray\n    self.assertEqual(self.window.tabs.count(), 5)\nAssertionError: 6 != 5\n"
     }
   ],
   "errors": [],
