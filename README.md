@@ -284,18 +284,7 @@ PDF 작업은 암호화된 PDF를 거부합니다. 이미지 PDF에서 텍스트
 
 [원문 이미지·차수별 출처·파일 해시](docs/IMAGE_MATERIALS.md)에서 화면과 합성 테스트 입력을 확인할 수 있습니다.
 
-<!-- privacy-public-copy-20261030 -->
-
-[🔒 공개 사본의 개인 표시·경로 정리와 보존 범위](docs/PRIVACY_PUBLIC_COPY.md) · [변경 기록](docs/changes/2026-10-30-%EA%B0%9C%EC%9D%B8%ED%91%9C%EC%8B%9C%EC%99%80%EA%B2%BD%EB%A1%9C%EC%A0%95%EB%A6%AC.md)
 
 
-<details>
-<summary>🧹 공개 자료 정리 기록</summary>
 
-| 검수 대상 | 연결 자료 | 상세·이번 비교 |
-| :--- | :--- | :--- |
-| **기존 코드와 자료** | [📁 검수 자료](docs/publication-review) | [📖 정리 내용](docs/publication-review/item-1.md) · [🔎 파일 비교](docs/publication-review/공개파일변경.json) |
 
-[🗂️ 전체 차수와 자료](docs/REVISION_INDEX.md)
-
-</details>
