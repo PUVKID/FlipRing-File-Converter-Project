@@ -18,6 +18,24 @@
 
 </div>
 
+<a name="implementation-details"></a>
+
+## 🧩 파일 선택부터 결과 보존까지
+
+`app.py`가 창·트레이·파일 선택을 연결하고 `engine.py`는 입력 종류와 가능한 목표 형식·외부 변환 도구를 판별합니다. `pdf_panel.py`와 `pdf_tools.py`는 PDF 요청을 구성·실행하며, `flipring_workflow.py`는 이름별 프리셋과 파일별 사전 점검을 맡습니다. `preview_panel.py`·`pdf_pages.py`는 미리보기와 페이지 작업을, 후속 `workspace_core.py`·`workspace_ui.py`는 레시피·감시 폴더·검색 중심의 작업 공간을 구성합니다.
+
+파일 선택→목표 형식/작업과 페이지·품질 지정→필요 도구·입력·출력 공간 검사→작업 큐 처리→결과 파일 열기의 순서로 사용합니다. 변환 성공 표시는 출력 문서의 OCR 문맥·행/열 복원 품질까지 보증하지 않으므로 결과를 직접 열어 확인합니다. 입력·출력 경로가 작업 기록에 남을 수 있습니다.
+
+1.7.0부터 보존된 프리셋 검증은 이름1~80자·대소문자 무시 중복 거부, convert/pdf 종류와 허용 옵션만 저장합니다. PDF 회전90/180/270·품질20~95·DPI60~600·PSM3/6/11·OCR 언어 kor+eng/kor/eng를 검사합니다. 손상된 프리셋은 오류를 보존하고 덮어쓰지 않으며 정상 저장만 임시 JSON의 flush/fsync·교체를 사용합니다.
+
+사전 점검의 공간값은 입력4배+64MiB라는 보수적 추정입니다. 입력 부재·미지원 형식·외부 도우미 부재·공간 부족·쓰기 실패를 서로 다른 코드로 돌려주므로 같은 오류로 뭉뚱그려 재시도하지 않습니다. FFmpeg·LibreOffice·Tesseract 등은 선택한 기능에 필요한 경우 준비하고 원본은 별도 보존합니다.
+
+1.9.0은 레시피·Ctrl+K 검색·사용자가 켜는 감시 폴더·OCR 교정·개인정보 후보 검토를 확장합니다. 검증 기록의249개 회귀와 설치 제품626파일 대조는 당시 범위의 검사이며 모든 문서의 변환 품질 측정은 아닙니다. 화면 수정 전 부분본은 독립 설치 패키지가 아니므로 차수 표의 자료 성격을 먼저 확인합니다.
+
+[🗂️ 각 차수의 코드·조건·관측·전체 비교](docs/REVISION_INDEX.md)
+
+
+
 <a name="overview"></a>
 
 <a name="latest-changes"></a>
@@ -284,22 +302,22 @@ PDF 작업은 암호화된 PDF를 거부합니다. 이미지 PDF에서 텍스트
 
 각 차수의 소스·설정·리소스·사용법·설계를 함께 보관합니다. 부분 자료와 실제 제품 버전을 각 설명에서 구분합니다.
 
-| 차수·보관본 | 파일·폴더 | 설명 | 공개 파일 전체 비교 |
+| 차수·자료 | 자료 폴더·원본 | 상세 설명 | 직전 비교·범위 |
 |---|---|---|---|
-| 1.2.0 | [📁 13개](history/1.2.0) | [기능·검증 설명](docs/versions/1.2.0.md) | [🔍 전체 차이·해시](docs/revision-audit/1.2.0.md) |
-| 부드러운디자인-작업전 | [📁 4개](history/%EB%B6%80%EB%93%9C%EB%9F%AC%EC%9A%B4%EB%94%94%EC%9E%90%EC%9D%B8-%EC%9E%91%EC%97%85%EC%A0%84) | [기능·검증 설명](docs/versions/%EB%B6%80%EB%93%9C%EB%9F%AC%EC%9A%B4%EB%94%94%EC%9E%90%EC%9D%B8-%EC%9E%91%EC%97%85%EC%A0%84.md) | [🔍 전체 차이·해시](docs/revision-audit/%EB%B6%80%EB%93%9C%EB%9F%AC%EC%9A%B4%EB%94%94%EC%9E%90%EC%9D%B8-%EC%9E%91%EC%97%85%EC%A0%84.md) |
-| 버튼모션-작업전 | [📁 3개](history/%EB%B2%84%ED%8A%BC%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84) | [기능·검증 설명](docs/versions/%EB%B2%84%ED%8A%BC%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md) | [🔍 전체 차이·해시](docs/revision-audit/%EB%B2%84%ED%8A%BC%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md) |
-| 콤보-작업전 | [📁 3개](history/%EC%BD%A4%EB%B3%B4-%EC%9E%91%EC%97%85%EC%A0%84) | [기능·검증 설명](docs/versions/%EC%BD%A4%EB%B3%B4-%EC%9E%91%EC%97%85%EC%A0%84.md) | [🔍 전체 차이·해시](docs/revision-audit/%EC%BD%A4%EB%B3%B4-%EC%9E%91%EC%97%85%EC%A0%84.md) |
-| 탭잔상-작업전 | [📁 3개](history/%ED%83%AD%EC%9E%94%EC%83%81-%EC%9E%91%EC%97%85%EC%A0%84) | [기능·검증 설명](docs/versions/%ED%83%AD%EC%9E%94%EC%83%81-%EC%9E%91%EC%97%85%EC%A0%84.md) | [🔍 전체 차이·해시](docs/revision-audit/%ED%83%AD%EC%9E%94%EC%83%81-%EC%9E%91%EC%97%85%EC%A0%84.md) |
-| 호버대비-작업전 | [📁 3개](history/%ED%98%B8%EB%B2%84%EB%8C%80%EB%B9%84-%EC%9E%91%EC%97%85%EC%A0%84) | [기능·검증 설명](docs/versions/%ED%98%B8%EB%B2%84%EB%8C%80%EB%B9%84-%EC%9E%91%EC%97%85%EC%A0%84.md) | [🔍 전체 차이·해시](docs/revision-audit/%ED%98%B8%EB%B2%84%EB%8C%80%EB%B9%84-%EC%9E%91%EC%97%85%EC%A0%84.md) |
-| 1.4.0 | [📁 13개](history/1.4.0) | [기능·검증 설명](docs/versions/1.4.0.md) | [🔍 전체 차이·해시](docs/revision-audit/1.4.0.md) |
-| 내부모션-작업전 | [📁 12개](history/%EB%82%B4%EB%B6%80%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84) | [기능·검증 설명](docs/versions/%EB%82%B4%EB%B6%80%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md) | [🔍 전체 차이·해시](docs/revision-audit/%EB%82%B4%EB%B6%80%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md) |
-| 1.6.0 | [📁 15개](history/1.6.0) | [기능·검증 설명](docs/versions/1.6.0.md) | [🔍 전체 차이·해시](docs/revision-audit/1.6.0.md) |
-| 1.7.0 | [📁 22개](history/1.7.0) | [기능·검증 설명](docs/versions/1.7.0.md) | [🔍 전체 차이·해시](docs/revision-audit/1.7.0.md) |
-| 1.8.0 | [📁 24개](history/1.8.0) | [기능·검증 설명](docs/versions/1.8.0.md) | [🔍 전체 차이·해시](docs/revision-audit/1.8.0.md) |
-| 1.9.0 | [📁 새 확장 소스](history/1.9.0) | [기능·검증 설명](docs/versions/1.9.0.md) | [🔍 전체 차이·해시](docs/revision-audit/1.9.0.md) |
-| 현행소스 | [📁 316개](%EC%86%8C%EC%8A%A4) | [보관 범위](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md) | [🔍 전체 차이·해시](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md) |
-| 고유 작업 코드·문서 | [공개 제외·원문 보존 안내](보존자료/작업소스) | [현재 공개 범위](docs/SOURCE_MATERIALS.md) | [초기 비교 기준·현재 제외 안내](docs/2026-11-02_공개반영재개검증.md#작업-원본의-비교-기준) |
+| 1.2.0 | [자료 폴더](history/1.2.0) | [상세 설명](docs/versions/1.2.0.md) | [전체 비교·범위](docs/revision-audit/1.2.0.md) |
+| 부드러운디자인-작업전 | [자료 폴더](history/%EB%B6%80%EB%93%9C%EB%9F%AC%EC%9A%B4%EB%94%94%EC%9E%90%EC%9D%B8-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%EB%B6%80%EB%93%9C%EB%9F%AC%EC%9A%B4%EB%94%94%EC%9E%90%EC%9D%B8-%EC%9E%91%EC%97%85%EC%A0%84.md) | [전체 비교·범위](docs/revision-audit/%EB%B6%80%EB%93%9C%EB%9F%AC%EC%9A%B4%EB%94%94%EC%9E%90%EC%9D%B8-%EC%9E%91%EC%97%85%EC%A0%84.md) |
+| 버튼모션-작업전 | [자료 폴더](history/%EB%B2%84%ED%8A%BC%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%EB%B2%84%ED%8A%BC%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md) | [전체 비교·범위](docs/revision-audit/%EB%B2%84%ED%8A%BC%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md) |
+| 콤보-작업전 | [자료 폴더](history/%EC%BD%A4%EB%B3%B4-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%EC%BD%A4%EB%B3%B4-%EC%9E%91%EC%97%85%EC%A0%84.md) | [전체 비교·범위](docs/revision-audit/%EC%BD%A4%EB%B3%B4-%EC%9E%91%EC%97%85%EC%A0%84.md) |
+| 탭잔상-작업전 | [자료 폴더](history/%ED%83%AD%EC%9E%94%EC%83%81-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%ED%83%AD%EC%9E%94%EC%83%81-%EC%9E%91%EC%97%85%EC%A0%84.md) | [전체 비교·범위](docs/revision-audit/%ED%83%AD%EC%9E%94%EC%83%81-%EC%9E%91%EC%97%85%EC%A0%84.md) |
+| 호버대비-작업전 | [자료 폴더](history/%ED%98%B8%EB%B2%84%EB%8C%80%EB%B9%84-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%ED%98%B8%EB%B2%84%EB%8C%80%EB%B9%84-%EC%9E%91%EC%97%85%EC%A0%84.md) | [전체 비교·범위](docs/revision-audit/%ED%98%B8%EB%B2%84%EB%8C%80%EB%B9%84-%EC%9E%91%EC%97%85%EC%A0%84.md) |
+| 1.4.0 | [자료 폴더](history/1.4.0) | [상세 설명](docs/versions/1.4.0.md) | [전체 비교·범위](docs/revision-audit/1.4.0.md) |
+| 내부모션-작업전 | [자료 폴더](history/%EB%82%B4%EB%B6%80%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%EB%82%B4%EB%B6%80%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md) | [전체 비교·범위](docs/revision-audit/%EB%82%B4%EB%B6%80%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md) |
+| 1.6.0 | [자료 폴더](history/1.6.0) | [상세 설명](docs/versions/1.6.0.md) | [전체 비교·범위](docs/revision-audit/1.6.0.md) |
+| 1.7.0 | [자료 폴더](history/1.7.0) | [상세 설명](docs/versions/1.7.0.md) | [전체 비교·범위](docs/revision-audit/1.7.0.md) |
+| 1.8.0 | [자료 폴더](history/1.8.0) | [상세 설명](docs/versions/1.8.0.md) | [전체 비교·범위](docs/revision-audit/1.8.0.md) |
+| 현행소스 | [자료 폴더](%EC%86%8C%EC%8A%A4) | [상세 설명](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md) | [전체 비교·범위](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md) |
+| 고유 작업 코드·문서 | [자료 폴더](%EB%B3%B4%EC%A1%B4%EC%9E%90%EB%A3%8C/%EC%9E%91%EC%97%85%EC%86%8C%EC%8A%A4) | [상세 설명](docs/SOURCE_MATERIALS.md) | [전체 비교·범위](docs/2026-11-02_%EA%B3%B5%EA%B0%9C%EB%B0%98%EC%98%81%EC%9E%AC%EA%B0%9C%EA%B2%80%EC%A6%9D.md) |
+| 1.9.0 | [자료 폴더](history/1.9.0) | [상세 설명](docs/versions/1.9.0.md) | [전체 비교·범위](docs/revision-audit/1.9.0.md) |
 
 
 <!-- flipring-supported-input -->
@@ -311,9 +329,3 @@ PDF 작업은 암호화된 PDF를 거부합니다. 이미지 PDF에서 텍스트
 ### 🖼️ 차수별 화면과 검증 이미지
 
 [원문 이미지·차수별 출처·파일 해시](docs/IMAGE_MATERIALS.md)에서 화면과 합성 테스트 입력을 확인할 수 있습니다.
-
-
-
-
-
-
