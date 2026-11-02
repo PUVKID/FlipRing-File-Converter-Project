@@ -84,6 +84,8 @@ class GuiTests(unittest.TestCase):
         cls.window.pool.shutdown(wait=True)
 
     def setUp(self):
+        # 확장 작업 공간이 기본 화면이므로 기존 화면 회귀는 파일 변환 탭에서 시작한다.
+        self.window.tabs.setCurrentIndex(0)
         self.events.clear()
         self.wheel.hide()
         self.window.start_point = None
@@ -99,7 +101,7 @@ class GuiTests(unittest.TestCase):
         APPLICATION.processEvents()
 
     def test_01_studio_workspace_and_tray(self):
-        self.assertEqual(self.window.tabs.count(), 6)
+        self.assertEqual(self.window.tabs.count(), 7)
         self.assertEqual([self.window.tabs.tabText(i) for i in range(4)], ["파일 변환", "도구", "기록", "정보"])
         self.assertIs(self.window.tabs.widget(4), self.window.pdf_panel)
         self.assertEqual(self.window.tabs.tabText(5), "설정")
@@ -1024,10 +1026,12 @@ class GuiTests(unittest.TestCase):
                 patch.object(app.winreg, "DeleteValue") as delete:
             self.window.set_language("en")
             self.window.autostart(True)
-            self.assertEqual(write.call_args.args[1], "FlipRing")
+            self.assertEqual(write.call_args.args[1], "FlipRing19")
+            self.assertNotEqual(write.call_args.args[1], "FlipRing")
             self.window.set_language("ko")
             self.window.autostart(False)
-            self.assertEqual(delete.call_args.args[1], "FlipRing")
+            self.assertEqual(delete.call_args.args[1], "FlipRing19")
+            self.assertNotEqual(delete.call_args.args[1], "FlipRing")
         self.assertEqual(app.DATA, ROOT / "격리설정")
 
     def test_31_history_double_click_selects_result_without_running_it(self):
@@ -1128,7 +1132,7 @@ class GuiTests(unittest.TestCase):
             self.window.refresh_history()
 
     def test_35_pdf_panel_language_and_tab_contract(self):
-        self.assertEqual(self.window.tabs.count(), 6)
+        self.assertEqual(self.window.tabs.count(), 7)
         self.assertIs(self.window.tabs.widget(4), self.window.pdf_panel)
         for language in ("en", "ko"):
             with patch.object(self.window.pdf_panel, "set_language",

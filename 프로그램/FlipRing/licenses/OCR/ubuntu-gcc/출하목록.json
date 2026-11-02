@@ -61,18 +61,18 @@
     },
     {
       "path": "download_one.py",
-      "size": 1742,
-      "sha256": "854c338fea68c51aa829875db0491142d8991944c67a020dad2a858cbcfe0105"
+      "size": 1655,
+      "sha256": "4f5ebf26934263dbf9596ee64206939fe1b4e9319fe731447ec267e192f624b8"
     },
     {
       "path": "inspect_runtime.py",
-      "size": 3108,
-      "sha256": "64eaaa29bbb5f296914e50af136d2471932a146f05d195939f1f95e6892bdae9"
+      "size": 3031,
+      "sha256": "82a0f72231b1f0b9276784b8e1c4efb756d56dedf7114b207a1fcf5b7a8695f0"
     },
     {
       "path": "finalize_sources.py",
-      "size": 5581,
-      "sha256": "1a11daba81aa1135b49b83f7b40559579fd2248d2d127a31a60215163c28aa57"
+      "size": 5372,
+      "sha256": "62d67f1e764bd3b342dd84a8bdfdeaeba34f625d50981fcb8e141f21df653bae"
     },
     {
       "path": "debian27/rules",

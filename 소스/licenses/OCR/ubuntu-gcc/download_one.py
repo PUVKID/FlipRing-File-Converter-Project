@@ -9,10 +9,8 @@ import urllib.request
 root = Path(__file__).resolve().parent
 url, filename = sys.argv[1:3]
 destination = root / filename
-report = {"korean_time": datetime.now(timezone(timedelta(hours=9))).isoformat(),
-          "session": "01a15519-c86d-7880-a2e6-c9070f59067d", "task": "mono-bilingual-20261021",
-          "worker": "/root/deep_mono_ui", "argv": sys.argv, "cwd": str(Path.cwd()),
-          "url": url, "destination": str(destination), "repair_used": 1}
+# 공개·출하 사본에는 자료 검증 결과만 기록하고 사적 운영 식별자는 포함하지 않습니다.
+report = {'korean_time': datetime.now(timezone(timedelta(hours=9))).isoformat(), 'url': url, 'destination': str(destination)}
 try:
     if destination.exists():
         raise FileExistsError(str(destination))

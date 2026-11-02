@@ -18,8 +18,9 @@
 | 1.6.0 | [📁 15개](../history/1.6.0) | [기능·검증 설명](../docs/versions/1.6.0.md) | [🔍 전체 차이·해시](../docs/revision-audit/1.6.0.md) |
 | 1.7.0 | [📁 22개](../history/1.7.0) | [기능·검증 설명](../docs/versions/1.7.0.md) | [🔍 전체 차이·해시](../docs/revision-audit/1.7.0.md) |
 | 1.8.0 | [📁 24개](../history/1.8.0) | [기능·검증 설명](../docs/versions/1.8.0.md) | [🔍 전체 차이·해시](../docs/revision-audit/1.8.0.md) |
-| 현행소스 | [📁 308개](../%EC%86%8C%EC%8A%A4) | [보관 범위](../docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md) | [🔍 전체 차이·해시](../docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md) |
-| 고유 작업 코드·문서 | [📁 622개](../보존자료/작업소스/) | [원본 제품자료 목록](../docs/SOURCE_MATERIALS.md) | 원래 차수·경로와 파일별 SHA-256 유지 |
+| 1.9.0 | [📁 새 확장 소스](../history/1.9.0) | [기능·검증 설명](../docs/versions/1.9.0.md) | [🔍 전체 차이·해시](../docs/revision-audit/1.9.0.md) |
+| 현행소스 | [📁 316개](../%EC%86%8C%EC%8A%A4) | [보관 범위](../docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md) | [🔍 전체 차이·해시](../docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md) |
+| 고유 작업 코드·문서 | [공개 제외·원문 보존 안내](../보존자료/작업소스) | [현재 공개 범위](../docs/SOURCE_MATERIALS.md) | [초기 비교 기준·현재 제외 안내](../docs/2026-11-02_공개반영재개검증.md#작업-원본의-비교-기준) |
 
 
 <!-- flipring-supported-input -->

@@ -13,9 +13,8 @@ seven = Path(sys.argv[1]).resolve()
 vendor = Path(sys.argv[2]).resolve()
 deb = root / (sys.argv[3] if len(sys.argv) > 3 else "gcc-mingw-w64-x86-64-win32-runtime_13.2.0-6ubuntu1+26.1_amd64.deb")
 prefix = sys.argv[4] if len(sys.argv) > 4 else "ubuntu13"
-report = {"korean_time": datetime.now(timezone(timedelta(hours=9))).isoformat(),
-          "session": "01a15519-c86d-7880-a2e6-c9070f59067d", "task": "mono-bilingual-20261021",
-          "worker": "/root/deep_mono_ui", "cwd": str(Path.cwd()), "argv": sys.argv, "repair_used": 1}
+# 공개·출하 사본에는 자료 검증 결과만 기록하고 사적 운영 식별자는 포함하지 않습니다.
+report = {'korean_time': datetime.now(timezone(timedelta(hours=9))).isoformat()}
 try:
     raw = deb.read_bytes()
     assert raw[:8] == b"!<arch>\n"

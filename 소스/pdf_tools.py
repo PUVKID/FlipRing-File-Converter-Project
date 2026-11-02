@@ -283,24 +283,120 @@ class _ProcessTree:
         self.kernel.CreateJobObjectW.argtypes = [ctypes.c_void_p, wintypes.LPCWSTR]
         self.kernel.CreateJobObjectW.restype = wintypes.HANDLE
         self.kernel.SetInformationJobObject.argtypes = [wintypes.HANDLE, ctypes.c_int, ctypes.c_void_p, wintypes.DWORD]
+        self.kernel.SetInformationJobObject.restype = wintypes.BOOL
         self.kernel.AssignProcessToJobObject.argtypes = [wintypes.HANDLE, wintypes.HANDLE]
+        self.kernel.AssignProcessToJobObject.restype = wintypes.BOOL
         self.kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+        self.kernel.CloseHandle.restype = wintypes.BOOL
         self.handle = self.kernel.CreateJobObjectW(None, None)
         if not self.handle:
             raise ctypes.WinError(ctypes.get_last_error())
         info = Extended()
         info.BasicLimitInformation.LimitFlags = 0x2000
         if not self.kernel.SetInformationJobObject(self.handle, 9, ctypes.byref(info), ctypes.sizeof(info)):
-            self.close()
-            raise ctypes.WinError(ctypes.get_last_error())
+            error = ctypes.WinError(ctypes.get_last_error())
+            try:
+                self.close()
+            except OSError as cleanup:
+                error.add_note(f"Job 정리 오류: {cleanup}")
+            raise error
         if not self.kernel.AssignProcessToJobObject(self.handle, int(process._handle)):
-            self.close()
-            raise ctypes.WinError(ctypes.get_last_error())
+            error = ctypes.WinError(ctypes.get_last_error())
+            try:
+                self.close()
+            except OSError as cleanup:
+                error.add_note(f"Job 정리 오류: {cleanup}")
+            raise error
 
     def close(self):
         if self.handle:
-            self.kernel.CloseHandle(self.handle)
+            if not self.kernel.CloseHandle(self.handle):
+                raise ctypes.WinError(ctypes.get_last_error())
             self.handle = None
+
+
+def _ocr_startup_checkpoint(cancel, deadline):
+    check_cancel(cancel)
+    if time.monotonic() >= deadline:
+        raise PdfToolError("ocr_timeout")
+
+
+def _resume_ocr_process(process, cancel, deadline):
+    """정지 생성한 새 PID의 유일한 시작 스레드를 검증한 뒤 한 번만 재개한다."""
+    class ThreadEntry(ctypes.Structure):
+        _fields_ = [("dwSize", wintypes.DWORD), ("cntUsage", wintypes.DWORD),
+                    ("th32ThreadID", wintypes.DWORD), ("th32OwnerProcessID", wintypes.DWORD),
+                    ("tpBasePri", wintypes.LONG), ("tpDeltaPri", wintypes.LONG), ("dwFlags", wintypes.DWORD)]
+
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel.CreateToolhelp32Snapshot.argtypes = [wintypes.DWORD, wintypes.DWORD]
+    kernel.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
+    kernel.Thread32First.argtypes = [wintypes.HANDLE, ctypes.POINTER(ThreadEntry)]
+    kernel.Thread32First.restype = wintypes.BOOL
+    kernel.Thread32Next.argtypes = [wintypes.HANDLE, ctypes.POINTER(ThreadEntry)]
+    kernel.Thread32Next.restype = wintypes.BOOL
+    kernel.OpenThread.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+    kernel.OpenThread.restype = wintypes.HANDLE
+    kernel.GetProcessIdOfThread.argtypes = [wintypes.HANDLE]
+    kernel.GetProcessIdOfThread.restype = wintypes.DWORD
+    kernel.ResumeThread.argtypes = [wintypes.HANDLE]
+    kernel.ResumeThread.restype = wintypes.DWORD
+    kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+    kernel.CloseHandle.restype = wintypes.BOOL
+    snapshot = thread = None
+    try:
+        _ocr_startup_checkpoint(cancel, deadline)
+        if process.poll() is not None:
+            raise PdfToolError("ocr_startup_state", "재개 전 프로세스가 종료됐습니다.")
+        snapshot = kernel.CreateToolhelp32Snapshot(0x00000004, 0)
+        if snapshot == ctypes.c_void_p(-1).value:
+            snapshot = None
+            raise ctypes.WinError(ctypes.get_last_error())
+        entry = ThreadEntry()
+        entry.dwSize = ctypes.sizeof(entry)
+        found = []
+        available = kernel.Thread32First(snapshot, ctypes.byref(entry))
+        while available:
+            _ocr_startup_checkpoint(cancel, deadline)
+            if entry.dwSize < ThreadEntry.th32OwnerProcessID.offset + ctypes.sizeof(wintypes.DWORD):
+                raise PdfToolError("ocr_startup_state", "스레드 소유 정보가 불완전합니다.")
+            if entry.th32OwnerProcessID == process.pid:
+                found.append(entry.th32ThreadID)
+            entry.dwSize = ctypes.sizeof(entry)
+            available = kernel.Thread32Next(snapshot, ctypes.byref(entry))
+        error_code = ctypes.get_last_error()
+        if error_code != 18:
+            raise ctypes.WinError(error_code)
+        if len(found) != 1:
+            raise PdfToolError("ocr_startup_state", "새 프로세스의 시작 스레드가 유일하지 않습니다.")
+        # 재개 권한과 소유 PID 조회에 필요한 최소 권한만 연다.
+        thread = kernel.OpenThread(0x0002 | 0x0800, False, found[0])
+        if not thread:
+            raise ctypes.WinError(ctypes.get_last_error())
+        owner_pid = kernel.GetProcessIdOfThread(thread)
+        if not owner_pid:
+            raise ctypes.WinError(ctypes.get_last_error())
+        if owner_pid != process.pid or process.poll() is not None:
+            raise PdfToolError("ocr_startup_state", "시작 스레드의 소유 프로세스가 바뀌었습니다.")
+        _ocr_startup_checkpoint(cancel, deadline)
+        previous_count = kernel.ResumeThread(thread)
+        if previous_count == 0xFFFFFFFF:
+            raise ctypes.WinError(ctypes.get_last_error())
+        if previous_count != 1:
+            raise PdfToolError("ocr_startup_state", "예상하지 못한 스레드 정지 횟수입니다.")
+    finally:
+        pending_error = sys.exc_info()[1]
+        cleanup_error = None
+        for handle in (thread, snapshot):
+            if handle and not kernel.CloseHandle(handle):
+                failure = ctypes.WinError(ctypes.get_last_error())
+                if cleanup_error is None:
+                    cleanup_error = failure
+        if cleanup_error is not None:
+            if pending_error is not None:
+                pending_error.add_note(f"시작 스레드 핸들 정리 오류: {cleanup_error}")
+            else:
+                raise cleanup_error
 
 
 def run_ocr_process(argv, work, cancel, timeout=180):
@@ -308,16 +404,22 @@ def run_ocr_process(argv, work, cancel, timeout=180):
     log = Path(work) / "ocr-process.log"
     environment = os.environ.copy()
     environment["OMP_THREAD_LIMIT"] = "2"
-    flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+    # Python이 노출하지 않는 CREATE_SUSPENDED는 Microsoft 문서의 값 0x00000004다.
+    flags = subprocess.CREATE_NO_WINDOW | 0x00000004 if os.name == "nt" else 0
     process = None
     tree = None
     with log.open("wb") as stderr:
         try:
+            deadline = time.monotonic() + timeout if os.name == "nt" else None
             process = subprocess.Popen(list(map(str, argv)), cwd=work, env=environment,
                                        stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=stderr,
                                        shell=False, creationflags=flags, start_new_session=os.name != "nt")
             tree = _ProcessTree(process)
-            deadline = time.monotonic() + timeout
+            if os.name == "nt":
+                _ocr_startup_checkpoint(cancel, deadline)
+                _resume_ocr_process(process, cancel, deadline)
+            else:
+                deadline = time.monotonic() + timeout
             while process.poll() is None:
                 check_cancel(cancel)
                 if time.monotonic() >= deadline:
@@ -329,16 +431,38 @@ def run_ocr_process(argv, work, cancel, timeout=180):
             if process.returncode:
                 raise PdfToolError("ocr_failed", f"exit={process.returncode}")
         finally:
-            if process is not None and process.poll() is None:
-                if tree is not None and tree.handle:
-                    tree.close()
-                elif os.name != "nt":
-                    os.killpg(process.pid, signal.SIGKILL)
-                else:
+            pending_error = sys.exc_info()[1]
+            cleanup_errors = []
+            # 정지 자식은 직접 종료를 먼저 요청해야 상속한 파일 핸들도 정리된다.
+            # Job은 이어서 닫아 실행 중이던 후손까지 같은 정리 범위에서 종료한다.
+            if os.name == "nt" and process is not None and process.poll() is None:
+                try:
                     process.kill()
-                process.wait(timeout=10)
+                except OSError as error:
+                    if process.poll() is None:
+                        cleanup_errors.append(error)
             if tree is not None:
-                tree.close()
+                try:
+                    tree.close()
+                except OSError as error:
+                    cleanup_errors.append(error)
+            if process is not None and os.name != "nt" and process.poll() is None:
+                try:
+                    os.killpg(process.pid, signal.SIGKILL)
+                except OSError as error:
+                    if process.poll() is None:
+                        cleanup_errors.append(error)
+            if process is not None:
+                try:
+                    process.wait(timeout=10)
+                except (OSError, subprocess.TimeoutExpired) as error:
+                    cleanup_errors.append(error)
+            if cleanup_errors:
+                if pending_error is not None:
+                    for error in cleanup_errors:
+                        pending_error.add_note(f"OCR 프로세스 정리 오류: {error}")
+                else:
+                    raise cleanup_errors[0]
 
 
 def parse_tsv(path):

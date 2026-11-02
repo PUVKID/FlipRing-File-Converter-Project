@@ -1,0 +1,132 @@
+[
+  {
+    "path": "소스/licenses/OCR/ubuntu-gcc/download_one.py",
+    "previous": {
+      "bytes": 1742,
+      "sha256": "854c338fea68c51aa829875db0491142d8991944c67a020dad2a858cbcfe0105"
+    },
+    "current": {
+      "bytes": 1655,
+      "sha256": "4f5ebf26934263dbf9596ee64206939fe1b4e9319fe731447ec267e192f624b8"
+    },
+    "logic_ast_except_report_same": true,
+    "reason": "조사 보조자료의 운영 보고 식별 필드 제거와 해당 출하 해시 갱신"
+  },
+  {
+    "path": "소스/licenses/OCR/ubuntu-gcc/finalize_sources.py",
+    "previous": {
+      "bytes": 5581,
+      "sha256": "1a11daba81aa1135b49b83f7b40559579fd2248d2d127a31a60215163c28aa57"
+    },
+    "current": {
+      "bytes": 5372,
+      "sha256": "62d67f1e764bd3b342dd84a8bdfdeaeba34f625d50981fcb8e141f21df653bae"
+    },
+    "logic_ast_except_report_same": true,
+    "reason": "조사 보조자료의 운영 보고 식별 필드 제거와 해당 출하 해시 갱신"
+  },
+  {
+    "path": "소스/licenses/OCR/ubuntu-gcc/inspect_runtime.py",
+    "previous": {
+      "bytes": 3108,
+      "sha256": "64eaaa29bbb5f296914e50af136d2471932a146f05d195939f1f95e6892bdae9"
+    },
+    "current": {
+      "bytes": 3031,
+      "sha256": "82a0f72231b1f0b9276784b8e1c4efb756d56dedf7114b207a1fcf5b7a8695f0"
+    },
+    "logic_ast_except_report_same": true,
+    "reason": "조사 보조자료의 운영 보고 식별 필드 제거와 해당 출하 해시 갱신"
+  },
+  {
+    "path": "소스/licenses/OCR/ubuntu-gcc/출하목록.json",
+    "previous": {
+      "bytes": 5069,
+      "sha256": "26d1c5a530d83fb4dc71ad7197f9a458b5b7fa4423e2f416da7dc578321228b5"
+    },
+    "current": {
+      "bytes": 4910,
+      "sha256": "71df1a83d1bffad3164f814a2f4285fc9daf56c6ab67b4162cc3de4b4c71180d"
+    },
+    "only_three_script_entries_changed": true,
+    "reason": "조사 보조자료의 운영 보고 식별 필드 제거와 해당 출하 해시 갱신"
+  },
+  {
+    "path": "소스/licenses/OCR/ubuntu-gcc/SHA256SUMS.txt",
+    "previous": {
+      "bytes": 2589,
+      "sha256": "7da2384a5ce46f3f907a19c07c52872de4c180ce9507b81946e397fcf3a78faf"
+    },
+    "current": {
+      "bytes": 2561,
+      "sha256": "cd4c6a4fa5f1d35f67bac66108f3892f0e484ec1e39b8b34f901aa7c556a8305"
+    },
+    "only_three_script_hash_lines_changed": true,
+    "reason": "조사 보조자료의 운영 보고 식별 필드 제거와 해당 출하 해시 갱신"
+  },
+  {
+    "path": "프로그램/FlipRing/licenses/OCR/ubuntu-gcc/download_one.py",
+    "previous": {
+      "bytes": 1742,
+      "sha256": "854c338fea68c51aa829875db0491142d8991944c67a020dad2a858cbcfe0105"
+    },
+    "current": {
+      "bytes": 1655,
+      "sha256": "4f5ebf26934263dbf9596ee64206939fe1b4e9319fe731447ec267e192f624b8"
+    },
+    "logic_ast_except_report_same": true,
+    "reason": "조사 보조자료의 운영 보고 식별 필드 제거와 해당 출하 해시 갱신"
+  },
+  {
+    "path": "프로그램/FlipRing/licenses/OCR/ubuntu-gcc/finalize_sources.py",
+    "previous": {
+      "bytes": 5581,
+      "sha256": "1a11daba81aa1135b49b83f7b40559579fd2248d2d127a31a60215163c28aa57"
+    },
+    "current": {
+      "bytes": 5372,
+      "sha256": "62d67f1e764bd3b342dd84a8bdfdeaeba34f625d50981fcb8e141f21df653bae"
+    },
+    "logic_ast_except_report_same": true,
+    "reason": "조사 보조자료의 운영 보고 식별 필드 제거와 해당 출하 해시 갱신"
+  },
+  {
+    "path": "프로그램/FlipRing/licenses/OCR/ubuntu-gcc/inspect_runtime.py",
+    "previous": {
+      "bytes": 3108,
+      "sha256": "64eaaa29bbb5f296914e50af136d2471932a146f05d195939f1f95e6892bdae9"
+    },
+    "current": {
+      "bytes": 3031,
+      "sha256": "82a0f72231b1f0b9276784b8e1c4efb756d56dedf7114b207a1fcf5b7a8695f0"
+    },
+    "logic_ast_except_report_same": true,
+    "reason": "조사 보조자료의 운영 보고 식별 필드 제거와 해당 출하 해시 갱신"
+  },
+  {
+    "path": "프로그램/FlipRing/licenses/OCR/ubuntu-gcc/출하목록.json",
+    "previous": {
+      "bytes": 5069,
+      "sha256": "26d1c5a530d83fb4dc71ad7197f9a458b5b7fa4423e2f416da7dc578321228b5"
+    },
+    "current": {
+      "bytes": 4910,
+      "sha256": "71df1a83d1bffad3164f814a2f4285fc9daf56c6ab67b4162cc3de4b4c71180d"
+    },
+    "only_three_script_entries_changed": true,
+    "reason": "조사 보조자료의 운영 보고 식별 필드 제거와 해당 출하 해시 갱신"
+  },
+  {
+    "path": "프로그램/FlipRing/licenses/OCR/ubuntu-gcc/SHA256SUMS.txt",
+    "previous": {
+      "bytes": 2589,
+      "sha256": "7da2384a5ce46f3f907a19c07c52872de4c180ce9507b81946e397fcf3a78faf"
+    },
+    "current": {
+      "bytes": 2561,
+      "sha256": "cd4c6a4fa5f1d35f67bac66108f3892f0e484ec1e39b8b34f901aa7c556a8305"
+    },
+    "only_three_script_hash_lines_changed": true,
+    "reason": "조사 보조자료의 운영 보고 식별 필드 제거와 해당 출하 해시 갱신"
+  }
+]

@@ -1,0 +1,177 @@
+[
+  {
+    "path": "app.py",
+    "bytes": 86660,
+    "sha256": "13c0941d9c94b85aa3d11306213ceb97235cf2a454c6cb445f7f03ee95d1dbc7"
+  },
+  {
+    "path": "build.py",
+    "bytes": 7607,
+    "sha256": "6e3b6446b10f92928fb7ec18bd0dfbd0ab9fb0da1f1446c7f93c4b04ef2cb9b2"
+  },
+  {
+    "path": "engine.py",
+    "bytes": 29743,
+    "sha256": "c473f5b6b530e4dff94df5cc5166657776a8131fa9244588ff0f1bae7ac1e27a"
+  },
+  {
+    "path": "fixed_viewport.py",
+    "bytes": 2468,
+    "sha256": "357b4f0a6ab3e95f1b655801f71e719ede4230d9c8ec91ff77c2d7cce01e1aa5"
+  },
+  {
+    "path": "flipring_workflow.py",
+    "bytes": 6873,
+    "sha256": "2959f12fe2b89498c5d29e3e1318f0da89ff96eaf06a52c628ad2e11a313398e"
+  },
+  {
+    "path": "i18n.py",
+    "bytes": 25496,
+    "sha256": "5baa3b5e81d9a46a92162e06ec86bc61f4eaf581f7a485c6debc8bacfb0645d9"
+  },
+  {
+    "path": "inspection_tools.py",
+    "bytes": 18781,
+    "sha256": "d0bd72a5be32edcd8dc87bdf5582aba3cffe700613f36131dc40a8e2bf844007"
+  },
+  {
+    "path": "inspection_ui.py",
+    "bytes": 36111,
+    "sha256": "d0b7517c1a0fbaac62bc22c20243c69dd46ee8390ffdfe4f859b1cdf0d5d41f9"
+  },
+  {
+    "path": "package.py",
+    "bytes": 10659,
+    "sha256": "e567740214e7422c938b768471376c46e1b98bd70ae94a48c081a676d83bfa4b"
+  },
+  {
+    "path": "pdf_lock.py",
+    "bytes": 147,
+    "sha256": "886a099f8965ef6a9db14ddaea3dc5067ab8247d524482ff3cafc8ad78c62b0a"
+  },
+  {
+    "path": "pdf_pages.py",
+    "bytes": 7563,
+    "sha256": "0eddd9a48630f382531e7019788de34a0a466e47b10bb3ab9a6c83564b746e2d"
+  },
+  {
+    "path": "pdf_panel.py",
+    "bytes": 62365,
+    "sha256": "e9bb66310316715f856dfd4dbbf11118da2436680af9d8621550e9f2cc8e2840"
+  },
+  {
+    "path": "pdf_tools.py",
+    "bytes": 38287,
+    "sha256": "014b480c958e620e7e6038aff0fa9b1eda28a397539044ca2e68c58380e20f94"
+  },
+  {
+    "path": "preview_panel.py",
+    "bytes": 6106,
+    "sha256": "fbaeb5e05627dd52a429c79e0c8a8d12dc071019969a94ab1178dfb8385d0f82"
+  },
+  {
+    "path": "studio_ui.py",
+    "bytes": 16400,
+    "sha256": "2b31eaf6ce3f22732190ca8e6e3ab78134dab382fc0b360c39b434fe97a506ba"
+  },
+  {
+    "path": "test_conversion_matrix.py",
+    "bytes": 16249,
+    "sha256": "61c1ee5677fdea77b98868d919db90bfa8937409018969e41ddcdb83ba8970a9"
+  },
+  {
+    "path": "test_engine.py",
+    "bytes": 6669,
+    "sha256": "7111c87a4899343e7766a9e82cbd81df80177094280a1ec937b46f579407e3a3"
+  },
+  {
+    "path": "test_fixed_layout.py",
+    "bytes": 16446,
+    "sha256": "09a197267314a72957373cb8e3d17a9297ffa72cb69ec9124fda8b7ee2fcbba1"
+  },
+  {
+    "path": "test_gui.py",
+    "bytes": 126787,
+    "sha256": "b7ee11a327c01c781afe713b512b1c409bfd1c646d27490f23f964094d392787"
+  },
+  {
+    "path": "test_inspection_tools.py",
+    "bytes": 18565,
+    "sha256": "fc16362dc11002a4afd5b23f29aee4a4d7262121dd25618a0cfb1f0f275bbdf6"
+  },
+  {
+    "path": "test_ocr_process.py",
+    "bytes": 5665,
+    "sha256": "92a5a75215970669044bac5e893c6e159b53ca7aa562a8d80f6251ae02b4d9d4"
+  },
+  {
+    "path": "test_pdf_tools.py",
+    "bytes": 27391,
+    "sha256": "1da54d97653601d8dd631849bf16674c95e39cd93d8e96c93319c953e5b2d854"
+  },
+  {
+    "path": "test_pdf_workspace.py",
+    "bytes": 27600,
+    "sha256": "da16cf732b25a0c045c96a445e1cf3a551f5ed57accc884b0f23cbcdd044333d"
+  },
+  {
+    "path": "test_workbench.py",
+    "bytes": 24064,
+    "sha256": "592b7533454786b82e40f9480db7412631ace79c13dfe544ff93f4f19a0ed3eb"
+  },
+  {
+    "path": "test_workspace_core.py",
+    "bytes": 33500,
+    "sha256": "7fa421b53dd755e082b59bdd99ebfcc4e80921229ace2a5de95db8643bf5577a"
+  },
+  {
+    "path": "test_workspace_ui.py",
+    "bytes": 21777,
+    "sha256": "b4ef86da4b5052dc468b735c7ebfe63e50efbc26d86e98b68d4bb730a5bf50c5"
+  },
+  {
+    "path": "ui_motion.py",
+    "bytes": 39166,
+    "sha256": "85a6ffa7a02806ae6605bc9a00e9677cc532846c3a95259c55c3953820b0b7da"
+  },
+  {
+    "path": "workspace_core.py",
+    "bytes": 47697,
+    "sha256": "1a14962e55fe5d067655c25902b08caf769313726ab57bf8427d7896ac7efb66"
+  },
+  {
+    "path": "workspace_ui.py",
+    "bytes": 44501,
+    "sha256": "91a71e925e06434f263be4ed430a8580630804baa7775385cbe946e85ea80ef6"
+  },
+  {
+    "path": "requirements-lock.txt",
+    "bytes": 644,
+    "sha256": "57a5e9a4c46e8212dccdab7557b87f6bc44047a55958afdb6d899a6f3c4feecb"
+  },
+  {
+    "path": "LICENSE.txt",
+    "bytes": 1396,
+    "sha256": "8c7b2363b1bd25e3428416587833dbe61098d211f30420582879ec4810cbf52f"
+  },
+  {
+    "path": "빌드방법.md",
+    "bytes": 11765,
+    "sha256": "3168cc824bd619bd0bd6fcb68b88697604f36425ad3732a2ac4c8a944d704498"
+  },
+  {
+    "path": "사용안내.txt",
+    "bytes": 8899,
+    "sha256": "61d621e66e54178d29dcafe5feb25fa2d72992a99db1dcd152e02eb5b2cd94bc"
+  },
+  {
+    "path": "1.9-확장안내.md",
+    "bytes": 1900,
+    "sha256": "dbac95d9f210fc1c72f93f6a0f50723c808ab3b9871abddff256866ac748905c"
+  },
+  {
+    "path": "version-info.txt",
+    "bytes": 523,
+    "sha256": "1f12a6a691bcf5b49454b1af1d2ed4bfcea9055f57bf03ef3f7dcea42598def9"
+  }
+]

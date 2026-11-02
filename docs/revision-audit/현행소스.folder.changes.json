@@ -2,2289 +2,3074 @@
   {
     "path": "1.7-새기능안내.md",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 4696,
-    "before_sha256": null,
-    "after_sha256": "e5448a06902439ac868072655d8f6328897b0b78f63a13707c3d04e3530d731a"
+    "previous": null,
+    "current": {
+      "bytes": 4696,
+      "sha256": "e5448a06902439ac868072655d8f6328897b0b78f63a13707c3d04e3530d731a"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "1.8-화면안내.md",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1628,
-    "before_sha256": null,
-    "after_sha256": "3793caf258369a9353138467924fb40f26c4aa3d477b844da3948dc2c67c788f"
+    "previous": null,
+    "current": {
+      "bytes": 1628,
+      "sha256": "3793caf258369a9353138467924fb40f26c4aa3d477b844da3948dc2c67c788f"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
-    "path": "FlipRing.spec",
+    "path": "1.9-확장안내.md",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1287,
-    "before_sha256": null,
-    "after_sha256": "e05a799e8cd588fe577af2bc1e97c5f91c7f4ff0c7ccd83531ad143a2d1e6d79"
+    "previous": null,
+    "current": {
+      "bytes": 1900,
+      "sha256": "dbac95d9f210fc1c72f93f6a0f50723c808ab3b9871abddff256866ac748905c"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "app.py",
+    "status": "수정",
+    "previous": {
+      "bytes": 81675,
+      "sha256": "be1fb631debba94240f8d81549b7e14dd4d6c321c4963bf8d7ee6b99116a3ba8"
+    },
+    "current": {
+      "bytes": 86660,
+      "sha256": "13c0941d9c94b85aa3d11306213ceb97235cf2a454c6cb445f7f03ee95d1dbc7"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "assets/NanumGothic-OFL.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 5398,
-    "before_sha256": null,
-    "after_sha256": "9413f0aaff51c59be2ff01113a28759b491e6fd67172c3d0a666e6354af18883"
+    "previous": null,
+    "current": {
+      "bytes": 5398,
+      "sha256": "9413f0aaff51c59be2ff01113a28759b491e6fd67172c3d0a666e6354af18883"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "assets/NanumGothicBold.ttf",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 4642244,
-    "before_sha256": null,
-    "after_sha256": "454eb3f503f377782a99eb84fc4bb7dde22a0f075d41b47427737f2985053bc9"
+    "previous": null,
+    "current": {
+      "bytes": 4642244,
+      "sha256": "454eb3f503f377782a99eb84fc4bb7dde22a0f075d41b47427737f2985053bc9"
+    },
+    "comparison": "바이너리 원문 전체 크기·SHA-256"
   },
   {
     "path": "assets/app.ico",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 18404,
-    "before_sha256": null,
-    "after_sha256": "01856a7bafbdc15ff8d00257a113521256da3099958c32c86542d6bc3209f93a"
+    "previous": null,
+    "current": {
+      "bytes": 18404,
+      "sha256": "01856a7bafbdc15ff8d00257a113521256da3099958c32c86542d6bc3209f93a"
+    },
+    "comparison": "바이너리 원문 전체 크기·SHA-256"
   },
   {
     "path": "assets/combo-chevron.svg",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 214,
-    "before_sha256": null,
-    "after_sha256": "8b5dac9eed1bf0e5dd5fab90746f6d47f5ed028fba92f0abf7fbcbb917e94c39"
+    "previous": null,
+    "current": {
+      "bytes": 214,
+      "sha256": "8b5dac9eed1bf0e5dd5fab90746f6d47f5ed028fba92f0abf7fbcbb917e94c39"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "assets/fonts/SUIT-Medium.ttf",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 592832,
-    "before_sha256": null,
-    "after_sha256": "06be0060927642883b9027b275744fc8234826e6563015ebe3324f3802ae005f"
+    "previous": null,
+    "current": {
+      "bytes": 592832,
+      "sha256": "06be0060927642883b9027b275744fc8234826e6563015ebe3324f3802ae005f"
+    },
+    "comparison": "바이너리 원문 전체 크기·SHA-256"
   },
   {
     "path": "assets/fonts/SUIT-Regular.ttf",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 594324,
-    "before_sha256": null,
-    "after_sha256": "88c94c990b9996c558666ef07c11664ab177c3be191e2846950b48f245d02274"
+    "previous": null,
+    "current": {
+      "bytes": 594324,
+      "sha256": "88c94c990b9996c558666ef07c11664ab177c3be191e2846950b48f245d02274"
+    },
+    "comparison": "바이너리 원문 전체 크기·SHA-256"
   },
   {
     "path": "assets/fonts/SUIT-SemiBold.ttf",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 591696,
-    "before_sha256": null,
-    "after_sha256": "8d202e0341b9426b653c1b3d36b2c0d1f4b482a7dfa83baaccf84d355d688fbd"
+    "previous": null,
+    "current": {
+      "bytes": 591696,
+      "sha256": "8d202e0341b9426b653c1b3d36b2c0d1f4b482a7dfa83baaccf84d355d688fbd"
+    },
+    "comparison": "바이너리 원문 전체 크기·SHA-256"
   },
   {
     "path": "assets/lucide/arrow-left-right.svg",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 313,
-    "before_sha256": null,
-    "after_sha256": "2d64da427cbb3f14e522658459903829575b09ec15162c1a69ea6ad341a4359a"
+    "previous": null,
+    "current": {
+      "bytes": 313,
+      "sha256": "2d64da427cbb3f14e522658459903829575b09ec15162c1a69ea6ad341a4359a"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "assets/lucide/arrow-up-right.svg",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 260,
-    "before_sha256": null,
-    "after_sha256": "50b2503b9d11881142255466b7e3461d022b919735841c321d72003ac9959fe1"
+    "previous": null,
+    "current": {
+      "bytes": 260,
+      "sha256": "50b2503b9d11881142255466b7e3461d022b919735841c321d72003ac9959fe1"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "assets/lucide/check.svg",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 239,
-    "before_sha256": null,
-    "after_sha256": "7f33acc9a77a61659531044525fc008edebe215bf4dcf1c789c8674ad3277db0"
+    "previous": null,
+    "current": {
+      "bytes": 239,
+      "sha256": "7f33acc9a77a61659531044525fc008edebe215bf4dcf1c789c8674ad3277db0"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "assets/lucide/file-up.svg",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 427,
-    "before_sha256": null,
-    "after_sha256": "0bd753699aed9b50bcbde59b12e1409329bb9291c0aa523dd4553497cd665c0b"
+    "previous": null,
+    "current": {
+      "bytes": 427,
+      "sha256": "0bd753699aed9b50bcbde59b12e1409329bb9291c0aa523dd4553497cd665c0b"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "assets/lucide/file.svg",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 373,
-    "before_sha256": null,
-    "after_sha256": "499039795d7412d67664ff79d2eb6b7412e746b24c18c8fd8aba383c24ddada0"
+    "previous": null,
+    "current": {
+      "bytes": 373,
+      "sha256": "499039795d7412d67664ff79d2eb6b7412e746b24c18c8fd8aba383c24ddada0"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "assets/lucide/folder-open.svg",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 401,
-    "before_sha256": null,
-    "after_sha256": "ee57452b40e71df310214091dd9da1941a397c83197b8ff8d7ae66dd4242578b"
+    "previous": null,
+    "current": {
+      "bytes": 401,
+      "sha256": "ee57452b40e71df310214091dd9da1941a397c83197b8ff8d7ae66dd4242578b"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "assets/lucide/info.svg",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 294,
-    "before_sha256": null,
-    "after_sha256": "bc977a64eb96f3e9c1041ffd09a3fceb70e3e65c02b571f76064062ed31f3cb9"
+    "previous": null,
+    "current": {
+      "bytes": 294,
+      "sha256": "bc977a64eb96f3e9c1041ffd09a3fceb70e3e65c02b571f76064062ed31f3cb9"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "assets/lucide/plus.svg",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 256,
-    "before_sha256": null,
-    "after_sha256": "7f6af73bf1ff6c4bca3f18351c8d1bdec6749c0c2530c4de5da85d520c21df17"
+    "previous": null,
+    "current": {
+      "bytes": 256,
+      "sha256": "7f6af73bf1ff6c4bca3f18351c8d1bdec6749c0c2530c4de5da85d520c21df17"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "assets/lucide/rotate-ccw-clock.svg",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 324,
-    "before_sha256": null,
-    "after_sha256": "a98ff758157910b9fc9d42d5d5dc80c2f4e037afa5f8ea4dee5f5649f03d438d"
+    "previous": null,
+    "current": {
+      "bytes": 324,
+      "sha256": "a98ff758157910b9fc9d42d5d5dc80c2f4e037afa5f8ea4dee5f5649f03d438d"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "assets/lucide/scan-text.svg",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 435,
-    "before_sha256": null,
-    "after_sha256": "6c05f5346bf0a9c7cdf6132f7ae3428ea932e2206ace2480f41a3d3bdc6efd80"
+    "previous": null,
+    "current": {
+      "bytes": 435,
+      "sha256": "6c05f5346bf0a9c7cdf6132f7ae3428ea932e2206ace2480f41a3d3bdc6efd80"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "assets/lucide/sliders-horizontal.svg",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 422,
-    "before_sha256": null,
-    "after_sha256": "e43a00e5eb684e6cbb61083bed2528d7a3fa5f265693eb2b5f314cd432aa65f4"
+    "previous": null,
+    "current": {
+      "bytes": 422,
+      "sha256": "e43a00e5eb684e6cbb61083bed2528d7a3fa5f265693eb2b5f314cd432aa65f4"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "assets/lucide/x.svg",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 260,
-    "before_sha256": null,
-    "after_sha256": "4a9cdab38fbb96162e7dace28e33f4ca0e49d8963a6162abc3d4691b7d675117"
+    "previous": null,
+    "current": {
+      "bytes": 260,
+      "sha256": "4a9cdab38fbb96162e7dace28e33f4ca0e49d8963a6162abc3d4691b7d675117"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
-    "path": "installer.iss",
+    "path": "build.py",
+    "status": "수정",
+    "previous": {
+      "bytes": 7067,
+      "sha256": "e449624880643b9a0250e22c7120dde9d4405352863d444d84f78bd622248dc8"
+    },
+    "current": {
+      "bytes": 7607,
+      "sha256": "6e3b6446b10f92928fb7ec18bd0dfbd0ab9fb0da1f1446c7f93c4b04ef2cb9b2"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "engine.py",
+    "status": "수정",
+    "previous": {
+      "bytes": 29746,
+      "sha256": "b06100438c938f7c380f89caae50610c8ef3b8963ead13bf9ff07485777e7b4d"
+    },
+    "current": {
+      "bytes": 29743,
+      "sha256": "c473f5b6b530e4dff94df5cc5166657776a8131fa9244588ff0f1bae7ac1e27a"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "i18n.py",
+    "status": "수정",
+    "previous": {
+      "bytes": 19141,
+      "sha256": "3782b9e67be6af694e2e3622730f3aa29fdff9735d696ceb07b1c70035fdf9da"
+    },
+    "current": {
+      "bytes": 25496,
+      "sha256": "5baa3b5e81d9a46a92162e06ec86bc61f4eaf581f7a485c6debc8bacfb0645d9"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "inspection_tools.py",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1395,
-    "before_sha256": null,
-    "after_sha256": "d1cdb5776f6f206e575b1a45a444d159558a863a699f12867762b3664a5aa421"
+    "previous": null,
+    "current": {
+      "bytes": 18781,
+      "sha256": "d0bd72a5be32edcd8dc87bdf5582aba3cffe700613f36131dc40a8e2bf844007"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "inspection_ui.py",
+    "status": "추가",
+    "previous": null,
+    "current": {
+      "bytes": 36111,
+      "sha256": "d0b7517c1a0fbaac62bc22c20243c69dd46ee8390ffdfe4f859b1cdf0d5d41f9"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/7Zip/LGPL-2.1.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 27032,
-    "before_sha256": null,
-    "after_sha256": "1e7e6bae5a5bde32f1ae5a7c37a082d1ab03cf89354f7f936ac40be9e39a6531"
+    "previous": null,
+    "current": {
+      "bytes": 27032,
+      "sha256": "1e7e6bae5a5bde32f1ae5a7c37a082d1ab03cf89354f7f936ac40be9e39a6531"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/7Zip/License.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 6031,
-    "before_sha256": null,
-    "after_sha256": "519ac0a4bded9c18ea02e0afb71f663d8c47373bd9facd3ac96a79f51d77765d"
+    "previous": null,
+    "current": {
+      "bytes": 6031,
+      "sha256": "519ac0a4bded9c18ea02e0afb71f663d8c47373bd9facd3ac96a79f51d77765d"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/7Zip/Source-License.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 6341,
-    "before_sha256": null,
-    "after_sha256": "9ac2b4a97ab5d523965534d8b2d5868e511b39096d51fff458ab72c38b80fccc"
+    "previous": null,
+    "current": {
+      "bytes": 6341,
+      "sha256": "9ac2b4a97ab5d523965534d8b2d5868e511b39096d51fff458ab72c38b80fccc"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/7Zip/unRarLicense.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1921,
-    "before_sha256": null,
-    "after_sha256": "17bd9fa4399092c777536fff045b41df76ec9d2ac4c9b8e7345d3b8b6ccc7976"
+    "previous": null,
+    "current": {
+      "bytes": 1921,
+      "sha256": "17bd9fa4399092c777536fff045b41df76ec9d2ac4c9b8e7345d3b8b6ccc7976"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/7Zip/출하목록.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 2762,
-    "before_sha256": null,
-    "after_sha256": "4e8bf6bc1939cb49640d8aea6b85152085c4e48e3b17e2253e8dfcb3af4d8f7d"
+    "previous": null,
+    "current": {
+      "bytes": 2762,
+      "sha256": "4e8bf6bc1939cb49640d8aea6b85152085c4e48e3b17e2253e8dfcb3af4d8f7d"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/GCC-RUNTIME-EXCEPTION.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3324,
-    "before_sha256": null,
-    "after_sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+    "previous": null,
+    "current": {
+      "bytes": 3324,
+      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/GPL-3.0.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 35149,
-    "before_sha256": null,
-    "after_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    "previous": null,
+    "current": {
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/GCC-PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1291,
-    "before_sha256": null,
-    "after_sha256": "2c9818f60ae5c6f4eee075cacf82424f8ee2e6d948786e332490535e854ee00d"
+    "previous": null,
+    "current": {
+      "bytes": 1291,
+      "sha256": "2c9818f60ae5c6f4eee075cacf82424f8ee2e6d948786e332490535e854ee00d"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.LIB",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 26527,
-    "before_sha256": null,
-    "after_sha256": "a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861"
+    "previous": null,
+    "current": {
+      "bytes": 26527,
+      "sha256": "a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.RUNTIME",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3324,
-    "before_sha256": null,
-    "after_sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+    "previous": null,
+    "current": {
+      "bytes": 3324,
+      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING3",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 35147,
-    "before_sha256": null,
-    "after_sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    "previous": null,
+    "current": {
+      "bytes": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/README",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 236,
-    "before_sha256": null,
-    "after_sha256": "33400d067fa3e2bd670a0868dcdb60c9486e8f559b675cf9ff1ff55d4e0d06ab"
+    "previous": null,
+    "current": {
+      "bytes": 236,
+      "sha256": "33400d067fa3e2bd670a0868dcdb60c9486e8f559b675cf9ff1ff55d4e0d06ab"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/HEIC-GNU-GCC대조.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1872,
-    "before_sha256": null,
-    "after_sha256": "241751dc6e8f683f03e52218bcc5531c61ff3ab20b979e8db6487d980cecdc53"
+    "previous": null,
+    "current": {
+      "bytes": 1872,
+      "sha256": "241751dc6e8f683f03e52218bcc5531c61ff3ab20b979e8db6487d980cecdc53"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/HEIC-GNU-PE수정영역.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 5993,
-    "before_sha256": null,
-    "after_sha256": "e9d1d2d5d7ffe916444c3ec84b2dc78f2ee846dd4e398496d38ab7df0dd4b1c8"
+    "previous": null,
+    "current": {
+      "bytes": 5993,
+      "sha256": "e9d1d2d5d7ffe916444c3ec84b2dc78f2ee846dd4e398496d38ab7df0dd4b1c8"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/HEIC-GNU-WINPTHREAD대조.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1120,
-    "before_sha256": null,
-    "after_sha256": "e63d37d228f0d4ac551faf0843aff4f6d9bb6416be1a39234c7e440925be15d6"
+    "previous": null,
+    "current": {
+      "bytes": 1120,
+      "sha256": "e63d37d228f0d4ac551faf0843aff4f6d9bb6416be1a39234c7e440925be15d6"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/HEIC-GNU-소스확보.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 434,
-    "before_sha256": null,
-    "after_sha256": "7acec12aefc960b7dfcc0251b81a549fe6bccac8556e3ffd1b823d83738b8c35"
+    "previous": null,
+    "current": {
+      "bytes": 434,
+      "sha256": "7acec12aefc960b7dfcc0251b81a549fe6bccac8556e3ffd1b823d83738b8c35"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/WINPTHREAD-PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 787,
-    "before_sha256": null,
-    "after_sha256": "0a7379d06cec37d3dc5283e2cbcccec35706175ba8a8eee743fc7acaf94d5746"
+    "previous": null,
+    "current": {
+      "bytes": 787,
+      "sha256": "0a7379d06cec37d3dc5283e2cbcccec35706175ba8a8eee743fc7acaf94d5746"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/WINPTHREAD-원문고지/libwinpthread/COPYING",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 2883,
-    "before_sha256": null,
-    "after_sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177"
+    "previous": null,
+    "current": {
+      "bytes": 2883,
+      "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/libheif/windows/mingw-w64-libheif/PKGBUILD",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 2484,
-    "before_sha256": null,
-    "after_sha256": "216f26f9dfa169b467af26001c9da6864054bb17f433d7612bb109cf4e17b7b1"
+    "previous": null,
+    "current": {
+      "bytes": 2484,
+      "sha256": "216f26f9dfa169b467af26001c9da6864054bb17f433d7612bb109cf4e17b7b1"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/pyproject.toml",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3033,
-    "before_sha256": null,
-    "after_sha256": "a5cb5be4340e98bb35776130f9df8bae845da5ab8b0160490b8e7bece36aa075"
+    "previous": null,
+    "current": {
+      "bytes": 3033,
+      "sha256": "a5cb5be4340e98bb35776130f9df8bae845da5ab8b0160490b8e7bece36aa075"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/setup.py",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 12778,
-    "before_sha256": null,
-    "after_sha256": "4b7786c05de87319ffc380265c91d776917f5a2d4fe31f3beb63cfe2c178c6f8"
+    "previous": null,
+    "current": {
+      "bytes": 12778,
+      "sha256": "4b7786c05de87319ffc380265c91d776917f5a2d4fe31f3beb63cfe2c178c6f8"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/읽어주세요.md",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3330,
-    "before_sha256": null,
-    "after_sha256": "280d93a25999fce85879a23f36c73264ade0de631b89aa2d710b95766c724411"
+    "previous": null,
+    "current": {
+      "bytes": 3330,
+      "sha256": "280d93a25999fce85879a23f36c73264ade0de631b89aa2d710b95766c724411"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/출하목록.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 4192,
-    "before_sha256": null,
-    "after_sha256": "89c48aa5b2e491d0b8138e8bb4b3e65cedf818354f4cc5eabe65ea53d1e98577"
+    "previous": null,
+    "current": {
+      "bytes": 4192,
+      "sha256": "89c48aa5b2e491d0b8138e8bb4b3e65cedf818354f4cc5eabe65ea53d1e98577"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-gcc-16.2.0-3/.SRCINFO",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 8081,
-    "before_sha256": null,
-    "after_sha256": "460257cf5496b17611ed36c01272e42fb41ae06cfc404374b1a2538970dc8158"
+    "previous": null,
+    "current": {
+      "bytes": 8081,
+      "sha256": "460257cf5496b17611ed36c01272e42fb41ae06cfc404374b1a2538970dc8158"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-gcc-16.2.0-3/PKGBUILD",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 25852,
-    "before_sha256": null,
-    "after_sha256": "226e4b4d6a5786b66eaf260181b5260934a77ee1d6548ef9d1f735ebaae30f1d"
+    "previous": null,
+    "current": {
+      "bytes": 25852,
+      "sha256": "226e4b4d6a5786b66eaf260181b5260934a77ee1d6548ef9d1f735ebaae30f1d"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1/.SRCINFO",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1390,
-    "before_sha256": null,
-    "after_sha256": "7c7488d882e286b56785565ba11d2982092bb62e96008e2ee535e94f0b1174c1"
+    "previous": null,
+    "current": {
+      "bytes": 1390,
+      "sha256": "7c7488d882e286b56785565ba11d2982092bb62e96008e2ee535e94f0b1174c1"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1/PKGBUILD",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 4484,
-    "before_sha256": null,
-    "after_sha256": "7e5cec4463bd044cddeeb584dc6aab3e91dee5afd088d382e90c6232d0dd4e17"
+    "previous": null,
+    "current": {
+      "bytes": 4484,
+      "sha256": "7e5cec4463bd044cddeeb584dc6aab3e91dee5afd088d382e90c6232d0dd4e17"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/HEIC-GNU-runtime/프로그램-DLL목록.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 919,
-    "before_sha256": null,
-    "after_sha256": "2b8414f075aec3f6584eea7ba4b1726bc47a778a608642f24cf77f14a3cbbb67"
+    "previous": null,
+    "current": {
+      "bytes": 919,
+      "sha256": "2b8414f075aec3f6584eea7ba4b1726bc47a778a608642f24cf77f14a3cbbb67"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/Inno-Setup-LICENSE.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1521,
-    "before_sha256": null,
-    "after_sha256": "2e5346868c2a18434489824e11d65c3031620f792fefc415d05f19cd441abf5c"
+    "previous": null,
+    "current": {
+      "bytes": 1521,
+      "sha256": "2e5346868c2a18434489824e11d65c3031620f792fefc415d05f19cd441abf5c"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/LGPL-3.0.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 7652,
-    "before_sha256": null,
-    "after_sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118"
+    "previous": null,
+    "current": {
+      "bytes": 7652,
+      "sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/Lucide/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3208,
-    "before_sha256": null,
-    "after_sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+    "previous": null,
+    "current": {
+      "bytes": 3208,
+      "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/Lucide/원본출처.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 7537,
-    "before_sha256": null,
-    "after_sha256": "2e6884324f7361c89ffe0ab91fff02e5e16a688722328652e8630ea8206f588a"
+    "previous": null,
+    "current": {
+      "bytes": 7537,
+      "sha256": "2e6884324f7361c89ffe0ab91fff02e5e16a688722328652e8630ea8206f588a"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/Mesa-LICENSE.html",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 18044,
-    "before_sha256": null,
-    "after_sha256": "9e0c5f9cba3e7b810ca8ee1f306073e80f6d18d89f05497eb7a4b9f487ff7c5d"
+    "previous": null,
+    "current": {
+      "bytes": 18044,
+      "sha256": "9e0c5f9cba3e7b810ca8ee1f306073e80f6d18d89f05497eb7a4b9f487ff7c5d"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/NanumGothic-OFL.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 5398,
-    "before_sha256": null,
-    "after_sha256": "9413f0aaff51c59be2ff01113a28759b491e6fd67172c3d0a666e6354af18883"
+    "previous": null,
+    "current": {
+      "bytes": 5398,
+      "sha256": "9413f0aaff51c59be2ff01113a28759b491e6fd67172c3d0a666e6354af18883"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/GPL-3.0.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 35149,
-    "before_sha256": null,
-    "after_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    "previous": null,
+    "current": {
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/MSYS2-구성요소.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 57186,
-    "before_sha256": null,
-    "after_sha256": "b73639d1e4b4dd575763365958167531a6d96c2a97fcc80e11a6f305200bf0e0"
+    "previous": null,
+    "current": {
+      "bytes": 57186,
+      "sha256": "b73639d1e4b4dd575763365958167531a6d96c2a97fcc80e11a6f305200bf0e0"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/Tesseract-소스다운로드.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 378,
-    "before_sha256": null,
-    "after_sha256": "4eb2c7909396a02bddd980776ce7e019209f8ed3e42588148d709a48646eb0e8"
+    "previous": null,
+    "current": {
+      "bytes": 378,
+      "sha256": "4eb2c7909396a02bddd980776ce7e019209f8ed3e42588148d709a48646eb0e8"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/Tesseract-원본다운로드.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 296,
-    "before_sha256": null,
-    "after_sha256": "952a1f62d9f8940821dbf015eb83c8be99e873de50a621eb6c4bbd922762123f"
+    "previous": null,
+    "current": {
+      "bytes": 296,
+      "sha256": "952a1f62d9f8940821dbf015eb83c8be99e873de50a621eb6c4bbd922762123f"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/brotli/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 464,
-    "before_sha256": null,
-    "after_sha256": "af08cd3cb0686c720d469e5be4860a2773929c149c39159555ed817d5ada2dbc"
+    "previous": null,
+    "current": {
+      "bytes": 464,
+      "sha256": "af08cd3cb0686c720d469e5be4860a2773929c149c39159555ed817d5ada2dbc"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/brotli/brotli/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1084,
-    "before_sha256": null,
-    "after_sha256": "3d180008e36922a4e8daec11c34c7af264fed5962d07924aea928c38e8663c94"
+    "previous": null,
+    "current": {
+      "bytes": 1084,
+      "sha256": "3d180008e36922a4e8daec11c34c7af264fed5962d07924aea928c38e8663c94"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/bzip2/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 448,
-    "before_sha256": null,
-    "after_sha256": "42dec4171b3ce74124bbd9b419ad572c60268d453bf40637dce748479781882f"
+    "previous": null,
+    "current": {
+      "bytes": 448,
+      "sha256": "42dec4171b3ce74124bbd9b419ad572c60268d453bf40637dce748479781882f"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/bzip2/bzip2/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1896,
-    "before_sha256": null,
-    "after_sha256": "c6dbbf828498be844a89eaa3b84adbab3199e342eb5cb2ed2f0d4ba7ec0f38a3"
+    "previous": null,
+    "current": {
+      "bytes": 1896,
+      "sha256": "c6dbbf828498be844a89eaa3b84adbab3199e342eb5cb2ed2f0d4ba7ec0f38a3"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/curl-winssl/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1378,
-    "before_sha256": null,
-    "after_sha256": "a053893f72f1e6503ac71b091ba0cf3386c1f1cd6cf7944cc43c0d9313247613"
+    "previous": null,
+    "current": {
+      "bytes": 1378,
+      "sha256": "a053893f72f1e6503ac71b091ba0cf3386c1f1cd6cf7944cc43c0d9313247613"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/curl-winssl/curl/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1088,
-    "before_sha256": null,
-    "after_sha256": "82f2f4427d6545ee5aaac4f0b80428da6cc8ba41c2cf5da3a03680ec327b9681"
+    "previous": null,
+    "current": {
+      "bytes": 1088,
+      "sha256": "82f2f4427d6545ee5aaac4f0b80428da6cc8ba41c2cf5da3a03680ec327b9681"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/expat/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 488,
-    "before_sha256": null,
-    "after_sha256": "9eb42cdf8f6e95c7f09d990c30e00fa47e45a50f2378b99f472084c126d97d52"
+    "previous": null,
+    "current": {
+      "bytes": 488,
+      "sha256": "9eb42cdf8f6e95c7f09d990c30e00fa47e45a50f2378b99f472084c126d97d52"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/expat/expat/COPYING",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1144,
-    "before_sha256": null,
-    "after_sha256": "31b15de82aa19a845156169a17a5488bf597e561b2c318d159ed583139b25e87"
+    "previous": null,
+    "current": {
+      "bytes": 1144,
+      "sha256": "31b15de82aa19a845156169a17a5488bf597e561b2c318d159ed583139b25e87"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/gettext-runtime/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 710,
-    "before_sha256": null,
-    "after_sha256": "9432a898a3d7a16f62e30eb1c65a63e51ea80199ebc61f3a362dd01be052b0e7"
+    "previous": null,
+    "current": {
+      "bytes": 710,
+      "sha256": "9432a898a3d7a16f62e30eb1c65a63e51ea80199ebc61f3a362dd01be052b0e7"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/gettext-runtime/gettext-runtime/COPYING",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 495,
-    "before_sha256": null,
-    "after_sha256": "7ef2cdfe58e0c0460657b6598b49af29d4e03c1e41cbaf0e1da1eb8ad74b95d0"
+    "previous": null,
+    "current": {
+      "bytes": 495,
+      "sha256": "7ef2cdfe58e0c0460657b6598b49af29d4e03c1e41cbaf0e1da1eb8ad74b95d0"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/gettext-runtime/gettext-runtime/intl/COPYING.LIB",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 26419,
-    "before_sha256": null,
-    "after_sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+    "previous": null,
+    "current": {
+      "bytes": 26419,
+      "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/gettext-runtime/gettext-runtime/libasprintf/COPYING",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 65,
-    "before_sha256": null,
-    "after_sha256": "03133addae5b99a6148c538300e6d97074453089be1423b741bd081f18e2b298"
+    "previous": null,
+    "current": {
+      "bytes": 65,
+      "sha256": "03133addae5b99a6148c538300e6d97074453089be1423b741bd081f18e2b298"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/gettext-runtime/gettext-runtime/libasprintf/COPYING.LIB",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 26419,
-    "before_sha256": null,
-    "after_sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+    "previous": null,
+    "current": {
+      "bytes": 26419,
+      "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/giflib/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 441,
-    "before_sha256": null,
-    "after_sha256": "51f5e616d8346958cd548e2237a840c50e9e84cbb53905da4045bb8b3a2b64c9"
+    "previous": null,
+    "current": {
+      "bytes": 441,
+      "sha256": "51f5e616d8346958cd548e2237a840c50e9e84cbb53905da4045bb8b3a2b64c9"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/jbigkit/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 496,
-    "before_sha256": null,
-    "after_sha256": "3efecb6c8e1eaf3381eecf5215a835a90439a20e39f83e41dbfdad0e2679dd64"
+    "previous": null,
+    "current": {
+      "bytes": 496,
+      "sha256": "3efecb6c8e1eaf3381eecf5215a835a90439a20e39f83e41dbfdad0e2679dd64"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/jbigkit/jbigkit/COPYING",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 17982,
-    "before_sha256": null,
-    "after_sha256": "91df39d1816bfb17a4dda2d3d2c83b1f6f2d38d53e53e41e8f97ad5ac46a0cad"
+    "previous": null,
+    "current": {
+      "bytes": 17982,
+      "sha256": "91df39d1816bfb17a4dda2d3d2c83b1f6f2d38d53e53e41e8f97ad5ac46a0cad"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/leptonica/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 817,
-    "before_sha256": null,
-    "after_sha256": "3d6f67437a0e2bda6c5922c2c55c5f5131ae9930a6f9212996c7bf8a392f1634"
+    "previous": null,
+    "current": {
+      "bytes": 817,
+      "sha256": "3d6f67437a0e2bda6c5922c2c55c5f5131ae9930a6f9212996c7bf8a392f1634"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/leptonica/leptonica/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1521,
-    "before_sha256": null,
-    "after_sha256": "87829abb5bbb00b55a107365da89e9a33f86c4250169e5a1e5588505be7d5806"
+    "previous": null,
+    "current": {
+      "bytes": 1521,
+      "sha256": "87829abb5bbb00b55a107365da89e9a33f86c4250169e5a1e5588505be7d5806"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/lerc/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 549,
-    "before_sha256": null,
-    "after_sha256": "b98e36b32c7231c3a9acfa1da42ea8680152a75510d334b8e67d5bc07402a984"
+    "previous": null,
+    "current": {
+      "bytes": 549,
+      "sha256": "b98e36b32c7231c3a9acfa1da42ea8680152a75510d334b8e67d5bc07402a984"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/lerc/lerc/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 9198,
-    "before_sha256": null,
-    "after_sha256": "77a8b761727c75e2167b15bfdf61b2c0bcf8792271228bebe80779106ad00671"
+    "previous": null,
+    "current": {
+      "bytes": 9198,
+      "sha256": "77a8b761727c75e2167b15bfdf61b2c0bcf8792271228bebe80779106ad00671"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libarchive/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 894,
-    "before_sha256": null,
-    "after_sha256": "ad244556ef01d0035523b2788a3baba2c19c53dcbb5ab13ad2ccc178ebe2cac6"
+    "previous": null,
+    "current": {
+      "bytes": 894,
+      "sha256": "ad244556ef01d0035523b2788a3baba2c19c53dcbb5ab13ad2ccc178ebe2cac6"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libarchive/libarchive/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3089,
-    "before_sha256": null,
-    "after_sha256": "30e556b3959e3985d66efefec5eaac51d4995053caa1d3cffe6eb916f146f229"
+    "previous": null,
+    "current": {
+      "bytes": 3089,
+      "sha256": "30e556b3959e3985d66efefec5eaac51d4995053caa1d3cffe6eb916f146f229"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libb2/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 495,
-    "before_sha256": null,
-    "after_sha256": "b31a8fc304b0f8740f86c3b50d0a773439fb2f637eed443f3a9c8bc39ba70c0d"
+    "previous": null,
+    "current": {
+      "bytes": 495,
+      "sha256": "b31a8fc304b0f8740f86c3b50d0a773439fb2f637eed443f3a9c8bc39ba70c0d"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libb2/libb2/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 6556,
-    "before_sha256": null,
-    "after_sha256": "6a1ee543e5282cd9061881edf462e6fdab181f328da71fc2c9a6950a80e94d01"
+    "previous": null,
+    "current": {
+      "bytes": 6556,
+      "sha256": "6a1ee543e5282cd9061881edf462e6fdab181f328da71fc2c9a6950a80e94d01"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libdeflate/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 525,
-    "before_sha256": null,
-    "after_sha256": "b5162afcdbf78bb94e7e1f9b16f78ae3daa277b2e49144aeacf41365702c4feb"
+    "previous": null,
+    "current": {
+      "bytes": 525,
+      "sha256": "b5162afcdbf78bb94e7e1f9b16f78ae3daa277b2e49144aeacf41365702c4feb"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libdeflate/libdeflate/COPYING",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1078,
-    "before_sha256": null,
-    "after_sha256": "4ad69099cb4374836fd27583d9991e2838cd86b6e4666ab26b2d32582c91e73a"
+    "previous": null,
+    "current": {
+      "bytes": 1078,
+      "sha256": "4ad69099cb4374836fd27583d9991e2838cd86b6e4666ab26b2d32582c91e73a"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libiconv/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 594,
-    "before_sha256": null,
-    "after_sha256": "7c64972a62c9feeddada9657103b833f9413cb8b39ab0160e348daaafa065366"
+    "previous": null,
+    "current": {
+      "bytes": 594,
+      "sha256": "7c64972a62c9feeddada9657103b833f9413cb8b39ab0160e348daaafa065366"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libiconv/libiconv/COPYING",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 35147,
-    "before_sha256": null,
-    "after_sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    "previous": null,
+    "current": {
+      "bytes": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libiconv/libiconv/COPYING.LIB",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 26419,
-    "before_sha256": null,
-    "after_sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+    "previous": null,
+    "current": {
+      "bytes": 26419,
+      "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libiconv/libiconv/README",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 5741,
-    "before_sha256": null,
-    "after_sha256": "4ae66e61d1c6593c84c47105b368d579bcee1af566dbb959ec63a0c48425dcf4"
+    "previous": null,
+    "current": {
+      "bytes": 5741,
+      "sha256": "4ae66e61d1c6593c84c47105b368d579bcee1af566dbb959ec63a0c48425dcf4"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libiconv/libiconv/libcharset/COPYING.LIB",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 26419,
-    "before_sha256": null,
-    "after_sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+    "previous": null,
+    "current": {
+      "bytes": 26419,
+      "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libidn2/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 732,
-    "before_sha256": null,
-    "after_sha256": "dfbe55689e808d53e95c3b4e24b94395ce1108c3d9b6042b0ed9367ff24f9f5d"
+    "previous": null,
+    "current": {
+      "bytes": 732,
+      "sha256": "dfbe55689e808d53e95c3b4e24b94395ce1108c3d9b6042b0ed9367ff24f9f5d"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libjpeg-turbo/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 715,
-    "before_sha256": null,
-    "after_sha256": "b86dde730391586237e10502ebd9691c6311ba0ffba9c43203bb0a8ad2ab7153"
+    "previous": null,
+    "current": {
+      "bytes": 715,
+      "sha256": "b86dde730391586237e10502ebd9691c6311ba0ffba9c43203bb0a8ad2ab7153"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libjpeg-turbo/libjpeg-turbo/LICENSE.md",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 5620,
-    "before_sha256": null,
-    "after_sha256": "2189dc45a8fe96204069f8124caa53a148dfdc193f50f584c6ca7849a6072872"
+    "previous": null,
+    "current": {
+      "bytes": 5620,
+      "sha256": "2189dc45a8fe96204069f8124caa53a148dfdc193f50f584c6ca7849a6072872"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.ijg",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 12799,
-    "before_sha256": null,
-    "after_sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6"
+    "previous": null,
+    "current": {
+      "bytes": 12799,
+      "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 18807,
-    "before_sha256": null,
-    "after_sha256": "bd9afea98b72467fb1b44f90caca6914ccc802afa89500a221973880b87e753a"
+    "previous": null,
+    "current": {
+      "bytes": 18807,
+      "sha256": "bd9afea98b72467fb1b44f90caca6914ccc802afa89500a221973880b87e753a"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libjpeg-turbo/libjpeg-turbo/simd/jsimdext.inc",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 15563,
-    "before_sha256": null,
-    "after_sha256": "68c5d236785edf75344cebe8b9bec36568bd35c96eb72cc67ffecd66c17dbd74"
+    "previous": null,
+    "current": {
+      "bytes": 15563,
+      "sha256": "68c5d236785edf75344cebe8b9bec36568bd35c96eb72cc67ffecd66c17dbd74"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libpng/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 537,
-    "before_sha256": null,
-    "after_sha256": "74dbd8ab37f228f2b791c20773d72a14bd101586a99b7fe665146114844bba56"
+    "previous": null,
+    "current": {
+      "bytes": 537,
+      "sha256": "74dbd8ab37f228f2b791c20773d72a14bd101586a99b7fe665146114844bba56"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libpng/libpng/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 5345,
-    "before_sha256": null,
-    "after_sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526"
+    "previous": null,
+    "current": {
+      "bytes": 5345,
+      "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libpsl/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 742,
-    "before_sha256": null,
-    "after_sha256": "1566b0f9bd3777a0e37ebfb05f9ce9c65b369e69385d94bf91812a4acf66f954"
+    "previous": null,
+    "current": {
+      "bytes": 742,
+      "sha256": "1566b0f9bd3777a0e37ebfb05f9ce9c65b369e69385d94bf91812a4acf66f954"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libpsl/libpsl/COPYING",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1060,
-    "before_sha256": null,
-    "after_sha256": "322392e6001b2b3b0fca705dc9f11f26e12441188ecde50eb1d22909980b2925"
+    "previous": null,
+    "current": {
+      "bytes": 1060,
+      "sha256": "322392e6001b2b3b0fca705dc9f11f26e12441188ecde50eb1d22909980b2925"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libssh2-wincng/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 662,
-    "before_sha256": null,
-    "after_sha256": "239cda9cef94151d2c5d94c3574b0aa2486cd3e1cdfaa8a7429f743ac04aebdd"
+    "previous": null,
+    "current": {
+      "bytes": 662,
+      "sha256": "239cda9cef94151d2c5d94c3574b0aa2486cd3e1cdfaa8a7429f743ac04aebdd"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libssh2-wincng/libssh2/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1959,
-    "before_sha256": null,
-    "after_sha256": "f7f9633cf9ff2f1333f3d7ce46973a8716a4d2a2815ad56f30d437d5fea7bafe"
+    "previous": null,
+    "current": {
+      "bytes": 1959,
+      "sha256": "f7f9633cf9ff2f1333f3d7ce46973a8716a4d2a2815ad56f30d437d5fea7bafe"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libtiff/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 842,
-    "before_sha256": null,
-    "after_sha256": "7f7ccb794e96c103c37ff0b567667ff10b397247691985b12dce56362d588855"
+    "previous": null,
+    "current": {
+      "bytes": 842,
+      "sha256": "7f7ccb794e96c103c37ff0b567667ff10b397247691985b12dce56362d588855"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libtiff/libtiff/LICENSE.md",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 2416,
-    "before_sha256": null,
-    "after_sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade"
+    "previous": null,
+    "current": {
+      "bytes": 2416,
+      "sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libunistring/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 569,
-    "before_sha256": null,
-    "after_sha256": "13da8767457adda92a35ccef074c17fdc6b6fe7bad0fb113f5b5ea15744abc62"
+    "previous": null,
+    "current": {
+      "bytes": 569,
+      "sha256": "13da8767457adda92a35ccef074c17fdc6b6fe7bad0fb113f5b5ea15744abc62"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libunistring/libunistring/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 35149,
-    "before_sha256": null,
-    "after_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    "previous": null,
+    "current": {
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libunistring/libunistring/LICENSE.LIB",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 7639,
-    "before_sha256": null,
-    "after_sha256": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c"
+    "previous": null,
+    "current": {
+      "bytes": 7639,
+      "sha256": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libwebp/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 693,
-    "before_sha256": null,
-    "after_sha256": "c2e173802642c0aef423a0208ba9dc52e922a0b3b49c5fc885b5f1f77aa88211"
+    "previous": null,
+    "current": {
+      "bytes": 693,
+      "sha256": "c2e173802642c0aef423a0208ba9dc52e922a0b3b49c5fc885b5f1f77aa88211"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libwebp/libwebp/COPYING",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1496,
-    "before_sha256": null,
-    "after_sha256": "5aec868f669e384a22372a4e8a1a6cd7d44c64cd451f960ca69cc170d1e13acf"
+    "previous": null,
+    "current": {
+      "bytes": 1496,
+      "sha256": "5aec868f669e384a22372a4e8a1a6cd7d44c64cd451f960ca69cc170d1e13acf"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libwinpthread/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 786,
-    "before_sha256": null,
-    "after_sha256": "fe13f531ab475b13020d41a7d35b225fab1676fe5c9fff38007d51938f4e3633"
+    "previous": null,
+    "current": {
+      "bytes": 786,
+      "sha256": "fe13f531ab475b13020d41a7d35b225fab1676fe5c9fff38007d51938f4e3633"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/libwinpthread/libwinpthread/COPYING",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 2883,
-    "before_sha256": null,
-    "after_sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177"
+    "previous": null,
+    "current": {
+      "bytes": 2883,
+      "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/lz4/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 427,
-    "before_sha256": null,
-    "after_sha256": "addb3bbcbf275fbbcdd78970e5ce37c84edff61acadec3f84a792da6c2ee459d"
+    "previous": null,
+    "current": {
+      "bytes": 427,
+      "sha256": "addb3bbcbf275fbbcdd78970e5ce37c84edff61acadec3f84a792da6c2ee459d"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/openjpeg2/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 643,
-    "before_sha256": null,
-    "after_sha256": "846e5af55cfd46f5381ec619be5c651e001b07cef6df00908447784b1178d2c2"
+    "previous": null,
+    "current": {
+      "bytes": 643,
+      "sha256": "846e5af55cfd46f5381ec619be5c651e001b07cef6df00908447784b1178d2c2"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/openjpeg2/openjpeg/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 2112,
-    "before_sha256": null,
-    "after_sha256": "a6af136f3e15038a666b61f376612a07d9a4e48cb7c01adbf3e33b3f14ab49b6"
+    "previous": null,
+    "current": {
+      "bytes": 2112,
+      "sha256": "a6af136f3e15038a666b61f376612a07d9a4e48cb7c01adbf3e33b3f14ab49b6"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/COPYING.RUNTIME.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3324,
-    "before_sha256": null,
-    "after_sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+    "previous": null,
+    "current": {
+      "bytes": 3324,
+      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/COPYING.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 18002,
-    "before_sha256": null,
-    "after_sha256": "231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c"
+    "previous": null,
+    "current": {
+      "bytes": 18002,
+      "sha256": "231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/COPYING3.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 35147,
-    "before_sha256": null,
-    "after_sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    "previous": null,
+    "current": {
+      "bytes": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/README.md",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 5499,
-    "before_sha256": null,
-    "after_sha256": "48d0f8f4862710e2eb722a6c50343c1a91b9279fbc900ef68da2a874e7eefeb9"
+    "previous": null,
+    "current": {
+      "bytes": 5499,
+      "sha256": "48d0f8f4862710e2eb722a6c50343c1a91b9279fbc900ef68da2a874e7eefeb9"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/SHA256SUMS.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 2589,
-    "before_sha256": null,
-    "after_sha256": "7da2384a5ce46f3f907a19c07c52872de4c180ce9507b81946e397fcf3a78faf"
+    "previous": null,
+    "current": {
+      "bytes": 2561,
+      "sha256": "cd4c6a4fa5f1d35f67bac66108f3892f0e484ec1e39b8b34f901aa7c556a8305"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/debian-gcc14/README.source",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1288,
-    "before_sha256": null,
-    "after_sha256": "419cba6d5fc2c44b61de0e67756a6b9ec4e87efa506f3df1c248dee611345b23"
+    "previous": null,
+    "current": {
+      "bytes": 1288,
+      "sha256": "419cba6d5fc2c44b61de0e67756a6b9ec4e87efa506f3df1c248dee611345b23"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/debian-gcc14/changelog",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 761264,
-    "before_sha256": null,
-    "after_sha256": "23b451e790b66adc6fd008447a384c6863e72ed18ad556a68aa22e35c7ef2938"
+    "previous": null,
+    "current": {
+      "bytes": 761264,
+      "sha256": "23b451e790b66adc6fd008447a384c6863e72ed18ad556a68aa22e35c7ef2938"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/debian-gcc14/copyright",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 69004,
-    "before_sha256": null,
-    "after_sha256": "20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79"
+    "previous": null,
+    "current": {
+      "bytes": 69004,
+      "sha256": "20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/debian-gcc14/rules",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 2984,
-    "before_sha256": null,
-    "after_sha256": "5a90bab597f87910b61564ce34aeedf66a35dd22a2c68b13686e95f17df1c3d9"
+    "previous": null,
+    "current": {
+      "bytes": 2984,
+      "sha256": "5a90bab597f87910b61564ce34aeedf66a35dd22a2c68b13686e95f17df1c3d9"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/debian14-runtime-control.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 890,
-    "before_sha256": null,
-    "after_sha256": "c337735ffef8f8b7925181ceed849504a19c00f6538770cfa6efae2d70f2ac80"
+    "previous": null,
+    "current": {
+      "bytes": 890,
+      "sha256": "c337735ffef8f8b7925181ceed849504a19c00f6538770cfa6efae2d70f2ac80"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/debian27/changelog",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 28689,
-    "before_sha256": null,
-    "after_sha256": "5a4cfcad5966c6c73a76cfb20e646a1c6a24aa86ba5f68c47bf8c33fdff27767"
+    "previous": null,
+    "current": {
+      "bytes": 28689,
+      "sha256": "5a4cfcad5966c6c73a76cfb20e646a1c6a24aa86ba5f68c47bf8c33fdff27767"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/debian27/control",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 37328,
-    "before_sha256": null,
-    "after_sha256": "40bf1a4b1b7dc1a1abb391a84ac73168dbfa9979cc482303a3f2e50d3618c0c3"
+    "previous": null,
+    "current": {
+      "bytes": 37328,
+      "sha256": "40bf1a4b1b7dc1a1abb391a84ac73168dbfa9979cc482303a3f2e50d3618c0c3"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/debian27/copyright",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 75729,
-    "before_sha256": null,
-    "after_sha256": "f891d7e0c56f503a92c7258d540b3d8215852d8387cbca8f1f07c6f4b6e67da6"
+    "previous": null,
+    "current": {
+      "bytes": 75729,
+      "sha256": "f891d7e0c56f503a92c7258d540b3d8215852d8387cbca8f1f07c6f4b6e67da6"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/debian27/rules",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 16681,
-    "before_sha256": null,
-    "after_sha256": "534993c328dd2ac9439cca693328e42936773d96361de249589d702c420e662c"
+    "previous": null,
+    "current": {
+      "bytes": 16681,
+      "sha256": "534993c328dd2ac9439cca693328e42936773d96361de249589d702c420e662c"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/download_one.py",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1742,
-    "before_sha256": null,
-    "after_sha256": "854c338fea68c51aa829875db0491142d8991944c67a020dad2a858cbcfe0105"
+    "previous": null,
+    "current": {
+      "bytes": 1655,
+      "sha256": "4f5ebf26934263dbf9596ee64206939fe1b4e9319fe731447ec267e192f624b8"
+    },
+    "comparison": "공개 제외 원문은 크기·SHA-256·사유만 제공",
+    "reason": "운영 보고 식별 필드 정제 전 원문 비공개 보존; 실제 새 파일 해시 제공"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/finalize_sources.py",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 5581,
-    "before_sha256": null,
-    "after_sha256": "1a11daba81aa1135b49b83f7b40559579fd2248d2d127a31a60215163c28aa57"
+    "previous": null,
+    "current": {
+      "bytes": 5372,
+      "sha256": "62d67f1e764bd3b342dd84a8bdfdeaeba34f625d50981fcb8e141f21df653bae"
+    },
+    "comparison": "공개 제외 원문은 크기·SHA-256·사유만 제공",
+    "reason": "운영 보고 식별 필드 정제 전 원문 비공개 보존; 실제 새 파일 해시 제공"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/gcc-14_14.2.0-19.dsc",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 47347,
-    "before_sha256": null,
-    "after_sha256": "7db1e202cce66617e9134a662c877a3a773de5b612fd52179815877e0ecfb847"
+    "previous": null,
+    "current": {
+      "bytes": 47347,
+      "sha256": "7db1e202cce66617e9134a662c877a3a773de5b612fd52179815877e0ecfb847"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.dsc",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 7737,
-    "before_sha256": null,
-    "after_sha256": "492f2ba821e43a3d40817841bd32caa5d49673fe66921bf5ba9c8b81c391dfea"
+    "previous": null,
+    "current": {
+      "bytes": 7737,
+      "sha256": "492f2ba821e43a3d40817841bd32caa5d49673fe66921bf5ba9c8b81c391dfea"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/inspect_runtime.py",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3108,
-    "before_sha256": null,
-    "after_sha256": "64eaaa29bbb5f296914e50af136d2471932a146f05d195939f1f95e6892bdae9"
+    "previous": null,
+    "current": {
+      "bytes": 3031,
+      "sha256": "82a0f72231b1f0b9276784b8e1c4efb756d56dedf7114b207a1fcf5b7a8695f0"
+    },
+    "comparison": "공개 제외 원문은 크기·SHA-256·사유만 제공",
+    "reason": "운영 보고 식별 필드 정제 전 원문 비공개 보존; 실제 새 파일 해시 제공"
   },
   {
     "path": "licenses/OCR/ubuntu-gcc/출하목록.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 5069,
-    "before_sha256": null,
-    "after_sha256": "26d1c5a530d83fb4dc71ad7197f9a458b5b7fa4423e2f416da7dc578321228b5"
+    "previous": null,
+    "current": {
+      "bytes": 4910,
+      "sha256": "71df1a83d1bffad3164f814a2f4285fc9daf56c6ab67b4162cc3de4b4c71180d"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/xz/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 638,
-    "before_sha256": null,
-    "after_sha256": "53d60ba64c99b6eb2581d14b81d0f90ea11bc3a208cd289d4f8629ff906c1c44"
+    "previous": null,
+    "current": {
+      "bytes": 638,
+      "sha256": "53d60ba64c99b6eb2581d14b81d0f90ea11bc3a208cd289d4f8629ff906c1c44"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/xz/xz/COPYING",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3119,
-    "before_sha256": null,
-    "after_sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8"
+    "previous": null,
+    "current": {
+      "bytes": 3119,
+      "sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/xz/xz/COPYING.0BSD",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 607,
-    "before_sha256": null,
-    "after_sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1"
+    "previous": null,
+    "current": {
+      "bytes": 607,
+      "sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/xz/xz/COPYING.GPLv2",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 17984,
-    "before_sha256": null,
-    "after_sha256": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6"
+    "previous": null,
+    "current": {
+      "bytes": 17984,
+      "sha256": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/xz/xz/COPYING.GPLv3",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 35149,
-    "before_sha256": null,
-    "after_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    "previous": null,
+    "current": {
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/xz/xz/COPYING.LGPLv2.1",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 26419,
-    "before_sha256": null,
-    "after_sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+    "previous": null,
+    "current": {
+      "bytes": 26419,
+      "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/zlib/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 514,
-    "before_sha256": null,
-    "after_sha256": "e30f2e78e3dea0449abce8207b70c511ee005042eeeef2ad6baed0c155056fb5"
+    "previous": null,
+    "current": {
+      "bytes": 514,
+      "sha256": "e30f2e78e3dea0449abce8207b70c511ee005042eeeef2ad6baed0c155056fb5"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/zlib/zlib/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1002,
-    "before_sha256": null,
-    "after_sha256": "e32ff4e00d9d94930537635291da39e7e612703334bf6fde8c7f1686fe8a45a2"
+    "previous": null,
+    "current": {
+      "bytes": 1002,
+      "sha256": "e32ff4e00d9d94930537635291da39e7e612703334bf6fde8c7f1686fe8a45a2"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/zstd/PKGINFO.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 564,
-    "before_sha256": null,
-    "after_sha256": "b4b877831ba33bbf40ef52356c435365e85e4569c2733943ad56eea1f8c1fea1"
+    "previous": null,
+    "current": {
+      "bytes": 564,
+      "sha256": "b4b877831ba33bbf40ef52356c435365e85e4569c2733943ad56eea1f8c1fea1"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/zstd/zstd/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1549,
-    "before_sha256": null,
-    "after_sha256": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8"
+    "previous": null,
+    "current": {
+      "bytes": 1549,
+      "sha256": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/모델과실행.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1749,
-    "before_sha256": null,
-    "after_sha256": "33a3ce19ede5a85639cff12dd6b6ee0b8a5214a5e8d6ff9eaac95220822776c6"
+    "previous": null,
+    "current": {
+      "bytes": 1749,
+      "sha256": "33a3ce19ede5a85639cff12dd6b6ee0b8a5214a5e8d6ff9eaac95220822776c6"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OCR/읽어주세요.md",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3220,
-    "before_sha256": null,
-    "after_sha256": "3478a3345fdf47c1da97c840d0a2d6f3e4793583186f8e925d5d5c9bd18c230c"
+    "previous": null,
+    "current": {
+      "bytes": 3220,
+      "sha256": "3478a3345fdf47c1da97c840d0a2d6f3e4793583186f8e925d5d5c9bd18c230c"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/OpenSSL-LICENSE.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 10175,
-    "before_sha256": null,
-    "after_sha256": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a"
+    "previous": null,
+    "current": {
+      "bytes": 10175,
+      "sha256": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/Pillow/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 9300,
-    "before_sha256": null,
-    "after_sha256": "140f39cb31ec9b46109828a6286f034a4848621263d6aab38d2f142083dd06c5"
+    "previous": null,
+    "current": {
+      "bytes": 9300,
+      "sha256": "140f39cb31ec9b46109828a6286f034a4848621263d6aab38d2f142083dd06c5"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/Pillow/licenses/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 78481,
-    "before_sha256": null,
-    "after_sha256": "988ffe8ab3480b0f4e9a0ab2702bffd73d9fb6b47198043fb3ba101a62fac236"
+    "previous": null,
+    "current": {
+      "bytes": 78481,
+      "sha256": "988ffe8ab3480b0f4e9a0ab2702bffd73d9fb6b47198043fb3ba101a62fac236"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/PySide6/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 5661,
-    "before_sha256": null,
-    "after_sha256": "8deea00d1df56b7d6b944cc05c226e56d3f408280217516f9444c60ab74dfd76"
+    "previous": null,
+    "current": {
+      "bytes": 5661,
+      "sha256": "8deea00d1df56b7d6b944cc05c226e56d3f408280217516f9444c60ab74dfd76"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/PySide6/licenses/LicenseRef-Qt-Commercial.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 470,
-    "before_sha256": null,
-    "after_sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+    "previous": null,
+    "current": {
+      "bytes": 470,
+      "sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/PySide6_Addons/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 4378,
-    "before_sha256": null,
-    "after_sha256": "07e5881696922ebc849f5f6b60c6d184ae7724e86b28bac5f707cac5e40ef518"
+    "previous": null,
+    "current": {
+      "bytes": 4378,
+      "sha256": "07e5881696922ebc849f5f6b60c6d184ae7724e86b28bac5f707cac5e40ef518"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/PySide6_Addons/licenses/LicenseRef-Qt-Commercial.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 470,
-    "before_sha256": null,
-    "after_sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+    "previous": null,
+    "current": {
+      "bytes": 470,
+      "sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/PySide6_Essentials/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3889,
-    "before_sha256": null,
-    "after_sha256": "c5eacdfdda84b8d0e026020a630e6a732bd403c00fc17e3efb9e2e92df0b98a7"
+    "previous": null,
+    "current": {
+      "bytes": 3889,
+      "sha256": "c5eacdfdda84b8d0e026020a630e6a732bd403c00fc17e3efb9e2e92df0b98a7"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/PySide6_Essentials/licenses/LicenseRef-Qt-Commercial.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 470,
-    "before_sha256": null,
-    "after_sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+    "previous": null,
+    "current": {
+      "bytes": 470,
+      "sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/PySide6_Pdf/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3588,
-    "before_sha256": null,
-    "after_sha256": "3c9fa9a5eda931852700287d94bb8bbea229379ff24590f282db4726f9bef49b"
+    "previous": null,
+    "current": {
+      "bytes": 3588,
+      "sha256": "3c9fa9a5eda931852700287d94bb8bbea229379ff24590f282db4726f9bef49b"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/PySide6_Pdf/licenses/LicenseRef-Qt-Commercial.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 470,
-    "before_sha256": null,
-    "after_sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+    "previous": null,
+    "current": {
+      "bytes": 470,
+      "sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/PySide6_WebEngine/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3651,
-    "before_sha256": null,
-    "after_sha256": "7f3c76eac98f55c0c47894a8ab224d63bc6d865d13912df7ba52774f9cdc69ae"
+    "previous": null,
+    "current": {
+      "bytes": 3651,
+      "sha256": "7f3c76eac98f55c0c47894a8ab224d63bc6d865d13912df7ba52774f9cdc69ae"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/PySide6_WebEngine/licenses/LicenseRef-Qt-Commercial.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 470,
-    "before_sha256": null,
-    "after_sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+    "previous": null,
+    "current": {
+      "bytes": 470,
+      "sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/Python-LICENSE.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 25066,
-    "before_sha256": null,
-    "after_sha256": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a"
+    "previous": null,
+    "current": {
+      "bytes": 25066,
+      "sha256": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/SUIT/OFL.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 4380,
-    "before_sha256": null,
-    "after_sha256": "30d101ee3c35ef629d622d933d261a27b2f60223e0a3b0f36791e569c2b9daa9"
+    "previous": null,
+    "current": {
+      "bytes": 4380,
+      "sha256": "30d101ee3c35ef629d622d933d261a27b2f60223e0a3b0f36791e569c2b9daa9"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/SUIT/원본출처.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3175,
-    "before_sha256": null,
-    "after_sha256": "c978e5f2162108fd938c13890a687a9ddf8554849100e3efa3c39ff87987f1fd"
+    "previous": null,
+    "current": {
+      "bytes": 3175,
+      "sha256": "c978e5f2162108fd938c13890a687a9ddf8554849100e3efa3c39ff87987f1fd"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/altgraph/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1002,
-    "before_sha256": null,
-    "after_sha256": "6c194d6db0c64d45535d10c95142b9b0cda7b7dcc7f1ddee302b3d536f3dbe46"
+    "previous": null,
+    "current": {
+      "bytes": 1002,
+      "sha256": "6c194d6db0c64d45535d10c95142b9b0cda7b7dcc7f1ddee302b3d536f3dbe46"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/altgraph/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 7519,
-    "before_sha256": null,
-    "after_sha256": "dc60641dba229a3aef09f764f562c38d908b930c92615af2e626af31d6ff19b5"
+    "previous": null,
+    "current": {
+      "bytes": 7519,
+      "sha256": "dc60641dba229a3aef09f764f562c38d908b930c92615af2e626af31d6ff19b5"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/charset-normalizer/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 47287,
-    "before_sha256": null,
-    "after_sha256": "49e955a09e1a159e0846872798006e8db7d518d8d70c637066fefdb08d3d9f7b"
+    "previous": null,
+    "current": {
+      "bytes": 47287,
+      "sha256": "49e955a09e1a159e0846872798006e8db7d518d8d70c637066fefdb08d3d9f7b"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/charset-normalizer/licenses/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1092,
-    "before_sha256": null,
-    "after_sha256": "18577485d3704f1a479ded8e573c0976cfed315fd2fd17983fa988da4c2f70d1"
+    "previous": null,
+    "current": {
+      "bytes": 1092,
+      "sha256": "18577485d3704f1a479ded8e573c0976cfed315fd2fd17983fa988da4c2f70d1"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/cssselect2/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 2941,
-    "before_sha256": null,
-    "after_sha256": "bb65ac3244a599d7bba63168f2ccea5849a4b2b1339568eab0ad933a8a44e475"
+    "previous": null,
+    "current": {
+      "bytes": 2941,
+      "sha256": "bb65ac3244a599d7bba63168f2ccea5849a4b2b1339568eab0ad933a8a44e475"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/cssselect2/licenses/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1548,
-    "before_sha256": null,
-    "after_sha256": "6fd97229a1d1b0f6a8b41e109f413426dbc0874b1e03746d66cc33282601c2c2"
+    "previous": null,
+    "current": {
+      "bytes": 1548,
+      "sha256": "6fd97229a1d1b0f6a8b41e109f413426dbc0874b1e03746d66cc33282601c2c2"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/et_xmlfile/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 2711,
-    "before_sha256": null,
-    "after_sha256": "0e97d7ea909ed0fbe03d88bc8b6f58677cee1b07bd3353ce361cd2405915204e"
+    "previous": null,
+    "current": {
+      "bytes": 2711,
+      "sha256": "0e97d7ea909ed0fbe03d88bc8b6f58677cee1b07bd3353ce361cd2405915204e"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/lxml/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3368,
-    "before_sha256": null,
-    "after_sha256": "4038f4e4decac1c15eb5fd883abf1370f2df9b176b53bd172dd709d4542e2a48"
+    "previous": null,
+    "current": {
+      "bytes": 3368,
+      "sha256": "4038f4e4decac1c15eb5fd883abf1370f2df9b176b53bd172dd709d4542e2a48"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/lxml/licenses/LICENSE.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1538,
-    "before_sha256": null,
-    "after_sha256": "e7c3ce8d76331b0101cc46790ab43958ea90a364bcf962ed8763d5a818340e69"
+    "previous": null,
+    "current": {
+      "bytes": 1538,
+      "sha256": "e7c3ce8d76331b0101cc46790ab43958ea90a364bcf962ed8763d5a818340e69"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/lxml/licenses/LICENSES.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 6348,
-    "before_sha256": null,
-    "after_sha256": "df682c668de65321677b5e4861dca4128a8bad8067f230956e9da3f985b3d398"
+    "previous": null,
+    "current": {
+      "bytes": 6348,
+      "sha256": "df682c668de65321677b5e4861dca4128a8bad8067f230956e9da3f985b3d398"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/openpyxl/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 2510,
-    "before_sha256": null,
-    "after_sha256": "23f80ca9830dd89435da1710f26deda8f81e5409287e74540210c72627a4ad96"
+    "previous": null,
+    "current": {
+      "bytes": 2510,
+      "sha256": "23f80ca9830dd89435da1710f26deda8f81e5409287e74540210c72627a4ad96"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/packaging/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3544,
-    "before_sha256": null,
-    "after_sha256": "70fdb89fc4d4a9a043bf7372b8972bcc883fddff34ab55e9cf80d73875384763"
+    "previous": null,
+    "current": {
+      "bytes": 3544,
+      "sha256": "70fdb89fc4d4a9a043bf7372b8972bcc883fddff34ab55e9cf80d73875384763"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/packaging/licenses/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 197,
-    "before_sha256": null,
-    "after_sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+    "previous": null,
+    "current": {
+      "bytes": 197,
+      "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/packaging/licenses/LICENSE.APACHE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 10174,
-    "before_sha256": null,
-    "after_sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    "previous": null,
+    "current": {
+      "bytes": 10174,
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/packaging/licenses/LICENSE.BSD",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1344,
-    "before_sha256": null,
-    "after_sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+    "previous": null,
+    "current": {
+      "bytes": 1344,
+      "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pefile/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1083,
-    "before_sha256": null,
-    "after_sha256": "b44409c067c6da52bfb54bb6624fb11a7b52157c3a13ae1400232f8196e86ad3"
+    "previous": null,
+    "current": {
+      "bytes": 1083,
+      "sha256": "b44409c067c6da52bfb54bb6624fb11a7b52157c3a13ae1400232f8196e86ad3"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pefile/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1355,
-    "before_sha256": null,
-    "after_sha256": "8ad83a5f8659e8da6eeaabf2dafa0eebb8c05832a3def16a5db4dd0d52e72474"
+    "previous": null,
+    "current": {
+      "bytes": 1355,
+      "sha256": "8ad83a5f8659e8da6eeaabf2dafa0eebb8c05832a3def16a5db4dd0d52e72474"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pi-heif-decoder/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 7354,
-    "before_sha256": null,
-    "after_sha256": "4b788e7e068cc9a5971d861f3e49d3b076385f373b5f3c0a26065fa6302b01a3"
+    "previous": null,
+    "current": {
+      "bytes": 7354,
+      "sha256": "4b788e7e068cc9a5971d861f3e49d3b076385f373b5f3c0a26065fa6302b01a3"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pi-heif-decoder/licenses/LICENSE.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1546,
-    "before_sha256": null,
-    "after_sha256": "9e2635f155b00af5a46cb2f2c9b052072ec546d59837ee74efc9cba2cbb83f3d"
+    "previous": null,
+    "current": {
+      "bytes": 1546,
+      "sha256": "9e2635f155b00af5a46cb2f2c9b052072ec546d59837ee74efc9cba2cbb83f3d"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pi-heif-decoder/licenses/LICENSES_bundled.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 327,
-    "before_sha256": null,
-    "after_sha256": "5335a401c42f1761e56e393e45aac1c4cbd55e6d9ca9176595177b6b0fba26d9"
+    "previous": null,
+    "current": {
+      "bytes": 327,
+      "sha256": "5335a401c42f1761e56e393e45aac1c4cbd55e6d9ca9176595177b6b0fba26d9"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pyinstaller-hooks-contrib/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 16042,
-    "before_sha256": null,
-    "after_sha256": "686e63d76cb494d44c4533ed64a7d797970a1253493a4f875d39defc190396c4"
+    "previous": null,
+    "current": {
+      "bytes": 16042,
+      "sha256": "686e63d76cb494d44c4533ed64a7d797970a1253493a4f875d39defc190396c4"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pyinstaller-hooks-contrib/licenses/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 27666,
-    "before_sha256": null,
-    "after_sha256": "91d0baaff00773038e72c0a1fc9d5d2d38706b7a2b9c04f34296608f931b9cd0"
+    "previous": null,
+    "current": {
+      "bytes": 27666,
+      "sha256": "91d0baaff00773038e72c0a1fc9d5d2d38706b7a2b9c04f34296608f931b9cd0"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pyinstaller/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 8517,
-    "before_sha256": null,
-    "after_sha256": "2991d3dcd53fe9966b8c16586322a7f9bbc564dd4752c190bd4fe8d6747f7046"
+    "previous": null,
+    "current": {
+      "bytes": 8517,
+      "sha256": "2991d3dcd53fe9966b8c16586322a7f9bbc564dd4752c190bd4fe8d6747f7046"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pyinstaller/licenses/COPYING.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 32604,
-    "before_sha256": null,
-    "after_sha256": "0598064c7d2718e38d7914a7d08343b2fa008e3bea9ebba2aa7a6ffa5900dd64"
+    "previous": null,
+    "current": {
+      "bytes": 32604,
+      "sha256": "0598064c7d2718e38d7914a7d08343b2fa008e3bea9ebba2aa7a6ffa5900dd64"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdf/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 7639,
-    "before_sha256": null,
-    "after_sha256": "3925a75c81106ba7f048e0424e94740852099c166699f2afba934249dc527ebc"
+    "previous": null,
+    "current": {
+      "bytes": 7639,
+      "sha256": "3925a75c81106ba7f048e0424e94740852099c166699f2afba934249dc527ebc"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdf/licenses/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1605,
-    "before_sha256": null,
-    "after_sha256": "a97ac230e5f33ef10a5367a850eb01f91f1a0b064e34742c7794d2294557f524"
+    "previous": null,
+    "current": {
+      "bytes": 1605,
+      "sha256": "a97ac230e5f33ef10a5367a850eb01f91f1a0b064e34742c7794d2294557f524"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 63509,
-    "before_sha256": null,
-    "after_sha256": "8733a714c056453b87b48c819495cc05f9038d38221b89505043d28c2501237e"
+    "previous": null,
+    "current": {
+      "bytes": 63509,
+      "sha256": "8733a714c056453b87b48c819495cc05f9038d38221b89505043d28c2501237e"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/LICENSES/Apache-2.0.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 11560,
-    "before_sha256": null,
-    "after_sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5"
+    "previous": null,
+    "current": {
+      "bytes": 11560,
+      "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/LICENSES/BSD-3-Clause.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1485,
-    "before_sha256": null,
-    "after_sha256": "ad9a9e823df025f42389c1812eae28019f657d1ed7b3a4ebfd5010b0736a0da4"
+    "previous": null,
+    "current": {
+      "bytes": 1485,
+      "sha256": "ad9a9e823df025f42389c1812eae28019f657d1ed7b3a4ebfd5010b0736a0da4"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/LICENSES/CC-BY-4.0.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 14844,
-    "before_sha256": null,
-    "after_sha256": "f1b1748301cd4274f46733c218d510929661b4990855de5fc645dacd69c4371c"
+    "previous": null,
+    "current": {
+      "bytes": 14844,
+      "sha256": "f1b1748301cd4274f46733c218d510929661b4990855de5fc645dacd69c4371c"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/abseil.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 11564,
-    "before_sha256": null,
-    "after_sha256": "f54fff0b905df5b3464527c652a30e903b172d6dcab4d89b5e6f105d5e4a4603"
+    "previous": null,
+    "current": {
+      "bytes": 11564,
+      "sha256": "f54fff0b905df5b3464527c652a30e903b172d6dcab4d89b5e6f105d5e4a4603"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/agg23.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 725,
-    "before_sha256": null,
-    "after_sha256": "c110d3ea2ad77467ce0dcff7d3337e6c8be8049a5103f4b9bd5fd911a77972e5"
+    "previous": null,
+    "current": {
+      "bytes": 725,
+      "sha256": "c110d3ea2ad77467ce0dcff7d3337e6c8be8049a5103f4b9bd5fd911a77972e5"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/fast_float.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1106,
-    "before_sha256": null,
-    "after_sha256": "bf1b57355feca8fce77ee95f48002f8d4789fb71b30ec7599c06cda4901fbb2b"
+    "previous": null,
+    "current": {
+      "bytes": 1106,
+      "sha256": "bf1b57355feca8fce77ee95f48002f8d4789fb71b30ec7599c06cda4901fbb2b"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 6742,
-    "before_sha256": null,
-    "after_sha256": "4a9a548027a2c1d37788519dea833294c9c81f1ebc280e817f41f50d0c642d78"
+    "previous": null,
+    "current": {
+      "bytes": 6742,
+      "sha256": "4a9a548027a2c1d37788519dea833294c9c81f1ebc280e817f41f50d0c642d78"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt.source-sha256.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 381,
-    "before_sha256": null,
-    "after_sha256": "4546389edc8f0d26c4cd8fa2706ae39a8843cc4c90bd6d605ba3b4160c89608f"
+    "previous": null,
+    "current": {
+      "bytes": 381,
+      "sha256": "4546389edc8f0d26c4cd8fa2706ae39a8843cc4c90bd6d605ba3b4160c89608f"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/icu.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 28286,
-    "before_sha256": null,
-    "after_sha256": "93679f4389d53b6835d89843f251844fb9bc455b35bab036d3c8e7abe497a47a"
+    "previous": null,
+    "current": {
+      "bytes": 28286,
+      "sha256": "93679f4389d53b6835d89843f251844fb9bc455b35bab036d3c8e7abe497a47a"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/lcms.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1353,
-    "before_sha256": null,
-    "after_sha256": "7312b68c5b25e9bf2b828706fb4e29588f22705112f411fd42e1f7d84c3d139a"
+    "previous": null,
+    "current": {
+      "bytes": 1353,
+      "sha256": "7312b68c5b25e9bf2b828706fb4e29588f22705112f411fd42e1f7d84c3d139a"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.ijg",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 13059,
-    "before_sha256": null,
-    "after_sha256": "db16a04128171879c60708d171b88d97345a2dd20f9bfc173680a4497c73f704"
+    "previous": null,
+    "current": {
+      "bytes": 13059,
+      "sha256": "db16a04128171879c60708d171b88d97345a2dd20f9bfc173680a4497c73f704"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 5762,
-    "before_sha256": null,
-    "after_sha256": "388b9b47f302c61fef8f23043cc436931d86486f515a205da5dbe8b7e5637854"
+    "previous": null,
+    "current": {
+      "bytes": 5762,
+      "sha256": "388b9b47f302c61fef8f23043cc436931d86486f515a205da5dbe8b7e5637854"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libopenjpeg.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1794,
-    "before_sha256": null,
-    "after_sha256": "c5ab0890a737c2dfa7ba675036554f6d17741d98629b0c2a145354d00617e6b2"
+    "previous": null,
+    "current": {
+      "bytes": 1794,
+      "sha256": "c5ab0890a737c2dfa7ba675036554f6d17741d98629b0c2a145354d00617e6b2"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libpng.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 5479,
-    "before_sha256": null,
-    "after_sha256": "452390433ba0f88aa3e2b122c647741b72a0c117cd6ed7a329b49785aecb5511"
+    "previous": null,
+    "current": {
+      "bytes": 5479,
+      "sha256": "452390433ba0f88aa3e2b122c647741b72a0c117cd6ed7a329b49785aecb5511"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/llvm-libc.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 15418,
-    "before_sha256": null,
-    "after_sha256": "3b6226c32e168c83b891d8d6f0d3c29c2116dc3ef93dc93c307b54f279ecf383"
+    "previous": null,
+    "current": {
+      "bytes": 15418,
+      "sha256": "3b6226c32e168c83b891d8d6f0d3c29c2116dc3ef93dc93c307b54f279ecf383"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium-binaries.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1184,
-    "before_sha256": null,
-    "after_sha256": "8854f4388f1ca13b3ad9baa42e95f5546b4c0b17109c159256d3eca7be39b09b"
+    "previous": null,
+    "current": {
+      "bytes": 1184,
+      "sha256": "8854f4388f1ca13b3ad9baa42e95f5546b4c0b17109c159256d3eca7be39b09b"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 12818,
-    "before_sha256": null,
-    "after_sha256": "961eacd9633fff6d051db7208b755e9210e30efac7adec3e6a6d52798f0ccf0e"
+    "previous": null,
+    "current": {
+      "bytes": 12818,
+      "sha256": "961eacd9633fff6d051db7208b755e9210e30efac7adec3e6a6d52798f0ccf0e"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/simdutf.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1077,
-    "before_sha256": null,
-    "after_sha256": "c172a0ba936ff31230febb5dad869e25cb7c1a07480c7a381be8cf011bb52719"
+    "previous": null,
+    "current": {
+      "bytes": 1077,
+      "sha256": "c172a0ba936ff31230febb5dad869e25cb7c1a07480c7a381be8cf011bb52719"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/zlib.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1332,
-    "before_sha256": null,
-    "after_sha256": "33fd641c9f3b0e0be64bc78fea9e94807674cdd70c48477599226cb8956565fe"
+    "previous": null,
+    "current": {
+      "bytes": 1332,
+      "sha256": "33fd641c9f3b0e0be64bc78fea9e94807674cdd70c48477599226cb8956565fe"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/python-docx/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 2022,
-    "before_sha256": null,
-    "after_sha256": "4c4cc819ebe6de4aca44daccfd3f9173e6f46d9ed900ad1c388ff9efb7b6b1d7"
+    "previous": null,
+    "current": {
+      "bytes": 2022,
+      "sha256": "4c4cc819ebe6de4aca44daccfd3f9173e6f46d9ed900ad1c388ff9efb7b6b1d7"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/python-docx/licenses/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1104,
-    "before_sha256": null,
-    "after_sha256": "7652f271e46d0d533e9dc463f3b5fcbdcacf4d6a9c8d6b554d15efd0f37f6132"
+    "previous": null,
+    "current": {
+      "bytes": 1104,
+      "sha256": "7652f271e46d0d533e9dc463f3b5fcbdcacf4d6a9c8d6b554d15efd0f37f6132"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/python-pptx/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1104,
-    "before_sha256": null,
-    "after_sha256": "7652f271e46d0d533e9dc463f3b5fcbdcacf4d6a9c8d6b554d15efd0f37f6132"
+    "previous": null,
+    "current": {
+      "bytes": 1104,
+      "sha256": "7652f271e46d0d533e9dc463f3b5fcbdcacf4d6a9c8d6b554d15efd0f37f6132"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/python-pptx/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 2503,
-    "before_sha256": null,
-    "after_sha256": "d38c6af5f1817cc528706264d8343cd1c95dbdec5672f29b944f54f79134a3a2"
+    "previous": null,
+    "current": {
+      "bytes": 2503,
+      "sha256": "d38c6af5f1817cc528706264d8343cd1c95dbdec5672f29b944f54f79134a3a2"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pywin32-ctypes/LICENSE.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1644,
-    "before_sha256": null,
-    "after_sha256": "dfa83b3e2709adfcdb838d9ad55823ca674abb780e60563d9dd9544ccbf785e9"
+    "previous": null,
+    "current": {
+      "bytes": 1644,
+      "sha256": "dfa83b3e2709adfcdb838d9ad55823ca674abb780e60563d9dd9544ccbf785e9"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/pywin32-ctypes/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3909,
-    "before_sha256": null,
-    "after_sha256": "1e3767d3faff4d5b9c347160883831098d1f25acf4306b02c9acdcc6bfb5883b"
+    "previous": null,
+    "current": {
+      "bytes": 3909,
+      "sha256": "1e3767d3faff4d5b9c347160883831098d1f25acf4306b02c9acdcc6bfb5883b"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/rarfile/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 4555,
-    "before_sha256": null,
-    "after_sha256": "07fa8bf389799afa721f81a15bc04c34b9f1bab2335ba7856ac09e1f9052d9ac"
+    "previous": null,
+    "current": {
+      "bytes": 4555,
+      "sha256": "07fa8bf389799afa721f81a15bc04c34b9f1bab2335ba7856ac09e1f9052d9ac"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/rarfile/licenses/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 756,
-    "before_sha256": null,
-    "after_sha256": "351350167805c294c7b3e170081ce1265445c46fbeb3e999e13b616c90c64a20"
+    "previous": null,
+    "current": {
+      "bytes": 756,
+      "sha256": "351350167805c294c7b3e170081ce1265445c46fbeb3e999e13b616c90c64a20"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/reportlab/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1638,
-    "before_sha256": null,
-    "after_sha256": "eaf25ccdf6556f532b6efbc78104a0d47832b67dd1cf9b747a142a1c68e9fbaa"
+    "previous": null,
+    "current": {
+      "bytes": 1638,
+      "sha256": "eaf25ccdf6556f532b6efbc78104a0d47832b67dd1cf9b747a142a1c68e9fbaa"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/reportlab/licenses/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1707,
-    "before_sha256": null,
-    "after_sha256": "ef831761646313921375fc2cb888e8eeaf7da213d0b92852c10c42f3a0b4d138"
+    "previous": null,
+    "current": {
+      "bytes": 1707,
+      "sha256": "ef831761646313921375fc2cb888e8eeaf7da213d0b92852c10c42f3a0b4d138"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/setuptools/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1023,
-    "before_sha256": null,
-    "after_sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+    "previous": null,
+    "current": {
+      "bytes": 1023,
+      "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/setuptools/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3563,
-    "before_sha256": null,
-    "after_sha256": "bdd67d4d16cf0bf3b893e7d18cd3d2d774adb82f37ed985bc7770c607226b35b"
+    "previous": null,
+    "current": {
+      "bytes": 3563,
+      "sha256": "bdd67d4d16cf0bf3b893e7d18cd3d2d774adb82f37ed985bc7770c607226b35b"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/setuptools/licenses/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1076,
-    "before_sha256": null,
-    "after_sha256": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d"
+    "previous": null,
+    "current": {
+      "bytes": 1076,
+      "sha256": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/setuptools/licenses/LICENSE.APACHE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 10174,
-    "before_sha256": null,
-    "after_sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    "previous": null,
+    "current": {
+      "bytes": 10174,
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/setuptools/licenses/LICENSE.BSD",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1344,
-    "before_sha256": null,
-    "after_sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+    "previous": null,
+    "current": {
+      "bytes": 1344,
+      "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/setuptools/licenses/LICENSE.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1107,
-    "before_sha256": null,
-    "after_sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654"
+    "previous": null,
+    "current": {
+      "bytes": 1107,
+      "sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/shiboken6/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 2594,
-    "before_sha256": null,
-    "after_sha256": "2e443fc68a670b00b5ee6f2d67fa3005613de00a8294a8f257c6c1263032009a"
+    "previous": null,
+    "current": {
+      "bytes": 2594,
+      "sha256": "2e443fc68a670b00b5ee6f2d67fa3005613de00a8294a8f257c6c1263032009a"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/shiboken6/licenses/LicenseRef-Qt-Commercial.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 470,
-    "before_sha256": null,
-    "after_sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+    "previous": null,
+    "current": {
+      "bytes": 470,
+      "sha256": "4f54763ac0fe2abd8f7f8d8fe370a94a08ebf84786aa0b91045bd6628deb08a3"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/svglib/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 14081,
-    "before_sha256": null,
-    "after_sha256": "23a9e2c20edf5aecc9be4d3eadc0e469e2488fe38feba21060e14c2858fa419c"
+    "previous": null,
+    "current": {
+      "bytes": 14081,
+      "sha256": "23a9e2c20edf5aecc9be4d3eadc0e469e2488fe38feba21060e14c2858fa419c"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/svglib/licenses/LICENSE.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 7637,
-    "before_sha256": null,
-    "after_sha256": "9ccf26cfe845e0eb8bb58053e47366e7ab6b697ae010f7650978d4b71b7d1fc1"
+    "previous": null,
+    "current": {
+      "bytes": 7637,
+      "sha256": "9ccf26cfe845e0eb8bb58053e47366e7ab6b697ae010f7650978d4b71b7d1fc1"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/tinycss2/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3007,
-    "before_sha256": null,
-    "after_sha256": "97a184ce0b479d613e7bb4bbc693067ae4c04e5665fd78e8381252f855bcab59"
+    "previous": null,
+    "current": {
+      "bytes": 3007,
+      "sha256": "97a184ce0b479d613e7bb4bbc693067ae4c04e5665fd78e8381252f855bcab59"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/tinycss2/licenses/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1534,
-    "before_sha256": null,
-    "after_sha256": "6b94acee20ec9f2709333134f3ba70322535fb420af0ce8c1455d9cbe297f1d5"
+    "previous": null,
+    "current": {
+      "bytes": 1534,
+      "sha256": "6b94acee20ec9f2709333134f3ba70322535fb420af0ce8c1455d9cbe297f1d5"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/typing_extensions/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3310,
-    "before_sha256": null,
-    "after_sha256": "b05084ca1d50879865178d9fff9fabeab61bdfb1f361bfbde95421ffc8f9be46"
+    "previous": null,
+    "current": {
+      "bytes": 3310,
+      "sha256": "b05084ca1d50879865178d9fff9fabeab61bdfb1f361bfbde95421ffc8f9be46"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/typing_extensions/licenses/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 13936,
-    "before_sha256": null,
-    "after_sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+    "previous": null,
+    "current": {
+      "bytes": 13936,
+      "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/webencodings/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 3426,
-    "before_sha256": null,
-    "after_sha256": "3d9819d1209e5b56d4c6315efca7d5ca452ba7e55d4c3617ec63555c099bfb70"
+    "previous": null,
+    "current": {
+      "bytes": 3426,
+      "sha256": "3d9819d1209e5b56d4c6315efca7d5ca452ba7e55d4c3617ec63555c099bfb70"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/webencodings/licenses/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1519,
-    "before_sha256": null,
-    "after_sha256": "e06ef33485e7498ad592887c41fa79cc8a7fecde576c7210e11bfdddef58040e"
+    "previous": null,
+    "current": {
+      "bytes": 1519,
+      "sha256": "e06ef33485e7498ad592887c41fa79cc8a7fecde576c7210e11bfdddef58040e"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/xlsxwriter/LICENSE.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1349,
-    "before_sha256": null,
-    "after_sha256": "cf08b60a4ded986b58a617cb8304373bda5c4eff42fb4e30d7597b616e116e87"
+    "previous": null,
+    "current": {
+      "bytes": 1349,
+      "sha256": "cf08b60a4ded986b58a617cb8304373bda5c4eff42fb4e30d7597b616e116e87"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/xlsxwriter/METADATA",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 2712,
-    "before_sha256": null,
-    "after_sha256": "10d504f188e087f07a06b9038ed0535f37ac072c232e60c075ddb0aedb7b7d78"
+    "previous": null,
+    "current": {
+      "bytes": 2712,
+      "sha256": "10d504f188e087f07a06b9038ed0535f37ac072c232e60c075ddb0aedb7b7d78"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "licenses/구성요소.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 4387,
-    "before_sha256": null,
-    "after_sha256": "64f2185aef623acfd2eab6eae57e9164e6e98206d4778178f4572cecd525b503"
+    "previous": null,
+    "current": {
+      "bytes": 4387,
+      "sha256": "64f2185aef623acfd2eab6eae57e9164e6e98206d4778178f4572cecd525b503"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "offscreen-monitor.json",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 141,
-    "before_sha256": null,
-    "after_sha256": "286c010caaf6c1e673d942e907c09274e0cb43870670653d45f263afa2c0c139"
+    "previous": null,
+    "current": {
+      "bytes": 141,
+      "sha256": "286c010caaf6c1e673d942e907c09274e0cb43870670653d45f263afa2c0c139"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "package.py",
+    "status": "수정",
+    "previous": {
+      "bytes": 10074,
+      "sha256": "05a8a127a030c6b467c438dbdd33bbd5b42f4686f86df0935f95c403e6a1379c"
+    },
+    "current": {
+      "bytes": 10659,
+      "sha256": "e567740214e7422c938b768471376c46e1b98bd70ae94a48c081a676d83bfa4b"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "pdf_tools.py",
+    "status": "수정",
+    "previous": {
+      "bytes": 31802,
+      "sha256": "5eb4dcc098c3d2a5b89de1f42a5262e25891d7c9df1319f045ae33d25c84830b"
+    },
+    "current": {
+      "bytes": 38287,
+      "sha256": "014b480c958e620e7e6038aff0fa9b1eda28a397539044ca2e68c58380e20f94"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "test-fixtures/sample.heic",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 446,
-    "before_sha256": null,
-    "after_sha256": "121cff26bef161550056c1b0a67ccd391b62f8b6ebdcb4186549e542c2934f4c"
+    "previous": null,
+    "current": {
+      "bytes": 446,
+      "sha256": "121cff26bef161550056c1b0a67ccd391b62f8b6ebdcb4186549e542c2934f4c"
+    },
+    "comparison": "바이너리 원문 전체 크기·SHA-256"
+  },
+  {
+    "path": "test_gui.py",
+    "status": "수정",
+    "previous": {
+      "bytes": 126342,
+      "sha256": "9a06e6c4cf76141bac8978abfb96aa0a83f4a1ab3aed144a9edde44494a9b70c"
+    },
+    "current": {
+      "bytes": 126787,
+      "sha256": "b7ee11a327c01c781afe713b512b1c409bfd1c646d27490f23f964094d392787"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "test_inspection_tools.py",
+    "status": "추가",
+    "previous": null,
+    "current": {
+      "bytes": 18565,
+      "sha256": "fc16362dc11002a4afd5b23f29aee4a4d7262121dd25618a0cfb1f0f275bbdf6"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "test_ocr_process.py",
+    "status": "추가",
+    "previous": null,
+    "current": {
+      "bytes": 5665,
+      "sha256": "92a5a75215970669044bac5e893c6e159b53ca7aa562a8d80f6251ae02b4d9d4"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "test_pdf_tools.py",
+    "status": "수정",
+    "previous": {
+      "bytes": 25413,
+      "sha256": "58032cfc269c038d9190c5e9cca9e9a2fd0436162c587b063147ada9f8dd8df7"
+    },
+    "current": {
+      "bytes": 27391,
+      "sha256": "1da54d97653601d8dd631849bf16674c95e39cd93d8e96c93319c953e5b2d854"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "test_workbench.py",
+    "status": "수정",
+    "previous": {
+      "bytes": 23935,
+      "sha256": "a9147d0b72067fffc1303397667eaa5cab62430d9658f76308a89b55f2b1c016"
+    },
+    "current": {
+      "bytes": 24064,
+      "sha256": "592b7533454786b82e40f9480db7412631ace79c13dfe544ff93f4f19a0ed3eb"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "test_workspace_core.py",
+    "status": "추가",
+    "previous": null,
+    "current": {
+      "bytes": 33500,
+      "sha256": "7fa421b53dd755e082b59bdd99ebfcc4e80921229ace2a5de95db8643bf5577a"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "test_workspace_ui.py",
+    "status": "추가",
+    "previous": null,
+    "current": {
+      "bytes": 21777,
+      "sha256": "b4ef86da4b5052dc468b735c7ebfe63e50efbc26d86e98b68d4bb730a5bf50c5"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "ui_motion.py",
+    "status": "수정",
+    "previous": {
+      "bytes": 38989,
+      "sha256": "07eeb948add98e295ce6c64b02faa6a11decd14ac9bae3a7d0ab380f92b737d9"
+    },
+    "current": {
+      "bytes": 39166,
+      "sha256": "85a6ffa7a02806ae6605bc9a00e9677cc532846c3a95259c55c3953820b0b7da"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/doc/AUTHORS",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 787,
-    "before_sha256": null,
-    "after_sha256": "720862b7253993b348fe15f37ed6e0d4feb0fc8df8324284d75975d54dd29923"
+    "previous": null,
+    "current": {
+      "bytes": 787,
+      "sha256": "720862b7253993b348fe15f37ed6e0d4feb0fc8df8324284d75975d54dd29923"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/doc/LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 11358,
-    "before_sha256": null,
-    "after_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    "previous": null,
+    "current": {
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/doc/README.md",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 8152,
-    "before_sha256": null,
-    "after_sha256": "35ca53a67a2895ebdc2cf6777fc5808c1b0c5df650b896b79c82b2c4a004bd76"
+    "previous": null,
+    "current": {
+      "bytes": 8152,
+      "sha256": "35ca53a67a2895ebdc2cf6777fc5808c1b0c5df650b896b79c82b2c4a004bd76"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/doc/tessdata_fast-LICENSE",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 11358,
-    "before_sha256": null,
-    "after_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    "previous": null,
+    "current": {
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/doc/tessdata_fast-README.md",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 4353,
-    "before_sha256": null,
-    "after_sha256": "22fee9835bff02fb7013aa9786a2144ae3d4c219083089375985a62808e7215e"
+    "previous": null,
+    "current": {
+      "bytes": 4353,
+      "sha256": "22fee9835bff02fb7013aa9786a2144ae3d4c219083089375985a62808e7215e"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/alto",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 23,
-    "before_sha256": null,
-    "after_sha256": "23a038ff290c7471a1a8aa4b5d23e310b0bf49f718480dad6b619a7d06eca330"
+    "previous": null,
+    "current": {
+      "bytes": 23,
+      "sha256": "23a038ff290c7471a1a8aa4b5d23e310b0bf49f718480dad6b619a7d06eca330"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/ambigs.train",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 146,
-    "before_sha256": null,
-    "after_sha256": "717e534fd4330ed3f9bdb006f0465aa2633cca866786a8f8d469dbd4b01c10c2"
+    "previous": null,
+    "current": {
+      "bytes": 146,
+      "sha256": "717e534fd4330ed3f9bdb006f0465aa2633cca866786a8f8d469dbd4b01c10c2"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/api_config",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 26,
-    "before_sha256": null,
-    "after_sha256": "2929bc0f1d2ba77f28cfc230f7b835b2b54038c0f9d2e8e4c5ada43803c999fd"
+    "previous": null,
+    "current": {
+      "bytes": 26,
+      "sha256": "2929bc0f1d2ba77f28cfc230f7b835b2b54038c0f9d2e8e4c5ada43803c999fd"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/bigram",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 129,
-    "before_sha256": null,
-    "after_sha256": "65e6583abc617a34d4091285181f2493d312c296a85629ac3c092d3b93b6e554"
+    "previous": null,
+    "current": {
+      "bytes": 129,
+      "sha256": "65e6583abc617a34d4091285181f2493d312c296a85629ac3c092d3b93b6e554"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/box.train",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 311,
-    "before_sha256": null,
-    "after_sha256": "a421355e3488bf3fdfc14a1bdcca08c6f6414ec92c53f0eea22317c868c1a623"
+    "previous": null,
+    "current": {
+      "bytes": 311,
+      "sha256": "a421355e3488bf3fdfc14a1bdcca08c6f6414ec92c53f0eea22317c868c1a623"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/box.train.stderr",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 311,
-    "before_sha256": null,
-    "after_sha256": "3e62cd37d2383abf0c6dfa5ba39fd1187fcff6856c4f4f27ea1554cb4c1874d2"
+    "previous": null,
+    "current": {
+      "bytes": 311,
+      "sha256": "3e62cd37d2383abf0c6dfa5ba39fd1187fcff6856c4f4f27ea1554cb4c1874d2"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/digits",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 37,
-    "before_sha256": null,
-    "after_sha256": "e757d95bb1e51444860ea10d7f2c8bb8a0c9c4ccc58a0e8c67e8dc2933a56e2e"
+    "previous": null,
+    "current": {
+      "bytes": 37,
+      "sha256": "e757d95bb1e51444860ea10d7f2c8bb8a0c9c4ccc58a0e8c67e8dc2933a56e2e"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/get.images",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 24,
-    "before_sha256": null,
-    "after_sha256": "28c774c157a2f48d835a1d58f5a35dd70106c136e176572ee43bbf46f3d65c92"
+    "previous": null,
+    "current": {
+      "bytes": 24,
+      "sha256": "28c774c157a2f48d835a1d58f5a35dd70106c136e176572ee43bbf46f3d65c92"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/hocr",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 40,
-    "before_sha256": null,
-    "after_sha256": "d6a7ec7c5143317a59fce2393054f6b7a8261824b934e7426fdd24febc929ad6"
+    "previous": null,
+    "current": {
+      "bytes": 40,
+      "sha256": "d6a7ec7c5143317a59fce2393054f6b7a8261824b934e7426fdd24febc929ad6"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/inter",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 59,
-    "before_sha256": null,
-    "after_sha256": "46303bf83668e446f4966d1ebf7418ad9f0c5e08836bc59d98cae3bbfc3aee9d"
+    "previous": null,
+    "current": {
+      "bytes": 59,
+      "sha256": "46303bf83668e446f4966d1ebf7418ad9f0c5e08836bc59d98cae3bbfc3aee9d"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/kannada",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 101,
-    "before_sha256": null,
-    "after_sha256": "7d34fec99283142a3a22d157dc5cc8824b93ee923e576e6bfd1b026039c2e8f0"
+    "previous": null,
+    "current": {
+      "bytes": 101,
+      "sha256": "7d34fec99283142a3a22d157dc5cc8824b93ee923e576e6bfd1b026039c2e8f0"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/linebox",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 70,
-    "before_sha256": null,
-    "after_sha256": "eb0279527b009a53432a9e1dde85bf42814901393546bc365bb61837f83355c9"
+    "previous": null,
+    "current": {
+      "bytes": 70,
+      "sha256": "eb0279527b009a53432a9e1dde85bf42814901393546bc365bb61837f83355c9"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/logfile",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 25,
-    "before_sha256": null,
-    "after_sha256": "5eed5e41e5fbbf0862836c0e4cda7821f8e08441645858ec6821ab41d926e195"
+    "previous": null,
+    "current": {
+      "bytes": 25,
+      "sha256": "5eed5e41e5fbbf0862836c0e4cda7821f8e08441645858ec6821ab41d926e195"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/lstm.train",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 282,
-    "before_sha256": null,
-    "after_sha256": "3d1f8e5ab4e41467fdd938dc4d266eea081b477f8d74ab6b198dd1d854b5301c"
+    "previous": null,
+    "current": {
+      "bytes": 282,
+      "sha256": "3d1f8e5ab4e41467fdd938dc4d266eea081b477f8d74ab6b198dd1d854b5301c"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/lstmbox",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 26,
-    "before_sha256": null,
-    "after_sha256": "61255d1b7c9df76b673ff43d2d91cda7f4c3c2e7d7f0643a71b212739833017e"
+    "previous": null,
+    "current": {
+      "bytes": 26,
+      "sha256": "61255d1b7c9df76b673ff43d2d91cda7f4c3c2e7d7f0643a71b212739833017e"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/lstmdebug",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 98,
-    "before_sha256": null,
-    "after_sha256": "62d40d7a7d80315e10cdca2561d2ddf2981f53dfdbd567513b04d36f3add7f4e"
+    "previous": null,
+    "current": {
+      "bytes": 98,
+      "sha256": "62d40d7a7d80315e10cdca2561d2ddf2981f53dfdbd567513b04d36f3add7f4e"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/makebox",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 26,
-    "before_sha256": null,
-    "after_sha256": "a8fe20a2bc9ff1e9e8ed06d56845336c978627b8e965600abd63f1f412c18ffe"
+    "previous": null,
+    "current": {
+      "bytes": 26,
+      "sha256": "a8fe20a2bc9ff1e9e8ed06d56845336c978627b8e965600abd63f1f412c18ffe"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/page",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 67,
-    "before_sha256": null,
-    "after_sha256": "6e4b43f27a77124e66c87fce8de518ff81e918d3cc36fe71a3d01179c1856a07"
+    "previous": null,
+    "current": {
+      "bytes": 67,
+      "sha256": "6e4b43f27a77124e66c87fce8de518ff81e918d3cc36fe71a3d01179c1856a07"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/pdf",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 22,
-    "before_sha256": null,
-    "after_sha256": "54d56e81dfefe289b0d2e4c7bc9bbe662711f5b8255c128b73bcd66efb6bba1a"
+    "previous": null,
+    "current": {
+      "bytes": 22,
+      "sha256": "54d56e81dfefe289b0d2e4c7bc9bbe662711f5b8255c128b73bcd66efb6bba1a"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/quiet",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 21,
-    "before_sha256": null,
-    "after_sha256": "8a93fad8251f61b5f17b8628203a0e068c71e0907cd63012ab22afb7b560fce3"
+    "previous": null,
+    "current": {
+      "bytes": 21,
+      "sha256": "8a93fad8251f61b5f17b8628203a0e068c71e0907cd63012ab22afb7b560fce3"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/rebox",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 65,
-    "before_sha256": null,
-    "after_sha256": "73ca35d7d71084fb88e2eb9a5c53ad91682754b3aecb918dece7591ec22a0b26"
+    "previous": null,
+    "current": {
+      "bytes": 65,
+      "sha256": "73ca35d7d71084fb88e2eb9a5c53ad91682754b3aecb918dece7591ec22a0b26"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/strokewidth",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 377,
-    "before_sha256": null,
-    "after_sha256": "ffb140aadd3e26d0d9b3b355d592b50cff8b2c3ce0394b4a6de4fabc1c0942c9"
+    "previous": null,
+    "current": {
+      "bytes": 377,
+      "sha256": "ffb140aadd3e26d0d9b3b355d592b50cff8b2c3ce0394b4a6de4fabc1c0942c9"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/tsv",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 22,
-    "before_sha256": null,
-    "after_sha256": "59d079bb75d8b3d7c839a3564580cb559e362c93a9d70f234e421c0c3e767e04"
+    "previous": null,
+    "current": {
+      "bytes": 22,
+      "sha256": "59d079bb75d8b3d7c839a3564580cb559e362c93a9d70f234e421c0c3e767e04"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 166,
-    "before_sha256": null,
-    "after_sha256": "9bcbdbe285fd3a024be563cb237751ceb3435d86610e231f08894023321af5d7"
+    "previous": null,
+    "current": {
+      "bytes": 166,
+      "sha256": "9bcbdbe285fd3a024be563cb237751ceb3435d86610e231f08894023321af5d7"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/unlv",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 45,
-    "before_sha256": null,
-    "after_sha256": "1b02e7801de71f0757a26ba6d749e9182a0d9971929966bebb67f99db8733f40"
+    "previous": null,
+    "current": {
+      "bytes": 45,
+      "sha256": "1b02e7801de71f0757a26ba6d749e9182a0d9971929966bebb67f99db8733f40"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/configs/wordstrbox",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 29,
-    "before_sha256": null,
-    "after_sha256": "9d1787cdce085ad36dc9d6ba6b2702ac262beaf06a0bb4a0b84355f6458261e5"
+    "previous": null,
+    "current": {
+      "bytes": 29,
+      "sha256": "9d1787cdce085ad36dc9d6ba6b2702ac262beaf06a0bb4a0b84355f6458261e5"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/eng.traineddata",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 4113088,
-    "before_sha256": null,
-    "after_sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+    "previous": null,
+    "current": {
+      "bytes": 4113088,
+      "sha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2"
+    },
+    "comparison": "바이너리 원문 전체 크기·SHA-256"
   },
   {
     "path": "vendor/tesseract/tessdata/kor.traineddata",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1677415,
-    "before_sha256": null,
-    "after_sha256": "6b85e11d9bbf07863b97b3523b1b112844c43e713df8b66418a081fd1060b3b2"
+    "previous": null,
+    "current": {
+      "bytes": 1677415,
+      "sha256": "6b85e11d9bbf07863b97b3523b1b112844c43e713df8b66418a081fd1060b3b2"
+    },
+    "comparison": "바이너리 원문 전체 크기·SHA-256"
   },
   {
     "path": "vendor/tesseract/tessdata/osd.traineddata",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 10562727,
-    "before_sha256": null,
-    "after_sha256": "9cf5d576fcc47564f11265841e5ca839001e7e6f38ff7f7aacf46d15a96b00ff"
+    "previous": null,
+    "current": {
+      "bytes": 10562727,
+      "sha256": "9cf5d576fcc47564f11265841e5ca839001e7e6f38ff7f7aacf46d15a96b00ff"
+    },
+    "comparison": "바이너리 원문 전체 크기·SHA-256"
   },
   {
     "path": "vendor/tesseract/tessdata/pdf.ttf",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 572,
-    "before_sha256": null,
-    "after_sha256": "c7845420925a23d88ed830a63957b8af85a66a8daf8d9fc90e843673b2ef1a59"
+    "previous": null,
+    "current": {
+      "bytes": 572,
+      "sha256": "c7845420925a23d88ed830a63957b8af85a66a8daf8d9fc90e843673b2ef1a59"
+    },
+    "comparison": "바이너리 원문 전체 크기·SHA-256"
   },
   {
     "path": "vendor/tesseract/tessdata/tessconfigs/batch",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 49,
-    "before_sha256": null,
-    "after_sha256": "d91107c3a8c1c311b00c64aee56cbce4d48894c6e5762165f1ec7871c7b7bf4e"
+    "previous": null,
+    "current": {
+      "bytes": 49,
+      "sha256": "d91107c3a8c1c311b00c64aee56cbce4d48894c6e5762165f1ec7871c7b7bf4e"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/tessconfigs/batch.nochop",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 37,
-    "before_sha256": null,
-    "after_sha256": "5acabb534cfd4fd8fe111c854955e1ffa9390619ef43775b1a5fbaf5283f68bb"
+    "previous": null,
+    "current": {
+      "bytes": 37,
+      "sha256": "5acabb534cfd4fd8fe111c854955e1ffa9390619ef43775b1a5fbaf5283f68bb"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/tessconfigs/matdemo",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 243,
-    "before_sha256": null,
-    "after_sha256": "d098cdf6ffe691ccc9dfa4490603f6ae33cdd313010cedfa50007ebde3ddd2d0"
+    "previous": null,
+    "current": {
+      "bytes": 243,
+      "sha256": "d098cdf6ffe691ccc9dfa4490603f6ae33cdd313010cedfa50007ebde3ddd2d0"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/tessconfigs/msdemo",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 368,
-    "before_sha256": null,
-    "after_sha256": "0ed753a05ea60766f4269d81873b6390e937ea2df1758de91c57db7e92429555"
+    "previous": null,
+    "current": {
+      "bytes": 368,
+      "sha256": "0ed753a05ea60766f4269d81873b6390e937ea2df1758de91c57db7e92429555"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/tessconfigs/nobatch",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 1,
-    "before_sha256": null,
-    "after_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    "previous": null,
+    "current": {
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "vendor/tesseract/tessdata/tessconfigs/segdemo",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 295,
-    "before_sha256": null,
-    "after_sha256": "7ec19f77f8c76b4dfb33ec8b13e11d7685ae5c9cf6eca4e7333cce0513ddac56"
+    "previous": null,
+    "current": {
+      "bytes": 295,
+      "sha256": "7ec19f77f8c76b4dfb33ec8b13e11d7685ae5c9cf6eca4e7333cce0513ddac56"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "version-info.txt",
+    "status": "추가",
+    "previous": null,
+    "current": {
+      "bytes": 523,
+      "sha256": "1f12a6a691bcf5b49454b1af1d2ed4bfcea9055f57bf03ef3f7dcea42598def9"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "workspace_core.py",
+    "status": "추가",
+    "previous": null,
+    "current": {
+      "bytes": 47697,
+      "sha256": "1a14962e55fe5d067655c25902b08caf769313726ab57bf8427d7896ac7efb66"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
+  },
+  {
+    "path": "workspace_ui.py",
+    "status": "추가",
+    "previous": null,
+    "current": {
+      "bytes": 44501,
+      "sha256": "91a71e925e06434f263be4ed430a8580630804baa7775385cbe946e85ea80ef6"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "검토기록.md",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 12701,
-    "before_sha256": null,
-    "after_sha256": "56046aa519af63aa6a2a6be3bce5f53f4dcbc7e4027a700fa93c1b0b4f3ff6fc"
+    "previous": null,
+    "current": {
+      "bytes": 12701,
+      "sha256": "56046aa519af63aa6a2a6be3bce5f53f4dcbc7e4027a700fa93c1b0b4f3ff6fc"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "빌드방법.md",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 10721,
-    "before_sha256": null,
-    "after_sha256": "8ad81bdc4eba3fcb9dccdbe44215dc6e8475c7135f5a7acc02ad9585f1086e70"
+    "previous": null,
+    "current": {
+      "bytes": 11765,
+      "sha256": "3168cc824bd619bd0bd6fcb68b88697604f36425ad3732a2ac4c8a944d704498"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "사용안내.txt",
     "status": "추가",
-    "before_bytes": null,
-    "after_bytes": 7358,
-    "before_sha256": null,
-    "after_sha256": "870d780b4bb6d350cb2e62ecf51a05f43349aba93bc8b4d0c0420785a6bc26a9"
+    "previous": null,
+    "current": {
+      "bytes": 8899,
+      "sha256": "61d621e66e54178d29dcafe5feb25fa2d72992a99db1dcd152e02eb5b2cd94bc"
+    },
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   },
   {
     "path": "파일목록.json",
-    "status": "이전만 존재",
-    "before_bytes": 3329,
-    "after_bytes": null,
-    "before_sha256": "7882b4d437f38e6d31b2b45522a53d3f7e88e2ef52280510523107ae1ffde766",
-    "after_sha256": null
+    "status": "이전에만 존재",
+    "previous": {
+      "bytes": 3329,
+      "sha256": "7882b4d437f38e6d31b2b45522a53d3f7e88e2ef52280510523107ae1ffde766"
+    },
+    "current": null,
+    "comparison": "공백·주석·개행을 포함한 UTF-8 전체 차이"
   }
 ]

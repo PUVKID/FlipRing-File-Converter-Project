@@ -1,7 +1,0 @@
-{
-  "DisplayName": "FlipRing 버전 1.5.0",
-  "DisplayVersion": "1.5.0",
-  "InstallLocation": ".\\AppData\\Local\\Programs\\FlipRing\\",
-  "UninstallString": "\".\\AppData\\Local\\Programs\\FlipRing\\unins000.exe\"",
-  "QuietUninstallString": "\".\\AppData\\Local\\Programs\\FlipRing\\unins000.exe\" /SILENT"
-}

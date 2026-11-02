@@ -124,7 +124,6 @@ class SurfaceMotion(QObject):
 
     def __init__(self, widget):
         super().__init__(widget)
-        self.host = widget.viewport() if isinstance(widget, QAbstractItemView) else widget
         self.overlay = FeedbackOverlay(self.host)
         self.amount = 0.0
         self.animation = QVariantAnimation(self)
@@ -154,6 +153,12 @@ class SurfaceMotion(QObject):
             widget.valueChanged.connect(self.pulse)
         elif isinstance(widget, QMenu):
             widget.hovered.connect(self.menu_pulse)
+
+    @property
+    def host(self):
+        # 위젯이 모션을 소유하므로 역방향 강한 참조로 수거 순환을 만들지 않는다.
+        widget = self.parent()
+        return widget.viewport() if isinstance(widget, QAbstractItemView) else widget
 
     def _frame(self, value):
         self.amount = float(value)

@@ -11,11 +11,8 @@ import tarfile
 root = Path(__file__).resolve().parent
 vendor = Path(sys.argv[1]).resolve()
 evidence = Path(sys.argv[2]).resolve()
-report = {"korean_time": datetime.now(timezone(timedelta(hours=9))).isoformat(),
-          "session": "01a15519-c86d-7880-a2e6-c9070f59067d", "task": "mono-bilingual-20261021",
-          "worker": "/root/deep_mono_ui", "cwd": str(Path.cwd()), "argv": sys.argv,
-          "role": "deep", "model_request": "gpt-6.1-sol", "effort_request": "xhigh",
-          "server_runtime_model": "미확인", "repair_used": 1}
+# 공개·출하 사본에는 자료 검증 결과만 기록하고 사적 운영 식별자는 포함하지 않습니다.
+report = {'korean_time': datetime.now(timezone(timedelta(hours=9))).isoformat()}
 try:
     sources = []
     for name in ("gcc-mingw-w64_27.dsc", "gcc-14_14.2.0-19.dsc"):

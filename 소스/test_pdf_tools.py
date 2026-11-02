@@ -338,10 +338,43 @@ class PanelTests(unittest.TestCase):
         self.application.processEvents()
 
     def wait_finished(self):
-        from PySide6.QtTest import QTest
-        deadline = time.monotonic() + 10
-        while self.panel.is_busy() and time.monotonic() < deadline:
-            QTest.qWait(10)
+        from PySide6.QtCore import QAbstractEventDispatcher, QEventLoop, QTimer, Qt
+        # 실제 이벤트 루프에서 완료 슬롯 반환을 관찰하며 기존 10초 제한을 유지한다.
+        if not self.panel.is_busy():
+            return
+        loop = QEventLoop()
+        timer = QTimer(loop)
+        timer.setSingleShot(True)
+        timer.setTimerType(Qt.PreciseTimer)
+        dispatcher = QAbstractEventDispatcher.instance()
+        active = [True]
+        expired = [False]
+
+        def completion_gate(*unused):
+            if active[0] and not self.panel.is_busy():
+                loop.quit()
+
+        def timeout():
+            if active[0]:
+                expired[0] = True
+                loop.quit()
+
+        # 연결 전에 전송된 완료 신호도 기존 완료 슬롯이 반환한 뒤 관찰한다.
+        self.panel._bridge.finished.connect(completion_gate, Qt.QueuedConnection)
+        dispatcher.aboutToBlock.connect(completion_gate)
+        timer.timeout.connect(timeout)
+        try:
+            timer.start(10000)
+            if self.panel.is_busy():
+                loop.exec()
+        finally:
+            # 이미 큐에 든 콜백을 비활성화하고 타이머와 연결을 모두 정리한다.
+            active[0] = False
+            timer.stop()
+            timer.timeout.disconnect(timeout)
+            self.panel._bridge.finished.disconnect(completion_gate)
+            dispatcher.aboutToBlock.disconnect(completion_gate)
+        self.assertFalse(expired[0], "작업이 10초 안에 종료되지 않았습니다")
         self.assertFalse(self.panel.is_busy())
 
     def test_19_panel_thread_result_language_and_restore(self):

@@ -1,38 +1,6 @@
 [
   {
-    "archive": "work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 입력 공백 2.zip",
-    "member": "한글 폴더 공백/원본.txt",
-    "source_sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063",
-    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
-    "public_targets": [
-      "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt"
-    ],
-    "current_public_files": [
-      {
-        "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt",
-        "bytes": 20,
-        "sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063"
-      }
-    ]
-  },
-  {
-    "archive": "work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 입력 공백 3.zip",
-    "member": "한글 폴더 공백/원본.txt",
-    "source_sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063",
-    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
-    "public_targets": [
-      "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt"
-    ],
-    "current_public_files": [
-      {
-        "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt",
-        "bytes": 20,
-        "sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063"
-      }
-    ]
-  },
-  {
-    "archive": "work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 입력 공백 4.zip",
+    "archive": "한글 입력 공백 4.zip",
     "member": "уииоотивл.txt",
     "source_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
     "decision": "압축에만 남은 고유 코드·설정·리소스·사용법/실험 노트 보존",
@@ -45,10 +13,12 @@
         "bytes": 2,
         "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
       }
-    ]
+    ],
+    "archive_reference_sha256": "f5763c00122260c45e478929c10120f9227474f9542847c337bcb4a3cbef465d",
+    "archive_scope": "로컬 압축 원본의 파일명과 경로 식별 해시입니다. 사적 실행 폴더 경로는 비공개 대응표에 보존합니다."
   },
   {
-    "archive": "work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 입력 공백 4.zip",
+    "archive": "한글 입력 공백 4.zip",
     "member": "𝐀𝐁𝐁𝐂.txt",
     "source_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
     "decision": "공개 입력과 원문 바이트 SHA-256 동일",
@@ -61,198 +31,8 @@
         "bytes": 2,
         "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
       }
-    ]
-  },
-  {
-    "archive": "work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 입력 공백.zip",
-    "member": "한글 폴더 공백/원본.txt",
-    "source_sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063",
-    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
-    "public_targets": [
-      "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt"
     ],
-    "current_public_files": [
-      {
-        "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt",
-        "bytes": 20,
-        "sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063"
-      }
-    ]
-  },
-  {
-    "archive": "work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백.zip",
-    "member": "한글 폴더 공백/원본.txt",
-    "source_sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063",
-    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
-    "public_targets": [
-      "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt"
-    ],
-    "current_public_files": [
-      {
-        "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt",
-        "bytes": 20,
-        "sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063"
-      }
-    ]
-  },
-  {
-    "archive": "work/enhancement-20261030/matrix-test/run-c0cc5f8f-5e63-4c82-bcca-bf60b9e10117/fixtures/한글 입력 공백 2.zip",
-    "member": "한글 폴더 공백/원본.txt",
-    "source_sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063",
-    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
-    "public_targets": [
-      "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt"
-    ],
-    "current_public_files": [
-      {
-        "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt",
-        "bytes": 20,
-        "sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063"
-      }
-    ]
-  },
-  {
-    "archive": "work/enhancement-20261030/matrix-test/run-c0cc5f8f-5e63-4c82-bcca-bf60b9e10117/fixtures/한글 입력 공백 3.zip",
-    "member": "한글 폴더 공백/원본.txt",
-    "source_sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063",
-    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
-    "public_targets": [
-      "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt"
-    ],
-    "current_public_files": [
-      {
-        "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt",
-        "bytes": 20,
-        "sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063"
-      }
-    ]
-  },
-  {
-    "archive": "work/enhancement-20261030/matrix-test/run-c0cc5f8f-5e63-4c82-bcca-bf60b9e10117/fixtures/한글 입력 공백.zip",
-    "member": "한글 폴더 공백/원본.txt",
-    "source_sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063",
-    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
-    "public_targets": [
-      "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt"
-    ],
-    "current_public_files": [
-      {
-        "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt",
-        "bytes": 20,
-        "sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063"
-      }
-    ]
-  },
-  {
-    "archive": "work/enhancement-20261030/matrix-test/run-c0cc5f8f-5e63-4c82-bcca-bf60b9e10117/fixtures/한글 폴더 공백.zip",
-    "member": "한글 폴더 공백/원본.txt",
-    "source_sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063",
-    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
-    "public_targets": [
-      "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt"
-    ],
-    "current_public_files": [
-      {
-        "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt",
-        "bytes": 20,
-        "sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063"
-      }
-    ]
-  },
-  {
-    "archive": "work/enhancement-20261030/matrix-test/run-cd6dd5dc-fc33-4d86-9c22-9cfb469e5f87/fixtures/한글 입력 공백 2.zip",
-    "member": "한글 폴더 공백/원본.txt",
-    "source_sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063",
-    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
-    "public_targets": [
-      "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt"
-    ],
-    "current_public_files": [
-      {
-        "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt",
-        "bytes": 20,
-        "sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063"
-      }
-    ]
-  },
-  {
-    "archive": "work/enhancement-20261030/matrix-test/run-cd6dd5dc-fc33-4d86-9c22-9cfb469e5f87/fixtures/한글 입력 공백 3.zip",
-    "member": "한글 폴더 공백/원본.txt",
-    "source_sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063",
-    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
-    "public_targets": [
-      "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt"
-    ],
-    "current_public_files": [
-      {
-        "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt",
-        "bytes": 20,
-        "sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063"
-      }
-    ]
-  },
-  {
-    "archive": "work/enhancement-20261030/matrix-test/run-cd6dd5dc-fc33-4d86-9c22-9cfb469e5f87/fixtures/한글 입력 공백.zip",
-    "member": "한글 폴더 공백/원본.txt",
-    "source_sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063",
-    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
-    "public_targets": [
-      "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt"
-    ],
-    "current_public_files": [
-      {
-        "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt",
-        "bytes": 20,
-        "sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063"
-      }
-    ]
-  },
-  {
-    "archive": "work/enhancement-20261030/matrix-test/run-cd6dd5dc-fc33-4d86-9c22-9cfb469e5f87/fixtures/한글 폴더 공백.zip",
-    "member": "한글 폴더 공백/원본.txt",
-    "source_sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063",
-    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
-    "public_targets": [
-      "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt"
-    ],
-    "current_public_files": [
-      {
-        "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt",
-        "bytes": 20,
-        "sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063"
-      }
-    ]
-  },
-  {
-    "archive": "work/enhancement-20261030/경로오류-생성자료/enhancement-20261030/matrix-test/run-46e754cc-1f7d-4610-af2e-567962faac6d/fixtures/한글 입력 공백.zip",
-    "member": "한글 폴더 공백/원본.txt",
-    "source_sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063",
-    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
-    "public_targets": [
-      "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt"
-    ],
-    "current_public_files": [
-      {
-        "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt",
-        "bytes": 20,
-        "sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063"
-      }
-    ]
-  },
-  {
-    "archive": "work/enhancement-20261030/경로오류-생성자료/enhancement-20261030/matrix-test/run-75d67d30-a8ad-47fa-924b-6b89ec9cc120/fixtures/한글 입력 공백.zip",
-    "member": "한글 폴더 공백/원본.txt",
-    "source_sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063",
-    "decision": "공개 입력과 원문 바이트 SHA-256 동일",
-    "public_targets": [
-      "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt"
-    ],
-    "current_public_files": [
-      {
-        "path": "보존자료/작업소스/work/enhancement-20261030/matrix-test/run-bf49e1f2-7b56-471b-918f-3bc495f6e860/fixtures/한글 폴더 공백/원본.txt",
-        "bytes": 20,
-        "sha256": "a496ba0be9acf9e521bd58d1e034196b74d204bd06821b1e4f2b10f57b583063"
-      }
-    ]
+    "archive_reference_sha256": "f5763c00122260c45e478929c10120f9227474f9542847c337bcb4a3cbef465d",
+    "archive_scope": "로컬 압축 원본의 파일명과 경로 식별 해시입니다. 사적 실행 폴더 경로는 비공개 대응표에 보존합니다."
   }
 ]

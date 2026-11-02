@@ -1,0 +1,86 @@
+[
+  {
+    "path": "docs/2026-10-30_고정창과세부디자인.md",
+    "previous": {
+      "bytes": 16808,
+      "sha256": "f2ffeac22c4ce346ed8d03f4269ac91b3b1f7bb7cba012f8b1707399761526a8"
+    },
+    "current": {
+      "bytes": 16525,
+      "sha256": "1a3a01eb680364e5f13026514ac8bc87add1dd18754fcc855dd900a2dc0a1604"
+    },
+    "reason": "제품 사양·검사 성적·실패 사실은 유지하고 개인 지침·조율·계정 연결·개인 자료 정리 문맥은 비공개 원문으로 분리"
+  },
+  {
+    "path": "docs/2026-10-30_작업흐름확장.md",
+    "previous": {
+      "bytes": 6035,
+      "sha256": "c2ddf73be8333354554ad2d4a34c2819028ab407fe5c044674f1ec76e918d542"
+    },
+    "current": {
+      "bytes": 6031,
+      "sha256": "0d3250e8aa0201f2be61aa8f957aed45f83000dc0441efcb38f0c6b38bc7eda2"
+    },
+    "reason": "제품 사양·검사 성적·실패 사실은 유지하고 개인 지침·조율·계정 연결·개인 자료 정리 문맥은 비공개 원문으로 분리"
+  },
+  {
+    "path": "docs/내부모션.md",
+    "previous": {
+      "bytes": 3455,
+      "sha256": "e9d6e93575bbaf98913d1acb5e8b8fea8a93928aec70b81fcd240f3b453c31d3"
+    },
+    "current": {
+      "bytes": 3137,
+      "sha256": "f01c4b0b89d420286115dbb3947cec5e8c125bcec31ba2c0a0c949348a9d81fa"
+    },
+    "reason": "제품 사양·검사 성적·실패 사실은 유지하고 개인 지침·조율·계정 연결·개인 자료 정리 문맥은 비공개 원문으로 분리"
+  },
+  {
+    "path": "docs/부드러운디자인.md",
+    "previous": {
+      "bytes": 3655,
+      "sha256": "569e65c2aa2365dfdd4416aa6358a38e4f3d18df0d6bf6d6ea2a79262d2770ae"
+    },
+    "current": {
+      "bytes": 2254,
+      "sha256": "de56838466caf85aee7bb043fb13e4920aa81aa87f61103338facceeb2442f75"
+    },
+    "reason": "제품 사양·검사 성적·실패 사실은 유지하고 개인 지침·조율·계정 연결·개인 자료 정리 문맥은 비공개 원문으로 분리"
+  },
+  {
+    "path": "docs/스튜디오재설계.md",
+    "previous": {
+      "bytes": 5770,
+      "sha256": "325e724bde9f62ff84dda4b5629bdb3a6a0936de971b186b9e1a5135b9ace57c"
+    },
+    "current": {
+      "bytes": 4632,
+      "sha256": "55d89ce658c6865ce649efc78169ea080a5a0f17fe2635789b8638f2b19cfaec"
+    },
+    "reason": "제품 사양·검사 성적·실패 사실은 유지하고 개인 지침·조율·계정 연결·개인 자료 정리 문맥은 비공개 원문으로 분리"
+  },
+  {
+    "path": "docs/요구사항.md",
+    "previous": {
+      "bytes": 4901,
+      "sha256": "2edacad2388504517fffce463356e07006d8f6042f2c62121d92c7b9f7134cf5"
+    },
+    "current": {
+      "bytes": 4258,
+      "sha256": "f4f61ff6762dab3bd41ccb4f0d6b584b3905571ffa88d17e88031090b071d369"
+    },
+    "reason": "제품 사양·검사 성적·실패 사실은 유지하고 개인 지침·조율·계정 연결·개인 자료 정리 문맥은 비공개 원문으로 분리"
+  },
+  {
+    "path": "docs/이동재개.md",
+    "previous": {
+      "bytes": 2179,
+      "sha256": "daa9ef7ed85dfa2cedae7d4f6a6e6243226912dbf7906c6c0f8a7d1adc4926d1"
+    },
+    "current": {
+      "bytes": 1356,
+      "sha256": "0fa6f4afc000e1679ae22d1e774974ae12fa731226f17f0f62976d2d0b206947"
+    },
+    "reason": "제품 사양·검사 성적·실패 사실은 유지하고 개인 지침·조율·계정 연결·개인 자료 정리 문맥은 비공개 원문으로 분리"
+  }
+]

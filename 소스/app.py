@@ -28,7 +28,7 @@ from PySide6.QtWidgets import (
     QApplication, QWidget, QMainWindow, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QFileDialog, QComboBox, QListWidget, QTabWidget, QCheckBox,
     QSystemTrayIcon, QMenu, QMessageBox, QProgressBar, QGraphicsOpacityEffect,
-    QStylePainter, QStyleOptionButton, QStyle, QFrame, QInputDialog, QListWidgetItem, QScrollArea, QSizePolicy,
+    QStylePainter, QStyleOptionButton, QStyle, QFrame, QInputDialog, QListWidgetItem, QScrollArea, QSizePolicy, QLineEdit,
 )
 import engine
 from flipring_workflow import PresetStore, preflight, BUILTINS
@@ -41,9 +41,10 @@ from ui_motion import (make_file_dialog, install_surface_motions, pulse_widget, 
                        install_motion_system, SURFACE_STYLE, MotionMessageBox, decorate_message)
 
 VERSION = 3
+RELEASE_VERSION = "1.9.0"
 APPNAME = "플립링"
-AUTOSTART_NAME = "FlipRing"
-DATA = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "PUVKID" / "DragWheel"
+AUTOSTART_NAME = "FlipRing19"
+DATA = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "PUVKID" / "FlipRing19"
 TRIGGER_KEYS = [
     ("Shift", 0x10), ("Alt", 0x12), ("Ctrl", 0x11),
     ("Windows", 0x5B), ("Space", 0x20), ("F8", 0x77), ("custom", -1),
@@ -481,10 +482,16 @@ class Wheel(QWidget):
         previous_options = self.options
         self.paths = paths
         self.options = engine.targets(self.paths)
+        workspace = getattr(self.controller, 'workspace_panel', None)
+        if workspace is not None:
+            self.options = workspace.ordered_formats(self.options)
         self.reasons = {}
         for target in self.options:
             self.reasons[target] = next(
                 (missing for path in self.paths if (missing := engine.requirement(path, target))), None)
+        if workspace is not None and self.paths and workspace.wheel_recipe() is not None:
+            self.options.append('recipe')
+            self.reasons['recipe'] = None
         if same_paths and self.options == previous_options:
             # 같은 파일의 도구 상태는 갱신하되 진행 중인 강조는 초기화하지 않는다.
             self.update()
@@ -626,7 +633,8 @@ class Wheel(QWidget):
             ink = 150 if missing else 242
             painter.setPen(QColor(ink, ink, ink))
             painter.setFont(ui_font(9 if count > 7 else 10, QFont.Medium))
-            painter.drawText(QRectF(x - 49, y - (19 if missing else 12), 98, 24), Qt.AlignCenter, fmt.upper())
+            label = self.controller.text('ws_wheel_recipe') if fmt == 'recipe' else fmt.upper()
+            painter.drawText(QRectF(x - 49, y - (19 if missing else 12), 98, 24), Qt.AlignCenter, label)
             if missing:
                 painter.setFont(ui_font(6))
                 painter.drawText(QRectF(x - 54, y + 4, 108, 20), Qt.AlignCenter,
@@ -649,7 +657,8 @@ class Wheel(QWidget):
         painter.setPen(Qt.white)
         painter.setFont(ui_font(12 if active else 18, QFont.Medium))
         painter.drawText(QRectF(center - 51, center - 14, 102, 28), Qt.AlignCenter,
-                         "→ " + self.options[self.hover].upper() if active else "×")
+                         "→ " + (self.controller.text('ws_wheel_recipe') if self.options[self.hover] == 'recipe'
+                                  else self.options[self.hover].upper()) if active else "×")
         painter.setPen(QColor("#c7c7c7"))
         painter.setFont(ui_font(7))
         painter.drawText(QRectF(center - 50, center + 17, 100, 21), Qt.AlignCenter,
@@ -693,7 +702,7 @@ class MainWindow(QMainWindow):
         self.recording = False
         self.record_until = 0
         self.wheel = Wheel(self)
-        self.wheel.chosen.connect(self.enqueue)
+        self.wheel.chosen.connect(self.dispatch_wheel)
         self.history_path = DATA / "history.json"
         try:
             records = json.loads(self.history_path.read_text(encoding="utf-8"))
@@ -899,9 +908,26 @@ class MainWindow(QMainWindow):
         history_layout = QVBoxLayout(history_page)
         history_layout.setContentsMargins(0, 0, 0, 0)
         self.history = HistoryList()
+        history_filters = QHBoxLayout()
+        self.history_search = QLineEdit()
+        self.history_state = QComboBox()
+        self.history_format = QLineEdit()
+        history_filters.addWidget(self.history_search, 1)
+        history_filters.addWidget(self.history_state)
+        history_filters.addWidget(self.history_format)
+        history_layout.addLayout(history_filters)
+        for widget in (self.history_search, self.history_format):
+            widget.textChanged.connect(self.filter_history)
+        self.history_state.currentIndexChanged.connect(self.filter_history)
         self.history.setItemDelegate(HistoryDelegate(self.history))
         self.history.itemDoubleClicked.connect(self.open_history_result)
         history_layout.addWidget(self.history)
+        history_copy = QHBoxLayout()
+        self.history_copy_file = self.button('', lambda: self.copy_history_result(True))
+        self.history_copy_path = self.button('', lambda: self.copy_history_result(False))
+        history_copy.addWidget(self.history_copy_file)
+        history_copy.addWidget(self.history_copy_path)
+        history_layout.addLayout(history_copy)
         history_layout.addWidget(self.localized(QLabel(), "recent_note"))
         self.tabs.addTab(history_page, self.text("history"))
         about_page = QWidget()
@@ -932,6 +958,14 @@ class MainWindow(QMainWindow):
         preferences.setFrameShape(QFrame.NoFrame)
         preferences.setWidget(self.quick_settings)
         self.tabs.addTab(preferences, self.text('settings'))
+        from workspace_ui import WorkspacePanel
+        self.workspace_panel = WorkspacePanel(self, self.language)
+        self.tabs.addTab(self.workspace_panel, self.text('ws_title'))
+        workspace_nav = NavButton('convert')
+        workspace_nav.set_svg(engine.asset('lucide/arrow-left-right.svg'))
+        workspace_nav.clicked.connect(lambda: self.tabs.setCurrentIndex(6))
+        self.nav_buttons[6] = workspace_nav
+        sidebar_layout.insertWidget(2, workspace_nav)
         settings_nav = NavButton('tools')
         settings_nav.set_svg(engine.asset('lucide/sliders-horizontal.svg'))
         settings_nav.clicked.connect(lambda: self.tabs.setCurrentIndex(5))
@@ -974,6 +1008,7 @@ class MainWindow(QMainWindow):
             pulse_widget(widget)
         self.retranslate()
         self.motion_changed(self.reduced_motion_toggle.isChecked())
+        self.tabs.setCurrentIndex(6)
         # 본문도 같은 논리 크기를 유지하고 작은 화면에서만 바깥으로 스크롤한다.
         host.setFixedSize(1160, 820)
         self.viewport_scroll.setWidgetResizable(False)
@@ -1034,6 +1069,7 @@ class MainWindow(QMainWindow):
         self.settings.sync()
         set_reduced_motion(self, enabled)
         self.pdf_panel.set_reduced_motion(enabled)
+        self.workspace_panel.set_reduced_motion(enabled)
 
     def run_selected(self):
         fmt = self.output_combo.currentData()
@@ -1139,7 +1175,7 @@ class MainWindow(QMainWindow):
     def update_navigation(self, index):
         for target, button in self.nav_buttons.items():
             button.setChecked(target == index)
-        keys = {0: "studio_convert", 1: "studio_helpers", 2: "history", 3: "about", 4: "pdf_tools", 5: "settings"}
+        keys = {0: "studio_convert", 1: "studio_helpers", 2: "history", 3: "about", 4: "pdf_tools", 5: "settings", 6: "ws_title"}
         self.page_title.setText(self.text(keys[index]))
         self.page_description.setText(self.text("studio_description_" + str(index)))
         pulse_widget(self.page_title)
@@ -1186,6 +1222,19 @@ class MainWindow(QMainWindow):
         self.update_navigation(self.tabs.currentIndex())
         self.update_selection_label()
         self.pdf_panel.set_language(self.language)
+        self.workspace_panel.set_language(self.language)
+        self.tabs.setTabText(6, self.text('ws_title'))
+        self.nav_buttons[6].setText(self.text('ws_title'))
+        self.history_search.setPlaceholderText(self.text('ws_history_search'))
+        self.history_format.setPlaceholderText(self.text('ws_history_formats'))
+        selected_state = self.history_state.currentData()
+        with QSignalBlocker(self.history_state):
+            self.history_state.clear()
+            for key, value in (('ws_history_all', ''), ('ws_history_success', 'success'), ('ws_history_failed', 'failed')):
+                self.history_state.addItem(self.text(key), value)
+            self.history_state.setCurrentIndex(max(0, self.history_state.findData(selected_state)))
+        self.history_copy_file.setText(self.text('ws_copy_file'))
+        self.history_copy_path.setText(self.text('ws_copy_path'))
         self.update_record_label()
         self.record_button.setToolTip(self.text("original_note"))
         self.update_trigger_hint()
@@ -1400,6 +1449,7 @@ class MainWindow(QMainWindow):
             message_dialog(self, self.text("busy_title"), self.text("busy_message")).exec()
             return
         self.timer.stop()
+        self.workspace_panel.shutdown()
         self.wheel.hide()
         self.pool.shutdown(wait=False)
         self.tray.hide()
@@ -1508,6 +1558,16 @@ class MainWindow(QMainWindow):
             self.notify(self.text("unsupported_title"), self.text("unsupported_message"))
             return
         self.wheel.display(QCursor.pos(), self.paths, preview=True)
+
+    def dispatch_wheel(self, paths, fmt):
+        if fmt == 'recipe':
+            recipe = self.workspace_panel.wheel_recipe()
+            if recipe is not None:
+                self.workspace_panel.set_files(paths)
+                self.tabs.setCurrentIndex(6)
+                self.workspace_panel.run_recipe(paths=paths, recipe=recipe)
+            return
+        self.enqueue(paths, fmt)
 
     def enqueue(self, paths, fmt):
         if self.pending or self.pdf_panel.is_busy():
@@ -1632,7 +1692,38 @@ class MainWindow(QMainWindow):
             item.setToolTip(row["source"] + "\n" + (error_text(self.language, row["error"]) if row["error"] else row["output"]))
         if hasattr(self, "history_error"):
             self.history.addItem(self.text("history_error"))
+        self.filter_history()
         pulse_widget(self.history)
+
+    def filter_history(self, *args):
+        query = self.history_search.text().casefold()
+        fmt = self.history_format.text().strip().lstrip('.').casefold()
+        state = self.history_state.currentData()
+        for index in range(self.history.count()):
+            item = self.history.item(index)
+            if item.data(Qt.UserRole + 2) is not True:
+                continue
+            detail = item.data(Qt.UserRole + 3)
+            error = bool(item.data(Qt.UserRole + 1))
+            item.setHidden(bool(query and query not in (item.text() + item.toolTip()).casefold())
+                           or bool(fmt and detail.get('format', '').casefold() != fmt)
+                           or bool(state == 'failed' and not error or state == 'success' and error))
+
+    def copy_history_result(self, as_file):
+        item = self.history.currentItem()
+        if item is None or item.data(Qt.UserRole + 2) is not True or item.data(Qt.UserRole + 1):
+            return
+        output = item.data(Qt.UserRole)
+        if not output or not Path(output).is_file():
+            message_dialog(self, self.text('history_missing_title'), self.text('history_missing_result')).exec()
+            return
+        if as_file:
+            from PySide6.QtCore import QMimeData
+            mime = QMimeData()
+            mime.setUrls([QUrl.fromLocalFile(output)])
+            QApplication.clipboard().setMimeData(mime)
+        else:
+            QApplication.clipboard().setText(output)
 
     def open_history_result(self, item):
         if item is None or item.data(Qt.UserRole + 2) is not True:

@@ -19,7 +19,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--output-root", type=Path, default=ROOT.parent, help="새 프로그램과 설치 파일을 저장할 빈 배포 폴더")
 args = parser.parse_args()
 release_root = args.output_root.resolve()
-release_version = "1.8.0"
+release_version = "1.9.0"
 output = release_root / "프로그램"
 if (output / name).exists() or (release_root / "설치파일" / (name + "-Setup.exe")).exists():
     raise SystemExit("기존 프로그램을 보존하기 위해 빌드를 중단합니다. 새 작업 폴더에서 빌드하세요.")
@@ -51,6 +51,16 @@ image = Image.new("RGBA", (256, 256), (0, 0, 0, 0)); d = ImageDraw.Draw(image)
 d.ellipse((8, 8, 248, 248), fill="#202020", outline="#eeeeee", width=14); d.ellipse((88, 88, 168, 168), outline="#eeeeee", width=14)
 image.save(ROOT / "assets/app.ico", sizes=[(16, 16), (32, 32), (48, 48), (128, 128), (256, 256)])
 spec = ROOT / (name + ".spec")
+version_file = ROOT / "version-info.txt"
+version_file.write_text('''VSVersionInfo(
+  ffi=FixedFileInfo(filevers=(1,9,0,0), prodvers=(1,9,0,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),
+  kids=[StringFileInfo([StringTable('040904B0', [
+    StringStruct('CompanyName','PUVKID'), StringStruct('FileDescription','FlipRing'),
+    StringStruct('FileVersion','1.9.0'), StringStruct('ProductVersion','1.9.0'),
+    StringStruct('ProductName','FlipRing'), StringStruct('OriginalFilename','FlipRing.exe')
+  ])]), VarFileInfo([VarStruct('Translation',[1033,1200])])]
+)
+''', encoding="utf-8")
 spec.write_text(f'''# Windows 배포에 필요한 Qt 기본 모듈만 포함한다.
 from PyInstaller.utils.hooks import collect_data_files
 a = Analysis([{str(ROOT / 'app.py')!r}], pathex=[{str(ROOT)!r}], binaries=[], datas=[({str(ROOT / 'assets')!r}, 'assets'), ({str(ROOT / 'vendor')!r}, 'vendor')] + collect_data_files('pypdfium2_raw'), hiddenimports=['PIL.AvifImagePlugin', 'PIL.WebPImagePlugin'], excludes=['tkinter', 'PySide6.QtWebEngineCore', 'PySide6.QtQml', 'PySide6.QtQuick'])
@@ -63,25 +73,26 @@ def required(entry):
     return True
 a.binaries = [entry for entry in a.binaries if required(entry)]
 pyz = PYZ(a.pure)
-exe = EXE(pyz, a.scripts, [], exclude_binaries=True, name={name!r}, debug=False, bootloader_ignore_signals=False, strip=False, upx=False, console=False, icon={str(ROOT / 'assets/app.ico')!r})
+exe = EXE(pyz, a.scripts, [], exclude_binaries=True, name={name!r}, debug=False, bootloader_ignore_signals=False, strip=False, upx=False, console=False, icon={str(ROOT / 'assets/app.ico')!r}, version={str(version_file)!r})
 coll = COLLECT(exe, a.binaries, a.datas, strip=False, upx=False, name={name!r})
 ''', encoding="utf-8")
 build_env = os.environ.copy()
 # 개발 환경의 Poppler·Conda DLL이 Windows 시스템 ICU보다 먼저 수집되지 않게 한다.
 build_env["PATH"] = os.pathsep.join([str(Path(sys.executable).parent), sys.base_prefix, str(Path(os.environ["WINDIR"]) / "System32"), os.environ["WINDIR"]])
-subprocess.run([sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean", "--distpath", str(output), "--workpath", str(ROOT / "build-cache"), str(spec)], check=True, cwd=ROOT, env=build_env)
+subprocess.run([sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean", "--distpath", str(output), "--workpath", str(ROOT.parent / "work/build-cache19"), str(spec)], check=True, cwd=ROOT, env=build_env)
 shutil.copytree(licenses, output / name / "licenses", dirs_exist_ok=True)
 shutil.copy2(ROOT / "LICENSE.txt", output / name / "LICENSE.txt")
 shutil.copy2(ROOT / "사용안내.txt", output / name / "사용안내.txt")
 iss = ROOT / "installer.iss"
-iss.write_text(f'''; 제작자 무료 배포판 설치 구성
+iss.write_text(f'''; PUVKID 무료 배포판 설치 구성
 [Setup]
-AppId=PUVKID.FlipRing
+AppId=PUVKID.FlipRing19
 AppName=FlipRing
 AppVersion={release_version}
-AppPublisher=제작자
-DefaultDirName={{localappdata}}\\Programs\\FlipRing
+AppPublisher=PUVKID
+DefaultDirName={{localappdata}}\\Programs\\FlipRing19
 DefaultGroupName=FlipRing
+UsePreviousAppDir=no
 PrivilegesRequired=lowest
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
@@ -102,13 +113,10 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "korean"; MessagesFile: "compiler:Languages\\Korean.isl"
 [Files]
 Source: "{output / name}\\*"; DestDir: "{{app}}"; Flags: ignoreversion recursesubdirs createallsubdirs
-[Tasks]
-Name: "desktopicon"; Description: "{{cm:CreateDesktopIcon}}"; Flags: unchecked
-[Icons]
-Name: "{{group}}\\FlipRing"; Filename: "{{app}}\\{name}.exe"
-Name: "{{autodesktop}}\\FlipRing"; Filename: "{{app}}\\{name}.exe"; Tasks: desktopicon
 [Registry]
-Root: HKCU; Subkey: "Software\\Microsoft\\Windows\\CurrentVersion\\Run"; ValueName: "FlipRing"; Flags: uninsdeletevalue
+Root: HKCU; Subkey: "Software\\Microsoft\\Windows\\CurrentVersion\\Run"; ValueName: "FlipRing19"; Flags: uninsdeletevalue
+[Run]
+Filename: "{{app}}\\{name}.exe"; Description: "FlipRing"; Flags: nowait postinstall skipifsilent
 ''', encoding="utf-8-sig")
 compiler = Path(os.environ.get("ISCC", ""))
 if not compiler.is_file():

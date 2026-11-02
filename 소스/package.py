@@ -35,6 +35,8 @@ required += [root / filename for filename in (
     "app.py", "i18n.py", "studio_ui.py", "ui_motion.py", "engine.py", "pdf_tools.py", "pdf_panel.py", "test_pdf_tools.py",
     "flipring_workflow.py", "preview_panel.py", "pdf_pages.py", "pdf_lock.py", "test_workbench.py", "test_pdf_workspace.py",
     "fixed_viewport.py", "test_fixed_layout.py", "build.py", "package.py", "test_gui.py", "test_engine.py", "test_conversion_matrix.py",
+    "workspace_core.py", "workspace_ui.py", "inspection_tools.py", "inspection_ui.py",
+    "test_workspace_core.py", "test_workspace_ui.py", "test_inspection_tools.py", "test_ocr_process.py", "1.9-확장안내.md",
     "offscreen-monitor.json", "requirements-lock.txt", "빌드방법.md", "사용안내.txt", "검토기록.md", "1.7-새기능안내.md", "1.8-화면안내.md", "LICENSE.txt",
     "assets/NanumGothicBold.ttf", "assets/NanumGothic-OFL.txt", "test-fixtures/sample.heic",
     "assets/combo-chevron.svg",
@@ -45,6 +47,10 @@ required += [root / filename for filename in (
     "licenses/OCR/MSYS2-구성요소.json", "licenses/OCR/읽어주세요.md",
     "licenses/OCR/GPL-3.0.txt", "licenses/OCR/sources/tesseract-5.5.3.tar.gz",
     "licenses/OCR/ubuntu-gcc/출하목록.json",
+)]
+verification_tools = release / "검사도구"
+required += [verification_tools / filename for filename in (
+    "regression19.py", "new_suites19.py", "run_new_suite19.py", "release_capture.py",
 )]
 missing = [str(path.relative_to(release)) for path in required if not path.is_file()]
 if missing:
@@ -148,6 +154,8 @@ files = [path for path in program.rglob("*") if path.is_file()]
 files.append(installer)
 files.extend(path for path in root.rglob("*")
              if path.is_file() and not excluded.intersection(path.relative_to(root).parts))
+files.extend(path for path in verification_tools.rglob("*")
+             if path.is_file() and not excluded.intersection(path.relative_to(verification_tools).parts))
 entries = []
 for path in sorted(files, key=lambda value: value.relative_to(release).as_posix()):
     with path.open("rb") as f: value = hashlib.file_digest(f, "sha256").hexdigest()

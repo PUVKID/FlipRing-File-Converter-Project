@@ -275,6 +275,8 @@ class WorkbenchUiTests(unittest.TestCase):
         app.DATA = Path(cls.directory.name)
         app.apply_application_style(cls.application)
         cls.window = app.MainWindow()
+        # 기존 작업 큐 회귀는 파일 변환 화면을 명시적으로 연다.
+        cls.window.tabs.setCurrentIndex(0)
         cls.window.notify = lambda *args: None
         cls.window.show()
         cls.application.processEvents()
