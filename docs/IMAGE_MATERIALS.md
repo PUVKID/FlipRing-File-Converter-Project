@@ -5,18 +5,18 @@
 
 [프로젝트](../README.md) · [차수별 설명과 비교](REVISION_INDEX.md) · [코드·문서 자료](SOURCE_MATERIALS.md)
 
-| 자료 묶음 | 이미지 수 |
-|---|---:|
-| [자료 1](image-materials/files-001.md) | 100 |
-| [자료 2](image-materials/files-002.md) | 100 |
-| [자료 3](image-materials/files-003.md) | 100 |
-| [자료 4](image-materials/files-004.md) | 100 |
-| [자료 5](image-materials/files-005.md) | 100 |
-| [자료 6](image-materials/files-006.md) | 100 |
-| [자료 7](image-materials/files-007.md) | 100 |
-| [자료 8](image-materials/files-008.md) | 100 |
-| [자료 9](image-materials/files-009.md) | 100 |
-| [자료 10](image-materials/files-010.md) | 100 |
-| [자료 11](image-materials/files-011.md) | 100 |
-| [자료 12](image-materials/files-012.md) | 100 |
-| [자료 13](image-materials/files-013.md) | 79 |
+| 내용 |
+| --- |
+| **자료 묶음:** [자료 1](image-materials/files-001.md)<br>**이미지 수:** 100 |
+| **자료 묶음:** [자료 2](image-materials/files-002.md)<br>**이미지 수:** 100 |
+| **자료 묶음:** [자료 3](image-materials/files-003.md)<br>**이미지 수:** 100 |
+| **자료 묶음:** [자료 4](image-materials/files-004.md)<br>**이미지 수:** 100 |
+| **자료 묶음:** [자료 5](image-materials/files-005.md)<br>**이미지 수:** 100 |
+| **자료 묶음:** [자료 6](image-materials/files-006.md)<br>**이미지 수:** 100 |
+| **자료 묶음:** [자료 7](image-materials/files-007.md)<br>**이미지 수:** 100 |
+| **자료 묶음:** [자료 8](image-materials/files-008.md)<br>**이미지 수:** 100 |
+| **자료 묶음:** [자료 9](image-materials/files-009.md)<br>**이미지 수:** 100 |
+| **자료 묶음:** [자료 10](image-materials/files-010.md)<br>**이미지 수:** 100 |
+| **자료 묶음:** [자료 11](image-materials/files-011.md)<br>**이미지 수:** 100 |
+| **자료 묶음:** [자료 12](image-materials/files-012.md)<br>**이미지 수:** 100 |
+| **자료 묶음:** [자료 13](image-materials/files-013.md)<br>**이미지 수:** 79 |
