@@ -1,3 +1,11 @@
+## ✨ 1.11.0 · 간단한 기본 화면과 문서 변환
+
+파일 선택 → 형식 선택 → 변환으로 시작하고, PDF·OCR의 세부 설정은 고급 옵션에서 펼칩니다. HWP·HWPX 읽기·다른 형식 변환을 유지하며 DOCX·TXT·HWP5·HWPX에서 HWP·HWPX로 저장하는 제한된 로컬 변환을 제공합니다. 단순 문단·굵게/기울임·직사각형 표·PNG/JPEG 그림을 다루고 지원하지 않는 구조는 거부합니다.
+
+HWP5 저장은 실험적이며 HWP3 출력은 제공하지 않습니다. 병합·중첩 표, 수식·주석·필드와 떠 있거나 회전한 그림 등 지원하지 않는 복잡한 구조는 거부합니다. 모든 HWPX 사용자 부품·글꼴·쪽 배치의 완전 보존이나 외부 뷰어 시각 일치를 보장하지 않습니다. HWP·HWPX의 PDF·Word 등 기존 읽기 변환과 Office 문서 변환에는 LibreOffice가 필요하며 HWP 읽기에는 H2Orestart·Java를 사용합니다. 초기 Excel 2007 Beta2 XLSB는 지원하지 않습니다. 일부 영상·오디오·문서 기능은 FFmpeg·Pandoc 등 별도 도우미가 필요합니다. 실행 파일과 설치 파일에는 코드서명 인증서가 적용되지 않았습니다.
+
+[1.10 개발 이력](docs/versions/1.10.0.md) · [1.11 실제 검사](docs/versions/1.11.0.md) · [전체 소스](https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/download/v1.11.0/플립링-1.11.0-전체소스.zip)
+
 # 변경 기록
 
 ## 2026-10-30 · 1.7.0 작업 흐름 확장

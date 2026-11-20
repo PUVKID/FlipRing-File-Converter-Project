@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import csv
+import ctypes
 from contextlib import contextmanager
+from ctypes import wintypes
 import html
 import io
 import json
@@ -26,6 +28,8 @@ from docx import Document
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+import document_formats as doc_formats
+import document_process
 
 pi_heif.register_heif_opener()
 TABLE = {
@@ -33,9 +37,9 @@ TABLE = {
     "오디오": ("mp3 m4a wav flac ogg opus aiff wma", "mp3 m4a wav flac ogg opus aiff wma"),
     "비디오": ("mp4 mov mkv webm avi wmv", "mp4 mov mkv webm avi wmv gif mp3"),
     "PDF": ("pdf", "docx jpg png epub txt md"),
-    "문서": ("docx doc odt rtf md txt epub html", "docx md txt epub html pdf jpg png"),
-    "프레젠테이션": ("pptx ppt odp", "pdf jpg png"),
-    "스프레드시트": ("xlsx xls ods csv tsv", "xlsx ods csv tsv pdf"),
+    "문서": (doc_formats.DOCUMENT_INPUTS, doc_formats.DOCUMENT_OUTPUTS),
+    "프레젠테이션": (doc_formats.PRESENTATION_INPUTS, doc_formats.PRESENTATION_OUTPUTS),
+    "스프레드시트": (doc_formats.SPREADSHEET_INPUTS, doc_formats.SPREADSHEET_OUTPUTS),
     "자막": ("srt vtt", "srt vtt txt"),
     "압축": ("zip tar tar.gz rar", "zip tar tar.gz"),
     "폴더": ("folder", "zip tar tar.gz"),
@@ -75,6 +79,109 @@ def terminate_tree(process):
     if process.poll() is None: process.kill()
     process.communicate()
 
+class _OwnedProcessTree(document_process._OfficeTree):
+    """새 도구의 Job 구성원 핸들을 보관하고 실제 종료 신호를 확인한다."""
+    def __init__(self, process):
+        self._operation_lock = threading.RLock()
+        super().__init__(process)
+
+    def terminate(self):
+        # 종료 요청 전에 소유 핸들을 확보한다. Job의 활성 수만으로 종료를 판단하지 않는다.
+        with self._operation_lock:
+            if self.handle:
+                self.collect()
+                if not self.kernel.TerminateJobObject(self.handle, 1):
+                    raise ctypes.WinError(ctypes.get_last_error())
+
+    def wait_empty(self, deadline):
+        while True:
+            with self._operation_lock:
+                active = self.collect()
+                waiting = False
+                for handle in self.process_handles.values():
+                    status = self.kernel.WaitForSingleObject(handle, 0)
+                    if status == 258:
+                        waiting = True
+                    elif status != 0:
+                        raise ctypes.WinError(ctypes.get_last_error())
+                if not active and not waiting:
+                    return
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise RuntimeError('외부 도우미의 소유 후손 종료를 확인하지 못했습니다.')
+            time.sleep(min(0.01, remaining))
+
+    def close(self):
+        with self._operation_lock:
+            super().close()
+
+
+
+def _finish_owned_process(process, deadline, unstarted=False):
+    """동일한 정리 기한으로 소유 트리와 직접 자식의 종료를 확인한다."""
+    tree = getattr(process, '_flipring_owned_tree', None)
+    errors = []
+    try:
+        if os.name == 'nt':
+            if tree is None and not unstarted:
+                raise RuntimeError('외부 도우미의 생성 시 Job 소유 정보가 없습니다.')
+            if tree is not None and tree.handle:
+                tree.terminate()
+                tree.wait_empty(deadline)
+            elif unstarted and process.poll() is None:
+                # 할당 실패한 새 정지 프로세스에는 실행된 후손이 없다.
+                process.kill()
+        else:
+            import signal
+            try: os.killpg(process.pid, signal.SIGKILL)
+            except ProcessLookupError: pass
+    except BaseException as error:
+        errors.append(error)
+    finally:
+        # 종료 API 실패 때도 Job 닫기의 소유 범위 정리를 요청하되 성공으로 숨기지 않는다.
+        if errors and tree is not None:
+            try: tree.close()
+            except BaseException as error: errors.append(error)
+        try:
+            process.wait(timeout=max(0, deadline - time.monotonic()))
+        except BaseException as error:
+            errors.append(error)
+        if tree is not None:
+            try: tree.close()
+            except BaseException as error: errors.append(error)
+    if errors:
+        raise RuntimeError('외부 도우미 종료 확인 실패: ' + '; '.join(map(str, errors))) from errors[0]
+
+
+def _start_owned_process(factory, args, kwargs, cancel, deadline):
+    """생성·할당·재개 실패 때 아직 사용하지 않은 새 프로세스만 회수한다."""
+    process = None
+    kwargs = dict(kwargs)
+    if os.name == 'nt':
+        kwargs['creationflags'] = kwargs.get('creationflags', 0) | 0x00000004
+    try:
+        process = factory(*args, **kwargs)
+        if os.name == 'nt':
+            tree = _OwnedProcessTree(process)
+            process._flipring_owned_tree = tree
+            document_process._resume_ocr_process(process, cancel, deadline)
+        return process
+    except BaseException as error:
+        if process is not None:
+            cleanup_deadline = time.monotonic() + 15
+            try:
+                _finish_owned_process(process, cleanup_deadline, unstarted=True)
+            except BaseException as cleanup:
+                raise cleanup from error
+            finally:
+                for stream in (process.stdin, process.stdout, process.stderr):
+                    if stream is not None:
+                        stream.close()
+        if isinstance(error, document_process.PdfCancelled):
+            raise Cancelled('작업이 취소되었습니다.') from error
+        raise
+
+
 def asset(name):
     return Path(__file__).resolve().parent / "assets" / name
 
@@ -104,6 +211,8 @@ def targets(paths):
         except ValueError:
             return []
         options = [x for x in TABLE[kind][1].split() if x != ext]
+        if ext not in doc_formats.NATIVE_HWP_INPUTS:
+            options = [x for x in options if x not in ("hwp", "hwpx")]
         common = options if common is None else [x for x in common if x in options]
     return common or []
 
@@ -144,14 +253,15 @@ def rar_tools():
 def _stop_rar_process(process):
     # 읽기 스레드가 파이프를 소유하므로 감시 스레드는 communicate를 호출하지 않는다.
     if os.name == 'nt':
-        subprocess.run(['taskkill', '/PID', str(process.pid), '/T', '/F'],
-                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                       creationflags=subprocess.CREATE_NO_WINDOW, timeout=15)
+        tree = getattr(process, '_flipring_owned_tree', None)
+        if tree is None:
+            raise RuntimeError('RAR 도우미의 생성 시 Job 소유 정보가 없습니다.')
+        tree.terminate()
     else:
         import signal
         try: os.killpg(process.pid, signal.SIGKILL)
         except ProcessLookupError: pass
-    if process.poll() is None: process.kill()
+        if process.poll() is None: process.kill()
 
 
 @contextmanager
@@ -162,51 +272,69 @@ def rar_processes():
         original = rarfile.Popen
         saved = {key: getattr(rarfile, key) for key in ('CURRENT_SETUP', 'UNRAR_TOOL', 'UNAR_TOOL', 'SEVENZIP_TOOL', 'SEVENZIP2_TOOL')}
         processes, monitor_errors = [], []
+        launch_lock = threading.Lock()
         stopped, expired = threading.Event(), threading.Event()
         cancel = getattr(_CONTEXT, 'cancel', None)
         deadline = time.monotonic() + 1800
 
         def spawn(*args, **kwargs):
-            check_cancel()
-            kwargs['start_new_session'] = os.name != 'nt'
-            frozen = os.name == 'nt' and getattr(sys, 'frozen', False)
-            if frozen:
-                import ctypes
-                ctypes.windll.kernel32.SetDllDirectoryW(None)
-            try:
-                process = original(*args, **kwargs)
-                processes.append(process)
-                return process
-            finally:
-                if frozen: ctypes.windll.kernel32.SetDllDirectoryW(sys._MEIPASS)
+            # 감시가 취소를 관측한 뒤 새 프로세스가 목록 밖에서 시작하지 않게 한다.
+            with launch_lock:
+                check_cancel()
+                if time.monotonic() >= deadline:
+                    raise RuntimeError('변환 제한 시간 30분을 초과했습니다.')
+                kwargs['start_new_session'] = os.name != 'nt'
+                frozen = os.name == 'nt' and getattr(sys, 'frozen', False)
+                if frozen:
+                    ctypes.windll.kernel32.SetDllDirectoryW(None)
+                try:
+                    process = _start_owned_process(original, args, kwargs, cancel, deadline)
+                    processes.append(process)
+                    return process
+                finally:
+                    if frozen: ctypes.windll.kernel32.SetDllDirectoryW(sys._MEIPASS)
 
         def watch():
             while not stopped.wait(0.05):
                 if (cancel is not None and cancel.is_set()) or time.monotonic() >= deadline:
                     if time.monotonic() >= deadline: expired.set()
-                    for process in list(processes):
-                        if process.poll() is None:
-                            try: _stop_rar_process(process)
-                            except BaseException as exc: monitor_errors.append(exc)
+                    with launch_lock:
+                        owned = list(processes)
+                    for process in owned:
+                        # 직접 부모가 먼저 끝나도 같은 Job의 후손은 종료 대상이다.
+                        try: _stop_rar_process(process)
+                        except BaseException as exc: monitor_errors.append(exc)
                     return
 
         rarfile.Popen = spawn
         monitor = threading.Thread(target=watch, name='FlipRing-RAR-cancel', daemon=True)
-        monitor.start()
         try:
+            monitor.start()
             yield
         finally:
+            pending = sys.exc_info()[1]
+            cleanup_deadline = time.monotonic() + 15
             stopped.set()
-            monitor.join()
-            rarfile.Popen = original
-            for key, value in saved.items(): setattr(rarfile, key, value)
-            for process in processes:
-                if process.poll() is None: _stop_rar_process(process)
-                process.wait()
-                for stream in (process.stdin, process.stdout, process.stderr):
-                    if stream is not None: stream.close()
+            cleanup_errors = []
+            try:
+                if monitor.ident is not None:
+                    monitor.join(timeout=max(0, cleanup_deadline - time.monotonic()))
+                    if monitor.is_alive():
+                        cleanup_errors.append(RuntimeError('RAR 취소 감시 스레드의 종료를 확인하지 못했습니다.'))
+                for process in processes:
+                    try: _finish_owned_process(process, cleanup_deadline)
+                    except BaseException as error: cleanup_errors.append(error)
+                    for stream in (process.stdin, process.stdout, process.stderr):
+                        if stream is not None:
+                            try: stream.close()
+                            except BaseException as error: cleanup_errors.append(error)
+            finally:
+                rarfile.Popen = original
+                for key, value in saved.items(): setattr(rarfile, key, value)
+            if cleanup_errors or monitor_errors:
+                error = RuntimeError('RAR 도우미 정리 실패: ' + '; '.join(map(str, cleanup_errors + monitor_errors)))
+                raise error from pending
             check_cancel()
-            if monitor_errors: raise monitor_errors[0]
             if expired.is_set(): raise RuntimeError('변환 제한 시간 30분을 초과했습니다.')
 
 
@@ -262,6 +390,11 @@ def adapt_rar_names(setup, entries):
 
 def requirement(path, dst):
     kind, src = classify(path)
+    if dst in ("hwp", "hwpx"):
+        if src not in doc_formats.NATIVE_HWP_INPUTS:
+            return "이 입력의 HWP/HWPX 저장은 지원하지 않습니다."
+        import importlib.util
+        return None if importlib.util.find_spec("hwpx") else "HWP/HWPX 저장 구성 요소"
     if src == "rar" and not any(rar_tools().values()): return "7-Zip"
     needed = None
     if kind in ("오디오", "비디오"):
@@ -270,7 +403,13 @@ def requirement(path, dst):
         if not (src in ("csv", "tsv") and dst in ("csv", "tsv")):
             needed = "soffice"
     elif kind == "문서":
-        if src in ("doc", "odt", "rtf"):
+        if dst in ("doc", "odt", "rtf") and not tool("soffice"):
+            return "LibreOffice"
+        if src in ("hwp", "hwpx"):
+            status = hwp_status()
+            if not status["ready"]:
+                return status["message"]
+        if src in doc_formats.OFFICE_DOCUMENTS:
             if not tool("soffice"): return "LibreOffice"
             if dst in ("md", "epub"): needed = "pandoc"
         elif src == "epub" or dst == "epub" or (src == "html" and dst != "txt") or (src == "md" and dst != "txt") or (src == "docx" and dst in ("html", "md")):
@@ -284,6 +423,11 @@ def requirement(path, dst):
     return TOOLS[needed][0] if needed and not tool(needed) else None
 
 
+def hwp_status(office_path=None):
+    """UI는 이미 관측한 경로를 전달해 추가 탐색 없이 상태를 표시한다."""
+    return doc_formats.hwp_status(tool("soffice") if office_path is None else office_path)
+
+
 def run(exe, args, cwd=None):
     check_cancel()
     if not exe:
@@ -291,14 +435,17 @@ def run(exe, args, cwd=None):
     flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
     # 외부 도구가 앱에 묶인 Qt/Python DLL을 잘못 로드하지 않도록 생성 시 검색 경로를 복구한다.
     frozen = os.name == "nt" and getattr(sys, "frozen", False)
+    deadline = time.monotonic() + 1800
+    cancel = getattr(_CONTEXT, 'cancel', None)
     if frozen:
         import ctypes
         ctypes.windll.kernel32.SetDllDirectoryW(None)
     try:
-        process = subprocess.Popen([str(exe), *map(str, args)], cwd=cwd, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, creationflags=flags, start_new_session=(os.name != "nt"))
+        process = _start_owned_process(subprocess.Popen, ([str(exe), *map(str, args)],),
+            dict(cwd=cwd, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                 creationflags=flags, start_new_session=(os.name != 'nt')), cancel, deadline)
     finally:
         if frozen: ctypes.windll.kernel32.SetDllDirectoryW(sys._MEIPASS)
-    deadline = time.monotonic() + 1800
     try:
         while True:
             check_cancel()
@@ -310,9 +457,15 @@ def run(exe, args, cwd=None):
             except subprocess.TimeoutExpired:
                 continue
         check_cancel()
-    except BaseException:
-        terminate_tree(process)
-        raise
+    finally:
+        pending = sys.exc_info()[1]
+        cleanup_deadline = time.monotonic() + 15
+        try:
+            _finish_owned_process(process, cleanup_deadline)
+            if pending is not None:
+                process.communicate(timeout=max(0, cleanup_deadline - time.monotonic()))
+        except BaseException as cleanup:
+            raise cleanup from pending
     if process.returncode:
         detail = (stderr or stdout).decode("utf-8", "replace")[-1200:]
         raise RuntimeError(f"{Path(exe).stem} 변환 실패 ({process.returncode})\n{detail}")
@@ -388,17 +541,40 @@ def _render_pdf(source, dst, work, base):
 def office(source, dst, work):
     folder = work / ("office-" + next(tempfile._get_candidate_names()))
     folder.mkdir()
-    filters = {"csv": "csv:Text - txt - csv (StarCalc):44,34,76", "tsv": "csv:Text - txt - csv (StarCalc):9,34,76", "txt": "txt:Text (encoded):UTF8", "xlsx": "xlsx:Calc MS Excel 2007 XML"}
-    extra = ["--infilter=CSV:" + ("9" if source.suffix.lower() == ".tsv" else "44") + ",34,76"] if source.suffix.lower() in (".csv", ".tsv") else []
+    kind, src = classify(source)
+    doc_formats.validate_input(source, src)
+    executable = tool("soffice")
+    python = doc_formats.office_python(executable)
+    if not python:
+        raise RuntimeError("LibreOffice의 UNO Python을 찾지 못했습니다. 공식 Windows LibreOffice 설치본을 확인해 주세요.")
+    result = folder / f"{source.stem}.{dst}"
     # 긴 원본 경로 아래 프로필은 LibreOffice 초기화에서 중단될 수 있어 별도로 격리한다.
     with tempfile.TemporaryDirectory(prefix="fr-lo-") as profile_folder:
-        profile = Path(profile_folder).as_uri()
-        run(tool("soffice"), [f"-env:UserInstallation={profile}", "--headless", "--norestore", *extra, "--convert-to", filters.get(dst, dst), "--outdir", folder, source])
-    result = folder / f"{source.stem}.{'csv' if dst == 'tsv' else dst}"
+        profile = Path(profile_folder)
+        doc_formats.write_secure_profile(profile)
+        request = {"source": str(Path(source).resolve()), "output": str(result.resolve()), "profile": str(profile),
+                   "office": executable, "family": kind, "extension": src, "target": dst}
+        if src == "xlsb":
+            from document_xlsb import source_sheets
+            request["xlsb_sheets"] = source_sheets(source, check_cancel=check_cancel)
+        if src in ("hwp", "hwpx"):
+            status = hwp_status(office_path=executable)
+            if not status["ready"]:
+                raise RuntimeError(status["message"])
+            request.update(oxt=status["oxt"], java=status["java"])
+        manifest = profile / "request.json"
+        manifest.write_bytes(json.dumps(request, ensure_ascii=False).encode("utf-8"))
+        # 외부 Python이 앱에 묶인 다른 버전의 확장 모듈을 먼저 읽지 않도록 격리한다.
+        for name in ("document_bridge.py", "document_formats.py", "document_xlsb.py"):
+            with (Path(__file__).resolve().parent / name).open("rb") as original, (profile / name).open("xb") as copied:
+                shutil.copyfileobj(original, copied)
+        bridge = profile / "document_bridge.py"
+        document_process.run_bridge([python, "-B", "-X", "utf8", bridge, manifest],
+                                    profile, getattr(_CONTEXT, "cancel", None), check_cancel)
     if not result.is_file():
         raise RuntimeError(f"LibreOffice에서 {dst.upper()} 결과를 만들지 못했습니다.")
-    if dst == "tsv":
-        result = result.rename(result.with_suffix(".tsv"))
+    if dst in ("docx", "xlsx", "pptx", "odt", "ods", "odp", "doc", "xls", "ppt", "rtf"):
+        doc_formats.validate_input(result, dst)
     return result
 
 
@@ -409,14 +585,101 @@ def pandoc(source, src, dst, output):
     return output
 
 
+def run_hwp_worker(source, target, work):
+    """앱 Python worker만 별도 Job에 소유하고 유한 로그·결과를 확인한다."""
+    import hashlib
+    from hwp_worker import read_message, write_message
+    from document_hwp import bounded_read, require_regular
+    check_cancel()
+    folder = Path(tempfile.mkdtemp(prefix="hwp-", dir=work))
+    source = require_regular(source)
+    source_hash = hashlib.sha256(bounded_read(source)).hexdigest()
+    request = folder / "request.json"
+    write_message(request, {"version": 1, "source": str(source), "target": target, "source_sha256": source_hash})
+    argv = ([sys.executable, "--hwp-worker", str(request)] if getattr(sys, "frozen", False)
+            else [sys.executable, "-B", "-X", "utf8", str(Path(__file__).with_name("app.py")), "--hwp-worker", str(request)])
+    deadline = time.monotonic() + 1800
+    cancel = getattr(_CONTEXT, "cancel", None)
+    flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+    # 자기 앱 worker는 외부 LO와 달리 앱 런타임을 그대로 사용한다.
+    process = _start_owned_process(subprocess.Popen, (argv,), dict(cwd=folder, stdin=subprocess.DEVNULL,
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, creationflags=flags,
+        start_new_session=os.name != "nt"), cancel, deadline)
+    captured = bytearray()
+    overflow = threading.Event()
+    read_errors = []
+    def drain():
+        try:
+            while True:
+                chunk = os.read(process.stdout.fileno(), 4096)
+                if not chunk:
+                    break
+                remaining = 65536 - len(captured)
+                captured.extend(chunk[:remaining])
+                if len(chunk) > remaining:
+                    overflow.set()
+        except BaseException as error:
+            read_errors.append(error)
+    reader = threading.Thread(target=drain, daemon=True)
+    reader.start()
+    try:
+        while process.poll() is None:
+            check_cancel()
+            if overflow.is_set():
+                raise RuntimeError("HWP worker 로그가64KiB를 초과했습니다.")
+            if time.monotonic() >= deadline:
+                raise RuntimeError("변환 제한 시간30분을 초과했습니다.")
+            try:
+                process.wait(timeout=0.05)
+            except subprocess.TimeoutExpired:
+                pass
+        check_cancel()
+    finally:
+        pending = sys.exc_info()[1]
+        cleanup_deadline = time.monotonic() + 15
+        try:
+            _finish_owned_process(process, cleanup_deadline)
+        except BaseException as cleanup:
+            raise cleanup from pending
+        finally:
+            reader.join(timeout=max(0, cleanup_deadline - time.monotonic()))
+            if not reader.is_alive():
+                process.stdout.close()
+        if reader.is_alive() or read_errors:
+            raise RuntimeError("HWP worker 로그 회수를 확인하지 못했습니다.") from pending
+    captured.decode("utf-8", errors="strict")
+    if overflow.is_set():
+        raise RuntimeError("HWP worker 로그가64KiB를 초과했습니다.")
+    result = read_message(folder / "result.json")
+    if result.get("ok") is not True or process.returncode != 0:
+        raise RuntimeError("HWP/HWPX 저장 실패: " + str(result.get("error", "worker 종료 오류")))
+    if type(result.get("version")) is not int or result["version"] != 1 or result.get("format") != target:
+        raise RuntimeError("HWP worker 결과 스키마가 다릅니다.")
+    expected = "output." + target
+    if result.get("source_sha256") != source_hash or result.get("output") != expected:
+        raise RuntimeError("HWP worker 원본·출력 경계가 다릅니다.")
+    output = require_regular(folder / expected)
+    if hashlib.sha256(bounded_read(output)).hexdigest() != result.get("output_sha256"):
+        raise RuntimeError("HWP worker 출력 해시가 다릅니다.")
+    if hashlib.sha256(bounded_read(source)).hexdigest() != source_hash:
+        raise RuntimeError("HWP worker 실행 중 원본이 바뀌었습니다.")
+    return output
+
+
 def document(source, src, dst, work, base):
     output = work / f"{base}.{dst}"
-    if src in ("doc", "odt", "rtf"):
-        if dst in ("pdf", "docx", "txt", "html"):
+    if dst in ("hwp", "hwpx"):
+        return run_hwp_worker(source, dst, work)
+    if src in doc_formats.OFFICE_DOCUMENTS:
+        if dst in ("pdf", "docx", "doc", "odt", "rtf", "txt", "html"):
             return office(source, dst, work)
         if dst in ("jpg", "png"):
             return render_pdf(office(source, "pdf", work), dst, work, base)
         source = office(source, "docx", work); src = "docx"
+    if dst in ("doc", "odt", "rtf"):
+        intermediate = work / "document-source.docx"
+        document(source, src, "docx", work, "document-source")
+        return office(intermediate, dst, work)
     if src == "docx" and dst in ("pdf", "jpg", "png"):
         pdf = office(source, "pdf", work)
         return pdf if dst == "pdf" else render_pdf(pdf, dst, work, base)
@@ -604,8 +867,9 @@ def _produce(source, dst, work):
         txt = work / f"{base}.txt"; txt.write_text(content, encoding="utf-8"); return pandoc(txt, "txt", dst, out)
     if kind == "문서": return document(source, src, dst, work, base)
     if kind == "프레젠테이션":
-        pdf = office(source, "pdf", work)
-        return pdf if dst == "pdf" else render_pdf(pdf, dst, work, base)
+        if dst in ("jpg", "png"):
+            return render_pdf(office(source, "pdf", work), dst, work, base)
+        return office(source, dst, work)
     if kind == "스프레드시트":
         if src in ("csv", "tsv") and dst in ("csv", "tsv"):
             rows = list(csv.reader(io.StringIO(text(source), newline=""), delimiter="\t" if src == "tsv" else ","))

@@ -5,6 +5,7 @@ from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel, QPushButton
 import pypdfium2 as pdfium
+import engine
 from pdf_lock import PDFIUM_LOCK
 
 class PreviewPanel(QWidget):
@@ -61,6 +62,17 @@ class PreviewPanel(QWidget):
                 image = None
                 if path.is_dir():
                     raise ValueError('Folder preview is not supported.' if en else '폴더 미리보기는 지원하지 않습니다.')
+                try:
+                    kind, extension = engine.classify(path)
+                except ValueError:
+                    kind, extension = None, ''
+                if kind in ('문서', '프레젠테이션', '스프레드시트'):
+                    # 문서 내용을 실행하거나 변환하지 않고 파일 정보만 표시한다.
+                    picture.setText(extension.upper())
+                    detail = ('Convert to PDF to preview pages. File information only; contents have not been validated.'
+                              if en else 'PDF로 변환한 뒤 페이지를 미리 볼 수 있습니다. 파일 정보만 표시하며 내용 유효성은 아직 확인하지 않았습니다.')
+                    info.setText(f'{metadata}\n{detail}')
+                    continue
                 if path.suffix.lower() == '.pdf':
                     if not PDFIUM_LOCK.acquire(blocking=False):
                         raise ValueError('PDF is busy. Select again after completion.' if en else 'PDF 처리 중입니다. 완료 후 다시 선택하세요.')

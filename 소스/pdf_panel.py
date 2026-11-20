@@ -12,7 +12,7 @@ import uuid
 from PySide6.QtCore import QObject, Signal, Slot, Qt, QCoreApplication, QPointF, QSize, QTimer, QMimeData, QSignalBlocker, QItemSelectionModel
 from PySide6.QtGui import QPainter, QPen, QColor, QImage, QPixmap, QIcon, QDrag
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QComboBox,
+    QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QComboBox,
     QListWidget, QFileDialog, QLineEdit, QSpinBox, QCheckBox, QProgressBar,
     QScrollArea, QFormLayout, QAbstractItemView, QStyleOptionSpinBox, QStyle, QAbstractSpinBox,
     QTabWidget, QListWidgetItem, QSplitter, QDialog,
@@ -24,6 +24,8 @@ from ui_motion import make_file_dialog, install_surface_motions, pulse_widget, S
 
 
 TEXT = {
+    "advanced_show": ("고급 옵션", "Advanced options"),
+    "advanced_hide": ("고급 옵션 접기", "Hide advanced options"),
     "files": ("파일 · 위에서 아래 순서로 처리", "Files · Processed from top to bottom"),
     "add": ("추가", "Add"), "remove": ("빼기", "Remove"),
     "up": ("위로", "Up"), "down": ("아래로", "Down"),
@@ -413,9 +415,11 @@ class PdfToolsPanel(QWidget):
         layout = QVBoxLayout(host)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(15)
-        self.form = QFormLayout()
-        self.form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
-        self.form.setRowWrapPolicy(QFormLayout.WrapAllRows)
+        self.form = QVBoxLayout()
+        self._row_hosts = {}
+        self._advanced_section = QWidget()
+        self._advanced_form = QVBoxLayout(self._advanced_section)
+        self._advanced_form.setContentsMargins(0, 0, 0, 0)
         self.operation = OptionComboBox()
         for key in ("merge", "split", "extract", "delete", "rotate", "images_to_pdf", "pdf_to_images", "compress", "recognize"):
             self.operation.addItem(key, key)
@@ -450,8 +454,14 @@ class PdfToolsPanel(QWidget):
             self.psm.addItem(label, code)
         self._row("layout", self.psm)
         layout.addLayout(self.form)
+        self.pdf_advanced_toggle = QPushButton()
+        self.pdf_advanced_toggle.setCheckable(True)
+        self.pdf_advanced_toggle.setAutoDefault(True)
+        self.pdf_advanced_toggle.toggled.connect(self._update_advanced_visibility)
+        layout.addWidget(self.pdf_advanced_toggle)
+        layout.addWidget(self._advanced_section)
         self.force = Toggle()
-        layout.addWidget(self.force)
+        self._advanced_form.addWidget(self.force)
         self.lossy_note = QLabel()
         self.lossy_note.setWordWrap(True)
         self.lossy_note.setObjectName("muted")
@@ -507,7 +517,26 @@ class PdfToolsPanel(QWidget):
     def _row(self, key, widget):
         label = QLabel()
         self._labels[key] = (label, widget)
-        self.form.addRow(label, widget)
+        host = QWidget()
+        row = QFormLayout(host)
+        row.setVerticalSpacing(12)
+        row.setHorizontalSpacing(14)
+        row.setContentsMargins(0, 0, 0, 0)
+        row.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+        row.setRowWrapPolicy(QFormLayout.WrapAllRows)
+        row.addRow(label, widget)
+        self._row_hosts[key] = host
+        self.form.addWidget(host)
+
+    def _update_advanced_visibility(self, *unused):
+        expanded = self.pdf_advanced_toggle.isChecked() and getattr(self, '_has_advanced', False)
+        focus = QApplication.focusWidget()
+        if not expanded and focus is not None and self._advanced_section.isAncestorOf(focus):
+            self.pdf_advanced_toggle.setFocus()
+        self._advanced_section.setVisible(expanded)
+        self.pdf_advanced_toggle.setText(self.tr_text('advanced_hide' if expanded else 'advanced_show'))
+        if expanded:
+            pulse_widget(self._advanced_section)
 
     def tr_text(self, key, **values):
         return TEXT[key][self.language == "en"].format(**values)
@@ -550,6 +579,7 @@ class PdfToolsPanel(QWidget):
         self.pdf_note.setText(self.tr_text("pdf_note"))
         self._refresh_output_labels()
         self._render_status()
+        self._update_advanced_visibility()
 
     def _refresh_output_labels(self):
         names = {"pdf": "searchable", "txt": "text", "docx": "word", "xlsx": "excel"}
@@ -567,9 +597,18 @@ class PdfToolsPanel(QWidget):
             "ocr_language": operation == "recognize", "output": operation in {"pdf_to_images", "recognize"},
             "layout": operation == "recognize",
         }
+        primary = {'split': {'pages'}, 'extract': {'pages'}, 'delete': {'pages'},
+                   'rotate': {'pages', 'rotation'}, 'pdf_to_images': {'output'},
+                   'compress': {'compression'}, 'recognize': {'ocr_language', 'output'}}.get(operation, set())
+        self._has_advanced = operation == 'recognize' or any(show and key not in primary for key, show in visible.items())
         for key, show in visible.items():
+            target = self.form if key in primary else self._advanced_form
+            target.addWidget(self._row_hosts[key])
+            self._row_hosts[key].setVisible(show)
             for widget in self._labels[key]:
                 widget.setVisible(show)
+        self.pdf_advanced_toggle.setVisible(self._has_advanced)
+        self._update_advanced_visibility()
         if operation != getattr(self, "_output_operation", None):
             self.output.blockSignals(True)
             self.output.clear()

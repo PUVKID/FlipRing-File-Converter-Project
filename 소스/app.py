@@ -1,6 +1,13 @@
 """플립링: 트레이와 원형 메뉴 중심의 무료 Windows 인터페이스."""
 from __future__ import annotations
 
+import sys
+
+# worker는 Qt·엔진·WinDLL과 사용자 설정을 초기화하기 전에 분리한다.
+if __name__ == '__main__' and '--hwp-worker' in sys.argv[1:]:
+    from hwp_worker import main as hwp_worker_main
+    raise SystemExit(hwp_worker_main(sys.argv[2:]) if sys.argv[1] == '--hwp-worker' else 2)
+
 import ctypes
 from ctypes import wintypes
 from concurrent.futures import ThreadPoolExecutor
@@ -41,7 +48,7 @@ from ui_motion import (make_file_dialog, install_surface_motions, pulse_widget, 
                        install_motion_system, SURFACE_STYLE, MotionMessageBox, decorate_message)
 
 VERSION = 3
-RELEASE_VERSION = "1.9.0"
+RELEASE_VERSION = "1.10.0"
 APPNAME = "플립링"
 AUTOSTART_NAME = "FlipRing19"
 DATA = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "PUVKID" / "FlipRing19"
@@ -877,6 +884,50 @@ class MainWindow(QMainWindow):
         tools_layout = QVBoxLayout(tools_page)
         tools_layout.setContentsMargins(0, 0, 0, 0)
         tools_layout.setSpacing(16)
+        self.document_support = StudioCard()
+        support_layout = QVBoxLayout(self.document_support)
+        support_layout.setContentsMargins(22, 20, 22, 20)
+        support_layout.setSpacing(10)
+        support_layout.addWidget(self.section_heading("document_support_title"))
+        self.document_dependency_note = self.localized(QLabel(), "document_dependency_note")
+        self.document_dependency_note.setWordWrap(True)
+        support_layout.addWidget(self.document_dependency_note)
+        self.document_support_toggle = QPushButton()
+        self.document_support_toggle.setCheckable(True)
+        self.document_support_toggle.setAutoDefault(True)
+        support_layout.addWidget(self.document_support_toggle)
+        self.document_support_details = QWidget()
+        details_layout = QVBoxLayout(self.document_support_details)
+        details_layout.setContentsMargins(0, 0, 0, 0)
+        support_layout.addWidget(self.document_support_details)
+        self.document_support_details.hide()
+        self.document_support_toggle.toggled.connect(lambda expanded: self.set_simple_section(
+            self.document_support_details, self.document_support_toggle, expanded, 'support_show', 'support_hide'))
+        self.document_format_labels = []
+        for kind, key in (("PDF", "document_pdf"), ("문서", "document_text"),
+                          ("프레젠테이션", "document_slides"), ("스프레드시트", "document_sheets")):
+            details_layout.addWidget(self.localized(QLabel(), key))
+            for position, label_key in ((0, "document_inputs"), (1, "document_outputs")):
+                row = QHBoxLayout()
+                caption = self.localized(QLabel(), label_key)
+                caption.setMinimumWidth(90)
+                caption.setAlignment(Qt.AlignLeft | Qt.AlignTop)
+                row.addWidget(caption)
+                formats = QLabel()
+                formats.setWordWrap(True)
+                formats.setTextInteractionFlags(Qt.TextSelectableByMouse)
+                row.addWidget(formats, 1)
+                self.document_format_labels.append((formats, kind, position))
+                details_layout.addLayout(row)
+        support_note = self.localized(QLabel(), "document_support_note")
+        support_note.setWordWrap(True)
+        support_note.setObjectName("muted")
+        details_layout.addWidget(support_note)
+        self.hwp_status_label = QLabel()
+        self.hwp_status_label.setWordWrap(True)
+        self.hwp_status_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
+        support_layout.addWidget(self.hwp_status_label)
+        tools_layout.addWidget(self.document_support)
         self.tool_labels = {}
         for name, (title, package, purpose) in engine.TOOLS.items():
             card = StudioCard()
@@ -947,8 +998,7 @@ class MainWindow(QMainWindow):
         self.pdf_panel = PdfToolsPanel(self.language, self)
         self.pdf_panel.scroll.widget().layout().setContentsMargins(0, 0, 0, 0)
         self.pdf_panel.scroll.widget().layout().setSpacing(20)
-        self.pdf_panel.form.setVerticalSpacing(12)
-        self.pdf_panel.form.setHorizontalSpacing(14)
+        self.pdf_panel.form.setSpacing(12)
         self.pdf_panel.result_ready.connect(self.pdf_finished)
         self.pdf_panel.activity_changed.connect(self.pdf_activity_changed)
         self.tabs.addTab(self.pdf_panel, self.text("pdf_tools"))
@@ -1008,7 +1058,7 @@ class MainWindow(QMainWindow):
             pulse_widget(widget)
         self.retranslate()
         self.motion_changed(self.reduced_motion_toggle.isChecked())
-        self.tabs.setCurrentIndex(6)
+        self.tabs.setCurrentIndex(0)
         # 본문도 같은 논리 크기를 유지하고 작은 화면에서만 바깥으로 스크롤한다.
         host.setFixedSize(1160, 820)
         self.viewport_scroll.setWidgetResizable(False)
@@ -1060,9 +1110,30 @@ class MainWindow(QMainWindow):
         preset_row.addWidget(self.localized(self.button('', self.apply_selected_preset), 'preset_apply'))
         preset_row.addWidget(self.localized(self.button('', self.save_conversion_preset), 'preset_save'))
         preset_row.addWidget(self.localized(self.button('', self.delete_selected_preset), 'preset_delete'))
-        layout.insertLayout(1, preset_row)
+        self.preset_section = QWidget()
+        preset_layout = QVBoxLayout(self.preset_section)
+        preset_layout.setContentsMargins(0, 0, 0, 0)
         self.preset_heading = self.section_heading('section_presets')
-        layout.insertWidget(1, self.preset_heading)
+        preset_layout.addWidget(self.preset_heading)
+        preset_layout.addLayout(preset_row)
+        self.preset_toggle = QPushButton()
+        self.preset_toggle.setCheckable(True)
+        self.preset_toggle.setAutoDefault(True)
+        self.preset_toggle.toggled.connect(lambda expanded: self.set_simple_section(
+            self.preset_section, self.preset_toggle, expanded, 'preset_show', 'preset_hide'))
+        layout.insertWidget(1, self.preset_toggle)
+        layout.insertWidget(2, self.preset_section)
+        self.preset_section.hide()
+
+    def set_simple_section(self, section, button, expanded, show_key, hide_key):
+        # 접어도 입력 위젯과 선택값은 그대로 보존한다.
+        focus = QApplication.focusWidget()
+        if not expanded and focus is not None and section.isAncestorOf(focus):
+            button.setFocus()
+        section.setVisible(expanded)
+        button.setText(self.text(hide_key if expanded else show_key))
+        if expanded:
+            pulse_widget(section)
 
     def motion_changed(self, enabled):
         self.settings.setValue('reduced_motion', bool(enabled))
@@ -1096,6 +1167,13 @@ class MainWindow(QMainWindow):
         self.cancel_button.setEnabled(busy or any(row['state'] == 'waiting' for row in self.jobs))
         self.retry_button.setEnabled(not busy and any(row['state'] == 'failed' and row['format'] for row in self.jobs))
         self.output_combo.setEnabled(not busy)
+        self.cancel_button.setVisible(busy)
+        self.retry_button.setVisible(not busy and any(row['state'] == 'failed' and row['format'] for row in self.jobs))
+        if hasattr(self, 'choose_button'):
+            self.choose_button.setProperty('primary', not bool(self.paths))
+            self.choose_button.style().unpolish(self.choose_button)
+            self.choose_button.style().polish(self.choose_button)
+            self.choose_button.update()
 
     def preview_selection(self, *unused):
         index = self.queue_list.currentRow()
@@ -1247,6 +1325,8 @@ class MainWindow(QMainWindow):
         self.refresh_presets()
         self.refresh_queue()
         self.preview_selection()
+        self.preset_toggle.setText(self.text('preset_hide' if self.preset_toggle.isChecked() else 'preset_show'))
+        self.document_support_toggle.setText(self.text('support_hide' if self.document_support_toggle.isChecked() else 'support_show'))
 
     def update_record_label(self):
         key = "record_wait" if self.recording else "recorded" if self.recorded_key is not None else "record"
@@ -1356,6 +1436,7 @@ class MainWindow(QMainWindow):
     def update_tray_menu(self, refresh=True):
         if refresh or not hasattr(self, "_tool_paths"):
             self._tool_paths = {name: engine.tool(name) for name in engine.TOOLS}
+            self._hwp_status = engine.hwp_status(office_path=self._tool_paths.get("soffice") or "")
             self.render_tools()
         menu = self.tray_menu
         previous_menus = [action.menu() for action in menu.actions() if action.menu() is not None]
@@ -1423,6 +1504,8 @@ class MainWindow(QMainWindow):
         self.update_trigger_hint()
 
     def update_trigger_hint(self):
+        if hasattr(self, 'record_button'):
+            self.record_button.setVisible(self.trigger.currentData() == -1)
         label = self.trigger.currentText()
         if self.trigger.currentData() == -1:
             label = self.text("custom_hint", key=self.custom_vk)
@@ -1461,11 +1544,18 @@ class MainWindow(QMainWindow):
 
     def refresh_tools(self):
         self._tool_paths = {name: engine.tool(name) for name in engine.TOOLS}
+        self._hwp_status = engine.hwp_status(office_path=self._tool_paths.get("soffice") or "")
         self.render_tools()
         self.update_tray_menu(refresh=False)
 
     def render_tools(self):
         """언어 변경은 관측을 다시 그린다. 명시 새로고침·트레이 열기는 실제 도구를 다시 찾는다."""
+        # 변환기가 사용하는 표와 같은 원본으로 입력·출력을 따로 표시한다.
+        for label, kind, position in self.document_format_labels:
+            label.setText(" · ".join(engine.TABLE[kind][position].upper().split()))
+        observed = self._hwp_status
+        self.hwp_status_label.setText(self.text("document_hwp_" + observed["code"]))
+        self.hwp_status_label.setToolTip(observed.get("message", ""))
         for name, label in self.tool_labels.items():
             path = self._tool_paths.get(name)
             label.setText(self.text("available" if path else "not_installed"))

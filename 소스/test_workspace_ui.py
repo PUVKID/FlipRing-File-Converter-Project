@@ -364,7 +364,7 @@ class WorkspaceUiTests(unittest.TestCase):
             window=app.MainWindow(); window.timer.stop()
             window.notifications.setChecked(False); window.reveal.setChecked(False)
             self.assertEqual(window.tabs.count(),7)
-            self.assertEqual(window.tabs.currentIndex(),6)
+            self.assertEqual(window.tabs.currentIndex(),0)
             self.assertIs(window.tabs.widget(4),window.pdf_panel)
             self.assertEqual(window.sidebar.width(),204)
             window.records=[{'time':'2026-11-02T00:00:00','source':str(self.path),'output':str(self.path),'error':''},

@@ -51,8 +51,8 @@
     },
     {
       "path": "debian14-runtime-comparison.json",
-      "size": 2940,
-      "sha256": "56c01a1990eb25c6fbb6d20620e61833d9d108c4dd3cda381758fd17fb43220c"
+      "size": 2358,
+      "sha256": "7b8227d4d37179d44fd752b6654b15065cbbb628c4860801ac50bd3a8e8474e4"
     },
     {
       "path": "debian14-runtime-control.txt",
@@ -116,33 +116,33 @@
     },
     {
       "path": "gcc-mingw-w64_27.dsc.origin.json",
-      "size": 1017,
-      "sha256": "0ff3b179ed505d9bb813ce75b0c9c58c679fea0bf3b98f9808be9819d0bc2a05"
+      "size": 690,
+      "sha256": "c27dd42c22587f0dacce7b7e407d686c27c4635e051581342a522812e1ef5411"
     },
     {
       "path": "gcc-mingw-w64_27.tar.xz.origin.json",
-      "size": 1104,
-      "sha256": "7aaca5e52c21d25760d33dc9f097347199a842284e5c95a067b57dcdd90b7d04"
+      "size": 776,
+      "sha256": "6274dcf123b38acaac1d906b402995a802220c8a5531ffd9e951b43a4e0bc9df"
     },
     {
       "path": "gcc-14_14.2.0-19.dsc.origin.json",
-      "size": 997,
-      "sha256": "90373d96e908c7911b60e03525e177f40d06d773b0f33891c806462f7cf3dcd8"
+      "size": 670,
+      "sha256": "64950154d9071a1275ba01bc300fff7237b1dec32110e1d8cc25f41dbff7a816"
     },
     {
       "path": "gcc-14_14.2.0.orig.tar.gz.origin.json",
-      "size": 1050,
-      "sha256": "a1eb8891796e436cb467bada79f3eaf071700e63c56b7d94d398c9bf4401d178"
+      "size": 774,
+      "sha256": "17315466f12bc6d8948139a630581d79d8a2fd8ca63f168f8c8c98a85fc75ca2"
     },
     {
       "path": "gcc-14_14.2.0-19.debian.tar.xz.origin.json",
-      "size": 1072,
-      "sha256": "fcedb9982c31b5e69c0fc136e0cbf4233fdb531eb41773d2e8253ed0c3389a7f"
+      "size": 796,
+      "sha256": "c802435ceb555799b5100ce04e23ecc8cde1d9b7a0a6ae5e323106102a47ec5b"
     },
     {
       "path": "gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb.origin.json",
-      "size": 1313,
-      "sha256": "4920f4808e536d872b11b4c3cb74f687770902a0514744176a25281b72874304"
+      "size": 985,
+      "sha256": "b4582157bd4ac480b966437c33423479db3d1f6f334964e829310286020afad0"
     }
   ],
   "include_metadata": [

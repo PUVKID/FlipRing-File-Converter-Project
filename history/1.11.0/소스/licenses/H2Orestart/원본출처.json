@@ -1,0 +1,19 @@
+{
+  "project": "H2Orestart",
+  "version": "v0.8.0",
+  "license": "GPL-3.0",
+  "upstream": "https://github.com/ebandal/H2Orestart",
+  "binary": {
+    "file": "vendor/h2orestart/H2Orestart.oxt",
+    "bytes": 611297,
+    "sha256": "f36c19fa6b7dff1cf34114d926bdc088e6bcfa7fdc93d67eaafd3f572be1d62c",
+    "url": "https://github.com/ebandal/H2Orestart/releases/download/v0.8.0/H2Orestart.oxt"
+  },
+  "source": {
+    "file": "H2Orestart-v0.8.0-source.tar.gz",
+    "bytes": 757464,
+    "sha256": "24c143bb442cd3d726414389f8e3b2f79b8ebb023c31abe58515096c2beeda3a",
+    "url": "https://api.github.com/repos/ebandal/H2Orestart/tarball/v0.8.0"
+  },
+  "scope": "로컬 LibreOffice 별도 프로세스에서 한글 입력 문서를 읽는 확장입니다. 원문은 수정하지 않았습니다."
+}

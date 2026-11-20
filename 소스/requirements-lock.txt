@@ -18,6 +18,7 @@ PySide6_Essentials==6.12.0
 PySide6_Pdf==6.12.0.140
 PySide6_WebEngine==6.12.0.140
 python-docx==1.2.0
+python-hwpx==6.12.0
 python-pptx==1.0.2
 pywin32-ctypes==0.2.3
 rarfile==4.5

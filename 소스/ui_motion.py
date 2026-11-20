@@ -573,7 +573,7 @@ class MotionFileDialog(QFileDialog):
         self.setIconProvider(self._icon_provider)
         if name_filter:
             self.setNameFilter(name_filter)
-        for role, key in ((QFileDialog.LookIn, "dialog_location"), (QFileDialog.FileName, "dialog_filename"),
+        for role, key in ((QFileDialog.LookIn, "dialog_location"), (QFileDialog.FileName, "dialog_foldername" if self.folder_mode else "dialog_filename"),
                           (QFileDialog.FileType, "dialog_filter"), (QFileDialog.Reject, "cancel"),
                           (QFileDialog.Accept, "dialog_choose" if folder else "dialog_open")):
             self.setLabelText(role, tr(language, key))
@@ -668,8 +668,15 @@ class MotionFileDialog(QFileDialog):
         pulse_widget(self.header)
         self._selection_changed(path)
 
+    def _update_folder_fields(self):
+        for name in ('fileTypeCombo', 'fileTypeLabel'):
+            widget = self.findChild(QWidget, name)
+            if widget is not None:
+                widget.setVisible(not self.folder_mode)
+
     def showEvent(self, event):
         super().showEvent(event)
+        self._update_folder_fields()
         if not self._header_configured:
             tree = self.findChild(QTreeView, "treeView")
             if tree is not None:
@@ -726,10 +733,11 @@ class MotionFileDialog(QFileDialog):
         self._icon_provider.language = self.language
         self.setWindowTitle(tr(self.language, self.title_key))
         self.heading.setText(self.windowTitle())
-        for role, key in ((QFileDialog.LookIn, "dialog_location"), (QFileDialog.FileName, "dialog_filename"),
+        for role, key in ((QFileDialog.LookIn, "dialog_location"), (QFileDialog.FileName, "dialog_foldername" if self.folder_mode else "dialog_filename"),
                           (QFileDialog.FileType, "dialog_filter"), (QFileDialog.Reject, "cancel"),
                           (QFileDialog.Accept, "dialog_choose" if self.folder_mode else "dialog_open")):
             self.setLabelText(role, tr(self.language, key))
+        self._update_folder_fields()
         self.caption.setText(tr(self.language, "picker_folder_caption" if self.folder_mode else "picker_caption"))
         self._selection_changed()
 

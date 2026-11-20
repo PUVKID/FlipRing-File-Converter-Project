@@ -1,0 +1,64 @@
+{
+  "korean_time": "2026-10-21T01:48:03.558999+09:00",
+  "argv": [
+    "소스/licenses/OCR/ubuntu-gcc/inspect_runtime.py",
+    "7z.exe",
+    "소스/vendor/tesseract",
+    "gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb",
+    "debian14"
+  ],
+  "extract_command": [
+    "7z.exe",
+    "x",
+    "-so",
+    "소스/licenses/OCR/ubuntu-gcc/debian14-data.tar.xz"
+  ],
+  "extract_exit_code": 0,
+  "runtime_members": [
+    ".",
+    "./usr",
+    "./usr/lib",
+    "./usr/lib/gcc",
+    "./usr/lib/gcc/x86_64-w64-mingw32",
+    "./usr/lib/gcc/x86_64-w64-mingw32/14-posix",
+    "./usr/lib/gcc/x86_64-w64-mingw32/14-posix/adalib",
+    "./usr/lib/gcc/x86_64-w64-mingw32/14-posix/adalib/libgnarl-14.dll",
+    "./usr/lib/gcc/x86_64-w64-mingw32/14-posix/adalib/libgnat-14.dll",
+    "./usr/lib/gcc/x86_64-w64-mingw32/14-posix/libatomic-1.dll",
+    "./usr/lib/gcc/x86_64-w64-mingw32/14-posix/libgcc_s_seh-1.dll",
+    "./usr/lib/gcc/x86_64-w64-mingw32/14-posix/libgfortran-5.dll",
+    "./usr/lib/gcc/x86_64-w64-mingw32/14-posix/libgomp-1.dll",
+    "./usr/lib/gcc/x86_64-w64-mingw32/14-posix/libobjc-4.dll",
+    "./usr/lib/gcc/x86_64-w64-mingw32/14-posix/libquadmath-0.dll",
+    "./usr/lib/gcc/x86_64-w64-mingw32/14-posix/libssp-0.dll",
+    "./usr/lib/gcc/x86_64-w64-mingw32/14-posix/libstdc++-6.dll",
+    "./usr/share",
+    "./usr/share/doc",
+    "./usr/share/lintian",
+    "./usr/share/lintian/overrides",
+    "./usr/share/lintian/overrides/gcc-mingw-w64-x86-64-posix-runtime",
+    "./usr/share/doc/gcc-mingw-w64-x86-64-posix-runtime"
+  ],
+  "comparison": [
+    {
+      "name": "libgcc_s_seh-1.dll",
+      "member": "./usr/lib/gcc/x86_64-w64-mingw32/14-posix/libgcc_s_seh-1.dll",
+      "size": 954773,
+      "packaged_sha256": "172cfdc9d83703ec0a0ca2cee08f6cf2a166b801717ee51a56b3a63b36bc2f83",
+      "vendor_sha256": "172cfdc9d83703ec0a0ca2cee08f6cf2a166b801717ee51a56b3a63b36bc2f83",
+      "matches": true
+    },
+    {
+      "name": "libstdc++-6.dll",
+      "member": "./usr/lib/gcc/x86_64-w64-mingw32/14-posix/libstdc++-6.dll",
+      "size": 26390974,
+      "packaged_sha256": "5fe5d4d8f6636eb6f2dc55be99dc5dc8a6c40db1abdf592e84480d1e6985abd0",
+      "vendor_sha256": "5fe5d4d8f6636eb6f2dc55be99dc5dc8a6c40db1abdf592e84480d1e6985abd0",
+      "matches": true
+    }
+  ],
+  "both_match": true,
+  "status": "success",
+  "exit_code": 0,
+  "vendor_modified": false
+}

@@ -493,6 +493,7 @@ class GuiTests(unittest.TestCase):
         panel = self.window.pdf_panel
         previous_size = self.window.size()
         previous_operation = panel.operation.currentData()
+        previous_advanced = panel.pdf_advanced_toggle.isChecked()
         self.window.resize(960, 680)
         self.window.tabs.setCurrentIndex(4)
         self.window.show()
@@ -500,6 +501,15 @@ class GuiTests(unittest.TestCase):
         panel.operation.setCurrentIndex(panel.operation.findData("recognize"))
         APPLICATION.processEvents()
         try:
+            # 기본 접힘 화면에서는 대상 옵션을 실제로 펼쳐 스크롤 시험 조건을 준비한다.
+            if not panel.pdf_advanced_toggle.isChecked():
+                QTest.mouseClick(panel.pdf_advanced_toggle, Qt.LeftButton)
+                APPLICATION.processEvents()
+            self.assertTrue(panel.pdf_advanced_toggle.isChecked())
+            for widget in (panel.output, panel.dpi):
+                self.assertTrue(widget.isVisible())
+                self.assertTrue(widget.isVisibleTo(self.window))
+            self.assertGreater(panel.scroll.verticalScrollBar().maximum(), 0)
             for focused in (False, True):
                 for widget in (panel.output, panel.dpi):
                     panel.scroll.ensureWidgetVisible(widget)
@@ -535,6 +545,7 @@ class GuiTests(unittest.TestCase):
             self.assertFalse(panel.output.view().isVisible())
         finally:
             panel.output.hidePopup()
+            panel.pdf_advanced_toggle.setChecked(previous_advanced)
             panel.operation.setCurrentIndex(panel.operation.findData(previous_operation))
             self.window.resize(previous_size)
             self.window.hide()

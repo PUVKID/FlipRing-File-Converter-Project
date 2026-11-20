@@ -223,8 +223,7 @@ class WorkbenchTests(unittest.TestCase):
             self.assertEqual(store.items, [])
 
     def test_office_profile_is_independent_and_cleaned_on_all_outcomes(self):
-        from urllib.request import url2pathname
-        from urllib.parse import urlparse
+        import json
         from docx import Document
         with tempfile.TemporaryDirectory() as directory:
             work = Path(directory) / ('긴작업경로' * 12)
@@ -234,16 +233,20 @@ class WorkbenchTests(unittest.TestCase):
             original = source.read_bytes()
             for outcome in ('success', 'failure', 'cancel'):
                 profiles = []
-                def tool_boundary(exe, args, cwd=None):
-                    profile = Path(url2pathname(urlparse(args[0].split('=', 1)[1]).path))
+                def tool_boundary(argv, bridge_work, cancel, check_cancel, timeout=1800):
+                    # 전용 문서 도우미의 실제 요청 경계에서 출력과 격리 프로필을 확인한다.
+                    request = json.loads(Path(argv[-1]).read_text(encoding='utf-8'))
+                    profile = Path(request['profile'])
                     profiles.append(profile)
                     self.assertTrue(profile.is_dir())
                     self.assertFalse(profile.is_relative_to(work))
+                    self.assertEqual(Path(request['source']), source.resolve())
+                    self.assertEqual(Path(bridge_work), profile)
                     if outcome == 'failure': raise RuntimeError('의도한 도우미 실패')
                     if outcome == 'cancel': raise engine.Cancelled('작업이 취소되었습니다.')
-                    output = Path(args[args.index('--outdir') + 1]) / '원본.pdf'
+                    output = Path(request['output'])
                     output.write_bytes(b'completed-result')
-                with self.subTest(outcome=outcome), patch.object(engine, 'run', side_effect=tool_boundary):
+                with self.subTest(outcome=outcome), patch.object(engine.document_process, 'run_bridge', side_effect=tool_boundary):
                     if outcome == 'success':
                         result = engine.office(source, 'pdf', work)
                         self.assertEqual(result.read_bytes(), b'completed-result')
