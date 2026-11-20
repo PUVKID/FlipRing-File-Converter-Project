@@ -19,6 +19,7 @@
 | 1.9.0 | [자료 폴더](../history/1.9.0) | [상세 설명](versions/1.9.0.md) | [전체 비교·범위](revision-audit/1.9.0.md) |
 | 1.10.0 | [폴더](../history/1.10.0/) | [설명](../docs/versions/1.10.0.md) | [전체 비교](../docs/revision-audit/1.10.0.md) |
 | 1.11.0 | [폴더](../history/1.11.0/) | [설명](../docs/versions/1.11.0.md) | [전체 비교](../docs/revision-audit/1.11.0.md) |
+| 1.12.0 | [폴더](../history/1.12.0/) | [설명](versions/1.12.0.md) | [전체 비교](revision-audit/1.12.0.md) |
 | 최종 | [폴더](../소스/) | [설명](../docs/versions/최종.md) | [전체 비교](../docs/revision-audit/최종.md) |
 | 현행소스 | 원격 726 기준: [자료 폴더](../%EC%86%8C%EC%8A%A4)<br>현재 후보: [폴더](../소스/) | 원격 726 기준: [상세 설명](revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md)<br>현재 후보: [설명](../docs/revision-audit/현행소스.md) | 원격 726 기준: [전체 비교·범위](revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md)<br>현재 후보: [전체 비교](../docs/revision-audit/현행소스.md) |
 | 고유 작업 코드·문서 | [자료 폴더](../%EB%B3%B4%EC%A1%B4%EC%9E%90%EB%A3%8C/%EC%9E%91%EC%97%85%EC%86%8C%EC%8A%A4) | [상세 설명](SOURCE_MATERIALS.md) | [전체 비교·범위](2026-11-02_%EA%B3%B5%EA%B0%9C%EB%B0%98%EC%98%81%EC%9E%AC%EA%B0%9C%EA%B2%80%EC%A6%9D.md) |

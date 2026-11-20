@@ -1,0 +1,21 @@
+Package: gcc-mingw-w64-x86-64-posix-runtime
+Source: gcc-mingw-w64 (27)
+Version: 14.2.0-19+27+b1
+Architecture: amd64
+Maintainer: Stephen Kitt <skitt@debian.org>
+Installed-Size: 58197
+Depends: gcc-mingw-w64-base (= 14.2.0-19+27+b1)
+Built-Using: gcc-14 (= 14.2.0-19)
+Section: devel
+Priority: optional
+Homepage: https://www.gnu.org/software/gcc/
+Description: GNU Compiler Collection for MinGW-w64, x86-64/POSIX
+ MinGW-w64 provides a development and runtime environment for 32- and
+ 64-bit (x86 and x64) Windows applications using the Windows API and
+ the GNU Compiler Collection (gcc).
+ .
+ This package contains the runtime DLLs used by GCC and applications
+ built with it, for x86-64, using the POSIX thread model.
+ Its purpose is both to provide the DLLs used during builds, and to
+ allow packages shipping Windows programs to depend on those DLLs
+ without pulling in the complete toolchain.

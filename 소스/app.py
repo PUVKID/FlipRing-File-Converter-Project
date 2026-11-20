@@ -38,6 +38,8 @@ from PySide6.QtWidgets import (
     QStylePainter, QStyleOptionButton, QStyle, QFrame, QInputDialog, QListWidgetItem, QScrollArea, QSizePolicy, QLineEdit,
 )
 import engine
+from theme_manager import manager as theme_manager, theme_color, ring_color
+from tool_installer import ToolInstaller, refresh_process_path
 from flipring_workflow import PresetStore, preflight, BUILTINS
 from preview_panel import PreviewPanel
 from fixed_viewport import fit_window, scroll_content
@@ -48,7 +50,7 @@ from ui_motion import (make_file_dialog, install_surface_motions, pulse_widget, 
                        install_motion_system, SURFACE_STYLE, MotionMessageBox, decorate_message)
 
 VERSION = 3
-RELEASE_VERSION = "1.10.0"
+RELEASE_VERSION = "1.12.0"
 APPNAME = "플립링"
 AUTOSTART_NAME = "FlipRing19"
 DATA = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "PUVKID" / "FlipRing19"
@@ -127,24 +129,7 @@ def apply_application_style(application):
             application._flipring_fonts[style] = identifier
     application.setStyle("Fusion")
     application.setFont(ui_font())
-    palette = QPalette()
-    for role, value in {
-        QPalette.Window: "#fafafa", QPalette.WindowText: "#171717",
-        QPalette.Base: "#ffffff", QPalette.AlternateBase: "#f0f0f0",
-        QPalette.Text: "#171717", QPalette.Button: "#ffffff",
-        QPalette.ButtonText: "#171717", QPalette.Highlight: "#242424",
-        QPalette.HighlightedText: "#ffffff", QPalette.ToolTipBase: "#171717",
-        QPalette.ToolTipText: "#ffffff", QPalette.Link: "#404040",
-        QPalette.LinkVisited: "#606060", QPalette.PlaceholderText: "#777777",
-        QPalette.BrightText: "#ffffff", QPalette.Light: "#ffffff",
-        QPalette.Midlight: "#eeeeee", QPalette.Mid: "#bbbbbb",
-        QPalette.Dark: "#888888", QPalette.Shadow: "#333333",
-        QPalette.Accent: "#242424",
-    }.items():
-        palette.setColor(role, QColor(value))
-    for role in (QPalette.WindowText, QPalette.Text, QPalette.ButtonText):
-        palette.setColor(QPalette.Disabled, role, QColor("#999999"))
-    application.setPalette(palette)
+    theme_manager(application).apply('system')
     install_motion_system(application, install_button_motions)
 
 
@@ -188,13 +173,13 @@ def icon(busy=False):
     pix.fill(Qt.transparent)
     painter = QPainter(pix)
     painter.setRenderHint(QPainter.Antialiasing)
-    painter.setPen(QPen(QColor("#ffffff" if busy else "#d9d9d9"), 5))
-    painter.setBrush(QColor("#202020"))
+    painter.setPen(QPen(ring_color("#ffffff" if busy else "#d9d9d9"), 5))
+    painter.setBrush(ring_color("#202020"))
     painter.drawEllipse(6, 6, 52, 52)
     painter.setBrush(Qt.NoBrush)
     painter.drawEllipse(22, 22, 20, 20)
     if busy:
-        painter.setPen(QPen(QColor("#ffffff"), 6))
+        painter.setPen(QPen(ring_color("#ffffff"), 6))
         painter.drawArc(6, 6, 52, 52, 30 * 16, 110 * 16)
     painter.end()
     return QIcon(pix)
@@ -306,8 +291,8 @@ class ButtonMotion(QObject):
             border = shade if primary else 226 - round(25 * self.amount)
             if self.button.hasFocus():
                 border = 112
-            painter.setBrush(QColor(shade, shade, shade))
-            painter.setPen(QColor(border, border, border))
+            painter.setBrush(theme_color(shade, shade, shade))
+            painter.setPen(theme_color(border, border, border))
             painter.drawRoundedRect(QRectF(self.button.rect()).adjusted(0.5, 0.5, -0.5, -0.5), 8, 8)
             painter.drawControl(QStyle.CE_PushButtonLabel, option)
             painter.end()
@@ -499,6 +484,10 @@ class Wheel(QWidget):
         if workspace is not None and self.paths and workspace.wheel_recipe() is not None:
             self.options.append('recipe')
             self.reasons['recipe'] = None
+        quick = getattr(self.controller, 'quick_actions_panel', None)
+        if quick is not None and self.paths and quick.wheel_action() is not None:
+            self.options.append('quick_action')
+            self.reasons['quick_action'] = None
         if same_paths and self.options == previous_options:
             # 같은 파일의 도구 상태는 갱신하되 진행 중인 강조는 초기화하지 않는다.
             self.update()
@@ -508,6 +497,13 @@ class Wheel(QWidget):
         self.weights = {}
         self.hover = -2
         self.update()
+
+    def option_label(self, fmt):
+        if fmt == 'quick_action':
+            return self.controller.quick_actions_panel.wheel_label() or self.controller.text('quick_actions')
+        if fmt == 'recipe':
+            return self.controller.text('ws_wheel_recipe')
+        return fmt.upper()
 
     def region(self, point):
         dx = point.x() - self.width() / 2
@@ -605,15 +601,15 @@ class Wheel(QWidget):
         center = self.width() / 2
         # 창 좌표·크기·전체 opacity는 고정한다. 옅은 바탕은 모션 중에도 드롭 영역을 유지한다.
         painter.setPen(Qt.NoPen)
-        painter.setBrush(QColor(24, 24, 24, 8))
+        painter.setBrush(ring_color(24, 24, 24, 8))
         painter.drawEllipse(QPointF(center, center), self.OUTER, self.OUTER)
         painter.setOpacity(self.reveal)
         scale = 0.94 + 0.06 * self.reveal
         painter.translate(center, center)
         painter.scale(scale, scale)
         painter.translate(-center, -center)
-        painter.setBrush(QColor(25, 25, 25, 248))
-        painter.setPen(QPen(QColor(255, 255, 255, 42), 1))
+        painter.setBrush(ring_color(25, 25, 25, 248))
+        painter.setPen(QPen(ring_color(255, 255, 255, 42), 1))
         painter.drawEllipse(QPointF(center, center), self.OUTER - 1, self.OUTER - 1)
         count = len(self.options)
         outer = self.OUTER - 5
@@ -623,12 +619,12 @@ class Wheel(QWidget):
             step = 360 / count
             weight = self.weights.get(index, 0.0)
             if weight > 0.001:
-                color = QColor("#606060" if not self.reasons[fmt] else "#555555")
+                color = ring_color("#606060" if not self.reasons[fmt] else "#555555")
                 color.setAlphaF(0.86 * weight)
                 painter.fillPath(self._wedge(center, outer, inner, start, step), color)
             if count > 1:
                 radians = math.radians(start)
-                painter.setPen(QPen(QColor(255, 255, 255, 28), 1))
+                painter.setPen(QPen(ring_color(255, 255, 255, 28), 1))
                 painter.drawLine(
                     QPointF(center + inner * math.sin(radians), center - inner * math.cos(radians)),
                     QPointF(center + outer * math.sin(radians), center - outer * math.cos(radians)))
@@ -638,18 +634,22 @@ class Wheel(QWidget):
             y = center - radius * math.cos(radians)
             missing = self.reasons[fmt]
             ink = 150 if missing else 242
-            painter.setPen(QColor(ink, ink, ink))
+            painter.setPen(ring_color(ink, ink, ink))
             painter.setFont(ui_font(9 if count > 7 else 10, QFont.Medium))
-            label = self.controller.text('ws_wheel_recipe') if fmt == 'recipe' else fmt.upper()
-            painter.drawText(QRectF(x - 49, y - (19 if missing else 12), 98, 24), Qt.AlignCenter, label)
+            label = self.option_label(fmt)
+            if fmt == 'quick_action':
+                painter.drawText(QRectF(x - 49, y - 24, 98, 48),
+                                 Qt.AlignCenter | Qt.TextWordWrap, label)
+            else:
+                painter.drawText(QRectF(x - 49, y - (19 if missing else 12), 98, 24), Qt.AlignCenter, label)
             if missing:
                 painter.setFont(ui_font(6))
                 painter.drawText(QRectF(x - 54, y + 4, 108, 20), Qt.AlignCenter,
                                  self.controller.text("needs_tool", tool=missing))
         cancel = self.weights.get(-1, 0.0)
-        painter.setPen(QPen(QColor(255, 255, 255, 40), 1))
+        painter.setPen(QPen(ring_color(255, 255, 255, 40), 1))
         shade = 43 + int(28 * cancel)
-        painter.setBrush(QColor(shade, shade, shade, 245))
+        painter.setBrush(ring_color(shade, shade, shade, 245))
         painter.drawEllipse(QPointF(center, center), self.INNER, self.INNER)
         if len(self.paths) > 1:
             label = self.controller.text("file_count", count=len(self.paths))
@@ -657,16 +657,16 @@ class Wheel(QWidget):
             label = engine.classify(self.paths[0])[1].upper()
         else:
             label = "FlipRing"
-        painter.setPen(QColor("#ababab"))
+        painter.setPen(ring_color("#ababab"))
         painter.setFont(ui_font(7))
         painter.drawText(QRectF(center - 49, center - 35, 98, 20), Qt.AlignCenter, label)
         active = 0 <= self.hover < count and not self.reasons[self.options[self.hover]]
-        painter.setPen(Qt.white)
+        painter.setPen(ring_color('#ffffff'))
         painter.setFont(ui_font(12 if active else 18, QFont.Medium))
         painter.drawText(QRectF(center - 51, center - 14, 102, 28), Qt.AlignCenter,
-                         "→ " + (self.controller.text('ws_wheel_recipe') if self.options[self.hover] == 'recipe'
-                                  else self.options[self.hover].upper()) if active else "×")
-        painter.setPen(QColor("#c7c7c7"))
+                         painter.fontMetrics().elidedText("→ " + self.option_label(self.options[self.hover]),
+                                                          Qt.ElideRight, 102) if active else "×")
+        painter.setPen(ring_color("#c7c7c7"))
         painter.setFont(ui_font(7))
         painter.drawText(QRectF(center - 50, center + 17, 100, 21), Qt.AlignCenter,
                          self.controller.text("drop_convert" if active else "cancel"))
@@ -685,6 +685,12 @@ class MainWindow(QMainWindow):
         self.settings = QSettings(str(DATA / f"settings-{VERSION}.ini"), QSettings.IniFormat)
         self.language = "en" if self.settings.value("language", "ko") == "en" else "ko"
         apply_language(self.language)
+        self.theme = theme_manager()
+        self.theme.apply(self.settings.value('theme', 'system'))
+        self.installer = ToolInstaller(self)
+        self.installer.state_changed.connect(self.install_state_changed)
+        self.installer.finished.connect(self.install_finished)
+        self._install_results = {}
         self._translated_widgets = []
         self.last_result = None
         self.recorded_key = None
@@ -779,6 +785,15 @@ class MainWindow(QMainWindow):
         self.page_description.setWordWrap(True)
         headings.addWidget(self.page_description)
         header.addLayout(headings, 1)
+        theme_controls = QVBoxLayout()
+        theme_controls.addWidget(self.localized(QLabel(), 'theme'))
+        self.theme_combo = QComboBox()
+        for value in ('light', 'dark', 'system'):
+            self.theme_combo.addItem(self.text('theme_' + value), value)
+        self.theme_combo.setCurrentIndex(self.theme_combo.findData(self.theme.mode))
+        self.theme_combo.currentIndexChanged.connect(self.theme_changed)
+        theme_controls.addWidget(self.theme_combo)
+        header.addLayout(theme_controls)
         self.key_badge = QLabel()
         self.key_badge.setObjectName("keyBadge")
         header.addWidget(self.key_badge, 0, Qt.AlignTop)
@@ -929,6 +944,7 @@ class MainWindow(QMainWindow):
         support_layout.addWidget(self.hwp_status_label)
         tools_layout.addWidget(self.document_support)
         self.tool_labels = {}
+        self.install_buttons = {}
         for name, (title, package, purpose) in engine.TOOLS.items():
             card = StudioCard()
             row = QHBoxLayout(card)
@@ -939,8 +955,10 @@ class MainWindow(QMainWindow):
             details.addWidget(title_label)
             details.addWidget(self.localized(QLabel(), "purpose_" + name))
             row.addLayout(details, 1)
-            row.addWidget(self.localized(self.button("", lambda checked=False, pkg=package:
-                                      self.copy_install_command(pkg)), "install_command"))
+            install = self.localized(self.button('', lambda checked=False, tool=name:
+                                      self.install_tool(tool)), 'install_tool')
+            self.install_buttons[name] = install
+            row.addWidget(install)
             tools_layout.addWidget(card)
             status = QLabel()
             status.setObjectName("muted")
@@ -951,6 +969,16 @@ class MainWindow(QMainWindow):
         note.setWordWrap(True)
         note.setObjectName("muted")
         tools_layout.addWidget(note)
+        self.install_status = QLabel()
+        self.install_status.setWordWrap(True)
+        tools_layout.addWidget(self.install_status)
+        self.install_progress = QProgressBar()
+        self.install_progress.setRange(0, 0)
+        self.install_progress.hide()
+        tools_layout.addWidget(self.install_progress)
+        self.install_cancel = self.localized(self.button('', self.installer.cancel), 'install_cancel')
+        self.install_cancel.hide()
+        tools_layout.addWidget(self.install_cancel)
         tools_layout.addWidget(self.localized(self.button("", self.refresh_tools), "refresh_tools"))
         tools_layout.addStretch()
         self.tabs.addTab(scroll_content(tools_page), self.text("tools"))
@@ -1016,6 +1044,14 @@ class MainWindow(QMainWindow):
         workspace_nav.clicked.connect(lambda: self.tabs.setCurrentIndex(6))
         self.nav_buttons[6] = workspace_nav
         sidebar_layout.insertWidget(2, workspace_nav)
+        from quick_actions_ui import QuickActionsPanel
+        self.quick_actions_panel = QuickActionsPanel(self, self.language)
+        self.tabs.addTab(self.quick_actions_panel, self.text('quick_actions'))
+        quick_nav = NavButton('convert')
+        quick_nav.set_svg(engine.asset('lucide/arrow-left-right.svg'))
+        quick_nav.clicked.connect(lambda: self.tabs.setCurrentIndex(7))
+        self.nav_buttons[7] = quick_nav
+        sidebar_layout.insertWidget(2, quick_nav)
         settings_nav = NavButton('tools')
         settings_nav.set_svg(engine.asset('lucide/sliders-horizontal.svg'))
         settings_nav.clicked.connect(lambda: self.tabs.setCurrentIndex(5))
@@ -1051,6 +1087,7 @@ class MainWindow(QMainWindow):
         self.refresh_tools()
         self.refresh_history()
         self.apply_style()
+        self.theme.changed.connect(self.theme_updated)
         install_button_motions(self)
         install_surface_motions(self)
         for widget in (self.status, self.selection_label, self.page_title, self.page_description,
@@ -1253,7 +1290,7 @@ class MainWindow(QMainWindow):
     def update_navigation(self, index):
         for target, button in self.nav_buttons.items():
             button.setChecked(target == index)
-        keys = {0: "studio_convert", 1: "studio_helpers", 2: "history", 3: "about", 4: "pdf_tools", 5: "settings", 6: "ws_title"}
+        keys = {0: "studio_convert", 1: "studio_helpers", 2: "history", 3: "about", 4: "pdf_tools", 5: "settings", 6: "ws_title", 7: "quick_actions"}
         self.page_title.setText(self.text(keys[index]))
         self.page_description.setText(self.text("studio_description_" + str(index)))
         pulse_widget(self.page_title)
@@ -1301,6 +1338,13 @@ class MainWindow(QMainWindow):
         self.update_selection_label()
         self.pdf_panel.set_language(self.language)
         self.workspace_panel.set_language(self.language)
+        self.quick_actions_panel.set_language(self.language)
+        self.tabs.setTabText(7, self.text('quick_actions'))
+        self.nav_buttons[7].setText(self.text('quick_actions'))
+        with QSignalBlocker(self.theme_combo):
+            for index in range(self.theme_combo.count()):
+                self.theme_combo.setItemText(index, self.text('theme_' + self.theme_combo.itemData(index)))
+        self.render_install_status()
         self.tabs.setTabText(6, self.text('ws_title'))
         self.nav_buttons[6].setText(self.text('ws_title'))
         self.history_search.setPlaceholderText(self.text('ws_history_search'))
@@ -1363,27 +1407,74 @@ class MainWindow(QMainWindow):
         button.clicked.connect(action)
         return button
 
-    @staticmethod
-    def install_command(package):
-        return f"winget install --id {package} -e --source winget --accept-package-agreements --accept-source-agreements"
+    def theme_changed(self):
+        mode = self.theme_combo.currentData()
+        self.settings.setValue('theme', mode)
+        self.settings.sync()
+        self.theme.apply(mode)
 
-    def copy_install_command(self, package):
-        QApplication.clipboard().setText(self.install_command(package))
-        self.status.setText(self.text("command_copied"))
-        self.status_mark.respond("complete")
-        pulse_widget(self.status)
+    def theme_updated(self, mode):
+        # 직접 그리는 휠과 트레이 아이콘도 현재 선택으로 다시 만든다.
+        self.wheel.update()
+        self.tray.setIcon(icon(busy=bool(self.pending)))
+        self.setWindowIcon(icon())
+        self.update_tray_menu(refresh=False)
+
+    def install_tool(self, name):
+        if self.installer.is_busy() or self.work_busy():
+            message_dialog(self, self.text('busy_title'), self.text('busy_message')).exec()
+            return
+        title, package, _ = engine.TOOLS[name]
+        dialog = message_dialog(self, self.text('install_tool'),
+                                self.text('install_confirm', tool=title, package=package))
+        dialog.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        if dialog.exec() == QMessageBox.Ok:
+            self.installer.start(name)
+
+    def install_state_changed(self, name, state, detail):
+        self._install_results[name] = (state, detail)
+        self.render_install_status()
+        busy = self.installer.is_busy()
+        self.install_progress.setVisible(busy)
+        self.install_cancel.setVisible(busy)
+        for key, button in self.install_buttons.items():
+            button.setEnabled(not busy and not bool(self._tool_paths.get(key)))
+        self.update_tray_menu(refresh=False)
+
+    def render_install_status(self):
+        if not hasattr(self, 'install_status'):
+            return
+        name = self.installer.name
+        result = self._install_results.get(name)
+        if not result:
+            return
+        state, detail = result
+        self.install_status.setText(self.text('install_' + state, tool=engine.TOOLS[name][0]))
+        self.install_status.setToolTip(detail)
+
+    def install_finished(self, name, state, code, detail):
+        self.refresh_tools()
+        if state == 'complete' and not self._tool_paths.get(name):
+            self._install_results[name] = ('undetected', detail)
+        elif state == 'failed':
+            self._install_results[name] = (state, f'Exit code: {code}\n{detail}')
+        self.render_install_status()
+
+    def work_busy(self):
+        return bool(self.pending or self.pdf_panel.is_busy() or self.workspace_panel.is_busy()
+                    or self.quick_actions_panel.is_busy())
 
     def apply_style(self):
         style = """
         QWidget {font-family:'SUIT','Segoe UI','Malgun Gothic';font-size:13px;font-weight:400;color:#242424;}
         QMainWindow {background:#f6f6f6;}
         QMenu {background:#fafafa;}
-        QFrame#sidebar {background:#191919;border:0;border-right:1px solid #424242;}
+        QFrame#sidebar {background:#efefef;border:0;border-right:1px solid #424242;}
         QFrame#workspaceDivider {color:#d7d7d7;background:#d7d7d7;max-height:1px;border:0;}
         QLabel#sectionHeading {font-size:12px;font-weight:600;color:#505050;padding:7px 0 5px 0;border-bottom:1px solid #dedede;}
-        QLabel#brand {font-size:24px;font-weight:600;color:#f5f5f5;padding:0 10px 3px 10px;}
+        QLabel#brand {font-size:24px;font-weight:600;color:#202020;padding:0 10px 3px 10px;}
         QLabel#sideCaption {color:#969696;font-size:11px;padding:0 10px;}
-        QLabel#sideMaker {color:#dedede;font-size:12px;padding:0 10px;}
+        QLabel#sideMaker {color:#505050;font-size:12px;padding:0 10px;}
         QLabel#pageTitle {font-size:29px;font-weight:600;color:#202020;}
         QLabel#muted {color:#707070;font-size:12px;}
         QLabel#keyBadge {background:#eeeeee;border-radius:9px;padding:9px 13px;color:#5e5e5e;font-size:11px;}
@@ -1431,7 +1522,7 @@ class MainWindow(QMainWindow):
         style += '\nQComboBox::down-arrow {image:url("' + arrow + '");width:12px;height:8px;}'
         self.setStyleSheet(style)
         self.tray_menu.setStyleSheet(style)
-        self.tray_menu.setStyleSheet(self.tray_menu.styleSheet() + SURFACE_STYLE)
+        self.tray_menu.setStyleSheet(style + SURFACE_STYLE)
 
     def update_tray_menu(self, refresh=True):
         if refresh or not hasattr(self, "_tool_paths"):
@@ -1483,12 +1574,14 @@ class MainWindow(QMainWindow):
             action = tools_menu.addAction(("✓ " if installed else "✗ ") + title + " · " + self.text("purpose_" + name))
             action.setEnabled(False)
             if not installed:
-                tools_menu.addAction(self.text("copy_install", tool=title), lambda checked=False, pkg=package:
-                                     self.copy_install_command(pkg))
+                action = tools_menu.addAction(self.text("install_tool_named", tool=title), lambda checked=False, tool=name:
+                                     self.install_tool(tool))
+                action.setEnabled(not self.installer.is_busy())
         tools_menu.addAction(self.text("details"), lambda: self.open_page(1))
         menu.addSeparator()
         menu.addAction(self.text("history"), lambda: self.open_page(2))
         menu.addAction(self.text("pdf_tools"), lambda: self.open_page(4))
+        menu.addAction(self.text("quick_actions"), lambda: self.open_page(7))
         menu.addAction(self.text("settings"), lambda: self.open_page(5))
         menu.addAction(self.text("about"), lambda: self.open_page(3))
         menu.addSeparator()
@@ -1528,11 +1621,12 @@ class MainWindow(QMainWindow):
         self.hide()
 
     def quit(self):
-        if self.pending or self.pdf_panel.is_busy():
+        if self.work_busy() or self.installer.is_busy():
             message_dialog(self, self.text("busy_title"), self.text("busy_message")).exec()
             return
         self.timer.stop()
         self.workspace_panel.shutdown()
+        self.quick_actions_panel.shutdown()
         self.wheel.hide()
         self.pool.shutdown(wait=False)
         self.tray.hide()
@@ -1543,6 +1637,7 @@ class MainWindow(QMainWindow):
         QDesktopServices.openUrl(QUrl.fromLocalFile(str(folder)))
 
     def refresh_tools(self):
+        refresh_process_path()
         self._tool_paths = {name: engine.tool(name) for name in engine.TOOLS}
         self._hwp_status = engine.hwp_status(office_path=self._tool_paths.get("soffice") or "")
         self.render_tools()
@@ -1559,7 +1654,8 @@ class MainWindow(QMainWindow):
         for name, label in self.tool_labels.items():
             path = self._tool_paths.get(name)
             label.setText(self.text("available" if path else "not_installed"))
-            label.setToolTip(path or "")
+            label.setToolTip(path or '')
+            self.install_buttons[name].setEnabled(not self.installer.is_busy() and not bool(path))
             pulse_widget(label)
 
     def pick_files(self):
@@ -1650,6 +1746,10 @@ class MainWindow(QMainWindow):
         self.wheel.display(QCursor.pos(), self.paths, preview=True)
 
     def dispatch_wheel(self, paths, fmt):
+        if fmt == 'quick_action':
+            self.quick_actions_panel.enqueue_paths(paths)
+            self.open_page(7)
+            return
         if fmt == 'recipe':
             recipe = self.workspace_panel.wheel_recipe()
             if recipe is not None:
@@ -1660,7 +1760,7 @@ class MainWindow(QMainWindow):
         self.enqueue(paths, fmt)
 
     def enqueue(self, paths, fmt):
-        if self.pending or self.pdf_panel.is_busy():
+        if self.work_busy() or self.installer.is_busy():
             message_dialog(self, self.text('busy_title'), self.text('busy_message')).exec()
             return
         self._pdf_activity = 'ready'

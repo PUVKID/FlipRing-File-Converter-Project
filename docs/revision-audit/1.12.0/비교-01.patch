@@ -1,0 +1,1742 @@
+--- 1.11.0/소스/1.12-기능50항목.md
++++ 1.12.0/소스/1.12-기능50항목.md
+@@ -0,0 +1,58 @@
++# 플립링 1.12 · 50가지 기능·개선
++
++이 표는 구현 위치를 나타냅니다. 50개 각각의 별도 실물검사가 모두 실행되었다는 뜻이 아닙니다.
++
++| 번호 | 요구 | 구현 연결 |
++|---|---|---|
++| 1 | 기본 버튼 | BUILTINS / presets / enqueue·wheel_action |
++| 2 | 사용자 작업 저장 | ActionStore.save / save_action |
++| 3 | 작업 이름 변경 | ActionStore.save(old_name) / rename_action |
++| 4 | 사용자 작업 삭제 | ActionStore.delete / delete_action |
++| 5 | 작업 내보내기 | export_action / 작업 관리 메뉴 |
++| 6 | 작업 가져오기 | validate_action / import_action |
++| 7 | 출력 형식 | format / action / workspace convert |
++| 8 | 작업별 품질 | quality / workspace convert |
++| 9 | 크기 조절 | width·height / workspace resize |
++| 10 | 변환 후 ZIP | create_bundle / zip |
++| 11 | 폴더 입력 | collect_inputs / choose_folder·enqueue_paths |
++| 12 | 하위 폴더 유지 | relative / target_dir |
++| 13 | 확장자 필터 | collect_inputs / _request / extensions |
++| 14 | 중복 입력 제거 | collect_inputs.seen / _collected.known |
++| 15 | 숨김·임시 제외 | 이름·Windows hidden속성·임시확장자 제외 |
++| 16 | 덮어쓰기 방지 | workspace._publish xb / safe_path |
++| 17 | 결과 폴더 | output / choose_output |
++| 18 | 이름 규칙 | template / workspace 검증 |
++| 19 | 이름 미리보기 | preview_names / 작업 설정 안 |
++| 20 | 충돌 번호 | workspace._publish 번호형 새이름 |
++| 21 | 목표 용량 | target KiB / max_bytes / workspace target |
++| 22 | 목표 달성 | constraints_met / met·unmet 결과행 |
++| 23 | 전후 비교 | _show_preview / 원본·결과 |
++| 24 | 투명 배경 | _preview 실제 RGBA + 체크무늬 |
++| 25 | 크기·절감량 | size·savings 실제바이트 / 1자리반올림 |
++| 26 | 문서 미리보기 연결 | _preview 메타정보·PDF렌더 / document_tools→workspace |
++| 27 | 지원 형식 점검 | preflight / engine.targets |
++| 28 | 누락 도구 안내 | preflight / engine.requirement |
++| 29 | 입력 누락 | safe_path / preflight |
++| 30 | 예상 공간 | 보수적4배·ZIP8배+64MiB / disk_usage |
++| 31 | 큐 추가 | _append_job / enqueue |
++| 32 | 실행 중 새 추가 | _jobs 독립스냅샷 / _next 직렬실행 |
++| 33 | 순서 변경 | move_job / 대기끼리만 이동 |
++| 34 | 대기 삭제 | remove_job / 대기만 제거 |
++| 35 | 일시 정지 | pause / 다음 작업 기동 중지 |
++| 36 | 계속 | resume / _next |
++| 37 | 실행 취소 | threading.Event / 기존 engine·pdf 취소 |
++| 38 | 실패만 재시도 | retry_failed / completed 제외 / ZIP만 재시도 / retried중복방지 |
++| 39 | 파일별 상태 | _event / 입력행 / job.file_states / summary |
++| 40 | 전체 진행률 | _update_progress / 등록파일 완료·실패·취소수 |
++| 41 | 결과 폴더 열기 | open_folder |
++| 42 | 결과 파일 선택 | reveal_result→owner.reveal_preview 기존 검증 API |
++| 43 | 결과 경로 복사 | copy_path |
++| 44 | 정리와 복원 | OutputLedger.cleanup·undo / 영구삭제 대신 보관이동 |
++| 45 | 변경 결과 보호 | sha256·safe_path / 기존 파일 충돌거부 |
++| 46 | 오류 복사 | copy_errors |
++| 47 | 작업 요약 저장 | export_summary JSON / 작업·파일상태·결과 |
++| 48 | 키보드 | Ctrl+O / Ctrl+Return / Delete 입력목록 / Esc |
++| 49 | 설정 재실행 | replay / 깊은복사 스냅샷 |
++| 50 | 한영·모션축소 | set_language / 내부 사전 / 공통 선택창 / 반복모션없음 / set_reduced_motion |
++
++제한: 목표 용량은 달성을 보장하지 않으며 미달성 결과를 표시·보존합니다. 크기 조절은 이미지 입력, 목표 용량은 이미지·PDF 출력입니다. 폴더 연결은 거부합니다. 큐 정지는 다음 작업부터 적용하며 현재 작업 취소는 별도 버튼입니다. 정리·복원 목록은 현재 실행 세션에 한정하고 보관 폴더는 유지합니다. 문서 내용은 직접 실행하지 않고 파일 정보와 기존 작업공간으로 연결합니다. 기존 엔진의 원문 오류는 진단으로 보존하므로 모든 외부 도구 오류 문장이 번역된다는 뜻은 아닙니다.
+--- 1.11.0/소스/1.12-빠른작업안내.md
++++ 1.12.0/소스/1.12-빠른작업안내.md
+@@ -0,0 +1,21 @@
++# 플립링 1.12 빠른 작업
++
++**빠른 작업**에서 파일이나 폴더를 추가하고 작업을 선택한 뒤 실행합니다. 세부 설정은 고급 옵션에서 펼칩니다.
++
++| 영역 | 사용 방법 |
++|---|---|
++| 테마 | 상단에서 라이트·다크·시스템 중 선택합니다. 선택은 다음 실행에도 유지합니다. |
++| 빠른 작업 | 자주 사용하는 출력 형식·품질·크기·목표 용량을 저장합니다. |
++| 폴더 | 하위 폴더 구조를 유지하고 확장자로 대상을 고를 수 있습니다. |
++| 대기열 | 작업 추가·순서 변경·일시 정지·계속·취소·실패 재시도를 제공합니다. |
++| 미리보기 | 이미지 전후·투명 배경·파일 크기를 확인합니다. 문서는 기존 미리보기로 연결합니다. |
++| 결과 관리 | 결과 위치를 열고 파일을 선택하거나 경로를 복사합니다. 정리는 앱이 만든 변경 없는 결과만 대상으로 합니다. |
++| 외부 도구 | 외부 도우미 화면의 설치 버튼으로 공식 패키지 설치를 진행합니다. Windows 권한 확인이 나타날 수 있습니다. |
++
++원본은 보존합니다. 목표 용량을 달성하지 못하면 달성했다고 표시하지 않습니다. 설치에 인터넷·Windows 패키지 관리자와 도구별 설치 권한이 필요합니다. HWP 출력의 복잡한 서식 제한과 LibreOffice 등 별도 프로그램의 필요 조건은 기존과 같습니다.
++
++전체 소스 ZIP에는 제품 코드·검사 코드·정확한 포함 라이브러리 소스·라이선스·빌드 방법이 포함됩니다. 실행 시 프로그램 폴더 전체를 유지하세요.
++
++공식 참고: [Windows 패키지 관리자 설치](https://learn.microsoft.com/en-us/windows/package-manager/winget/install) · [Qt 파일 선택창](https://doc.qt.io/qtforpython-6/PySide6/QtWidgets/QFileDialog.html).
++
++[50가지 기능·개선과 구현 위치](1.12-기능50항목.md)에서 상세 내용을 확인할 수 있습니다. 정리와 되돌리기 목록은 현재 실행 세션에 한정됩니다. 정리한 파일의 보관 폴더는 남습니다.
+--- 1.11.0/소스/app.py
++++ 1.12.0/소스/app.py
+@@ -38,6 +38,8 @@
+     QStylePainter, QStyleOptionButton, QStyle, QFrame, QInputDialog, QListWidgetItem, QScrollArea, QSizePolicy, QLineEdit,
+ )
+ import engine
++from theme_manager import manager as theme_manager, theme_color, ring_color
++from tool_installer import ToolInstaller, refresh_process_path
+ from flipring_workflow import PresetStore, preflight, BUILTINS
+ from preview_panel import PreviewPanel
+ from fixed_viewport import fit_window, scroll_content
+@@ -48,7 +50,7 @@
+                        install_motion_system, SURFACE_STYLE, MotionMessageBox, decorate_message)
+ 
+ VERSION = 3
+-RELEASE_VERSION = "1.10.0"
++RELEASE_VERSION = "1.12.0"
+ APPNAME = "플립링"
+ AUTOSTART_NAME = "FlipRing19"
+ DATA = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "PUVKID" / "FlipRing19"
+@@ -127,24 +129,7 @@
+             application._flipring_fonts[style] = identifier
+     application.setStyle("Fusion")
+     application.setFont(ui_font())
+-    palette = QPalette()
+-    for role, value in {
+-        QPalette.Window: "#fafafa", QPalette.WindowText: "#171717",
+-        QPalette.Base: "#ffffff", QPalette.AlternateBase: "#f0f0f0",
+-        QPalette.Text: "#171717", QPalette.Button: "#ffffff",
+-        QPalette.ButtonText: "#171717", QPalette.Highlight: "#242424",
+-        QPalette.HighlightedText: "#ffffff", QPalette.ToolTipBase: "#171717",
+-        QPalette.ToolTipText: "#ffffff", QPalette.Link: "#404040",
+-        QPalette.LinkVisited: "#606060", QPalette.PlaceholderText: "#777777",
+-        QPalette.BrightText: "#ffffff", QPalette.Light: "#ffffff",
+-        QPalette.Midlight: "#eeeeee", QPalette.Mid: "#bbbbbb",
+-        QPalette.Dark: "#888888", QPalette.Shadow: "#333333",
+-        QPalette.Accent: "#242424",
+-    }.items():
+-        palette.setColor(role, QColor(value))
+-    for role in (QPalette.WindowText, QPalette.Text, QPalette.ButtonText):
+-        palette.setColor(QPalette.Disabled, role, QColor("#999999"))
+-    application.setPalette(palette)
++    theme_manager(application).apply('system')
+     install_motion_system(application, install_button_motions)
+ 
+ 
+@@ -188,13 +173,13 @@
+     pix.fill(Qt.transparent)
+     painter = QPainter(pix)
+     painter.setRenderHint(QPainter.Antialiasing)
+-    painter.setPen(QPen(QColor("#ffffff" if busy else "#d9d9d9"), 5))
+-    painter.setBrush(QColor("#202020"))
++    painter.setPen(QPen(ring_color("#ffffff" if busy else "#d9d9d9"), 5))
++    painter.setBrush(ring_color("#202020"))
+     painter.drawEllipse(6, 6, 52, 52)
+     painter.setBrush(Qt.NoBrush)
+     painter.drawEllipse(22, 22, 20, 20)
+     if busy:
+-        painter.setPen(QPen(QColor("#ffffff"), 6))
++        painter.setPen(QPen(ring_color("#ffffff"), 6))
+         painter.drawArc(6, 6, 52, 52, 30 * 16, 110 * 16)
+     painter.end()
+     return QIcon(pix)
+@@ -306,8 +291,8 @@
+             border = shade if primary else 226 - round(25 * self.amount)
+             if self.button.hasFocus():
+                 border = 112
+-            painter.setBrush(QColor(shade, shade, shade))
+-            painter.setPen(QColor(border, border, border))
++            painter.setBrush(theme_color(shade, shade, shade))
++            painter.setPen(theme_color(border, border, border))
+             painter.drawRoundedRect(QRectF(self.button.rect()).adjusted(0.5, 0.5, -0.5, -0.5), 8, 8)
+             painter.drawControl(QStyle.CE_PushButtonLabel, option)
+             painter.end()
+@@ -499,6 +484,10 @@
+         if workspace is not None and self.paths and workspace.wheel_recipe() is not None:
+             self.options.append('recipe')
+             self.reasons['recipe'] = None
++        quick = getattr(self.controller, 'quick_actions_panel', None)
++        if quick is not None and self.paths and quick.wheel_action() is not None:
++            self.options.append('quick_action')
++            self.reasons['quick_action'] = None
+         if same_paths and self.options == previous_options:
+             # 같은 파일의 도구 상태는 갱신하되 진행 중인 강조는 초기화하지 않는다.
+             self.update()
+@@ -508,6 +497,13 @@
+         self.weights = {}
+         self.hover = -2
+         self.update()
++
++    def option_label(self, fmt):
++        if fmt == 'quick_action':
++            return self.controller.quick_actions_panel.wheel_label() or self.controller.text('quick_actions')
++        if fmt == 'recipe':
++            return self.controller.text('ws_wheel_recipe')
++        return fmt.upper()
+ 
+     def region(self, point):
+         dx = point.x() - self.width() / 2
+@@ -605,15 +601,15 @@
+         center = self.width() / 2
+         # 창 좌표·크기·전체 opacity는 고정한다. 옅은 바탕은 모션 중에도 드롭 영역을 유지한다.
+         painter.setPen(Qt.NoPen)
+-        painter.setBrush(QColor(24, 24, 24, 8))
++        painter.setBrush(ring_color(24, 24, 24, 8))
+         painter.drawEllipse(QPointF(center, center), self.OUTER, self.OUTER)
+         painter.setOpacity(self.reveal)
+         scale = 0.94 + 0.06 * self.reveal
+         painter.translate(center, center)
+         painter.scale(scale, scale)
+         painter.translate(-center, -center)
+-        painter.setBrush(QColor(25, 25, 25, 248))
+-        painter.setPen(QPen(QColor(255, 255, 255, 42), 1))
++        painter.setBrush(ring_color(25, 25, 25, 248))
++        painter.setPen(QPen(ring_color(255, 255, 255, 42), 1))
+         painter.drawEllipse(QPointF(center, center), self.OUTER - 1, self.OUTER - 1)
+         count = len(self.options)
+         outer = self.OUTER - 5
+@@ -623,12 +619,12 @@
+             step = 360 / count
+             weight = self.weights.get(index, 0.0)
+             if weight > 0.001:
+-                color = QColor("#606060" if not self.reasons[fmt] else "#555555")
++                color = ring_color("#606060" if not self.reasons[fmt] else "#555555")
+                 color.setAlphaF(0.86 * weight)
+                 painter.fillPath(self._wedge(center, outer, inner, start, step), color)
+             if count > 1:
+                 radians = math.radians(start)
+-                painter.setPen(QPen(QColor(255, 255, 255, 28), 1))
++                painter.setPen(QPen(ring_color(255, 255, 255, 28), 1))
+                 painter.drawLine(
+                     QPointF(center + inner * math.sin(radians), center - inner * math.cos(radians)),
+                     QPointF(center + outer * math.sin(radians), center - outer * math.cos(radians)))
+@@ -638,18 +634,22 @@
+             y = center - radius * math.cos(radians)
+             missing = self.reasons[fmt]
+             ink = 150 if missing else 242
+-            painter.setPen(QColor(ink, ink, ink))
++            painter.setPen(ring_color(ink, ink, ink))
+             painter.setFont(ui_font(9 if count > 7 else 10, QFont.Medium))
+-            label = self.controller.text('ws_wheel_recipe') if fmt == 'recipe' else fmt.upper()
+-            painter.drawText(QRectF(x - 49, y - (19 if missing else 12), 98, 24), Qt.AlignCenter, label)
++            label = self.option_label(fmt)
++            if fmt == 'quick_action':
++                painter.drawText(QRectF(x - 49, y - 24, 98, 48),
++                                 Qt.AlignCenter | Qt.TextWordWrap, label)
++            else:
++                painter.drawText(QRectF(x - 49, y - (19 if missing else 12), 98, 24), Qt.AlignCenter, label)
+             if missing:
+                 painter.setFont(ui_font(6))
+                 painter.drawText(QRectF(x - 54, y + 4, 108, 20), Qt.AlignCenter,
+                                  self.controller.text("needs_tool", tool=missing))
+         cancel = self.weights.get(-1, 0.0)
+-        painter.setPen(QPen(QColor(255, 255, 255, 40), 1))
++        painter.setPen(QPen(ring_color(255, 255, 255, 40), 1))
+         shade = 43 + int(28 * cancel)
+-        painter.setBrush(QColor(shade, shade, shade, 245))
++        painter.setBrush(ring_color(shade, shade, shade, 245))
+         painter.drawEllipse(QPointF(center, center), self.INNER, self.INNER)
+         if len(self.paths) > 1:
+             label = self.controller.text("file_count", count=len(self.paths))
+@@ -657,16 +657,16 @@
+             label = engine.classify(self.paths[0])[1].upper()
+         else:
+             label = "FlipRing"
+-        painter.setPen(QColor("#ababab"))
++        painter.setPen(ring_color("#ababab"))
+         painter.setFont(ui_font(7))
+         painter.drawText(QRectF(center - 49, center - 35, 98, 20), Qt.AlignCenter, label)
+         active = 0 <= self.hover < count and not self.reasons[self.options[self.hover]]
+-        painter.setPen(Qt.white)
++        painter.setPen(ring_color('#ffffff'))
+         painter.setFont(ui_font(12 if active else 18, QFont.Medium))
+         painter.drawText(QRectF(center - 51, center - 14, 102, 28), Qt.AlignCenter,
+-                         "→ " + (self.controller.text('ws_wheel_recipe') if self.options[self.hover] == 'recipe'
+-                                  else self.options[self.hover].upper()) if active else "×")
+-        painter.setPen(QColor("#c7c7c7"))
++                         painter.fontMetrics().elidedText("→ " + self.option_label(self.options[self.hover]),
++                                                          Qt.ElideRight, 102) if active else "×")
++        painter.setPen(ring_color("#c7c7c7"))
+         painter.setFont(ui_font(7))
+         painter.drawText(QRectF(center - 50, center + 17, 100, 21), Qt.AlignCenter,
+                          self.controller.text("drop_convert" if active else "cancel"))
+@@ -685,6 +685,12 @@
+         self.settings = QSettings(str(DATA / f"settings-{VERSION}.ini"), QSettings.IniFormat)
+         self.language = "en" if self.settings.value("language", "ko") == "en" else "ko"
+         apply_language(self.language)
++        self.theme = theme_manager()
++        self.theme.apply(self.settings.value('theme', 'system'))
++        self.installer = ToolInstaller(self)
++        self.installer.state_changed.connect(self.install_state_changed)
++        self.installer.finished.connect(self.install_finished)
++        self._install_results = {}
+         self._translated_widgets = []
+         self.last_result = None
+         self.recorded_key = None
+@@ -779,6 +785,15 @@
+         self.page_description.setWordWrap(True)
+         headings.addWidget(self.page_description)
+         header.addLayout(headings, 1)
++        theme_controls = QVBoxLayout()
++        theme_controls.addWidget(self.localized(QLabel(), 'theme'))
++        self.theme_combo = QComboBox()
++        for value in ('light', 'dark', 'system'):
++            self.theme_combo.addItem(self.text('theme_' + value), value)
++        self.theme_combo.setCurrentIndex(self.theme_combo.findData(self.theme.mode))
++        self.theme_combo.currentIndexChanged.connect(self.theme_changed)
++        theme_controls.addWidget(self.theme_combo)
++        header.addLayout(theme_controls)
+         self.key_badge = QLabel()
+         self.key_badge.setObjectName("keyBadge")
+         header.addWidget(self.key_badge, 0, Qt.AlignTop)
+@@ -929,6 +944,7 @@
+         support_layout.addWidget(self.hwp_status_label)
+         tools_layout.addWidget(self.document_support)
+         self.tool_labels = {}
++        self.install_buttons = {}
+         for name, (title, package, purpose) in engine.TOOLS.items():
+             card = StudioCard()
+             row = QHBoxLayout(card)
+@@ -939,8 +955,10 @@
+             details.addWidget(title_label)
+             details.addWidget(self.localized(QLabel(), "purpose_" + name))
+             row.addLayout(details, 1)
+-            row.addWidget(self.localized(self.button("", lambda checked=False, pkg=package:
+-                                      self.copy_install_command(pkg)), "install_command"))
++            install = self.localized(self.button('', lambda checked=False, tool=name:
++                                      self.install_tool(tool)), 'install_tool')
++            self.install_buttons[name] = install
++            row.addWidget(install)
+             tools_layout.addWidget(card)
+             status = QLabel()
+             status.setObjectName("muted")
+@@ -951,6 +969,16 @@
+         note.setWordWrap(True)
+         note.setObjectName("muted")
+         tools_layout.addWidget(note)
++        self.install_status = QLabel()
++        self.install_status.setWordWrap(True)
++        tools_layout.addWidget(self.install_status)
++        self.install_progress = QProgressBar()
++        self.install_progress.setRange(0, 0)
++        self.install_progress.hide()
++        tools_layout.addWidget(self.install_progress)
++        self.install_cancel = self.localized(self.button('', self.installer.cancel), 'install_cancel')
++        self.install_cancel.hide()
++        tools_layout.addWidget(self.install_cancel)
+         tools_layout.addWidget(self.localized(self.button("", self.refresh_tools), "refresh_tools"))
+         tools_layout.addStretch()
+         self.tabs.addTab(scroll_content(tools_page), self.text("tools"))
+@@ -1016,6 +1044,14 @@
+         workspace_nav.clicked.connect(lambda: self.tabs.setCurrentIndex(6))
+         self.nav_buttons[6] = workspace_nav
+         sidebar_layout.insertWidget(2, workspace_nav)
++        from quick_actions_ui import QuickActionsPanel
++        self.quick_actions_panel = QuickActionsPanel(self, self.language)
++        self.tabs.addTab(self.quick_actions_panel, self.text('quick_actions'))
++        quick_nav = NavButton('convert')
++        quick_nav.set_svg(engine.asset('lucide/arrow-left-right.svg'))
++        quick_nav.clicked.connect(lambda: self.tabs.setCurrentIndex(7))
++        self.nav_buttons[7] = quick_nav
++        sidebar_layout.insertWidget(2, quick_nav)
+         settings_nav = NavButton('tools')
+         settings_nav.set_svg(engine.asset('lucide/sliders-horizontal.svg'))
+         settings_nav.clicked.connect(lambda: self.tabs.setCurrentIndex(5))
+@@ -1051,6 +1087,7 @@
+         self.refresh_tools()
+         self.refresh_history()
+         self.apply_style()
++        self.theme.changed.connect(self.theme_updated)
+         install_button_motions(self)
+         install_surface_motions(self)
+         for widget in (self.status, self.selection_label, self.page_title, self.page_description,
+@@ -1253,7 +1290,7 @@
+     def update_navigation(self, index):
+         for target, button in self.nav_buttons.items():
+             button.setChecked(target == index)
+-        keys = {0: "studio_convert", 1: "studio_helpers", 2: "history", 3: "about", 4: "pdf_tools", 5: "settings", 6: "ws_title"}
++        keys = {0: "studio_convert", 1: "studio_helpers", 2: "history", 3: "about", 4: "pdf_tools", 5: "settings", 6: "ws_title", 7: "quick_actions"}
+         self.page_title.setText(self.text(keys[index]))
+         self.page_description.setText(self.text("studio_description_" + str(index)))
+         pulse_widget(self.page_title)
+@@ -1301,6 +1338,13 @@
+         self.update_selection_label()
+         self.pdf_panel.set_language(self.language)
+         self.workspace_panel.set_language(self.language)
++        self.quick_actions_panel.set_language(self.language)
++        self.tabs.setTabText(7, self.text('quick_actions'))
++        self.nav_buttons[7].setText(self.text('quick_actions'))
++        with QSignalBlocker(self.theme_combo):
++            for index in range(self.theme_combo.count()):
++                self.theme_combo.setItemText(index, self.text('theme_' + self.theme_combo.itemData(index)))
++        self.render_install_status()
+         self.tabs.setTabText(6, self.text('ws_title'))
+         self.nav_buttons[6].setText(self.text('ws_title'))
+         self.history_search.setPlaceholderText(self.text('ws_history_search'))
+@@ -1363,27 +1407,74 @@
+         button.clicked.connect(action)
+         return button
+ 
+-    @staticmethod
+-    def install_command(package):
+-        return f"winget install --id {package} -e --source winget --accept-package-agreements --accept-source-agreements"
+-
+-    def copy_install_command(self, package):
+-        QApplication.clipboard().setText(self.install_command(package))
+-        self.status.setText(self.text("command_copied"))
+-        self.status_mark.respond("complete")
+-        pulse_widget(self.status)
++    def theme_changed(self):
++        mode = self.theme_combo.currentData()
++        self.settings.setValue('theme', mode)
++        self.settings.sync()
++        self.theme.apply(mode)
++
++    def theme_updated(self, mode):
++        # 직접 그리는 휠과 트레이 아이콘도 현재 선택으로 다시 만든다.
++        self.wheel.update()
++        self.tray.setIcon(icon(busy=bool(self.pending)))
++        self.setWindowIcon(icon())
++        self.update_tray_menu(refresh=False)
++
++    def install_tool(self, name):
++        if self.installer.is_busy() or self.work_busy():
++            message_dialog(self, self.text('busy_title'), self.text('busy_message')).exec()
++            return
++        title, package, _ = engine.TOOLS[name]
++        dialog = message_dialog(self, self.text('install_tool'),
++                                self.text('install_confirm', tool=title, package=package))
++        dialog.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
++        if dialog.exec() == QMessageBox.Ok:
++            self.installer.start(name)
++
++    def install_state_changed(self, name, state, detail):
++        self._install_results[name] = (state, detail)
++        self.render_install_status()
++        busy = self.installer.is_busy()
++        self.install_progress.setVisible(busy)
++        self.install_cancel.setVisible(busy)
++        for key, button in self.install_buttons.items():
++            button.setEnabled(not busy and not bool(self._tool_paths.get(key)))
++        self.update_tray_menu(refresh=False)
++
++    def render_install_status(self):
++        if not hasattr(self, 'install_status'):
++            return
++        name = self.installer.name
++        result = self._install_results.get(name)
++        if not result:
++            return
++        state, detail = result
++        self.install_status.setText(self.text('install_' + state, tool=engine.TOOLS[name][0]))
++        self.install_status.setToolTip(detail)
++
++    def install_finished(self, name, state, code, detail):
++        self.refresh_tools()
++        if state == 'complete' and not self._tool_paths.get(name):
++            self._install_results[name] = ('undetected', detail)
++        elif state == 'failed':
++            self._install_results[name] = (state, f'Exit code: {code}\n{detail}')
++        self.render_install_status()
++
++    def work_busy(self):
++        return bool(self.pending or self.pdf_panel.is_busy() or self.workspace_panel.is_busy()
++                    or self.quick_actions_panel.is_busy())
+ 
+     def apply_style(self):
+         style = """
+         QWidget {font-family:'SUIT','Segoe UI','Malgun Gothic';font-size:13px;font-weight:400;color:#242424;}
+         QMainWindow {background:#f6f6f6;}
+         QMenu {background:#fafafa;}
+-        QFrame#sidebar {background:#191919;border:0;border-right:1px solid #424242;}
++        QFrame#sidebar {background:#efefef;border:0;border-right:1px solid #424242;}
+         QFrame#workspaceDivider {color:#d7d7d7;background:#d7d7d7;max-height:1px;border:0;}
+         QLabel#sectionHeading {font-size:12px;font-weight:600;color:#505050;padding:7px 0 5px 0;border-bottom:1px solid #dedede;}
+-        QLabel#brand {font-size:24px;font-weight:600;color:#f5f5f5;padding:0 10px 3px 10px;}
++        QLabel#brand {font-size:24px;font-weight:600;color:#202020;padding:0 10px 3px 10px;}
+         QLabel#sideCaption {color:#969696;font-size:11px;padding:0 10px;}
+-        QLabel#sideMaker {color:#dedede;font-size:12px;padding:0 10px;}
++        QLabel#sideMaker {color:#505050;font-size:12px;padding:0 10px;}
+         QLabel#pageTitle {font-size:29px;font-weight:600;color:#202020;}
+         QLabel#muted {color:#707070;font-size:12px;}
+         QLabel#keyBadge {background:#eeeeee;border-radius:9px;padding:9px 13px;color:#5e5e5e;font-size:11px;}
+@@ -1431,7 +1522,7 @@
+         style += '\nQComboBox::down-arrow {image:url("' + arrow + '");width:12px;height:8px;}'
+         self.setStyleSheet(style)
+         self.tray_menu.setStyleSheet(style)
+-        self.tray_menu.setStyleSheet(self.tray_menu.styleSheet() + SURFACE_STYLE)
++        self.tray_menu.setStyleSheet(style + SURFACE_STYLE)
+ 
+     def update_tray_menu(self, refresh=True):
+         if refresh or not hasattr(self, "_tool_paths"):
+@@ -1483,12 +1574,14 @@
+             action = tools_menu.addAction(("✓ " if installed else "✗ ") + title + " · " + self.text("purpose_" + name))
+             action.setEnabled(False)
+             if not installed:
+-                tools_menu.addAction(self.text("copy_install", tool=title), lambda checked=False, pkg=package:
+-                                     self.copy_install_command(pkg))
++                action = tools_menu.addAction(self.text("install_tool_named", tool=title), lambda checked=False, tool=name:
++                                     self.install_tool(tool))
++                action.setEnabled(not self.installer.is_busy())
+         tools_menu.addAction(self.text("details"), lambda: self.open_page(1))
+         menu.addSeparator()
+         menu.addAction(self.text("history"), lambda: self.open_page(2))
+         menu.addAction(self.text("pdf_tools"), lambda: self.open_page(4))
++        menu.addAction(self.text("quick_actions"), lambda: self.open_page(7))
+         menu.addAction(self.text("settings"), lambda: self.open_page(5))
+         menu.addAction(self.text("about"), lambda: self.open_page(3))
+         menu.addSeparator()
+@@ -1528,11 +1621,12 @@
+         self.hide()
+ 
+     def quit(self):
+-        if self.pending or self.pdf_panel.is_busy():
++        if self.work_busy() or self.installer.is_busy():
+             message_dialog(self, self.text("busy_title"), self.text("busy_message")).exec()
+             return
+         self.timer.stop()
+         self.workspace_panel.shutdown()
++        self.quick_actions_panel.shutdown()
+         self.wheel.hide()
+         self.pool.shutdown(wait=False)
+         self.tray.hide()
+@@ -1543,6 +1637,7 @@
+         QDesktopServices.openUrl(QUrl.fromLocalFile(str(folder)))
+ 
+     def refresh_tools(self):
++        refresh_process_path()
+         self._tool_paths = {name: engine.tool(name) for name in engine.TOOLS}
+         self._hwp_status = engine.hwp_status(office_path=self._tool_paths.get("soffice") or "")
+         self.render_tools()
+@@ -1559,7 +1654,8 @@
+         for name, label in self.tool_labels.items():
+             path = self._tool_paths.get(name)
+             label.setText(self.text("available" if path else "not_installed"))
+-            label.setToolTip(path or "")
++            label.setToolTip(path or '')
++            self.install_buttons[name].setEnabled(not self.installer.is_busy() and not bool(path))
+             pulse_widget(label)
+ 
+     def pick_files(self):
+@@ -1650,6 +1746,10 @@
+         self.wheel.display(QCursor.pos(), self.paths, preview=True)
+ 
+     def dispatch_wheel(self, paths, fmt):
++        if fmt == 'quick_action':
++            self.quick_actions_panel.enqueue_paths(paths)
++            self.open_page(7)
++            return
+         if fmt == 'recipe':
+             recipe = self.workspace_panel.wheel_recipe()
+             if recipe is not None:
+@@ -1660,7 +1760,7 @@
+         self.enqueue(paths, fmt)
+ 
+     def enqueue(self, paths, fmt):
+-        if self.pending or self.pdf_panel.is_busy():
++        if self.work_busy() or self.installer.is_busy():
+             message_dialog(self, self.text('busy_title'), self.text('busy_message')).exec()
+             return
+         self._pdf_activity = 'ready'
+--- 1.11.0/소스/build.py
++++ 1.12.0/소스/build.py
+@@ -15,8 +15,8 @@
+ ROOT = Path(__file__).resolve().parent
+ 
+ SPEC = "from pathlib import Path\nimport os\nsource = Path(os.environ['FLIPRING_SOURCE'])\n# Windows 배포에 필요한 Qt 기본 모듈만 포함한다.\nfrom PyInstaller.utils.hooks import collect_data_files\na = Analysis([str(source / 'app.py')], pathex=[str(source)], binaries=[], datas=[(str(source / 'assets'), 'assets'), (str(source / 'vendor'), 'vendor'), (str(source / 'document_bridge.py'), '.'), (str(source / 'document_formats.py'), '.'), (str(source / 'document_xlsb.py'), '.')] + collect_data_files('pypdfium2_raw') + collect_data_files('hwpx'), hiddenimports=['PIL.AvifImagePlugin', 'PIL.WebPImagePlugin'], excludes=['tkinter', 'PySide6.QtWebEngineCore', 'PySide6.QtQml', 'PySide6.QtQuick', 'olefile'])\nblocked = ('Qt6Pdf', 'Qt6Qml', 'Qt6Quick', 'Qt6VirtualKeyboard')\ndef required(entry):\n    path = entry[0].replace('\\\\', '/')\n    if any(part in path for part in blocked): return False\n    if '/plugins/platforminputcontexts/' in path or '/plugins/qmltooling/' in path: return False\n    if path.endswith('/qpdf.dll'): return False\n    return True\na.binaries = [entry for entry in a.binaries if required(entry)]\npyz = PYZ(a.pure)\nexe = EXE(pyz, a.scripts, [], exclude_binaries=True, name='FlipRing', debug=False, bootloader_ignore_signals=False, strip=False, upx=False, console=False, icon=str(source / 'assets/app.ico'), version=str(source / 'version-info.txt'))\ncoll = COLLECT(exe, a.binaries, a.datas, strip=False, upx=False, name='FlipRing')\n"
+-ISS = '; PUVKID 무료 배포판 설치 구성\n[Setup]\nAppId=PUVKID.FlipRing19\nAppName=FlipRing\nAppVersion=1.11.0\nAppPublisher=PUVKID\nDefaultDirName={localappdata}\\Programs\\FlipRing19\nDefaultGroupName=FlipRing\nUsePreviousAppDir=no\nPrivilegesRequired=lowest\nArchitecturesAllowed=x64compatible\nArchitecturesInstallIn64BitMode=x64compatible\nMinVersion=10.0\nOutputDir={#GetEnv(\'FLIPRING_INSTALLER\')}\nOutputBaseFilename=FlipRing-Setup\nSetupIconFile={#GetEnv(\'FLIPRING_SOURCE\')}\\assets\\app.ico\nUninstallDisplayIcon={app}\\FlipRing.exe\nCompression=lzma2\nSolidCompression=yes\nWizardStyle=modern\nCloseApplications=yes\nRestartApplications=no\nLicenseFile={#GetEnv(\'FLIPRING_SOURCE\')}\\LICENSE.txt\nInfoAfterFile={#GetEnv(\'FLIPRING_PROGRAM\')}\\사용안내.txt\n[Languages]\nName: "english"; MessagesFile: "compiler:Default.isl"\nName: "korean"; MessagesFile: "compiler:Languages\\Korean.isl"\n[Files]\nSource: "{#GetEnv(\'FLIPRING_PROGRAM\')}\\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs\n[Registry]\nRoot: HKCU; Subkey: "Software\\Microsoft\\Windows\\CurrentVersion\\Run"; ValueName: "FlipRing19"; Flags: uninsdeletevalue\n[Run]\nFilename: "{app}\\FlipRing.exe"; Description: "FlipRing"; Flags: nowait postinstall skipifsilent\n'
+-VERSION = "VSVersionInfo(\n  ffi=FixedFileInfo(filevers=(1,11,0,0), prodvers=(1,11,0,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),\n  kids=[StringFileInfo([StringTable('040904B0', [\n    StringStruct('CompanyName','PUVKID'), StringStruct('FileDescription','FlipRing'),\n    StringStruct('FileVersion','1.11.0'), StringStruct('ProductVersion','1.11.0'),\n    StringStruct('ProductName','FlipRing'), StringStruct('OriginalFilename','FlipRing.exe')\n  ])]), VarFileInfo([VarStruct('Translation',[1033,1200])])]\n)\n"
++ISS = '; PUVKID 무료 배포판 설치 구성\n[Setup]\nAppId=PUVKID.FlipRing19\nAppName=FlipRing\nAppVersion=1.12.0\nAppPublisher=PUVKID\nDefaultDirName={localappdata}\\Programs\\FlipRing19\nDefaultGroupName=FlipRing\nUsePreviousAppDir=no\nPrivilegesRequired=lowest\nArchitecturesAllowed=x64compatible\nArchitecturesInstallIn64BitMode=x64compatible\nMinVersion=10.0\nOutputDir={#GetEnv(\'FLIPRING_INSTALLER\')}\nOutputBaseFilename=FlipRing-Setup\nSetupIconFile={#GetEnv(\'FLIPRING_SOURCE\')}\\assets\\app.ico\nUninstallDisplayIcon={app}\\FlipRing.exe\nCompression=lzma2\nSolidCompression=yes\nWizardStyle=modern\nCloseApplications=yes\nRestartApplications=no\nLicenseFile={#GetEnv(\'FLIPRING_SOURCE\')}\\LICENSE.txt\nInfoAfterFile={#GetEnv(\'FLIPRING_PROGRAM\')}\\사용안내.txt\n[Languages]\nName: "english"; MessagesFile: "compiler:Default.isl"\nName: "korean"; MessagesFile: "compiler:Languages\\Korean.isl"\n[Files]\nSource: "{#GetEnv(\'FLIPRING_PROGRAM\')}\\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs\n[Registry]\nRoot: HKCU; Subkey: "Software\\Microsoft\\Windows\\CurrentVersion\\Run"; ValueName: "FlipRing19"; Flags: uninsdeletevalue\n[Run]\nFilename: "{app}\\FlipRing.exe"; Description: "FlipRing"; Flags: nowait postinstall skipifsilent\n'
++VERSION = "VSVersionInfo(\n  ffi=FixedFileInfo(filevers=(1,12,0,0), prodvers=(1,12,0,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),\n  kids=[StringFileInfo([StringTable('040904B0', [\n    StringStruct('CompanyName','PUVKID'), StringStruct('FileDescription','FlipRing'),\n    StringStruct('FileVersion','1.12.0'), StringStruct('ProductVersion','1.12.0'),\n    StringStruct('ProductName','FlipRing'), StringStruct('OriginalFilename','FlipRing.exe')\n  ])]), VarFileInfo([VarStruct('Translation',[1033,1200])])]\n)\n"
+ 
+ COMPILER_PROBE = "[Setup]\nAppName=FlipRingCompilerProbe\nAppVersion=1\nDefaultDirName={tmp}\\FlipRingCompilerProbe\nUninstallable=no\nOutput=no\nOutputDir=\nOutputManifestFile=\n"
+ 
+--- 1.11.0/소스/engine.py
++++ 1.12.0/소스/engine.py
+@@ -1,918 +1,918 @@
+-"""PUVKID의 Windows 파일 변환 엔진. 원본은 읽기만 하고 결과를 새 이름으로 저장한다."""
+-from __future__ import annotations
+-
+-import csv
+-import ctypes
+-from contextlib import contextmanager
+-from ctypes import wintypes
+-import html
+-import io
+-import json
+-import os
+-from pathlib import Path
+-import re
+-import shutil
+-import subprocess
+-import sys
+-import tarfile
+-import tempfile
+-import threading
+-import time
+-from pdf_lock import PDFIUM_LOCK
+-import zipfile
+-
+-from PIL import Image, ImageOps
+-import pi_heif
+-import pypdfium2 as pdfium
+-from docx import Document
+-from reportlab.pdfgen import canvas
+-from reportlab.pdfbase import pdfmetrics
+-from reportlab.pdfbase.ttfonts import TTFont
+-import document_formats as doc_formats
+-import document_process
+-
+-pi_heif.register_heif_opener()
+-TABLE = {
+-    "이미지": ("jpg png webp heic tiff avif bmp gif svg", "jpg png webp tiff avif bmp pdf"),
+-    "오디오": ("mp3 m4a wav flac ogg opus aiff wma", "mp3 m4a wav flac ogg opus aiff wma"),
+-    "비디오": ("mp4 mov mkv webm avi wmv", "mp4 mov mkv webm avi wmv gif mp3"),
+-    "PDF": ("pdf", "docx jpg png epub txt md"),
+-    "문서": (doc_formats.DOCUMENT_INPUTS, doc_formats.DOCUMENT_OUTPUTS),
+-    "프레젠테이션": (doc_formats.PRESENTATION_INPUTS, doc_formats.PRESENTATION_OUTPUTS),
+-    "스프레드시트": (doc_formats.SPREADSHEET_INPUTS, doc_formats.SPREADSHEET_OUTPUTS),
+-    "자막": ("srt vtt", "srt vtt txt"),
+-    "압축": ("zip tar tar.gz rar", "zip tar tar.gz"),
+-    "폴더": ("folder", "zip tar tar.gz"),
+-}
+-ALIASES = dict(jpeg="jpg", jpe="jpg", tif="tiff", heif="heic", htm="html", markdown="md", aif="aiff", tgz="tar.gz")
+-TOOLS = {
+-    "ffmpeg": ("FFmpeg", "Gyan.FFmpeg", "오디오 · 비디오"),
+-    "pandoc": ("Pandoc", "JohnMacFarlane.Pandoc", "전자책 · 문서"),
+-    "soffice": ("LibreOffice", "TheDocumentFoundation.LibreOffice", "Office 문서 · 발표 · 표"),
+-}
+-
+-
+-
+-class Cancelled(RuntimeError):
+-    """사용자 취소는 변환 실패와 구별한다."""
+-
+-
+-_CONTEXT = threading.local()
+-
+-
+-def check_cancel():
+-    event = getattr(_CONTEXT, 'cancel', None)
+-    if event is not None and event.is_set():
+-        raise Cancelled('작업이 취소되었습니다.')
+-
+-
+-def terminate_tree(process):
+-    """외부 도우미와 후손을 종료한 뒤 파이프를 회수한다."""
+-    if os.name == 'nt':
+-        subprocess.run(['taskkill', '/PID', str(process.pid), '/T', '/F'],
+-                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+-                       creationflags=subprocess.CREATE_NO_WINDOW, timeout=15)
+-    else:
+-        import signal
+-        try: os.killpg(process.pid, signal.SIGKILL)
+-        except ProcessLookupError: pass
+-    if process.poll() is None: process.kill()
+-    process.communicate()
+-
+-class _OwnedProcessTree(document_process._OfficeTree):
+-    """새 도구의 Job 구성원 핸들을 보관하고 실제 종료 신호를 확인한다."""
+-    def __init__(self, process):
+-        self._operation_lock = threading.RLock()
+-        super().__init__(process)
+-
+-    def terminate(self):
+-        # 종료 요청 전에 소유 핸들을 확보한다. Job의 활성 수만으로 종료를 판단하지 않는다.
+-        with self._operation_lock:
+-            if self.handle:
+-                self.collect()
+-                if not self.kernel.TerminateJobObject(self.handle, 1):
+-                    raise ctypes.WinError(ctypes.get_last_error())
+-
+-    def wait_empty(self, deadline):
+-        while True:
+-            with self._operation_lock:
+-                active = self.collect()
+-                waiting = False
+-                for handle in self.process_handles.values():
+-                    status = self.kernel.WaitForSingleObject(handle, 0)
+-                    if status == 258:
+-                        waiting = True
+-                    elif status != 0:
+-                        raise ctypes.WinError(ctypes.get_last_error())
+-                if not active and not waiting:
+-                    return
+-            remaining = deadline - time.monotonic()
+-            if remaining <= 0:
+-                raise RuntimeError('외부 도우미의 소유 후손 종료를 확인하지 못했습니다.')
+-            time.sleep(min(0.01, remaining))
+-
+-    def close(self):
+-        with self._operation_lock:
+-            super().close()
+-
+-
+-
+-def _finish_owned_process(process, deadline, unstarted=False):
+-    """동일한 정리 기한으로 소유 트리와 직접 자식의 종료를 확인한다."""
+-    tree = getattr(process, '_flipring_owned_tree', None)
+-    errors = []
+-    try:
+-        if os.name == 'nt':
+-            if tree is None and not unstarted:
+-                raise RuntimeError('외부 도우미의 생성 시 Job 소유 정보가 없습니다.')
+-            if tree is not None and tree.handle:
+-                tree.terminate()
+-                tree.wait_empty(deadline)
+-            elif unstarted and process.poll() is None:
+-                # 할당 실패한 새 정지 프로세스에는 실행된 후손이 없다.
+-                process.kill()
+-        else:
+-            import signal
+-            try: os.killpg(process.pid, signal.SIGKILL)
+-            except ProcessLookupError: pass
+-    except BaseException as error:
+-        errors.append(error)
+-    finally:
+-        # 종료 API 실패 때도 Job 닫기의 소유 범위 정리를 요청하되 성공으로 숨기지 않는다.
+-        if errors and tree is not None:
+-            try: tree.close()
+-            except BaseException as error: errors.append(error)
+-        try:
+-            process.wait(timeout=max(0, deadline - time.monotonic()))
+-        except BaseException as error:
+-            errors.append(error)
+-        if tree is not None:
+-            try: tree.close()
+-            except BaseException as error: errors.append(error)
+-    if errors:
+-        raise RuntimeError('외부 도우미 종료 확인 실패: ' + '; '.join(map(str, errors))) from errors[0]
+-
+-
+-def _start_owned_process(factory, args, kwargs, cancel, deadline):
+-    """생성·할당·재개 실패 때 아직 사용하지 않은 새 프로세스만 회수한다."""
+-    process = None
+-    kwargs = dict(kwargs)
+-    if os.name == 'nt':
+-        kwargs['creationflags'] = kwargs.get('creationflags', 0) | 0x00000004
+-    try:
+-        process = factory(*args, **kwargs)
+-        if os.name == 'nt':
+-            tree = _OwnedProcessTree(process)
+-            process._flipring_owned_tree = tree
+-            document_process._resume_ocr_process(process, cancel, deadline)
+-        return process
+-    except BaseException as error:
+-        if process is not None:
+-            cleanup_deadline = time.monotonic() + 15
+-            try:
+-                _finish_owned_process(process, cleanup_deadline, unstarted=True)
+-            except BaseException as cleanup:
+-                raise cleanup from error
+-            finally:
+-                for stream in (process.stdin, process.stdout, process.stderr):
+-                    if stream is not None:
+-                        stream.close()
+-        if isinstance(error, document_process.PdfCancelled):
+-            raise Cancelled('작업이 취소되었습니다.') from error
+-        raise
+-
+-
+-def asset(name):
+-    return Path(__file__).resolve().parent / "assets" / name
+-
+-
+-def classify(path):
+-    p = Path(path)
+-    ext = "folder" if p.is_dir() else "tar.gz" if p.name.lower().endswith((".tar.gz", ".tgz")) else p.suffix.lower().lstrip(".")
+-    ext = ALIASES.get(ext, ext)
+-    for kind, (sources, _) in TABLE.items():
+-        if ext in sources.split():
+-            return kind, ext
+-    raise ValueError(f"지원하지 않는 파일입니다: {p.name}")
+-
+-
+-def stem(path):
+-    p = Path(path)
+-    if p.is_dir():
+-        return p.name
+-    return p.name[:-7] if p.name.lower().endswith(".tar.gz") else p.stem
+-
+-
+-def targets(paths):
+-    common = None
+-    for p in paths:
+-        try:
+-            kind, ext = classify(p)
+-        except ValueError:
+-            return []
+-        options = [x for x in TABLE[kind][1].split() if x != ext]
+-        if ext not in doc_formats.NATIVE_HWP_INPUTS:
+-            options = [x for x in options if x not in ("hwp", "hwpx")]
+-        common = options if common is None else [x for x in common if x in options]
+-    return common or []
+-
+-
+-def tool(name):
+-    # 현재 프로세스를 시작한 뒤 설치한 도구도 다음 드래그에서 탐색한다.
+-    exe = name + ".exe"
+-    p = shutil.which(exe)
+-    if p:
+-        return p
+-    local = Path(os.environ.get("LOCALAPPDATA", ""))
+-    roots = [local / "Microsoft/WinGet/Links", Path(os.environ.get("ProgramFiles", "C:/Program Files")) / "LibreOffice/program", local / "Pandoc", Path(os.environ.get("ProgramFiles", "C:/Program Files")) / "Pandoc"]
+-    for root in roots:
+-        if (root / exe).is_file():
+-            return str(root / exe)
+-    packages = local / "Microsoft/WinGet/Packages"
+-    for prefix in {"ffmpeg": ["Gyan.FFmpeg*"], "pandoc": ["JohnMacFarlane.Pandoc*"], "soffice": []}.get(name, []):
+-        for root in packages.glob(prefix):
+-            found = next(root.rglob(exe), None)
+-            if found:
+-                return str(found)
+-    return None
+-
+-
+-_RAR_LOCK = threading.RLock()
+-
+-
+-def rar_tools():
+-    """번들의 두 실행 구성 요소를 확인하고 정상 외부 도구 경로도 찾는다."""
+-    vendor = Path(__file__).resolve().parent / 'vendor/7zip'
+-    bundle = str(vendor / '7z.exe') if all((vendor / name).is_file() for name in ('7z.exe', '7z.dll')) else None
+-    installed = Path(os.environ.get('ProgramFiles', 'C:/Program Files')) / '7-Zip/7z.exe'
+-    return {'bundle': bundle, 'unrar': shutil.which('unrar'), 'unar': shutil.which('unar'),
+-            'sevenzip': shutil.which('7z') or (str(installed) if installed.is_file() else None),
+-            'sevenzip2': shutil.which('7zz')}
+-
+-
+-def _stop_rar_process(process):
+-    # 읽기 스레드가 파이프를 소유하므로 감시 스레드는 communicate를 호출하지 않는다.
+-    if os.name == 'nt':
+-        tree = getattr(process, '_flipring_owned_tree', None)
+-        if tree is None:
+-            raise RuntimeError('RAR 도우미의 생성 시 Job 소유 정보가 없습니다.')
+-        tree.terminate()
+-    else:
+-        import signal
+-        try: os.killpg(process.pid, signal.SIGKILL)
+-        except ProcessLookupError: pass
+-        if process.poll() is None: process.kill()
+-
+-
+-@contextmanager
+-def rar_processes():
+-    """rarfile의 스트리밍·CRC 검사는 유지하고 생성한 외부 프로세스만 취소한다."""
+-    import rarfile
+-    with _RAR_LOCK:
+-        original = rarfile.Popen
+-        saved = {key: getattr(rarfile, key) for key in ('CURRENT_SETUP', 'UNRAR_TOOL', 'UNAR_TOOL', 'SEVENZIP_TOOL', 'SEVENZIP2_TOOL')}
+-        processes, monitor_errors = [], []
+-        launch_lock = threading.Lock()
+-        stopped, expired = threading.Event(), threading.Event()
+-        cancel = getattr(_CONTEXT, 'cancel', None)
+-        deadline = time.monotonic() + 1800
+-
+-        def spawn(*args, **kwargs):
+-            # 감시가 취소를 관측한 뒤 새 프로세스가 목록 밖에서 시작하지 않게 한다.
+-            with launch_lock:
+-                check_cancel()
+-                if time.monotonic() >= deadline:
+-                    raise RuntimeError('변환 제한 시간 30분을 초과했습니다.')
+-                kwargs['start_new_session'] = os.name != 'nt'
+-                frozen = os.name == 'nt' and getattr(sys, 'frozen', False)
+-                if frozen:
+-                    ctypes.windll.kernel32.SetDllDirectoryW(None)
+-                try:
+-                    process = _start_owned_process(original, args, kwargs, cancel, deadline)
+-                    processes.append(process)
+-                    return process
+-                finally:
+-                    if frozen: ctypes.windll.kernel32.SetDllDirectoryW(sys._MEIPASS)
+-
+-        def watch():
+-            while not stopped.wait(0.05):
+-                if (cancel is not None and cancel.is_set()) or time.monotonic() >= deadline:
+-                    if time.monotonic() >= deadline: expired.set()
+-                    with launch_lock:
+-                        owned = list(processes)
+-                    for process in owned:
+-                        # 직접 부모가 먼저 끝나도 같은 Job의 후손은 종료 대상이다.
+-                        try: _stop_rar_process(process)
+-                        except BaseException as exc: monitor_errors.append(exc)
+-                    return
+-
+-        rarfile.Popen = spawn
+-        monitor = threading.Thread(target=watch, name='FlipRing-RAR-cancel', daemon=True)
+-        try:
+-            monitor.start()
+-            yield
+-        finally:
+-            pending = sys.exc_info()[1]
+-            cleanup_deadline = time.monotonic() + 15
+-            stopped.set()
+-            cleanup_errors = []
+-            try:
+-                if monitor.ident is not None:
+-                    monitor.join(timeout=max(0, cleanup_deadline - time.monotonic()))
+-                    if monitor.is_alive():
+-                        cleanup_errors.append(RuntimeError('RAR 취소 감시 스레드의 종료를 확인하지 못했습니다.'))
+-                for process in processes:
+-                    try: _finish_owned_process(process, cleanup_deadline)
+-                    except BaseException as error: cleanup_errors.append(error)
+-                    for stream in (process.stdin, process.stdout, process.stderr):
+-                        if stream is not None:
+-                            try: stream.close()
+-                            except BaseException as error: cleanup_errors.append(error)
+-            finally:
+-                rarfile.Popen = original
+-                for key, value in saved.items(): setattr(rarfile, key, value)
+-            if cleanup_errors or monitor_errors:
+-                error = RuntimeError('RAR 도우미 정리 실패: ' + '; '.join(map(str, cleanup_errors + monitor_errors)))
+-                raise error from pending
+-            check_cancel()
+-            if expired.is_set(): raise RuntimeError('변환 제한 시간 30분을 초과했습니다.')
+-
+-
+-def setup_rar_tools():
+-    """매 사용 시 재탐색하여 이전 bsdtar 캐시로 되돌아가지 않는다."""
+-    import rarfile
+-    paths = rar_tools()
+-    if paths['bundle']:
+-        rarfile.SEVENZIP_TOOL = paths['bundle']
+-        try:
+-            return rarfile.tool_setup(unrar=False, unar=False, sevenzip2=False, bsdtar=False, force=True)
+-        except rarfile.RarCannotExec:
+-            pass
+-    for key, attr in (('unrar', 'UNRAR_TOOL'), ('unar', 'UNAR_TOOL'), ('sevenzip', 'SEVENZIP_TOOL'), ('sevenzip2', 'SEVENZIP2_TOOL')):
+-        if paths[key]: setattr(rarfile, attr, paths[key])
+-    return rarfile.tool_setup(unrar=bool(paths['unrar']), unar=bool(paths['unar']),
+-                             sevenzip=bool(paths['sevenzip']), sevenzip2=bool(paths['sevenzip2']),
+-                             bsdtar=False, force=True)
+-
+-
+-def adapt_rar_names(setup, entries):
+-    """Windows 7-Zip의 비유니코드 RAR3 선택 이름만 OEM 해석과 맞춘다."""
+-    import rarfile
+-    if os.name != 'nt' or setup.setup['open_cmd'][0] not in ('SEVENZIP_TOOL', 'SEVENZIP2_TOOL'):
+-        return
+-    import ctypes
+-    kernel = ctypes.windll.kernel32
+-    names, selected = {}, set()
+-    for entry in entries:
+-        name = entry.filename
+-        if isinstance(entry, rarfile.Rar3Info) and not entry.flags & rarfile.RAR_FILE_UNICODE:
+-            raw = entry.orig_filename
+-            size = kernel.MultiByteToWideChar(1, 0, raw, len(raw), None, 0)
+-            if not size: raise ValueError('RAR 파일 이름을 해석할 수 없습니다.')
+-            buffer = ctypes.create_unicode_buffer(size)
+-            if kernel.MultiByteToWideChar(1, 0, raw, len(raw), buffer, size) != size:
+-                raise ValueError('RAR 파일 이름을 해석할 수 없습니다.')
+-            name = buffer[:size]
+-        name = name.replace('/', os.path.sep)
+-        key = name.casefold().rstrip('\\/')
+-        if key in selected: raise ValueError('RAR 파일 이름이 도구에서 중복되어 안전하게 선택할 수 없습니다.')
+-        selected.add(key)
+-        names[entry.filename.replace('/', os.path.sep)] = name
+-
+-    class ExactNames(rarfile.ToolSetup):
+-        def add_file_arg(self, cmdline, filename):
+-            cmdline.append(names.get(filename, filename))
+-
+-    config = dict(setup.setup)
+-    config['open_cmd'] = (*config['open_cmd'], '-spd')
+-    rarfile.CURRENT_SETUP = ExactNames(config)
+-
+-
+-def requirement(path, dst):
+-    kind, src = classify(path)
+-    if dst in ("hwp", "hwpx"):
+-        if src not in doc_formats.NATIVE_HWP_INPUTS:
+-            return "이 입력의 HWP/HWPX 저장은 지원하지 않습니다."
+-        import importlib.util
+-        return None if importlib.util.find_spec("hwpx") else "HWP/HWPX 저장 구성 요소"
+-    if src == "rar" and not any(rar_tools().values()): return "7-Zip"
+-    needed = None
+-    if kind in ("오디오", "비디오"):
+-        needed = "ffmpeg"
+-    elif kind in ("프레젠테이션", "스프레드시트"):
+-        if not (src in ("csv", "tsv") and dst in ("csv", "tsv")):
+-            needed = "soffice"
+-    elif kind == "문서":
+-        if dst in ("doc", "odt", "rtf") and not tool("soffice"):
+-            return "LibreOffice"
+-        if src in ("hwp", "hwpx"):
+-            status = hwp_status()
+-            if not status["ready"]:
+-                return status["message"]
+-        if src in doc_formats.OFFICE_DOCUMENTS:
+-            if not tool("soffice"): return "LibreOffice"
+-            if dst in ("md", "epub"): needed = "pandoc"
+-        elif src == "epub" or dst == "epub" or (src == "html" and dst != "txt") or (src == "md" and dst != "txt") or (src == "docx" and dst in ("html", "md")):
+-            if dst in ("pdf", "jpg", "png") and not tool("soffice"):
+-                return "LibreOffice"
+-            needed = "pandoc"
+-        elif src == "docx" and dst in ("pdf", "jpg", "png"):
+-            needed = "soffice"
+-    elif kind == "PDF" and dst == "epub":
+-        needed = "pandoc"
+-    return TOOLS[needed][0] if needed and not tool(needed) else None
+-
+-
+-def hwp_status(office_path=None):
+-    """UI는 이미 관측한 경로를 전달해 추가 탐색 없이 상태를 표시한다."""
+-    return doc_formats.hwp_status(tool("soffice") if office_path is None else office_path)
+-
+-
+-def run(exe, args, cwd=None):
+-    check_cancel()
+-    if not exe:
+-        raise RuntimeError("변환 도구를 찾을 수 없습니다. 설정의 도우미 도구를 확인해 주세요.")
+-    flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+-    # 외부 도구가 앱에 묶인 Qt/Python DLL을 잘못 로드하지 않도록 생성 시 검색 경로를 복구한다.
+-    frozen = os.name == "nt" and getattr(sys, "frozen", False)
+-    deadline = time.monotonic() + 1800
+-    cancel = getattr(_CONTEXT, 'cancel', None)
+-    if frozen:
+-        import ctypes
+-        ctypes.windll.kernel32.SetDllDirectoryW(None)
+-    try:
+-        process = _start_owned_process(subprocess.Popen, ([str(exe), *map(str, args)],),
+-            dict(cwd=cwd, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+-                 creationflags=flags, start_new_session=(os.name != 'nt')), cancel, deadline)
+-    finally:
+-        if frozen: ctypes.windll.kernel32.SetDllDirectoryW(sys._MEIPASS)
+-    try:
+-        while True:
+-            check_cancel()
+-            if time.monotonic() >= deadline:
+-                raise RuntimeError("변환 제한 시간 30분을 초과했습니다.")
+-            try:
+-                stdout, stderr = process.communicate(timeout=0.15)
+-                break
+-            except subprocess.TimeoutExpired:
+-                continue
+-        check_cancel()
+-    finally:
+-        pending = sys.exc_info()[1]
+-        cleanup_deadline = time.monotonic() + 15
+-        try:
+-            _finish_owned_process(process, cleanup_deadline)
+-            if pending is not None:
+-                process.communicate(timeout=max(0, cleanup_deadline - time.monotonic()))
+-        except BaseException as cleanup:
+-            raise cleanup from pending
+-    if process.returncode:
+-        detail = (stderr or stdout).decode("utf-8", "replace")[-1200:]
+-        raise RuntimeError(f"{Path(exe).stem} 변환 실패 ({process.returncode})\n{detail}")
+-    return stdout
+-
+-
+-def text(path):
+-    data = Path(path).read_bytes()
+-    if data.startswith((b"\xff\xfe", b"\xfe\xff")):
+-        return data.decode("utf-16")
+-    for enc in ("utf-8-sig", "cp949", "cp1252"):
+-        try:
+-            return data.decode(enc)
+-        except UnicodeDecodeError:
+-            pass
+-    raise ValueError("텍스트 인코딩을 확인해 주세요.")
+-
+-
+-def write_text_pdf(content, output):
+-    font = "PUVKIDText"
+-    if font not in pdfmetrics.getRegisteredFontNames():
+-        pdfmetrics.registerFont(TTFont(font, str(asset("NanumGothicBold.ttf"))))
+-    c = canvas.Canvas(str(output), pagesize=(612, 792))
+-    c.setTitle(output.stem)
+-    c.setFont(font, 11)
+-    y = 738
+-    # 사용자 파일의 글자는 자르지 않고 폭에 맞춰 줄바꿈한다.
+-    for line in content.expandtabs(4).splitlines() or [""]:
+-        fragment = ""
+-        for char in line:
+-            if fragment and pdfmetrics.stringWidth(fragment + char, font, 11) > 504:
+-                c.drawString(54, y, fragment)
+-                y -= 17
+-                fragment = ""
+-                if y < 54:
+-                    c.showPage(); c.setFont(font, 11); y = 738
+-            fragment += char
+-        c.drawString(54, y, fragment)
+-        y -= 17
+-        if y < 54:
+-            c.showPage(); c.setFont(font, 11); y = 738
+-    c.save()
+-
+-
+-def render_pdf(source, dst, work, base):
+-    with PDFIUM_LOCK:
+-        return _render_pdf(source, dst, work, base)
+-
+-
+-def _render_pdf(source, dst, work, base):
+-    doc = pdfium.PdfDocument(str(source))
+-    try:
+-        if not len(doc):
+-            raise ValueError("페이지가 없는 PDF입니다.")
+-        out = work / f"{base} ({dst})" if len(doc) > 1 else work / f"{base}.{dst}"
+-        if len(doc) > 1:
+-            out.mkdir()
+-        for i in range(len(doc)):
+-            check_cancel()
+-            page = doc[i]
+-            bitmap = page.render(scale=2)
+-            try:
+-                image = bitmap.to_pil().copy().convert("RGB")
+-                dest = out / f"{base}-{i + 1:0{len(str(len(doc)))}d}.{dst}" if len(doc) > 1 else out
+-                image.save(dest, quality=90)
+-            finally:
+-                bitmap.close(); page.close()
+-        return out
+-    finally:
+-        doc.close()
+-
+-
+-def office(source, dst, work):
+-    folder = work / ("office-" + next(tempfile._get_candidate_names()))
+-    folder.mkdir()
+-    kind, src = classify(source)
+-    doc_formats.validate_input(source, src)
+-    executable = tool("soffice")
+-    python = doc_formats.office_python(executable)
+-    if not python:
+-        raise RuntimeError("LibreOffice의 UNO Python을 찾지 못했습니다. 공식 Windows LibreOffice 설치본을 확인해 주세요.")
+-    result = folder / f"{source.stem}.{dst}"
+-    # 긴 원본 경로 아래 프로필은 LibreOffice 초기화에서 중단될 수 있어 별도로 격리한다.
+-    with tempfile.TemporaryDirectory(prefix="fr-lo-") as profile_folder:
+-        profile = Path(profile_folder)
+-        doc_formats.write_secure_profile(profile)
+-        request = {"source": str(Path(source).resolve()), "output": str(result.resolve()), "profile": str(profile),
+-                   "office": executable, "family": kind, "extension": src, "target": dst}
+-        if src == "xlsb":
+-            from document_xlsb import source_sheets
+-            request["xlsb_sheets"] = source_sheets(source, check_cancel=check_cancel)
+-        if src in ("hwp", "hwpx"):
+-            status = hwp_status(office_path=executable)
+-            if not status["ready"]:
+-                raise RuntimeError(status["message"])
+-            request.update(oxt=status["oxt"], java=status["java"])
+-        manifest = profile / "request.json"
+-        manifest.write_bytes(json.dumps(request, ensure_ascii=False).encode("utf-8"))
+-        # 외부 Python이 앱에 묶인 다른 버전의 확장 모듈을 먼저 읽지 않도록 격리한다.
+-        for name in ("document_bridge.py", "document_formats.py", "document_xlsb.py"):
+-            with (Path(__file__).resolve().parent / name).open("rb") as original, (profile / name).open("xb") as copied:
+-                shutil.copyfileobj(original, copied)
+-        bridge = profile / "document_bridge.py"
+-        document_process.run_bridge([python, "-B", "-X", "utf8", bridge, manifest],
+-                                    profile, getattr(_CONTEXT, "cancel", None), check_cancel)
+-    if not result.is_file():
+-        raise RuntimeError(f"LibreOffice에서 {dst.upper()} 결과를 만들지 못했습니다.")
+-    if dst in ("docx", "xlsx", "pptx", "odt", "ods", "odp", "doc", "xls", "ppt", "rtf"):
+-        doc_formats.validate_input(result, dst)
+-    return result
+-
+-
+-def pandoc(source, src, dst, output):
+-    reader = {"md": "markdown", "txt": "markdown"}.get(src, src)
+-    writer = {"md": "gfm", "txt": "plain"}.get(dst, dst)
+-    run(tool("pandoc"), [source, "--from", reader, "--to", writer, "--standalone", "--wrap=none", "--metadata", f"title={source.stem}", "-o", output], source.parent)
+-    return output
+-
+-
+-def run_hwp_worker(source, target, work):
+-    """앱 Python worker만 별도 Job에 소유하고 유한 로그·결과를 확인한다."""
+-    import hashlib
+-    from hwp_worker import read_message, write_message
+-    from document_hwp import bounded_read, require_regular
+-    check_cancel()
+-    folder = Path(tempfile.mkdtemp(prefix="hwp-", dir=work))
+-    source = require_regular(source)
+-    source_hash = hashlib.sha256(bounded_read(source)).hexdigest()
+-    request = folder / "request.json"
+-    write_message(request, {"version": 1, "source": str(source), "target": target, "source_sha256": source_hash})
+-    argv = ([sys.executable, "--hwp-worker", str(request)] if getattr(sys, "frozen", False)
+-            else [sys.executable, "-B", "-X", "utf8", str(Path(__file__).with_name("app.py")), "--hwp-worker", str(request)])
+-    deadline = time.monotonic() + 1800
+-    cancel = getattr(_CONTEXT, "cancel", None)
+-    flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+-    # 자기 앱 worker는 외부 LO와 달리 앱 런타임을 그대로 사용한다.
+-    process = _start_owned_process(subprocess.Popen, (argv,), dict(cwd=folder, stdin=subprocess.DEVNULL,
+-        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, creationflags=flags,
+-        start_new_session=os.name != "nt"), cancel, deadline)
+-    captured = bytearray()
+-    overflow = threading.Event()
+-    read_errors = []
+-    def drain():
+-        try:
+-            while True:
+-                chunk = os.read(process.stdout.fileno(), 4096)
+-                if not chunk:
+-                    break
+-                remaining = 65536 - len(captured)
+-                captured.extend(chunk[:remaining])
+-                if len(chunk) > remaining:
+-                    overflow.set()
+-        except BaseException as error:
+-            read_errors.append(error)
+-    reader = threading.Thread(target=drain, daemon=True)
+-    reader.start()
+-    try:
+-        while process.poll() is None:
+-            check_cancel()
+-            if overflow.is_set():
+-                raise RuntimeError("HWP worker 로그가64KiB를 초과했습니다.")
+-            if time.monotonic() >= deadline:
+-                raise RuntimeError("변환 제한 시간30분을 초과했습니다.")
+-            try:
+-                process.wait(timeout=0.05)
+-            except subprocess.TimeoutExpired:
+-                pass
+-        check_cancel()
+-    finally:
+-        pending = sys.exc_info()[1]
+-        cleanup_deadline = time.monotonic() + 15
+-        try:
+-            _finish_owned_process(process, cleanup_deadline)
+-        except BaseException as cleanup:
+-            raise cleanup from pending
+-        finally:
+-            reader.join(timeout=max(0, cleanup_deadline - time.monotonic()))
+-            if not reader.is_alive():
+-                process.stdout.close()
+-        if reader.is_alive() or read_errors:
+-            raise RuntimeError("HWP worker 로그 회수를 확인하지 못했습니다.") from pending
+-    captured.decode("utf-8", errors="strict")
+-    if overflow.is_set():
+-        raise RuntimeError("HWP worker 로그가64KiB를 초과했습니다.")
+-    result = read_message(folder / "result.json")
+-    if result.get("ok") is not True or process.returncode != 0:
+-        raise RuntimeError("HWP/HWPX 저장 실패: " + str(result.get("error", "worker 종료 오류")))
+-    if type(result.get("version")) is not int or result["version"] != 1 or result.get("format") != target:
+-        raise RuntimeError("HWP worker 결과 스키마가 다릅니다.")
+-    expected = "output." + target
+-    if result.get("source_sha256") != source_hash or result.get("output") != expected:
+-        raise RuntimeError("HWP worker 원본·출력 경계가 다릅니다.")
+-    output = require_regular(folder / expected)
+-    if hashlib.sha256(bounded_read(output)).hexdigest() != result.get("output_sha256"):
+-        raise RuntimeError("HWP worker 출력 해시가 다릅니다.")
+-    if hashlib.sha256(bounded_read(source)).hexdigest() != source_hash:
+-        raise RuntimeError("HWP worker 실행 중 원본이 바뀌었습니다.")
+-    return output
+-
+-
+-def document(source, src, dst, work, base):
+-    output = work / f"{base}.{dst}"
+-    if dst in ("hwp", "hwpx"):
+-        return run_hwp_worker(source, dst, work)
+-    if src in doc_formats.OFFICE_DOCUMENTS:
+-        if dst in ("pdf", "docx", "doc", "odt", "rtf", "txt", "html"):
+-            return office(source, dst, work)
+-        if dst in ("jpg", "png"):
+-            return render_pdf(office(source, "pdf", work), dst, work, base)
+-        source = office(source, "docx", work); src = "docx"
+-    if dst in ("doc", "odt", "rtf"):
+-        intermediate = work / "document-source.docx"
+-        document(source, src, "docx", work, "document-source")
+-        return office(intermediate, dst, work)
+-    if src == "docx" and dst in ("pdf", "jpg", "png"):
+-        pdf = office(source, "pdf", work)
+-        return pdf if dst == "pdf" else render_pdf(pdf, dst, work, base)
+-    if src == "epub" or dst == "epub" or (src == "html" and dst != "txt") or (src == "md" and dst != "txt") or (src == "docx" and dst in ("md", "html")):
+-        if dst in ("pdf", "jpg", "png"):
+-            intermediate = work / "pandoc-source.docx"
+-            pandoc(source, src, "docx", intermediate)
+-            pdf = office(intermediate, "pdf", work)
+-            return pdf if dst == "pdf" else render_pdf(pdf, dst, work, base)
+-        return pandoc(source, src, dst, output)
+-    if src == "docx":
+-        doc = Document(source)
+-        content = "\n".join([p.text for p in doc.paragraphs] + ["\t".join(c.text for c in row.cells) for table in doc.tables for row in table.rows])
+-    else:
+-        content = text(source)
+-        if src == "html":
+-            from html.parser import HTMLParser
+-            class Extract(HTMLParser):
+-                def __init__(self): super().__init__(); self.parts = []; self.skip = 0
+-                def handle_starttag(self, tag, attrs):
+-                    if tag in ("script", "style"): self.skip += 1
+-                    if tag in ("p", "br", "div", "li", "h1", "h2"): self.parts.append("\n")
+-                def handle_endtag(self, tag):
+-                    if tag in ("script", "style"): self.skip = max(0, self.skip - 1)
+-                def handle_data(self, data):
+-                    if not self.skip: self.parts.append(data)
+-            parser = Extract(); parser.feed(content); content = "".join(parser.parts)
+-    if dst in ("txt", "md"):
+-        output.write_text(content, encoding="utf-8")
+-    elif dst == "html":
+-        output.write_text('<!doctype html><meta charset="utf-8"><pre>' + html.escape(content) + "</pre>", encoding="utf-8")
+-    elif dst == "docx":
+-        d = Document()
+-        for line in content.splitlines(): d.add_paragraph(line)
+-        d.save(output)
+-    elif dst in ("pdf", "jpg", "png"):
+-        pdf = work / (base + ".pdf")
+-        write_text_pdf(content, pdf)
+-        return pdf if dst == "pdf" else render_pdf(pdf, dst, work, base)
+-    else:
+-        raise ValueError("지원하지 않는 문서 출력입니다.")
+-    return output
+-
+-
+-def subtitles(source, dst, output):
+-    raw = text(source).replace("\r\n", "\n").replace("\r", "\n")
+-    cues = []
+-    for block in re.split(r"\n\s*\n", raw.strip()):
+-        lines = block.splitlines()
+-        for i, line in enumerate(lines):
+-            m = re.match(r"\s*((?:\d+:)?\d{2}:\d{2}[.,]\d{3})\s*-->\s*((?:\d+:)?\d{2}:\d{2}[.,]\d{3})", line)
+-            if m:
+-                times = [v.replace(",", ".") if v.count(":") == 2 else "00:" + v.replace(",", ".") for v in m.groups()]
+-                cues.append((*times, lines[i + 1:])); break
+-    if not cues:
+-        raise ValueError("자막 시간 정보를 찾지 못했습니다.")
+-    if dst == "txt":
+-        clean = []
+-        for _, _, lines in cues:
+-            for line in lines:
+-                value = html.unescape(re.sub(r"<[^>]*>|\{\\[^}]*\}", "", line)).strip()
+-                if value and (not clean or clean[-1] != value): clean.append(value)
+-        value = "\n".join(clean) + "\n"
+-    else:
+-        blocks = []
+-        for i, (start, end, lines) in enumerate(cues, 1):
+-            if dst == "srt": start, end = start.replace(".", ","), end.replace(".", ",")
+-            blocks.append((f"{i}\n" if dst == "srt" else "") + f"{start} --> {end}\n" + "\n".join(lines))
+-        value = ("WEBVTT\n\n" if dst == "vtt" else "") + "\n\n".join(blocks) + "\n"
+-    output.write_text(value, encoding="utf-8")
+-    return output
+-
+-
+-def safe_member(root, name):
+-    # 압축 안의 절대 경로·상위 경로·Windows 장치 경로를 거부한다.
+-    clean = name.replace("\\", "/")
+-    if ":" in clean or clean.startswith("/") or ".." in clean.split("/"):
+-        raise ValueError("압축 파일에 안전하지 않은 경로가 있습니다.")
+-    destination = (root / clean).resolve()
+-    if not destination.is_relative_to(root.resolve()):
+-        raise ValueError("압축 해제 경로가 작업 폴더를 벗어납니다.")
+-    return destination
+-
+-
+-def archive(source, src, dst, output, work):
+-    import stat
+-    if src == "folder":
+-        root, prefix = source, source.name
+-    else:
+-        root = work / "extracted"; root.mkdir(); prefix = ""
+-        if src == "zip":
+-            with zipfile.ZipFile(source) as z:
+-                for entry in z.infolist():
+-                    safe_member(root, entry.filename)
+-                    if stat.S_ISLNK(entry.external_attr >> 16): raise ValueError("심볼릭 링크 압축은 지원하지 않습니다.")
+-                z.extractall(root)
+-        elif src == "rar":
+-            import rarfile
+-            with rar_processes():
+-                try:
+-                    setup = setup_rar_tools()
+-                    with rarfile.RarFile(source) as z:
+-                        entries = z.infolist()
+-                        for entry in entries:
+-                            check_cancel()
+-                            safe_member(root, entry.filename)
+-                            if entry.is_symlink(): raise ValueError("심볼릭 링크 압축은 지원하지 않습니다.")
+-                        adapt_rar_names(setup, entries)
+-                        z.extractall(root)
+-                except rarfile.RarCannotExec as exc:
+-                    raise RuntimeError("RAR 해제에 UnRAR 또는 7-Zip 도구가 필요합니다.") from exc
+-        else:
+-            with tarfile.open(source) as z:
+-                for entry in z.getmembers():
+-                    safe_member(root, entry.name)
+-                    if not (entry.isfile() or entry.isdir()): raise ValueError("링크·특수 파일 압축은 지원하지 않습니다.")
+-                z.extractall(root, filter="data")
+-    entries = list(root.rglob("*"))
+-    if any(p.is_symlink() or (getattr(p.stat(follow_symlinks=False), "st_file_attributes", 0) & 0x400) for p in entries):
+-        raise ValueError("링크·접합점이 포함된 폴더는 압축하지 않습니다.")
+-    if dst == "zip":
+-        with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as z:
+-            if prefix: z.writestr(prefix + "/", "")
+-            for p in entries: z.write(p, str(Path(prefix) / p.relative_to(root)))
+-    else:
+-        with tarfile.open(output, "w:gz" if dst == "tar.gz" else "w") as z:
+-            if prefix: z.add(root, arcname=prefix, recursive=False)
+-            for p in entries: z.add(p, arcname=str(Path(prefix) / p.relative_to(root)), recursive=False)
+-    return output
+-
+-
+-def produce(source, dst, work):
+-    check_cancel()
+-    with PDFIUM_LOCK:
+-        return _produce(source, dst, work)
+-
+-
+-def _produce(source, dst, work):
+-    kind, src = classify(source)
+-    base = stem(source)
+-    out = work / f"{base}.{dst}"
+-    if kind == "이미지":
+-        if src == "svg":
+-            from svglib.svglib import svg2rlg
+-            from reportlab.graphics import renderPDF
+-            pdf = work / "svg.pdf"
+-            drawing = svg2rlg(str(source))
+-            if drawing is None: raise ValueError("SVG를 읽을 수 없습니다.")
+-            renderPDF.drawToFile(drawing, str(pdf))
+-            if dst == "pdf": return pdf
+-            source = render_pdf(pdf, "png", work, "svg-raster")
+-        with Image.open(source) as original:
+-            im = ImageOps.exif_transpose(original).copy()
+-            if dst in ("jpg", "bmp", "pdf"):
+-                rgba = im.convert("RGBA"); flat = Image.new("RGB", im.size, "white"); flat.paste(rgba, mask=rgba.getchannel("A")); im = flat
+-            im.save(out, format={"jpg": "JPEG", "tiff": "TIFF"}.get(dst, dst.upper()), quality=90)
+-        return out
+-    if kind in ("오디오", "비디오"):
+-        args = ["-nostdin", "-hide_banner", "-loglevel", "error", "-i", source]
+-        audio = {"mp3": ["libmp3lame", "-q:a", "2"], "m4a": ["aac", "-b:a", "256k"], "wav": ["pcm_s16le"], "flac": ["flac"], "ogg": ["libvorbis", "-q:a", "6"], "opus": ["libopus", "-b:a", "160k"], "aiff": ["pcm_s16be"], "wma": ["wmav2", "-b:a", "192k"]}
+-        if kind == "오디오" or dst == "mp3": args += ["-vn", "-c:a", *audio[dst]]
+-        elif dst in ("mp4", "mov", "mkv"): args += ["-vf", "scale=trunc(iw/2)*2:trunc(ih/2)*2", "-c:v", "libx264", "-crf", "20", "-pix_fmt", "yuv420p", "-c:a", "aac"] + (["-movflags", "+faststart"] if dst != "mkv" else [])
+-        elif dst == "webm": args += ["-c:v", "libvpx-vp9", "-crf", "32", "-b:v", "0", "-c:a", "libopus"]
+-        elif dst == "avi": args += ["-c:v", "mpeg4", "-q:v", "3", "-c:a", "libmp3lame"]
+-        elif dst == "wmv": args += ["-c:v", "wmv2", "-b:v", "4M", "-c:a", "wmav2"]
+-        elif dst == "gif": args += ["-an", "-filter_complex", "fps=12,scale=640:-2:force_original_aspect_ratio=decrease,split[a][b];[a]palettegen[p];[b][p]paletteuse", "-loop", "0"]
+-        run(tool("ffmpeg"), [*args, out]); return out
+-    if kind == "PDF":
+-        if dst in ("jpg", "png"): return render_pdf(source, dst, work, base)
+-        doc = pdfium.PdfDocument(str(source))
+-        try:
+-            pages = []
+-            for i in range(len(doc)):
+-                check_cancel()
+-                page = doc[i]; tp = page.get_textpage()
+-                try: pages.append(tp.get_text_range())
+-                finally: tp.close(); page.close()
+-        finally: doc.close()
+-        content = ("\n\n---\n\n" if dst == "md" else "\n\n").join(pages)
+-        if dst in ("txt", "md"): out.write_text(content, encoding="utf-8"); return out
+-        if dst == "docx":
+-            d = Document()
+-            for line in content.splitlines(): d.add_paragraph(line)
+-            d.save(out); return out
+-        txt = work / f"{base}.txt"; txt.write_text(content, encoding="utf-8"); return pandoc(txt, "txt", dst, out)
+-    if kind == "문서": return document(source, src, dst, work, base)
+-    if kind == "프레젠테이션":
+-        if dst in ("jpg", "png"):
+-            return render_pdf(office(source, "pdf", work), dst, work, base)
+-        return office(source, dst, work)
+-    if kind == "스프레드시트":
+-        if src in ("csv", "tsv") and dst in ("csv", "tsv"):
+-            rows = list(csv.reader(io.StringIO(text(source), newline=""), delimiter="\t" if src == "tsv" else ","))
+-            with out.open("w", encoding="utf-8-sig", newline="") as f: csv.writer(f, delimiter="\t" if dst == "tsv" else ",").writerows(rows)
+-            return out
+-        return office(source, dst, work)
+-    if kind == "자막": return subtitles(source, dst, out)
+-    if kind in ("압축", "폴더"): return archive(source, src, dst, out, work)
+-    raise ValueError("지원하지 않는 변환입니다.")
+-
+-
+-def convert(path, dst, cancel=None, progress=None):
+-    previous = getattr(_CONTEXT, 'cancel', None)
+-    _CONTEXT.cancel = cancel
+-    try:
+-        check_cancel()
+-        if progress is not None: progress('processing')
+-        return _convert(path, dst)
+-    finally:
+-        _CONTEXT.cancel = previous
+-
+-
+-def _convert(path, dst):
+-    source = Path(path).resolve(strict=True)
+-    if dst not in targets([source]): raise ValueError("이 파일에 사용할 수 없는 출력 형식입니다.")
+-    missing = requirement(source, dst)
+-    if missing: raise RuntimeError(f"{missing} 도구를 설치해 주세요. 설정에서 설치 명령을 복사할 수 있습니다.")
+-    # 대상과 같은 드라이브에서 준비하고 최종 이동은 덮어쓰기 없이 처리한다.
+-    with tempfile.TemporaryDirectory(prefix=".puvkid-dragwheel-", dir=source.parent) as folder:
+-        work = Path(folder)
+-        produced = produce(source, dst, work)
+-        if not produced.exists() or (produced.is_file() and produced.stat().st_size == 0 and dst not in ("txt", "md")):
+-            raise RuntimeError("변환기가 유효한 출력 파일을 만들지 못했습니다.")
+-        base = stem(source)
+-        for i in range(1, 100000):
+-            suffix = "" if i == 1 else f" {i}"
+-            candidate = source.parent / (base + suffix + (f" ({dst})" if produced.is_dir() else "." + dst))
+-            if candidate.exists(): continue
+-            try:
+-                # Windows의 rename은 대상이 존재하면 실패하므로 원본과 기존 결과를 보존한다.
+-                check_cancel()
+-                produced.rename(candidate)
+-                return str(candidate)
+-            except FileExistsError:
+-                continue
+-        raise RuntimeError("새 파일 이름을 만들지 못했습니다.")
++"""PUVKID의 Windows 파일 변환 엔진. 원본은 읽기만 하고 결과를 새 이름으로 저장한다."""
++from __future__ import annotations
++
++import csv
++import ctypes
++from contextlib import contextmanager
++from ctypes import wintypes
++import html
++import io
++import json
++import os
++from pathlib import Path
++import re
++import shutil
++import subprocess
++import sys
++import tarfile
++import tempfile
++import threading
++import time
++from pdf_lock import PDFIUM_LOCK
++import zipfile
++
++from PIL import Image, ImageOps
++import pi_heif
++import pypdfium2 as pdfium
++from docx import Document
++from reportlab.pdfgen import canvas
++from reportlab.pdfbase import pdfmetrics
++from reportlab.pdfbase.ttfonts import TTFont
++import document_formats as doc_formats
++import document_process
++
++pi_heif.register_heif_opener()
++TABLE = {
++    "이미지": ("jpg png webp heic tiff avif bmp gif svg", "jpg png webp tiff avif bmp pdf"),
++    "오디오": ("mp3 m4a wav flac ogg opus aiff wma", "mp3 m4a wav flac ogg opus aiff wma"),
++    "비디오": ("mp4 mov mkv webm avi wmv", "mp4 mov mkv webm avi wmv gif mp3"),
++    "PDF": ("pdf", "docx jpg png epub txt md"),
++    "문서": (doc_formats.DOCUMENT_INPUTS, doc_formats.DOCUMENT_OUTPUTS),
++    "프레젠테이션": (doc_formats.PRESENTATION_INPUTS, doc_formats.PRESENTATION_OUTPUTS),
++    "스프레드시트": (doc_formats.SPREADSHEET_INPUTS, doc_formats.SPREADSHEET_OUTPUTS),
++    "자막": ("srt vtt", "srt vtt txt"),
++    "압축": ("zip tar tar.gz rar", "zip tar tar.gz"),
++    "폴더": ("folder", "zip tar tar.gz"),
++}
++ALIASES = dict(jpeg="jpg", jpe="jpg", tif="tiff", heif="heic", htm="html", markdown="md", aif="aiff", tgz="tar.gz")
++TOOLS = {
++    "ffmpeg": ("FFmpeg", "Gyan.FFmpeg", "오디오 · 비디오"),
++    "pandoc": ("Pandoc", "JohnMacFarlane.Pandoc", "전자책 · 문서"),
++    "soffice": ("LibreOffice", "TheDocumentFoundation.LibreOffice", "Office 문서 · 발표 · 표"),
++}
++
++
++
++class Cancelled(RuntimeError):
++    """사용자 취소는 변환 실패와 구별한다."""
++
++
++_CONTEXT = threading.local()
++
++
++def check_cancel():
++    event = getattr(_CONTEXT, 'cancel', None)
++    if event is not None and event.is_set():
++        raise Cancelled('작업이 취소되었습니다.')
++
++
++def terminate_tree(process):
++    """외부 도우미와 후손을 종료한 뒤 파이프를 회수한다."""
++    if os.name == 'nt':
++        subprocess.run(['taskkill', '/PID', str(process.pid), '/T', '/F'],
++                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
++                       creationflags=subprocess.CREATE_NO_WINDOW, timeout=15)
++    else:
++        import signal
++        try: os.killpg(process.pid, signal.SIGKILL)
++        except ProcessLookupError: pass
++    if process.poll() is None: process.kill()
++    process.communicate()
++
++class _OwnedProcessTree(document_process._OfficeTree):
++    """새 도구의 Job 구성원 핸들을 보관하고 실제 종료 신호를 확인한다."""
++    def __init__(self, process):
++        self._operation_lock = threading.RLock()
++        super().__init__(process)
++
++    def terminate(self):
++        # 종료 요청 전에 소유 핸들을 확보한다. Job의 활성 수만으로 종료를 판단하지 않는다.
++        with self._operation_lock:
++            if self.handle:
++                self.collect()
++                if not self.kernel.TerminateJobObject(self.handle, 1):
++                    raise ctypes.WinError(ctypes.get_last_error())
++
++    def wait_empty(self, deadline):
++        while True:
++            with self._operation_lock:
++                active = self.collect()
++                waiting = False
++                for handle in self.process_handles.values():
++                    status = self.kernel.WaitForSingleObject(handle, 0)
++                    if status == 258:
++                        waiting = True
++                    elif status != 0:
++                        raise ctypes.WinError(ctypes.get_last_error())
++                if not active and not waiting:
++                    return
++            remaining = deadline - time.monotonic()
++            if remaining <= 0:
++                raise RuntimeError('외부 도우미의 소유 후손 종료를 확인하지 못했습니다.')
++            time.sleep(min(0.01, remaining))
++
++    def close(self):
++        with self._operation_lock:
++            super().close()
++
++
++
++def _finish_owned_process(process, deadline, unstarted=False):
++    """동일한 정리 기한으로 소유 트리와 직접 자식의 종료를 확인한다."""
++    tree = getattr(process, '_flipring_owned_tree', None)
++    errors = []
++    try:
++        if os.name == 'nt':
++            if tree is None and not unstarted:
++                raise RuntimeError('외부 도우미의 생성 시 Job 소유 정보가 없습니다.')
++            if tree is not None and tree.handle:
++                tree.terminate()
++                tree.wait_empty(deadline)
++            elif unstarted and process.poll() is None:
++                # 할당 실패한 새 정지 프로세스에는 실행된 후손이 없다.
++                process.kill()
++        else:
++            import signal
++            try: os.killpg(process.pid, signal.SIGKILL)
++            except ProcessLookupError: pass
++    except BaseException as error:
++        errors.append(error)
++    finally:
++        # 종료 API 실패 때도 Job 닫기의 소유 범위 정리를 요청하되 성공으로 숨기지 않는다.
++        if errors and tree is not None:
++            try: tree.close()
++            except BaseException as error: errors.append(error)
++        try:
++            process.wait(timeout=max(0, deadline - time.monotonic()))
++        except BaseException as error:
++            errors.append(error)
++        if tree is not None:
++            try: tree.close()
++            except BaseException as error: errors.append(error)
++    if errors:
++        raise RuntimeError('외부 도우미 종료 확인 실패: ' + '; '.join(map(str, errors))) from errors[0]
++
++
++def _start_owned_process(factory, args, kwargs, cancel, deadline):
++    """생성·할당·재개 실패 때 아직 사용하지 않은 새 프로세스만 회수한다."""
++    process = None
++    kwargs = dict(kwargs)
++    if os.name == 'nt':
++        kwargs['creationflags'] = kwargs.get('creationflags', 0) | 0x00000004
++    try:
++        process = factory(*args, **kwargs)
++        if os.name == 'nt':
++            tree = _OwnedProcessTree(process)
++            process._flipring_owned_tree = tree
++            document_process._resume_ocr_process(process, cancel, deadline)
++        return process
++    except BaseException as error:
++        if process is not None:
++            cleanup_deadline = time.monotonic() + 15
++            try:
++                _finish_owned_process(process, cleanup_deadline, unstarted=True)
++            except BaseException as cleanup:
++                raise cleanup from error
++            finally:
++                for stream in (process.stdin, process.stdout, process.stderr):
++                    if stream is not None:
++                        stream.close()
++        if isinstance(error, document_process.PdfCancelled):
++            raise Cancelled('작업이 취소되었습니다.') from error
++        raise
++
++
++def asset(name):
++    return Path(__file__).resolve().parent / "assets" / name
++
++
++def classify(path):
++    p = Path(path)
++    ext = "folder" if p.is_dir() else "tar.gz" if p.name.lower().endswith((".tar.gz", ".tgz")) else p.suffix.lower().lstrip(".")
++    ext = ALIASES.get(ext, ext)
++    for kind, (sources, _) in TABLE.items():
++        if ext in sources.split():
++            return kind, ext
++    raise ValueError(f"지원하지 않는 파일입니다: {p.name}")
++
++
++def stem(path):
++    p = Path(path)
++    if p.is_dir():
++        return p.name
++    return p.name[:-7] if p.name.lower().endswith(".tar.gz") else p.stem
++
++
++def targets(paths):
++    common = None
++    for p in paths:
++        try:
++            kind, ext = classify(p)
++        except ValueError:
++            return []
++        options = [x for x in TABLE[kind][1].split() if x != ext]
++        if ext not in doc_formats.NATIVE_HWP_INPUTS:
++            options = [x for x in options if x not in ("hwp", "hwpx")]
++        common = options if common is None else [x for x in common if x in options]
++    return common or []
++
++
++def tool(name):
++    # 현재 프로세스를 시작한 뒤 설치한 도구도 다음 드래그에서 탐색한다.
++    exe = name + ".exe"
++    p = shutil.which(exe)
++    if p:
++        return p
++    local = Path(os.environ.get("LOCALAPPDATA", ""))
++    roots = [local / "Microsoft/WinGet/Links", Path(os.environ.get("ProgramFiles", "C:/Program Files")) / "LibreOffice/program", local / "Pandoc", Path(os.environ.get("ProgramFiles", "C:/Program Files")) / "Pandoc"]
++    for root in roots:
++        if (root / exe).is_file():
++            return str(root / exe)
++    packages = local / "Microsoft/WinGet/Packages"
++    for prefix in {"ffmpeg": ["Gyan.FFmpeg*"], "pandoc": ["JohnMacFarlane.Pandoc*"], "soffice": []}.get(name, []):
++        for root in packages.glob(prefix):
++            found = next(root.rglob(exe), None)
++            if found:
++                return str(found)
++    return None
++
++
++_RAR_LOCK = threading.RLock()
++
++
++def rar_tools():
++    """번들의 두 실행 구성 요소를 확인하고 정상 외부 도구 경로도 찾는다."""
++    vendor = Path(__file__).resolve().parent / 'vendor/7zip'
++    bundle = str(vendor / '7z.exe') if all((vendor / name).is_file() for name in ('7z.exe', '7z.dll')) else None
++    installed = Path(os.environ.get('ProgramFiles', 'C:/Program Files')) / '7-Zip/7z.exe'
++    return {'bundle': bundle, 'unrar': shutil.which('unrar'), 'unar': shutil.which('unar'),
++            'sevenzip': shutil.which('7z') or (str(installed) if installed.is_file() else None),
++            'sevenzip2': shutil.which('7zz')}
++
++
++def _stop_rar_process(process):
++    # 읽기 스레드가 파이프를 소유하므로 감시 스레드는 communicate를 호출하지 않는다.
++    if os.name == 'nt':
++        tree = getattr(process, '_flipring_owned_tree', None)
++        if tree is None:
++            raise RuntimeError('RAR 도우미의 생성 시 Job 소유 정보가 없습니다.')
++        tree.terminate()
++    else:
++        import signal
++        try: os.killpg(process.pid, signal.SIGKILL)

@@ -896,7 +896,7 @@ def _convert(path, dst):
     source = Path(path).resolve(strict=True)
     if dst not in targets([source]): raise ValueError("이 파일에 사용할 수 없는 출력 형식입니다.")
     missing = requirement(source, dst)
-    if missing: raise RuntimeError(f"{missing} 도구를 설치해 주세요. 설정에서 설치 명령을 복사할 수 있습니다.")
+    if missing: raise RuntimeError(f"{missing} 도구를 설치해 주세요. 외부 도우미 화면에서 설치 버튼을 눌러 주세요.")
     # 대상과 같은 드라이브에서 준비하고 최종 이동은 덮어쓰기 없이 처리한다.
     with tempfile.TemporaryDirectory(prefix=".puvkid-dragwheel-", dir=source.parent) as folder:
         work = Path(folder)

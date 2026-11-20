@@ -1,6 +1,8 @@
 """앱 내부 표면의 유한 피드백과 공통 파일 선택창. 실제 입력·파일 처리는 Qt에 맡긴다."""
 from __future__ import annotations
 
+from theme_manager import theme_color, ring_color
+
 from pathlib import Path
 import weakref
 
@@ -98,10 +100,10 @@ class FeedbackOverlay(QWidget):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
         rectangle = self.current_rectangle()
-        painter.setPen(QPen(QColor(54, 54, 54, round(105 * self.amount)), 1.1))
-        painter.setBrush(QColor(90, 90, 90, round(8 * self.amount)))
+        painter.setPen(QPen(theme_color(54, 54, 54, round(105 * self.amount)), 1.1))
+        painter.setBrush(theme_color(90, 90, 90, round(8 * self.amount)))
         painter.drawRoundedRect(rectangle, 8, 8)
-        painter.setPen(QPen(QColor(42, 42, 42, round(145 * self.amount)), 2, Qt.SolidLine, Qt.RoundCap))
+        painter.setPen(QPen(theme_color(42, 42, 42, round(145 * self.amount)), 2, Qt.SolidLine, Qt.RoundCap))
         width = max(0, rectangle.width() - 18) * (0.18 + 0.65 * self.amount)
         painter.drawLine(QPointF(rectangle.left() + 9, rectangle.bottom() - 1),
                          QPointF(rectangle.left() + 9 + width, rectangle.bottom() - 1))
@@ -375,10 +377,10 @@ class StateMark(QWidget):
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
-        painter.setPen(QPen(QColor("#e4e4e4"), 1.3))
+        painter.setPen(QPen(theme_color("#e4e4e4"), 1.3))
         painter.setBrush(Qt.NoBrush)
         painter.drawEllipse(QRectF(3, 3, 22, 22))
-        painter.setPen(QPen(QColor("#505050"), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.setPen(QPen(theme_color("#505050"), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
         if self.state in {"working", "cancelling"}:
             painter.drawArc(QRectF(3, 3, 22, 22), round((1 - self.phase) * 230 * 16), 250 * 16)
             if self.state == "cancelling":
@@ -492,12 +494,12 @@ class PickerMark(QWidget):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
         painter.setPen(Qt.NoPen)
-        painter.setBrush(QColor("#242424"))
+        painter.setBrush(theme_color("#242424"))
         painter.drawRoundedRect(QRectF(1, 1, 52, 52), 16, 16)
         painter.setBrush(Qt.NoBrush)
-        painter.setPen(QPen(QColor("#bfbfbf"), 1.2))
+        painter.setPen(QPen(theme_color("#bfbfbf"), 1.2))
         painter.drawEllipse(QPointF(27, 27), 16, 16)
-        painter.setPen(QPen(QColor("#ffffff"), 2, Qt.SolidLine, Qt.RoundCap))
+        painter.setPen(QPen(theme_color("#ffffff"), 2, Qt.SolidLine, Qt.RoundCap))
         painter.drawArc(QRectF(11, 11, 32, 32), round((1 - self.phase) * 110 * 16), 115 * 16)
         painter.drawLine(23, 27, 31, 27)
         painter.drawLine(27, 23, 27, 31)
@@ -529,8 +531,8 @@ class MonoFileIcons(QFileIconProvider):
             pixmap.fill(Qt.transparent)
             painter = QPainter(pixmap)
             painter.setRenderHint(QPainter.Antialiasing)
-            painter.setPen(QPen(QColor("#6a6a6a"), 1.4, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
-            painter.setBrush(QColor("#f5f5f5"))
+            painter.setPen(QPen(theme_color("#6a6a6a"), 1.4, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+            painter.setBrush(theme_color("#f5f5f5"))
             if folder:
                 path = QPainterPath(QPointF(3, 7))
                 for point in ((3, 5), (9, 5), (11, 7), (21, 7), (21, 19), (3, 19)):
@@ -825,7 +827,7 @@ def navigation_icon(symbol):
     pixmap.fill(Qt.transparent)
     painter = QPainter(pixmap)
     painter.setRenderHint(QPainter.Antialiasing)
-    painter.setPen(QPen(QColor("#505050"), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+    painter.setPen(QPen(theme_color("#505050"), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
     if symbol in {"back", "forward", "up"}:
         painter.translate(10, 10)
         painter.rotate({"back": 0, "forward": 180, "up": 90}[symbol])

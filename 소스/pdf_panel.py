@@ -1,6 +1,8 @@
 """흑백 PDF/OCR 패널. 무거운 작업은 별도 스레드에서 로컬 처리한다."""
 from __future__ import annotations
 
+from theme_manager import theme_color, ring_color
+
 import threading
 from collections import OrderedDict
 from concurrent.futures import ThreadPoolExecutor
@@ -149,7 +151,7 @@ class OptionSpinBox(QSpinBox):
             if rectangle.isEmpty():
                 continue
             enabled = self.isEnabled() and bool(self.stepEnabled() & flag)
-            painter.setPen(QPen(QColor("#757575" if enabled else "#bbbbbb"), 1.4,
+            painter.setPen(QPen(theme_color("#757575" if enabled else "#bbbbbb"), 1.4,
                                 Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
             center = rectangle.center()
             tip = QPointF(center.x(), center.y() - direction * 1.5)
@@ -689,10 +691,17 @@ class PdfToolsPanel(QWidget):
         pulse_widget(self.options_card)
         self.activity_changed.emit(self.status_mark.state)
 
+    def _other_work_busy(self):
+        """다른 작업 공간·설치가 사용 중이면 새 PDF 작업을 시작하지 않는다."""
+        owner = self.window()
+        return bool(getattr(owner, "pending", 0) or any(
+            getattr(getattr(owner, name, None), "is_busy", lambda: False)()
+            for name in ("installer", "workspace_panel", "quick_actions_panel")))
+
     def start(self):
         if self._busy or self._pool is None:
             return
-        if getattr(self.window(), "pending", 0):
+        if self._other_work_busy():
             self._set_status("busy")
             return
         paths = self.input_paths()
@@ -954,7 +963,7 @@ class PdfToolsPanel(QWidget):
     def _can_workspace_work(self):
         if self._busy or self._pool is None:
             return False
-        if getattr(self.window(), "pending", 0):
+        if self._other_work_busy():
             self._error = None
             self._set_status("busy")
             return False
@@ -1114,7 +1123,7 @@ class PdfToolsPanel(QWidget):
         self._render_scheduled = False
         if self.workspace is None or self._pool is None or self.source_tabs.currentIndex() != 1:
             return
-        if self._busy or getattr(self.window(), "pending", 0):
+        if self._busy or self._other_work_busy():
             self._render_pending = True
             return
         workspace = self.workspace

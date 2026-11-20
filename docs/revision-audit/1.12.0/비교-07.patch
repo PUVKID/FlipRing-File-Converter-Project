@@ -1,0 +1,1514 @@
++    "소스/licenses/Temurin17/legal/java.scripting/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/java.scripting/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/java.scripting/LICENSE",
++    "소스/licenses/Temurin17/legal/java.se/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/java.se/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/java.se/LICENSE",
++    "소스/licenses/Temurin17/legal/java.security.jgss/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/java.security.jgss/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/java.security.jgss/LICENSE",
++    "소스/licenses/Temurin17/legal/java.security.sasl/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/java.security.sasl/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/java.security.sasl/LICENSE",
++    "소스/licenses/Temurin17/legal/java.smartcardio/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/java.smartcardio/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/java.smartcardio/LICENSE",
++    "소스/licenses/Temurin17/legal/java.sql.rowset/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/java.sql.rowset/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/java.sql.rowset/LICENSE",
++    "소스/licenses/Temurin17/legal/java.sql/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/java.sql/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/java.sql/LICENSE",
++    "소스/licenses/Temurin17/legal/java.transaction.xa/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/java.transaction.xa/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/java.transaction.xa/LICENSE",
++    "소스/licenses/Temurin17/legal/java.xml.crypto/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/java.xml.crypto/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/java.xml.crypto/LICENSE",
++    "소스/licenses/Temurin17/legal/java.xml.crypto/santuario.md",
++    "소스/licenses/Temurin17/legal/java.xml/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/java.xml/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/java.xml/LICENSE",
++    "소스/licenses/Temurin17/legal/java.xml/bcel.md",
++    "소스/licenses/Temurin17/legal/java.xml/dom.md",
++    "소스/licenses/Temurin17/legal/java.xml/jcup.md",
++    "소스/licenses/Temurin17/legal/java.xml/xalan.md",
++    "소스/licenses/Temurin17/legal/java.xml/xerces.md",
++    "소스/licenses/Temurin17/legal/jdk.accessibility/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.accessibility/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.accessibility/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.charsets/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.charsets/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.charsets/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.crypto.cryptoki/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.crypto.cryptoki/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.crypto.cryptoki/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.crypto.cryptoki/pkcs11cryptotoken.md",
++    "소스/licenses/Temurin17/legal/jdk.crypto.cryptoki/pkcs11wrapper.md",
++    "소스/licenses/Temurin17/legal/jdk.crypto.ec/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.crypto.ec/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.crypto.ec/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.crypto.mscapi/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.crypto.mscapi/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.crypto.mscapi/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.dynalink/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.dynalink/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.dynalink/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.dynalink/dynalink.md",
++    "소스/licenses/Temurin17/legal/jdk.httpserver/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.httpserver/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.httpserver/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.incubator.foreign/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.incubator.foreign/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.incubator.foreign/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.incubator.vector/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.incubator.vector/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.incubator.vector/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.internal.vm.ci/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.internal.vm.ci/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.internal.vm.ci/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.internal.vm.compiler.management/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.internal.vm.compiler.management/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.internal.vm.compiler.management/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.internal.vm.compiler/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.internal.vm.compiler/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.internal.vm.compiler/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.jdwp.agent/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.jdwp.agent/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.jdwp.agent/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.jfr/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.jfr/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.jfr/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.jsobject/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.jsobject/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.jsobject/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.localedata/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.localedata/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.localedata/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.localedata/cldr.md",
++    "소스/licenses/Temurin17/legal/jdk.localedata/thaidict.md",
++    "소스/licenses/Temurin17/legal/jdk.management.agent/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.management.agent/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.management.agent/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.management.jfr/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.management.jfr/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.management.jfr/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.management/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.management/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.management/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.naming.dns/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.naming.dns/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.naming.dns/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.naming.rmi/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.naming.rmi/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.naming.rmi/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.net/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.net/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.net/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.nio.mapmode/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.nio.mapmode/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.nio.mapmode/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.sctp/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.sctp/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.sctp/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.security.auth/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.security.auth/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.security.auth/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.security.jgss/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.security.jgss/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.security.jgss/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.unsupported/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.unsupported/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.unsupported/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.xml.dom/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.xml.dom/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.xml.dom/LICENSE",
++    "소스/licenses/Temurin17/legal/jdk.zipfs/ADDITIONAL_LICENSE_INFO",
++    "소스/licenses/Temurin17/legal/jdk.zipfs/ASSEMBLY_EXCEPTION",
++    "소스/licenses/Temurin17/legal/jdk.zipfs/LICENSE",
++    "소스/licenses/Temurin17/release",
++    "소스/licenses/Temurin17/출하목록.json",
++    "소스/licenses/altgraph/LICENSE",
++    "소스/licenses/altgraph/METADATA",
++    "소스/licenses/charset-normalizer/METADATA",
++    "소스/licenses/charset-normalizer/licenses/LICENSE",
++    "소스/licenses/cssselect2/METADATA",
++    "소스/licenses/cssselect2/licenses/LICENSE",
++    "소스/licenses/et_xmlfile/METADATA",
++    "소스/licenses/lxml/METADATA",
++    "소스/licenses/lxml/licenses/LICENSE.txt",
++    "소스/licenses/lxml/licenses/LICENSES.txt",
++    "소스/licenses/openpyxl/METADATA",
++    "소스/licenses/packaging/METADATA",
++    "소스/licenses/packaging/licenses/LICENSE",
++    "소스/licenses/packaging/licenses/LICENSE.APACHE",
++    "소스/licenses/packaging/licenses/LICENSE.BSD",
++    "소스/licenses/pefile/LICENSE",
++    "소스/licenses/pefile/METADATA",
++    "소스/licenses/pi-heif-decoder/METADATA",
++    "소스/licenses/pi-heif-decoder/licenses/LICENSE.txt",
++    "소스/licenses/pi-heif-decoder/licenses/LICENSES_bundled.txt",
++    "소스/licenses/pyinstaller-hooks-contrib/METADATA",
++    "소스/licenses/pyinstaller-hooks-contrib/licenses/LICENSE",
++    "소스/licenses/pyinstaller/METADATA",
++    "소스/licenses/pyinstaller/licenses/COPYING.txt",
++    "소스/licenses/pypdf/METADATA",
++    "소스/licenses/pypdf/licenses/LICENSE",
++    "소스/licenses/pypdfium2/METADATA",
++    "소스/licenses/pypdfium2/licenses/LICENSES/Apache-2.0.txt",
++    "소스/licenses/pypdfium2/licenses/LICENSES/BSD-3-Clause.txt",
++    "소스/licenses/pypdfium2/licenses/LICENSES/CC-BY-4.0.txt",
++    "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/abseil.txt",
++    "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/agg23.txt",
++    "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/fast_float.txt",
++    "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt",
++    "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/icu.txt",
++    "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/lcms.txt",
++    "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.ijg",
++    "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
++    "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libopenjpeg.txt",
++    "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libpng.txt",
++    "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/llvm-libc.txt",
++    "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium-binaries.txt",
++    "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium.txt",
++    "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/simdutf.txt",
++    "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/zlib.txt",
++    "소스/licenses/python-docx/METADATA",
++    "소스/licenses/python-docx/licenses/LICENSE",
++    "소스/licenses/python-hwpx/METADATA",
++    "소스/licenses/python-hwpx/licenses/LICENSE",
++    "소스/licenses/python-hwpx/licenses/NOTICE",
++    "소스/licenses/python-hwpx/sources/python_hwpx-6.12.0.tar.gz",
++    "소스/licenses/python-hwpx/원본출처.json",
++    "소스/licenses/python-pptx/LICENSE",
++    "소스/licenses/python-pptx/METADATA",
++    "소스/licenses/pywin32-ctypes/LICENSE.txt",
++    "소스/licenses/pywin32-ctypes/METADATA",
++    "소스/licenses/rarfile/METADATA",
++    "소스/licenses/rarfile/licenses/LICENSE",
++    "소스/licenses/reportlab/METADATA",
++    "소스/licenses/reportlab/licenses/LICENSE",
++    "소스/licenses/setuptools/LICENSE",
++    "소스/licenses/setuptools/METADATA",
++    "소스/licenses/setuptools/licenses/LICENSE",
++    "소스/licenses/setuptools/licenses/LICENSE.APACHE",
++    "소스/licenses/setuptools/licenses/LICENSE.BSD",
++    "소스/licenses/setuptools/licenses/LICENSE.txt",
++    "소스/licenses/shiboken6/METADATA",
++    "소스/licenses/shiboken6/licenses/LicenseRef-Qt-Commercial.txt",
++    "소스/licenses/svglib/METADATA",
++    "소스/licenses/svglib/licenses/LICENSE.txt",
++    "소스/licenses/test-dependencies/olefile-0.47-LICENSE.txt",
++    "소스/licenses/tinycss2/METADATA",
++    "소스/licenses/tinycss2/licenses/LICENSE",
++    "소스/licenses/typing_extensions/METADATA",
++    "소스/licenses/typing_extensions/licenses/LICENSE",
++    "소스/licenses/webencodings/METADATA",
++    "소스/licenses/webencodings/licenses/LICENSE",
++    "소스/licenses/xlsxwriter/LICENSE.txt",
++    "소스/licenses/xlsxwriter/METADATA",
++    "소스/licenses/구성요소.json",
++    "소스/offscreen-monitor.json",
++    "소스/package.py",
++    "소스/pdf_lock.py",
++    "소스/pdf_pages.py",
++    "소스/pdf_panel.py",
++    "소스/pdf_tools.py",
++    "소스/preview_panel.py",
++    "소스/requirements-documents-test.txt",
++    "소스/requirements-lock.txt",
++    "소스/restore_document_runtime.py",
++    "소스/studio_ui.py",
++    "소스/test-fixtures/sample.heic",
++    "소스/test-fixtures/공식휠_출처와해시.json",
++    "소스/test-fixtures/생성조건과출처.json",
++    "소스/test-fixtures/생성환경_준비.py",
++    "소스/test-fixtures/자체HEIC_생성.py",
++    "소스/test-fixtures/자체HEIC_출처와재생성.md",
++    "소스/test-fixtures/자체색상패턴.png",
++    "소스/test_conversion_matrix.py",
++    "소스/test_document_external.py",
++    "소스/test_document_formats.py",
++    "소스/test_document_hwp.py",
++    "소스/test_document_security.py",
++    "소스/test_document_shutdown.py",
++    "소스/test_document_xlsb.py",
++    "소스/test_documents_integration.py",
++    "소스/test_documents_ui110.py",
++    "소스/test_engine.py",
++    "소스/test_fixed_layout.py",
++    "소스/test_gui.py",
++    "소스/test_hwp_worker.py",
++    "소스/test_inspection_tools.py",
++    "소스/test_ocr_process.py",
++    "소스/test_pdf_tools.py",
++    "소스/test_pdf_workspace.py",
++    "소스/test_simple_ui111.py",
++    "소스/test_workbench.py",
++    "소스/test_workspace_core.py",
++    "소스/test_workspace_ui.py",
++    "소스/test_배포도구.py",
++    "소스/ui_motion.py",
++    "소스/vendor/7zip/7z.dll",
++    "소스/vendor/7zip/7z.exe",
++    "소스/vendor/h2orestart/H2Orestart.oxt",
++    "소스/vendor/java/NOTICE",
++    "소스/vendor/java/bin/WinFallbackLookup.dll",
++    "소스/vendor/java/bin/api-ms-win-core-console-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-console-l1-2-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-datetime-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-debug-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-errorhandling-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-fibers-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-fibers-l1-1-1.dll",
++    "소스/vendor/java/bin/api-ms-win-core-file-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-file-l1-2-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-file-l2-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-handle-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-heap-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-interlocked-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-kernel32-legacy-l1-1-1.dll",
++    "소스/vendor/java/bin/api-ms-win-core-libraryloader-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-localization-l1-2-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-memory-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-namedpipe-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-processenvironment-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-processthreads-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-processthreads-l1-1-1.dll",
++    "소스/vendor/java/bin/api-ms-win-core-profile-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-rtlsupport-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-string-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-synch-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-synch-l1-2-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-sysinfo-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-sysinfo-l1-2-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-timezone-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-core-util-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-crt-conio-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-crt-convert-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-crt-environment-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-crt-filesystem-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-crt-heap-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-crt-locale-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-crt-math-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-crt-multibyte-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-crt-private-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-crt-process-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-crt-runtime-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-crt-stdio-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-crt-string-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-crt-time-l1-1-0.dll",
++    "소스/vendor/java/bin/api-ms-win-crt-utility-l1-1-0.dll",
++    "소스/vendor/java/bin/awt.dll",
++    "소스/vendor/java/bin/dt_socket.dll",
++    "소스/vendor/java/bin/extnet.dll",
++    "소스/vendor/java/bin/fontmanager.dll",
++    "소스/vendor/java/bin/freetype.dll",
++    "소스/vendor/java/bin/instrument.dll",
++    "소스/vendor/java/bin/j2gss.dll",
++    "소스/vendor/java/bin/j2pcsc.dll",
++    "소스/vendor/java/bin/j2pkcs11.dll",
++    "소스/vendor/java/bin/jaas.dll",
++    "소스/vendor/java/bin/jabswitch.exe",
++    "소스/vendor/java/bin/jaccessinspector.exe",
++    "소스/vendor/java/bin/jaccesswalker.exe",
++    "소스/vendor/java/bin/java.dll",
++    "소스/vendor/java/bin/java.exe",
++    "소스/vendor/java/bin/javaaccessbridge.dll",
++    "소스/vendor/java/bin/javajpeg.dll",
++    "소스/vendor/java/bin/javaw.exe",
++    "소스/vendor/java/bin/jawt.dll",
++    "소스/vendor/java/bin/jdwp.dll",
++    "소스/vendor/java/bin/jfr.exe",
++    "소스/vendor/java/bin/jimage.dll",
++    "소스/vendor/java/bin/jli.dll",
++    "소스/vendor/java/bin/jrunscript.exe",
++    "소스/vendor/java/bin/jsound.dll",
++    "소스/vendor/java/bin/jsvml.dll",
++    "소스/vendor/java/bin/keytool.exe",
++    "소스/vendor/java/bin/kinit.exe",
++    "소스/vendor/java/bin/klist.exe",
++    "소스/vendor/java/bin/ktab.exe",
++    "소스/vendor/java/bin/lcms.dll",
++    "소스/vendor/java/bin/management.dll",
++    "소스/vendor/java/bin/management_agent.dll",
++    "소스/vendor/java/bin/management_ext.dll",
++    "소스/vendor/java/bin/mlib_image.dll",
++    "소스/vendor/java/bin/msvcp140.dll",
++    "소스/vendor/java/bin/net.dll",
++    "소스/vendor/java/bin/nio.dll",
++    "소스/vendor/java/bin/prefs.dll",
++    "소스/vendor/java/bin/rmi.dll",
++    "소스/vendor/java/bin/rmiregistry.exe",
++    "소스/vendor/java/bin/server/classes.jsa",
++    "소스/vendor/java/bin/server/classes_nocoops.jsa",
++    "소스/vendor/java/bin/server/jvm.dll",
++    "소스/vendor/java/bin/splashscreen.dll",
++    "소스/vendor/java/bin/sspi_bridge.dll",
++    "소스/vendor/java/bin/sunmscapi.dll",
++    "소스/vendor/java/bin/ucrtbase.dll",
++    "소스/vendor/java/bin/vcruntime140.dll",
++    "소스/vendor/java/bin/vcruntime140_1.dll",
++    "소스/vendor/java/bin/verify.dll",
++    "소스/vendor/java/bin/w2k_lsa_auth.dll",
++    "소스/vendor/java/bin/windowsaccessbridge-64.dll",
++    "소스/vendor/java/bin/zip.dll",
++    "소스/vendor/java/conf/logging.properties",
++    "소스/vendor/java/conf/management/jmxremote.access",
++    "소스/vendor/java/conf/management/jmxremote.password.template",
++    "소스/vendor/java/conf/management/management.properties",
++    "소스/vendor/java/conf/net.properties",
++    "소스/vendor/java/conf/security/java.policy",
++    "소스/vendor/java/conf/security/java.security",
++    "소스/vendor/java/conf/security/policy/README.txt",
++    "소스/vendor/java/conf/security/policy/limited/default_US_export.policy",
++    "소스/vendor/java/conf/security/policy/limited/default_local.policy",
++    "소스/vendor/java/conf/security/policy/limited/exempt_local.policy",
++    "소스/vendor/java/conf/security/policy/unlimited/default_US_export.policy",
++    "소스/vendor/java/conf/security/policy/unlimited/default_local.policy",
++    "소스/vendor/java/conf/sound.properties",
++    "소스/vendor/java/legal/java.base/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.base/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.base/LICENSE",
++    "소스/vendor/java/legal/java.base/aes.md",
++    "소스/vendor/java/legal/java.base/asm.md",
++    "소스/vendor/java/legal/java.base/c-libutl.md",
++    "소스/vendor/java/legal/java.base/cldr.md",
++    "소스/vendor/java/legal/java.base/icu.md",
++    "소스/vendor/java/legal/java.base/public_suffix.md",
++    "소스/vendor/java/legal/java.base/siphash.md",
++    "소스/vendor/java/legal/java.base/unicode.md",
++    "소스/vendor/java/legal/java.base/wepoll.md",
++    "소스/vendor/java/legal/java.base/zlib.md",
++    "소스/vendor/java/legal/java.compiler/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.compiler/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.compiler/LICENSE",
++    "소스/vendor/java/legal/java.datatransfer/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.datatransfer/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.datatransfer/LICENSE",
++    "소스/vendor/java/legal/java.desktop/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.desktop/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.desktop/LICENSE",
++    "소스/vendor/java/legal/java.desktop/colorimaging.md",
++    "소스/vendor/java/legal/java.desktop/freetype.md",
++    "소스/vendor/java/legal/java.desktop/giflib.md",
++    "소스/vendor/java/legal/java.desktop/harfbuzz.md",
++    "소스/vendor/java/legal/java.desktop/jpeg.md",
++    "소스/vendor/java/legal/java.desktop/lcms.md",
++    "소스/vendor/java/legal/java.desktop/libpng.md",
++    "소스/vendor/java/legal/java.desktop/mesa3d.md",
++    "소스/vendor/java/legal/java.instrument/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.instrument/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.instrument/LICENSE",
++    "소스/vendor/java/legal/java.logging/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.logging/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.logging/LICENSE",
++    "소스/vendor/java/legal/java.management.rmi/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.management.rmi/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.management.rmi/LICENSE",
++    "소스/vendor/java/legal/java.management/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.management/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.management/LICENSE",
++    "소스/vendor/java/legal/java.naming/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.naming/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.naming/LICENSE",
++    "소스/vendor/java/legal/java.net.http/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.net.http/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.net.http/LICENSE",
++    "소스/vendor/java/legal/java.prefs/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.prefs/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.prefs/LICENSE",
++    "소스/vendor/java/legal/java.rmi/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.rmi/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.rmi/LICENSE",
++    "소스/vendor/java/legal/java.scripting/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.scripting/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.scripting/LICENSE",
++    "소스/vendor/java/legal/java.se/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.se/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.se/LICENSE",
++    "소스/vendor/java/legal/java.security.jgss/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.security.jgss/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.security.jgss/LICENSE",
++    "소스/vendor/java/legal/java.security.sasl/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.security.sasl/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.security.sasl/LICENSE",
++    "소스/vendor/java/legal/java.smartcardio/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.smartcardio/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.smartcardio/LICENSE",
++    "소스/vendor/java/legal/java.sql.rowset/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.sql.rowset/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.sql.rowset/LICENSE",
++    "소스/vendor/java/legal/java.sql/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.sql/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.sql/LICENSE",
++    "소스/vendor/java/legal/java.transaction.xa/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.transaction.xa/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.transaction.xa/LICENSE",
++    "소스/vendor/java/legal/java.xml.crypto/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.xml.crypto/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.xml.crypto/LICENSE",
++    "소스/vendor/java/legal/java.xml.crypto/santuario.md",
++    "소스/vendor/java/legal/java.xml/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/java.xml/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/java.xml/LICENSE",
++    "소스/vendor/java/legal/java.xml/bcel.md",
++    "소스/vendor/java/legal/java.xml/dom.md",
++    "소스/vendor/java/legal/java.xml/jcup.md",
++    "소스/vendor/java/legal/java.xml/xalan.md",
++    "소스/vendor/java/legal/java.xml/xerces.md",
++    "소스/vendor/java/legal/jdk.accessibility/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.accessibility/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.accessibility/LICENSE",
++    "소스/vendor/java/legal/jdk.charsets/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.charsets/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.charsets/LICENSE",
++    "소스/vendor/java/legal/jdk.crypto.cryptoki/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.crypto.cryptoki/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.crypto.cryptoki/LICENSE",
++    "소스/vendor/java/legal/jdk.crypto.cryptoki/pkcs11cryptotoken.md",
++    "소스/vendor/java/legal/jdk.crypto.cryptoki/pkcs11wrapper.md",
++    "소스/vendor/java/legal/jdk.crypto.ec/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.crypto.ec/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.crypto.ec/LICENSE",
++    "소스/vendor/java/legal/jdk.crypto.mscapi/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.crypto.mscapi/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.crypto.mscapi/LICENSE",
++    "소스/vendor/java/legal/jdk.dynalink/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.dynalink/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.dynalink/LICENSE",
++    "소스/vendor/java/legal/jdk.dynalink/dynalink.md",
++    "소스/vendor/java/legal/jdk.httpserver/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.httpserver/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.httpserver/LICENSE",
++    "소스/vendor/java/legal/jdk.incubator.foreign/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.incubator.foreign/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.incubator.foreign/LICENSE",
++    "소스/vendor/java/legal/jdk.incubator.vector/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.incubator.vector/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.incubator.vector/LICENSE",
++    "소스/vendor/java/legal/jdk.internal.vm.ci/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.internal.vm.ci/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.internal.vm.ci/LICENSE",
++    "소스/vendor/java/legal/jdk.internal.vm.compiler.management/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.internal.vm.compiler.management/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.internal.vm.compiler.management/LICENSE",
++    "소스/vendor/java/legal/jdk.internal.vm.compiler/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.internal.vm.compiler/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.internal.vm.compiler/LICENSE",
++    "소스/vendor/java/legal/jdk.jdwp.agent/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.jdwp.agent/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.jdwp.agent/LICENSE",
++    "소스/vendor/java/legal/jdk.jfr/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.jfr/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.jfr/LICENSE",
++    "소스/vendor/java/legal/jdk.jsobject/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.jsobject/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.jsobject/LICENSE",
++    "소스/vendor/java/legal/jdk.localedata/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.localedata/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.localedata/LICENSE",
++    "소스/vendor/java/legal/jdk.localedata/cldr.md",
++    "소스/vendor/java/legal/jdk.localedata/thaidict.md",
++    "소스/vendor/java/legal/jdk.management.agent/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.management.agent/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.management.agent/LICENSE",
++    "소스/vendor/java/legal/jdk.management.jfr/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.management.jfr/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.management.jfr/LICENSE",
++    "소스/vendor/java/legal/jdk.management/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.management/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.management/LICENSE",
++    "소스/vendor/java/legal/jdk.naming.dns/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.naming.dns/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.naming.dns/LICENSE",
++    "소스/vendor/java/legal/jdk.naming.rmi/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.naming.rmi/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.naming.rmi/LICENSE",
++    "소스/vendor/java/legal/jdk.net/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.net/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.net/LICENSE",
++    "소스/vendor/java/legal/jdk.nio.mapmode/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.nio.mapmode/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.nio.mapmode/LICENSE",
++    "소스/vendor/java/legal/jdk.sctp/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.sctp/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.sctp/LICENSE",
++    "소스/vendor/java/legal/jdk.security.auth/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.security.auth/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.security.auth/LICENSE",
++    "소스/vendor/java/legal/jdk.security.jgss/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.security.jgss/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.security.jgss/LICENSE",
++    "소스/vendor/java/legal/jdk.unsupported/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.unsupported/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.unsupported/LICENSE",
++    "소스/vendor/java/legal/jdk.xml.dom/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.xml.dom/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.xml.dom/LICENSE",
++    "소스/vendor/java/legal/jdk.zipfs/ADDITIONAL_LICENSE_INFO",
++    "소스/vendor/java/legal/jdk.zipfs/ASSEMBLY_EXCEPTION",
++    "소스/vendor/java/legal/jdk.zipfs/LICENSE",
++    "소스/vendor/java/lib/classlist",
++    "소스/vendor/java/lib/fontconfig.bfc",
++    "소스/vendor/java/lib/fontconfig.properties.src",
++    "소스/vendor/java/lib/jawt.lib",
++    "소스/vendor/java/lib/jfr/default.jfc",
++    "소스/vendor/java/lib/jfr/profile.jfc",
++    "소스/vendor/java/lib/jrt-fs.jar",
++    "소스/vendor/java/lib/jvm.cfg",
++    "소스/vendor/java/lib/jvm.lib",
++    "소스/vendor/java/lib/modules",
++    "소스/vendor/java/lib/psfont.properties.ja",
++    "소스/vendor/java/lib/psfontj2d.properties",
++    "소스/vendor/java/lib/security/blocked.certs",
++    "소스/vendor/java/lib/security/cacerts",
++    "소스/vendor/java/lib/security/default.policy",
++    "소스/vendor/java/lib/security/public_suffix_list.dat",
++    "소스/vendor/java/lib/tzdb.dat",
++    "소스/vendor/java/lib/tzmappings",
++    "소스/vendor/java/release",
++    "소스/vendor/tesseract/doc/AUTHORS",
++    "소스/vendor/tesseract/doc/LICENSE",
++    "소스/vendor/tesseract/doc/README.md",
++    "소스/vendor/tesseract/doc/tessdata_fast-LICENSE",
++    "소스/vendor/tesseract/doc/tessdata_fast-README.md",
++    "소스/vendor/tesseract/libLerc.dll",
++    "소스/vendor/tesseract/libarchive-13.dll",
++    "소스/vendor/tesseract/libb2-1.dll",
++    "소스/vendor/tesseract/libbrotlicommon.dll",
++    "소스/vendor/tesseract/libbrotlidec.dll",
++    "소스/vendor/tesseract/libbz2-1.dll",
++    "소스/vendor/tesseract/libcurl-4.dll",
++    "소스/vendor/tesseract/libdeflate.dll",
++    "소스/vendor/tesseract/libexpat-1.dll",
++    "소스/vendor/tesseract/libgcc_s_seh-1.dll",
++    "소스/vendor/tesseract/libgif-7.dll",
++    "소스/vendor/tesseract/libiconv-2.dll",
++    "소스/vendor/tesseract/libidn2-0.dll",
++    "소스/vendor/tesseract/libintl-8.dll",
++    "소스/vendor/tesseract/libjbig-0.dll",
++    "소스/vendor/tesseract/libjpeg-8.dll",
++    "소스/vendor/tesseract/libleptonica-6.dll",
++    "소스/vendor/tesseract/liblz4.dll",
++    "소스/vendor/tesseract/liblzma-5.dll",
++    "소스/vendor/tesseract/libopenjp2-7.dll",
++    "소스/vendor/tesseract/libpng16-16.dll",
++    "소스/vendor/tesseract/libpsl-5.dll",
++    "소스/vendor/tesseract/libsharpyuv-0.dll",
++    "소스/vendor/tesseract/libssh2-1.dll",
++    "소스/vendor/tesseract/libstdc++-6.dll",
++    "소스/vendor/tesseract/libtesseract-5.dll",
++    "소스/vendor/tesseract/libtiff-6.dll",
++    "소스/vendor/tesseract/libunistring-5.dll",
++    "소스/vendor/tesseract/libwebp-7.dll",
++    "소스/vendor/tesseract/libwebpmux-3.dll",
++    "소스/vendor/tesseract/libwinpthread-1.dll",
++    "소스/vendor/tesseract/libzstd.dll",
++    "소스/vendor/tesseract/tessdata/configs/alto",
++    "소스/vendor/tesseract/tessdata/configs/ambigs.train",
++    "소스/vendor/tesseract/tessdata/configs/api_config",
++    "소스/vendor/tesseract/tessdata/configs/bigram",
++    "소스/vendor/tesseract/tessdata/configs/box.train",
++    "소스/vendor/tesseract/tessdata/configs/box.train.stderr",
++    "소스/vendor/tesseract/tessdata/configs/digits",
++    "소스/vendor/tesseract/tessdata/configs/get.images",
++    "소스/vendor/tesseract/tessdata/configs/hocr",
++    "소스/vendor/tesseract/tessdata/configs/inter",
++    "소스/vendor/tesseract/tessdata/configs/kannada",
++    "소스/vendor/tesseract/tessdata/configs/linebox",
++    "소스/vendor/tesseract/tessdata/configs/logfile",
++    "소스/vendor/tesseract/tessdata/configs/lstm.train",
++    "소스/vendor/tesseract/tessdata/configs/lstmbox",
++    "소스/vendor/tesseract/tessdata/configs/lstmdebug",
++    "소스/vendor/tesseract/tessdata/configs/makebox",
++    "소스/vendor/tesseract/tessdata/configs/page",
++    "소스/vendor/tesseract/tessdata/configs/pdf",
++    "소스/vendor/tesseract/tessdata/configs/quiet",
++    "소스/vendor/tesseract/tessdata/configs/rebox",
++    "소스/vendor/tesseract/tessdata/configs/strokewidth",
++    "소스/vendor/tesseract/tessdata/configs/tsv",
++    "소스/vendor/tesseract/tessdata/configs/txt",
++    "소스/vendor/tesseract/tessdata/configs/unlv",
++    "소스/vendor/tesseract/tessdata/configs/wordstrbox",
++    "소스/vendor/tesseract/tessdata/eng.traineddata",
++    "소스/vendor/tesseract/tessdata/kor.traineddata",
++    "소스/vendor/tesseract/tessdata/osd.traineddata",
++    "소스/vendor/tesseract/tessdata/pdf.ttf",
++    "소스/vendor/tesseract/tessdata/tessconfigs/batch",
++    "소스/vendor/tesseract/tessdata/tessconfigs/batch.nochop",
++    "소스/vendor/tesseract/tessdata/tessconfigs/matdemo",
++    "소스/vendor/tesseract/tessdata/tessconfigs/msdemo",
++    "소스/vendor/tesseract/tessdata/tessconfigs/nobatch",
++    "소스/vendor/tesseract/tessdata/tessconfigs/segdemo",
++    "소스/vendor/tesseract/tesseract.exe",
++    "소스/vendor/tesseract/zlib1.dll",
++    "소스/version-info.txt",
++    "소스/workspace_core.py",
++    "소스/workspace_ui.py",
++    "소스/배포구성.json",
++    "소스/배포빌드.py",
++    "소스/빌드방법.md",
++    "소스/사용안내.txt",
++    "소스/quick_actions.py",
++    "소스/quick_actions_ui.py",
++    "소스/theme_manager.py",
++    "소스/tool_installer.py",
++    "소스/test_quick_actions112.py",
++    "소스/test_theme_install112.py",
++    "소스/1.12-빠른작업안내.md",
++    "소스/1.12-기능50항목.md"
++  ],
++  "excluded_files": {
++    "ROUTING-LESSONS.md": "비공개 운영·실패 이력",
++    "소스/검토기록.md": "비공개 운영 검토 기록",
++    "AGENTS.md": "개인·작업자 운영 지침이며 제품·빌드 입력 아님",
++    "AGENTS.override.md": "개인·작업자 운영 지침이며 제품·빌드 입력 아님",
++    "소스/AGENTS.md": "개인·작업자 운영 지침이며 제품·빌드 입력 아님",
++    "소스/AGENTS.override.md": "개인·작업자 운영 지침이며 제품·빌드 입력 아님",
++    "docs/2026-10-30_고정창과세부디자인.md": "개별 공개 미승인 내부 계획·운영 문서이며 제품·빌드 입력 아님. 원문은 로컬 보존.",
++    "docs/2026-10-30_작업흐름확장.md": "개별 공개 미승인 내부 계획·운영 문서이며 제품·빌드 입력 아님. 원문은 로컬 보존.",
++    "docs/2026-11-02_확장1차_구현계획.md": "개별 공개 미승인 내부 계획·운영 문서이며 제품·빌드 입력 아님. 원문은 로컬 보존.",
++    "docs/2026-11-02_확장1차_명세.md": "개별 공개 미승인 내부 계획·운영 문서이며 제품·빌드 입력 아님. 원문은 로컬 보존.",
++    "docs/2026-11-02_회귀검사계약.md": "개별 공개 미승인 내부 계획·운영 문서이며 제품·빌드 입력 아님. 원문은 로컬 보존.",
++    "docs/2026-11-10_경량화_후속차수계획.md": "개별 공개 미승인 내부 계획·운영 문서이며 제품·빌드 입력 아님. 원문은 로컬 보존.",
++    "docs/2026-11-10_기본과고급_노출표.md": "개별 공개 미승인 내부 계획·운영 문서이며 제품·빌드 입력 아님. 원문은 로컬 보존.",
++    "docs/2026-11-10_문서지원확장_구현계획.md": "개별 공개 미승인 내부 계획·운영 문서이며 제품·빌드 입력 아님. 원문은 로컬 보존.",
++    "docs/2026-11-10_문서지원확장_명세.md": "개별 공개 미승인 내부 계획·운영 문서이며 제품·빌드 입력 아님. 원문은 로컬 보존.",
++    "docs/2026-11-10_쉬운내부화면_구현계획.md": "개별 공개 미승인 내부 계획·운영 문서이며 제품·빌드 입력 아님. 원문은 로컬 보존.",
++    "docs/내부모션.md": "개별 공개 미승인 내부 계획·운영 문서이며 제품·빌드 입력 아님. 원문은 로컬 보존.",
++    "docs/부드러운디자인.md": "개별 공개 미승인 내부 계획·운영 문서이며 제품·빌드 입력 아님. 원문은 로컬 보존.",
++    "docs/스튜디오재설계.md": "개별 공개 미승인 내부 계획·운영 문서이며 제품·빌드 입력 아님. 원문은 로컬 보존.",
++    "docs/요구사항.md": "개별 공개 미승인 내부 계획·운영 문서이며 제품·빌드 입력 아님. 원문은 로컬 보존.",
++    "docs/이동재개.md": "개별 공개 미승인 내부 계획·운영 문서이며 제품·빌드 입력 아님. 원문은 로컬 보존.",
++    "docs/2026-11-20_빠른작업과테마_구현계획.md": "내부 구현 배정 계획이며 제품 소스·사용 안내가 아님",
++    "docs/2026-11-13_HWP양방향_구현계획.md": "이전 내부 설계·작업 문서. 공개 안내는 소스/1.12-빠른작업안내.md와 공개 차수 문서에 별도 보존.",
++    "docs/2026-11-13_HWP양방향_요구사항.md": "이전 내부 설계·작업 문서. 공개 안내는 소스/1.12-빠른작업안내.md와 공개 차수 문서에 별도 보존.",
++    "docs/2026-11-13_문서변환_초기화개선.md": "이전 내부 설계·작업 문서. 공개 안내는 소스/1.12-빠른작업안내.md와 공개 차수 문서에 별도 보존.",
++    "docs/2026-11-14_HWP저장_구현과검증.md": "이전 내부 설계·작업 문서. 공개 안내는 소스/1.12-빠른작업안내.md와 공개 차수 문서에 별도 보존.",
++    "docs/검증/문서51_독립검사_요약.json": "이전 내부 설계·작업·검증 기록. 제품 소스와 필수 고지·빌드 입력이 아니며 로컬에 보존."
++  },
++  "excluded_dirs": {
++    "work": "비공개 작업·중간본·운영 이력",
++    "evidence": "비공개 검증 이력",
++    ".codex": "로컬 운영 상태·정책",
++    ".git": "Git 내부 객체·설정",
++    "소스/__pycache__": "재생성 Python 캐시",
++    "소스/.venv": "개발 환경",
++    "소스/venv": "개발 환경",
++    "소스/build-cache": "재생성 빌드 캐시",
++    "검사도구/__pycache__": "재생성 Python 캐시"
++  },
++  "required_exact": [
++    {
++      "path": "소스/test-fixtures/sample.heic",
++      "bytes": 1954,
++      "sha256": "41a469918bea92bed4d831ee03a583c74d9ce526e9aa7299510502e1774cd44e"
++    },
++    {
++      "path": "소스/test-fixtures/생성조건과출처.json",
++      "bytes": 1347,
++      "sha256": "dacb0d91a04164c22164d9f364a084eb12d96f3166766fbdd660ef2a2063d4ed"
++    },
++    {
++      "path": "소스/test-fixtures/자체HEIC_생성.py",
++      "bytes": 2300,
++      "sha256": "29eb9545d8495adf0ae6de3288035fa892055b05229c630cb76ba4b0ee817de3"
++    },
++    {
++      "path": "소스/licenses/python-hwpx/METADATA",
++      "bytes": 17383,
++      "sha256": "5ab68643b0f10ca287a9ec35924153e271b38958382a4032347aeb1e77a6a80b"
++    },
++    {
++      "path": "소스/licenses/python-hwpx/licenses/LICENSE",
++      "bytes": 9688,
++      "sha256": "fee6f3e30bfe064913de5de0bbe42e1fb2467958ee458199a192bde5e36c0875"
++    },
++    {
++      "path": "소스/licenses/python-hwpx/licenses/NOTICE",
++      "bytes": 3837,
++      "sha256": "85edcf04b5e72192b4b0db28cdcf92010da3bd68d5eb5828ca559467c1cf8b7b"
++    },
++    {
++      "path": "소스/licenses/python-hwpx/sources/python_hwpx-6.12.0.tar.gz",
++      "bytes": 1904791,
++      "sha256": "cad4b8cbdc4036762a1abf9c862196d7c281cb71233f90b53fe50ca93d66ef17"
++    },
++    {
++      "path": "소스/licenses/python-hwpx/원본출처.json",
++      "bytes": 557,
++      "sha256": "18083def18c9223d65a8e8eb46a591d60ca80dc57cd7f0f996166070f5cdccea"
++    }
++  ],
++  "runtime_source_archive_allowlist": [
++    {
++      "path": "소스/licenses/Temurin17/OpenJDK17U-jdk-sources_17.0.21_9.tar.gz",
++      "bytes": 109791166,
++      "sha256": "89a455fa83b19e3a166bca47a465d51712441be607543dd465083ef2437a426d"
++    },
++    {
++      "path": "소스/licenses/HEIC-GNU-runtime/mingw-w64-gcc-16.2.0-3.src.tar.zst",
++      "bytes": 107228430,
++      "sha256": "eb3479a8b0b23810fbbbc25ef76879e867e88d09960a40145d73f5505fda4da0"
++    },
++    {
++      "path": "소스/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0.orig.tar.gz",
++      "bytes": 94299633,
++      "sha256": "e162a5ef3f0077ecae598c6556908d2ab80841532df3398072a96a6df6e6aa29"
++    },
++    {
++      "path": "소스/licenses/HEIC-GNU-runtime/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1.src.tar.zst",
++      "bytes": 54173752,
++      "sha256": "7bf513784ae0bc4f1a413e1f787f7a3ba2bd7ec0503980ea4d17ddf0e4796c87"
++    },
++    {
++      "path": "소스/licenses/OCR/sources/mingw-w64-winpthreads-14.0.0.r220.gd999af622-1.src.tar.zst",
++      "bytes": 52471595,
++      "sha256": "9743facee4a25c6bb44e856ed8182f7e4c652812481656e68aa57b9070992451"
++    },
++    {
++      "path": "소스/licenses/Qt-소스/qtbase-everywhere-src-6.12.0.tar.xz",
++      "bytes": 51220268,
++      "sha256": "a951bd163c7b80fc6b8c88d7668fb56abf91c152373e13c10666763238131307"
++    },
++    {
++      "path": "소스/licenses/Qt-소스/pyside-setup-everywhere-src-6.12.0.tar.xz",
++      "bytes": 18211772,
++      "sha256": "099c1a597cf33c1b000e11cf68a0b82d216fb802bf81726efc720394f10c7751"
++    },
++    {
++      "path": "소스/licenses/HEIC-소스/pi_heif_decoder-1.7.0.post4.tar.gz",
++      "bytes": 17121791,
++      "sha256": "14113194032e4a4b5a3260d35524f09a0d6619110d31ad8457092fddede4ca1e"
++    },
++    {
++      "path": "소스/licenses/OCR/sources/mingw-w64-leptonica-1.87.0-1.src.tar.zst",
++      "bytes": 13713270,
++      "sha256": "956dd40b8213863ec55fe7a6a36bd501782f315306c5dae1cad8abc405979b7c"
++    },
++    {
++      "path": "소스/licenses/OCR/sources/mingw-w64-gettext-1.0-1.src.tar.zst",
++      "bytes": 10267655,
++      "sha256": "cca0d0c8f60353faccc5ad40405240014e4a7ccc8b1c6ca9f4626aef3097d26e"
++    }
++  ],
++  "separation_reason": "528499332바이트의 정확10개 원 archive는 전체소스ZIP에 보존하고 실행부에서만 분리. 동등한 동일 Release 접근의 실제 게시 검증은 별도.",
++  "source_zip": "플립링-1.12.0-전체소스.zip"
++}
+--- 1.11.0/소스/배포빌드.py
++++ 1.12.0/소스/배포빌드.py
+@@ -1,334 +1,334 @@
+-"""준비 → 전체 소스 동결 → 불변 입력 컴파일의 배포 진입점과 공통 검사."""
+-import argparse
+-from contextlib import contextmanager
+-import hashlib
+-import json
+-import os
+-from pathlib import Path, PurePosixPath
+-import stat
+-import subprocess
+-import sys
+-import zipfile
+-
+-SOURCE_ZIP_NAME = "플립링-1.11.0-전체소스.zip"
+-RELEASE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.11.0"
+-SOURCE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/download/v1.11.0/" + SOURCE_ZIP_NAME
+-
+-
+-class DeliveryError(RuntimeError):
+-    """누락·변조·안전 경계 실패는 다음 배포 단계를 차단한다."""
+-
+-
+-def digest(path):
+-    with Path(path).open("rb") as stream:
+-        return hashlib.file_digest(stream, "sha256").hexdigest()
+-
+-
+-def record(path, name):
+-    return {"path": name, "bytes": path.stat().st_size, "sha256": digest(path)}
+-
+-
+-def relative_name(value):
+-    if not isinstance(value, str) or not value or "\\" in value or ":" in value or "\x00" in value:
+-        raise DeliveryError("잘못된 상대 경로: " + repr(value))
+-    parts = value.split("/")
+-    if any(part in ("", ".", "..") or part.endswith((" ", ".")) for part in parts):
+-        raise DeliveryError("상대 경로 탈출 또는 모호한 이름: " + value)
+-    reserved = {"CON", "PRN", "AUX", "NUL", *("COM" + str(i) for i in range(1, 10)), *("LPT" + str(i) for i in range(1, 10))}
+-    if any(part.split(".")[0].upper() in reserved or any(c in part for c in '<>"|?*') for part in parts):
+-        raise DeliveryError("Windows에서 모호하거나 금지된 ZIP 경로: " + value)
+-    return value
+-
+-
+-def reject_links(path):
+-    path = Path(path).absolute()
+-    for parent in (path, *path.parents):
+-        if parent.exists() or parent.is_symlink():
+-            info = parent.lstat()
+-            if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & 0x400:
+-                raise DeliveryError("연결·재분석 지점은 허용하지 않습니다: " + str(parent))
+-    return path
+-
+-
+-def external_path(root, target):
+-    root = reject_links(root).resolve(strict=True)
+-    target = reject_links(target).resolve()
+-    if target == root or target.is_relative_to(root) or root.is_relative_to(target):
+-        raise DeliveryError("작업·출력은 입력 트리와 겹칠 수 없습니다: " + str(target))
+-    return target
+-
+-
+-def snapshot(root):
+-    root = reject_links(root).resolve(strict=True)
+-    result, seen = [], set()
+-    for directory, dirs, files in os.walk(root, followlinks=False):
+-        for name in dirs + files:
+-            reject_links(Path(directory) / name)
+-        for name in files:
+-            path = Path(directory) / name
+-            relative = relative_name(path.relative_to(root).as_posix())
+-            if relative.casefold() in seen:
+-                raise DeliveryError("대소문자 충돌: " + relative)
+-            seen.add(relative.casefold())
+-            result.append(record(path, relative))
+-    return sorted(result, key=lambda entry: entry["path"])
+-
+-
+-def assert_tree(root, expected):
+-    if snapshot(root) != expected:
+-        raise DeliveryError("동결 소스의 파일 추가·삭제·내용 변경을 발견했습니다.")
+-
+-
+-def save_new(path, data):
+-    path = reject_links(path)
+-    path.parent.mkdir(parents=True, exist_ok=True)
+-    with path.open("x", encoding="utf-8", newline="\n") as stream:
+-        json.dump(data, stream, ensure_ascii=False, indent=2)
+-        stream.write("\n")
+-
+-
+-def load(path):
+-    reject_links(path)
+-    return json.loads(Path(path).read_text(encoding="utf-8"))
+-
+-
+-def classified_entries(root, config):
+-    if config.get("held_inputs"):
+-        raise DeliveryError("권한·필수 입력 보류 해소 전 동결 금지: " + repr(config["held_inputs"]))
+-    entries = snapshot(root)
+-    files = config["excluded_files"]
+-    dirs = config["excluded_dirs"]
+-    for mapping in (files, dirs):
+-        for name, reason in mapping.items():
+-            relative_name(name)
+-            if not isinstance(reason, str) or not reason.strip():
+-                raise DeliveryError("공개 제외 이유가 없습니다: " + name)
+-    included, excluded = [], {}
+-    for entry in entries:
+-        name = entry["path"]
+-        if config.get("source_roots") and name.split("/")[0] not in config["source_roots"] and name not in files:
+-            raise DeliveryError("분류되지 않은 입력 경로: " + name)
+-        reason = files.get(name)
+-        excluded_name = name
+-        if name.startswith("docs/") and name not in config.get("reviewed_public_docs", []) and name not in files:
+-            raise DeliveryError("개별 공개 분류가 없는 상위 문서: " + name)
+-        for directory, why in dirs.items():
+-            if name.startswith(directory + "/"):
+-                reason = why
+-                excluded_name = directory + "/"
+-        if reason:
+-            caches = {"__pycache__", ".venv", "venv", "build-cache"}
+-            product_code = name.startswith("소스/") and name.endswith(".py") and not caches.intersection(PurePosixPath(name).parts)
+-            product_data = name.startswith(("소스/assets/", "소스/vendor/", "소스/licenses/", "소스/test-fixtures/"))
+-            if name in config["required"] or product_code or product_data:
+-                raise DeliveryError("필수 입력·제품·빌드·검사 코드는 제외할 수 없습니다: " + name)
+-            excluded[excluded_name] = {"path": excluded_name, "reason": reason}
+-        else:
+-            included.append(entry)
+-    names = {entry["path"] for entry in included}
+-    for name in config["required"]:
+-        if name not in names:
+-            raise DeliveryError("필수 전체 소스 입력 누락: " + name)
+-    for entry in config["runtime_source_archive_allowlist"]:
+-        if entry not in included:
+-            raise DeliveryError("정확 원본 archive의 경로·크기·SHA 불일치: " + entry["path"])
+-    for entry in config.get("required_exact", []):
+-        if entry not in included:
+-            raise DeliveryError("공개 가능한 필수 입력의 정확 경로·크기·SHA 미확인: " + entry["path"])
+-    return included, [excluded[name] for name in sorted(excluded)]
+-
+-
+-def verify_zip(path, expected):
+-    expected_map = {relative_name(e["path"]): e for e in expected}
+-    if len(expected_map) != len(expected):
+-        raise DeliveryError("기대 ZIP 목록에 중복 경로가 있습니다.")
+-    seen = set()
+-    with zipfile.ZipFile(path) as archive:
+-        for info in archive.infolist():
+-            name = relative_name(info.filename)
+-            if info.is_dir() or stat.S_ISLNK(info.external_attr >> 16):
+-                raise DeliveryError("ZIP 디렉터리·연결 항목은 허용하지 않습니다: " + name)
+-            if name.casefold() in seen or name not in expected_map:
+-                raise DeliveryError("ZIP 중복·대소문자 충돌·불명 추가: " + name)
+-            seen.add(name.casefold())
+-            entry = expected_map[name]
+-            with archive.open(info) as stream:
+-                actual = hashlib.file_digest(stream, "sha256").hexdigest()
+-            if info.file_size != entry["bytes"] or actual != entry["sha256"]:
+-                raise DeliveryError("ZIP 파일 크기·SHA 불일치: " + name)
+-        if seen != {name.casefold() for name in expected_map}:
+-            raise DeliveryError("ZIP 필수 entry가 누락됐습니다.")
+-
+-
+-def freeze_source(root, prepared, target):
+-    root = Path(root)
+-    target = external_path(root, target)
+-    if target.name != SOURCE_ZIP_NAME:
+-        raise DeliveryError("고정 전체 소스 ZIP 파일명을 유지해 주세요.")
+-    assert_tree(root, prepared["source_tree"])
+-    entries, excluded = classified_entries(root, prepared["config"])
+-    partial = target.with_suffix(target.suffix + ".partial")
+-    if target.exists() or partial.exists():
+-        raise DeliveryError("기존 ZIP·중단 산출물을 재사용하지 않습니다.")
+-    target.parent.mkdir(parents=True, exist_ok=True)
+-    with zipfile.ZipFile(partial, "x", compression=zipfile.ZIP_DEFLATED, compresslevel=6, allowZip64=True) as archive:
+-        for entry in entries:
+-            archive.write(root / entry["path"], entry["path"])
+-    verify_zip(partial, entries)
+-    assert_tree(root, prepared["source_tree"])
+-    partial.rename(target)
+-    return {"schema": 1, "version": prepared["config"]["version"], "file": target.name,
+-            "bytes": target.stat().st_size, "sha256": digest(target), "entries": entries,
+-            "excluded": excluded, "release_url": RELEASE_URL, "source_url": SOURCE_URL,
+-            "url_verified": False}
+-
+-
+-def verify_source_manifest(root, prepared, manifest, archive):
+-    assert_tree(root, prepared["source_tree"])
+-    if prepared.get("config_path") and load(Path(root) / relative_name(prepared["config_path"])) != prepared["config"]:
+-        raise DeliveryError("외부 준비 manifest의 배포 구성이 동결 구성과 다릅니다.")
+-    entries, excluded = classified_entries(root, prepared["config"])
+-    if manifest.get("entries") != entries or manifest.get("excluded") != excluded:
+-        raise DeliveryError("전체 소스 분류와 외부 manifest가 다릅니다.")
+-    if (manifest.get("file") != SOURCE_ZIP_NAME or manifest.get("version") != "1.11.0"
+-            or manifest.get("release_url") != RELEASE_URL or manifest.get("source_url") != SOURCE_URL):
+-        raise DeliveryError("전체 소스의 버전·파일명·예정 URL이 다릅니다.")
+-    archive = reject_links(archive)
+-    if archive.stat().st_size != manifest["bytes"] or digest(archive) != manifest["sha256"]:
+-        raise DeliveryError("전체 소스 ZIP 크기·SHA 불일치")
+-    verify_zip(archive, entries)
+-
+-
+-class ZipFileValue:
+-    def __init__(self, archive, entry):
+-        self.archive, self.entry = archive, entry
+-
+-    def is_file(self):
+-        return True
+-
+-    def stat(self):
+-        from types import SimpleNamespace
+-        return SimpleNamespace(st_size=self.entry["bytes"])
+-
+-    @contextmanager
+-    def open(self, mode="rb"):
+-        if mode != "rb":
+-            raise DeliveryError("ZIP 소스는 읽기만 허용합니다.")
+-        # 큰 상응 소스를 메모리 전체에 올리지 않고 ZIP과 entry 수명을 함께 닫는다.
+-        with zipfile.ZipFile(self.archive) as archive:
+-            with archive.open(self.entry["path"]) as stream:
+-                yield stream
+-
+-    def read_bytes(self):
+-        with zipfile.ZipFile(self.archive) as archive:
+-            return archive.read(self.entry["path"])
+-
+-
+-class ArchiveResolver:
+-    def __init__(self, runtime, archive, manifest, config):
+-        self.runtime = reject_links(runtime).resolve(strict=True)
+-        self.archive = reject_links(archive)
+-        if digest(self.archive) != manifest["sha256"] or self.archive.stat().st_size != manifest["bytes"]:
+-            raise DeliveryError("해석할 전체 소스 ZIP 변조")
+-        verify_zip(self.archive, manifest["entries"])
+-        self.allowed = {}
+-        for entry in config["runtime_source_archive_allowlist"]:
+-            if entry not in manifest["entries"] or not entry["path"].startswith("소스/licenses/"):
+-                raise DeliveryError("허용 archive가 정확 전체 소스에 없습니다.")
+-            relative = entry["path"].removeprefix("소스/")
+-            if (self.runtime / relative).exists():
+-                raise DeliveryError("실행 폴더에 분리 대상 archive가 잔존합니다: " + relative)
+-            self.allowed[relative] = entry
+-
+-    def resolve(self, path):
+-        path = reject_links(path).resolve()
+-        if not path.is_relative_to(self.runtime):
+-            raise DeliveryError("실행 자료 경로 탈출")
+-        if path.is_file():
+-            return path
+-        entry = self.allowed.get(path.relative_to(self.runtime).as_posix())
+-        if entry is None:
+-            raise DeliveryError("허용 목록 밖 실행 자료 누락: " + str(path))
+-        return ZipFileValue(self.archive, entry)
+-
+-
+-def runtime_notice(manifest):
+-    return ("플립링 1.11.0 전체 상응 소스\n파일: " + manifest["file"] + "\nSHA-256: " + manifest["sha256"]
+-            + "\n동일 Release: " + manifest["release_url"] + "\n정확 소스 자산: " + manifest["source_url"]
+-            + "\n고객 배포 폴더의 같은 전체 소스 ZIP과 원문 고지·패치·빌드 방법을 보존해 주세요.\n"
+-            "온라인 재배포자는 같은 장소에서 무료로 동등한 상응 소스 접근을 제공할 수 있습니다.\n"
+-            "원 개발자의 URL만 남겨 자신의 소스 제공 의무가 자동 면제되는 것은 아닙니다.\n"
+-            "호환 Qt/PySide 동적 라이브러리 교체와 수정 디버깅을 위한 역공학을 제한하지 않습니다.\n")
+-
+-
+-def stage_legal(source, program, manifest, config):
+-    import shutil
+-    target = program / "licenses"
+-    if target.exists():
+-        raise DeliveryError("오래된 고지 overlay를 막기 위해 새 고지 폴더가 필요합니다.")
+-    allowed = {entry["path"].removeprefix("소스/") for entry in config["runtime_source_archive_allowlist"]}
+-    expected = []
+-    for entry in snapshot(source / "licenses"):
+-        relative = "licenses/" + entry["path"]
+-        if relative in allowed:
+-            continue
+-        destination = program / relative
+-        destination.parent.mkdir(parents=True, exist_ok=True)
+-        shutil.copy2(source / relative, destination)
+-        expected.append(entry)
+-    if snapshot(target) != expected:
+-        raise DeliveryError("실행 고지 목록·내용이 원문과 다릅니다.")
+-    (target / "전체소스_안내.txt").write_text(runtime_notice(manifest), encoding="utf-8", newline="\n")
+-    save_new(target / "상응소스_배치.json", {"source": {key: manifest[key] for key in ("file", "bytes", "sha256", "source_url", "release_url")},
+-              "runtime_excluded": config["runtime_source_archive_allowlist"]})
+-
+-
+-def verify_runtime_legal(source, program, manifest, config):
+-    expected = {entry["path"]: entry for entry in snapshot(source / "licenses")}
+-    for entry in config["runtime_source_archive_allowlist"]:
+-        expected.pop(entry["path"].removeprefix("소스/licenses/"))
+-    actual = {entry["path"]: entry for entry in snapshot(program / "licenses")}
+-    for name in ("전체소스_안내.txt", "상응소스_배치.json"):
+-        if name not in actual:
+-            raise DeliveryError("동결 소스 고지·배치 안내 누락: " + name)
+-        actual.pop(name)
+-    if actual != expected:
+-        raise DeliveryError("실행 원 고지·패치·recipe의 누락·추가·변조")
+-    if (program / "licenses/전체소스_안내.txt").read_text(encoding="utf-8") != runtime_notice(manifest):
+-        raise DeliveryError("동결 전체 소스 고지 URL·SHA·안내 불일치")
+-    placement = load(program / "licenses/상응소스_배치.json")
+-    if placement != {"source": {key: manifest[key] for key in ("file", "bytes", "sha256", "source_url", "release_url")},
+-                     "runtime_excluded": config["runtime_source_archive_allowlist"]}:
+-        raise DeliveryError("상응 소스 배치 manifest 불일치")
+-
+-
+-def main():
+-    parser = argparse.ArgumentParser(description=__doc__)
+-    parser.add_argument("--output-root", type=Path, required=True)
+-    parser.add_argument("--work-root", type=Path, required=True)
+-    parser.add_argument("--iscc", type=Path, required=True)
+-    args = parser.parse_args()
+-    source = Path(__file__).resolve().parent
+-    root = source.parent
+-    output = external_path(root, args.output_root)
+-    work = external_path(root, args.work_root)
+-    for path in (output, work):
+-        if path.exists():
+-            raise DeliveryError("새 작업·출력 폴더를 지정해 주세요: " + str(path))
+-    import build
+-    prepared = build.prepare(source, output, work, args.iscc)
+-    prepared_path = work / "준비_manifest.json"
+-    save_new(prepared_path, prepared)
+-    manifest = freeze_source(root, prepared, output / SOURCE_ZIP_NAME)
+-    manifest_path = output / "전체소스_manifest.json"
+-    save_new(manifest_path, manifest)
+-    build.compile_prepared(source, prepared, manifest, output, work, args.iscc)
+-    subprocess.run([sys.executable, "-B", "-X", "utf8", str(source / "package.py"), "--release-root", str(output),
+-                    "--source-manifest", str(manifest_path), "--prepared", str(prepared_path)], check=True, cwd=source, timeout=600)
+-
+-
+-if __name__ == "__main__":
+-    try:
+-        main()
+-    except (DeliveryError, OSError, subprocess.SubprocessError, ValueError) as error:
+-        raise SystemExit("배포 중단: " + str(error)) from error
++"""준비 → 전체 소스 동결 → 불변 입력 컴파일의 배포 진입점과 공통 검사."""
++import argparse
++from contextlib import contextmanager
++import hashlib
++import json
++import os
++from pathlib import Path, PurePosixPath
++import stat
++import subprocess
++import sys
++import zipfile
++
++SOURCE_ZIP_NAME = "플립링-1.12.0-전체소스.zip"
++RELEASE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.12.0"
++SOURCE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/download/v1.12.0/" + "FlipRing-1.12.0-Source.zip"
++
++
++class DeliveryError(RuntimeError):
++    """누락·변조·안전 경계 실패는 다음 배포 단계를 차단한다."""
++
++
++def digest(path):
++    with Path(path).open("rb") as stream:
++        return hashlib.file_digest(stream, "sha256").hexdigest()
++
++
++def record(path, name):
++    return {"path": name, "bytes": path.stat().st_size, "sha256": digest(path)}
++
++
++def relative_name(value):
++    if not isinstance(value, str) or not value or "\\" in value or ":" in value or "\x00" in value:
++        raise DeliveryError("잘못된 상대 경로: " + repr(value))
++    parts = value.split("/")
++    if any(part in ("", ".", "..") or part.endswith((" ", ".")) for part in parts):
++        raise DeliveryError("상대 경로 탈출 또는 모호한 이름: " + value)
++    reserved = {"CON", "PRN", "AUX", "NUL", *("COM" + str(i) for i in range(1, 10)), *("LPT" + str(i) for i in range(1, 10))}
++    if any(part.split(".")[0].upper() in reserved or any(c in part for c in '<>"|?*') for part in parts):
++        raise DeliveryError("Windows에서 모호하거나 금지된 ZIP 경로: " + value)
++    return value
++
++
++def reject_links(path):
++    path = Path(path).absolute()
++    for parent in (path, *path.parents):
++        if parent.exists() or parent.is_symlink():
++            info = parent.lstat()
++            if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & 0x400:
++                raise DeliveryError("연결·재분석 지점은 허용하지 않습니다: " + str(parent))
++    return path
++
++
++def external_path(root, target):
++    root = reject_links(root).resolve(strict=True)
++    target = reject_links(target).resolve()
++    if target == root or target.is_relative_to(root) or root.is_relative_to(target):
++        raise DeliveryError("작업·출력은 입력 트리와 겹칠 수 없습니다: " + str(target))
++    return target
++
++
++def snapshot(root):
++    root = reject_links(root).resolve(strict=True)
++    result, seen = [], set()
++    for directory, dirs, files in os.walk(root, followlinks=False):
++        for name in dirs + files:
++            reject_links(Path(directory) / name)
++        for name in files:
++            path = Path(directory) / name
++            relative = relative_name(path.relative_to(root).as_posix())
++            if relative.casefold() in seen:
++                raise DeliveryError("대소문자 충돌: " + relative)
++            seen.add(relative.casefold())
++            result.append(record(path, relative))
++    return sorted(result, key=lambda entry: entry["path"])
++
++
++def assert_tree(root, expected):
++    if snapshot(root) != expected:
++        raise DeliveryError("동결 소스의 파일 추가·삭제·내용 변경을 발견했습니다.")
++
++
++def save_new(path, data):
++    path = reject_links(path)
++    path.parent.mkdir(parents=True, exist_ok=True)
++    with path.open("x", encoding="utf-8", newline="\n") as stream:
++        json.dump(data, stream, ensure_ascii=False, indent=2)
++        stream.write("\n")
++
++
++def load(path):
++    reject_links(path)
++    return json.loads(Path(path).read_text(encoding="utf-8"))
++
++
++def classified_entries(root, config):
++    if config.get("held_inputs"):
++        raise DeliveryError("권한·필수 입력 보류 해소 전 동결 금지: " + repr(config["held_inputs"]))
++    entries = snapshot(root)
++    files = config["excluded_files"]
++    dirs = config["excluded_dirs"]
++    for mapping in (files, dirs):
++        for name, reason in mapping.items():
++            relative_name(name)
++            if not isinstance(reason, str) or not reason.strip():
++                raise DeliveryError("공개 제외 이유가 없습니다: " + name)
++    included, excluded = [], {}
++    for entry in entries:
++        name = entry["path"]
++        if config.get("source_roots") and name.split("/")[0] not in config["source_roots"] and name not in files:
++            raise DeliveryError("분류되지 않은 입력 경로: " + name)
++        reason = files.get(name)
++        excluded_name = name
++        if name.startswith("docs/") and name not in config.get("reviewed_public_docs", []) and name not in files:
++            raise DeliveryError("개별 공개 분류가 없는 상위 문서: " + name)
++        for directory, why in dirs.items():
++            if name.startswith(directory + "/"):
++                reason = why
++                excluded_name = directory + "/"
++        if reason:
++            caches = {"__pycache__", ".venv", "venv", "build-cache"}
++            product_code = name.startswith("소스/") and name.endswith(".py") and not caches.intersection(PurePosixPath(name).parts)
++            product_data = name.startswith(("소스/assets/", "소스/vendor/", "소스/licenses/", "소스/test-fixtures/"))
++            if name in config["required"] or product_code or product_data:
++                raise DeliveryError("필수 입력·제품·빌드·검사 코드는 제외할 수 없습니다: " + name)
++            excluded[excluded_name] = {"path": excluded_name, "reason": reason}
++        else:
++            included.append(entry)
++    names = {entry["path"] for entry in included}
++    for name in config["required"]:
++        if name not in names:
++            raise DeliveryError("필수 전체 소스 입력 누락: " + name)
++    for entry in config["runtime_source_archive_allowlist"]:
++        if entry not in included:
++            raise DeliveryError("정확 원본 archive의 경로·크기·SHA 불일치: " + entry["path"])
++    for entry in config.get("required_exact", []):
++        if entry not in included:
++            raise DeliveryError("공개 가능한 필수 입력의 정확 경로·크기·SHA 미확인: " + entry["path"])
++    return included, [excluded[name] for name in sorted(excluded)]
++
++
++def verify_zip(path, expected):
++    expected_map = {relative_name(e["path"]): e for e in expected}
++    if len(expected_map) != len(expected):
++        raise DeliveryError("기대 ZIP 목록에 중복 경로가 있습니다.")
++    seen = set()
++    with zipfile.ZipFile(path) as archive:
++        for info in archive.infolist():
++            name = relative_name(info.filename)
++            if info.is_dir() or stat.S_ISLNK(info.external_attr >> 16):
++                raise DeliveryError("ZIP 디렉터리·연결 항목은 허용하지 않습니다: " + name)
++            if name.casefold() in seen or name not in expected_map:
++                raise DeliveryError("ZIP 중복·대소문자 충돌·불명 추가: " + name)
++            seen.add(name.casefold())
++            entry = expected_map[name]
++            with archive.open(info) as stream:
++                actual = hashlib.file_digest(stream, "sha256").hexdigest()
++            if info.file_size != entry["bytes"] or actual != entry["sha256"]:
++                raise DeliveryError("ZIP 파일 크기·SHA 불일치: " + name)
++        if seen != {name.casefold() for name in expected_map}:
++            raise DeliveryError("ZIP 필수 entry가 누락됐습니다.")
++
++
++def freeze_source(root, prepared, target):
++    root = Path(root)
++    target = external_path(root, target)
++    if target.name != SOURCE_ZIP_NAME:
++        raise DeliveryError("고정 전체 소스 ZIP 파일명을 유지해 주세요.")
++    assert_tree(root, prepared["source_tree"])
++    entries, excluded = classified_entries(root, prepared["config"])
++    partial = target.with_suffix(target.suffix + ".partial")
++    if target.exists() or partial.exists():
++        raise DeliveryError("기존 ZIP·중단 산출물을 재사용하지 않습니다.")
++    target.parent.mkdir(parents=True, exist_ok=True)
++    with zipfile.ZipFile(partial, "x", compression=zipfile.ZIP_DEFLATED, compresslevel=6, allowZip64=True) as archive:
++        for entry in entries:
++            archive.write(root / entry["path"], entry["path"])
++    verify_zip(partial, entries)
++    assert_tree(root, prepared["source_tree"])
++    partial.rename(target)
++    return {"schema": 1, "version": prepared["config"]["version"], "file": target.name,
++            "bytes": target.stat().st_size, "sha256": digest(target), "entries": entries,
++            "excluded": excluded, "release_url": RELEASE_URL, "source_url": SOURCE_URL,
++            "url_verified": False}
++
++
++def verify_source_manifest(root, prepared, manifest, archive):
++    assert_tree(root, prepared["source_tree"])
++    if prepared.get("config_path") and load(Path(root) / relative_name(prepared["config_path"])) != prepared["config"]:
++        raise DeliveryError("외부 준비 manifest의 배포 구성이 동결 구성과 다릅니다.")
++    entries, excluded = classified_entries(root, prepared["config"])
++    if manifest.get("entries") != entries or manifest.get("excluded") != excluded:
++        raise DeliveryError("전체 소스 분류와 외부 manifest가 다릅니다.")
++    if (manifest.get("file") != SOURCE_ZIP_NAME or manifest.get("version") != "1.12.0"
++            or manifest.get("release_url") != RELEASE_URL or manifest.get("source_url") != SOURCE_URL):
++        raise DeliveryError("전체 소스의 버전·파일명·예정 URL이 다릅니다.")
++    archive = reject_links(archive)
++    if archive.stat().st_size != manifest["bytes"] or digest(archive) != manifest["sha256"]:
++        raise DeliveryError("전체 소스 ZIP 크기·SHA 불일치")
++    verify_zip(archive, entries)
++
++
++class ZipFileValue:
++    def __init__(self, archive, entry):
++        self.archive, self.entry = archive, entry
++
++    def is_file(self):
++        return True
++
++    def stat(self):
++        from types import SimpleNamespace
++        return SimpleNamespace(st_size=self.entry["bytes"])
++
++    @contextmanager
++    def open(self, mode="rb"):
++        if mode != "rb":
++            raise DeliveryError("ZIP 소스는 읽기만 허용합니다.")
++        # 큰 상응 소스를 메모리 전체에 올리지 않고 ZIP과 entry 수명을 함께 닫는다.
++        with zipfile.ZipFile(self.archive) as archive:
++            with archive.open(self.entry["path"]) as stream:
++                yield stream
++
++    def read_bytes(self):
++        with zipfile.ZipFile(self.archive) as archive:
++            return archive.read(self.entry["path"])
++
++
++class ArchiveResolver:
++    def __init__(self, runtime, archive, manifest, config):
++        self.runtime = reject_links(runtime).resolve(strict=True)
++        self.archive = reject_links(archive)
++        if digest(self.archive) != manifest["sha256"] or self.archive.stat().st_size != manifest["bytes"]:
++            raise DeliveryError("해석할 전체 소스 ZIP 변조")
++        verify_zip(self.archive, manifest["entries"])
++        self.allowed = {}
++        for entry in config["runtime_source_archive_allowlist"]:
++            if entry not in manifest["entries"] or not entry["path"].startswith("소스/licenses/"):
++                raise DeliveryError("허용 archive가 정확 전체 소스에 없습니다.")
++            relative = entry["path"].removeprefix("소스/")
++            if (self.runtime / relative).exists():
++                raise DeliveryError("실행 폴더에 분리 대상 archive가 잔존합니다: " + relative)
++            self.allowed[relative] = entry
++
++    def resolve(self, path):
++        path = reject_links(path).resolve()
++        if not path.is_relative_to(self.runtime):
++            raise DeliveryError("실행 자료 경로 탈출")
++        if path.is_file():
++            return path
++        entry = self.allowed.get(path.relative_to(self.runtime).as_posix())
++        if entry is None:
++            raise DeliveryError("허용 목록 밖 실행 자료 누락: " + str(path))
++        return ZipFileValue(self.archive, entry)
++
++
++def runtime_notice(manifest):
++    return ("플립링 1.12.0 전체 상응 소스\n파일: " + manifest["file"] + "\nSHA-256: " + manifest["sha256"]
++            + "\n동일 Release: " + manifest["release_url"] + "\n정확 소스 자산: " + manifest["source_url"]
++            + "\n고객 배포 폴더의 같은 전체 소스 ZIP과 원문 고지·패치·빌드 방법을 보존해 주세요.\n"
++            "온라인 재배포자는 같은 장소에서 무료로 동등한 상응 소스 접근을 제공할 수 있습니다.\n"
++            "원 개발자의 URL만 남겨 자신의 소스 제공 의무가 자동 면제되는 것은 아닙니다.\n"
++            "호환 Qt/PySide 동적 라이브러리 교체와 수정 디버깅을 위한 역공학을 제한하지 않습니다.\n")
++
++
++def stage_legal(source, program, manifest, config):
++    import shutil
++    target = program / "licenses"
++    if target.exists():
++        raise DeliveryError("오래된 고지 overlay를 막기 위해 새 고지 폴더가 필요합니다.")
++    allowed = {entry["path"].removeprefix("소스/") for entry in config["runtime_source_archive_allowlist"]}
++    expected = []
++    for entry in snapshot(source / "licenses"):
++        relative = "licenses/" + entry["path"]
++        if relative in allowed:
++            continue
++        destination = program / relative
++        destination.parent.mkdir(parents=True, exist_ok=True)
++        shutil.copy2(source / relative, destination)
++        expected.append(entry)
++    if snapshot(target) != expected:
++        raise DeliveryError("실행 고지 목록·내용이 원문과 다릅니다.")
++    (target / "전체소스_안내.txt").write_text(runtime_notice(manifest), encoding="utf-8", newline="\n")
++    save_new(target / "상응소스_배치.json", {"source": {key: manifest[key] for key in ("file", "bytes", "sha256", "source_url", "release_url")},
++              "runtime_excluded": config["runtime_source_archive_allowlist"]})
++
++
++def verify_runtime_legal(source, program, manifest, config):
++    expected = {entry["path"]: entry for entry in snapshot(source / "licenses")}
++    for entry in config["runtime_source_archive_allowlist"]:
++        expected.pop(entry["path"].removeprefix("소스/licenses/"))
++    actual = {entry["path"]: entry for entry in snapshot(program / "licenses")}
++    for name in ("전체소스_안내.txt", "상응소스_배치.json"):
++        if name not in actual:
++            raise DeliveryError("동결 소스 고지·배치 안내 누락: " + name)
++        actual.pop(name)
++    if actual != expected:
++        raise DeliveryError("실행 원 고지·패치·recipe의 누락·추가·변조")
++    if (program / "licenses/전체소스_안내.txt").read_text(encoding="utf-8") != runtime_notice(manifest):
++        raise DeliveryError("동결 전체 소스 고지 URL·SHA·안내 불일치")
++    placement = load(program / "licenses/상응소스_배치.json")
++    if placement != {"source": {key: manifest[key] for key in ("file", "bytes", "sha256", "source_url", "release_url")},
++                     "runtime_excluded": config["runtime_source_archive_allowlist"]}:
++        raise DeliveryError("상응 소스 배치 manifest 불일치")
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--output-root", type=Path, required=True)
++    parser.add_argument("--work-root", type=Path, required=True)
++    parser.add_argument("--iscc", type=Path, required=True)
++    args = parser.parse_args()
++    source = Path(__file__).resolve().parent
++    root = source.parent
++    output = external_path(root, args.output_root)
++    work = external_path(root, args.work_root)
++    for path in (output, work):
++        if path.exists():
++            raise DeliveryError("새 작업·출력 폴더를 지정해 주세요: " + str(path))
++    import build
++    prepared = build.prepare(source, output, work, args.iscc)
++    prepared_path = work / "준비_manifest.json"
++    save_new(prepared_path, prepared)
++    manifest = freeze_source(root, prepared, output / SOURCE_ZIP_NAME)
++    manifest_path = output / "전체소스_manifest.json"
++    save_new(manifest_path, manifest)
++    build.compile_prepared(source, prepared, manifest, output, work, args.iscc)
++    subprocess.run([sys.executable, "-B", "-X", "utf8", str(source / "package.py"), "--release-root", str(output),
++                    "--source-manifest", str(manifest_path), "--prepared", str(prepared_path)], check=True, cwd=source, timeout=600)
++
++
++if __name__ == "__main__":
++    try:
++        main()
++    except (DeliveryError, OSError, subprocess.SubprocessError, ValueError) as error:
++        raise SystemExit("배포 중단: " + str(error)) from error
+--- 1.11.0/소스/빌드방법.md
++++ 1.12.0/소스/빌드방법.md
+@@ -1,214 +1,218 @@
+-# 플립링 1.11.0 빌드와 전체 소스
+-
+-Windows 10/11 x64, Python 3.12 x64, 고정 requirements-lock.txt와 Inno Setup 6이 필요합니다. 제품 버전 1.11.0과 설정 스키마 VERSION=3은 별개입니다. 실행 이름 FlipRing.exe·설치 이름 FlipRing-Setup.exe·기존 FlipRing19 설치/설정 규약은 유지합니다. 새 바로가기·정션·심볼릭 링크는 만들지 않습니다.
+-
+-고객용 전체 소스는 `플립링-1.11.0-전체소스.zip`입니다. 공개 Git의 대용량 제한을 적용한 사본이나 GitHub 자동 소스 압축본으로 대체하지 않습니다. ZIP에는 제품·빌드·검사 Python 코드, 필수 assets/vendor/licenses, 원바이트 상응 소스 archive와 검사도구 6개를 보존합니다. 상위 docs의 공개 미승인 내부 계획, work/evidence/.codex/.git, 개인 지침과 검토기록.md는 제외 이유를 외부 목록에 남깁니다. 공개 미승인 필수 입력이 있으면 준비가 중단됩니다.
+-
+-## 새 경로에서 재현
+-
+-ZIP을 새로운 입력 폴더에 풀어 `소스`와 `검사도구`를 나란히 유지합니다. 개발 환경·캐시·출력은 입력 트리 밖에 만드세요. 아래는 풀어 놓은 `소스`에서 실행하는 예입니다. Inno 컴파일러 경로는 실제 설치 위치로 지정합니다. 새 작업과 출력 폴더는 아직 존재하지 않아야 하며, 실패한 산출물은 보존하고 다른 새 경로로 원인을 해결한 뒤 다시 실행합니다.
+-
+-```powershell
+-py -3.12 -m venv ..\..\플립링-재현환경\venv
+-..\..\플립링-재현환경\venv\Scripts\python.exe -m pip install -r requirements-lock.txt
+-..\..\플립링-재현환경\venv\Scripts\python.exe -m pip install -r requirements-documents-test.txt
+-..\..\플립링-재현환경\venv\Scripts\python.exe -B -X utf8 -m unittest test_배포도구 -v
+-..\..\플립링-재현환경\venv\Scripts\python.exe -B -X utf8 배포빌드.py --output-root ..\..\플립링-새배포 --work-root ..\..\플립링-새빌드 --iscc 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
+-```
+-
+-`배포빌드.py`는 이미 준비된 환경만 사용합니다. 자동 패키지 설치·도구 다운로드·로그인·업로드를 수행하지 않습니다. 위 pip 명령은 개발자가 명시적으로 실행하는 준비 작업입니다. 고객 실행·설치에는 Python이 필요하지 않습니다.
+-
+-1.11의 Office 도우미는 `document_bridge.py`·`document_formats.py`·`document_xlsb.py`를 일회용 프로필로 복사한 뒤 LibreOffice Python의 `-B -X utf8`로 실행합니다. 앱 번들의 Python 확장 모듈 경로와 별도 도우미의 실행 위치를 분리하며 사용자 LibreOffice 설정은 바꾸지 않습니다.
+-
+-순서는 고지·아이콘·1.11 버전·이동 가능한 spec/iss 준비, 외부 준비 manifest, 전체 소스 ZIP 동결, 외부 소스 manifest, PyInstaller, 실행 고지, Inno, package 검증입니다. spec/iss는 실행 시 FLIPRING_SOURCE·FLIPRING_PROGRAM·FLIPRING_INSTALLER 환경값을 받으므로 이동 후 절대경로를 SOURCE에 다시 쓰지 않습니다. Python 바이트코드·PyInstaller 캐시·임시 파일도 외부 작업 폴더를 사용합니다.
+-
+-분리 실행이 필요하면 `build.py --prepare-only --output-root <새출력> --work-root <새작업> --iscc <실제ISCC> --manifest <외부준비JSON>`으로 준비만 수행할 수 있습니다. Python에서 `배포빌드.freeze_source`를 호출하는 동일 규칙으로 ZIP을 동결하고 외부 소스 JSON을 저장한 뒤 `build.py --prepared <준비JSON> --source-manifest <소스JSON> --output-root <출력> --work-root <작업> --iscc <동일ISCC>`로 컴파일합니다. 일반 재현에는 위 한글 진입점 한 명령을 사용하세요.
+-
+-`package.py --release-root <실제staging> --source-manifest <외부소스JSON> --prepared <외부준비JSON>`은 별도 출력 경로를 직접 검사합니다. 준비 manifest에는 전체 입력 트리와 도구의 실제 버전·SHA를 기록하며 로컬 경로 등 실행 정보를 포함하므로 공개 소스 ZIP에 넣지 않습니다. 소스 ZIP SHA는 외부 소스 manifest·실행 고지에만 기록하며 SOURCE에 되돌려 쓰지 않습니다.
+-
+-## 상응 소스와 재배포
+-
+-검토한 정확 10개 archive 528,499,332바이트만 실행 폴더에서 분리합니다. `배포구성.json`의 경로·크기·SHA와 전체 ZIP entry를 모두 대조하며 원본 고지·출처·출하목록·패치·recipe 및 나머지 자료는 실행 폴더에 유지합니다. glob·크기 기준 삭제는 사용하지 않습니다. 전체 소스 ZIP과 SOURCE의 원 archive는 변경하지 않습니다. GCC·7-Zip·H2Orestart·Java 검사는 유지하며 허용된 archive만 정확 ZIP entry에서 해석합니다. 허용 목록 밖의 실행 자료 누락은 실패합니다.
+-
+-고객 폴더에는 프로그램/FlipRing 전체, 설치파일/FlipRing-Setup.exe, 정확 전체 소스 ZIP, 외부 소스 manifest와 SHA 목록·안내를 함께 제공합니다. 앱의 라이선스 폴더에는 정확 ZIP명·SHA·동일 Release URL·자산 URL과 재배포 안내를 생성합니다. 온라인 재배포자는 같은 장소에서 무료로 동등한 소스 접근을 제공할 수 있습니다. Qt/PySide의 호환 동적 라이브러리 교체와 수정 디버깅을 위한 역공학을 제한하지 않습니다.
+-
+-예정 공개 위치는 https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.11.0 입니다. installer와 전체 소스 ZIP을 같은 Release에 실제 게시하고, 로그인 없는 전체 다운로드·SHA·ZIP 내용·링크를 별도로 확인해야 공개 완료입니다. 예정 주소나 로컬 빌드 성공만으로 게시·법적 조건 충족을 주장하지 않습니다.
+-
+-## 현재 검사 묶음과 한계
+-
+-기존 제품 회귀 163개와 확장 86개는 별도 묶음입니다. 현재 문서 검사는 형식14+XLSB12+Qt4+합성 Office7+외부 실제8+매크로/링크2+종료4의 51개입니다. 아래 1.10 절차는 당시 기록으로 보존하되, 같은 명령으로 수행하는 문서 검사 수 안내는 현재 계약 51개로 정정했습니다. 당시 49개 집계와 현재 51개를 구분합니다. 현재 명령은 `python -B -X utf8 ../검사도구/documents_suites110.py`입니다. 기존 timeout·원문·검사 기대를 보존하며 이 문서는 해당 검사를 통과했다는 증거가 아닙니다.
+-
+-외부 실제 표본 8개는 아래 원출처·고정 SHA와 FLIPRING_DOCUMENT_FIXTURES 절차로 별도 준비합니다. 고객 ZIP에 넣지 않으며 없는 표본을 skip/PASS로 바꾸지 않습니다. 자체 HEIC 표본의 출처·재생성은 test-fixtures/자체HEIC_출처와재생성.md를 따르며, 생성 전용 helper와 메타데이터를 외부 작업 폴더에 복사한 뒤 실행합니다. 생성용 encoder·휠은 고객 런타임에 포함하지 않습니다. 고정 입력의 현재 SHA와 다르면 동결을 중단합니다.
+-

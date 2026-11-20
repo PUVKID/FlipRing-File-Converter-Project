@@ -1,0 +1,170 @@
+[
+  {
+    "path": "소스/1.12-기능50항목.md",
+    "change": "added",
+    "bytes": 4244,
+    "sha256": "b6a7f8805b573cc04dad740e2696a9358ea43d807fc74866193d2eaf83306a5a"
+  },
+  {
+    "path": "소스/1.12-빠른작업안내.md",
+    "change": "added",
+    "bytes": 2147,
+    "sha256": "be30b983c1beb9507700a52e787c030a3f0ddd62a02850e4b2cfd8f2ad37172c"
+  },
+  {
+    "path": "소스/app.py",
+    "change": "modified",
+    "bytes": 96960,
+    "sha256": "d5b065760e30ebdbbf7fcfe83008e2c25ac9a15ec8d977386dcb964a117a30e3",
+    "previous_bytes": 92105,
+    "previous_sha256": "a7bd76f6afe88466ad4c4609c636b11712ef73f1951b65a9ba091e3c57352033"
+  },
+  {
+    "path": "소스/build.py",
+    "change": "modified",
+    "bytes": 20063,
+    "sha256": "95db978300638aa84ebca86873b6e5e7fff22d7ffbba8b82cf7c0881ab70eb71",
+    "previous_bytes": 20063,
+    "previous_sha256": "d62e65481fe12ef2ba1ffbc02344b394e12cd7f7caa89aa2d8001faac8f550eb"
+  },
+  {
+    "path": "소스/engine.py",
+    "change": "modified",
+    "bytes": 43450,
+    "sha256": "7a91d510a03d10b3551b414ec504f90e7d7f091019eb42cf03075c9a824b2535",
+    "previous_bytes": 42525,
+    "previous_sha256": "4153bb8300dcf31dd3beab1230163f6919173e7f83deeb2f93eee55ed40159ee"
+  },
+  {
+    "path": "소스/i18n.py",
+    "change": "modified",
+    "bytes": 31745,
+    "sha256": "04160a7469e36cebf090e41e43c5bd3df2c908a259efc914c7710b8fd63999e8",
+    "previous_bytes": 28893,
+    "previous_sha256": "f85d0f8677b2576958c7434eb4c8305bb772153e59a1bfaa5fc7833618010df9"
+  },
+  {
+    "path": "소스/inspection_ui.py",
+    "change": "modified",
+    "bytes": 36160,
+    "sha256": "1fa980701e4f7630b3be1b6f8036de15f543596ada21085ae9513c0ba7c3a36f",
+    "previous_bytes": 36111,
+    "previous_sha256": "d0b7517c1a0fbaac62bc22c20243c69dd46ee8390ffdfe4f859b1cdf0d5d41f9"
+  },
+  {
+    "path": "소스/installer.iss",
+    "change": "modified",
+    "bytes": 1222,
+    "sha256": "8077bf8a1718aa252ff81b9af840103636d270a6738e4e03bb0f7097f8d314d5",
+    "previous_bytes": 1222,
+    "previous_sha256": "260e4c3e59c3d7b7f07671097c665dbda2b4a605e3ae09dca91e240e862c68d2"
+  },
+  {
+    "path": "소스/pdf_panel.py",
+    "change": "modified",
+    "bytes": 65016,
+    "sha256": "2ef63a9bad673aeb668f8b1facb7a554b5354616061e2ae0e959d75f710b7a52",
+    "previous_bytes": 64607,
+    "previous_sha256": "4fdbfd90a3d2279c0d23aaaf2135972c49540e85dca5cc4202b22edef56e4ad5"
+  },
+  {
+    "path": "소스/quick_actions.py",
+    "change": "added",
+    "bytes": 18849,
+    "sha256": "68f17c1e68ff298d024ba490deab48eb84cb58d714e2ac0fae08ce94b8416740"
+  },
+  {
+    "path": "소스/quick_actions_ui.py",
+    "change": "added",
+    "bytes": 41822,
+    "sha256": "a7962f7f64af5fa16807ce3977b7c2eee6b26fdb429ddde9f22f4aa86c49d16d"
+  },
+  {
+    "path": "소스/studio_ui.py",
+    "change": "modified",
+    "bytes": 16703,
+    "sha256": "8fa947bf77f7339f8c02380b77779c7a1d4fbb0c5c79ef06d2636e48046db6c4",
+    "previous_bytes": 16400,
+    "previous_sha256": "2b31eaf6ce3f22732190ca8e6e3ab78134dab382fc0b360c39b434fe97a506ba"
+  },
+  {
+    "path": "소스/test_quick_actions112.py",
+    "change": "added",
+    "bytes": 11247,
+    "sha256": "b6b7e62b22f47be613d05c3ef34feaebed83c1e2e757b8835e5560dea2ccffb6"
+  },
+  {
+    "path": "소스/test_theme_install112.py",
+    "change": "added",
+    "bytes": 5674,
+    "sha256": "8495d4699da5a56458f153669cb859db1c9cca9ae5a3f40f1bdb28d410f3e05b"
+  },
+  {
+    "path": "소스/theme_manager.py",
+    "change": "added",
+    "bytes": 4893,
+    "sha256": "7b8a889169ecff3fbaa84f6af8455623993084f29bfd28e196bbb542d2e2b14b"
+  },
+  {
+    "path": "소스/tool_installer.py",
+    "change": "added",
+    "bytes": 4422,
+    "sha256": "639472bde91e248b4f821f99f35f0811296b154767b57548e5dafea790afa8a3"
+  },
+  {
+    "path": "소스/ui_motion.py",
+    "change": "modified",
+    "bytes": 38832,
+    "sha256": "ea6a9693ab0de05b558d1d4aafec6a10f827d5d1703d0cd4fb7b71d39d39aba7",
+    "previous_bytes": 39574,
+    "previous_sha256": "3bcee6bbcfda7e78b8026a60542a852b33e9f96645e3c34b9226c112d0f5ded6"
+  },
+  {
+    "path": "소스/version-info.txt",
+    "change": "modified",
+    "bytes": 519,
+    "sha256": "e493161db441259d1de58581905cba56ef4e95add2666e229b83499d240bd34b",
+    "previous_bytes": 519,
+    "previous_sha256": "23d5f76f39a659a9ab1b4ecf9379d2a06ee82432260f352d1bd9db7827da1223"
+  },
+  {
+    "path": "소스/workspace_ui.py",
+    "change": "modified",
+    "bytes": 45515,
+    "sha256": "2f5c3c321126d0756b22c7a1c9e1819ce0c340e188eb8c9e55e90eec463483b4",
+    "previous_bytes": 44501,
+    "previous_sha256": "91a71e925e06434f263be4ed430a8580630804baa7775385cbe946e85ea80ef6"
+  },
+  {
+    "path": "소스/배포구성.json",
+    "change": "modified",
+    "bytes": 65161,
+    "sha256": "4e66afff77874f83f2a0edb70231ca22ac1ee62debd62b01633749c4fc8f487c",
+    "previous_bytes": 62652,
+    "previous_sha256": "99c73a7c24de1eda77441feec6041d04c95c2040f7d518598769c19468dce05b"
+  },
+  {
+    "path": "소스/배포빌드.py",
+    "change": "modified",
+    "bytes": 17055,
+    "sha256": "8792c109e884b6ccb4d64585b45d2ceafa69a0d1c9bfbfefb766c4cd200f5a05",
+    "previous_bytes": 16708,
+    "previous_sha256": "62ab66091296ef97be792e854f87abeee25191feea0ef43bb03448226bf51d58"
+  },
+  {
+    "path": "소스/빌드방법.md",
+    "change": "modified",
+    "bytes": 32879,
+    "sha256": "632aade6e53ca83317d85f21ef007ab769dbb813c6a80f7508ef41918519235a",
+    "previous_bytes": 32314,
+    "previous_sha256": "f2e575435fbb58469dd372f79b94d889881b95e63ae89e30c0d03eb53ab56e6f"
+  },
+  {
+    "path": "소스/사용안내.txt",
+    "change": "modified",
+    "bytes": 12483,
+    "sha256": "30d329bc0f9a3bae7d9e059d429b56fb89f55def0cbab2f1ac7594daf61041b0",
+    "previous_bytes": 12172,
+    "previous_sha256": "e04b91b09d498db6c94fb00893b5cf557ec8d591850b5f575332491b60bd2b1a"
+  }
+]

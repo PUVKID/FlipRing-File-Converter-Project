@@ -1,0 +1,17 @@
+{
+  "korean_time": "2026-10-21T01:42:36.177645+09:00",
+  "argv": [
+    "소스/licenses/OCR/ubuntu-gcc/download_one.py",
+    "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64_27.dsc",
+    "gcc-mingw-w64_27.dsc"
+  ],
+  "url": "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64_27.dsc",
+  "destination": "소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.dsc",
+  "final_url": "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64_27.dsc",
+  "content_type": "text/prs.lines.tag",
+  "status": "success",
+  "size": 7737,
+  "sha256": "492f2ba821e43a3d40817841bd32caa5d49673fe66921bf5ba9c8b81c391dfea",
+  "changed": true,
+  "exit_code": 0
+}

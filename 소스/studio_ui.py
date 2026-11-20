@@ -1,6 +1,8 @@
 """작업 공간의 내비게이션과 파일 상태를 그리는 Qt 전용 구성 요소."""
 from __future__ import annotations
 
+from theme_manager import theme_color, ring_color, is_dark
+
 import math
 from ui_motion import start_motion, set_reduced_motion
 
@@ -47,29 +49,29 @@ class HistoryDelegate(QStyledItemDelegate):
         painter.setRenderHint(QPainter.Antialiasing)
         rectangle = QRectF(option.rect).adjusted(4, 3, -4, -3)
         painter.setPen(Qt.NoPen)
-        painter.setBrush(QColor("#eeeeee" if option.state & QStyle.State_Selected else "#ffffff"))
+        painter.setBrush(theme_color("#eeeeee" if option.state & QStyle.State_Selected else "#ffffff"))
         painter.drawRoundedRect(rectangle, 10, 10)
         icon = QRectF(rectangle.left() + 16, rectangle.top() + 17, 42, 44)
-        painter.setBrush(QColor("#f1f1f1"))
+        painter.setBrush(theme_color("#f1f1f1"))
         painter.drawRoundedRect(icon, 9, 9)
         font = option.font
         font.setPixelSize(9)
         font.setWeight(QFont.Medium)
         painter.setFont(font)
-        painter.setPen(QColor("#666666"))
+        painter.setPen(theme_color("#666666"))
         painter.drawText(icon, Qt.AlignCenter, row["format"])
         left = rectangle.left() + 74
         width = max(20, rectangle.width() - 94)
         font.setPixelSize(13)
         font.setWeight(QFont.Medium)
         painter.setFont(font)
-        painter.setPen(QColor("#303030"))
+        painter.setPen(theme_color("#303030"))
         painter.drawText(QRectF(left, rectangle.top() + 15, width, 22), Qt.AlignLeft | Qt.AlignVCenter,
                          painter.fontMetrics().elidedText(row["source"], Qt.ElideMiddle, int(width)))
         font.setPixelSize(11)
         font.setWeight(QFont.Normal)
         painter.setFont(font)
-        painter.setPen(QColor("#737373"))
+        painter.setPen(theme_color("#737373"))
         detail = row["time"] + "   ·   " + row["detail"]
         painter.drawText(QRectF(left, rectangle.top() + 40, width, 20), Qt.AlignLeft | Qt.AlignVCenter,
                          painter.fontMetrics().elidedText(detail, Qt.ElideMiddle, int(width)))
@@ -123,18 +125,18 @@ class Toggle(QCheckBox):
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
-        painter.setPen(QColor("#424242" if self.isEnabled() else "#999999"))
+        painter.setPen(theme_color("#424242" if self.isEnabled() else "#999999"))
         painter.drawText(QRectF(0, 0, self.width() - 52, self.height()),
                          Qt.AlignVCenter | Qt.AlignLeft | Qt.TextWordWrap, self.text())
         shade = round(220 - 166 * self.amount)
         painter.setPen(Qt.NoPen)
-        painter.setBrush(QColor(shade, shade, shade))
+        painter.setBrush(theme_color(shade, shade, shade))
         x, y = self.width() - 39, (self.height() - 22) / 2
         painter.drawRoundedRect(QRectF(x, y, 38, 22), 11, 11)
-        painter.setBrush(QColor("#ffffff"))
+        painter.setBrush(theme_color("#ffffff"))
         painter.drawEllipse(QRectF(x + 3 + 16 * self.amount, y + 3, 16, 16))
         if self.hasFocus():
-            painter.setPen(QPen(QColor("#888888"), 1))
+            painter.setPen(QPen(theme_color("#888888"), 1))
             painter.setBrush(Qt.NoBrush)
             painter.drawRoundedRect(QRectF(self.rect()).adjusted(0.5, 0.5, -0.5, -0.5), 6, 6)
         painter.end()
@@ -161,8 +163,9 @@ class NavButton(QAbstractButton):
         self.toggled.connect(self.transition)
 
     def set_svg(self, path):
-        self.svg_icons = {selected: svg_icon(path, color)
-                          for selected, color in ((False, "#b8b8b8"), (True, "#f3f3f3"))}
+        self.svg_icons = {(dark, selected): svg_icon(path, color)
+                          for dark, selected, color in ((False, False, "#474747"), (False, True, "#0c0c0c"),
+                                                       (True, False, "#b8b8b8"), (True, True, "#f3f3f3"))}
 
     def _frame(self, value):
         self.amount = float(value)
@@ -200,22 +203,22 @@ class NavButton(QAbstractButton):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
         painter.setPen(Qt.NoPen)
-        painter.setBrush(QColor(255, 255, 255, round(20 * self.amount)))
+        painter.setBrush(ring_color(255, 255, 255, round(20 * self.amount)))
         painter.drawRoundedRect(QRectF(self.rect()).adjusted(0, 1, 0, -1), 10, 10)
         if self.isChecked():
-            painter.setBrush(QColor('#eeeeee'))
+            painter.setBrush(ring_color('#eeeeee'))
             painter.drawRoundedRect(QRectF(3, 13, 3, self.height() - 26), 1.5, 1.5)
-        color = QColor("#f3f3f3" if self.isChecked() else "#b8b8b8")
+        color = ring_color("#f3f3f3" if self.isChecked() else "#b8b8b8")
         painter.setPen(QPen(color, 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
         painter.setBrush(Qt.NoBrush)
         if self.svg_icons is not None:
-            self.svg_icons[self.isChecked()].paint(painter, 16, round(self.height() / 2 - 10), 20, 20)
+            self.svg_icons[(is_dark(), self.isChecked())].paint(painter, 16, round(self.height() / 2 - 10), 20, 20)
         font = self.font()
         font.setWeight(QFont.Medium if self.isChecked() else QFont.Normal)
         painter.setFont(font)
         painter.drawText(QRectF(46, 0, self.width() - 58, self.height()), Qt.AlignVCenter | Qt.AlignLeft, self.text())
         if self.hasFocus():
-            painter.setPen(QPen(QColor("#909090"), 1))
+            painter.setPen(QPen(ring_color("#909090"), 1))
             painter.drawRoundedRect(QRectF(self.rect()).adjusted(1, 2, -1, -2), 9, 9)
         painter.end()
 
@@ -290,19 +293,19 @@ class OrbitVisual(QWidget):
         radius *= 0.86 + 0.14 * self.phase + 0.055 * self.approach
         painter.translate(center)
         painter.setBrush(Qt.NoBrush)
-        painter.setPen(QPen(QColor("#eeeeee"), 1))
+        painter.setPen(QPen(theme_color("#eeeeee"), 1))
         painter.drawEllipse(QPointF(), radius + 29, radius + 29)
         painter.drawEllipse(QPointF(), radius + 15, radius + 15)
         for index in range(3):
             painter.save()
             painter.rotate(index * 60 + (1 - self.phase) * 35 + self.approach * 12)
-            painter.setPen(QPen(QColor(120 + index * 35, 120 + index * 35, 120 + index * 35), 1.2))
+            painter.setPen(QPen(theme_color(120 + index * 35, 120 + index * 35, 120 + index * 35), 1.2))
             painter.drawEllipse(QRectF(-radius, -radius * 0.46, radius * 2, radius * 0.92))
             painter.restore()
         painter.setPen(Qt.NoPen)
-        painter.setBrush(QColor("#202020"))
+        painter.setBrush(theme_color("#202020"))
         painter.drawEllipse(QPointF(), 35 + self.approach * 3, 35 + self.approach * 3)
-        painter.setPen(QPen(QColor("#ffffff"), 1.7, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.setPen(QPen(theme_color("#ffffff"), 1.7, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
         painter.setBrush(Qt.NoBrush)
         if self.state == "complete":
             path = QPainterPath(QPointF(-12, 0))
@@ -335,10 +338,10 @@ class OrbitVisual(QWidget):
             distance = (radius + 18) * (0.5 + 0.5 * progress)
             point = QPointF(math.cos(angle) * distance, math.sin(angle) * distance)
             rectangle = QRectF(point.x() - 27, point.y() - 12, 54, 24)
-            painter.setPen(QPen(QColor("#e6e6e6"), 1))
-            painter.setBrush(QColor("#ffffff"))
+            painter.setPen(QPen(theme_color("#e6e6e6"), 1))
+            painter.setBrush(theme_color("#ffffff"))
             painter.drawRoundedRect(rectangle, 12, 12)
-            painter.setPen(QColor("#5a5a5a"))
+            painter.setPen(theme_color("#5a5a5a"))
             painter.drawText(rectangle, Qt.AlignCenter, label)
         painter.end()
 

@@ -1,6 +1,8 @@
 """실제 파일·레시피·검사 도구를 연결하는 확장 작업 공간."""
 from __future__ import annotations
 
+from theme_manager import theme_color, ring_color
+
 import json
 import threading
 import time
@@ -114,7 +116,7 @@ class WorkspaceVisual(QWidget):
             x = center - 33 + spread
             y = 17 + abs(i-(n-1)/2)*6 - (8*self.phase if self.state == 'complete' else 0)
             p.setPen(Qt.NoPen)
-            p.setBrush(QColor(0,0,0,18))
+            p.setBrush(theme_color(0,0,0,18))
             p.drawRoundedRect(QRectF(x+6,y+8,63,80),8,8)
             shape = QPainterPath()
             fold = 17 - 5*self.phase
@@ -124,19 +126,19 @@ class WorkspaceVisual(QWidget):
             shape.lineTo(x+63,y+80)
             shape.lineTo(x,y+80)
             shape.closeSubpath()
-            p.setPen(QPen(QColor('#555555'),1))
-            p.setBrush(QColor('#ffffff'))
+            p.setPen(QPen(theme_color('#555555'),1))
+            p.setBrush(theme_color('#ffffff'))
             p.drawPath(shape)
-            p.setBrush(QColor('#dddddd'))
+            p.setBrush(theme_color('#dddddd'))
             flap = QPainterPath(QPointF(x+63-fold,y))
             flap.lineTo(x+63-fold,y+fold)
             flap.lineTo(x+63,y+fold)
             flap.closeSubpath()
             p.drawPath(flap)
-            p.setPen(QColor('#222222'))
+            p.setPen(theme_color('#222222'))
             f = QFont(self.font()); f.setBold(True); f.setPointSize(12); p.setFont(f)
             p.drawText(QRectF(x+3,y+36,57,25),Qt.AlignCenter,self.formats[i] if i<len(self.formats) else '+')
-        p.setPen(QPen(QColor('#333333'),2))
+        p.setPen(QPen(theme_color('#333333'),2))
         p.setBrush(Qt.NoBrush)
         ring = QRectF(center+100,36,36,36)
         if self.state == 'working':
@@ -236,7 +238,7 @@ class CaptureOverlay(QWidget):
         self.setGeometry(screen.geometry()); self.setAttribute(Qt.WA_DeleteOnClose)
         self.setWindowOpacity(.25); self.setCursor(Qt.CrossCursor); self.setFocusPolicy(Qt.StrongFocus)
     def paintEvent(self, event):
-        p=QPainter(self); p.fillRect(self.rect(),QColor('#777777')); p.setPen(QPen(Qt.white,3))
+        p=QPainter(self); p.fillRect(self.rect(),theme_color('#777777')); p.setPen(QPen(Qt.white,3))
         p.drawRect(self.selection)
         p.drawText(self.rect().adjusted(24,24,-24,-24),Qt.AlignTop,tr(self.language,'ws_capture_hint'))
     def mousePressEvent(self,event): self.origin=event.position().toPoint()
@@ -379,7 +381,9 @@ class WorkspacePanel(QWidget):
             if hasattr(dialog,'set_reduced_motion'): dialog.set_reduced_motion(enabled)
         for dialog in self._pickers: set_reduced_motion(dialog,enabled)
     def is_busy(self): return self._busy or any(getattr(d,'is_busy',lambda:False)() for d in self._dialogs)
-    def global_busy(self): return bool(self.owner.pending or self.owner.pdf_panel.is_busy() or self.is_busy())
+    def global_busy(self): return bool(self.owner.pending or self.owner.pdf_panel.is_busy() or self.is_busy()
+                                          or self.owner.installer.is_busy()
+                                          or getattr(getattr(self.owner, 'quick_actions_panel', None), 'is_busy', lambda: False)())
     def choose_files(self):
         paths=self.choose_paths('ws_add')
         if paths: self.add_files(paths)

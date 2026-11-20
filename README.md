@@ -17,13 +17,20 @@
 
 모든 안내는 같은 프로젝트와 전체 차수를 다룹니다. 기존 상세 본문은 아래에 계속 보존합니다.
 <!-- project-levels:end -->
+## 1.12.0 · 빠른 작업과 라이트·다크 테마
+
+**저장한 변환 설정을 Shift 드래그로 바로 실행합니다.** 폴더 구조를 유지한 일괄 변환, 목표 용량과 전후 비교, 대기열·결과 정리·되돌리기를 추가했습니다. 화면 테마는 라이트·다크·시스템을 저장하며 외부 도구는 앱의 설치 버튼으로 설치합니다.
+
+[1.12 사용법과 50가지 개선](docs/versions/1.12.0.md) · [설치 파일과 전체 소스](https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.12.0)
+
+
 ## 1.11.0 · 간단한 기본 화면과 문서 변환
 
 파일 선택 → 형식 선택 → 변환으로 시작하고, PDF·OCR의 세부 설정은 고급 옵션에서 펼칩니다. HWP·HWPX 읽기·다른 형식 변환을 유지하며 DOCX·TXT·HWP5·HWPX에서 HWP·HWPX로 저장하는 제한된 로컬 변환을 제공합니다. 단순 문단·굵게/기울임·직사각형 표·PNG/JPEG 그림을 다루고 지원하지 않는 구조는 거부합니다.
 
 HWP5 저장은 실험적이며 HWP3 출력은 제공하지 않습니다. 병합·중첩 표, 수식·주석·필드와 떠 있거나 회전한 그림 등 지원하지 않는 복잡한 구조는 거부합니다. 모든 HWPX 사용자 부품·글꼴·쪽 배치의 완전 보존이나 외부 뷰어 시각 일치를 보장하지 않습니다. HWP·HWPX의 PDF·Word 등 기존 읽기 변환과 Office 문서 변환에는 LibreOffice가 필요하며 HWP 읽기에는 H2Orestart·Java를 사용합니다. 초기 Excel 2007 Beta2 XLSB는 지원하지 않습니다. 일부 영상·오디오·문서 기능은 FFmpeg·Pandoc 등 별도 도우미가 필요합니다. 실행 파일과 설치 파일에는 코드서명 인증서가 적용되지 않았습니다.
 
-[1.10 개발 이력](docs/versions/1.10.0.md) · [1.11 실제 검사](docs/versions/1.11.0.md) · [전체 소스](https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/download/v1.11.0/플립링-1.11.0-전체소스.zip)
+[1.10 개발 이력](docs/versions/1.10.0.md) · [1.11 실제 검사](docs/versions/1.11.0.md) · [전체 소스](https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/download/v1.11.0/FlipRing-1.11.0-Source.zip)
 
 
 
@@ -365,6 +372,7 @@ PDF 작업은 암호화된 PDF를 거부합니다. 이미지 PDF에서 텍스트
 | 1.9.0 | [자료 폴더](history/1.9.0) | [상세 설명](docs/versions/1.9.0.md) | [전체 비교·범위](docs/revision-audit/1.9.0.md) |
 | 1.10.0 | [폴더](history/1.10.0/) | [설명](docs/versions/1.10.0.md) | [전체 비교](docs/revision-audit/1.10.0.md) |
 | 1.11.0 | [폴더](history/1.11.0/) | [설명](docs/versions/1.11.0.md) | [전체 비교](docs/revision-audit/1.11.0.md) |
+| 1.12.0 | [폴더](history/1.12.0/) | [설명](docs/versions/1.12.0.md) | [전체 비교](docs/revision-audit/1.12.0.md) |
 | 최종 | [폴더](소스/) | [설명](docs/versions/최종.md) | [전체 비교](docs/revision-audit/최종.md) |
 | 현행소스 | 원격 726 기준: [자료 폴더](%EC%86%8C%EC%8A%A4)<br>현재 후보: [폴더](소스/) | 원격 726 기준: [상세 설명](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md)<br>현재 후보: [설명](docs/revision-audit/현행소스.md) | 원격 726 기준: [전체 비교·범위](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md)<br>현재 후보: [전체 비교](docs/revision-audit/현행소스.md) |
 | 고유 작업 코드·문서 | [자료 폴더](%EB%B3%B4%EC%A1%B4%EC%9E%90%EB%A3%8C/%EC%9E%91%EC%97%85%EC%86%8C%EC%8A%A4) | [상세 설명](docs/SOURCE_MATERIALS.md) | [전체 비교·범위](docs/2026-11-02_%EA%B3%B5%EA%B0%9C%EB%B0%98%EC%98%81%EC%9E%AC%EA%B0%9C%EA%B2%80%EC%A6%9D.md) |

@@ -1,6 +1,8 @@
 """OCR 교정·동일 페이지 비교·검토 후보·사용자 영역 가림 창."""
 from __future__ import annotations
 
+from theme_manager import theme_color
+
 from pathlib import Path
 import threading
 
@@ -84,9 +86,9 @@ class PageCanvas(QWidget):
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        painter.fillRect(self.rect(), QColor('#e9e9e9'))
+        painter.fillRect(self.rect(), theme_color('#e9e9e9'))
         if self.image.isNull():
-            painter.setPen(QColor('#666666'))
+            painter.setPen(theme_color('#666666'))
             painter.drawText(self.rect().adjusted(20, 20, -20, -20), Qt.AlignCenter | Qt.TextWordWrap, self.placeholder)
             return
         painter.setRenderHint(QPainter.SmoothPixmapTransform)
