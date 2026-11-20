@@ -5,7 +5,7 @@ PUVKID의 파일 변환 검사를 위해 색상과 도형을 직접 계산한 �
 - 크기 48×36, RGB 8 비트, 단일 이미지, 알파 없음, ICC 없음, 4:2:0 색차 표본화입니다.
 - HEIC NCLX는 color_primaries =1, transfer_characteristics =13, matrix_coefficients =6, full_range_flag =1입니다.
 - 저장 품질 90은 손 실 인코딩 조건입니다. PNG 원본과 HEIC가 픽셀까지 같다고 주장하지 않습니다.
-- 실제 생성 환경은 Python3.12.14, Pillow13.0.0, pillow-heif1.8.1, libheif1.23.6, x2654.3 +1-e9b8812입니다. 원본 PNG·HEIC해 시는 생성 조건과 출처.json에 있습니다.
+- 실제 생성 환경은 Python3.12.14, Pillow13.0.0, pillow-heif1.8.1, libheif1.23.6, x2654.3 +1-e9b8812입니다. 원본 PNG·HEIC해시는 생성 조건과 출처.json에 있습니다.
 
 생성 도구만 사용할 별도 빈 폴더에 `자체HEIC_생성.py`, `생성환경_준비.py`, `공식휠_출처와해시.json`을 복사하고 Windows x64 CPython3.12에서 다음 순서로 실행합니다. 이미 있는 시험 자료와 환경을 덮어 쓰지 않도록 검사합니다.
 
@@ -28,7 +28,7 @@ python -I -B -X utf8 자체HEIC_생성.py
 
 실제 앱 환경의 pi-heif-decoder1.7.0.post4에서 읽기와 PNG/JPG/TIFF/AVIF 변환을 확인했습니다.
 
-PNG/TIFF 출력은 디코딩한 HEIC의 픽셀과 같았고, 각 변환 전후 입력 파일해 시를 보존했습니다.
+PNG/TIFF 출력은 디코딩한 HEIC의 픽셀과 같았고, 각 변환 전후 입력 파일 해시를 보존했습니다.
 
 이는 이 후보에 대한 변환 확인이며 기존 전체 검사·설치 본·모든 HEIC 호환 검증은 아닙니다.
 
