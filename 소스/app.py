@@ -50,7 +50,7 @@ from ui_motion import (make_file_dialog, install_surface_motions, pulse_widget, 
                        install_motion_system, SURFACE_STYLE, MotionMessageBox, decorate_message)
 
 VERSION = 3
-RELEASE_VERSION = "1.12.0"
+RELEASE_VERSION = "1.12.1"
 APPNAME = "플립링"
 AUTOSTART_NAME = "FlipRing19"
 DATA = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "PUVKID" / "FlipRing19"
@@ -1148,6 +1148,8 @@ class MainWindow(QMainWindow):
         preset_row.addWidget(self.localized(self.button('', self.save_conversion_preset), 'preset_save'))
         preset_row.addWidget(self.localized(self.button('', self.delete_selected_preset), 'preset_delete'))
         self.preset_section = QWidget()
+        # 펼친 프리셋 영역은 내용 높이만 사용하여 제목과 입력 사이가 늘어나지 않는다.
+        self.preset_section.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
         preset_layout = QVBoxLayout(self.preset_section)
         preset_layout.setContentsMargins(0, 0, 0, 0)
         self.preset_heading = self.section_heading('section_presets')

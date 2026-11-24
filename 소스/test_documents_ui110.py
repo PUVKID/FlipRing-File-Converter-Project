@@ -25,6 +25,7 @@ class DocumentUiTests(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        cls.window.quick_actions_panel.shutdown()
         cls.window.workspace_panel.shutdown()
         cls.window.timer.stop()
         cls.window.wheel.hide()
@@ -48,7 +49,7 @@ class DocumentUiTests(unittest.TestCase):
         self.assertIn('Input formats', labels)
         self.assertIn('Output formats', labels)
         self.assertIn('Spreadsheets', labels)
-        self.assertEqual(window.tabs.count(), 7)
+        self.assertEqual(window.tabs.count(), 8)
         window.set_language('ko')
 
     def test_document_metadata_does_not_claim_unreadable_or_start_conversion(self):

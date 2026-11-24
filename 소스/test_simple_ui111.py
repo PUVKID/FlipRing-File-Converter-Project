@@ -29,6 +29,7 @@ class SimpleUiTests(unittest.TestCase):
 
     def tearDown(self):
         self.window.pending = 0
+        self.window.quick_actions_panel.shutdown()
         self.window.workspace_panel.shutdown()
         self.window.wheel.hide()
         self.window.tray.hide()
@@ -59,7 +60,7 @@ class SimpleUiTests(unittest.TestCase):
         fresh.timer.stop()
         try:
             self.assertEqual(fresh.tabs.currentIndex(), 0)
-            self.assertEqual(fresh.tabs.count(), 7)
+            self.assertEqual(fresh.tabs.count(), 8)
             fresh.show()
             fresh.raise_()
             fresh.activateWindow()
@@ -78,6 +79,7 @@ class SimpleUiTests(unittest.TestCase):
                     self.assertEqual(fresh.tabs.currentIndex(), 0)
                     self.assertTrue(fresh.choose_button.isVisible())
         finally:
+            fresh.quick_actions_panel.shutdown()
             fresh.workspace_panel.shutdown()
             fresh.pdf_panel.shutdown()
             fresh.pool.shutdown(wait=True)

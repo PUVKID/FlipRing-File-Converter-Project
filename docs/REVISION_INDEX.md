@@ -5,6 +5,7 @@
 
 | 차수·자료 | 자료 폴더·원본 | 상세 설명 | 직전 비교·범위 |
 | --- | --- | --- | --- |
+| 1.12.1 | [폴더](../history/1.12.1/) | [설명](versions/1.12.1.md) | [전체 비교](revision-audit/1.12.1.md) |
 | 1.2.0 | [자료 폴더](../history/1.2.0) | [상세 설명](versions/1.2.0.md) | [전체 비교·범위](revision-audit/1.2.0.md) |
 | 부드러운디자인-작업전 | [자료 폴더](../history/%EB%B6%80%EB%93%9C%EB%9F%AC%EC%9A%B4%EB%94%94%EC%9E%90%EC%9D%B8-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](versions/%EB%B6%80%EB%93%9C%EB%9F%AC%EC%9A%B4%EB%94%94%EC%9E%90%EC%9D%B8-%EC%9E%91%EC%97%85%EC%A0%84.md) | [전체 비교·범위](revision-audit/%EB%B6%80%EB%93%9C%EB%9F%AC%EC%9A%B4%EB%94%94%EC%9E%90%EC%9D%B8-%EC%9E%91%EC%97%85%EC%A0%84.md) |
 | 버튼모션-작업전 | [자료 폴더](../history/%EB%B2%84%ED%8A%BC%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](versions/%EB%B2%84%ED%8A%BC%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md) | [전체 비교·범위](revision-audit/%EB%B2%84%ED%8A%BC%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md) |

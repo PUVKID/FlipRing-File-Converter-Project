@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "1.12.0",
+  "version": "1.12.1",
   "source_roots": [
     "소스",
     "검사도구",
@@ -11,7 +11,8 @@
     ".git"
   ],
   "reviewed_public_docs": [
-    "docs/2026-11-20_빠른작업과테마_설계.md"
+    "docs/2026-11-20_빠른작업과테마_설계.md",
+    "docs/2026-11-20_배포전전체기능_확인.md"
   ],
   "required": [
     "검사도구/documents_suites110.py",
@@ -969,7 +970,10 @@
     "소스/test_quick_actions112.py",
     "소스/test_theme_install112.py",
     "소스/1.12-빠른작업안내.md",
-    "소스/1.12-기능50항목.md"
+    "소스/1.12-기능50항목.md",
+    "소스/test_document_import1121.py",
+    "검사도구/대표문서입력검사1121.py",
+    "소스/1.12.1-문서입력보완.md"
   ],
   "excluded_files": {
     "ROUTING-LESSONS.md": "비공개 운영·실패 이력",
@@ -1106,5 +1110,5 @@
     }
   ],
   "separation_reason": "528499332바이트의 정확10개 원 archive는 전체소스ZIP에 보존하고 실행부에서만 분리. 동등한 동일 Release 접근의 실제 게시 검증은 별도.",
-  "source_zip": "플립링-1.12.0-전체소스.zip"
+  "source_zip": "플립링-1.12.1-전체소스.zip"
 }

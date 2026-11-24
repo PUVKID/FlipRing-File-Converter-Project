@@ -2,7 +2,7 @@
 [Setup]
 AppId=PUVKID.FlipRing19
 AppName=FlipRing
-AppVersion=1.12.0
+AppVersion=1.12.1
 AppPublisher=PUVKID
 DefaultDirName={localappdata}\Programs\FlipRing19
 DefaultGroupName=FlipRing

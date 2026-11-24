@@ -90,7 +90,7 @@ class ThemeInstallTests(unittest.TestCase):
             app.apply_application_style(self.app)
             window = app.MainWindow()
             window.timer.stop()
-            self.assertEqual(app.RELEASE_VERSION, '1.12.0')
+            self.assertEqual(app.RELEASE_VERSION, '1.12.1')
             self.assertEqual(app.VERSION, 3)
             self.assertEqual(window.tabs.count(), 8)
             for mode in ('dark', 'light'):

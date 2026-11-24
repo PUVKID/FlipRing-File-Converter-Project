@@ -21,6 +21,9 @@ class Owner(QWidget):
         self.pending = 0
         self.records = []
         self.pdf_panel = type('Pdf', (), {'is_busy': lambda s: False})()
+        # 실제 MainWindow의 신규 설치·빠른 작업 계약을 모형에도 반영합니다.
+        self.installer = type('Installer', (), {'is_busy': lambda s: False})()
+        self.quick_actions_panel = None
     def append_record(self, *record):
         self.records.append(record)
     def update_status(self):
@@ -363,7 +366,7 @@ class WorkspaceUiTests(unittest.TestCase):
             app.apply_application_style(APP)
             window=app.MainWindow(); window.timer.stop()
             window.notifications.setChecked(False); window.reveal.setChecked(False)
-            self.assertEqual(window.tabs.count(),7)
+            self.assertEqual(window.tabs.count(),8)
             self.assertEqual(window.tabs.currentIndex(),0)
             self.assertIs(window.tabs.widget(4),window.pdf_panel)
             self.assertEqual(window.sidebar.width(),204)
@@ -383,6 +386,7 @@ class WorkspaceUiTests(unittest.TestCase):
             self.assertEqual(window.workspace_panel.run_button.text(),'Run recipe')
         finally:
             if window:
+                window.quick_actions_panel.shutdown()
                 window.workspace_panel.shutdown(); window.pdf_panel.shutdown(); window.pool.shutdown(wait=False)
                 window.timer.stop(); window.wheel.hide(); window.tray.hide(); window.hide()
             app.DATA=previous

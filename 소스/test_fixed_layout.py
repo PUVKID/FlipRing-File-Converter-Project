@@ -74,6 +74,8 @@ class FixedLayoutTests(unittest.TestCase):
         cls.window.tray.hide()
         cls.window.hide()
         cls.window.wheel.hide()
+        cls.window.quick_actions_panel.shutdown()
+        cls.window.workspace_panel.shutdown()
         cls.window.pool.shutdown(wait=True)
         cls.window.pdf_panel._pool.shutdown(wait=True)
 
@@ -112,18 +114,30 @@ class FixedLayoutTests(unittest.TestCase):
                 self.assertGreaterEqual(window.page_title.height(), window.page_title.fontMetrics().height())
             window.tabs.setCurrentIndex(0)
             settle()
+            window.preset_toggle.setChecked(True)
+            settle()
+            self.assertTrue(window.preset_combo.isVisible())
             gap = window.preset_combo.mapTo(window.preset_heading.parentWidget(), QPoint()).y() - window.preset_heading.geometry().bottom()
             self.assertLessEqual(gap, 24)
             OBSERVATIONS.append({'language': language, 'preset_heading_gap': gap})
             window.receive_files([str(OUT / '원본.png')])
             settle()
             for button in (window.run_button, window.cancel_button, window.retry_button):
+                # 기존 조건부 표시 계약에 맞는 상태를 만들고 원래 가시 영역 기준을 유지합니다.
+                window.pending = 1 if button is window.cancel_button else 0
+                window.jobs[0]['state'] = 'failed' if button is window.retry_button else 'waiting'
+                window.jobs[0]['format'] = 'jpg'
+                window.refresh_queue()
+                settle()
                 expose(button)
                 self.assertTrue(button.visibleRegion().contains(button.rect()), button.text())
                 self.assertGreaterEqual(button.width(), button.fontMetrics().horizontalAdvance(button.text()) + 16)
+            window.pending = 0
+            window.jobs[0]['state'] = 'waiting'
+            window.refresh_queue()
             headings = [label.text() for label in window.findChildren(QLabel, 'sectionHeading')]
-            self.assertEqual(len(headings), 4)
-            self.assertEqual(len(set(headings)), 4)
+            self.assertEqual(len(headings), 5)
+            self.assertEqual(len(set(headings)), 5)
             self.assertTrue(capture(window, OUT / f'{language}-selected.png'))
             for _, _, _, button in window.preview_panel.panels:
                 expose(button)

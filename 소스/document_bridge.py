@@ -12,7 +12,7 @@ import sys
 import time
 import uuid
 
-from document_formats import EXPORT_FILTERS
+from document_formats import EXPORT_FILTERS, prepare_import_source
 from document_xlsb import ensure_loaded_sheets
 
 
@@ -33,6 +33,10 @@ def load_options(handler, source_extension):
     if source_extension in ("csv", "tsv"):
         options["FilterName"] = "Text - txt - csv (StarCalc)"
         options["FilterOptions"] = ("9" if source_extension == "tsv" else "44") + ",34,76,1,,0,false,true,true,false,false,0"
+    elif source_extension == "dif":
+        # 읽기 전 정규화한 UTF-8을 명시해 시스템 설정과 확인창에 의존하지 않는다.
+        options["FilterName"] = "DIF"
+        options["FilterOptions"] = "76"
     return options
 
 
@@ -149,6 +153,7 @@ def convert(request):
     source, output, profile = (Path(request[key]).resolve() for key in ("source", "output", "profile"))
     if output.exists():
         raise ValueError("이미 있는 문서 결과는 덮어쓰지 않습니다.")
+    source = prepare_import_source(source, request["extension"], profile)
     family, target = request["family"], request["target"]
     if target != "txt" or family != "프레젠테이션":
         filter_name = EXPORT_FILTERS.get(family, {}).get(target)

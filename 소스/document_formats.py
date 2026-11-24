@@ -4,7 +4,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 import shutil
-import xml.etree.ElementTree as ET
+import xml.parsers.expat as expat
 import zipfile
 
 
@@ -129,6 +129,79 @@ def write_secure_profile(profile):
     (user / "registrymodifications.xcu").write_bytes(("\n".join(body) + "\n").encode("utf-8"))
 
 
+def _safe_xml_import(raw, extension):
+    """인코딩에 관계없이 엔터티를 거부하고 정형 AbiWord DTD만 제거한다."""
+    parser = expat.ParserCreate()
+    spans = []
+
+    def reject_entity(*_arguments):
+        raise ValueError("외부 엔터티가 있는 문서는 변환하지 않습니다.")
+
+    def doctype(name, system_id, public_id, internal_subset):
+        allowed = (extension == "abw" and name == "abiword" and not internal_subset
+                   and public_id == "-//ABISOURCE//DTD AWML 1.0 Strict//EN"
+                   and system_id == "http://www.abisource.com/awml.dtd")
+        if not allowed:
+            reject_entity()
+        # Expat의 위치는 선언 끝 '>'의 원본 바이트 위치다. UTF-16도 변환하지 않는다.
+        codec = "utf-16-le" if raw.startswith((b"\xff\xfe", b"<\x00")) else (
+            "utf-16-be" if raw.startswith((b"\xfe\xff", b"\x00<")) else "ascii")
+        token, closing = "<!DOCTYPE".encode(codec), ">".encode(codec)
+        end = parser.CurrentByteIndex
+        start = raw.rfind(token, 0, end)
+        if start < 0 or raw[end:end + len(closing)] != closing:
+            raise ValueError("AbiWord 문서 선언의 위치를 안전하게 확인하지 못했습니다.")
+        spans.append((start, end + len(closing)))
+
+    parser.StartDoctypeDeclHandler = doctype
+    parser.EntityDeclHandler = reject_entity
+    parser.ExternalEntityRefHandler = reject_entity
+    parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_NEVER)
+    try:
+        parser.Parse(raw, True)
+    except expat.ExpatError as exc:
+        raise ValueError("XML 문서가 손상되었습니다.") from exc
+    for start, end in reversed(spans):
+        raw = raw[:start] + raw[end:]
+    return raw
+
+
+def prepare_import_source(source, extension, profile):
+    """원본을 보존하며 문서 선언·텍스트 인코딩을 일회용 사본에서 정규화한다."""
+    source = Path(source)
+    if extension == "dif":
+        # 앱의 기존 텍스트 입력 우선순위와 동일하며 시스템 문자집합에 의존하지 않는다.
+        raw = source.read_bytes()
+        if raw.startswith((b"\xff\xfe", b"\xfe\xff")):
+            content = raw.decode("utf-16")
+        else:
+            for encoding in ("utf-8-sig", "cp949", "cp1252"):
+                try:
+                    content = raw.decode(encoding)
+                    break
+                except UnicodeDecodeError:
+                    continue
+            else:
+                raise ValueError("DIF 텍스트 인코딩을 확인해 주세요.")
+        normalized = content.encode("utf-8")
+        if normalized == raw:
+            return source
+        copied = Path(profile) / "text-import.dif"
+        with copied.open("xb") as stream:
+            stream.write(normalized)
+        return copied
+    if extension != "abw":
+        return source
+    raw = source.read_bytes()
+    normalized = _safe_xml_import(raw, extension)
+    if normalized == raw:
+        return source
+    copied = Path(profile) / "abiword-import.abw"
+    with copied.open("xb") as stream:
+        stream.write(normalized)
+    return copied
+
+
 def validate_input(source, extension):
     """확장자만 바꾼 가짜 문서·깨진 ZIP·암호화 패키지를 조기에 거부한다."""
     source = Path(source)
@@ -177,11 +250,4 @@ def validate_input(source, extension):
     elif extension == "rtf" and not header.lstrip().startswith(b"{\\rtf"):
         raise ValueError("RTF 문서의 실제 형식을 확인할 수 없습니다.")
     elif extension in {"fodt", "fods", "fodp", "abw"}:
-        # XML 확장 엔터티는 로컬 파일·네트워크를 참조할 수 있으므로 사용하지 않는다.
-        raw = source.read_bytes()
-        if b"<!DOCTYPE" in raw.upper() or b"<!ENTITY" in raw.upper():
-            raise ValueError("외부 엔터티가 있는 문서는 변환하지 않습니다.")
-        try:
-            ET.fromstring(raw)
-        except ET.ParseError as exc:
-            raise ValueError("XML 문서가 손상되었습니다.") from exc
+        _safe_xml_import(source.read_bytes(), extension)

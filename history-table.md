@@ -2,6 +2,7 @@
 
 | 차수 | 보존 범위 | 소스·설명 | 비교 |
 | --- | --- | --- | --- |
+| 1.12.1 | 문서 입력·프리셋 간격 보완 | [폴더](history/1.12.1/) · [설명](docs/versions/1.12.1.md) | [전체 비교](docs/revision-audit/1.12.1.md) |
 | 1.2.0 | 설치 구성의 AppVersion =1.2.0으로 확인한 이전 Mono 소스 | [폴더](history/1.2.0/) · [설명](docs/versions/1.2.0.md) | 직전 비교 대상·순서 근거 없음<br>파일 범위 비교 설명: [전체 비교](docs/revision-audit/1.2.0.md) |
 | 부드러운디자인-작업전 | app·PDF 화면·GUI 검사만 남은 부분 기준본 | [폴더](history/부드러운디자인-작업전/) · [설명](docs/versions/부드러운디자인-작업전.md) | 직전 비교 대상·순서 근거 없음<br>파일 범위 비교 설명: [전체 비교](docs/revision-audit/부드러운디자인-작업전.md) |
 | 버튼모션-작업전 | app·GUI 검사만 남은 부분 기준본 | [폴더](history/버튼모션-작업전/) · [설명](docs/versions/버튼모션-작업전.md) | 직전 비교 대상·순서 근거 없음<br>파일 범위 비교 설명: [전체 비교](docs/revision-audit/버튼모션-작업전.md) |

@@ -81,6 +81,8 @@ class GuiTests(unittest.TestCase):
         cls.wheel.hide()
         cls.window.tray.hide()
         cls.window.hide()
+        cls.window.quick_actions_panel.shutdown()
+        cls.window.workspace_panel.shutdown()
         cls.window.pool.shutdown(wait=True)
 
     def setUp(self):
@@ -101,7 +103,7 @@ class GuiTests(unittest.TestCase):
         APPLICATION.processEvents()
 
     def test_01_studio_workspace_and_tray(self):
-        self.assertEqual(self.window.tabs.count(), 7)
+        self.assertEqual(self.window.tabs.count(), 8)
         self.assertEqual([self.window.tabs.tabText(i) for i in range(4)], ["파일 변환", "도구", "기록", "정보"])
         self.assertIs(self.window.tabs.widget(4), self.window.pdf_panel)
         self.assertEqual(self.window.tabs.tabText(5), "설정")
@@ -553,12 +555,12 @@ class GuiTests(unittest.TestCase):
     def test_02_common_formats_preserved(self):
         self.show_wheel([str(SOURCE), str(SOURCE2), str(SOURCE)])
         self.assertEqual(len(self.wheel.paths), 2)
-        self.assertEqual(self.wheel.options, ["jpg", "webp", "tiff", "avif", "bmp", "pdf"])
+        self.assertEqual(self.wheel.options, ["jpg", "webp", "tiff", "avif", "bmp", "pdf", "quick_action"])
         self.assertTrue(all(reason is None for reason in self.wheel.reasons.values()))
         text = ROOT / "별도.txt"
         text.write_text("한글", encoding="utf-8")
         self.wheel.set_paths([str(SOURCE), str(text)])
-        self.assertEqual(self.wheel.options, ["jpg", "pdf"])
+        self.assertEqual(self.wheel.options, ["jpg", "pdf", "quick_action"])
 
     def test_03_copy_overrides_shift_move(self):
         self.show_wheel()
@@ -910,7 +912,7 @@ class GuiTests(unittest.TestCase):
 
     def test_25_translation_placeholders_are_complete(self):
         formatter = string.Formatter()
-        values = {"app": "FlipRing", "key": "F8", "tool": "FFmpeg", "count": 2,
+        values = {"package": "Gyan.FFmpeg", "app": "FlipRing", "key": "F8", "tool": "FFmpeg", "count": 2,
                   "name": "원본.jpg", "error": "Example", "detail": "OS diagnostic", "needed": "64.0", "free": "1024.0"}
         for message_id, pair in i18n.TEXT.items():
             with self.subTest(message_id=message_id):
@@ -927,7 +929,7 @@ class GuiTests(unittest.TestCase):
         for korean, english in [
             ("지원하지 않는 파일입니다: sample.foo", "Unsupported file: sample.foo"),
             ("LibreOffice에서 PDF 결과를 만들지 못했습니다.", "LibreOffice did not produce a PDF result."),
-            ("FFmpeg 도구를 설치해 주세요. 설정에서 설치 명령을 복사할 수 있습니다.", "Install FFmpeg. You can copy the install command in Settings."),
+            ("FFmpeg 도구를 설치해 주세요. 설정에서 설치 명령을 복사할 수 있습니다.", "Install FFmpeg. You can install it automatically in Helper tools."),
             ("ffmpeg 변환 실패 (2)\ncodec error", "ffmpeg conversion failed (2)\ncodec error"),
         ]:
             self.assertEqual(i18n.error_text("en", korean), english)
@@ -1143,7 +1145,7 @@ class GuiTests(unittest.TestCase):
             self.window.refresh_history()
 
     def test_35_pdf_panel_language_and_tab_contract(self):
-        self.assertEqual(self.window.tabs.count(), 7)
+        self.assertEqual(self.window.tabs.count(), 8)
         self.assertIs(self.window.tabs.widget(4), self.window.pdf_panel)
         for language in ("en", "ko"):
             with patch.object(self.window.pdf_panel, "set_language",
@@ -1458,7 +1460,8 @@ class GuiTests(unittest.TestCase):
         with patch.object(app.engine, "requirement", return_value="test helper") as requirement:
             self.wheel.set_paths([str(SOURCE)])
         self.assertTrue(requirement.called)
-        self.assertTrue(all(reason == "test helper" for reason in self.wheel.reasons.values()))
+        self.assertTrue(all(reason == "test helper" for key, reason in self.wheel.reasons.items() if key != "quick_action"))
+        self.assertIsNone(self.wheel.reasons["quick_action"])
         self.wheel.set_paths([str(SOURCE)])
 
     def test_50_button_hover_frames_preserve_clicks_geometry_and_idle_state(self):
@@ -1747,6 +1750,8 @@ class GuiTests(unittest.TestCase):
             self.window.hide()
 
     def test_57_hover_label_contrast_stays_readable_through_rendered_frames(self):
+        previous_theme = self.window.theme.mode
+        self.window.theme.apply("dark")
         self.show_wheel()
         self.wheel.motion.setCurrentTime(self.wheel.motion.duration())
         self.assertEqual(self.wheel.options[1], "webp")
@@ -1762,9 +1767,14 @@ class GuiTests(unittest.TestCase):
         for position in (0, 0.25, 0.5, 0.75, 1):
             self.wheel.highlight.setCurrentTime(round(self.wheel.highlight.duration() * position))
             image = self.wheel.grab().toImage()
-            background = image.pixelColor(303, 170)
+            angle = app.math.radians((1 + 0.5) * 360 / len(self.wheel.options))
+            center = self.wheel.width() / 2
+            radius = ((self.wheel.INNER + 6) + (self.wheel.OUTER - 5)) / 2 + 3 * self.wheel.weights.get(1, 0)
+            label_x = round(center + radius * app.math.sin(angle))
+            label_y = round(center - radius * app.math.cos(angle))
+            background = image.pixelColor(round(center + (self.wheel.OUTER - 12) * app.math.sin(angle)), round(center - (self.wheel.OUTER - 12) * app.math.cos(angle)))
             # 고정 WEBP 라벨 내부만 검사하고 중앙 문구·외곽선·AA 경계 픽셀은 제외한다.
-            cores = [image.pixelColor(x, y) for y in range(153, 187) for x in range(240, 304)
+            cores = [image.pixelColor(x, y) for y in range(label_y - 17, label_y + 17) for x in range(label_x - 32, label_x + 32)
                      if image.pixelColor(x, y).alpha() >= 250 and image.pixelColor(x, y).red() >= 238]
             self.assertTrue(cores)
             foreground = max(cores, key=lambda color: color.red())
@@ -1781,6 +1791,7 @@ class GuiTests(unittest.TestCase):
                 self.assertTrue(self.wheel.grab().save(str(ROOT / f"Fluid-hover-contrast-{position:g}.png")))
         self.wheel.highlight.stop()
         (ROOT / "Fluid-호버대비.json").write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
+        self.window.theme.apply(previous_theme)
 
     def test_58_tab_completion_destroys_effect_and_requests_one_background_update(self):
         tabs = self.window.tabs
