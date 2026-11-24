@@ -1,0 +1,290 @@
+[
+  {
+    "published_path": "history/1.10.0/소스/1.10-문서지원안내.md",
+    "before_sha256": "826557f0abae99822f082a82102583a55124980b19f63ad28076ee2ec9eb955f",
+    "restored_sha256": "f49564c4c6a62db5bc5142b60a94678d2e9623b9dba8669778c0e2c06f391a6e",
+    "bytes": 4220
+  },
+  {
+    "published_path": "history/1.10.0/소스/1.7-새기능안내.md",
+    "before_sha256": "81f9afe6b45349f54a557147c082cf4e912bbb7f1b1521f5b645f9012a04827a",
+    "restored_sha256": "6c812afba5f4d2ff99fdb4cac4b58466368d62ec7bba26b3d9815e5f5e774fb7",
+    "bytes": 4680
+  },
+  {
+    "published_path": "history/1.10.0/소스/1.8-화면안내.md",
+    "before_sha256": "0da7af067cbe42dd51c425f18e9390e4928d110f683e3a9880afe7dd9732c995",
+    "restored_sha256": "3793caf258369a9353138467924fb40f26c4aa3d477b844da3948dc2c67c788f",
+    "bytes": 1628
+  },
+  {
+    "published_path": "history/1.10.0/소스/1.9-확장안내.md",
+    "before_sha256": "22cd35030d203f3faadbfdc57d0f7998c3237387268d65c568d7b285702b9ac4",
+    "restored_sha256": "dbac95d9f210fc1c72f93f6a0f50723c808ab3b9871abddff256866ac748905c",
+    "bytes": 1900
+  },
+  {
+    "published_path": "history/1.10.0/소스/licenses/HEIC-GNU-runtime/읽어주세요.md",
+    "before_sha256": "e2e331dc04a7b1026644936f2e58d1b86b365f06868e60d248deffe3e0d73c9e",
+    "restored_sha256": "280d93a25999fce85879a23f36c73264ade0de631b89aa2d710b95766c724411",
+    "bytes": 3330
+  },
+  {
+    "published_path": "history/1.10.0/소스/licenses/OCR/ubuntu-gcc/README.md",
+    "before_sha256": "129a1ec002980d4aa376fac3d0b04ef5d0a43dac39ed287cabdc0ee3dc86fc85",
+    "restored_sha256": "48d0f8f4862710e2eb722a6c50343c1a91b9279fbc900ef68da2a874e7eefeb9",
+    "bytes": 5499
+  },
+  {
+    "published_path": "history/1.10.0/소스/licenses/OCR/읽어주세요.md",
+    "before_sha256": "ce39d1f70495db9308ed38f8410e57c4a00354652c970e8126979a218c3e458d",
+    "restored_sha256": "bfa34f798177e0f419b3caea6f608ddfbfa3f22e99e7e45747c62be95832c47f",
+    "bytes": 3217
+  },
+  {
+    "published_path": "history/1.10.0/소스/licenses/Temurin17/legal/jdk.localedata/cldr.md",
+    "before_sha256": "c8aba9b5d0b6904764d93994e97c3f1d182ba791257634036982bae5bb3eb58c",
+    "restored_sha256": "09972449731a1d1a0863af0384aeb7839f84cac74983c96856e6c305e31ed8b2",
+    "bytes": 33
+  },
+  {
+    "published_path": "history/1.10.0/소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
+    "before_sha256": "96f5b328adbb78eeaaec6980d73fd558cb1e4d62560ed615646bc3cf5e532430",
+    "restored_sha256": "be2b2b5ab168bce87bc3e31f2a5c5adba4b7f6e9e51d618e958d1d46972ebd95",
+    "bytes": 5755
+  },
+  {
+    "published_path": "history/1.10.0/소스/vendor/java/legal/jdk.localedata/cldr.md",
+    "before_sha256": "c8aba9b5d0b6904764d93994e97c3f1d182ba791257634036982bae5bb3eb58c",
+    "restored_sha256": "09972449731a1d1a0863af0384aeb7839f84cac74983c96856e6c305e31ed8b2",
+    "bytes": 33
+  },
+  {
+    "published_path": "history/1.10.0/소스/vendor/tesseract/doc/README.md",
+    "before_sha256": "33b491c89c37a9d0f38a484d9d17a992189a7564efe0d7544dbdeb110f54933a",
+    "restored_sha256": "35ca53a67a2895ebdc2cf6777fc5808c1b0c5df650b896b79c82b2c4a004bd76",
+    "bytes": 8152
+  },
+  {
+    "published_path": "history/1.10.0/소스/vendor/tesseract/doc/tessdata_fast-README.md",
+    "before_sha256": "4d8642bec35134f7f378887ee309577b3707ae2772b63b0d21cadd955f17ee66",
+    "restored_sha256": "22fee9835bff02fb7013aa9786a2144ae3d4c219083089375985a62808e7215e",
+    "bytes": 4353
+  },
+  {
+    "published_path": "history/1.10.0/소스/빌드방법.md",
+    "before_sha256": "22c30216f184fc58348f245df33cca6b620628700df46fc1ee9b57d5f568d8a6",
+    "restored_sha256": "24c524abfd0481f5a898bae284ee76ed9027044d39158bc9629f99a041831ea1",
+    "bytes": 22816
+  },
+  {
+    "published_path": "docs/2026-11-13_HWP양방향_요구사항.md",
+    "before_sha256": "1020c46a5e3e428d22e4787d8f38ec2550240b30aae81a4e5e3c6bc043eac554",
+    "restored_sha256": "8695117434a4de21057a98b3fe6643599af65783708c6dc28f34c2f303f00fc7",
+    "bytes": 5004
+  },
+  {
+    "published_path": "docs/2026-11-13_문서변환_초기화개선.md",
+    "before_sha256": "4cf7d16172b0e106468b4346a7698cc7b42a7e26d958e4479123d0a3045fa6d6",
+    "restored_sha256": "ed97f524df1d05bd3497621da79f36e4bfce68b3bbb0a434cf529bd0e753a523",
+    "bytes": 5213
+  },
+  {
+    "published_path": "docs/2026-11-14_HWP저장_구현과검증.md",
+    "before_sha256": "62bbc40cd10a31e8002b67318302d0618223ed580452a0d8ce98c7e1923b05fa",
+    "restored_sha256": "22d3f79d8d41e3b776e1503c1586befd8cb43e7f5efa0278b6dca7ffc3bdf8e8",
+    "bytes": 6828
+  },
+  {
+    "published_path": "history/1.11.0/소스/1.10-문서지원안내.md",
+    "before_sha256": "1283758efcea638a5117a4d9018e90671a267d171df118c1de1e88055344f2fd",
+    "restored_sha256": "7efac75386facf83fcb94b67446e7f111792254959f3decf98a2c7a1555394c3",
+    "bytes": 5062
+  },
+  {
+    "published_path": "history/1.11.0/소스/1.7-새기능안내.md",
+    "before_sha256": "81f9afe6b45349f54a557147c082cf4e912bbb7f1b1521f5b645f9012a04827a",
+    "restored_sha256": "6c812afba5f4d2ff99fdb4cac4b58466368d62ec7bba26b3d9815e5f5e774fb7",
+    "bytes": 4680
+  },
+  {
+    "published_path": "history/1.11.0/소스/1.8-화면안내.md",
+    "before_sha256": "0da7af067cbe42dd51c425f18e9390e4928d110f683e3a9880afe7dd9732c995",
+    "restored_sha256": "3793caf258369a9353138467924fb40f26c4aa3d477b844da3948dc2c67c788f",
+    "bytes": 1628
+  },
+  {
+    "published_path": "history/1.11.0/소스/1.9-확장안내.md",
+    "before_sha256": "22cd35030d203f3faadbfdc57d0f7998c3237387268d65c568d7b285702b9ac4",
+    "restored_sha256": "dbac95d9f210fc1c72f93f6a0f50723c808ab3b9871abddff256866ac748905c",
+    "bytes": 1900
+  },
+  {
+    "published_path": "history/1.11.0/소스/licenses/HEIC-GNU-runtime/읽어주세요.md",
+    "before_sha256": "e2e331dc04a7b1026644936f2e58d1b86b365f06868e60d248deffe3e0d73c9e",
+    "restored_sha256": "280d93a25999fce85879a23f36c73264ade0de631b89aa2d710b95766c724411",
+    "bytes": 3330
+  },
+  {
+    "published_path": "history/1.11.0/소스/licenses/OCR/ubuntu-gcc/README.md",
+    "before_sha256": "129a1ec002980d4aa376fac3d0b04ef5d0a43dac39ed287cabdc0ee3dc86fc85",
+    "restored_sha256": "48d0f8f4862710e2eb722a6c50343c1a91b9279fbc900ef68da2a874e7eefeb9",
+    "bytes": 5499
+  },
+  {
+    "published_path": "history/1.11.0/소스/licenses/OCR/읽어주세요.md",
+    "before_sha256": "ce39d1f70495db9308ed38f8410e57c4a00354652c970e8126979a218c3e458d",
+    "restored_sha256": "bfa34f798177e0f419b3caea6f608ddfbfa3f22e99e7e45747c62be95832c47f",
+    "bytes": 3217
+  },
+  {
+    "published_path": "history/1.11.0/소스/licenses/Temurin17/legal/jdk.localedata/cldr.md",
+    "before_sha256": "c8aba9b5d0b6904764d93994e97c3f1d182ba791257634036982bae5bb3eb58c",
+    "restored_sha256": "09972449731a1d1a0863af0384aeb7839f84cac74983c96856e6c305e31ed8b2",
+    "bytes": 33
+  },
+  {
+    "published_path": "history/1.11.0/소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
+    "before_sha256": "96f5b328adbb78eeaaec6980d73fd558cb1e4d62560ed615646bc3cf5e532430",
+    "restored_sha256": "be2b2b5ab168bce87bc3e31f2a5c5adba4b7f6e9e51d618e958d1d46972ebd95",
+    "bytes": 5755
+  },
+  {
+    "published_path": "history/1.11.0/소스/test-fixtures/자체HEIC_출처와재생성.md",
+    "before_sha256": "0faa75b5ffce4c23d915b31b948379198639dc8374f8cd6fe0a173bed8441619",
+    "restored_sha256": "e2bf920209dd73afa08984e16bd5105c413f8bde204d8f94ebd91bf82081a314",
+    "bytes": 3000
+  },
+  {
+    "published_path": "history/1.11.0/소스/vendor/java/legal/jdk.localedata/cldr.md",
+    "before_sha256": "c8aba9b5d0b6904764d93994e97c3f1d182ba791257634036982bae5bb3eb58c",
+    "restored_sha256": "09972449731a1d1a0863af0384aeb7839f84cac74983c96856e6c305e31ed8b2",
+    "bytes": 33
+  },
+  {
+    "published_path": "history/1.11.0/소스/vendor/tesseract/doc/README.md",
+    "before_sha256": "33b491c89c37a9d0f38a484d9d17a992189a7564efe0d7544dbdeb110f54933a",
+    "restored_sha256": "35ca53a67a2895ebdc2cf6777fc5808c1b0c5df650b896b79c82b2c4a004bd76",
+    "bytes": 8152
+  },
+  {
+    "published_path": "history/1.11.0/소스/vendor/tesseract/doc/tessdata_fast-README.md",
+    "before_sha256": "4d8642bec35134f7f378887ee309577b3707ae2772b63b0d21cadd955f17ee66",
+    "restored_sha256": "22fee9835bff02fb7013aa9786a2144ae3d4c219083089375985a62808e7215e",
+    "bytes": 4353
+  },
+  {
+    "published_path": "history/1.11.0/소스/빌드방법.md",
+    "before_sha256": "a67b52635b8f932e1315057219bf140899bb3c9c4aca6d1c66c985f55c0da009",
+    "restored_sha256": "f2e575435fbb58469dd372f79b94d889881b95e63ae89e30c0d03eb53ab56e6f",
+    "bytes": 32314
+  },
+  {
+    "published_path": "docs/2026-10-30_고정창과세부디자인.md",
+    "before_sha256": "bbd060f849ee3a5e89d4799a8151f8e4c425a882e881bff50aa8bacceaa36ee5",
+    "restored_sha256": "1a3a01eb680364e5f13026514ac8bc87add1dd18754fcc855dd900a2dc0a1604",
+    "bytes": 16525
+  },
+  {
+    "published_path": "docs/2026-10-30_작업흐름확장.md",
+    "before_sha256": "1bb5ca031998ef261d115015247c1a824415e124c8489f11b1408ee624be427e",
+    "restored_sha256": "0d3250e8aa0201f2be61aa8f957aed45f83000dc0441efcb38f0c6b38bc7eda2",
+    "bytes": 6031
+  },
+  {
+    "published_path": "docs/2026-11-02_1.9.0_공개변경기록.md",
+    "before_sha256": "be849eab77e06f91c05145dbca294e0549b2567ade1386bd561fc2f41676e5ab",
+    "restored_sha256": "342b8ae69e5f6838c4f2fbac815cf5a43de9bb2972a8fd9838423fe7b3c28e9c",
+    "bytes": 6271
+  },
+  {
+    "published_path": "docs/PRIVACY_PUBLIC_COPY.md",
+    "before_sha256": "e63d5a74a9af2be3b289e9ace42100cf490fe10ca656e5ffe74ade3683a2e086",
+    "restored_sha256": "8af450982d012cb5f2ab9f2b64286a11ff5a0ab55a289ee0952971651e71a8ed",
+    "bytes": 2048
+  },
+  {
+    "published_path": "docs/changes/2026-10-30_1.7_실제조작확인.md",
+    "before_sha256": "3e39159483b3887127d90ae2031156edb04c40a78fad7f128d09740de8beffab",
+    "restored_sha256": "0df9e32cb67e061da379908cbff5c319305f75789ef281aa5946ad68d4eb32a5",
+    "bytes": 2458
+  },
+  {
+    "published_path": "docs/changes/2026-10-30_1.8_고정창.md",
+    "before_sha256": "deb4e6a8ffe5a66824ba8784126981293ad70ff9c8a2b241d84d76c2d936a97f",
+    "restored_sha256": "873593f71d7f937be85cea4e2003b633445b773be76fe23a94a55bc9388f3a98",
+    "bytes": 8900
+  },
+  {
+    "published_path": "docs/changes/2026-10-30_차수별_전체비교.md",
+    "before_sha256": "39413d22e3f3f02fe389ca25a339837b86bf4c10d65b0f2cb3a6446e5c997271",
+    "restored_sha256": "2893d88e77df2a6c71ce70c0fdd8d6f746f8d3a223040dae4e790aa916d56147",
+    "bytes": 1161
+  },
+  {
+    "published_path": "docs/내부모션.md",
+    "before_sha256": "6ebdda4bcb4af1535af2d924f1b2f1a091105c0b00cb9b4ac292d3a8a4cbef34",
+    "restored_sha256": "f01c4b0b89d420286115dbb3947cec5e8c125bcec31ba2c0a0c949348a9d81fa",
+    "bytes": 3137
+  },
+  {
+    "published_path": "docs/부드러운디자인.md",
+    "before_sha256": "49c4776553155e5c7993710a8039136fe660722154d783050673b2604fb54bd1",
+    "restored_sha256": "de56838466caf85aee7bb043fb13e4920aa81aa87f61103338facceeb2442f75",
+    "bytes": 2254
+  },
+  {
+    "published_path": "docs/스튜디오재설계.md",
+    "before_sha256": "7cbefa95dbcfae032ccb38c882a157d60920e5c6f3e0f5d8368344c9c47b1263",
+    "restored_sha256": "55d89ce658c6865ce649efc78169ea080a5a0f17fe2635789b8638f2b19cfaec",
+    "bytes": 4632
+  },
+  {
+    "published_path": "docs/요구사항.md",
+    "before_sha256": "b5525f63e28dddb4e4e51b43ed344a0ca82124ffdd2db5e3976ce185ef78fce5",
+    "restored_sha256": "f4f61ff6762dab3bd41ccb4f0d6b584b3905571ffa88d17e88031090b071d369",
+    "bytes": 4258
+  },
+  {
+    "published_path": "docs/이동재개.md",
+    "before_sha256": "2b5d7628043eb26fc2a80d4cba1f4dddb86f124d00ac4bf62942b56d17771e21",
+    "restored_sha256": "0fa6f4afc000e1679ae22d1e774974ae12fa731226f17f0f62976d2d0b206947",
+    "bytes": 1356
+  },
+  {
+    "published_path": "history/1.9.0/빌드방법.md",
+    "before_sha256": "0c85920e26d666835799694df5b7aefbb5bbfbf484a57398b5439a4f9f8a449d",
+    "restored_sha256": "3168cc824bd619bd0bd6fcb68b88697604f36425ad3732a2ac4c8a944d704498",
+    "bytes": 11765
+  },
+  {
+    "published_path": "docs/changes/2026-10-31-문서링크정리.md",
+    "before_sha256": "8b6b1557879bdb050a1cd29024b807b9d4e6971484dee4ff0e65202bce428b71",
+    "restored_sha256": "fc176dd9b5400dcf699f8ca3ad925ad1ecee2147369e01eca1481c0ea5cbede4",
+    "bytes": 861
+  },
+  {
+    "published_path": "프로그램/FlipRing/licenses/OCR/읽어주세요.md",
+    "before_sha256": "d2d95d83c2fc435e3ddd35e4b644e9d8bbebd1f5a680c72bfb1ec7c7e37b7aee",
+    "restored_sha256": "3478a3345fdf47c1da97c840d0a2d6f3e4793583186f8e925d5d5c9bd18c230c",
+    "bytes": 3220
+  },
+  {
+    "published_path": "프로그램/FlipRing/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
+    "before_sha256": "4321f41d8d106ce8096000d099491d1ef6d4b96a2f37777348c0b69cd7fbbef2",
+    "restored_sha256": "388b9b47f302c61fef8f23043cc436931d86486f515a205da5dbe8b7e5637854",
+    "bytes": 5762
+  },
+  {
+    "published_path": "프로그램/FlipRing/licenses/HEIC-GNU-runtime/읽어주세요.md",
+    "before_sha256": "e2e331dc04a7b1026644936f2e58d1b86b365f06868e60d248deffe3e0d73c9e",
+    "restored_sha256": "280d93a25999fce85879a23f36c73264ade0de631b89aa2d710b95766c724411",
+    "bytes": 3330
+  },
+  {
+    "published_path": "프로그램/FlipRing/licenses/OCR/ubuntu-gcc/README.md",
+    "before_sha256": "129a1ec002980d4aa376fac3d0b04ef5d0a43dac39ed287cabdc0ee3dc86fc85",
+    "restored_sha256": "48d0f8f4862710e2eb722a6c50343c1a91b9279fbc900ef68da2a874e7eefeb9",
+    "bytes": 5499
+  }
+]
