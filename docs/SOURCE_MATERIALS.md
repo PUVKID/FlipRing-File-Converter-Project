@@ -11,7 +11,7 @@
 
 </div>
 <!-- reading-levels:start -->
-[LEVEL 1 - Beginner](#reading-level-1) · [LEVEL 2 - Explorer](#reading-level-2) · [LEVEL 3 - Practitioner](#reading-level-3) · [LEVEL 4 - Advanced](#reading-level-4) · [LEVEL 5 - Expert](#reading-level-5)
+[LEVEL 1 - Beginner](#user-content-reading-level-1) · [LEVEL 2 - Explorer](#user-content-reading-level-2) · [LEVEL 3 - Practitioner](#user-content-reading-level-3) · [LEVEL 4 - Advanced](#user-content-reading-level-4) · [LEVEL 5 - Expert](#user-content-reading-level-5)
 
 프로젝트 전체의 설명은 [LEVEL 1 - Beginner](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)부터 [LEVEL 5 - Expert](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)까지 같은 범위로 연결됩니다.
 
@@ -21,7 +21,7 @@
 <a id="reading-level-1"></a>
 ## LEVEL 1 - Beginner · 목적부터 결과 확인까지
 
-[같은 수준 프로젝트](읽기안내/레벨1.md) · [같은 수준 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨1.md) · [LEVEL 1 - Beginner](#reading-level-1) · [LEVEL 2 - Explorer](#reading-level-2) · [LEVEL 3 - Practitioner](#reading-level-3) · [LEVEL 4 - Advanced](#reading-level-4) · [LEVEL 5 - Expert](#reading-level-5) · [프로젝트 첫 화면](../README.md)
+[같은 수준 프로젝트](읽기안내/레벨1.md) · [같은 수준 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨1.md) · [LEVEL 1 - Beginner](#user-content-reading-level-1) · [LEVEL 2 - Explorer](#user-content-reading-level-2) · [LEVEL 3 - Practitioner](#user-content-reading-level-3) · [LEVEL 4 - Advanced](#user-content-reading-level-4) · [LEVEL 5 - Expert](#user-content-reading-level-5) · [프로젝트 첫 화면](../README.md)
 
 이 자료는 여러 시점에 따로 보관한 제품 코드·설정·사용법·설계·라이선스를 찾는 목록입니다.
 
@@ -131,7 +131,7 @@ ZIP 안의 파일은 공개 ZIP 멤버 대응 목록으로 연결합니다.
 <a id="reading-level-2"></a>
 ## LEVEL 2 - Explorer · 구성과 처리 관계
 
-[같은 수준 프로젝트](읽기안내/레벨2.md) · [같은 수준 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨2.md) · [LEVEL 1 - Beginner](#reading-level-1) · [LEVEL 2 - Explorer](#reading-level-2) · [LEVEL 3 - Practitioner](#reading-level-3) · [LEVEL 4 - Advanced](#reading-level-4) · [LEVEL 5 - Expert](#reading-level-5) · [프로젝트 첫 화면](../README.md)
+[같은 수준 프로젝트](읽기안내/레벨2.md) · [같은 수준 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨2.md) · [LEVEL 1 - Beginner](#user-content-reading-level-1) · [LEVEL 2 - Explorer](#user-content-reading-level-2) · [LEVEL 3 - Practitioner](#user-content-reading-level-3) · [LEVEL 4 - Advanced](#user-content-reading-level-4) · [LEVEL 5 - Expert](#user-content-reading-level-5) · [프로젝트 첫 화면](../README.md)
 
 files.json은 공개 사 본의 파일 대응을, archive-members.json은 압축 내부 항목과 공개 경로의 대응을 제공합니다. 전체 차수 안내는 그 파일이 어떤 시점의 작업인지 연결합니다. 원문 경로·출처·해시를 따라 기능 소스와 보조 도구를 구분하는 흐름입니다.
 
@@ -237,7 +237,7 @@ README는 묶음의 안내이고 files.json은 파일 단위 명세입니다. �
 <a id="reading-level-3"></a>
 ## LEVEL 3 - Practitioner · 준비·절차·오류 확인
 
-[같은 수준 프로젝트](읽기안내/레벨3.md) · [같은 수준 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨3.md) · [LEVEL 1 - Beginner](#reading-level-1) · [LEVEL 2 - Explorer](#reading-level-2) · [LEVEL 3 - Practitioner](#reading-level-3) · [LEVEL 4 - Advanced](#reading-level-4) · [LEVEL 5 - Expert](#reading-level-5) · [프로젝트 첫 화면](../README.md)
+[같은 수준 프로젝트](읽기안내/레벨3.md) · [같은 수준 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨3.md) · [LEVEL 1 - Beginner](#user-content-reading-level-1) · [LEVEL 2 - Explorer](#user-content-reading-level-2) · [LEVEL 3 - Practitioner](#user-content-reading-level-3) · [LEVEL 4 - Advanced](#user-content-reading-level-4) · [LEVEL 5 - Expert](#user-content-reading-level-5) · [프로젝트 첫 화면](../README.md)
 
 원하는 기능의 차수와 원래 경로를 먼저 찾고 연결된 코드·문서를 대조합니다. 압축에서 가져온 파일이면 ZIP 멤버 대응도 확인합니다. 실행이 필요하다면 해당 차수 안내의 입력·의존성·원래 경로를 확보한 뒤 개별 도구 목적을 검토합니다. 정리·복구·배포 도구를 목록 순서대로 실행하지 않습니다.
 
@@ -343,7 +343,7 @@ README에서 보존 위치를 확인하고 실제 필요한 파일은 명세와 
 <a id="reading-level-4"></a>
 ## LEVEL 4 - Advanced · 구현 경계와 변경 영향
 
-[같은 수준 프로젝트](읽기안내/레벨4.md) · [같은 수준 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨4.md) · [LEVEL 1 - Beginner](#reading-level-1) · [LEVEL 2 - Explorer](#reading-level-2) · [LEVEL 3 - Practitioner](#reading-level-3) · [LEVEL 4 - Advanced](#reading-level-4) · [LEVEL 5 - Expert](#reading-level-5) · [프로젝트 첫 화면](../README.md)
+[같은 수준 프로젝트](읽기안내/레벨4.md) · [같은 수준 프로필](https://github.com/PUVKID/PUVKID/blob/main/docs/읽기안내/레벨4.md) · [LEVEL 1 - Beginner](#user-content-reading-level-1) · [LEVEL 2 - Explorer](#user-content-reading-level-2) · [LEVEL 3 - Practitioner](#user-content-reading-level-3) · [LEVEL 4 - Advanced](#user-content-reading-level-4) · [LEVEL 5 - Expert](#user-content-reading-level-5) · [프로젝트 첫 화면](../README.md)
 
 이 목록의 책임은 이질적인 시점의 자료를 출처와 대응 관계로 묶는 것입니다. 파일명세·ZIP 멤버 대응·차수 설명·공개 제외 기록은 서로 다른 집합을 나타내므로 단순 파일 수 비교만으로 보존 완전성을 판정할 수 없습니다. 같은 이름이라도 경로·시점·해시가 다르면 별개 자료로 취급해야 합니다.
 
@@ -449,7 +449,7 @@ README에서 보존 위치를 확인하고 실제 필요한 파일은 명세와 
 <a id="reading-level-5"></a>
 ## LEVEL 5 - Expert
 
-기존의 전체 설명·표·코드·함수 참조·파일별 비교는 아래에 그대로 이어집니다. [자료 폴더](../%EB%B3%B4%EC%A1%B4%EC%9E%90%EB%A3%8C/%EC%9E%91%EC%97%85%EC%86%8C%EC%8A%A4) · [직전 비교·자료 범위](2026-11-02_%EA%B3%B5%EA%B0%9C%EB%B0%98%EC%98%81%EC%9E%AC%EA%B0%9C%EA%B2%80%EC%A6%9D.md) · [이 차수의 원래 전체 상세](#reading-level-5)
+기존의 전체 설명·표·코드·함수 참조·파일별 비교는 아래에 그대로 이어집니다. [자료 폴더](../%EB%B3%B4%EC%A1%B4%EC%9E%90%EB%A3%8C/%EC%9E%91%EC%97%85%EC%86%8C%EC%8A%A4) · [직전 비교·자료 범위](2026-11-02_%EA%B3%B5%EA%B0%9C%EB%B0%98%EC%98%81%EC%9E%AC%EA%B0%9C%EA%B2%80%EC%A6%9D.md) · [이 차수의 원래 전체 상세](#user-content-reading-level-5)
 <!-- reading-levels:end -->
 
 
