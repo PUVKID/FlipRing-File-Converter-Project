@@ -86,7 +86,7 @@ HWP·HWPX의 PDF·Word 등 기존 읽기 변환과 Office 문서 변환에는 Li
 1.7.0부터 보존된 프리셋 검증 조건은 다음과 같습니다.
 
 - 이름은 1~80 자이며 대소문자를 무시한 중복 이름을 거부합니다. convert/pdf 종류와 허용 옵션만 저장합니다.
-- PDF 회전 90/180/270·품질 20~95·DPI 60~600·PSM 3/6/11·OCR 언어 kor+eng/kor/eng를 검사합니다.
+- PDF 회전 90/180/270·품질 20\~95·DPI 60\~600·PSM 3/6/11·OCR 언어 kor+eng/kor/eng를 검사합니다.
 - 손상된 프리셋은 오류를 보존하고 덮어 쓰지 않습니다. 정상 저장만 임시 JSON의 flush/fsync·교체를 사용합니다.
 
 사전 점검의 공간 값은 입력 4 배 +64MiB라는 보수적 추정입니다.
@@ -425,6 +425,7 @@ Windows 글꼴·운영 체제 API와 선택한 기능의 실행 파일이 필요
 | 1.10.0 | [폴더](history/1.10.0/) | [설명](docs/versions/1.10.0.md) | [전체 비교](docs/revision-audit/1.10.0.md) |
 | 1.11.0 | [폴더](history/1.11.0/) | [설명](docs/versions/1.11.0.md) | [전체 비교](docs/revision-audit/1.11.0.md) |
 | 1.12.0 | [폴더](history/1.12.0/) | [설명](docs/versions/1.12.0.md) | [전체 비교](docs/revision-audit/1.12.0.md) |
+| 1.12.1 | [폴더](history/1.12.1/) | [설명](docs/versions/1.12.1.md) | [전체 비교](docs/revision-audit/1.12.1.md) |
 | 최종 | [폴더](소스/) | [설명](docs/versions/최종.md) | [전체 비교](docs/revision-audit/최종.md) |
 | 현행소스 | 원격 726 기준: [자료 폴더](%EC%86%8C%EC%8A%A4)<br>현재 후보: [폴더](소스/) | 원격 726 기준: [상세 설명](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md)<br>현재 후보: [설명](docs/revision-audit/현행소스.md) | 원격 726 기준: [전체 비교·범위](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md)<br>현재 후보: [전체 비교](docs/revision-audit/현행소스.md) |
 | 고유 작업 코드·문서 | [자료 폴더](%EB%B3%B4%EC%A1%B4%EC%9E%90%EB%A3%8C/%EC%9E%91%EC%97%85%EC%86%8C%EC%8A%A4) | [상세 설명](docs/SOURCE_MATERIALS.md) | [전체 비교·범위](docs/2026-11-02_%EA%B3%B5%EA%B0%9C%EB%B0%98%EC%98%81%EC%9E%AC%EA%B0%9C%EA%B2%80%EC%A6%9D.md) |
