@@ -1,0 +1,33 @@
+{
+  "project": "H2Orestart",
+  "version": "v0.8.0",
+  "license": "GPL-3.0",
+  "upstream": "https://github.com/ebandal/H2Orestart",
+  "binary": {
+    "file": "vendor/h2orestart/H2Orestart.oxt",
+    "bytes": 606897,
+    "sha256": "6a12a08a4c10bd4e020c4bce9dc9315046a71bf5dc3061ad9405e456d75a13ab",
+    "origin": "v0.8.0에 flipring-fullbounds1을 적용해 로컬 재빌드",
+    "build_manifest": "licenses/H2Orestart/수정빌드_명세.json"
+  },
+  "source": {
+    "file": "H2Orestart-v0.8.0-source.tar.gz",
+    "bytes": 757464,
+    "sha256": "24c143bb442cd3d726414389f8e3b2f79b8ebb023c31abe58515096c2beeda3a",
+    "url": "https://api.github.com/repos/ebandal/H2Orestart/tarball/v0.8.0"
+  },
+  "scope": "로컬 LibreOffice 별도 프로세스에서 한글 입력을 읽는 확장입니다. v0.8.0 원본은 보존하며 원본 전체 그림의 한 행 손실을 막는 조건만 수정했습니다.",
+  "upstream_binary": {
+    "file": "vendor/h2orestart/H2Orestart.oxt",
+    "bytes": 611297,
+    "sha256": "f36c19fa6b7dff1cf34114d926bdc088e6bcfa7fdc93d67eaafd3f572be1d62c",
+    "url": "https://github.com/ebandal/H2Orestart/releases/download/v0.8.0/H2Orestart.oxt"
+  },
+  "modified": true,
+  "local_patch": "flipring-fullbounds1",
+  "modification_source": {
+    "file": "수정소스/soffice/ConvGraphics.java",
+    "patch": "전체그림경계-수정.patch",
+    "recipe": "재빌드.py"
+  }
+}

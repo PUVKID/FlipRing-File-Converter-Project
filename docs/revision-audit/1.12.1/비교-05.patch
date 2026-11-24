@@ -1,676 +1,1656 @@
-+APP = QApplication.instance() or QApplication([])
-+
-+class Owner(QWidget):
-+    def __init__(self, root):
-+        super().__init__()
-+        self.settings = QSettings(str(root / 'settings.ini'), QSettings.IniFormat)
-+        self.pending = 0
-+        self.records = []
-+        self.pdf_panel = type('Pdf', (), {'is_busy': lambda s: False})()
-+        # 실제 MainWindow의 신규 설치·빠른 작업 계약을 모형에도 반영합니다.
-+        self.installer = type('Installer', (), {'is_busy': lambda s: False})()
-+        self.quick_actions_panel = None
-+    def append_record(self, *record):
-+        self.records.append(record)
-+    def update_status(self):
-+        pass
-+
-+class WorkspaceUiTests(unittest.TestCase):
-+    def setUp(self):
-+        self.tmp = tempfile.TemporaryDirectory()
-+        self.root = Path(self.tmp.name)
-+        self.owner = Owner(self.root)
-+        # 실제 배치 검사는 부모 창까지 표시하여 Qt 레이아웃을 활성화한다.
-+        self.owner.resize(1000,720)
-+        self.owner.show()
-+        self.panel = WorkspacePanel(self.owner)
-+        self.panel.resize(900, 660)
-+        self.panel.show()
-+        self.path = self.root / '원본.png'
-+        Image.new('RGB', (64, 40), 'white').save(self.path)
-+    def tearDown(self):
-+        self.panel.shutdown()
-+        self.wait_done()
-+        # 오프스크린 Qt가 소유한 검사 MIME은 QApplication보다 먼저 정리한다.
-+        # 제품의 실제 클립보드 유지 동작과 파일 복사 검증은 바꾸지 않는다.
-+        QApplication.clipboard().clear()
-+        APP.processEvents()
-+        self.panel.close()
-+        self.owner.close()
-+        APP.processEvents()
-+        self.tmp.cleanup()
-+    def wait_done(self):
-+        # 실제 이벤트 루프에서 완료를 관찰하며 기존 27초 제한은 유지한다.
-+        if not self.panel.is_busy():
-+            return
-+        loop=QEventLoop()
-+        timer=QTimer(loop)
-+        timer.setSingleShot(True)
-+        timer.setTimerType(Qt.PreciseTimer)
-+        dispatcher=QAbstractEventDispatcher.instance()
-+        active=[True]
-+        expired=[False]
-+        def completion_gate(*unused):
-+            if active[0] and not self.panel.is_busy():
-+                loop.quit()
-+        def timeout():
-+            if active[0]:
-+                expired[0]=True
-+                loop.quit()
-+        # 연결 전에 이미 전송된 완료 신호도 큐 처리 뒤의 gate에서 관찰한다.
-+        self.panel.bridge.done.connect(completion_gate,Qt.QueuedConnection)
-+        dispatcher.aboutToBlock.connect(completion_gate)
-+        timer.timeout.connect(timeout)
-+        try:
-+            timer.start(27000)
-+            if self.panel.is_busy():
-+                loop.exec()
-+        finally:
-+            # 이미 큐에 든 콜백은 비활성 gate로 처리하고 모든 연결을 해제한다.
-+            active[0]=False
-+            timer.stop()
-+            timer.timeout.disconnect(timeout)
-+            self.panel.bridge.done.disconnect(completion_gate)
-+            dispatcher.aboutToBlock.disconnect(completion_gate)
-+        if expired[0] or self.panel.is_busy():
-+            self.fail('작업이 종료되지 않았습니다')
-+    def test_files_language_and_motion(self):
-+        self.panel.set_files([str(self.path)])
-+        self.assertEqual(self.panel.files.count(), 1)
-+        self.panel.set_language('en')
-+        self.assertEqual(self.panel.run_button.text(), 'Run recipe')
-+        self.assertEqual(self.panel.paths, [str(self.path)])
-+        self.panel.set_reduced_motion(True)
-+        self.assertEqual(self.panel.visual.animation.state().name, 'Stopped')
-+        self.panel.hide()
-+        self.assertEqual(self.panel.visual.animation.state().name, 'Stopped')
-+    def test_empty_selection_name_hint_preserves_literal_braces(self):
-+        from i18n import tr
-+        expected={'ko':'{name}, {index}, {date}를 사용할 수 있습니다.',
-+                  'en':'Use {name}, {index}, {date}.'}
-+        # 미리보기 제공자가 빈 목록을 반환하는 안내 분기도 실제 패널에서 확인한다.
-+        with patch('workspace_core.preview_names',return_value=[]):
-+            self.panel.set_files([])
-+            for language,text in expected.items():
-+                self.assertEqual(tr(language,'ws_name_hint'),text)
-+                self.panel.set_language(language)
-+                self.assertEqual(self.panel.paths,[])
-+                self.assertEqual(self.panel.names_preview.text(),text)
-+    def test_pipeline_preserves_source_and_records(self):
-+        original = self.path.read_bytes()
-+        self.panel.set_files([str(self.path)])
-+        self.panel.recipe_editor.setPlainText('{"version":1,"name":"복사","steps":[{"op":"rename","template":"{name}_{index}"}]}')
-+        self.assertTrue(self.panel.run_recipe())
-+        self.assertEqual(self.owner.pending, 1)
-+        self.assertFalse(self.panel.run_recipe())
-+        self.wait_done()
-+        self.assertEqual(self.owner.pending, 0)
-+        self.assertEqual(self.path.read_bytes(), original)
-+        self.assertTrue(self.owner.records)
-+        self.assertTrue(Path(self.owner.records[0][1]).is_file())
-+    def test_invalid_recipe_and_busy_gate(self):
-+        self.panel.set_files([str(self.path)])
-+        self.panel.recipe_editor.setPlainText('{"version":1,"name":"bad","steps":[{"op":"shell"}]}')
-+        self.assertFalse(self.panel.run_recipe())
-+        self.assertFalse(self.panel.is_busy())
-+        self.owner.pending = 1
-+        self.assertFalse(self.panel.run_recipe())
-+        self.owner.pending = 0
-+    def test_recipe_save_reload(self):
-+        self.panel.recipe_editor.setPlainText('{"version":1,"name":"저장","steps":[{"op":"audit"}]}')
-+        self.assertTrue(self.panel.save_recipe())
-+        self.assertGreaterEqual(self.panel.recipe_combo.findText('저장'), 0)
-+    def test_watch_requires_stability_and_excludes_outputs(self):
-+        output = self.root / 'results'
-+        output.mkdir()
-+        watcher = StableFolderWatch()
-+        watcher.configure(self.root, output)
-+        self.assertEqual(watcher.scan(), [])
-+        self.assertEqual(watcher.scan(), [str(self.path)])
-+        self.assertEqual(watcher.scan(), [])
-+        Image.new('RGB',(4,4)).save(output / 'out.png')
-+        self.assertEqual(watcher.scan(), [])
-+        (self.root / '.tmp.png').write_bytes(b'pending')
-+        self.assertEqual(watcher.scan(), [])
-+    def test_no_overlap_and_finite_motion(self):
-+        self.panel.set_files([str(self.path)])
-+        APP.processEvents()
-+        self.assertLess(self.panel.visual.geometry().bottom(), self.panel.files.geometry().top())
-+        self.assertLess(self.panel.files.geometry().bottom(), self.panel.recipe_combo.geometry().top())
-+        QTest.qWait(400)
-+        APP.processEvents()
-+        self.assertEqual(self.panel.visual.animation.state().name, 'Stopped')
-+        self.assertAlmostEqual(self.panel.visual.phase, 1.0)
-+    def test_cancel_queued_result_and_gate_release(self):
-+        import workspace_core
-+        real_execute = workspace_core.execute_workspace
-+        def execute_after_cancel(*args, **kwargs):
-+            kwargs['cancel'].wait(2)
-+            return real_execute(*args, **kwargs)
-+        self.panel.set_files([str(self.path)])
-+        with patch('workspace_core.execute_workspace', side_effect=execute_after_cancel):
-+            self.assertTrue(self.panel.run_recipe())
-+            self.panel.cancel()
-+            self.wait_done()
-+        self.assertEqual(self.panel._status_key, 'ws_cancelled')
-+        self.assertEqual(self.owner.pending, 0)
-+        self.assertEqual(self.panel.results.count(), 0)
-+    def test_shutdown_defers_close_until_cancel_signal(self):
-+        import workspace_core
-+        real_execute=workspace_core.execute_workspace
-+        def execute_after_cancel(*args,**kwargs):
-+            kwargs['cancel'].wait(2)
-+            return real_execute(*args,**kwargs)
-+        self.panel.set_files([str(self.path)])
-+        with patch('workspace_core.execute_workspace',side_effect=execute_after_cancel):
-+            self.panel.run_recipe()
-+            self.assertFalse(self.panel.shutdown())
-+            self.panel.close()
-+            self.wait_done()
-+        self.assertEqual(self.owner.pending,0)
-+        self.assertTrue(self.panel.shutdown())
-+    def test_explicit_watch_executes_once_and_stops(self):
-+        self.panel._watch_folder = str(self.root)
-+        self.panel.output_dir = self.root / 'output'
-+        self.panel.output_dir.mkdir()
-+        self.panel.write_recipe({'version':1,'name':'감시','steps':[{'op':'rename','template':'{name}_watched'}]})
-+        self.assertFalse(self.panel.watch_timer.isActive())
-+        self.panel.watch_enabled.setChecked(True)
-+        self.panel.watch_timer.stop()
-+        self.panel.scan_watch()
-+        self.assertFalse(self.panel.is_busy())
-+        self.panel.scan_watch()
-+        self.wait_done()
-+        self.assertEqual(len(self.owner.records), 1)
-+        self.panel.scan_watch()
-+        self.assertEqual(len(self.owner.records), 1)
-+        self.panel.watch_enabled.setChecked(False)
-+        self.assertFalse(self.panel.watch_timer.isActive())
-+    def test_clipboard_drop_and_result_copy(self):
-+        QApplication.clipboard().setText('한글 클립보드')
-+        self.panel.import_clipboard()
-+        self.assertEqual(Path(self.panel.paths[0]).read_text(encoding='utf-8'), '한글 클립보드')
-+        mime=QMimeData(); mime.setUrls([QUrl.fromLocalFile(str(self.path))])
-+        event=QDropEvent(QPointF(20,20),Qt.CopyAction|Qt.MoveAction,mime,Qt.LeftButton,Qt.ShiftModifier)
-+        self.panel.files.dropEvent(event)
-+        self.assertEqual(event.dropAction(), Qt.CopyAction)
-+        self.assertIn(str(self.path),self.panel.paths)
-+        self.panel.set_files([str(self.path)])
-+        self.panel.write_recipe({'version':1,'name':'복사','steps':[{'op':'rename','template':'{name}_copy'}]})
-+        self.panel.run_recipe(); self.wait_done()
-+        self.panel.copy_result(False)
-+        self.assertTrue(Path(QApplication.clipboard().text()).is_file())
-+        self.panel.copy_result(True)
-+        self.assertTrue(QApplication.clipboard().mimeData().hasUrls())
-+    def test_commands_search_keyboard_and_wheel_persistence(self):
-+        dialog=CommandDialog(self.panel)
-+        dialog.show()
-+        dialog.search.setText(self.panel.t('ws_run'))
-+        self.assertEqual(dialog.list.count(),1)
-+        self.assertFalse(dialog.list.item(0).data(Qt.UserRole+1))
-+        dialog.close()
-+        self.owner.settings.setValue('workspace/wheel','{"order":["webp","jpg"],"hidden":["png"],"recipe":""}')
-+        self.owner.settings.sync()
-+        self.assertEqual(self.panel.ordered_formats(['png','jpg','webp']),['webp','jpg'])
-+        stored=QSettings(self.owner.settings.fileName(),QSettings.IniFormat)
-+        self.assertIn('webp',stored.value('workspace/wheel'))
-+    def test_command_keyboard_action_and_wheel_dialog_save_reset(self):
-+        called=[]
-+        with patch.object(self.panel,'choose_files',lambda:called.append('files')):
-+            dialog=CommandDialog(self.panel); dialog.show()
-+            dialog.search.setText(self.panel.t('ws_add'))
-+            QTest.keyClick(dialog.search,Qt.Key_Down)
-+            QTest.keyClick(dialog.search,Qt.Key_Return)
-+            self.assertEqual(called,['files'])
-+        def save_dialog():
-+            dialog=next(w for w in QApplication.topLevelWidgets() if isinstance(w,QDialog) and w.isVisible())
-+            values=dialog.findChild(QListWidget)
-+            values.item(0).setCheckState(Qt.Unchecked)
-+            dialog.findChild(QDialogButtonBox).button(QDialogButtonBox.Save).click()
-+        QTimer.singleShot(50,save_dialog)
-+        self.panel.edit_wheel()
-+        self.assertTrue(self.panel.wheel_preferences()['hidden'])
-+        def reset_dialog():
-+            dialog=next(w for w in QApplication.topLevelWidgets() if isinstance(w,QDialog) and w.isVisible())
-+            next(b for b in dialog.findChildren(QPushButton) if b.text()==self.panel.t('ws_reset')).click()
-+        QTimer.singleShot(50,reset_dialog)
-+        self.panel.edit_wheel()
-+        self.assertEqual(self.panel.wheel_preferences(),{})
-+    def test_actual_collage_and_gif_outputs(self):
-+        second=self.root/'second.png'; Image.new('RGB',(20,30),'black').save(second)
-+        self.panel.set_files([str(self.path),str(second)])
-+        for operation in ('collage','gif','combine_pdf'):
-+            self.panel.write_recipe({'version':1,'name':operation,'steps':[{'op':operation}]})
-+            self.assertTrue(self.panel.run_recipe())
-+            self.wait_done()
-+            output=Path(self.panel.results.item(0).data(Qt.UserRole))
-+            self.assertTrue(output.is_file())
-+            self.assertEqual(self.panel._status_key,'ws_complete')
-+    def test_default_target_plain_text_copy_and_explicit_quality_rejection(self):
-+        path=self.root/'원본.txt'; path.write_text('원본 텍스트',encoding='utf-8')
-+        self.panel.set_files([str(path)])
-+        self.panel.write_recipe({'version':1,'name':'텍스트 복사','steps':[{'op':'rename','template':'{name}_copy'}]})
-+        self.assertEqual(self.panel.target(),{})
-+        self.assertFalse(self.panel.quality.isEnabled())
-+        self.assertFalse(self.panel.dpi.isEnabled())
-+        self.assertTrue(self.panel.run_recipe()); self.wait_done()
-+        self.assertEqual(self.panel._status_key,'ws_complete')
-+        self.assertEqual(len(self.owner.records),1)
-+        self.assertEqual(self.owner.records[0][2],'')
-+        self.assertEqual(Path(self.owner.records[0][1]).read_text(encoding='utf-8'),'원본 텍스트')
-+        self.panel.quality_enabled.setChecked(True)
-+        self.assertTrue(self.panel.quality.isEnabled())
-+        self.assertFalse(self.panel.run_recipe())
-+        self.assertEqual(len(self.owner.records),1)
-+        self.assertEqual(self.owner.pending,0)
-+        self.assertEqual(path.read_text(encoding='utf-8'),'원본 텍스트')
-+        self.panel.write_recipe({'version':1,'name':'원래 크기','steps':[{'op':'normalize_pages','page_size':'original'}]})
-+        self.assertFalse(self.panel.run_recipe())
-+        self.assertEqual(len(self.owner.records),1)
-+    def test_default_ui_ocr_document_and_receipt_outputs(self):
-+        import engine
-+        image=Image.new('RGB',(1100,400),'white')
-+        font=ImageFont.truetype(str(engine.asset('NanumGothicBold.ttf')),56)
-+        ImageDraw.Draw(image).text((30,60),'PUVKID 1200\nTOTAL 3000',font=font,fill='black',spacing=35)
-+        path=self.root/'receipt.png'; image.save(path)
-+        self.panel.set_files([str(path)])
-+        self.assertEqual(self.panel.target(),{})
-+        operations=[{'op':'ocr','format':fmt,'language':'eng'} for fmt in ('txt','docx','xlsx')]
-+        operations.append({'op':'receipts_xlsx','language':'eng'})
-+        for step in operations:
-+            before=len(self.owner.records)
-+            self.panel.write_recipe({'version':1,'name':'문서 출력','steps':[step]})
-+            self.assertTrue(self.panel.run_recipe()); self.wait_done()
-+            self.assertEqual(self.panel._status_key,'ws_complete',self.panel.status.text())
-+            self.assertEqual(len(self.owner.records),before+1)
-+            self.assertEqual(self.owner.records[-1][2],'')
-+            self.assertTrue(Path(self.owner.records[-1][1]).is_file())
-+    def test_explicit_image_quality_and_independent_targets(self):
-+        self.panel.format.setCurrentIndex(self.panel.format.findData('pdf'))
-+        self.panel.max_bytes.setValue(512)
-+        self.panel.a4.setChecked(True)
-+        self.assertEqual(self.panel.target(),{'format':'pdf','max_bytes':512*1024,'page_size':'A4'})
-+        self.panel.format.setCurrentIndex(0); self.panel.max_bytes.setValue(0); self.panel.a4.setChecked(False)
-+        self.panel.set_files([str(self.path)])
-+        self.panel.write_recipe({'version':1,'name':'명시 품질','steps':[{'op':'rename','template':'{name}_quality'}]})
-+        self.panel.quality_enabled.setChecked(True)
-+        self.panel.quality.setValue(70); self.panel.dpi.setValue(120)
-+        self.assertEqual(self.panel.target(),{'quality':70,'dpi':120})
-+        self.panel.set_language('en')
-+        self.assertTrue(self.panel.quality_enabled.isChecked())
-+        self.assertTrue(self.panel.run_recipe()); self.wait_done()
-+        self.assertEqual(self.panel._status_key,'ws_complete')
-+        self.assertEqual(len(self.owner.records),1)
-+        self.assertEqual(self.owner.records[0][2],'')
-+    def test_common_picker_classes_languages_motion_and_cancel(self):
-+        from ui_motion import MotionFileDialog
-+        actions=[self.panel.choose_files,self.panel.import_recipe,self.panel.export_recipe,self.panel.choose_output,self.panel.choose_watch_folder]
-+        before=(self.panel.paths.copy(),self.panel.recipe_editor.toPlainText(),self.panel.output_dir)
-+        seen=[]
-+        def reject(dialog):
-+            self.assertIsInstance(dialog,MotionFileDialog)
-+            self.assertTrue(dialog.testOption(QFileDialog.DontUseNativeDialog))
-+            seen.append((dialog.title_key,dialog.fileMode(),dialog.acceptMode()))
-+            self.panel.set_language('en')
-+            self.assertEqual(dialog.language,'en')
-+            self.assertEqual(dialog.windowTitle(),self.panel.t(dialog.title_key))
-+            self.panel.set_reduced_motion(True)
-+            dialog.show(); APP.processEvents()
-+            self.assertTrue(APP.property('flipringReducedMotion'))
-+            dialog.reject()
-+            return QFileDialog.Rejected
-+        with patch.object(MotionFileDialog,'exec',reject):
-+            for action in actions: action()
-+        self.assertEqual(len(seen),5)
-+        self.assertEqual(seen[0][1],QFileDialog.ExistingFiles)
-+        self.assertEqual(seen[1][1],QFileDialog.ExistingFile)
-+        self.assertEqual(seen[2][2],QFileDialog.AcceptSave)
-+        self.assertEqual(seen[3][1],QFileDialog.Directory)
-+        self.assertEqual(seen[4][1],QFileDialog.Directory)
-+        self.assertEqual((self.panel.paths,self.panel.recipe_editor.toPlainText(),self.panel.output_dir),before)
-+        self.assertFalse(hasattr(self.panel,'_watch_folder'))
-+        self.assertEqual(self.panel._pickers,[])
-+    def test_common_picker_accepts_files_recipe_export_and_folders(self):
-+        import json
-+        from ui_motion import MotionFileDialog
-+        recipe={'version':1,'name':'선택창 레시피','steps':[{'op':'rename','template':'{name}_selected'}]}
-+        imported=self.root/'import.json'; imported.write_text(json.dumps(recipe,ensure_ascii=False),encoding='utf-8')
-+        exported=self.root/'export.json'; output=self.root/'out';output.mkdir();watch=self.root/'watch';watch.mkdir()
-+        selected={'ws_add':[str(self.path)],'ws_import':[str(imported)],'ws_export':[str(exported)],'ws_output':[str(output)],'ws_watch_folder':[str(watch)]}
-+        with patch.object(MotionFileDialog,'exec',lambda d:QFileDialog.Accepted), patch.object(MotionFileDialog,'selectedFiles',lambda d:selected[d.title_key]):
-+            self.panel.choose_files();self.panel.import_recipe();self.panel.export_recipe();self.panel.choose_output();self.panel.choose_watch_folder()
-+        self.assertEqual(self.panel.paths,[str(self.path)])
-+        self.assertEqual(json.loads(exported.read_text(encoding='utf-8')),recipe)
-+        self.assertEqual(self.panel.output_dir,output)
-+        self.assertEqual(self.panel._watch_folder,str(watch))
-+        self.assertFalse(self.panel.watch_enabled.isChecked())
-+    def test_mainwindow_history_filters_and_legacy_boundaries(self):
-+        import app
-+        previous=app.DATA; app.DATA=self.root/'app-data'
-+        window=None
-+        try:
-+            app.apply_application_style(APP)
-+            window=app.MainWindow(); window.timer.stop()
-+            window.notifications.setChecked(False); window.reveal.setChecked(False)
-+            self.assertEqual(window.tabs.count(),8)
-+            self.assertEqual(window.tabs.currentIndex(),0)
-+            self.assertIs(window.tabs.widget(4),window.pdf_panel)
-+            self.assertEqual(window.sidebar.width(),204)
-+            window.records=[{'time':'2026-11-02T00:00:00','source':str(self.path),'output':str(self.path),'error':''},
-+                            {'time':'2026-11-02T00:01:00','source':'missing.pdf','output':'','error':'failed'}]
-+            window.refresh_history()
-+            window.history_format.setText('png')
-+            self.assertTrue(window.history.item(0).isHidden())
-+            self.assertFalse(window.history.item(1).isHidden())
-+            window.history_format.clear(); window.history_state.setCurrentIndex(window.history_state.findData('failed'))
-+            self.assertFalse(window.history.item(0).isHidden())
-+            self.assertTrue(window.history.item(1).isHidden())
-+            window.history_state.setCurrentIndex(0); window.history.setCurrentRow(1)
-+            window.copy_history_result(False)
-+            self.assertEqual(QApplication.clipboard().text(),str(self.path))
-+            window.set_language('en')
-+            self.assertEqual(window.workspace_panel.run_button.text(),'Run recipe')
-+        finally:
-+            if window:
-+                window.quick_actions_panel.shutdown()
-+                window.workspace_panel.shutdown(); window.pdf_panel.shutdown(); window.pool.shutdown(wait=False)
-+                window.timer.stop(); window.wheel.hide(); window.tray.hide(); window.hide()
-+            app.DATA=previous
-+
-+if __name__ == '__main__':
-     unittest.main()
---- 1.12.0/소스/version-info.txt
-+++ 1.12.1/소스/version-info.txt
-@@ -1,8 +1,8 @@
- VSVersionInfo(
--  ffi=FixedFileInfo(filevers=(1,12,0,0), prodvers=(1,12,0,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),
-+  ffi=FixedFileInfo(filevers=(1,12,1,0), prodvers=(1,12,1,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),
-   kids=[StringFileInfo([StringTable('040904B0', [
-     StringStruct('CompanyName','PUVKID'), StringStruct('FileDescription','FlipRing'),
--    StringStruct('FileVersion','1.12.0'), StringStruct('ProductVersion','1.12.0'),
-+    StringStruct('FileVersion','1.12.1'), StringStruct('ProductVersion','1.12.1'),
-     StringStruct('ProductName','FlipRing'), StringStruct('OriginalFilename','FlipRing.exe')
-   ])]), VarFileInfo([VarStruct('Translation',[1033,1200])])]
- )
---- 1.12.0/소스/배포구성.json
-+++ 1.12.1/소스/배포구성.json
-@@ -1,6 +1,6 @@
- {
-   "schema": 1,
--  "version": "1.12.0",
-+  "version": "1.12.1",
-   "source_roots": [
-     "소스",
-     "검사도구",
-@@ -11,7 +11,8 @@
-     ".git"
-   ],
-   "reviewed_public_docs": [
--    "docs/2026-11-20_빠른작업과테마_설계.md"
-+    "docs/2026-11-20_빠른작업과테마_설계.md",
-+    "docs/2026-11-20_배포전전체기능_확인.md"
-   ],
-   "required": [
-     "검사도구/documents_suites110.py",
-@@ -969,7 +970,10 @@
-     "소스/test_quick_actions112.py",
-     "소스/test_theme_install112.py",
-     "소스/1.12-빠른작업안내.md",
--    "소스/1.12-기능50항목.md"
-+    "소스/1.12-기능50항목.md",
-+    "소스/test_document_import1121.py",
-+    "검사도구/대표문서입력검사1121.py",
-+    "소스/1.12.1-문서입력보완.md"
-   ],
-   "excluded_files": {
-     "ROUTING-LESSONS.md": "비공개 운영·실패 이력",
-@@ -1106,5 +1110,5 @@
-     }
-   ],
-   "separation_reason": "528499332바이트의 정확10개 원 archive는 전체소스ZIP에 보존하고 실행부에서만 분리. 동등한 동일 Release 접근의 실제 게시 검증은 별도.",
--  "source_zip": "플립링-1.12.0-전체소스.zip"
-+  "source_zip": "플립링-1.12.1-전체소스.zip"
- }
---- 1.12.0/소스/배포빌드.py
-+++ 1.12.1/소스/배포빌드.py
-@@ -10,9 +10,9 @@
- import sys
- import zipfile
- 
--SOURCE_ZIP_NAME = "플립링-1.12.0-전체소스.zip"
--RELEASE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.12.0"
--SOURCE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/download/v1.12.0/" + "FlipRing-1.12.0-Source.zip"
-+SOURCE_ZIP_NAME = "플립링-1.12.1-전체소스.zip"
-+RELEASE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.12.1"
-+SOURCE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/download/v1.12.1/" + "FlipRing-1.12.1-Source.zip"
- 
- 
- class DeliveryError(RuntimeError):
-@@ -190,7 +190,7 @@
-     entries, excluded = classified_entries(root, prepared["config"])
-     if manifest.get("entries") != entries or manifest.get("excluded") != excluded:
-         raise DeliveryError("전체 소스 분류와 외부 manifest가 다릅니다.")
--    if (manifest.get("file") != SOURCE_ZIP_NAME or manifest.get("version") != "1.12.0"
-+    if (manifest.get("file") != SOURCE_ZIP_NAME or manifest.get("version") != "1.12.1"
-             or manifest.get("release_url") != RELEASE_URL or manifest.get("source_url") != SOURCE_URL):
-         raise DeliveryError("전체 소스의 버전·파일명·예정 URL이 다릅니다.")
-     archive = reject_links(archive)
-@@ -253,7 +253,7 @@
- 
- 
- def runtime_notice(manifest):
--    return ("플립링 1.12.0 전체 상응 소스\n파일: " + manifest["file"] + "\nSHA-256: " + manifest["sha256"]
-+    return ("플립링 1.12.1 전체 상응 소스\n파일: " + manifest["file"] + "\nSHA-256: " + manifest["sha256"]
-             + "\n동일 Release: " + manifest["release_url"] + "\n정확 소스 자산: " + manifest["source_url"]
-             + "\n고객 배포 폴더의 같은 전체 소스 ZIP과 원문 고지·패치·빌드 방법을 보존해 주세요.\n"
-             "온라인 재배포자는 같은 장소에서 무료로 동등한 상응 소스 접근을 제공할 수 있습니다.\n"
---- 1.12.0/소스/빌드방법.md
-+++ 1.12.1/소스/빌드방법.md
-@@ -1,12 +1,12 @@
--# 1.12.0 빌드
+-            self.assertEqual(tabs.geometry(), geometry)
+-            self.assertEqual(tabs.currentWidget().geometry(), page_geometry)
+-            self.assertTrue(self.window.pdf_panel.operation.isEnabled())
+-            self.assertTrue(self.window.grab().save(str(ROOT / "Fluid-tab-complete-clean.png")))
+-        self.window.hide()
 -
--현재 소스의 버전은 1.12.0입니다. 아래 명령의 출력·작업 폴더는 새 1.12.0 경로로 지정하세요. 기존 전체 회귀 검사는 변경 없는 코드에 대해 반복 실행할 필요가 없습니다. 새 변경은 test_quick_actions112·test_theme_install112와 실행본 확인으로 검증합니다.
-+# 1.12.1 빌드
+-    def test_59_tab_interruption_hide_and_restart_leave_no_idle_effect_or_animation(self):
+-        tabs = self.window.tabs
+-        self.window.show()
+-        tabs.setCurrentIndex(0)
+-        tabs.fade.setCurrentTime(tabs.fade.duration())
+-        APPLICATION.processEvents()
+-        geometry = tabs.geometry()
+-        previous = None
+-        for index in (4, 2, 4, 0, 4):
+-            tabs.setCurrentIndex(index)
+-            if previous is not None:
+-                self.assertFalse(isValid(previous))
+-            effect = tabs.currentWidget().graphicsEffect()
+-            self.assertTrue(isValid(effect))
+-            self.assertIsNot(effect, previous)
+-            tabs.fade.setCurrentTime(55)
+-            self.assertEqual(sum(tabs.widget(i).graphicsEffect() is not None for i in range(tabs.count())), 1)
+-            self.assertEqual(tabs.geometry(), geometry)
+-            self.assertTrue(tabs.currentWidget().isEnabled())
+-            previous = effect
+-        self.window.hide()
+-        self.assertFalse(isValid(previous))
+-        self.assertIsNone(tabs._fade_page)
+-        self.assertEqual(tabs.fade.state(), QAbstractAnimation.Stopped)
+-        self.assertTrue(all(tabs.widget(i).graphicsEffect() is None for i in range(tabs.count())))
+-        tabs._fade_frame(0.96)
+-        tabs.setCurrentIndex(0)
+-        self.assertIsNone(tabs.currentWidget().graphicsEffect())
+-        self.window.show()
+-        APPLICATION.processEvents()
+-        self.assertEqual(tabs.fade.state(), QAbstractAnimation.Stopped)
+-        self.assertIsNone(tabs.currentWidget().graphicsEffect())
+-        tabs.setCurrentIndex(4)
+-        restarted = tabs.currentWidget().graphicsEffect()
+-        self.assertTrue(isValid(restarted))
+-        tabs.fade.setCurrentTime(tabs.fade.duration())
+-        self.assertFalse(isValid(restarted))
+-        self.assertIsNone(tabs.currentWidget().graphicsEffect())
+-        self.assertEqual(tabs.fade.state(), QAbstractAnimation.Stopped)
+-        self.assertEqual(tabs.geometry(), geometry)
+-        self.window.hide()
+-
+-
+-    def test_70_shared_file_picker_has_designed_header_summary_and_finite_motion(self):
+-        dialogs = [self.window.file_dialog(False), self.window.file_dialog(True)]
+-        try:
+-            for folder, dialog in zip((False, True), dialogs):
+-                self.assertTrue(dialog.property("flipringFilePicker"),
+-                                "파일·폴더 선택창에 승인된 공통 디자인과 모션이 없습니다")
+-                self.assertEqual(dialog.fileMode(), QFileDialog.Directory if folder else QFileDialog.ExistingFiles)
+-                self.assertTrue(dialog.testOption(QFileDialog.DontUseNativeDialog))
+-                self.assertIsNotNone(dialog.findChild(app.QLabel, "pickerTitle"))
+-                self.assertIsNotNone(dialog.findChild(app.QLabel, "pickerSummary"))
+-                dialog.setDirectory(str(ROOT))
+-                dialog.show()
+-                APPLICATION.processEvents()
+-                geometry = dialog.geometry()
+-                motion = dialog._flipring_surface_motion
+-                motion.animation.setCurrentTime(60)
+-                middle = dialog.grab().toImage()
+-                self.assertGreater(motion.amount, 0)
+-                self.assertLess(motion.amount, 1)
+-                self.assertTrue(middle.save(str(ROOT / f"Internal-picker-{'folder' if folder else 'files'}-middle.png")))
+-                motion.animation.setCurrentTime(motion.animation.duration())
+-                self.assertEqual(motion.animation.state(), QAbstractAnimation.Stopped)
+-                self.assertFalse(motion.overlay.isVisible())
+-                self.assertNotEqual(middle, dialog.grab().toImage())
+-                self.assertEqual(dialog.geometry(), geometry)
+-                self.assertIsNone(dialog.graphicsEffect())
+-                QTest.keyClick(dialog, Qt.Key_Escape)
+-                self.assertFalse(dialog.isVisible())
+-                self.assertEqual(dialog.result(), QFileDialog.Rejected)
+-        finally:
+-            for dialog in dialogs:
+-                dialog.hide()
+-                dialog.deleteLater()
+-
+-    def test_71_inputs_lists_popups_and_real_status_have_owned_finite_feedback(self):
+-        panel = self.window.pdf_panel
+-        self.window.tabs.setCurrentIndex(4)
+-        self.window.show()
+-        APPLICATION.processEvents()
+-        controls = [self.window.language_combo, self.window.trigger, self.window.history,
+-                    panel.files, panel.operation, panel.pages, panel.output, panel.dpi,
+-                    panel.force, self.window.status, panel.status, panel.progress]
+-        try:
+-            for widget in controls:
+-                with self.subTest(control=widget.metaObject().className()):
+-                    motion = getattr(widget, "_flipring_surface_motion", None)
+-                    self.assertIsNotNone(motion, "조작 또는 실제 상태의 공통 피드백이 빠졌습니다")
+-                    self.assertEqual(motion.parent(), widget)
+-                    self.assertEqual(motion.animation.loopCount(), 1)
+-            target = panel.operation
+-            motion = target._flipring_surface_motion
+-            geometry = target.geometry()
+-            value = target.currentData()
+-            motion.pulse()
+-            motion.animation.setCurrentTime(65)
+-            amount = motion.amount
+-            self.assertGreater(amount, 0)
+-            motion.pulse()
+-            self.assertAlmostEqual(motion.amount, amount)
+-            motion.animation.setCurrentTime(motion.animation.duration())
+-            self.assertEqual(motion.animation.state(), QAbstractAnimation.Stopped)
+-            self.assertFalse(motion.overlay.isVisible())
+-            self.assertEqual(target.currentData(), value)
+-            self.assertEqual(target.geometry(), geometry)
+-            self.assertTrue(motion.overlay.testAttribute(Qt.WA_TransparentForMouseEvents))
+-            target.showPopup()
+-            APPLICATION.processEvents()
+-            popup = target.view().window()
+-            self.assertIsNotNone(getattr(popup, "_flipring_surface_motion", None))
+-            target.hidePopup()
+-            self.assertFalse(popup._flipring_surface_motion.overlay.isVisible())
+-        finally:
+-            self.window.hide()
+-
+-    def test_72_pdf_picker_uses_common_local_multiselect_and_filter(self):
+-        panel = self.window.pdf_panel
+-        factory = getattr(panel, "file_dialog", None)
+-        self.assertTrue(callable(factory), "PDF 파일 추가가 공통 선택창을 사용하지 않습니다")
+-        dialog = factory()
+-        try:
+-            self.assertTrue(dialog.property("flipringFilePicker"))
+-            self.assertEqual(dialog.fileMode(), QFileDialog.ExistingFiles)
+-            self.assertIn("*.pdf", dialog.nameFilters()[0])
+-            self.assertIn("*.png", dialog.nameFilters()[0])
+-            dialog.setDirectory(str(ROOT))
+-            dialog.selectFile(str(SOURCE))
+-            self.assertIn(SOURCE.resolve(), [Path(path).resolve() for path in dialog.selectedFiles()])
+-            self.assertTrue(all(Path(path).is_file() for path in dialog.selectedFiles()))
+-            dialog.reject()
+-            self.assertEqual(dialog.result(), QFileDialog.Rejected)
+-        finally:
+-            dialog.deleteLater()
+-
+-    def test_73_picker_header_keeps_full_text_viewport_and_sorting(self):
+-        dialog = self.window.file_dialog(False)
+-        try:
+-            dialog.setDirectory(str(ROOT))
+-            dialog.show()
+-            APPLICATION.processEvents()
+-            tree = dialog.findChild(QTreeView, "treeView")
+-            header = tree.header()
+-            self.assertEqual(header.viewport().geometry().left(), 0,
+-                             "목록 padding이 헤더에 상속되어 열 제목이 잘립니다")
+-            self.assertEqual(header.viewport().geometry().top(), 0)
+-            self.assertGreaterEqual(header.viewport().height(), header.fontMetrics().height() + 12)
+-            self.assertEqual([tree.model().headerData(i, Qt.Horizontal, Qt.DisplayRole) for i in range(4)],
+-                             ["이름", "크기", "종류", "수정한 날짜"])
+-            previous = header.sortIndicatorOrder()
+-            section = header.sectionViewportPosition(0)
+-            QTest.mouseClick(header.viewport(), Qt.LeftButton, pos=QPoint(section + 25, header.height() // 2))
+-            self.assertNotEqual(header.sortIndicatorOrder(), previous)
+-            self.assertEqual(header.sortIndicatorSection(), 0)
+-        finally:
+-            dialog.hide()
+-            dialog.deleteLater()
+-
+-    def test_74_rebuilt_tray_menus_release_old_motions_and_activate_once(self):
+-        menu = self.window.tray_menu
+-        self.window.show()
+-        for language in ("en", "ko", "en", "ko"):
+-            old = [action.menu() for action in menu.actions() if action.menu() is not None]
+-            self.window.set_language(language)
+-            self.window.update_tray_menu()
+-            QCoreApplication.sendPostedEvents(None, QEvent.DeferredDelete)
+-            self.assertTrue(all(not isValid(item) for item in old))
+-            self.assertEqual(len(menu.findChildren(QMenu)), 2,
+-                             "다시 만든 트레이 하위 메뉴와 모션이 누적됩니다")
+-        menu.popup(QPoint(300, 200))
+-        APPLICATION.processEvents()
+-        action = next(action for action in menu.actions() if action.text() == "기록")
+-        activated = QSignalSpy(action.triggered)
+-        menu.setActiveAction(action)
+-        QTest.keyClick(menu, Qt.Key_Return)
+-        self.assertEqual(activated.count(), 1)
+-        self.assertEqual(self.window.tabs.currentIndex(), 2)
+-        self.assertFalse(menu.isVisible())
+-        self.assertFalse(menu._flipring_surface_motion.overlay.isVisible())
+-        self.window.hide()
+-
+-    def test_75_open_picker_retranslates_without_losing_selected_path(self):
+-        dialogs = [self.window.file_dialog(False), self.window.file_dialog(True), self.window.pdf_panel.file_dialog()]
+-        try:
+-            for dialog in dialogs:
+-                dialog.setDirectory(str(ROOT))
+-                if dialog.fileMode() != QFileDialog.Directory:
+-                    dialog.selectFile(str(SOURCE))
+-                before = [Path(path).resolve() for path in dialog.selectedFiles()]
+-                for language, accept in (("en", "Choose" if dialog.folder_mode else "Open"),
+-                                          ("ko", "선택" if dialog.folder_mode else "열기")):
+-                    self.window.set_language(language)
+-                    APPLICATION.processEvents()
+-                    self.assertEqual(dialog.language, language)
+-                    self.assertEqual(dialog.labelText(QFileDialog.Accept), accept)
+-                    self.assertEqual(dialog.heading.text(), dialog.windowTitle())
+-                    self.assertIn("선택" if language == "ko" else "Choose", dialog.heading.text())
+-                    self.assertEqual([Path(path).resolve() for path in dialog.selectedFiles()], before)
+-                    from PySide6.QtCore import QFileInfo
+-                    self.assertEqual(dialog._icon_provider.type(QFileInfo(str(ROOT))), "폴더" if language == "ko" else "Folder")
+-        finally:
+-            self.window.set_language("ko")
+-            for dialog in dialogs:
+-                dialog.deleteLater()
+-
+-    def test_76_message_has_designed_header_and_returns_without_motion_delay(self):
+-        dialog = app.message_dialog(self.window, "저장 위치 안내", "<파일 이름>과 오류 원문을 보존합니다.")
+-        try:
+-            heading = dialog.findChild(app.QLabel, "messageTitle")
+-            self.assertIsNotNone(heading, "메시지 내부 제목과 모션 헤더가 빠졌습니다")
+-            self.assertEqual(heading.text(), "저장 위치 안내")
+-            self.assertEqual(dialog.textFormat(), Qt.PlainText)
+-            dialog.show()
+-            APPLICATION.processEvents()
+-            geometry = dialog.geometry()
+-            message = dialog.findChild(app.QLabel, "qt_msgbox_label")
+-            self.assertGreaterEqual(message.width(), dialog.layout().contentsRect().width() - 1,
+-                                    "아이콘 없는 메시지 본문이 빈 아이콘 열 때문에 오른쪽으로 좁아집니다")
+-            motion = dialog._flipring_surface_motion
+-            motion.animation.setCurrentTime(80)
+-            self.assertGreater(motion.amount, 0)
+-            mark = dialog._flipring_message_mark
+-            mark.animation.setCurrentTime(100)
+-            self.assertGreater(mark.phase, 0)
+-            self.assertLess(mark.phase, 1)
+-            self.assertTrue(dialog.grab().save(str(ROOT / "Internal-message-middle.png")))
+-            closed = QSignalSpy(dialog.finished)
+-            QTest.keyClick(dialog, Qt.Key_Escape)
+-            self.assertEqual(closed.count(), 1)
+-            self.assertFalse(dialog.isVisible())
+-            self.assertEqual(dialog.geometry(), geometry)
+-            self.assertEqual(motion.animation.state(), QAbstractAnimation.Stopped)
+-            self.assertEqual(mark.animation.state(), QAbstractAnimation.Stopped)
+-        finally:
+-            dialog.hide()
+-            dialog.deleteLater()
+-
+-    def test_77_picker_keyboard_multiselect_enter_and_folder_accept_preserve_files(self):
+-        folder = ROOT / "한글 선택 폴더"
+-        folder.mkdir(exist_ok=True)
+-        for folder_mode in (False, True):
+-            dialog = self.window.file_dialog(folder_mode)
+-            try:
+-                dialog.setDirectory(str(ROOT))
+-                dialog.show()
+-                APPLICATION.processEvents()
+-                edit = dialog.findChild(QLineEdit, "fileNameEdit")
+-                edit.setText(str(folder) if folder_mode else f'"{SOURCE.name}" "{SOURCE2.name}"')
+-                accepted = QSignalSpy(dialog.accepted)
+-                QTest.keyClick(edit, Qt.Key_Return)
+-                self.assertEqual(accepted.count(), 1)
+-                self.assertFalse(dialog.isVisible())
+-                actual = [Path(path).resolve() for path in dialog.selectedFiles()]
+-                self.assertEqual(set(actual), {folder.resolve()} if folder_mode else {SOURCE.resolve(), SOURCE2.resolve()})
+-                self.assertEqual(hashlib.sha256(SOURCE.read_bytes()).hexdigest(), ORIGINAL_HASH)
+-            finally:
+-                dialog.hide()
+-                dialog.deleteLater()
+-
+-    def test_78_status_motion_tracks_real_states_and_stops_on_hide_and_reentry(self):
+-        panel = self.window.pdf_panel
+-        self.window.tabs.setCurrentIndex(4)
+-        self.window.show()
+-        APPLICATION.processEvents()
+-        for key, expected in (("working", "working"), ("cancelling", "cancelling"),
+-                              ("cancelled", "cancelled"), ("done", "complete")):
+-            panel._set_status(key, label="실제 파일", count=2)
+-            self.assertEqual(panel.status_mark.state, expected)
+-            animation = panel.status_mark.animation
+-            animation.setCurrentTime(100)
+-            self.assertGreater(panel.status_mark.phase, 0)
+-            self.assertLess(panel.status_mark.phase, 1)
+-            animation.setCurrentTime(animation.duration())
+-            self.assertEqual(animation.state(), QAbstractAnimation.Stopped)
+-        self.window.last_result = ("", "지원하지 않는 변환입니다.")
+-        self.window.update_status()
+-        self.assertEqual(self.window.status_mark.state, "error")
+-        self.window.hide()
+-        from ui_motion import SurfaceMotion, StateMark
+-        for motion in self.window.findChildren(SurfaceMotion):
+-            self.assertEqual(motion.animation.state(), QAbstractAnimation.Stopped)
+-            self.assertFalse(motion.overlay.isVisible())
+-        for mark in self.window.findChildren(StateMark):
+-            self.assertEqual(mark.animation.state(), QAbstractAnimation.Stopped)
+-        self.window.show()
+-        APPLICATION.processEvents()
+-        panel.status_mark.respond("complete")
+-        QTest.qWait(420)
+-        # 420ms 대기 뒤 현재 큐를 한 번 처리한 시점에서 완료 상태를 관찰한다.
+-        APPLICATION.processEvents()
+-        self.assertEqual(panel.status_mark.animation.state(), QAbstractAnimation.Stopped)
+-        self.assertAlmostEqual(panel.status_mark.phase, 1)
+-        self.window.last_result = None
+-        panel._set_status("ready")
+-        self.window.hide()
+-
+-    def test_79_late_context_menu_and_plain_tooltip_use_owned_finite_motion(self):
+-        from ui_motion import show_tooltip
+-        self.window.show()
+-        APPLICATION.processEvents()
+-        menu = QMenu(self.window)
+-        menu.addAction("원문 경로")
+-        menu.popup(QPoint(300, 250))
+-        APPLICATION.processEvents()
+-        try:
+-            motion = menu._flipring_surface_motion
+-            style = menu.styleSheet()
+-            menu.hide()
+-            menu.popup(QPoint(300, 250))
+-            APPLICATION.processEvents()
+-            self.assertEqual(menu.styleSheet(), style, "팝업을 다시 열 때 스타일이 누적됩니다")
+-            QTest.keyClick(menu, Qt.Key_Escape)
+-            self.assertEqual(motion.animation.state(), QAbstractAnimation.Stopped)
+-            owner = self.window.record_button
+-            owner.setToolTip("<b>경로를 번역하거나 HTML로 실행하지 않습니다</b>")
+-            point = owner.mapToGlobal(owner.rect().center())
+-            help_event = QHelpEvent(QEvent.ToolTip, owner.rect().center(), point)
+-            QApplication.sendEvent(owner, help_event)
+-            tooltip = APPLICATION._flipring_tooltip
+-            self.assertTrue(tooltip.isVisible())
+-            self.assertEqual(tooltip.label.textFormat(), Qt.PlainText)
+-            self.assertEqual(tooltip.label.text(), owner.toolTip())
+-            self.assertTrue(tooltip.timeout.isActive())
+-            QApplication.sendEvent(owner, QEvent(QEvent.Leave))
+-            self.assertFalse(tooltip.isVisible())
+-            self.assertFalse(tooltip.timeout.isActive())
+-        finally:
+-            menu.hide()
+-            menu.deleteLater()
+-            self.window.hide()
+-
+-    def test_80_pdf_file_row_changes_keep_order_data_and_busy_boundary(self):
+-        panel = self.window.pdf_panel
+-        self.window.tabs.setCurrentIndex(4)
+-        self.window.show()
+-        APPLICATION.processEvents()
+-        panel.set_files([str(SOURCE), str(SOURCE2), str(SOURCE)])
+-        self.assertEqual(panel.input_paths(), [str(SOURCE), str(SOURCE2)])
+-        panel.files.setCurrentRow(1)
+-        panel.move_file(-1)
+-        self.assertEqual(panel.input_paths(), [str(SOURCE2), str(SOURCE)])
+-        panel._set_busy(True)
+-        before = panel.input_paths()
+-        panel.move_file(1)
+-        panel.remove_files()
+-        self.assertEqual(panel.input_paths(), before)
+-        panel._set_busy(False)
+-        panel.files.setCurrentRow(0)
+-        panel.remove_files()
+-        self.assertEqual(panel.input_paths(), [str(SOURCE)])
+-        motion = panel.files._flipring_surface_motion
+-        self.assertEqual(motion.animation.state(), QAbstractAnimation.Running)
+-        motion.animation.setCurrentTime(120)
+-        self.assertGreater(motion.amount, 0)
+-        self.window.hide()
+-        self.assertFalse(motion.overlay.isVisible())
+-
+-    def test_81_row_feedback_retarget_starts_from_current_rendered_rectangle(self):
+-        from ui_motion import ensure_surface_motion
+-        from PySide6.QtCore import QRectF
+-        host = app.QListWidget()
+-        host.resize(280, 240)
+-        host.show()
+-        APPLICATION.processEvents()
+-        motion = ensure_surface_motion(host)
+-        try:
+-            motion.pulse(rectangle=QRectF(4, 10, 250, 30))
+-            motion.animation.setCurrentTime(motion.animation.duration())
+-            motion.pulse(rectangle=QRectF(4, 100, 250, 30))
+-            motion.animation.setCurrentTime(85)
+-            before = motion.overlay.grab().toImage()
+-            amount = motion.amount
+-            motion.pulse(rectangle=QRectF(4, 160, 250, 30))
+-            self.assertAlmostEqual(motion.amount, amount)
+-            self.assertEqual(before, motion.overlay.grab().toImage(),
+-                             "빠른 행 재선택에서 현재 그리기 위치가 이전 목적지로 튑니다")
+-            motion.animation.setCurrentTime(motion.animation.duration())
+-            self.assertFalse(motion.overlay.isVisible())
+-        finally:
+-            host.hide()
+-            host.deleteLater()
+-
+-    def test_82_partial_queue_completion_keeps_overall_working_visual(self):
+-        records, last = self.window.records.copy(), self.window.last_result
+-        saved = self.window.history_path.read_bytes() if self.window.history_path.exists() else None
+-        pending = self.window.pending
+-        try:
+-            self.window.pending = 2
+-            self.window.finished(str(SOURCE), str(SOURCE2), "")
+-            self.assertEqual(self.window.pending, 1)
+-            self.assertEqual(self.window.drop_card.orbit.state, "working")
+-            self.assertEqual(self.window.status_mark.state, "working")
+-            self.assertIn("1", self.window.status.text())
+-            self.window.finished(str(SOURCE), str(SOURCE2), "")
+-            self.assertEqual(self.window.pending, 0)
+-            self.assertEqual(self.window.drop_card.orbit.state, "complete")
+-        finally:
+-            self.window.records, self.window.last_result, self.window.pending = records, last, pending
+-            self.window.refresh_history()
+-            self.window.update_status()
+-            if saved is not None:
+-                self.window.history_path.write_bytes(saved)
+-
+-    def test_83_pdf_activity_reaches_home_visual_and_cancel_without_fake_percentage(self):
+-        panel = self.window.pdf_panel
+-        last = self.window.last_result
+-        try:
+-            panel._set_busy(True)
+-            panel._set_status("working", label="실제 처리 파일")
+-            self.assertEqual(self.window.status_mark.state, "working")
+-            self.assertEqual(self.window.drop_card.orbit.state, "working")
+-            self.assertEqual(self.window.status.text(), panel.status.text())
+-            self.assertEqual(panel.progress.value(), 0)
+-            panel._set_status("cancelling")
+-            self.assertEqual(self.window.drop_card.orbit.state, "cancelling")
+-            panel._set_busy(False)
+-            panel._set_status("cancelled")
+-            self.assertEqual(self.window.status_mark.state, "cancelled")
+-            self.assertEqual(self.window.drop_card.orbit.state, "cancelled")
+-        finally:
+-            panel._set_busy(False)
+-            panel._set_status("ready")
+-            self.window.last_result = last
+-            self.window.update_status()
+-
+-    def test_84_picker_ctrl_shift_view_selection_accepts_exact_unicode_files_once(self):
+-        fixture = ROOT / "한글 다중 선택"
+-        fixture.mkdir(exist_ok=True)
+-        sources = [fixture / name for name in ("가.png", "나.png", "다.png")]
+-        for path in sources:
+-            path.write_bytes(SOURCE.read_bytes())
+-        dialog = self.window.file_dialog(False)
+-        try:
+-            dialog.setDirectory(str(fixture))
+-            dialog.show()
+-            APPLICATION.processEvents()
+-            QTest.qWait(50)
+-            tree = dialog.findChild(QTreeView, "treeView")
+-            tree.sortByColumn(0, Qt.AscendingOrder)
+-            indexes = [tree.model().index(str(path)) for path in sources]
+-            self.assertTrue(all(index.isValid() for index in indexes))
+-            points = [tree.visualRect(index).center() for index in indexes]
+-            QTest.mouseClick(tree.viewport(), Qt.LeftButton, Qt.NoModifier, points[0])
+-            QTest.mouseClick(tree.viewport(), Qt.LeftButton, Qt.ControlModifier, points[2])
+-            self.assertEqual({Path(path).resolve() for path in dialog.selectedFiles()},
+-                             {sources[0].resolve(), sources[2].resolve()})
+-            QTest.mouseClick(tree.viewport(), Qt.LeftButton, Qt.NoModifier, points[0])
+-            QTest.mouseClick(tree.viewport(), Qt.LeftButton, Qt.ShiftModifier, points[2])
+-            self.assertEqual({Path(path).resolve() for path in dialog.selectedFiles()}, {path.resolve() for path in sources})
+-            self.assertIn("3", dialog.summary.text())
+-            accepted = QSignalSpy(dialog.accepted)
+-            QTest.keyClick(tree, Qt.Key_Return)
+-            self.assertEqual(accepted.count(), 1)
+-            self.assertFalse(dialog.isVisible())
+-            self.assertEqual(hashlib.sha256(SOURCE.read_bytes()).hexdigest(), ORIGINAL_HASH)
+-        finally:
+-            dialog.hide()
+-            dialog.deleteLater()
+-
+-    def test_85_language_uses_observed_helpers_and_explicit_refresh_detects_changes(self):
+-        previous = getattr(self.window, "_tool_paths", None)
+-        observations = {name: None for name in app.engine.TOOLS}
+-        try:
+-            with patch.object(app.engine, "tool", side_effect=lambda name: observations[name]) as discover:
+-                self.window.refresh_tools()
+-                self.assertEqual(discover.call_count, 3)
+-                self.window.set_language("en")
+-                self.window.set_language("ko")
+-                self.assertEqual(discover.call_count, 3, "표시 언어를 바꾸며 같은 도구 경로를 다시 탐색합니다")
+-                self.assertIn("미설치", self.window.tool_labels["ffmpeg"].text())
+-                observations["ffmpeg"] = str(ROOT / "새로 설치한 ffmpeg.exe")
+-                self.window.open_page(1)
+-                self.assertEqual(discover.call_count, 6)
+-                self.assertEqual(self.window.tool_labels["ffmpeg"].text(), "사용 가능")
+-                self.assertEqual(self.window.tool_labels["ffmpeg"].toolTip(), observations["ffmpeg"])
+-                observations["ffmpeg"] = None
+-                self.window.tray_menu.popup(QPoint(300, 200))
+-                APPLICATION.processEvents()
+-                self.assertEqual(discover.call_count, 9)
+-                tools = next(action.menu() for action in self.window.tray_menu.actions() if action.text() == "도우미 도구")
+-                self.assertTrue(any(action.text().startswith("✗ FFmpeg") for action in tools.actions()))
+-                QTest.keyClick(self.window.tray_menu, Qt.Key_Escape)
+-        finally:
+-            self.window.hide()
+-            if previous is not None:
+-                self.window._tool_paths = previous
+-                self.window.render_tools()
+-                self.window.update_tray_menu(refresh=False)
+-
+-
+-def main():
+-    suite = unittest.defaultTestLoader.loadTestsFromTestCase(GuiTests)
+-    result = unittest.TextTestRunner(verbosity=2, failfast=True).run(suite)
+-    report = {
+-        "version": app.VERSION,
+-        "tests": result.testsRun,
+-        "passed": result.testsRun - len(result.failures) - len(result.errors),
+-        "failures": [{"test": str(test), "detail": detail} for test, detail in result.failures],
+-        "errors": [{"test": str(test), "detail": detail} for test, detail in result.errors],
+-        "original_sha256": ORIGINAL_HASH,
+-        "original_preserved": hashlib.sha256(SOURCE.read_bytes()).hexdigest() == ORIGINAL_HASH,
+-        "qt_platform": APPLICATION.platformName(),
+-        "scope": "Qt 위젯·그리기·애니메이션·이벤트 전달·이미지 변환과 모형 키 상태 시험. offscreen 플랫폼이면 창은 화면에 표시하지 않습니다. 실제 Windows 탐색기 OLE 드래그 및 물리 Shift 키는 별도 미검증입니다.",
+-        "os_input_injected": False,
+-        "registry_writes_tested": False,
+-        "registered_test_fonts": REGISTERED_TEST_FONTS,
+-        "windows_system_font_files_copied_or_redistributed": False,
+-        "bundled_ui_font_files": ["SUIT-Regular.ttf", "SUIT-Medium.ttf", "SUIT-SemiBold.ttf"],
+-        "shell_selection_api_tested_with_mocks": True,
+-        "actual_explorer_file_selection_tested": False,
+-        "bundled_ui_font": "SUIT Regular 400 / Medium 500 / SemiBold 600",
+-        "motion_scope": "실제 Qt 중간 프레임·재진입 연속성·호버 재지정·탭 전환·고정 드롭 영역을 검사했습니다. 실제 화면 프레임 속도는 별도 확인 범위입니다.",
+-    }
+-    (ROOT / "Mono-Qt검증.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+-    print(json.dumps({key: value for key, value in report.items() if key not in ("failures", "errors")}, ensure_ascii=False))
+-    return 0 if result.wasSuccessful() else 1
+-
+-
+-if __name__ == "__main__":
+-    sys.exit(main())
++"""Qt 드롭·모션·키 상태 회귀 시험. 실제 탐색기/물리 Shift 시험과 구분한다."""
++from __future__ import annotations
 +
-+현재 소스의 버전은 1.12.1입니다. 아래 명령의 출력·작업 폴더는 새 1.12.1 경로로 지정하세요. 기존 전체 회귀 검사는 변경 없는 코드에 대해 반복 실행할 필요가 없습니다. 문서 입력 수리는 test_document_import1121과 실제 문서 변환으로 확인합니다. 변경 없는 기존 기능의 유효한 근거는 재사용하며 실행본·설치본 확인은 별도로 구분합니다.
- 
- # 플립링 1.11.0 빌드와 전체 소스
- 
- Windows 10/11 x64, Python 3.12 x64, 고정 requirements-lock.txt와 Inno Setup 6이 필요합니다. 제품 버전 1.11.0과 설정 스키마 VERSION=3은 별개입니다. 실행 이름 FlipRing.exe·설치 이름 FlipRing-Setup.exe·기존 FlipRing19 설치/설정 규약은 유지합니다. 새 바로가기·정션·심볼릭 링크는 만들지 않습니다.
- 
--고객용 전체 소스는 `플립링-1.12.0-전체소스.zip`입니다. 공개 Git의 대용량 제한을 적용한 사본이나 GitHub 자동 소스 압축본으로 대체하지 않습니다. ZIP에는 제품·빌드·검사 Python 코드, 필수 assets/vendor/licenses, 원바이트 상응 소스 archive와 검사도구 6개를 보존합니다. 상위 docs의 공개 미승인 내부 계획, work/evidence/.codex/.git, 개인 지침과 검토기록.md는 제외 이유를 외부 목록에 남깁니다. 공개 미승인 필수 입력이 있으면 준비가 중단됩니다.
-+고객용 전체 소스는 `플립링-1.12.1-전체소스.zip`입니다. 공개 Git의 대용량 제한을 적용한 사본이나 GitHub 자동 소스 압축본으로 대체하지 않습니다. ZIP에는 제품·빌드·검사 Python 코드, 필수 assets/vendor/licenses, 원바이트 상응 소스 archive와 검사도구를 보존합니다. 상위 docs의 공개 미승인 내부 계획, work/evidence/.codex/.git, 개인 지침과 검토기록.md는 제외 이유를 외부 목록에 남깁니다. 공개 미승인 필수 입력이 있으면 준비가 중단됩니다.
- 
- ## 새 경로에서 재현
- 
-@@ -36,7 +36,7 @@
- 
- 고객 폴더에는 프로그램/FlipRing 전체, 설치파일/FlipRing-Setup.exe, 정확 전체 소스 ZIP, 외부 소스 manifest와 SHA 목록·안내를 함께 제공합니다. 앱의 라이선스 폴더에는 정확 ZIP명·SHA·동일 Release URL·자산 URL과 재배포 안내를 생성합니다. 온라인 재배포자는 같은 장소에서 무료로 동등한 소스 접근을 제공할 수 있습니다. Qt/PySide의 호환 동적 라이브러리 교체와 수정 디버깅을 위한 역공학을 제한하지 않습니다.
- 
--예정 공개 위치는 https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.12.0 입니다. installer와 전체 소스 ZIP을 같은 Release에 실제 게시하고, 로그인 없는 전체 다운로드·SHA·ZIP 내용·링크를 별도로 확인해야 공개 완료입니다. 예정 주소나 로컬 빌드 성공만으로 게시·법적 조건 충족을 주장하지 않습니다.
-+예정 공개 위치는 https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.12.1 입니다. installer와 전체 소스 ZIP을 같은 Release에 실제 게시하고, 로그인 없는 전체 다운로드·SHA·ZIP 내용·링크를 별도로 확인해야 공개 완료입니다. 예정 주소나 로컬 빌드 성공만으로 게시·법적 조건 충족을 주장하지 않습니다.
- 
- ## 현재 검사 묶음과 한계
- 
---- 1.12.0/소스/사용안내.txt
-+++ 1.12.1/소스/사용안내.txt
-@@ -1,4 +1,4 @@
--플립링 1.12.0 — PUVKID
-+플립링 1.12.1 — PUVKID
- 라이트·다크 테마와 빠른 작업·폴더 변환·결과 관리를 제공합니다.
- 추가 도구는 외부 도우미 화면에서 설치합니다.
- 
---- /dev/null
-+++ 1.12.1/검사도구/대표문서입력검사1121.py
-@@ -0,0 +1,171 @@
-+"""합성 템플릿과 HWP 출력을 실제 LibreOffice로 읽어 내용 보존을 확인합니다."""
-+from pathlib import Path
 +import hashlib
 +import json
++import os
++from pathlib import Path
++import re
++import string
++import subprocess
 +import sys
-+import zipfile
-+import xml.etree.ElementTree as ET
++import time
++import unittest
++from unittest.mock import Mock, patch
 +
-+ROOT = Path(__file__).resolve().parents[1]
-+SOURCE = ROOT / '소스'
-+sys.path.insert(0, str(SOURCE))
-+MARKER = 'FlipRing template 1121'
++from PySide6.QtCore import Qt, QPoint, QPointF, QMimeData, QUrl, QEvent, QAbstractAnimation, QCoreApplication
++from PySide6.QtGui import QFont, QFontDatabase, QFontInfo, QRawFont, QTextLayout, QPalette, QDragEnterEvent, QDragMoveEvent, QDropEvent, QMouseEvent, QWheelEvent, QHelpEvent
++from PySide6.QtTest import QTest, QSignalSpy
++from PySide6.QtWidgets import QApplication, QFileDialog, QDialogButtonBox, QMessageBox, QStyleOptionComboBox, QStyleOptionSpinBox, QTreeView, QMenu, QLineEdit
++from shiboken6 import isValid
++import app
++import i18n
++from studio_ui import OrbitVisual
++from pdf_panel import ERRORS as PDF_ERRORS
++from pdf_tools import PdfToolError
 +
-+LEGACY = {'dot': ('문서', 'MS Word 97 Vorlage'),
-+          'pot': ('프레젠테이션', 'MS PowerPoint 97 Vorlage'),
-+          'pps': ('프레젠테이션', 'MS PowerPoint 97 AutoPlay'),
-+          'xlt': ('스프레드시트', 'MS Excel 97 Vorlage/Template')}
-+OPENXML = {'dotm': ('docx', 'application/vnd.ms-word.template.macroEnabledTemplate.main+xml'),
-+           'potx': ('pptx', 'application/vnd.openxmlformats-officedocument.presentationml.template.main+xml'),
-+           'potm': ('pptx', 'application/vnd.ms-powerpoint.template.macroEnabled.main+xml'),
-+           'ppsm': ('pptx', 'application/vnd.ms-powerpoint.slideshow.macroEnabled.main+xml'),
-+           'xltm': ('xlsx', 'application/vnd.ms-excel.template.macroEnabled.main+xml')}
 +
-+def sha(path):
-+    return hashlib.sha256(path.read_bytes()).hexdigest()
++ROOT = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else Path("gui-test-output").resolve()
++ROOT.mkdir(parents=True, exist_ok=True)
++SOURCE = ROOT / "원본보존-드롭시험.png"
++SOURCE2 = ROOT / "두번째.png"
++app.engine.Image.new("RGBA", (48, 32), (30, 130, 240, 140)).save(SOURCE)
++app.engine.Image.new("RGB", (32, 32), "orange").save(SOURCE2)
++ORIGINAL_HASH = hashlib.sha256(SOURCE.read_bytes()).hexdigest()
++app.DATA = ROOT / "격리설정"
++APPLICATION = QApplication([])
++APPLICATION.setQuitOnLastWindowClosed(False)
++REGISTERED_TEST_FONTS = {}
++if APPLICATION.platformName() == "offscreen":
++    # Windows의 offscreen 플러그인은 시스템 글꼴을 열거하지 않는다. 시험 프로세스에만 등록한다.
++    for name in ("segoeui.ttf", "seguisb.ttf", "malgun.ttf", "malgunbd.ttf"):
++        filename = Path(os.environ.get("WINDIR", "C:/Windows")) / "Fonts" / name
++        REGISTERED_TEST_FONTS[name] = QFontDatabase.addApplicationFont(str(filename))
++app.apply_application_style(APPLICATION)
 +
-+def make_base(directory, extension):
-+    path = directory / ('입력.' + extension)
-+    if extension == 'docx':
-+        from docx import Document
-+        d = Document()
-+        d.add_paragraph(MARKER)
-+        d.save(path)
-+    elif extension == 'pptx':
-+        from pptx import Presentation
-+        d = Presentation()
-+        d.slides.add_slide(d.slide_layouts[1]).shapes.title.text = MARKER
-+        d.save(path)
-+    else:
-+        from openpyxl import Workbook
-+        d = Workbook()
-+        d.active.append([MARKER, 123])
-+        d.save(path)
-+    return path
 +
-+def output_text(path):
-+    if path.suffix == '.docx':
-+        from docx import Document
-+        d = Document(path)
-+        return '\n'.join(p.text for p in d.paragraphs) + '\n'.join(c.text for t in d.tables for row in t.rows for c in row.cells)
-+    if path.suffix == '.pptx':
-+        from pptx import Presentation
-+        return '\n'.join(s.text for slide in Presentation(path).slides for s in slide.shapes if s.has_text_frame)
-+    from openpyxl import load_workbook
-+    d = load_workbook(path, read_only=True, data_only=False)
-+    try:
-+        return '\n'.join(str(v) for sheet in d for row in sheet.values for v in row if v is not None)
-+    finally:
-+        d.close()
++def mime_for(*urls):
++    mime = QMimeData()
++    mime.setUrls(list(urls) or [QUrl.fromLocalFile(str(SOURCE))])
++    return mime
 +
-+def office_export(source, target, profile, family, filter_name):
-+    import engine
-+    import document_formats as formats
-+    import document_process
-+    profile.mkdir()
-+    formats.write_secure_profile(profile)
-+    # 이 추가 필터는 합성 시험 입력 생성에만 쓰며 제품 지원표는 변경하지 않습니다.
-+    helper = profile / 'create_fixture.py'
-+    helper.write_text('import sys\nfrom pathlib import Path\nsys.path.insert(0,' + repr(str(SOURCE)) + ')\nimport document_bridge as b\nb.EXPORT_FILTERS={k:dict(v) for k,v in b.EXPORT_FILTERS.items()}\nb.EXPORT_FILTERS[' + repr(family) + '][' + repr(target.suffix[1:]) + ']=' + repr(filter_name) + '\nraise SystemExit(b.main())\n', encoding='utf-8')
-+    request = dict(source=str(source),output=str(target),profile=str(profile),office=engine.tool('soffice'),family=family,extension=source.suffix[1:],target=target.suffix[1:])
-+    manifest = profile / 'request.json'
-+    manifest.write_text(json.dumps(request,ensure_ascii=False),encoding='utf-8')
-+    document_process.run_bridge([formats.office_python(request['office']),'-B','-X','utf8',helper,manifest],profile,None,lambda:None,timeout=90)
 +
-+def create_input(directory, extension):
-+    target = directory / ('실제입력.' + extension)
-+    if extension in LEGACY:
-+        family, name = LEGACY[extension]
-+        source = make_base(directory, {'문서':'docx','프레젠테이션':'pptx','스프레드시트':'xlsx'}[family])
-+        office_export(source,target,directory/'profile',family,name)
-+    elif extension in OPENXML:
-+        base, content_type = OPENXML[extension]
-+        source = make_base(directory,base)
-+        main = {'docx':'/word/document.xml','pptx':'/ppt/presentation.xml','xlsx':'/xl/workbook.xml'}[base]
-+        with zipfile.ZipFile(source) as package, zipfile.ZipFile(target,'w',zipfile.ZIP_DEFLATED) as output:
-+            for entry in package.infolist():
-+                data = package.read(entry)
-+                if entry.filename == '[Content_Types].xml':
-+                    root = ET.fromstring(data)
-+                    item = next(x for x in root if x.get('PartName') == main)
-+                    # 형식 탐지기가 기본 네임스페이스 선언을 그대로 읽도록 원본 XML 표현을 보존한다.
-+                    original = item.get('ContentType').encode('utf-8')
-+                    assert data.count(original) == 1
-+                    data = data.replace(original, content_type.encode('utf-8'))
-+                output.writestr(entry,data)
-+    elif extension in ('sxw','stw'):
-+        mimetype = 'application/vnd.sun.xml.writer' + ('.template' if extension == 'stw' else '')
-+        body = '<?xml version="1.0" encoding="UTF-8"?><office:document-content xmlns:office="http://openoffice.org/2000/office" xmlns:text="http://openoffice.org/2000/text" office:class="text" office:version="1.0"><office:body><text:p>' + MARKER + '</text:p></office:body></office:document-content>'
-+        manifest = '<?xml version="1.0"?><manifest:manifest xmlns:manifest="http://openoffice.org/2001/manifest"><manifest:file-entry manifest:media-type="' + mimetype + '" manifest:full-path="/"/><manifest:file-entry manifest:media-type="text/xml" manifest:full-path="content.xml"/></manifest:manifest>'
-+        with zipfile.ZipFile(target,'w',zipfile.ZIP_DEFLATED) as package:
-+            package.writestr('mimetype',mimetype)
-+            package.writestr('content.xml',body)
-+            package.writestr('META-INF/manifest.xml',manifest)
-+    elif extension == 'slk':
-+        target.write_text('ID;PFlipRing\nC;X1;Y1;K"' + MARKER + '"\nC;X2;Y1;K123\nE\n',encoding='ascii')
-+    return target
++def drop_at(point, mime=None, actions=Qt.CopyAction | Qt.MoveAction):
++    mime = mime if mime is not None else mime_for()
++    event = QDropEvent(point, actions, mime, Qt.LeftButton, Qt.ShiftModifier)
++    # QDropEvent는 MIME 객체를 소유하지 않으므로 모의 이벤트가 끝날 때까지 참조를 유지한다.
++    event._mime_reference = mime
++    return event
 +
-+def check_case(directory, extension):
-+    import engine
-+    directory.mkdir(parents=True,exist_ok=False)
-+    if extension == 'hwp_roundtrip':
-+        return check_hwp_roundtrip(directory)
-+    source = create_input(directory,extension)
-+    before = sha(source)
-+    family = engine.classify(source)[0]
-+    output = Path(engine.convert(source,{'문서':'docx','프레젠테이션':'pptx','스프레드시트':'xlsx'}[family]))
-+    assert MARKER in output_text(output), '합성 입력의 실제 본문 누락'
-+    assert before == sha(source), '원본 변경'
-+    return dict(extension=extension,result='passed',source_sha256=before,output_sha256=sha(output),source_preserved=True)
 +
-+def check_hwp_roundtrip(directory):
-+    import engine
-+    from docx import Document
-+    from docx.shared import Inches
-+    from PIL import Image
-+    source = directory / '한글표그림.docx'
-+    picture = directory / '그림.png'
-+    Image.new('RGB',(100,60),(30,80,150)).save(picture)
-+    document = Document()
-+    document.add_paragraph(MARKER)
-+    run = document.add_paragraph().add_run('한글 보존 PUVKID')
-+    run.bold = True
-+    run.italic = True
-+    table = document.add_table(rows=2,cols=2)
-+    for cell,value in zip([c for row in table.rows for c in row.cells],['항목','값','변환','123']):
-+        cell.text = value
-+    document.add_picture(str(picture),width=Inches(1))
-+    document.save(source)
-+    before = sha(source)
-+    results = []
-+    for extension in ('hwp','hwpx'):
-+        native = Path(engine.convert(source,extension))
-+        native_before = sha(native)
-+        returned = Path(engine.convert(native,'docx'))
-+        text = output_text(returned)
-+        assert MARKER in text and '한글 보존 PUVKID' in text
-+        result_document = Document(returned)
-+        assert any(len(t.rows)>=2 and len(t.columns)>=2 and t.cell(1,0).text=='변환' and t.cell(1,1).text=='123' for t in result_document.tables), '표 내용 누락'
-+        with zipfile.ZipFile(returned) as package:
-+            assert any(name.startswith('word/media/') for name in package.namelist()), '포함 그림 누락'
-+        assert sha(native) == native_before
-+        results.append(dict(extension=extension,native_sha256=native_before,returned_sha256=sha(returned),text=True,table=True,image=True))
-+    assert sha(source) == before
-+    return dict(result='passed',source_preserved=True,source_sha256=before,reader='LibreOffice/H2Orestart',results=results)
++def settle(milliseconds=190):
++    QTest.qWait(milliseconds)
++    APPLICATION.processEvents()
 +
-+def main():
-+    base = Path(sys.argv[1]).resolve()
-+    if len(sys.argv) > 2:
-+        print(json.dumps(check_case(base/sys.argv[2],sys.argv[2]),ensure_ascii=False))
-+        return
-+    sys.path.insert(0,str(ROOT/'검사도구'))
-+    from release_capture import run_check
-+    results = []
-+    for extension in [*LEGACY,*OPENXML,'sxw','stw','slk']:
-+        result = run_check(dict(id=extension,argv=[sys.executable,'-B','-X','utf8',str(Path(__file__).resolve()),str(base),extension],cwd=str(SOURCE),timeout_seconds=180))
-+        results.append(result)
-+        (base.parent/'문서템플릿_검사결과1121.json').write_text(json.dumps(results,ensure_ascii=False,indent=2),encoding='utf-8')
-+        print(json.dumps({k:result.get(k) for k in ('id','status','exit_code','duration_seconds')},ensure_ascii=False),flush=True)
 +
-+if __name__ == '__main__':
-+    main()
++class GuiTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.window = app.MainWindow()
++        cls.window.timer.stop()
++        cls.window.notifications.setChecked(False)
++        cls.window.reveal.setChecked(False)
++        cls.wheel = cls.window.wheel
++        cls.wheel.chosen.disconnect()
++        cls.events = []
++        cls.wheel.chosen.connect(lambda files, target: cls.events.append((files, target)))
++
++    @classmethod
++    def tearDownClass(cls):
++        cls.window.timer.stop()
++        cls.wheel.hide()
++        cls.window.tray.hide()
++        cls.window.hide()
++        cls.window.quick_actions_panel.shutdown()
++        cls.window.workspace_panel.shutdown()
++        cls.window.pool.shutdown(wait=True)
++
++    def setUp(self):
++        # 확장 작업 공간이 기본 화면이므로 기존 화면 회귀는 파일 변환 탭에서 시작한다.
++        self.window.tabs.setCurrentIndex(0)
++        self.events.clear()
++        self.wheel.hide()
++        self.window.start_point = None
++        self.window.drag_fired = False
++        self.window.explorer_drag = False
++        self.window.release_time = None
++        self.window.recording = False
++        self.window.trigger.setCurrentIndex(0)
++        self.window.set_language("ko")
++
++    def show_wheel(self, paths=None, preview=False):
++        self.wheel.display(QPoint(500, 380), paths or [str(SOURCE)], preview)
++        APPLICATION.processEvents()
++
++    def test_01_studio_workspace_and_tray(self):
++        self.assertEqual(self.window.tabs.count(), 8)
++        self.assertEqual([self.window.tabs.tabText(i) for i in range(4)], ["파일 변환", "도구", "기록", "정보"])
++        self.assertIs(self.window.tabs.widget(4), self.window.pdf_panel)
++        self.assertEqual(self.window.tabs.tabText(5), "설정")
++        self.assertTrue(self.window.tabs.widget(5).isAncestorOf(self.window.language_combo))
++        self.assertGreaterEqual(self.window.width(), 960)
++        self.assertEqual(self.window.minimumWidth(), 1160)
++        self.assertEqual(self.window.minimumHeight(), 820)
++        self.assertEqual(self.window.sidebar.width(), 204)
++        self.assertFalse(self.window.tabs.tabBar().isVisible())
++        self.assertFalse(hasattr(self.window, "list"))
++        self.window.update_tray_menu()
++        texts = [action.text() for action in self.window.tray_menu.actions()]
++        for text in ["파일 선택…", "폴더 선택…", "드래그 키", "로그인 시 시작", "결과 파일 선택", "변환 알림", "도우미 도구", "기록", "설정", "정보", "종료"]:
++            self.assertIn(text, texts)
++        self.window.show()
++        APPLICATION.processEvents()
++        self.assertTrue(self.window.grab().save(str(ROOT / "3차-간단설정.png")))
++        self.window.hide()
++
++    def test_60_sidebar_native_input_maps_all_pages_and_keeps_one_selection(self):
++        self.window.show()
++        self.window.tabs.setCurrentIndex(0)
++        APPLICATION.processEvents()
++        for index in (4, 2, 1, 3, 5, 0):
++            button = self.window.nav_buttons[index]
++            self.assertTrue(all(not pixmap.isNull() for pixmap in button.svg_icons.values()))
++            geometry = button.geometry()
++            QTest.mouseClick(button, Qt.LeftButton)
++            self.assertEqual(self.window.tabs.currentIndex(), index)
++            self.assertTrue(button.isChecked())
++            self.assertEqual(sum(item.isChecked() for item in self.window.nav_buttons.values()), 1)
++            self.assertEqual(button.geometry(), geometry)
++            self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        current = self.window.nav_buttons[0]
++        QTest.mouseClick(current, Qt.LeftButton)
++        self.assertTrue(current.isChecked())
++        target = self.window.nav_buttons[4]
++        target.setEnabled(False)
++        QTest.mouseClick(target, Qt.LeftButton)
++        self.assertEqual(self.window.tabs.currentIndex(), 0)
++        target.setEnabled(True)
++        QTest.keyClick(target, Qt.Key_Space)
++        self.assertEqual(self.window.tabs.currentIndex(), 4)
++        self.assertTrue(target.isChecked())
++        self.window.hide()
++        self.assertTrue(all(button.motion.state() == QAbstractAnimation.Stopped
++                            for button in self.window.nav_buttons.values()))
++
++    def test_61_workspace_drop_and_file_buttons_open_actual_conversion_path(self):
++        # 이전 검사에서 남은 선택에 의존하지 않고 빈 화면부터 드롭을 검사한다.
++        self.window.set_files([])
++        self.window.tabs.setCurrentIndex(0)
++        self.window.show()
++        self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        APPLICATION.processEvents()
++        card = self.window.drop_card
++        geometry = card.geometry()
++        self.assertEqual(card.maximumHeight(), 210)
++        self.assertTrue(card.title.isVisible())
++        mime = mime_for()
++        enter = QDragEnterEvent(QPoint(30, 30), Qt.CopyAction | Qt.MoveAction,
++                                mime, Qt.LeftButton, Qt.ShiftModifier)
++        card.dragEnterEvent(enter)
++        self.assertTrue(enter.isAccepted())
++        self.assertEqual(enter.dropAction(), Qt.CopyAction)
++        APPLICATION.processEvents()
++        self.assertEqual(card.geometry(), geometry)
++        move = QDragMoveEvent(QPoint(32, 32), Qt.CopyAction | Qt.MoveAction,
++                              mime, Qt.LeftButton, Qt.ShiftModifier)
++        card.dragMoveEvent(move)
++        self.assertTrue(move.isAccepted())
++        self.assertEqual(move.dropAction(), Qt.CopyAction)
++        APPLICATION.processEvents()
++        self.assertEqual(card.geometry(), geometry)
++        with patch.object(self.wheel, "display") as display:
++            drop = drop_at(QPointF(30, 30), mime)
++            card.dropEvent(drop)
++            self.assertTrue(drop.isAccepted())
++            self.assertEqual(drop.dropAction(), Qt.CopyAction)
++            self.assertEqual(self.window.paths, [str(SOURCE)])
++            self.assertEqual(display.call_args.args[1], [str(SOURCE)])
++            self.assertTrue(display.call_args.kwargs["preview"])
++            APPLICATION.processEvents()
++            self.assertEqual(card.maximumHeight(), 80)
++            self.assertLessEqual(card.height(), 80)
++            self.assertFalse(card.title.isVisible())
++            self.assertTrue(self.window.workbench.isVisible())
++            compact_geometry = card.geometry()
++            invalid = drop_at(QPointF(30, 30), mime_for(QUrl("https://example.invalid/file.png")))
++            card.dropEvent(invalid)
++            self.assertFalse(invalid.isAccepted())
++            self.assertEqual(display.call_count, 1)
++            picker = Mock()
++            picker.exec.return_value = QFileDialog.Accepted
++            picker.selectedFiles.return_value = [str(SOURCE2)]
++            with patch.object(self.window, "file_dialog", return_value=picker) as choose:
++                QTest.mouseClick(self.window.choose_button, Qt.LeftButton)
++                choose.assert_called_once_with(False)
++                self.assertEqual(self.window.paths, [str(SOURCE2)])
++                self.assertEqual(display.call_count, 2)
++                choose.reset_mock()
++                QTest.mouseClick(self.window.folder_button, Qt.LeftButton)
++                choose.assert_called_once_with(True)
++                self.assertEqual(display.call_count, 3)
++                choose.reset_mock()
++                QTest.keyClick(card, Qt.Key_Return)
++                choose.assert_called_once_with(False)
++                self.assertEqual(display.call_count, 4)
++        APPLICATION.processEvents()
++        self.assertEqual(card.geometry(), compact_geometry)
++        self.assertEqual(hashlib.sha256(SOURCE.read_bytes()).hexdigest(), ORIGINAL_HASH)
++        self.window.hide()
++
++    def test_62_pill_toggle_preserves_checkbox_signals_keyboard_and_motion(self):
++        toggle = app.Toggle()
++        toggle.setText("알림 Notifications")
++        toggle.resize(230, 38)
++        toggle.show()
++        APPLICATION.processEvents()
++        signals = QSignalSpy(toggle.toggled)
++        try:
++            geometry = toggle.geometry()
++            QTest.mouseClick(toggle, Qt.LeftButton)
++            self.assertTrue(toggle.isChecked())
++            self.assertEqual(signals.count(), 1)
++            toggle.motion.setCurrentTime(90)
++            middle = toggle.amount
++            self.assertGreater(middle, 0)
++            self.assertLess(middle, 1)
++            QTest.keyClick(toggle, Qt.Key_Space)
++            self.assertFalse(toggle.isChecked())
++            self.assertEqual(signals.count(), 2)
++            self.assertAlmostEqual(toggle.amount, middle)
++            toggle.motion.setCurrentTime(toggle.motion.duration())
++            self.assertAlmostEqual(toggle.amount, 0)
++            toggle.setEnabled(False)
++            QTest.mouseClick(toggle, Qt.LeftButton)
++            self.assertEqual(signals.count(), 2)
++            self.assertEqual(toggle.geometry(), geometry)
++        finally:
++            toggle.hide()
++            self.assertEqual(toggle.motion.state(), QAbstractAnimation.Stopped)
++            toggle.deleteLater()
++
++    def test_63_center_ring_has_distinct_finite_frames_and_continuous_drag_retarget(self):
++        self.window.tabs.setCurrentIndex(0)
++        self.window.show()
++        self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        APPLICATION.processEvents()
++        # 메인의 큰 장식은 제거했으며 독립 위젯에서 기존 모션 계약을 그대로 검사한다.
++        orbit = OrbitVisual(self.window)
++        orbit.resize(400, 300)
++        orbit.show()
++        APPLICATION.processEvents()
++        geometry = orbit.geometry()
++        orbit.respond(["jpg", "pdf", "webp", "png"])
++        images = []
++        for milliseconds in (0, 220, 720):
++            orbit.intro.setCurrentTime(milliseconds)
++            filename = ROOT / f"Studio-ring-intro-{milliseconds}.png"
++            self.assertTrue(orbit.grab().save(str(filename)))
++            images.append(filename.read_bytes())
++        self.assertEqual(len(set(images)), 3)
++        self.assertEqual(orbit.intro.state(), QAbstractAnimation.Stopped)
++        orbit.set_approach(True)
++        orbit.motion.setCurrentTime(115)
++        current = orbit.approach
++        self.assertGreater(current, 0)
++        self.assertLess(current, 1)
++        orbit.set_approach(False)
++        self.assertAlmostEqual(orbit.approach, current)
++        orbit.motion.setCurrentTime(230)
++        self.assertAlmostEqual(orbit.approach, 0)
++        orbit.respond(state="complete")
++        orbit.intro.setCurrentTime(720)
++        self.assertEqual(orbit.state, "complete")
++        self.assertTrue(orbit.grab().save(str(ROOT / "Studio-ring-complete.png")))
++        self.assertEqual(orbit.geometry(), geometry)
++        self.window.hide()
++        self.assertEqual(orbit.intro.state(), QAbstractAnimation.Stopped)
++        self.assertEqual(orbit.motion.state(), QAbstractAnimation.Stopped)
++        orbit.deleteLater()
++
++    def test_64_studio_resize_languages_and_pdf_columns_keep_controls_accessible(self):
++        original_size = self.window.size()
++        panel = self.window.pdf_panel
++        operation = panel.operation.currentData()
++        self.window.show()
++        try:
++            for language in ("ko", "en"):
++                self.window.set_language(language)
++                for width, height in ((960, 680), (1280, 840)):
++                    self.window.resize(width, height)
++                    self.window.tabs.setCurrentIndex(0)
++                    self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++                    APPLICATION.processEvents()
++                    self.assertEqual(self.window.sidebar.width(), 204)
++                    self.assertGreaterEqual(self.window.drop_card.width(), 300)
++                    self.assertTrue(self.window.quick_settings.rect().contains(self.window.notifications.geometry()))
++                    self.assertEqual(self.window.page_title.text(), self.window.text("studio_convert"))
++                    self.window.tabs.setCurrentIndex(4)
++                    panel.operation.setCurrentIndex(panel.operation.findData("recognize"))
++                    self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++                    APPLICATION.processEvents()
++                    self.assertLess(panel.sources_card.geometry().left(), panel.options_card.geometry().left())
++                    self.assertFalse(panel.scroll.horizontalScrollBar().isVisible())
++                    self.assertTrue(panel.operation.isEnabled())
++                    self.assertEqual(self.window.page_title.text(), self.window.text("pdf_tools"))
++                    if width == 1280:
++                        self.assertTrue(self.window.grab().save(str(ROOT / f"Studio-{language}-pdf-ocr.png")))
++            self.window.tabs.setCurrentIndex(0)
++            self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++            self.assertTrue(self.window.grab().save(str(ROOT / "Studio-en-workspace.png")))
++        finally:
++            panel.operation.setCurrentIndex(panel.operation.findData(operation))
++            self.window.resize(original_size)
++            self.window.set_language("ko")
++            self.window.hide()
++
++    def test_65_history_visual_rows_keep_schema_roles_and_full_path_tooltip(self):
++        previous = self.window.records
++        previous_language = self.window.language
++        row = {"time": "2026-10-21T05:00:00", "source": str(SOURCE),
++               "output": str(ROOT / "완료한 결과.pdf"), "error": ""}
++        self.window.records = [row]
++        try:
++            self.window.refresh_history()
++            item = self.window.history.item(0)
++            self.assertEqual(set(row), {"time", "source", "output", "error"})
++            self.assertEqual(item.data(Qt.UserRole), row["output"])
++            self.assertEqual(item.data(Qt.UserRole + 1), "")
++            self.assertIs(item.data(Qt.UserRole + 2), True)
++            self.assertEqual(item.data(Qt.UserRole + 3)["source"], SOURCE.name)
++            self.assertIn(row["output"], item.toolTip())
++            self.window.tabs.setCurrentIndex(2)
++            self.window.show()
++            self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++            APPLICATION.processEvents()
++            self.assertGreaterEqual(self.window.history.visualItemRect(item).height(), 80)
++            self.assertTrue(self.window.grab().save(str(ROOT / "Studio-history-rows.png")))
++            for language in ("ko", "en"):
++                self.window.set_language(language)
++                self.window.refresh_history()
++                self.assertEqual(self.window.history.item(0).toolTip(), row["source"] + "\n" + row["output"])
++            for stored, language in ((PDF_ERRORS["invalid_pdf"][0], "en"),
++                                     (PDF_ERRORS["invalid_pdf"][1], "ko")):
++                failed = dict(row, error=stored)
++                self.window.records = [failed]
++                self.window.set_language(language)
++                self.window.refresh_history()
++                item = self.window.history.item(0)
++                self.assertEqual(item.toolTip(), failed["source"] + "\n" + i18n.error_text(language, stored))
++                self.assertEqual(item.data(Qt.UserRole), failed["output"])
++                self.assertEqual(item.data(Qt.UserRole + 1), stored)
++                self.assertEqual(failed, dict(row, error=stored))
++            diagnostic = "Unrecognized OS diagnostic / 원문 진단 0x1234"
++            for language in ("ko", "en"):
++                self.window.records = [dict(row, error=diagnostic)]
++                self.window.set_language(language)
++                self.window.refresh_history()
++                tooltip = self.window.history.item(0).toolTip()
++                self.assertEqual(tooltip.split("\n", 1)[0], row["source"])
++                self.assertIn(diagnostic, tooltip)
++                self.assertEqual(self.window.history.item(0).data(Qt.UserRole + 1), diagnostic)
++        finally:
++            self.window.records = previous
++            self.window.set_language(previous_language)
++            self.window.refresh_history()
++            self.window.hide()
++
++    def test_66_ring_zero_time_hide_and_reentry_keep_value_and_drawing_in_sync(self):
++        orbit = OrbitVisual()
++        orbit.resize(360, 300)
++        orbit.show()
++        APPLICATION.processEvents()
++        try:
++            for _ in range(3):
++                orbit.intro.stop()
++                orbit.intro.setCurrentTime(0)
++                orbit.hide()
++                self.assertEqual(orbit.phase, 1)
++                self.assertEqual(orbit.intro.currentValue(), 0)
++                orbit.show()
++                self.assertEqual(orbit.intro.currentTime(), 0)
++                self.assertEqual(orbit.phase, orbit.intro.currentValue())
++                self.assertEqual(orbit.phase, 0)
++                orbit.respond()
++                self.assertEqual(orbit.phase, 0)
++                orbit.intro.setCurrentTime(220)
++                self.assertAlmostEqual(orbit.phase, orbit.intro.currentValue())
++                self.assertGreater(orbit.phase, 0)
++                self.assertLess(orbit.phase, 1)
++                orbit.intro.setCurrentTime(720)
++                self.assertEqual(orbit.phase, 1)
++                self.assertEqual(orbit.intro.state(), QAbstractAnimation.Stopped)
++        finally:
++            orbit.hide()
++            self.assertEqual(orbit.intro.state(), QAbstractAnimation.Stopped)
++            self.assertEqual(orbit.motion.state(), QAbstractAnimation.Stopped)
++            orbit.deleteLater()
++
++    def test_67_ocr_controls_stay_fully_exposed_while_only_options_scroll(self):
++        panel = self.window.pdf_panel
++        previous_size = self.window.size()
++        previous_operation = panel.operation.currentData()
++        buttons = (panel.add_button, panel.remove_button, panel.up_button,
++                   panel.down_button, panel.start_button, panel.cancel_button)
++        self.window.tabs.setCurrentIndex(4)
++        self.window.show()
++        self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        panel.operation.setCurrentIndex(panel.operation.findData("recognize"))
++        try:
++            for language in ("ko", "en"):
++                self.window.set_language(language)
++                for width, height in ((960, 680), (1080, 780), (1280, 840)):
++                    self.window.resize(width, height)
++                    APPLICATION.processEvents()
++                    positions = [button.mapTo(panel, QPoint()) for button in buttons]
++                    for value in (0, panel.scroll.verticalScrollBar().maximum()):
++                        panel.scroll.verticalScrollBar().setValue(value)
++                        APPLICATION.processEvents()
++                        for number, button in enumerate(buttons):
++                            with self.subTest(language=language, size=(width, height), scroll=value, button=button.text()):
++                                self.assertTrue(button.isVisible())
++                                self.assertTrue(button.visibleRegion().contains(button.rect()), "버튼 일부가 화면 밖에 가려졌습니다")
++                                self.assertTrue(panel.rect().contains(button.mapTo(panel, button.rect().topLeft())))
++                                self.assertTrue(panel.rect().contains(button.mapTo(panel, button.rect().bottomRight())))
++                                self.assertEqual(button.mapTo(panel, QPoint()), positions[number])
++                    if width == 960:
++                        self.assertTrue(self.window.grab().save(str(ROOT / f"Studio-{language}-ocr-fixed-controls.png")))
++        finally:
++            panel.operation.setCurrentIndex(panel.operation.findData(previous_operation))
++            self.window.resize(previous_size)
++            self.window.set_language("ko")
++            self.window.hide()
++
++    def test_68_dpi_flat_buttons_keep_visible_arrows_mouse_keys_and_limits(self):
++        panel = self.window.pdf_panel
++        previous = panel.operation.currentData()
++        value = panel.dpi.value()
++        self.window.tabs.setCurrentIndex(4)
++        self.window.show()
++        self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        panel.operation.setCurrentIndex(panel.operation.findData("recognize"))
++        panel.scroll.verticalScrollBar().setValue(0)
++        APPLICATION.processEvents()
++        spin = panel.dpi
++        try:
++            spin.clearFocus()
++            self.window.nav_buttons[4].setFocus()
++            APPLICATION.processEvents()
++            image = spin.grab().toImage()
++            self.assertTrue(all(image.pixelColor(image.width() - 2, y).red() >= 200
++                                for y in range(5, image.height() - 5)), "증감 영역에 강한 입체 외곽선이 남았습니다")
++            option = QStyleOptionSpinBox()
++            spin.initStyleOption(option)
++            up = spin.style().subControlRect(app.QStyle.CC_SpinBox, option, app.QStyle.SC_SpinBoxUp, spin)
++            down = spin.style().subControlRect(app.QStyle.CC_SpinBox, option, app.QStyle.SC_SpinBoxDown, spin)
++            for rectangle in (up, down):
++                self.assertTrue(spin.rect().contains(rectangle))
++                center = rectangle.center()
++                self.assertGreater(sum(image.pixelColor(x, y).red() < 180
++                                       for x in range(center.x() - 4, center.x() + 5)
++                                       for y in range(center.y() - 3, center.y() + 4)), 3)
++            geometry = spin.geometry()
++            spin.setValue(200)
++            QTest.keyClick(spin, Qt.Key_Up)
++            self.assertEqual(spin.value(), 225)
++            QTest.keyClick(spin, Qt.Key_Down)
++            self.assertEqual(spin.value(), 200)
++            QTest.mouseClick(spin, Qt.LeftButton, pos=up.center())
++            self.assertEqual(spin.value(), 225)
++            QTest.mouseClick(spin, Qt.LeftButton, pos=down.center())
++            self.assertEqual(spin.value(), 200)
++            spin.setValue(600)
++            QTest.mouseClick(spin, Qt.LeftButton, pos=up.center())
++            self.assertEqual(spin.value(), 600)
++            spin.setValue(60)
++            QTest.mouseClick(spin, Qt.LeftButton, pos=down.center())
++            self.assertEqual(spin.value(), 60)
++            self.assertEqual(spin.geometry(), geometry)
++            self.assertTrue(spin.grab().save(str(ROOT / "Studio-dpi-flat-buttons.png")))
++        finally:
++            spin.setValue(value)
++            panel.operation.setCurrentIndex(panel.operation.findData(previous))
++            self.window.hide()
++
++    def test_69_pdf_option_wheel_scrolls_without_changing_focused_or_unfocused_values(self):
++        panel = self.window.pdf_panel
++        previous_size = self.window.size()
++        previous_operation = panel.operation.currentData()
++        previous_advanced = panel.pdf_advanced_toggle.isChecked()
++        self.window.resize(960, 680)
++        self.window.tabs.setCurrentIndex(4)
++        self.window.show()
++        self.window.tabs.fade.setCurrentTime(self.window.tabs.fade.duration())
++        panel.operation.setCurrentIndex(panel.operation.findData("recognize"))
++        APPLICATION.processEvents()
++        try:
++            # 기본 접힘 화면에서는 대상 옵션을 실제로 펼쳐 스크롤 시험 조건을 준비한다.
++            if not panel.pdf_advanced_toggle.isChecked():
++                QTest.mouseClick(panel.pdf_advanced_toggle, Qt.LeftButton)
++                APPLICATION.processEvents()
++            self.assertTrue(panel.pdf_advanced_toggle.isChecked())
++            for widget in (panel.output, panel.dpi):
++                self.assertTrue(widget.isVisible())
++                self.assertTrue(widget.isVisibleTo(self.window))
++            self.assertGreater(panel.scroll.verticalScrollBar().maximum(), 0)
++            for focused in (False, True):
++                for widget in (panel.output, panel.dpi):
++                    panel.scroll.ensureWidgetVisible(widget)
++                    (widget if focused else self.window.nav_buttons[4]).setFocus()
++                    APPLICATION.processEvents()
++                    scrollbar = panel.scroll.verticalScrollBar()
++                    before_scroll = scrollbar.value()
++                    before_value = widget.currentData() if hasattr(widget, "currentData") else widget.value()
++                    direction = -120 if before_scroll < scrollbar.maximum() else 120
++                    position = widget.mapTo(self.window, widget.rect().center())
++                    QTest.wheelEvent(self.window.windowHandle(), QPointF(position), QPoint(0, direction))
++                    APPLICATION.processEvents()
++                    after_value = widget.currentData() if hasattr(widget, "currentData") else widget.value()
++                    self.assertEqual(after_value, before_value, "옵션 위 스크롤이 값을 바꿨습니다")
++                    self.assertNotEqual(scrollbar.value(), before_scroll, "휠이 옵션 스크롤로 전달되지 않았습니다")
++            panel.scroll.ensureWidgetVisible(panel.output)
++            panel.output.setCurrentIndex(panel.output.findData("pdf"))
++            QTest.keyClick(panel.output, Qt.Key_Down)
++            self.assertEqual(panel.output.currentData(), "txt")
++            QTest.keyClick(panel.output, Qt.Key_Up)
++            self.assertEqual(panel.output.currentData(), "pdf")
++            panel.output.showPopup()
++            APPLICATION.processEvents()
++            self.assertTrue(panel.output.view().isVisible())
++            target = panel.output.model().index(panel.output.findData("txt"), 0)
++            activated = QSignalSpy(panel.output.activated)
++            QTest.mouseMove(panel.output.view().viewport(),
++                            pos=panel.output.view().visualRect(target).center())
++            QTest.mouseClick(panel.output.view().viewport(), Qt.LeftButton,
++                             pos=panel.output.view().visualRect(target).center())
++            self.assertEqual(panel.output.currentData(), "txt")
++            self.assertEqual(activated.count(), 1)
++            self.assertFalse(panel.output.view().isVisible())
++        finally:
++            panel.output.hidePopup()
++            panel.pdf_advanced_toggle.setChecked(previous_advanced)
++            panel.operation.setCurrentIndex(panel.operation.findData(previous_operation))
++            self.window.resize(previous_size)
++            self.window.hide()
++
++    def test_02_common_formats_preserved(self):
++        self.show_wheel([str(SOURCE), str(SOURCE2), str(SOURCE)])
++        self.assertEqual(len(self.wheel.paths), 2)
++        self.assertEqual(self.wheel.options, ["jpg", "webp", "tiff", "avif", "bmp", "pdf", "quick_action"])
++        self.assertTrue(all(reason is None for reason in self.wheel.reasons.values()))
++        text = ROOT / "별도.txt"
++        text.write_text("한글", encoding="utf-8")
++        self.wheel.set_paths([str(SOURCE), str(text)])
++        self.assertEqual(self.wheel.options, ["jpg", "pdf", "quick_action"])
++
++    def test_03_copy_overrides_shift_move(self):
++        self.show_wheel()
++        mime = mime_for()
++        event = QDragEnterEvent(QPoint(170, 170), Qt.CopyAction | Qt.MoveAction,
++                                mime, Qt.LeftButton, Qt.ShiftModifier)
++        self.wheel.dragEnterEvent(event)
++        self.assertTrue(event.isAccepted())
++        self.assertEqual(event.dropAction(), Qt.CopyAction)
++        move = QDragMoveEvent(QPoint(220, 80), Qt.CopyAction | Qt.MoveAction,
++                              mime, Qt.LeftButton, Qt.ShiftModifier)
++        self.wheel.dragMoveEvent(move)
++        self.assertTrue(move.isAccepted())
++        self.assertEqual(move.dropAction(), Qt.CopyAction)
++
++    def test_04_center_cancel_consumes_without_conversion(self):
++        self.show_wheel()
++        event = drop_at(QPointF(170, 170))
++        self.wheel.dropEvent(event)
++        self.assertTrue(event.isAccepted())
++        self.assertEqual(event.dropAction(), Qt.CopyAction)
++        self.assertEqual(self.events, [])
++        settle()
++        self.assertFalse(self.wheel.isVisible())
++
++    def test_05_valid_sector_drop_once(self):
++        self.show_wheel()
++        point = QPointF(220, 80)
++        self.assertEqual(self.wheel.region(point), 0)
++        event = drop_at(point)
++        self.wheel.dropEvent(event)
++        self.assertTrue(event.isAccepted())
++        self.assertEqual(self.events, [([str(SOURCE)], "jpg")])
++        duplicate = drop_at(point)
++        self.wheel.dropEvent(duplicate)
++        self.assertFalse(duplicate.isAccepted())
++        self.assertEqual(len(self.events), 1)
++
++    def test_06_move_only_drag_is_rejected(self):
++        self.show_wheel()
++        mime = mime_for()
++        event = QDragEnterEvent(QPoint(220, 80), Qt.MoveAction, mime, Qt.LeftButton, Qt.ShiftModifier)
++        self.wheel.dragEnterEvent(event)
++        self.assertFalse(event.isAccepted())
++        drop = drop_at(QPointF(220, 80), mime, Qt.MoveAction)
++        self.wheel.dropEvent(drop)
++        self.assertFalse(drop.isAccepted())
++        self.assertEqual(self.events, [])
++
++    def test_07_remote_or_mixed_or_missing_urls_rejected(self):
++        self.show_wheel()
++        cases = [
++            mime_for(QUrl("https://example.invalid/input.png")),
++            mime_for(QUrl.fromLocalFile(str(SOURCE)), QUrl("https://example.invalid/input.png")),
++            mime_for(QUrl.fromLocalFile(str(ROOT / "없는파일.png"))),
++            QMimeData(),
++        ]
++        for mime in cases:
++            with self.subTest(urls=[url.toString() for url in mime.urls()]):
++                enter = QDragEnterEvent(QPoint(220, 80), Qt.CopyAction | Qt.MoveAction,
++                                        mime, Qt.LeftButton, Qt.ShiftModifier)
++                self.wheel.dragEnterEvent(enter)
++                self.assertFalse(enter.isAccepted())
++                event = drop_at(QPointF(220, 80), mime)
++                self.wheel.dropEvent(event)
++                self.assertFalse(event.isAccepted())
++        self.assertEqual(self.events, [])
++
++    def test_08_disabled_target_preserves_copy_and_no_job(self):
++        self.show_wheel()
++        audio = ROOT / "도구없는.wav"
++        audio.write_bytes(b"RIFF-test")
++        with patch.object(app.engine, "tool", return_value=None), patch.object(self.window, "notify") as notice:
++            self.wheel.set_paths([str(audio)])
++            event = drop_at(QPointF(220, 80), mime_for(QUrl.fromLocalFile(str(audio))))
++            self.wheel.dropEvent(event)
++            self.assertTrue(event.isAccepted())
++            self.assertEqual(event.dropAction(), Qt.CopyAction)
++            self.assertEqual(self.events, [])
++            notice.assert_called_once_with("도우미 도구 필요", "FFmpeg를 설치해 주세요.")
++
++    def test_09_outer_area_consumes_without_conversion(self):
++        self.show_wheel()
++        event = drop_at(QPointF(2, 2))
++        self.wheel.dropEvent(event)
++        self.assertEqual(event.dropAction(), Qt.CopyAction)
++        self.assertTrue(event.isAccepted())
++        self.assertEqual(self.events, [])
++
++    def test_10_motion_has_intermediate_frames_fixed_geometry(self):
++        self.show_wheel()
++        geometry = self.wheel.geometry()
++        settle(45)
++        self.assertGreater(self.wheel.reveal, 0)
++        self.assertLess(self.wheel.reveal, 1)
++        self.assertEqual(self.wheel.geometry(), geometry)
++        self.assertEqual(self.wheel.windowOpacity(), 1.0)
++        self.assertTrue(self.wheel.acceptDrops())
++        self.wheel.grab().save(str(ROOT / "3차-모션중간.png"))
++        settle(235)
++        self.assertAlmostEqual(self.wheel.reveal, 1)
++        self.wheel.set_hover(0)
++        settle(40)
++        self.assertGreater(self.wheel.weights.get(0, 0), 0)
++        self.assertLess(self.wheel.weights.get(0, 0), 1)
++        settle(135)
++        self.assertAlmostEqual(self.wheel.weights[0], 1)
++        self.wheel.grab().save(str(ROOT / "3차-원본형메뉴.png"))
++        self.wheel.dismiss()
++        settle(40)
++        self.assertTrue(self.wheel.isVisible())
++        self.assertGreater(self.wheel.reveal, 0)
++        self.assertLess(self.wheel.reveal, 1)
++        self.assertFalse(self.wheel.acceptDrops())
++        settle(170)
++        self.assertFalse(self.wheel.isVisible())
++
++    def test_11_reopen_interrupts_stale_close_animation(self):
++        self.show_wheel()
++        settle()
++        self.wheel.dismiss()
++        settle(35)
++        self.wheel.display(QPoint(600, 400), [str(SOURCE2)], True)
++        settle()
++        self.assertTrue(self.wheel.isVisible())
++        self.assertFalse(self.wheel._closing)
++        self.assertTrue(self.wheel.acceptDrops())
++        self.assertEqual(self.wheel.paths, [str(SOURCE2)])
++
++    def test_12_fast_drop_during_entrance(self):
++        self.show_wheel()
++        event = drop_at(QPointF(220, 80))
++        self.wheel.dropEvent(event)
++        self.assertTrue(event.isAccepted())
++        self.assertEqual(self.events[-1][1], "jpg")
++        settle()
++        self.assertFalse(self.wheel.isVisible())
++
++    def test_13_screen_edge_clamping(self):
++        bounds = APPLICATION.primaryScreen().availableGeometry()
++        for point in [bounds.topLeft(), bounds.bottomRight()]:
++            self.wheel.display(point, [str(SOURCE)])
++            self.assertTrue(bounds.contains(self.wheel.geometry()))
++
++    def test_14_preview_click_selects_and_right_click_does_not(self):
++        self.show_wheel(preview=True)
++        event = QMouseEvent(QMouseEvent.MouseButtonRelease, QPointF(220, 80),
++                            Qt.RightButton, Qt.NoButton, Qt.NoModifier)
++        self.wheel.mouseReleaseEvent(event)
++        self.assertEqual(self.events, [])
++        self.assertFalse(self.wheel._closing)
++        event = QMouseEvent(QMouseEvent.MouseButtonRelease, QPointF(220, 80),
++                            Qt.LeftButton, Qt.NoButton, Qt.NoModifier)
++        self.wheel.mouseReleaseEvent(event)
++        self.assertEqual(self.events, [([str(SOURCE)], "jpg")])
++
++    def test_15_preview_escape_without_mouse_button(self):
++        self.show_wheel(preview=True)
++        settle()
++        with patch.object(app, "down", side_effect=lambda vk: vk == 0x1B):
++            self.window.poll()
++        settle()
++        self.assertFalse(self.wheel.isVisible())
++
++    def test_16_explorer_trigger_after_real_threshold_model(self):
++        class Native:
++            @staticmethod
++            def GetForegroundWindow():
++                return 123
++
++            @staticmethod
++            def GetClassNameW(hwnd, buffer, length):
++                buffer.value = "CabinetWClass"
++
++        keys = {1, 0x10}
++        with patch.object(app, "USER32", Native()), patch.object(app, "down", side_effect=lambda vk: vk in keys), \
++                patch.object(app.QCursor, "pos", side_effect=[QPoint(100, 100), QPoint(104, 104), QPoint(140, 140), QPoint(180, 180)]):
++            self.window.poll()
++            self.assertFalse(self.window.drag_fired)
++            self.window.poll()
++            self.assertFalse(self.window.drag_fired)
++            self.window.poll()
++            self.assertTrue(self.window.drag_fired)
++            geometry = self.wheel.geometry()
++            self.window.poll()
++            self.assertEqual(self.wheel.geometry(), geometry)
++            self.assertTrue(self.wheel.isVisible())
++
++    def test_17_non_explorer_does_not_trigger_model(self):
++        class Native:
++            @staticmethod
++            def GetForegroundWindow():
++                return 456
++
++            @staticmethod
++            def GetClassNameW(hwnd, buffer, length):
++                buffer.value = "Notepad"
++
++        with patch.object(app, "USER32", Native()), patch.object(app, "down", side_effect=lambda vk: vk in {1, 0x10}), \
++                patch.object(app.QCursor, "pos", side_effect=[QPoint(100, 100), QPoint(180, 180)]):
++            self.window.poll()
++            self.window.poll()
++        self.assertFalse(self.window.drag_fired)
++        self.assertFalse(self.wheel.isVisible())
++
++    def test_18_release_grace_allows_queued_drop_model(self):
++        self.show_wheel()
++        settle()
++        self.window.start_point = QPoint(100, 100)
++        with patch.object(app, "down", return_value=False), patch.object(app.time, "monotonic", return_value=100):
++            self.window.poll()
++        self.assertEqual(self.window.release_time, 100)
++        self.assertFalse(self.wheel._closing)
++        with patch.object(app, "down", return_value=False), patch.object(app.time, "monotonic", return_value=100.34):
++            self.window.poll()
++        self.assertFalse(self.wheel._closing)
++        with patch.object(app, "down", return_value=False), patch.object(app.time, "monotonic", return_value=100.36):
++            self.window.poll()
++        self.assertTrue(self.wheel._closing)
++
++    def test_19_custom_key_recording_and_hint_model(self):
++        self.window.record_key()
++        with patch.object(app, "down", side_effect=lambda vk: vk == 0x77):
++            self.window.poll()
++        self.assertFalse(self.window.recording)
++        self.assertEqual(self.window.custom_vk, 0x77)
++        self.assertEqual(self.window.trigger.currentData(), -1)
++        self.assertIn("119", self.window.subtitle.text())
++        self.window.record_key()
++        with patch.object(app, "down", side_effect=lambda vk: vk == 0x1B):
++            self.window.poll()
++        self.assertFalse(self.window.recording)
++
++    def test_20_conversion_queue_history_and_original_hash(self):
++        self.window.enqueue([str(SOURCE)], "jpg")
++        deadline = time.monotonic() + 10
++        while self.window.pending and time.monotonic() < deadline:
++            settle(25)
++        self.assertEqual(self.window.pending, 0)
++        row = self.window.records[-1]
++        self.assertEqual(row["error"], "")
++        output = Path(row["output"])
++        self.assertTrue(output.is_file())
++        self.assertNotEqual(output, SOURCE)
++        self.assertEqual(output.parent, SOURCE.parent)
++        with app.engine.Image.open(output) as image:
++            image.verify()
++        self.assertEqual(hashlib.sha256(SOURCE.read_bytes()).hexdigest(), ORIGINAL_HASH)
++        self.assertTrue(self.window.history_path.is_file())
++        self.assertFalse(self.window.progress.isVisible())
++
++    def test_21_history_schema_error_preserves_bytes(self):
++        before = self.window.history_path.read_bytes() if self.window.history_path.exists() else None
++        broken = b'{"not":"a history list"}'
++        self.window.history_path.write_bytes(broken)
++        other = app.MainWindow()
++        other.timer.stop()
++        other.notifications.setChecked(False)
++        self.assertTrue(hasattr(other, "history_error"))
++        self.assertEqual(other.history_path.read_bytes(), broken)
++        other.tray.hide()
++        other.wheel.hide()
++        other.hide()
++        other.pool.shutdown(wait=True)
++        if before is not None:
++            self.window.history_path.write_bytes(before)
++
++    def test_22_settings_drop_opens_manual_wheel(self):
++        mime = mime_for()
++        enter = QDragEnterEvent(QPoint(100, 100), Qt.CopyAction | Qt.MoveAction,
++                                mime, Qt.LeftButton, Qt.ShiftModifier)
++        self.window.dragEnterEvent(enter)
++        self.assertTrue(enter.isAccepted())
++        self.assertEqual(enter.dropAction(), Qt.CopyAction)
++        event = drop_at(QPointF(100, 100), mime)
++        self.window.dropEvent(event)
++        self.assertTrue(event.isAccepted())
++        self.assertEqual(event.dropAction(), Qt.CopyAction)
++        self.assertTrue(self.wheel.isVisible())
++        self.assertTrue(self.wheel.preview)
++        self.assertEqual(self.wheel.paths, [str(SOURCE)])
++        self.assertEqual(self.events, [])
++        rejected = drop_at(QPointF(100, 100), mime, Qt.MoveAction)
++        self.window.dropEvent(rejected)
++        self.assertFalse(rejected.isAccepted())
++
++    def test_23_language_switch_preserves_trigger_and_wheel(self):
++        self.window.custom_vk = 65
++        self.window.settings.setValue("custom_vk", 65)
++        self.window.trigger.setCurrentIndex(self.window.trigger.findData(-1))
++        self.show_wheel()
++        geometry = self.wheel.geometry()
++        paths, options = self.wheel.paths.copy(), self.wheel.options.copy()
++        old_values = {key: self.window.settings.value(key) for key in ("trigger", "custom_vk", "notify", "reveal")}
++        changed = QSignalSpy(self.window.trigger.currentIndexChanged)
++        self.window.language_combo.setCurrentIndex(self.window.language_combo.findData("en"))
++        self.assertEqual(self.window.language, "en")
++        self.assertEqual(self.window.windowTitle(), "FlipRing Settings")
++        self.assertEqual(self.window.tabs.tabText(5), "Settings")
++        self.assertEqual(self.window.trigger.currentData(), -1)
++        self.assertEqual(self.window.custom_vk, 65)
++        self.assertEqual(self.window.trigger.currentText(), "Custom")
++        self.assertEqual(changed.count(), 0)
++        self.assertEqual({key: self.window.settings.value(key) for key in old_values}, old_values)
++        self.assertEqual(self.wheel.geometry(), geometry)
++        self.assertEqual(self.wheel.paths, paths)
++        self.assertEqual(self.wheel.options, options)
++        self.assertTrue(self.wheel.isVisible())
++        self.assertIn("Custom key (65)", self.window.subtitle.text())
++        self.assertIn("Choose files…", [action.text() for action in self.window.tray_menu.actions()])
++        self.window.show()
++        APPLICATION.processEvents()
++        self.assertTrue(self.window.grab().save(str(ROOT / "Mono-English-settings.png")))
++        self.window.hide()
++
++    def test_24_language_persists_when_window_recreated(self):
++        self.window.set_language("en")
++        self.window.settings.sync()
++        script = (
++            "import json,pathlib; from PySide6.QtWidgets import QApplication; import app; "
++            f"app.DATA=pathlib.Path({str(app.DATA)!r}); q=QApplication([]); app.apply_application_style(q); w=app.MainWindow(); "
++            "w.timer.stop(); print(json.dumps({'language':w.language,'tab':w.tabs.tabText(5)})); "
++            "w.tray.hide(); w.wheel.hide(); w.pool.shutdown(wait=True)"
++        )
++        restarted = subprocess.run([sys.executable, "-B", "-X", "utf8", "-c", script],
++                                   cwd=Path(app.__file__).parent, capture_output=True, text=True,
++                                   encoding="utf-8", timeout=10, check=False)
++        self.assertEqual(restarted.returncode, 0, restarted.stderr)
++        self.assertEqual(json.loads(restarted.stdout), {"language": "en", "tab": "Settings"})
++        other = app.MainWindow()
++        try:
++            other.timer.stop()
++            self.assertEqual(other.language, "en")
++            self.assertEqual(other.language_combo.currentData(), "en")
++            self.assertEqual(other.tabs.tabText(2), "History")
++            self.assertEqual(other.settings.value("language"), "en")
++            self.assertEqual(other.settings.fileName(), self.window.settings.fileName())
++        finally:
++            other.timer.stop()
++            other.tray.hide()
++            other.wheel.hide()
++            other.hide()
++            other.pool.shutdown(wait=True)
++            self.window.set_language("ko")
++        self.window.show()
++        APPLICATION.processEvents()
++        self.assertTrue(self.window.grab().save(str(ROOT / "Mono-Korean-settings.png")))
++        self.window.hide()
++
++    def test_25_translation_placeholders_are_complete(self):
++        formatter = string.Formatter()
++        values = {"package": "Gyan.FFmpeg", "app": "FlipRing", "key": "F8", "tool": "FFmpeg", "count": 2,
++                  "name": "원본.jpg", "error": "Example", "detail": "OS diagnostic", "needed": "64.0", "free": "1024.0"}
++        for message_id, pair in i18n.TEXT.items():
++            with self.subTest(message_id=message_id):
++                fields = [{name for _, name, _, _ in formatter.parse(text) if name} for text in pair]
++                self.assertEqual(fields[0], fields[1])
++                for language in ("ko", "en"):
++                    self.assertNotIn("\ufffd", i18n.tr(language, message_id, **values))
++
++    def test_26_engine_errors_are_translated_without_mutating_records(self):
++        for korean, english in i18n.ERROR_TEXT.items():
++            self.assertEqual(i18n.error_text("en", korean), english)
++            self.assertEqual(i18n.error_text("ko", korean), korean)
++            self.assertIsNone(re.search("[가-힣]", english))
++        for korean, english in [
++            ("지원하지 않는 파일입니다: sample.foo", "Unsupported file: sample.foo"),
++            ("LibreOffice에서 PDF 결과를 만들지 못했습니다.", "LibreOffice did not produce a PDF result."),
++            ("FFmpeg 도구를 설치해 주세요. 설정에서 설치 명령을 복사할 수 있습니다.", "Install FFmpeg. You can install it automatically in Helper tools."),
++            ("ffmpeg 변환 실패 (2)\ncodec error", "ffmpeg conversion failed (2)\ncodec error"),
++        ]:
++            self.assertEqual(i18n.error_text("en", korean), english)
++        original = self.window.records.copy()
++        row = {"time": "2026-10-21T00:00:00", "source": str(SOURCE), "output": "",
++               "error": "지원하지 않는 변환입니다."}
++        self.window.records = [row]
++        self.window.last_result = ("", row["error"])
++        try:
++            self.window.set_language("en")
++            self.assertIn("Failed: This conversion is not supported.", self.window.history.item(0).text())
++            self.assertIn(SOURCE.name, self.window.history.item(0).text())
++            self.assertEqual(row["error"], "지원하지 않는 변환입니다.")
++            self.assertEqual(self.window.status.text(), "Failed · This conversion is not supported.")
++        finally:
++            self.window.records = original
++            self.window.last_result = None
++            self.window.set_language("ko")
++
++    def test_27_monochrome_palette_wheel_icons_and_bundled_font(self):
++        for color in re.findall(r"#[0-9a-fA-F]{6}", self.window.styleSheet()):
++            self.assertEqual(color[1:3], color[3:5])
++            self.assertEqual(color[3:5], color[5:7])
++        for role in (QPalette.Window, QPalette.WindowText, QPalette.Base, QPalette.Text,
++                     QPalette.Highlight, QPalette.Button, QPalette.ButtonText, QPalette.Accent):
++            color = APPLICATION.palette().color(role)
++            self.assertEqual(color.red(), color.green())
++            self.assertEqual(color.green(), color.blue())
++        self.assertEqual(app.ui_font().families()[:2], ["SUIT", "Segoe UI"])
++        self.assertIn("Malgun Gothic", app.ui_font().families())
++        self.assertEqual(app.ui_font().weight(), QFont.Normal)
++        self.assertEqual(APPLICATION.font().weight(), QFont.Normal)
++        self.assertEqual(QFontInfo(app.ui_font()).family(), "SUIT")
++        self.assertEqual(QFontInfo(APPLICATION.font()).family(), "SUIT")
++        self.assertEqual(set(APPLICATION._flipring_fonts), {"Regular", "Medium", "SemiBold"})
++        self.assertTrue(all(value >= 0 for value in APPLICATION._flipring_fonts.values()))
++        self.assertTrue(all(value >= 0 for value in REGISTERED_TEST_FONTS.values()))
++        self.show_wheel()
++        settle()
++        self.wheel.set_hover(0)
++        settle(120)
++        pixmaps = [app.icon(busy=False).pixmap(64, 64), app.icon(busy=True).pixmap(64, 64), self.wheel.grab()]
++        for pixmap in pixmaps:
++            image = pixmap.toImage()
++            for y in range(image.height()):
++                for x in range(image.width()):
++                    color = image.pixelColor(x, y)
++                    if color.alpha():
++                        self.assertEqual(color.red(), color.green())
++                        self.assertEqual(color.green(), color.blue())
++        self.assertTrue(self.wheel.grab().save(str(ROOT / "Mono-monochrome-wheel.png")))
++
++    def test_28_recording_and_busy_status_follow_language(self):
++        self.window.record_key()
++        self.window.set_language("en")
++        self.assertEqual(self.window.record_button.text(), "Press a key · Esc to cancel")
++        self.window.pending = 2
++        try:
++            self.window.update_status()
++            self.assertEqual(self.window.status.text(), "Converting · 2 remaining")
++            self.window.set_language("ko")
++            self.assertEqual(self.window.status.text(), "변환 중 · 2개 대기")
++            self.assertEqual(self.window.record_button.text(), "사용할 키를 누르세요 · Esc 취소")
++        finally:
++            self.window.pending = 0
++            self.window.recording = False
++            self.window.update_record_label()
++            self.window.update_status()
++
++    def test_29_dialog_labels_and_standard_buttons_follow_language(self):
++        for language, open_text, cancel_text in (("ko", "열기", "취소"), ("en", "Open", "Cancel")):
++            self.window.set_language(language)
++            notice = app.message_dialog(self.window, self.window.text("busy_title"), self.window.text("busy_message"))
++            self.assertEqual(notice.icon(), QMessageBox.NoIcon)
++            self.assertEqual(notice.button(QMessageBox.Ok).text().replace("&", ""), "확인" if language == "ko" else "OK")
++            notice.deleteLater()
++            dialog = self.window.file_dialog(False)
++            try:
++                self.assertTrue(dialog.testOption(QFileDialog.DontUseNativeDialog))
++                self.assertEqual(dialog.labelText(QFileDialog.Accept), open_text)
++                self.assertEqual(dialog.labelText(QFileDialog.Reject), cancel_text)
++                self.assertEqual(dialog.labelText(QFileDialog.FileName), self.window.text("dialog_filename"))
++                box = dialog.findChild(QDialogButtonBox)
++                self.assertIsNotNone(box)
++                self.assertEqual(box.button(QDialogButtonBox.Cancel).text().replace("&", ""), cancel_text)
++                self.assertEqual(QApplication.translate("QFileSystemModel", "Name"), "이름" if language == "ko" else "Name")
++                self.assertEqual(QApplication.translate("QFileDialog", "Unmapped diagnostic"), "Unmapped diagnostic")
++                dialog.resize(660, 430)
++                dialog.show()
++                APPLICATION.processEvents()
++                self.assertTrue(dialog.grab().save(str(ROOT / f"Mono-{language}-file-dialog.png")))
++            finally:
++                dialog.hide()
++                dialog.deleteLater()
++        self.window.set_language("ko")
++
++    def test_30_autostart_value_is_language_independent(self):
++        class Key:
++            def __enter__(self):
++                return self
++
++            def __exit__(self, *args):
++                return False
++
++        with patch.object(app.winreg, "CreateKey", return_value=Key()), \
++                patch.object(app.winreg, "SetValueEx") as write, \
++                patch.object(app.winreg, "DeleteValue") as delete:
++            self.window.set_language("en")
++            self.window.autostart(True)
++            self.assertEqual(write.call_args.args[1], "FlipRing19")
++            self.assertNotEqual(write.call_args.args[1], "FlipRing")
++            self.window.set_language("ko")
++            self.window.autostart(False)
++            self.assertEqual(delete.call_args.args[1], "FlipRing19")
++            self.assertNotEqual(delete.call_args.args[1], "FlipRing")
++        self.assertEqual(app.DATA, ROOT / "격리설정")
++
++    def test_31_history_double_click_selects_result_without_running_it(self):
++        output = ROOT / "기록 & [선택] 한글.png"
++        output.write_bytes("결과 파일".encode("utf-8"))
++        self.window.records = [{"time": "2026-10-21T12:00:00", "source": str(SOURCE),
++                                "output": str(output), "error": ""}]
++        self.window.refresh_history()
++        item = self.window.history.item(0)
++        self.assertEqual(item.data(Qt.UserRole), str(output))
++        with patch.object(app, "select_in_explorer") as launch:
++            self.window.tabs.setCurrentIndex(2)
++            self.window.show()
++            APPLICATION.processEvents()
++            point = self.window.history.visualItemRect(item).center()
++            QTest.mouseClick(self.window.history.viewport(), Qt.LeftButton, pos=point)
++            launch.assert_not_called()
++            QTest.mouseDClick(self.window.history.viewport(), Qt.LeftButton, pos=point)
++            APPLICATION.processEvents()
++        launch.assert_called_once_with(output)
++        with patch.object(app, "select_in_explorer") as launch:
++            QTest.mouseDClick(self.window.history.viewport(), Qt.RightButton, pos=point)
++            APPLICATION.processEvents()
++            launch.assert_not_called()
++        self.window.hide()
++        output.unlink()
++
++    def test_32_history_failure_and_missing_result_show_bilingual_guidance(self):
++        rows = [
++            {"time": "2026-10-21T12:00:00", "source": str(SOURCE), "output": "",
++             "error": "지원하지 않는 변환입니다."},
++            {"time": "2026-10-21T12:01:00", "source": str(SOURCE),
++             "output": str(ROOT / "이동되었거나 삭제된 결과.png"), "error": ""},
++        ]
++        for language, expected in (
++                ("ko", ["실패한 변환 기록에는 선택할 결과 파일이 없습니다.", "결과 파일이 없거나 폴더입니다."]),
++                ("en", ["Failed conversions do not have a result file to select.",
++                        "The result is missing or is a folder."])):
++            self.window.records = rows
++            self.window.set_language(language)
++            self.window.refresh_history()
++            with patch.object(app, "select_in_explorer") as launch, \
++                    patch.object(app, "message_dialog", return_value=Mock()) as dialog:
++                self.window.open_history_result(self.window.history.item(1))
++                self.window.open_history_result(self.window.history.item(0))
++            self.assertEqual(dialog.call_count, 2)
++            self.assertIn(expected[0], dialog.call_args_list[0].args[2])
++            self.assertIn(expected[1], dialog.call_args_list[1].args[2])
++            launch.assert_not_called()
++        self.window.set_language("ko")
++        self.window.records = []
++        self.window.refresh_history()
++
++    def test_33_history_non_record_rows_and_directories_do_not_open_explorer(self):
++        directory = ROOT / "기록에 저장된 폴더"
++        directory.mkdir(exist_ok=True)
++        self.window.records = [{"time": "2026-10-21T12:00:00", "source": str(SOURCE),
++                                "output": str(directory), "error": ""}]
++        self.window.refresh_history()
++        self.window.history.addItem("기록 오류 안내")
++        with patch.object(app, "select_in_explorer") as launch, \
++                patch.object(app, "message_dialog", return_value=Mock()) as dialog:
++            self.window.open_history_result(self.window.history.item(0))
++            self.window.open_history_result(self.window.history.item(1))
++        launch.assert_not_called()
++        self.assertEqual(dialog.call_count, 1)
++        directory.rmdir()
++        self.window.records = []
++        self.window.refresh_history()
++        self.window.set_language("ko")
++
++    def test_34_history_explorer_failure_and_empty_output_are_explained(self):
++        output = ROOT / "선택 가능한 결과.png"
++        output.write_bytes(b"result")
++        original = self.window.records.copy()
++        try:
++            for language in ("ko", "en"):
++                self.window.set_language(language)
++                self.window.records = [{"time": "2026-10-21T12:00:00", "source": str(SOURCE),
++                                        "output": str(output), "error": ""}]
++                self.window.refresh_history()
++                with patch.object(app, "select_in_explorer", side_effect=OSError("Unavailable")), \

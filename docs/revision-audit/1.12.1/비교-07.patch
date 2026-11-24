@@ -1,0 +1,1346 @@
++                panel.operation.setCurrentIndex(panel.operation.findData('recognize'))
++                cases = ((0, window.preset_toggle, window.preset_section),
++                         (1, window.document_support_toggle, window.document_support_details),
++                         (4, panel.pdf_advanced_toggle, panel._advanced_section))
++                for tab, button, section in cases:
++                    with self.subTest(language=language, reduced=reduced, button=button.text()):
++                        window.tabs.setCurrentIndex(tab)
++                        button.setChecked(False)
++                        window.raise_()
++                        window.activateWindow()
++                        self.settle()
++                        clicks = []
++                        button.clicked.connect(lambda checked, observed=clicks: observed.append(checked))
++                        for key, expected in ((Qt.Key_Return, True), (Qt.Key_Return, False),
++                                              (Qt.Key_Space, True), (Qt.Key_Space, False)):
++                            window.setFocus()
++                            button.setFocus(Qt.TabFocusReason)
++                            self.settle()
++                            self.assertTrue(button.hasFocus())
++                            self.assertTrue(button.isVisible())
++                            self.assertTrue(button.isEnabled())
++                            before = len(clicks)
++                            QTest.keyClick(button, key)
++                            self.settle()
++                            self.assertEqual(len(clicks), before + 1)
++                            self.assertEqual(button.isChecked(), expected)
++                            self.assertEqual(section.isVisible(), expected)
++
++    def test_primary_action_and_conditional_queue_actions(self):
++        window = self.window
++        self.assertTrue(window.choose_button.property('primary'))
++        self.assertFalse(window.preset_section.isVisible())
++        path = Path(self.directory.name)/'원본.png'
++        Image.new('RGB', (30, 20)).save(path)
++        original = path.read_bytes()
++        window.set_files([str(path)])
++        self.settle()
++        self.assertFalse(window.choose_button.property('primary'))
++        self.assertTrue(window.run_button.property('primary'))
++        self.assertTrue(window.run_button.isVisible())
++        self.assertFalse(window.cancel_button.isVisible())
++        self.assertFalse(window.retry_button.isVisible())
++        self.assertIn('30 × 20', window.preview_panel.panels[0][2].text())
++        window.jobs[0].update(state='failed', format='jpg', error='검사 실패')
++        window.refresh_queue()
++        self.assertTrue(window.retry_button.isVisible())
++        window.pending = 1
++        window.refresh_queue()
++        self.assertTrue(window.cancel_button.isVisible())
++        self.assertFalse(window.retry_button.isVisible())
++        self.assertEqual(path.read_bytes(), original)
++
++    def test_presets_can_be_opened_by_keyboard_without_resetting_selection(self):
++        window = self.window
++        before = window.preset_combo.currentData()
++        window.preset_toggle.setFocus()
++        QTest.keyClick(window.preset_toggle, Qt.Key_Space)
++        self.settle()
++        self.assertTrue(window.preset_section.isVisible())
++        self.assertTrue(window.preset_combo.isVisible())
++        QTest.keyClick(window.preset_toggle, Qt.Key_Space)
++        self.settle()
++        self.assertFalse(window.preset_section.isVisible())
++        self.assertEqual(window.preset_combo.currentData(), before)
++
++    def test_support_details_and_language_keep_readiness_visible(self):
++        window = self.window
++        window.tabs.setCurrentIndex(1)
++        for language in ('en', 'ko'):
++            window.set_language(language)
++            self.settle()
++            self.assertFalse(window.document_support_details.isVisible())
++            self.assertTrue(window.hwp_status_label.isVisible())
++            self.assertTrue(window.document_dependency_note.isVisible())
++            state = dict(window._hwp_status)
++            QTest.mouseClick(window.document_support_toggle, Qt.LeftButton)
++            self.settle()
++            self.assertTrue(window.document_support_details.isVisible())
++            self.assertTrue(all(label.isVisible() for label, unused, position in window.document_format_labels))
++            self.assertEqual(window._hwp_status, state)
++            QTest.mouseClick(window.document_support_toggle, Qt.LeftButton)
++            self.settle()
++
++    def test_custom_key_record_is_only_visible_for_custom_trigger(self):
++        window = self.window
++        window.tabs.setCurrentIndex(5)
++        self.assertFalse(window.record_button.isVisible())
++        self.choose(window.trigger, -1)
++        self.assertTrue(window.record_button.isVisible())
++        window.set_language('en')
++        self.assertTrue(window.record_button.isVisible())
++        self.choose(window.trigger, 0x10)
++        self.assertFalse(window.record_button.isVisible())
++
++    def test_pdf_operations_keep_primary_fields_and_preserve_advanced_values(self):
++        window = self.window
++        window.tabs.setCurrentIndex(4)
++        panel = window.pdf_panel
++        matrix = {
++            'merge': (set(), set()),
++            'split': ({'pages'}, set()),
++            'extract': ({'pages'}, set()),
++            'delete': ({'pages'}, set()),
++            'rotate': ({'pages', 'rotation'}, set()),
++            'images_to_pdf': (set(), {'dpi'}),
++            'pdf_to_images': ({'output'}, {'pages', 'dpi', 'quality'}),
++            'compress': ({'compression'}, set()),
++            'recognize': ({'ocr_language', 'output'}, {'pages', 'dpi', 'layout'}),
++        }
++        panel.pages.setText('1,3')
++        panel.dpi.setValue(275)
++        panel.quality.setValue(75)
++        panel.force.setChecked(True)
++        for language in ('ko', 'en'):
++            window.set_language(language)
++            for operation, (primary, advanced) in matrix.items():
++                with self.subTest(language=language, operation=operation):
++                    if panel.pdf_advanced_toggle.isChecked():
++                        QTest.mouseClick(panel.pdf_advanced_toggle, Qt.LeftButton)
++                    self.choose(panel.operation, operation)
++                    for key in primary:
++                        self.assertTrue(panel._labels[key][1].isVisible(), key)
++                    for key in advanced:
++                        self.assertFalse(panel._labels[key][1].isVisible(), key)
++                    self.assertEqual(panel.pdf_advanced_toggle.isVisible(), bool(advanced))
++                    if advanced:
++                        QTest.mouseClick(panel.pdf_advanced_toggle, Qt.LeftButton)
++                        self.settle()
++                        for key in advanced:
++                            self.assertTrue(panel._labels[key][1].isVisible(), key)
++                        QTest.mouseClick(panel.pdf_advanced_toggle, Qt.LeftButton)
++                        self.settle()
++                    self.assertEqual(panel.pages.text(), '1,3')
++                    self.assertEqual(panel.dpi.value(), 275)
++                    self.assertEqual(panel.quality.value(), 75)
++                    self.assertTrue(panel.force.isChecked())
++            self.choose(panel.operation, 'compress')
++            self.choose(panel.compression, 'images')
++            self.assertTrue(panel.lossy_note.isVisible())
++            self.assertTrue(panel.pdf_advanced_toggle.isVisible())
++            QTest.mouseClick(panel.pdf_advanced_toggle, Qt.LeftButton)
++            self.settle()
++            self.assertTrue(panel.dpi.isVisible())
++            self.assertTrue(panel.quality.isVisible())
++            self.choose(panel.compression, 'lossless')
++            self.assertFalse(panel.pdf_advanced_toggle.isVisible())
++
++    def test_reduced_motion_and_folder_labels_keep_escape_and_filters(self):
++        window = self.window
++        window.reduced_motion_toggle.setChecked(True)
++        self.assertTrue(ui_motion.reduced_motion())
++        window.tabs.setCurrentIndex(1)
++        QTest.mouseClick(window.document_support_toggle, Qt.LeftButton)
++        self.settle()
++        self.assertTrue(window.document_support_details.isVisible())
++        for language, label in (('ko', '폴더 이름:'), ('en', 'Folder name:')):
++            window.set_language(language)
++            dialog = window.file_dialog(True)
++            dialog.setDirectory(self.directory.name)
++            dialog.show()
++            self.settle()
++            try:
++                self.assertEqual(dialog.fileMode(), QFileDialog.Directory)
++                self.assertEqual(dialog.labelText(QFileDialog.FileName), label)
++                self.assertFalse(dialog.findChild(QComboBox, 'fileTypeCombo').isVisible())
++                QTest.keyClick(dialog, Qt.Key_Escape)
++                self.assertFalse(dialog.isVisible())
++                self.assertEqual(dialog.result(), QFileDialog.Rejected)
++            finally:
++                dialog.hide()
++                dialog.deleteLater()
++        normal = ui_motion.make_file_dialog(window, 'PDF', name_filter='PDF (*.pdf)')
++        normal.show()
++        self.settle()
++        try:
++            self.assertTrue(normal.findChild(QComboBox, 'fileTypeCombo').isVisible())
++            self.assertIn('PDF (*.pdf)', normal.nameFilters())
++        finally:
++            normal.hide()
++            normal.deleteLater()
++
++
++if __name__ == '__main__':
++    unittest.main()
+--- 1.12.0/소스/test_theme_install112.py
++++ 1.12.1/소스/test_theme_install112.py
+@@ -1,119 +1,119 @@
+-"""테마와 자동 설치 경계의 최소 검사. 실제 도구는 설치하지 않는다."""
+-import sys
+-import tempfile
+-import unittest
+-from pathlib import Path
+-from unittest.mock import patch
+-
+-from PySide6.QtCore import QEventLoop, QTimer, QProcess, QSettings
+-from PySide6.QtGui import QPalette
+-from PySide6.QtWidgets import QApplication, QWidget, QLabel
+-
+-from theme_manager import manager, theme_color, ring_color
+-from tool_installer import ToolInstaller, install_arguments, refresh_process_path
+-
+-
+-class ThemeInstallTests(unittest.TestCase):
+-    @classmethod
+-    def setUpClass(cls):
+-        cls.app = QApplication.instance() or QApplication([])
+-
+-    def test_01_theme_surfaces_and_custom_paint(self):
+-        from ui_motion import make_file_dialog, MotionMessageBox
+-        from studio_ui import Toggle
+-        theme = manager(self.app)
+-        root = QWidget()
+-        label = QLabel('한글 English', root)
+-        label.setStyleSheet('background:#ffffff;color:#242424;')
+-        theme.apply('dark')
+-        picker = make_file_dialog(root, '선택')
+-        message = MotionMessageBox(root)
+-        toggle = Toggle(root)
+-        self.app.processEvents()
+-        self.assertLess(self.app.palette().color(QPalette.Base).lightness(), 70)
+-        self.assertNotIn('background:#ffffff', label.styleSheet())
+-        self.assertNotIn('background:#fafafa', picker.styleSheet())
+-        self.assertGreater(theme_color('#242424').lightness(), 180)
+-        self.assertGreater(ring_color('#ffffff').lightness(), 240)
+-        self.assertFalse(toggle.grab().isNull())
+-        theme.apply('light')
+-        self.assertEqual(label.styleSheet(), 'background:#ffffff;color:#242424;')
+-        self.assertGreater(self.app.palette().color(QPalette.Base).lightness(), 240)
+-        theme.apply('system')
+-        self.assertEqual(theme.mode, 'system')
+-        picker.deleteLater(); message.deleteLater(); root.deleteLater()
+-
+-    def test_02_install_allowlist_and_missing_manager(self):
+-        args = install_arguments('ffmpeg')
+-        self.assertEqual(args[:4], ['install', '--id', 'Gyan.FFmpeg', '--exact'])
+-        self.assertNotIn('--ignore-security-hash', args)
+-        with self.assertRaises(ValueError):
+-            install_arguments('ffmpeg & calc')
+-        installer = ToolInstaller()
+-        results = []
+-        installer.finished.connect(lambda *result: results.append(result))
+-        with patch('tool_installer.shutil.which', return_value=None):
+-            self.assertFalse(installer.start('pandoc'))
+-        self.assertEqual(results[0][1:3], ('missing', -1))
+-        self.assertFalse(installer.is_busy())
+-
+-    def test_03_async_failure_and_cancel(self):
+-        installer = ToolInstaller()
+-        results = []
+-        installer.finished.connect(lambda *result: results.append(result))
+-        actual_start = QProcess.start
+-        def fake_start(process, program, arguments):
+-            self.assertEqual(program, 'winget-test.exe')
+-            self.assertEqual(arguments, install_arguments('pandoc'))
+-            actual_start(process, sys.executable, ['-B', '-c', 'import sys; sys.exit(7)'])
+-        loop = QEventLoop()
+-        installer.finished.connect(loop.quit)
+-        with patch('tool_installer.shutil.which', return_value='winget-test.exe'), patch.object(QProcess, 'start', fake_start):
+-            self.assertTrue(installer.start('pandoc'))
+-            QTimer.singleShot(5000, loop.quit)
+-            loop.exec()
+-        self.assertFalse(installer.is_busy())
+-        self.assertEqual(results[-1][1:3], ('failed', 7))
+-        def waiting_start(process, program, arguments):
+-            actual_start(process, sys.executable, ['-B', '-c', 'import time; time.sleep(10)'])
+-        with patch('tool_installer.shutil.which', return_value='winget-test.exe'), patch.object(QProcess, 'start', waiting_start):
+-            self.assertTrue(installer.start('pandoc'))
+-            QTimer.singleShot(50, installer.cancel)
+-            QTimer.singleShot(5000, loop.quit)
+-            loop.exec()
+-        self.assertFalse(installer.is_busy())
+-        self.assertEqual(results[-1][1], 'cancelled')
+-
+-    def test_04_app_theme_persistence_and_pages(self):
+-        import app
+-        with tempfile.TemporaryDirectory() as temp, patch.object(app, 'DATA', Path(temp)):
+-            app.apply_application_style(self.app)
+-            window = app.MainWindow()
+-            window.timer.stop()
+-            self.assertEqual(app.RELEASE_VERSION, '1.12.0')
+-            self.assertEqual(app.VERSION, 3)
+-            self.assertEqual(window.tabs.count(), 8)
+-            for mode in ('dark', 'light'):
+-                window.theme_combo.setCurrentIndex(window.theme_combo.findData(mode))
+-                self.app.processEvents()
+-                self.assertEqual(window.settings.value('theme'), mode)
+-                for index in range(8):
+-                    window.tabs.setCurrentIndex(index)
+-                    self.assertFalse(window.tabs.currentWidget().grab().isNull())
+-                self.assertFalse(window.wheel.grab().isNull())
+-            window.set_language('en')
+-            self.assertEqual(window.nav_buttons[7].text(), 'Quick actions')
+-            self.assertEqual(window.theme_combo.itemText(0), 'Light')
+-            saved = QSettings(str(Path(temp) / 'settings-3.ini'), QSettings.IniFormat)
+-            self.assertEqual(saved.value('theme'), 'light')
+-            window.quick_actions_panel.shutdown()
+-            window.workspace_panel.shutdown()
+-            window.pdf_panel.shutdown()
+-            window.pool.shutdown(wait=False)
+-            window.tray.hide()
+-            window.wheel.deleteLater()
+-            window.deleteLater()
+-
+-
+-if __name__ == '__main__':
+-    unittest.main()
++"""테마와 자동 설치 경계의 최소 검사. 실제 도구는 설치하지 않는다."""
++import sys
++import tempfile
++import unittest
++from pathlib import Path
++from unittest.mock import patch
++
++from PySide6.QtCore import QEventLoop, QTimer, QProcess, QSettings
++from PySide6.QtGui import QPalette
++from PySide6.QtWidgets import QApplication, QWidget, QLabel
++
++from theme_manager import manager, theme_color, ring_color
++from tool_installer import ToolInstaller, install_arguments, refresh_process_path
++
++
++class ThemeInstallTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.app = QApplication.instance() or QApplication([])
++
++    def test_01_theme_surfaces_and_custom_paint(self):
++        from ui_motion import make_file_dialog, MotionMessageBox
++        from studio_ui import Toggle
++        theme = manager(self.app)
++        root = QWidget()
++        label = QLabel('한글 English', root)
++        label.setStyleSheet('background:#ffffff;color:#242424;')
++        theme.apply('dark')
++        picker = make_file_dialog(root, '선택')
++        message = MotionMessageBox(root)
++        toggle = Toggle(root)
++        self.app.processEvents()
++        self.assertLess(self.app.palette().color(QPalette.Base).lightness(), 70)
++        self.assertNotIn('background:#ffffff', label.styleSheet())
++        self.assertNotIn('background:#fafafa', picker.styleSheet())
++        self.assertGreater(theme_color('#242424').lightness(), 180)
++        self.assertGreater(ring_color('#ffffff').lightness(), 240)
++        self.assertFalse(toggle.grab().isNull())
++        theme.apply('light')
++        self.assertEqual(label.styleSheet(), 'background:#ffffff;color:#242424;')
++        self.assertGreater(self.app.palette().color(QPalette.Base).lightness(), 240)
++        theme.apply('system')
++        self.assertEqual(theme.mode, 'system')
++        picker.deleteLater(); message.deleteLater(); root.deleteLater()
++
++    def test_02_install_allowlist_and_missing_manager(self):
++        args = install_arguments('ffmpeg')
++        self.assertEqual(args[:4], ['install', '--id', 'Gyan.FFmpeg', '--exact'])
++        self.assertNotIn('--ignore-security-hash', args)
++        with self.assertRaises(ValueError):
++            install_arguments('ffmpeg & calc')
++        installer = ToolInstaller()
++        results = []
++        installer.finished.connect(lambda *result: results.append(result))
++        with patch('tool_installer.shutil.which', return_value=None):
++            self.assertFalse(installer.start('pandoc'))
++        self.assertEqual(results[0][1:3], ('missing', -1))
++        self.assertFalse(installer.is_busy())
++
++    def test_03_async_failure_and_cancel(self):
++        installer = ToolInstaller()
++        results = []
++        installer.finished.connect(lambda *result: results.append(result))
++        actual_start = QProcess.start
++        def fake_start(process, program, arguments):
++            self.assertEqual(program, 'winget-test.exe')
++            self.assertEqual(arguments, install_arguments('pandoc'))
++            actual_start(process, sys.executable, ['-B', '-c', 'import sys; sys.exit(7)'])
++        loop = QEventLoop()
++        installer.finished.connect(loop.quit)
++        with patch('tool_installer.shutil.which', return_value='winget-test.exe'), patch.object(QProcess, 'start', fake_start):
++            self.assertTrue(installer.start('pandoc'))
++            QTimer.singleShot(5000, loop.quit)
++            loop.exec()
++        self.assertFalse(installer.is_busy())
++        self.assertEqual(results[-1][1:3], ('failed', 7))
++        def waiting_start(process, program, arguments):
++            actual_start(process, sys.executable, ['-B', '-c', 'import time; time.sleep(10)'])
++        with patch('tool_installer.shutil.which', return_value='winget-test.exe'), patch.object(QProcess, 'start', waiting_start):
++            self.assertTrue(installer.start('pandoc'))
++            QTimer.singleShot(50, installer.cancel)
++            QTimer.singleShot(5000, loop.quit)
++            loop.exec()
++        self.assertFalse(installer.is_busy())
++        self.assertEqual(results[-1][1], 'cancelled')
++
++    def test_04_app_theme_persistence_and_pages(self):
++        import app
++        with tempfile.TemporaryDirectory() as temp, patch.object(app, 'DATA', Path(temp)):
++            app.apply_application_style(self.app)
++            window = app.MainWindow()
++            window.timer.stop()
++            self.assertEqual(app.RELEASE_VERSION, '1.12.1')
++            self.assertEqual(app.VERSION, 3)
++            self.assertEqual(window.tabs.count(), 8)
++            for mode in ('dark', 'light'):
++                window.theme_combo.setCurrentIndex(window.theme_combo.findData(mode))
++                self.app.processEvents()
++                self.assertEqual(window.settings.value('theme'), mode)
++                for index in range(8):
++                    window.tabs.setCurrentIndex(index)
++                    self.assertFalse(window.tabs.currentWidget().grab().isNull())
++                self.assertFalse(window.wheel.grab().isNull())
++            window.set_language('en')
++            self.assertEqual(window.nav_buttons[7].text(), 'Quick actions')
++            self.assertEqual(window.theme_combo.itemText(0), 'Light')
++            saved = QSettings(str(Path(temp) / 'settings-3.ini'), QSettings.IniFormat)
++            self.assertEqual(saved.value('theme'), 'light')
++            window.quick_actions_panel.shutdown()
++            window.workspace_panel.shutdown()
++            window.pdf_panel.shutdown()
++            window.pool.shutdown(wait=False)
++            window.tray.hide()
++            window.wheel.deleteLater()
++            window.deleteLater()
++
++
++if __name__ == '__main__':
++    unittest.main()
+--- 1.12.0/소스/test_workspace_ui.py
++++ 1.12.1/소스/test_workspace_ui.py
+@@ -1,391 +1,395 @@
+-"""확장 작업 공간의 실제 Qt·파일·상태 검사."""
+-import os
+-os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
+-import tempfile
+-import unittest
+-from unittest.mock import patch
+-from pathlib import Path
+-from PySide6.QtWidgets import QApplication, QWidget, QDialog, QDialogButtonBox, QListWidget, QPushButton, QFileDialog
+-from PySide6.QtCore import QSettings, Qt, QMimeData, QUrl, QPointF, QTimer, QEventLoop, QAbstractEventDispatcher
+-from PySide6.QtGui import QDropEvent
+-from PySide6.QtTest import QTest
+-from PIL import Image, ImageDraw, ImageFont
+-from workspace_ui import WorkspacePanel, StableFolderWatch, CommandDialog
+-
+-APP = QApplication.instance() or QApplication([])
+-
+-class Owner(QWidget):
+-    def __init__(self, root):
+-        super().__init__()
+-        self.settings = QSettings(str(root / 'settings.ini'), QSettings.IniFormat)
+-        self.pending = 0
+-        self.records = []
+-        self.pdf_panel = type('Pdf', (), {'is_busy': lambda s: False})()
+-    def append_record(self, *record):
+-        self.records.append(record)
+-    def update_status(self):
+-        pass
+-
+-class WorkspaceUiTests(unittest.TestCase):
+-    def setUp(self):
+-        self.tmp = tempfile.TemporaryDirectory()
+-        self.root = Path(self.tmp.name)
+-        self.owner = Owner(self.root)
+-        # 실제 배치 검사는 부모 창까지 표시하여 Qt 레이아웃을 활성화한다.
+-        self.owner.resize(1000,720)
+-        self.owner.show()
+-        self.panel = WorkspacePanel(self.owner)
+-        self.panel.resize(900, 660)
+-        self.panel.show()
+-        self.path = self.root / '원본.png'
+-        Image.new('RGB', (64, 40), 'white').save(self.path)
+-    def tearDown(self):
+-        self.panel.shutdown()
+-        self.wait_done()
+-        # 오프스크린 Qt가 소유한 검사 MIME은 QApplication보다 먼저 정리한다.
+-        # 제품의 실제 클립보드 유지 동작과 파일 복사 검증은 바꾸지 않는다.
+-        QApplication.clipboard().clear()
+-        APP.processEvents()
+-        self.panel.close()
+-        self.owner.close()
+-        APP.processEvents()
+-        self.tmp.cleanup()
+-    def wait_done(self):
+-        # 실제 이벤트 루프에서 완료를 관찰하며 기존 27초 제한은 유지한다.
+-        if not self.panel.is_busy():
+-            return
+-        loop=QEventLoop()
+-        timer=QTimer(loop)
+-        timer.setSingleShot(True)
+-        timer.setTimerType(Qt.PreciseTimer)
+-        dispatcher=QAbstractEventDispatcher.instance()
+-        active=[True]
+-        expired=[False]
+-        def completion_gate(*unused):
+-            if active[0] and not self.panel.is_busy():
+-                loop.quit()
+-        def timeout():
+-            if active[0]:
+-                expired[0]=True
+-                loop.quit()
+-        # 연결 전에 이미 전송된 완료 신호도 큐 처리 뒤의 gate에서 관찰한다.
+-        self.panel.bridge.done.connect(completion_gate,Qt.QueuedConnection)
+-        dispatcher.aboutToBlock.connect(completion_gate)
+-        timer.timeout.connect(timeout)
+-        try:
+-            timer.start(27000)
+-            if self.panel.is_busy():
+-                loop.exec()
+-        finally:
+-            # 이미 큐에 든 콜백은 비활성 gate로 처리하고 모든 연결을 해제한다.
+-            active[0]=False
+-            timer.stop()
+-            timer.timeout.disconnect(timeout)
+-            self.panel.bridge.done.disconnect(completion_gate)
+-            dispatcher.aboutToBlock.disconnect(completion_gate)
+-        if expired[0] or self.panel.is_busy():
+-            self.fail('작업이 종료되지 않았습니다')
+-    def test_files_language_and_motion(self):
+-        self.panel.set_files([str(self.path)])
+-        self.assertEqual(self.panel.files.count(), 1)
+-        self.panel.set_language('en')
+-        self.assertEqual(self.panel.run_button.text(), 'Run recipe')
+-        self.assertEqual(self.panel.paths, [str(self.path)])
+-        self.panel.set_reduced_motion(True)
+-        self.assertEqual(self.panel.visual.animation.state().name, 'Stopped')
+-        self.panel.hide()
+-        self.assertEqual(self.panel.visual.animation.state().name, 'Stopped')
+-    def test_empty_selection_name_hint_preserves_literal_braces(self):
+-        from i18n import tr
+-        expected={'ko':'{name}, {index}, {date}를 사용할 수 있습니다.',
+-                  'en':'Use {name}, {index}, {date}.'}
+-        # 미리보기 제공자가 빈 목록을 반환하는 안내 분기도 실제 패널에서 확인한다.
+-        with patch('workspace_core.preview_names',return_value=[]):
+-            self.panel.set_files([])
+-            for language,text in expected.items():
+-                self.assertEqual(tr(language,'ws_name_hint'),text)
+-                self.panel.set_language(language)
+-                self.assertEqual(self.panel.paths,[])
+-                self.assertEqual(self.panel.names_preview.text(),text)
+-    def test_pipeline_preserves_source_and_records(self):
+-        original = self.path.read_bytes()
+-        self.panel.set_files([str(self.path)])
+-        self.panel.recipe_editor.setPlainText('{"version":1,"name":"복사","steps":[{"op":"rename","template":"{name}_{index}"}]}')
+-        self.assertTrue(self.panel.run_recipe())
+-        self.assertEqual(self.owner.pending, 1)
+-        self.assertFalse(self.panel.run_recipe())
+-        self.wait_done()
+-        self.assertEqual(self.owner.pending, 0)
+-        self.assertEqual(self.path.read_bytes(), original)
+-        self.assertTrue(self.owner.records)
+-        self.assertTrue(Path(self.owner.records[0][1]).is_file())
+-    def test_invalid_recipe_and_busy_gate(self):
+-        self.panel.set_files([str(self.path)])
+-        self.panel.recipe_editor.setPlainText('{"version":1,"name":"bad","steps":[{"op":"shell"}]}')
+-        self.assertFalse(self.panel.run_recipe())
+-        self.assertFalse(self.panel.is_busy())
+-        self.owner.pending = 1
+-        self.assertFalse(self.panel.run_recipe())
+-        self.owner.pending = 0
+-    def test_recipe_save_reload(self):
+-        self.panel.recipe_editor.setPlainText('{"version":1,"name":"저장","steps":[{"op":"audit"}]}')
+-        self.assertTrue(self.panel.save_recipe())
+-        self.assertGreaterEqual(self.panel.recipe_combo.findText('저장'), 0)
+-    def test_watch_requires_stability_and_excludes_outputs(self):
+-        output = self.root / 'results'
+-        output.mkdir()
+-        watcher = StableFolderWatch()
+-        watcher.configure(self.root, output)
+-        self.assertEqual(watcher.scan(), [])
+-        self.assertEqual(watcher.scan(), [str(self.path)])
+-        self.assertEqual(watcher.scan(), [])
+-        Image.new('RGB',(4,4)).save(output / 'out.png')
+-        self.assertEqual(watcher.scan(), [])
+-        (self.root / '.tmp.png').write_bytes(b'pending')
+-        self.assertEqual(watcher.scan(), [])
+-    def test_no_overlap_and_finite_motion(self):
+-        self.panel.set_files([str(self.path)])
+-        APP.processEvents()
+-        self.assertLess(self.panel.visual.geometry().bottom(), self.panel.files.geometry().top())
+-        self.assertLess(self.panel.files.geometry().bottom(), self.panel.recipe_combo.geometry().top())
+-        QTest.qWait(400)
+-        APP.processEvents()
+-        self.assertEqual(self.panel.visual.animation.state().name, 'Stopped')
+-        self.assertAlmostEqual(self.panel.visual.phase, 1.0)
+-    def test_cancel_queued_result_and_gate_release(self):
+-        import workspace_core
+-        real_execute = workspace_core.execute_workspace
+-        def execute_after_cancel(*args, **kwargs):
+-            kwargs['cancel'].wait(2)
+-            return real_execute(*args, **kwargs)
+-        self.panel.set_files([str(self.path)])
+-        with patch('workspace_core.execute_workspace', side_effect=execute_after_cancel):
+-            self.assertTrue(self.panel.run_recipe())
+-            self.panel.cancel()
+-            self.wait_done()
+-        self.assertEqual(self.panel._status_key, 'ws_cancelled')
+-        self.assertEqual(self.owner.pending, 0)
+-        self.assertEqual(self.panel.results.count(), 0)
+-    def test_shutdown_defers_close_until_cancel_signal(self):
+-        import workspace_core
+-        real_execute=workspace_core.execute_workspace
+-        def execute_after_cancel(*args,**kwargs):
+-            kwargs['cancel'].wait(2)
+-            return real_execute(*args,**kwargs)
+-        self.panel.set_files([str(self.path)])
+-        with patch('workspace_core.execute_workspace',side_effect=execute_after_cancel):
+-            self.panel.run_recipe()
+-            self.assertFalse(self.panel.shutdown())
+-            self.panel.close()
+-            self.wait_done()
+-        self.assertEqual(self.owner.pending,0)
+-        self.assertTrue(self.panel.shutdown())
+-    def test_explicit_watch_executes_once_and_stops(self):
+-        self.panel._watch_folder = str(self.root)
+-        self.panel.output_dir = self.root / 'output'
+-        self.panel.output_dir.mkdir()
+-        self.panel.write_recipe({'version':1,'name':'감시','steps':[{'op':'rename','template':'{name}_watched'}]})
+-        self.assertFalse(self.panel.watch_timer.isActive())
+-        self.panel.watch_enabled.setChecked(True)
+-        self.panel.watch_timer.stop()
+-        self.panel.scan_watch()
+-        self.assertFalse(self.panel.is_busy())
+-        self.panel.scan_watch()
+-        self.wait_done()
+-        self.assertEqual(len(self.owner.records), 1)
+-        self.panel.scan_watch()
+-        self.assertEqual(len(self.owner.records), 1)
+-        self.panel.watch_enabled.setChecked(False)
+-        self.assertFalse(self.panel.watch_timer.isActive())
+-    def test_clipboard_drop_and_result_copy(self):
+-        QApplication.clipboard().setText('한글 클립보드')
+-        self.panel.import_clipboard()
+-        self.assertEqual(Path(self.panel.paths[0]).read_text(encoding='utf-8'), '한글 클립보드')
+-        mime=QMimeData(); mime.setUrls([QUrl.fromLocalFile(str(self.path))])
+-        event=QDropEvent(QPointF(20,20),Qt.CopyAction|Qt.MoveAction,mime,Qt.LeftButton,Qt.ShiftModifier)
+-        self.panel.files.dropEvent(event)
+-        self.assertEqual(event.dropAction(), Qt.CopyAction)
+-        self.assertIn(str(self.path),self.panel.paths)
+-        self.panel.set_files([str(self.path)])
+-        self.panel.write_recipe({'version':1,'name':'복사','steps':[{'op':'rename','template':'{name}_copy'}]})
+-        self.panel.run_recipe(); self.wait_done()
+-        self.panel.copy_result(False)
+-        self.assertTrue(Path(QApplication.clipboard().text()).is_file())
+-        self.panel.copy_result(True)
+-        self.assertTrue(QApplication.clipboard().mimeData().hasUrls())
+-    def test_commands_search_keyboard_and_wheel_persistence(self):
+-        dialog=CommandDialog(self.panel)
+-        dialog.show()
+-        dialog.search.setText(self.panel.t('ws_run'))
+-        self.assertEqual(dialog.list.count(),1)
+-        self.assertFalse(dialog.list.item(0).data(Qt.UserRole+1))
+-        dialog.close()
+-        self.owner.settings.setValue('workspace/wheel','{"order":["webp","jpg"],"hidden":["png"],"recipe":""}')
+-        self.owner.settings.sync()
+-        self.assertEqual(self.panel.ordered_formats(['png','jpg','webp']),['webp','jpg'])
+-        stored=QSettings(self.owner.settings.fileName(),QSettings.IniFormat)
+-        self.assertIn('webp',stored.value('workspace/wheel'))
+-    def test_command_keyboard_action_and_wheel_dialog_save_reset(self):
+-        called=[]
+-        with patch.object(self.panel,'choose_files',lambda:called.append('files')):
+-            dialog=CommandDialog(self.panel); dialog.show()
+-            dialog.search.setText(self.panel.t('ws_add'))
+-            QTest.keyClick(dialog.search,Qt.Key_Down)
+-            QTest.keyClick(dialog.search,Qt.Key_Return)
+-            self.assertEqual(called,['files'])
+-        def save_dialog():
+-            dialog=next(w for w in QApplication.topLevelWidgets() if isinstance(w,QDialog) and w.isVisible())
+-            values=dialog.findChild(QListWidget)
+-            values.item(0).setCheckState(Qt.Unchecked)
+-            dialog.findChild(QDialogButtonBox).button(QDialogButtonBox.Save).click()
+-        QTimer.singleShot(50,save_dialog)
+-        self.panel.edit_wheel()
+-        self.assertTrue(self.panel.wheel_preferences()['hidden'])
+-        def reset_dialog():
+-            dialog=next(w for w in QApplication.topLevelWidgets() if isinstance(w,QDialog) and w.isVisible())
+-            next(b for b in dialog.findChildren(QPushButton) if b.text()==self.panel.t('ws_reset')).click()
+-        QTimer.singleShot(50,reset_dialog)
+-        self.panel.edit_wheel()
+-        self.assertEqual(self.panel.wheel_preferences(),{})
+-    def test_actual_collage_and_gif_outputs(self):
+-        second=self.root/'second.png'; Image.new('RGB',(20,30),'black').save(second)
+-        self.panel.set_files([str(self.path),str(second)])
+-        for operation in ('collage','gif','combine_pdf'):
+-            self.panel.write_recipe({'version':1,'name':operation,'steps':[{'op':operation}]})
+-            self.assertTrue(self.panel.run_recipe())
+-            self.wait_done()
+-            output=Path(self.panel.results.item(0).data(Qt.UserRole))
+-            self.assertTrue(output.is_file())
+-            self.assertEqual(self.panel._status_key,'ws_complete')
+-    def test_default_target_plain_text_copy_and_explicit_quality_rejection(self):
+-        path=self.root/'원본.txt'; path.write_text('원본 텍스트',encoding='utf-8')
+-        self.panel.set_files([str(path)])
+-        self.panel.write_recipe({'version':1,'name':'텍스트 복사','steps':[{'op':'rename','template':'{name}_copy'}]})
+-        self.assertEqual(self.panel.target(),{})
+-        self.assertFalse(self.panel.quality.isEnabled())
+-        self.assertFalse(self.panel.dpi.isEnabled())
+-        self.assertTrue(self.panel.run_recipe()); self.wait_done()
+-        self.assertEqual(self.panel._status_key,'ws_complete')
+-        self.assertEqual(len(self.owner.records),1)
+-        self.assertEqual(self.owner.records[0][2],'')
+-        self.assertEqual(Path(self.owner.records[0][1]).read_text(encoding='utf-8'),'원본 텍스트')
+-        self.panel.quality_enabled.setChecked(True)
+-        self.assertTrue(self.panel.quality.isEnabled())
+-        self.assertFalse(self.panel.run_recipe())
+-        self.assertEqual(len(self.owner.records),1)
+-        self.assertEqual(self.owner.pending,0)
+-        self.assertEqual(path.read_text(encoding='utf-8'),'원본 텍스트')
+-        self.panel.write_recipe({'version':1,'name':'원래 크기','steps':[{'op':'normalize_pages','page_size':'original'}]})
+-        self.assertFalse(self.panel.run_recipe())
+-        self.assertEqual(len(self.owner.records),1)
+-    def test_default_ui_ocr_document_and_receipt_outputs(self):
+-        import engine
+-        image=Image.new('RGB',(1100,400),'white')
+-        font=ImageFont.truetype(str(engine.asset('NanumGothicBold.ttf')),56)
+-        ImageDraw.Draw(image).text((30,60),'PUVKID 1200\nTOTAL 3000',font=font,fill='black',spacing=35)
+-        path=self.root/'receipt.png'; image.save(path)
+-        self.panel.set_files([str(path)])
+-        self.assertEqual(self.panel.target(),{})
+-        operations=[{'op':'ocr','format':fmt,'language':'eng'} for fmt in ('txt','docx','xlsx')]
+-        operations.append({'op':'receipts_xlsx','language':'eng'})
+-        for step in operations:
+-            before=len(self.owner.records)
+-            self.panel.write_recipe({'version':1,'name':'문서 출력','steps':[step]})
+-            self.assertTrue(self.panel.run_recipe()); self.wait_done()
+-            self.assertEqual(self.panel._status_key,'ws_complete',self.panel.status.text())
+-            self.assertEqual(len(self.owner.records),before+1)
+-            self.assertEqual(self.owner.records[-1][2],'')
+-            self.assertTrue(Path(self.owner.records[-1][1]).is_file())
+-    def test_explicit_image_quality_and_independent_targets(self):
+-        self.panel.format.setCurrentIndex(self.panel.format.findData('pdf'))
+-        self.panel.max_bytes.setValue(512)
+-        self.panel.a4.setChecked(True)
+-        self.assertEqual(self.panel.target(),{'format':'pdf','max_bytes':512*1024,'page_size':'A4'})
+-        self.panel.format.setCurrentIndex(0); self.panel.max_bytes.setValue(0); self.panel.a4.setChecked(False)
+-        self.panel.set_files([str(self.path)])
+-        self.panel.write_recipe({'version':1,'name':'명시 품질','steps':[{'op':'rename','template':'{name}_quality'}]})
+-        self.panel.quality_enabled.setChecked(True)
+-        self.panel.quality.setValue(70); self.panel.dpi.setValue(120)
+-        self.assertEqual(self.panel.target(),{'quality':70,'dpi':120})
+-        self.panel.set_language('en')
+-        self.assertTrue(self.panel.quality_enabled.isChecked())
+-        self.assertTrue(self.panel.run_recipe()); self.wait_done()
+-        self.assertEqual(self.panel._status_key,'ws_complete')
+-        self.assertEqual(len(self.owner.records),1)
+-        self.assertEqual(self.owner.records[0][2],'')
+-    def test_common_picker_classes_languages_motion_and_cancel(self):
+-        from ui_motion import MotionFileDialog
+-        actions=[self.panel.choose_files,self.panel.import_recipe,self.panel.export_recipe,self.panel.choose_output,self.panel.choose_watch_folder]
+-        before=(self.panel.paths.copy(),self.panel.recipe_editor.toPlainText(),self.panel.output_dir)
+-        seen=[]
+-        def reject(dialog):
+-            self.assertIsInstance(dialog,MotionFileDialog)
+-            self.assertTrue(dialog.testOption(QFileDialog.DontUseNativeDialog))
+-            seen.append((dialog.title_key,dialog.fileMode(),dialog.acceptMode()))
+-            self.panel.set_language('en')
+-            self.assertEqual(dialog.language,'en')
+-            self.assertEqual(dialog.windowTitle(),self.panel.t(dialog.title_key))
+-            self.panel.set_reduced_motion(True)
+-            dialog.show(); APP.processEvents()
+-            self.assertTrue(APP.property('flipringReducedMotion'))
+-            dialog.reject()
+-            return QFileDialog.Rejected
+-        with patch.object(MotionFileDialog,'exec',reject):
+-            for action in actions: action()
+-        self.assertEqual(len(seen),5)
+-        self.assertEqual(seen[0][1],QFileDialog.ExistingFiles)
+-        self.assertEqual(seen[1][1],QFileDialog.ExistingFile)
+-        self.assertEqual(seen[2][2],QFileDialog.AcceptSave)
+-        self.assertEqual(seen[3][1],QFileDialog.Directory)
+-        self.assertEqual(seen[4][1],QFileDialog.Directory)
+-        self.assertEqual((self.panel.paths,self.panel.recipe_editor.toPlainText(),self.panel.output_dir),before)
+-        self.assertFalse(hasattr(self.panel,'_watch_folder'))
+-        self.assertEqual(self.panel._pickers,[])
+-    def test_common_picker_accepts_files_recipe_export_and_folders(self):
+-        import json
+-        from ui_motion import MotionFileDialog
+-        recipe={'version':1,'name':'선택창 레시피','steps':[{'op':'rename','template':'{name}_selected'}]}
+-        imported=self.root/'import.json'; imported.write_text(json.dumps(recipe,ensure_ascii=False),encoding='utf-8')
+-        exported=self.root/'export.json'; output=self.root/'out';output.mkdir();watch=self.root/'watch';watch.mkdir()
+-        selected={'ws_add':[str(self.path)],'ws_import':[str(imported)],'ws_export':[str(exported)],'ws_output':[str(output)],'ws_watch_folder':[str(watch)]}
+-        with patch.object(MotionFileDialog,'exec',lambda d:QFileDialog.Accepted), patch.object(MotionFileDialog,'selectedFiles',lambda d:selected[d.title_key]):
+-            self.panel.choose_files();self.panel.import_recipe();self.panel.export_recipe();self.panel.choose_output();self.panel.choose_watch_folder()
+-        self.assertEqual(self.panel.paths,[str(self.path)])
+-        self.assertEqual(json.loads(exported.read_text(encoding='utf-8')),recipe)
+-        self.assertEqual(self.panel.output_dir,output)
+-        self.assertEqual(self.panel._watch_folder,str(watch))
+-        self.assertFalse(self.panel.watch_enabled.isChecked())
+-    def test_mainwindow_history_filters_and_legacy_boundaries(self):
+-        import app
+-        previous=app.DATA; app.DATA=self.root/'app-data'
+-        window=None
+-        try:
+-            app.apply_application_style(APP)
+-            window=app.MainWindow(); window.timer.stop()
+-            window.notifications.setChecked(False); window.reveal.setChecked(False)
+-            self.assertEqual(window.tabs.count(),7)
+-            self.assertEqual(window.tabs.currentIndex(),0)
+-            self.assertIs(window.tabs.widget(4),window.pdf_panel)
+-            self.assertEqual(window.sidebar.width(),204)
+-            window.records=[{'time':'2026-11-02T00:00:00','source':str(self.path),'output':str(self.path),'error':''},
+-                            {'time':'2026-11-02T00:01:00','source':'missing.pdf','output':'','error':'failed'}]
+-            window.refresh_history()
+-            window.history_format.setText('png')
+-            self.assertTrue(window.history.item(0).isHidden())
+-            self.assertFalse(window.history.item(1).isHidden())
+-            window.history_format.clear(); window.history_state.setCurrentIndex(window.history_state.findData('failed'))
+-            self.assertFalse(window.history.item(0).isHidden())
+-            self.assertTrue(window.history.item(1).isHidden())
+-            window.history_state.setCurrentIndex(0); window.history.setCurrentRow(1)
+-            window.copy_history_result(False)
+-            self.assertEqual(QApplication.clipboard().text(),str(self.path))
+-            window.set_language('en')
+-            self.assertEqual(window.workspace_panel.run_button.text(),'Run recipe')
+-        finally:
+-            if window:
+-                window.workspace_panel.shutdown(); window.pdf_panel.shutdown(); window.pool.shutdown(wait=False)
+-                window.timer.stop(); window.wheel.hide(); window.tray.hide(); window.hide()
+-            app.DATA=previous
+-
+-if __name__ == '__main__':
++"""확장 작업 공간의 실제 Qt·파일·상태 검사."""
++import os
++os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
++import tempfile
++import unittest
++from unittest.mock import patch
++from pathlib import Path
++from PySide6.QtWidgets import QApplication, QWidget, QDialog, QDialogButtonBox, QListWidget, QPushButton, QFileDialog
++from PySide6.QtCore import QSettings, Qt, QMimeData, QUrl, QPointF, QTimer, QEventLoop, QAbstractEventDispatcher
++from PySide6.QtGui import QDropEvent
++from PySide6.QtTest import QTest
++from PIL import Image, ImageDraw, ImageFont
++from workspace_ui import WorkspacePanel, StableFolderWatch, CommandDialog
++
++APP = QApplication.instance() or QApplication([])
++
++class Owner(QWidget):
++    def __init__(self, root):
++        super().__init__()
++        self.settings = QSettings(str(root / 'settings.ini'), QSettings.IniFormat)
++        self.pending = 0
++        self.records = []
++        self.pdf_panel = type('Pdf', (), {'is_busy': lambda s: False})()
++        # 실제 MainWindow의 신규 설치·빠른 작업 계약을 모형에도 반영합니다.
++        self.installer = type('Installer', (), {'is_busy': lambda s: False})()
++        self.quick_actions_panel = None
++    def append_record(self, *record):
++        self.records.append(record)
++    def update_status(self):
++        pass
++
++class WorkspaceUiTests(unittest.TestCase):
++    def setUp(self):
++        self.tmp = tempfile.TemporaryDirectory()
++        self.root = Path(self.tmp.name)
++        self.owner = Owner(self.root)
++        # 실제 배치 검사는 부모 창까지 표시하여 Qt 레이아웃을 활성화한다.
++        self.owner.resize(1000,720)
++        self.owner.show()
++        self.panel = WorkspacePanel(self.owner)
++        self.panel.resize(900, 660)
++        self.panel.show()
++        self.path = self.root / '원본.png'
++        Image.new('RGB', (64, 40), 'white').save(self.path)
++    def tearDown(self):
++        self.panel.shutdown()
++        self.wait_done()
++        # 오프스크린 Qt가 소유한 검사 MIME은 QApplication보다 먼저 정리한다.
++        # 제품의 실제 클립보드 유지 동작과 파일 복사 검증은 바꾸지 않는다.
++        QApplication.clipboard().clear()
++        APP.processEvents()
++        self.panel.close()
++        self.owner.close()
++        APP.processEvents()
++        self.tmp.cleanup()
++    def wait_done(self):
++        # 실제 이벤트 루프에서 완료를 관찰하며 기존 27초 제한은 유지한다.
++        if not self.panel.is_busy():
++            return
++        loop=QEventLoop()
++        timer=QTimer(loop)
++        timer.setSingleShot(True)
++        timer.setTimerType(Qt.PreciseTimer)
++        dispatcher=QAbstractEventDispatcher.instance()
++        active=[True]
++        expired=[False]
++        def completion_gate(*unused):
++            if active[0] and not self.panel.is_busy():
++                loop.quit()
++        def timeout():
++            if active[0]:
++                expired[0]=True
++                loop.quit()
++        # 연결 전에 이미 전송된 완료 신호도 큐 처리 뒤의 gate에서 관찰한다.
++        self.panel.bridge.done.connect(completion_gate,Qt.QueuedConnection)
++        dispatcher.aboutToBlock.connect(completion_gate)
++        timer.timeout.connect(timeout)
++        try:
++            timer.start(27000)
++            if self.panel.is_busy():
++                loop.exec()
++        finally:
++            # 이미 큐에 든 콜백은 비활성 gate로 처리하고 모든 연결을 해제한다.
++            active[0]=False
++            timer.stop()
++            timer.timeout.disconnect(timeout)
++            self.panel.bridge.done.disconnect(completion_gate)
++            dispatcher.aboutToBlock.disconnect(completion_gate)
++        if expired[0] or self.panel.is_busy():
++            self.fail('작업이 종료되지 않았습니다')
++    def test_files_language_and_motion(self):
++        self.panel.set_files([str(self.path)])
++        self.assertEqual(self.panel.files.count(), 1)
++        self.panel.set_language('en')
++        self.assertEqual(self.panel.run_button.text(), 'Run recipe')
++        self.assertEqual(self.panel.paths, [str(self.path)])
++        self.panel.set_reduced_motion(True)
++        self.assertEqual(self.panel.visual.animation.state().name, 'Stopped')
++        self.panel.hide()
++        self.assertEqual(self.panel.visual.animation.state().name, 'Stopped')
++    def test_empty_selection_name_hint_preserves_literal_braces(self):
++        from i18n import tr
++        expected={'ko':'{name}, {index}, {date}를 사용할 수 있습니다.',
++                  'en':'Use {name}, {index}, {date}.'}
++        # 미리보기 제공자가 빈 목록을 반환하는 안내 분기도 실제 패널에서 확인한다.
++        with patch('workspace_core.preview_names',return_value=[]):
++            self.panel.set_files([])
++            for language,text in expected.items():
++                self.assertEqual(tr(language,'ws_name_hint'),text)
++                self.panel.set_language(language)
++                self.assertEqual(self.panel.paths,[])
++                self.assertEqual(self.panel.names_preview.text(),text)
++    def test_pipeline_preserves_source_and_records(self):
++        original = self.path.read_bytes()
++        self.panel.set_files([str(self.path)])
++        self.panel.recipe_editor.setPlainText('{"version":1,"name":"복사","steps":[{"op":"rename","template":"{name}_{index}"}]}')
++        self.assertTrue(self.panel.run_recipe())
++        self.assertEqual(self.owner.pending, 1)
++        self.assertFalse(self.panel.run_recipe())
++        self.wait_done()
++        self.assertEqual(self.owner.pending, 0)
++        self.assertEqual(self.path.read_bytes(), original)
++        self.assertTrue(self.owner.records)
++        self.assertTrue(Path(self.owner.records[0][1]).is_file())
++    def test_invalid_recipe_and_busy_gate(self):
++        self.panel.set_files([str(self.path)])
++        self.panel.recipe_editor.setPlainText('{"version":1,"name":"bad","steps":[{"op":"shell"}]}')
++        self.assertFalse(self.panel.run_recipe())
++        self.assertFalse(self.panel.is_busy())
++        self.owner.pending = 1
++        self.assertFalse(self.panel.run_recipe())
++        self.owner.pending = 0
++    def test_recipe_save_reload(self):
++        self.panel.recipe_editor.setPlainText('{"version":1,"name":"저장","steps":[{"op":"audit"}]}')
++        self.assertTrue(self.panel.save_recipe())
++        self.assertGreaterEqual(self.panel.recipe_combo.findText('저장'), 0)
++    def test_watch_requires_stability_and_excludes_outputs(self):
++        output = self.root / 'results'
++        output.mkdir()
++        watcher = StableFolderWatch()
++        watcher.configure(self.root, output)
++        self.assertEqual(watcher.scan(), [])
++        self.assertEqual(watcher.scan(), [str(self.path)])
++        self.assertEqual(watcher.scan(), [])
++        Image.new('RGB',(4,4)).save(output / 'out.png')
++        self.assertEqual(watcher.scan(), [])
++        (self.root / '.tmp.png').write_bytes(b'pending')
++        self.assertEqual(watcher.scan(), [])
++    def test_no_overlap_and_finite_motion(self):
++        self.panel.set_files([str(self.path)])
++        APP.processEvents()
++        self.assertLess(self.panel.visual.geometry().bottom(), self.panel.files.geometry().top())
++        self.assertLess(self.panel.files.geometry().bottom(), self.panel.recipe_combo.geometry().top())
++        QTest.qWait(400)
++        APP.processEvents()
++        self.assertEqual(self.panel.visual.animation.state().name, 'Stopped')
++        self.assertAlmostEqual(self.panel.visual.phase, 1.0)
++    def test_cancel_queued_result_and_gate_release(self):
++        import workspace_core
++        real_execute = workspace_core.execute_workspace
++        def execute_after_cancel(*args, **kwargs):
++            kwargs['cancel'].wait(2)
++            return real_execute(*args, **kwargs)
++        self.panel.set_files([str(self.path)])
++        with patch('workspace_core.execute_workspace', side_effect=execute_after_cancel):
++            self.assertTrue(self.panel.run_recipe())
++            self.panel.cancel()
++            self.wait_done()
++        self.assertEqual(self.panel._status_key, 'ws_cancelled')
++        self.assertEqual(self.owner.pending, 0)
++        self.assertEqual(self.panel.results.count(), 0)
++    def test_shutdown_defers_close_until_cancel_signal(self):
++        import workspace_core
++        real_execute=workspace_core.execute_workspace
++        def execute_after_cancel(*args,**kwargs):
++            kwargs['cancel'].wait(2)
++            return real_execute(*args,**kwargs)
++        self.panel.set_files([str(self.path)])
++        with patch('workspace_core.execute_workspace',side_effect=execute_after_cancel):
++            self.panel.run_recipe()
++            self.assertFalse(self.panel.shutdown())
++            self.panel.close()
++            self.wait_done()
++        self.assertEqual(self.owner.pending,0)
++        self.assertTrue(self.panel.shutdown())
++    def test_explicit_watch_executes_once_and_stops(self):
++        self.panel._watch_folder = str(self.root)
++        self.panel.output_dir = self.root / 'output'
++        self.panel.output_dir.mkdir()
++        self.panel.write_recipe({'version':1,'name':'감시','steps':[{'op':'rename','template':'{name}_watched'}]})
++        self.assertFalse(self.panel.watch_timer.isActive())
++        self.panel.watch_enabled.setChecked(True)
++        self.panel.watch_timer.stop()
++        self.panel.scan_watch()
++        self.assertFalse(self.panel.is_busy())
++        self.panel.scan_watch()
++        self.wait_done()
++        self.assertEqual(len(self.owner.records), 1)
++        self.panel.scan_watch()
++        self.assertEqual(len(self.owner.records), 1)
++        self.panel.watch_enabled.setChecked(False)
++        self.assertFalse(self.panel.watch_timer.isActive())
++    def test_clipboard_drop_and_result_copy(self):
++        QApplication.clipboard().setText('한글 클립보드')
++        self.panel.import_clipboard()
++        self.assertEqual(Path(self.panel.paths[0]).read_text(encoding='utf-8'), '한글 클립보드')
++        mime=QMimeData(); mime.setUrls([QUrl.fromLocalFile(str(self.path))])
++        event=QDropEvent(QPointF(20,20),Qt.CopyAction|Qt.MoveAction,mime,Qt.LeftButton,Qt.ShiftModifier)
++        self.panel.files.dropEvent(event)
++        self.assertEqual(event.dropAction(), Qt.CopyAction)
++        self.assertIn(str(self.path),self.panel.paths)
++        self.panel.set_files([str(self.path)])
++        self.panel.write_recipe({'version':1,'name':'복사','steps':[{'op':'rename','template':'{name}_copy'}]})
++        self.panel.run_recipe(); self.wait_done()
++        self.panel.copy_result(False)
++        self.assertTrue(Path(QApplication.clipboard().text()).is_file())
++        self.panel.copy_result(True)
++        self.assertTrue(QApplication.clipboard().mimeData().hasUrls())
++    def test_commands_search_keyboard_and_wheel_persistence(self):
++        dialog=CommandDialog(self.panel)
++        dialog.show()
++        dialog.search.setText(self.panel.t('ws_run'))
++        self.assertEqual(dialog.list.count(),1)
++        self.assertFalse(dialog.list.item(0).data(Qt.UserRole+1))
++        dialog.close()
++        self.owner.settings.setValue('workspace/wheel','{"order":["webp","jpg"],"hidden":["png"],"recipe":""}')
++        self.owner.settings.sync()
++        self.assertEqual(self.panel.ordered_formats(['png','jpg','webp']),['webp','jpg'])
++        stored=QSettings(self.owner.settings.fileName(),QSettings.IniFormat)
++        self.assertIn('webp',stored.value('workspace/wheel'))
++    def test_command_keyboard_action_and_wheel_dialog_save_reset(self):
++        called=[]
++        with patch.object(self.panel,'choose_files',lambda:called.append('files')):
++            dialog=CommandDialog(self.panel); dialog.show()
++            dialog.search.setText(self.panel.t('ws_add'))
++            QTest.keyClick(dialog.search,Qt.Key_Down)
++            QTest.keyClick(dialog.search,Qt.Key_Return)
++            self.assertEqual(called,['files'])
++        def save_dialog():
++            dialog=next(w for w in QApplication.topLevelWidgets() if isinstance(w,QDialog) and w.isVisible())
++            values=dialog.findChild(QListWidget)
++            values.item(0).setCheckState(Qt.Unchecked)
++            dialog.findChild(QDialogButtonBox).button(QDialogButtonBox.Save).click()
++        QTimer.singleShot(50,save_dialog)
++        self.panel.edit_wheel()
++        self.assertTrue(self.panel.wheel_preferences()['hidden'])
++        def reset_dialog():
++            dialog=next(w for w in QApplication.topLevelWidgets() if isinstance(w,QDialog) and w.isVisible())
++            next(b for b in dialog.findChildren(QPushButton) if b.text()==self.panel.t('ws_reset')).click()
++        QTimer.singleShot(50,reset_dialog)
++        self.panel.edit_wheel()
++        self.assertEqual(self.panel.wheel_preferences(),{})
++    def test_actual_collage_and_gif_outputs(self):
++        second=self.root/'second.png'; Image.new('RGB',(20,30),'black').save(second)
++        self.panel.set_files([str(self.path),str(second)])
++        for operation in ('collage','gif','combine_pdf'):
++            self.panel.write_recipe({'version':1,'name':operation,'steps':[{'op':operation}]})
++            self.assertTrue(self.panel.run_recipe())
++            self.wait_done()
++            output=Path(self.panel.results.item(0).data(Qt.UserRole))
++            self.assertTrue(output.is_file())
++            self.assertEqual(self.panel._status_key,'ws_complete')
++    def test_default_target_plain_text_copy_and_explicit_quality_rejection(self):
++        path=self.root/'원본.txt'; path.write_text('원본 텍스트',encoding='utf-8')
++        self.panel.set_files([str(path)])
++        self.panel.write_recipe({'version':1,'name':'텍스트 복사','steps':[{'op':'rename','template':'{name}_copy'}]})
++        self.assertEqual(self.panel.target(),{})
++        self.assertFalse(self.panel.quality.isEnabled())
++        self.assertFalse(self.panel.dpi.isEnabled())
++        self.assertTrue(self.panel.run_recipe()); self.wait_done()
++        self.assertEqual(self.panel._status_key,'ws_complete')
++        self.assertEqual(len(self.owner.records),1)
++        self.assertEqual(self.owner.records[0][2],'')
++        self.assertEqual(Path(self.owner.records[0][1]).read_text(encoding='utf-8'),'원본 텍스트')
++        self.panel.quality_enabled.setChecked(True)
++        self.assertTrue(self.panel.quality.isEnabled())
++        self.assertFalse(self.panel.run_recipe())
++        self.assertEqual(len(self.owner.records),1)
++        self.assertEqual(self.owner.pending,0)
++        self.assertEqual(path.read_text(encoding='utf-8'),'원본 텍스트')
++        self.panel.write_recipe({'version':1,'name':'원래 크기','steps':[{'op':'normalize_pages','page_size':'original'}]})
++        self.assertFalse(self.panel.run_recipe())
++        self.assertEqual(len(self.owner.records),1)
++    def test_default_ui_ocr_document_and_receipt_outputs(self):
++        import engine
++        image=Image.new('RGB',(1100,400),'white')
++        font=ImageFont.truetype(str(engine.asset('NanumGothicBold.ttf')),56)
++        ImageDraw.Draw(image).text((30,60),'PUVKID 1200\nTOTAL 3000',font=font,fill='black',spacing=35)
++        path=self.root/'receipt.png'; image.save(path)
++        self.panel.set_files([str(path)])
++        self.assertEqual(self.panel.target(),{})
++        operations=[{'op':'ocr','format':fmt,'language':'eng'} for fmt in ('txt','docx','xlsx')]
++        operations.append({'op':'receipts_xlsx','language':'eng'})
++        for step in operations:
++            before=len(self.owner.records)
++            self.panel.write_recipe({'version':1,'name':'문서 출력','steps':[step]})
++            self.assertTrue(self.panel.run_recipe()); self.wait_done()
++            self.assertEqual(self.panel._status_key,'ws_complete',self.panel.status.text())
++            self.assertEqual(len(self.owner.records),before+1)
++            self.assertEqual(self.owner.records[-1][2],'')
++            self.assertTrue(Path(self.owner.records[-1][1]).is_file())
++    def test_explicit_image_quality_and_independent_targets(self):
++        self.panel.format.setCurrentIndex(self.panel.format.findData('pdf'))
++        self.panel.max_bytes.setValue(512)
++        self.panel.a4.setChecked(True)
++        self.assertEqual(self.panel.target(),{'format':'pdf','max_bytes':512*1024,'page_size':'A4'})
++        self.panel.format.setCurrentIndex(0); self.panel.max_bytes.setValue(0); self.panel.a4.setChecked(False)
++        self.panel.set_files([str(self.path)])
++        self.panel.write_recipe({'version':1,'name':'명시 품질','steps':[{'op':'rename','template':'{name}_quality'}]})
++        self.panel.quality_enabled.setChecked(True)
++        self.panel.quality.setValue(70); self.panel.dpi.setValue(120)
++        self.assertEqual(self.panel.target(),{'quality':70,'dpi':120})
++        self.panel.set_language('en')
++        self.assertTrue(self.panel.quality_enabled.isChecked())
++        self.assertTrue(self.panel.run_recipe()); self.wait_done()
++        self.assertEqual(self.panel._status_key,'ws_complete')
++        self.assertEqual(len(self.owner.records),1)
++        self.assertEqual(self.owner.records[0][2],'')
++    def test_common_picker_classes_languages_motion_and_cancel(self):
++        from ui_motion import MotionFileDialog
++        actions=[self.panel.choose_files,self.panel.import_recipe,self.panel.export_recipe,self.panel.choose_output,self.panel.choose_watch_folder]
++        before=(self.panel.paths.copy(),self.panel.recipe_editor.toPlainText(),self.panel.output_dir)
++        seen=[]
++        def reject(dialog):
++            self.assertIsInstance(dialog,MotionFileDialog)
++            self.assertTrue(dialog.testOption(QFileDialog.DontUseNativeDialog))
++            seen.append((dialog.title_key,dialog.fileMode(),dialog.acceptMode()))
++            self.panel.set_language('en')
++            self.assertEqual(dialog.language,'en')
++            self.assertEqual(dialog.windowTitle(),self.panel.t(dialog.title_key))
++            self.panel.set_reduced_motion(True)
++            dialog.show(); APP.processEvents()
++            self.assertTrue(APP.property('flipringReducedMotion'))
++            dialog.reject()
++            return QFileDialog.Rejected
++        with patch.object(MotionFileDialog,'exec',reject):
++            for action in actions: action()
++        self.assertEqual(len(seen),5)
++        self.assertEqual(seen[0][1],QFileDialog.ExistingFiles)
++        self.assertEqual(seen[1][1],QFileDialog.ExistingFile)
++        self.assertEqual(seen[2][2],QFileDialog.AcceptSave)
++        self.assertEqual(seen[3][1],QFileDialog.Directory)
++        self.assertEqual(seen[4][1],QFileDialog.Directory)
++        self.assertEqual((self.panel.paths,self.panel.recipe_editor.toPlainText(),self.panel.output_dir),before)
++        self.assertFalse(hasattr(self.panel,'_watch_folder'))
++        self.assertEqual(self.panel._pickers,[])
++    def test_common_picker_accepts_files_recipe_export_and_folders(self):
++        import json
++        from ui_motion import MotionFileDialog
++        recipe={'version':1,'name':'선택창 레시피','steps':[{'op':'rename','template':'{name}_selected'}]}
++        imported=self.root/'import.json'; imported.write_text(json.dumps(recipe,ensure_ascii=False),encoding='utf-8')
++        exported=self.root/'export.json'; output=self.root/'out';output.mkdir();watch=self.root/'watch';watch.mkdir()
++        selected={'ws_add':[str(self.path)],'ws_import':[str(imported)],'ws_export':[str(exported)],'ws_output':[str(output)],'ws_watch_folder':[str(watch)]}
++        with patch.object(MotionFileDialog,'exec',lambda d:QFileDialog.Accepted), patch.object(MotionFileDialog,'selectedFiles',lambda d:selected[d.title_key]):
++            self.panel.choose_files();self.panel.import_recipe();self.panel.export_recipe();self.panel.choose_output();self.panel.choose_watch_folder()
++        self.assertEqual(self.panel.paths,[str(self.path)])
++        self.assertEqual(json.loads(exported.read_text(encoding='utf-8')),recipe)
++        self.assertEqual(self.panel.output_dir,output)
++        self.assertEqual(self.panel._watch_folder,str(watch))
++        self.assertFalse(self.panel.watch_enabled.isChecked())
++    def test_mainwindow_history_filters_and_legacy_boundaries(self):
++        import app
++        previous=app.DATA; app.DATA=self.root/'app-data'
++        window=None
++        try:
++            app.apply_application_style(APP)
++            window=app.MainWindow(); window.timer.stop()
++            window.notifications.setChecked(False); window.reveal.setChecked(False)
++            self.assertEqual(window.tabs.count(),8)
++            self.assertEqual(window.tabs.currentIndex(),0)
++            self.assertIs(window.tabs.widget(4),window.pdf_panel)
++            self.assertEqual(window.sidebar.width(),204)
++            window.records=[{'time':'2026-11-02T00:00:00','source':str(self.path),'output':str(self.path),'error':''},
++                            {'time':'2026-11-02T00:01:00','source':'missing.pdf','output':'','error':'failed'}]
++            window.refresh_history()
++            window.history_format.setText('png')
++            self.assertTrue(window.history.item(0).isHidden())
++            self.assertFalse(window.history.item(1).isHidden())
++            window.history_format.clear(); window.history_state.setCurrentIndex(window.history_state.findData('failed'))
++            self.assertFalse(window.history.item(0).isHidden())
++            self.assertTrue(window.history.item(1).isHidden())
++            window.history_state.setCurrentIndex(0); window.history.setCurrentRow(1)
++            window.copy_history_result(False)
++            self.assertEqual(QApplication.clipboard().text(),str(self.path))
++            window.set_language('en')
++            self.assertEqual(window.workspace_panel.run_button.text(),'Run recipe')
++        finally:
++            if window:
++                window.quick_actions_panel.shutdown()
++                window.workspace_panel.shutdown(); window.pdf_panel.shutdown(); window.pool.shutdown(wait=False)
++                window.timer.stop(); window.wheel.hide(); window.tray.hide(); window.hide()
++            app.DATA=previous
++
++if __name__ == '__main__':
+     unittest.main()
+Binary files 1.12.0/소스/vendor/h2orestart/H2Orestart.oxt and 1.12.1/소스/vendor/h2orestart/H2Orestart.oxt differ
+--- 1.12.0/소스/version-info.txt
++++ 1.12.1/소스/version-info.txt
+@@ -1,8 +1,8 @@
+ VSVersionInfo(
+-  ffi=FixedFileInfo(filevers=(1,12,0,0), prodvers=(1,12,0,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),
++  ffi=FixedFileInfo(filevers=(1,12,1,0), prodvers=(1,12,1,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),
+   kids=[StringFileInfo([StringTable('040904B0', [
+     StringStruct('CompanyName','PUVKID'), StringStruct('FileDescription','FlipRing'),
+-    StringStruct('FileVersion','1.12.0'), StringStruct('ProductVersion','1.12.0'),
++    StringStruct('FileVersion','1.12.1'), StringStruct('ProductVersion','1.12.1'),
+     StringStruct('ProductName','FlipRing'), StringStruct('OriginalFilename','FlipRing.exe')
+   ])]), VarFileInfo([VarStruct('Translation',[1033,1200])])]
+ )
+--- 1.12.0/소스/배포구성.json
++++ 1.12.1/소스/배포구성.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": 1,
+-  "version": "1.12.0",
++  "version": "1.12.1",
+   "source_roots": [
+     "소스",
+     "검사도구",
+@@ -11,7 +11,8 @@
+     ".git"
+   ],
+   "reviewed_public_docs": [
+-    "docs/2026-11-20_빠른작업과테마_설계.md"
++    "docs/2026-11-20_빠른작업과테마_설계.md",
++    "docs/2026-11-20_배포전전체기능_확인.md"
+   ],
+   "required": [
+     "검사도구/documents_suites110.py",
+@@ -969,7 +970,17 @@
+     "소스/test_quick_actions112.py",
+     "소스/test_theme_install112.py",
+     "소스/1.12-빠른작업안내.md",
+-    "소스/1.12-기능50항목.md"
++    "소스/1.12-기능50항목.md",
++    "소스/test_document_import1121.py",
++    "검사도구/대표문서입력검사1121.py",
++    "소스/1.12.1-문서입력보완.md",
++    "소스/licenses/H2Orestart/H2Orestart-v0.8.0-original.oxt",
++    "소스/licenses/H2Orestart/수정과_재빌드안내.md",
++    "소스/licenses/H2Orestart/수정빌드_명세.json",
++    "소스/licenses/H2Orestart/재빌드.py",
++    "소스/licenses/H2Orestart/전체그림경계-수정.patch",
++    "소스/licenses/H2Orestart/수정소스/soffice/ConvGraphics.java",
++    "검사도구/HWP그림경계검사1121.py"
+   ],
+   "excluded_files": {
+     "ROUTING-LESSONS.md": "비공개 운영·실패 이력",
+@@ -1106,5 +1117,5 @@
+     }
+   ],
+   "separation_reason": "528499332바이트의 정확10개 원 archive는 전체소스ZIP에 보존하고 실행부에서만 분리. 동등한 동일 Release 접근의 실제 게시 검증은 별도.",
+-  "source_zip": "플립링-1.12.0-전체소스.zip"
++  "source_zip": "플립링-1.12.1-전체소스.zip"
+ }
+--- 1.12.0/소스/배포빌드.py
++++ 1.12.1/소스/배포빌드.py
+@@ -10,9 +10,9 @@
+ import sys
+ import zipfile
+ 
+-SOURCE_ZIP_NAME = "플립링-1.12.0-전체소스.zip"
+-RELEASE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.12.0"
+-SOURCE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/download/v1.12.0/" + "FlipRing-1.12.0-Source.zip"
++SOURCE_ZIP_NAME = "플립링-1.12.1-전체소스.zip"
++RELEASE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.12.1"
++SOURCE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/download/v1.12.1/" + "FlipRing-1.12.1-Source.zip"
+ 
+ 
+ class DeliveryError(RuntimeError):
+@@ -190,7 +190,7 @@
+     entries, excluded = classified_entries(root, prepared["config"])
+     if manifest.get("entries") != entries or manifest.get("excluded") != excluded:
+         raise DeliveryError("전체 소스 분류와 외부 manifest가 다릅니다.")
+-    if (manifest.get("file") != SOURCE_ZIP_NAME or manifest.get("version") != "1.12.0"
++    if (manifest.get("file") != SOURCE_ZIP_NAME or manifest.get("version") != "1.12.1"
+             or manifest.get("release_url") != RELEASE_URL or manifest.get("source_url") != SOURCE_URL):
+         raise DeliveryError("전체 소스의 버전·파일명·예정 URL이 다릅니다.")
+     archive = reject_links(archive)
+@@ -253,7 +253,7 @@
+ 
+ 
+ def runtime_notice(manifest):
+-    return ("플립링 1.12.0 전체 상응 소스\n파일: " + manifest["file"] + "\nSHA-256: " + manifest["sha256"]
++    return ("플립링 1.12.1 전체 상응 소스\n파일: " + manifest["file"] + "\nSHA-256: " + manifest["sha256"]
+             + "\n동일 Release: " + manifest["release_url"] + "\n정확 소스 자산: " + manifest["source_url"]
+             + "\n고객 배포 폴더의 같은 전체 소스 ZIP과 원문 고지·패치·빌드 방법을 보존해 주세요.\n"
+             "온라인 재배포자는 같은 장소에서 무료로 동등한 상응 소스 접근을 제공할 수 있습니다.\n"
+--- 1.12.0/소스/빌드방법.md
++++ 1.12.1/소스/빌드방법.md
+@@ -1,12 +1,16 @@
+-# 1.12.0 빌드
+-
+-현재 소스의 버전은 1.12.0입니다. 아래 명령의 출력·작업 폴더는 새 1.12.0 경로로 지정하세요. 기존 전체 회귀 검사는 변경 없는 코드에 대해 반복 실행할 필요가 없습니다. 새 변경은 test_quick_actions112·test_theme_install112와 실행본 확인으로 검증합니다.
++# 1.12.1 빌드
++
++현재 소스의 버전은 1.12.1입니다. 아래 명령의 출력·작업 폴더는 새 1.12.1 경로로 지정하세요. 기존 전체 회귀 검사는 변경 없는 코드에 대해 반복 실행할 필요가 없습니다. 문서 입력 수리는 test_document_import1121과 실제 문서 변환으로 확인합니다. 변경 없는 기존 기능의 유효한 근거는 재사용하며 실행본·설치본 확인은 별도로 구분합니다.
++
++## 1.12.1 HWP 그림 읽기 보완
++
++H2Orestart의 전체 그림 자르기 경계를 수정한 로컬 빌드를 포함합니다. 원본·수정 소스·정확한 패치와 재현 명령은 `licenses/H2Orestart/수정과_재빌드안내.md`에 있습니다. 아래 1.11 기록의 그림 한 줄 잘림 미해결 설명은 당시 상태이며, 이번 패치에서는 고정 64×48 전체 그림과 32×24 부분 자르기의 HWP·HWPX 네 경로를 실제 대조했습니다. 다른 외부 뷰어의 모든 배치를 확인한 의미는 아닙니다.
+ 
+ # 플립링 1.11.0 빌드와 전체 소스
+ 
+ Windows 10/11 x64, Python 3.12 x64, 고정 requirements-lock.txt와 Inno Setup 6이 필요합니다. 제품 버전 1.11.0과 설정 스키마 VERSION=3은 별개입니다. 실행 이름 FlipRing.exe·설치 이름 FlipRing-Setup.exe·기존 FlipRing19 설치/설정 규약은 유지합니다. 새 바로가기·정션·심볼릭 링크는 만들지 않습니다.
+ 
+-고객용 전체 소스는 `플립링-1.12.0-전체소스.zip`입니다. 공개 Git의 대용량 제한을 적용한 사본이나 GitHub 자동 소스 압축본으로 대체하지 않습니다. ZIP에는 제품·빌드·검사 Python 코드, 필수 assets/vendor/licenses, 원바이트 상응 소스 archive와 검사도구 6개를 보존합니다. 상위 docs의 공개 미승인 내부 계획, work/evidence/.codex/.git, 개인 지침과 검토기록.md는 제외 이유를 외부 목록에 남깁니다. 공개 미승인 필수 입력이 있으면 준비가 중단됩니다.
++고객용 전체 소스는 `플립링-1.12.1-전체소스.zip`입니다. 공개 Git의 대용량 제한을 적용한 사본이나 GitHub 자동 소스 압축본으로 대체하지 않습니다. ZIP에는 제품·빌드·검사 Python 코드, 필수 assets/vendor/licenses, 원바이트 상응 소스 archive와 검사도구를 보존합니다. 상위 docs의 공개 미승인 내부 계획, work/evidence/.codex/.git, 개인 지침과 검토기록.md는 제외 이유를 외부 목록에 남깁니다. 공개 미승인 필수 입력이 있으면 준비가 중단됩니다.
+ 
+ ## 새 경로에서 재현
+ 
+@@ -36,7 +40,7 @@
+ 
+ 고객 폴더에는 프로그램/FlipRing 전체, 설치파일/FlipRing-Setup.exe, 정확 전체 소스 ZIP, 외부 소스 manifest와 SHA 목록·안내를 함께 제공합니다. 앱의 라이선스 폴더에는 정확 ZIP명·SHA·동일 Release URL·자산 URL과 재배포 안내를 생성합니다. 온라인 재배포자는 같은 장소에서 무료로 동등한 소스 접근을 제공할 수 있습니다. Qt/PySide의 호환 동적 라이브러리 교체와 수정 디버깅을 위한 역공학을 제한하지 않습니다.
+ 
+-예정 공개 위치는 https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.12.0 입니다. installer와 전체 소스 ZIP을 같은 Release에 실제 게시하고, 로그인 없는 전체 다운로드·SHA·ZIP 내용·링크를 별도로 확인해야 공개 완료입니다. 예정 주소나 로컬 빌드 성공만으로 게시·법적 조건 충족을 주장하지 않습니다.
++예정 공개 위치는 https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.12.1 입니다. installer와 전체 소스 ZIP을 같은 Release에 실제 게시하고, 로그인 없는 전체 다운로드·SHA·ZIP 내용·링크를 별도로 확인해야 공개 완료입니다. 예정 주소나 로컬 빌드 성공만으로 게시·법적 조건 충족을 주장하지 않습니다.
+ 
+ ## 현재 검사 묶음과 한계
+ 
+--- 1.12.0/소스/사용안내.txt
++++ 1.12.1/소스/사용안내.txt
+@@ -1,4 +1,4 @@
+-플립링 1.12.0 — PUVKID
++플립링 1.12.1 — PUVKID
+ 라이트·다크 테마와 빠른 작업·폴더 변환·결과 관리를 제공합니다.
+ 추가 도구는 외부 도우미 화면에서 설치합니다.
+ 

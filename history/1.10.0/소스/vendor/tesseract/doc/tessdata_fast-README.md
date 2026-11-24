@@ -41,15 +41,9 @@ Initial capitals in the filename indicate the one model for all languages in tha
 
 ### LSTM training details for different languages and scripts
 
-For Latin-based languages, the existing model data provided has been trained on about 400000 textlines spanning about 4500 fonts.
+For Latin-based languages, the existing model data provided has been trained on about 400000 textlines spanning about 4500 fonts. For other scripts, not so many fonts are available, but they have still been trained on a similar number of textlines.  eg. Latin ~4500 fonts, Devanagari ~50 fonts, Kannada 15.
 
-For other scripts, not so many fonts are available, but they have still been trained on a similar number of textlines.  eg.
-
-Latin ~4500 fonts, Devanagari ~50 fonts, Kannada 15.
-
-With a theory that poor accuracy on test data and over-fitting on training data was caused by the lack of fonts, the training data has been mixed with English, so that some of the font diversity might generalize to the other script.
-
-The overall effect was slightly positive, hence the script models include English language also.
+With a theory that poor accuracy on test data and over-fitting on training data was caused by the lack of fonts, the training data has been mixed with English, so that some of the font diversity might generalize to the other script. The overall effect was slightly positive, hence the script models include English language also.
 
 ### Example - jpn and  Japanese
 

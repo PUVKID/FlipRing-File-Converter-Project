@@ -1,9 +1,21 @@
 [
   {
+    "path": "검사도구/HWP그림경계검사1121.py",
+    "change": "added",
+    "bytes": 8322,
+    "sha256": "da65cfb2c7cdf6264e9b5ac8c1d4efcfa3c6c94079a96a92c84aeffbf0ab5c76"
+  },
+  {
+    "path": "검사도구/대표문서입력검사1121.py",
+    "change": "added",
+    "bytes": 9337,
+    "sha256": "743120a337ecf4bb6ab2681e4f8f644ecb782d5a0760bf3cafab7e8856e375a2"
+  },
+  {
     "path": "소스/1.12.1-문서입력보완.md",
     "change": "added",
-    "bytes": 2023,
-    "sha256": "7f50e84c46a27412ff3f51fbc0538ac44f46715ab19725e04446d566c78a019e"
+    "bytes": 2897,
+    "sha256": "c455a4c07224b59bad93e32f75a12edb47ebd532c4c7d39d10b750639e98803a"
   },
   {
     "path": "소스/app.py",
@@ -44,6 +56,50 @@
     "sha256": "5da6d5ce0a4d5bca015f4200e75248e7ce0820aef5218cb5bb269df1a8f79031",
     "previous_bytes": 1222,
     "previous_sha256": "8077bf8a1718aa252ff81b9af840103636d270a6738e4e03bb0f7097f8d314d5"
+  },
+  {
+    "path": "소스/licenses/H2Orestart/H2Orestart-v0.8.0-original.oxt",
+    "change": "added",
+    "bytes": 611297,
+    "sha256": "f36c19fa6b7dff1cf34114d926bdc088e6bcfa7fdc93d67eaafd3f572be1d62c"
+  },
+  {
+    "path": "소스/licenses/H2Orestart/수정과_재빌드안내.md",
+    "change": "added",
+    "bytes": 4535,
+    "sha256": "b170fb535fcd175c34aa6e5e28344852f515310e48ad93c09776e86b74141d13"
+  },
+  {
+    "path": "소스/licenses/H2Orestart/수정빌드_명세.json",
+    "change": "added",
+    "bytes": 6700,
+    "sha256": "75e38c264f7af1a1c6d86c63f682af15d83aa82dd12dbd28ca458d2edf10c82c"
+  },
+  {
+    "path": "소스/licenses/H2Orestart/수정소스/soffice/ConvGraphics.java",
+    "change": "added",
+    "bytes": 180316,
+    "sha256": "84b3dc0a06becb60a1a646ac2dc058439803a94dfafcd0f816d403feb0c1ae3a"
+  },
+  {
+    "path": "소스/licenses/H2Orestart/원본출처.json",
+    "change": "modified",
+    "bytes": 1430,
+    "sha256": "34f2a286d4d27fb10a50170018ae4bb85bd9cb525e8ece7eea5fa005be551ad9",
+    "previous_bytes": 785,
+    "previous_sha256": "cd69b7f9b03deca7151c6362d849abb1c293d7c91f03d7f69594238489dc8c28"
+  },
+  {
+    "path": "소스/licenses/H2Orestart/재빌드.py",
+    "change": "added",
+    "bytes": 5646,
+    "sha256": "53d28b922a11875a15a995a6890a229c8e50fe9e8be7610073d19c5b7f08fb71"
+  },
+  {
+    "path": "소스/licenses/H2Orestart/전체그림경계-수정.patch",
+    "change": "added",
+    "bytes": 1856,
+    "sha256": "0ecac44320f37136ba6dbe3a7d0d865e96dcaca2b15c63cb33bbc17a8c4b49ff"
   },
   {
     "path": "소스/test_document_import1121.py",
@@ -100,6 +156,14 @@
     "previous_sha256": "9ccecc6be0a41bb4275817f85ebe127275f50b1de5b4e16c4d0d5c56ca443afc"
   },
   {
+    "path": "소스/vendor/h2orestart/H2Orestart.oxt",
+    "change": "modified",
+    "bytes": 606897,
+    "sha256": "6a12a08a4c10bd4e020c4bce9dc9315046a71bf5dc3061ad9405e456d75a13ab",
+    "previous_bytes": 611297,
+    "previous_sha256": "f36c19fa6b7dff1cf34114d926bdc088e6bcfa7fdc93d67eaafd3f572be1d62c"
+  },
+  {
     "path": "소스/version-info.txt",
     "change": "modified",
     "bytes": 519,
@@ -110,8 +174,8 @@
   {
     "path": "소스/배포구성.json",
     "change": "modified",
-    "bytes": 65357,
-    "sha256": "fc681e707df3689a107f9e4114ee59a59f6d1ed094070102abe521f1777d255b",
+    "bytes": 65786,
+    "sha256": "a41b90da3248450b94fe94bc0d92e484d90b266eda3165192bd5b8152eb05566",
     "previous_bytes": 65161,
     "previous_sha256": "4e66afff77874f83f2a0edb70231ca22ac1ee62debd62b01633749c4fc8f487c"
   },
@@ -126,8 +190,8 @@
   {
     "path": "소스/빌드방법.md",
     "change": "modified",
-    "bytes": 32993,
-    "sha256": "79117d021cb9da29c7adac7dac4d1676305edd0c6e9cbb1688ce09a27ba55ba8",
+    "bytes": 33546,
+    "sha256": "ec440ffe2d2533ce853193b5984eea7dc5d2c4b0a50bc221aa71a7988a9cc1da",
     "previous_bytes": 32879,
     "previous_sha256": "632aade6e53ca83317d85f21ef007ab769dbb813c6a80f7508ef41918519235a"
   },

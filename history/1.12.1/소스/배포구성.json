@@ -973,7 +973,14 @@
     "소스/1.12-기능50항목.md",
     "소스/test_document_import1121.py",
     "검사도구/대표문서입력검사1121.py",
-    "소스/1.12.1-문서입력보완.md"
+    "소스/1.12.1-문서입력보완.md",
+    "소스/licenses/H2Orestart/H2Orestart-v0.8.0-original.oxt",
+    "소스/licenses/H2Orestart/수정과_재빌드안내.md",
+    "소스/licenses/H2Orestart/수정빌드_명세.json",
+    "소스/licenses/H2Orestart/재빌드.py",
+    "소스/licenses/H2Orestart/전체그림경계-수정.patch",
+    "소스/licenses/H2Orestart/수정소스/soffice/ConvGraphics.java",
+    "검사도구/HWP그림경계검사1121.py"
   ],
   "excluded_files": {
     "ROUTING-LESSONS.md": "비공개 운영·실패 이력",
