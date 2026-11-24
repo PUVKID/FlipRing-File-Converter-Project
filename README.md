@@ -7,7 +7,7 @@
 <!-- project-levels:start -->
 ## 1.12.1 · 문서 입력 보완
 
-**ABW·DIF 입력, HWP·HWPX 그림 경계와 프리셋 간격을 보완했습니다.** 실행·설치 파일과 전체 소스를 빌드하고 Windows 설치·기동을 확인했습니다. 실제 탐색기 변환·취소와 생성 파일을 대조했으며 남은 확인 항목은 상세 문서에 기록했습니다.
+ABW·DIF 입력, HWP·HWPX 그림 경계와 프리셋 간격을 보완했습니다. 실행·설치 파일과 전체 소스를 빌드하고 Windows 설치·기동을 확인했습니다. 실제 탐색기 변환·취소와 생성 파일을 대조했으며 남은 확인 항목은 상세 문서에 기록했습니다.
 
 [차수 설명](docs/versions/1.12.1.md) · [소스](history/1.12.1/소스/) · [직전 비교](docs/revision-audit/1.12.1.md)
 
@@ -17,7 +17,7 @@ Pandoc 3.13에서 3.14로의 설치·재탐지는 실제 설치 백엔드에서 
 
 
 
-**저장한 변환 설정을 Shift 드래그로 바로 실행합니다.** 폴더 구조를 유지한 일괄 변환, 목표 용량과 전후 비교, 대기열·결과 정리·되돌리기를 추가했습니다. 화면 테마는 라이트·다크·시스템을 저장하며 외부 도구는 앱의 설치 버튼으로 설치합니다.
+저장한 변환 설정을 Shift 드래그로 바로 실행합니다. 폴더 구조를 유지한 일괄 변환, 목표 용량과 전후 비교, 대기열·결과 정리·되돌리기를 추가했습니다. 화면 테마는 라이트·다크·시스템을 저장하며 외부 도구는 앱의 설치 버튼으로 설치합니다.
 
 
 
@@ -158,7 +158,7 @@ FFmpeg·LibreOffice·Tesseract 등은 선택한 기능에 필요한 경우 준�
 - [163개 기능 검사와 모션 동기화 검증](docs/2026-11-02_검사실행구성보완.md)을 별도로 기록했습니다. 이 후속 기록은 보존된 1.8.0 제품과 검사 실행에 관한 자료입니다.
 - 개발 검증에 사용하는 [출력 수집기](tools/release_capture.py)와 [회귀 검사 전체 소스](tools/test_release_capture.py)도 함께 보관합니다.
 
-**1.7.0 · 파일별 작업 흐름과 PDF 페이지 편집**
+1.7.0 · 파일별 작업 흐름과 PDF 페이지 편집
 
 - 원본·결과 이미지 미리보기, 파일별 대기·완료·실패·취소와 실패만 재시도, 기본·사용자 프리셋을 연결했습니다.
 - PDF 실제 썸네일의 드래그 순서 변경·다중 선택·회전·삭제·추출·확대와 새 파일 저장을 추가했습니다.
@@ -290,7 +290,7 @@ flowchart LR
 <a name="️-트레이와-원형-메뉴"></a>
 ### 트레이와 원형 메뉴
 
-기본 조합은 **Shift를 누른 채 탐색기·바탕 화면에서 파일을 끌기**입니다. 앱은 30ms 간격으로 입력 상태를 확인하고 10px보다 큰 이동에서 원형 메뉴를 띄웁니다. 메뉴에 실제로 전달된 로컬 파일을 확인하고 복사 동작으로 드롭을 받아 변환합니다. 중앙·지원하지 않는 영역에서는 변환하지 않습니다.
+기본 조합은 Shift를 누른 채 탐색기·바탕 화면에서 파일을 끌기입니다. 앱은 30ms 간격으로 입력 상태를 확인하고 10px보다 큰 이동에서 원형 메뉴를 띄웁니다. 메뉴에 실제로 전달된 로컬 파일을 확인하고 복사 동작으로 드롭을 받아 변환합니다. 중앙·지원하지 않는 영역에서는 변환하지 않습니다.
 
 창의 닫기 버튼은 앱을 트레이로 숨깁니다. 종료는 트레이 메뉴에서 선택하며, 변환 작업이 남아 있으면 완료를 기다리도록 안내합니다. 일반 변환과 PDF 작업은 각각 단일 작업 스레드를 사용하고 두 큐를 동시에 실행하지 않습니다. 도움 도구 화면은 설치 명령을 클립보드에 복사하며 자동 설치하지 않습니다.
 
@@ -398,7 +398,7 @@ Windows 글꼴·운영 체제 API와 선택한 기능의 실행 파일이 필요
 
 <div align="center">
 
-**선택하고, 변환하고, 새 결과로 보관합니다.**
+선택하고, 변환하고, 새 결과로 보관합니다.
 
 </div>
 
@@ -408,27 +408,27 @@ Windows 글꼴·운영 체제 API와 선택한 기능의 실행 파일이 필요
 
 각 차수의 소스·설정·리소스·사용법·설계를 함께 보관합니다. 부분 자료와 실제 제품 버전을 각 설명에서 구분합니다.
 
-| 차수·자료 | 자료 폴더·원본 | 상세 설명 | 직전 비교·범위 |
-| --- | --- | --- | --- |
-| 1.2.0 | [자료 폴더](history/1.2.0) | [상세 설명](docs/versions/1.2.0.md) | [전체 비교·범위](docs/revision-audit/1.2.0.md) |
-| 부드러운디자인-작업전 | [자료 폴더](history/%EB%B6%80%EB%93%9C%EB%9F%AC%EC%9A%B4%EB%94%94%EC%9E%90%EC%9D%B8-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%EB%B6%80%EB%93%9C%EB%9F%AC%EC%9A%B4%EB%94%94%EC%9E%90%EC%9D%B8-%EC%9E%91%EC%97%85%EC%A0%84.md) | [전체 비교·범위](docs/revision-audit/%EB%B6%80%EB%93%9C%EB%9F%AC%EC%9A%B4%EB%94%94%EC%9E%90%EC%9D%B8-%EC%9E%91%EC%97%85%EC%A0%84.md) |
-| 버튼모션-작업전 | [자료 폴더](history/%EB%B2%84%ED%8A%BC%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%EB%B2%84%ED%8A%BC%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md) | [전체 비교·범위](docs/revision-audit/%EB%B2%84%ED%8A%BC%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md) |
-| 콤보-작업전 | [자료 폴더](history/%EC%BD%A4%EB%B3%B4-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%EC%BD%A4%EB%B3%B4-%EC%9E%91%EC%97%85%EC%A0%84.md) | [전체 비교·범위](docs/revision-audit/%EC%BD%A4%EB%B3%B4-%EC%9E%91%EC%97%85%EC%A0%84.md) |
-| 탭잔상-작업전 | [자료 폴더](history/%ED%83%AD%EC%9E%94%EC%83%81-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%ED%83%AD%EC%9E%94%EC%83%81-%EC%9E%91%EC%97%85%EC%A0%84.md) | [전체 비교·범위](docs/revision-audit/%ED%83%AD%EC%9E%94%EC%83%81-%EC%9E%91%EC%97%85%EC%A0%84.md) |
-| 호버대비-작업전 | [자료 폴더](history/%ED%98%B8%EB%B2%84%EB%8C%80%EB%B9%84-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%ED%98%B8%EB%B2%84%EB%8C%80%EB%B9%84-%EC%9E%91%EC%97%85%EC%A0%84.md) | [전체 비교·범위](docs/revision-audit/%ED%98%B8%EB%B2%84%EB%8C%80%EB%B9%84-%EC%9E%91%EC%97%85%EC%A0%84.md) |
-| 1.4.0 | [자료 폴더](history/1.4.0) | [상세 설명](docs/versions/1.4.0.md) | [전체 비교·범위](docs/revision-audit/1.4.0.md) |
-| 내부모션-작업전 | [자료 폴더](history/%EB%82%B4%EB%B6%80%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%EB%82%B4%EB%B6%80%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md) | [전체 비교·범위](docs/revision-audit/%EB%82%B4%EB%B6%80%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md) |
-| 1.6.0 | [자료 폴더](history/1.6.0) | [상세 설명](docs/versions/1.6.0.md) | [전체 비교·범위](docs/revision-audit/1.6.0.md) |
-| 1.7.0 | [자료 폴더](history/1.7.0) | [상세 설명](docs/versions/1.7.0.md) | [전체 비교·범위](docs/revision-audit/1.7.0.md) |
-| 1.8.0 | [자료 폴더](history/1.8.0) | [상세 설명](docs/versions/1.8.0.md) | [전체 비교·범위](docs/revision-audit/1.8.0.md) |
-| 1.9.0 | [자료 폴더](history/1.9.0) | [상세 설명](docs/versions/1.9.0.md) | [전체 비교·범위](docs/revision-audit/1.9.0.md) |
-| 1.10.0 | [폴더](history/1.10.0/) | [설명](docs/versions/1.10.0.md) | [전체 비교](docs/revision-audit/1.10.0.md) |
-| 1.11.0 | [폴더](history/1.11.0/) | [설명](docs/versions/1.11.0.md) | [전체 비교](docs/revision-audit/1.11.0.md) |
-| 1.12.0 | [폴더](history/1.12.0/) | [설명](docs/versions/1.12.0.md) | [전체 비교](docs/revision-audit/1.12.0.md) |
-| 1.12.1 | [폴더](history/1.12.1/) | [설명](docs/versions/1.12.1.md) | [전체 비교](docs/revision-audit/1.12.1.md) |
-| 최종 | [폴더](소스/) | [설명](docs/versions/최종.md) | [전체 비교](docs/revision-audit/최종.md) |
-| 현행소스 | 원격 726 기준: [자료 폴더](%EC%86%8C%EC%8A%A4)<br>현재 후보: [폴더](소스/) | 원격 726 기준: [상세 설명](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md)<br>현재 후보: [설명](docs/revision-audit/현행소스.md) | 원격 726 기준: [전체 비교·범위](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md)<br>현재 후보: [전체 비교](docs/revision-audit/현행소스.md) |
-| 고유 작업 코드·문서 | [자료 폴더](%EB%B3%B4%EC%A1%B4%EC%9E%90%EB%A3%8C/%EC%9E%91%EC%97%85%EC%86%8C%EC%8A%A4) | [상세 설명](docs/SOURCE_MATERIALS.md) | [전체 비교·범위](docs/2026-11-02_%EA%B3%B5%EA%B0%9C%EB%B0%98%EC%98%81%EC%9E%AC%EA%B0%9C%EA%B2%80%EC%A6%9D.md) |
+| 차수·자료 | 자료 폴더·원본 | 상세 설명 · 직전 비교·범위 |
+| --- | --- | --- |
+| 1.2.0 | [자료 폴더](history/1.2.0) | [상세 설명](docs/versions/1.2.0.md)<br>[전체 비교·범위](docs/revision-audit/1.2.0.md) |
+| 부드러운디자인-작업전 | [자료 폴더](history/%EB%B6%80%EB%93%9C%EB%9F%AC%EC%9A%B4%EB%94%94%EC%9E%90%EC%9D%B8-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%EB%B6%80%EB%93%9C%EB%9F%AC%EC%9A%B4%EB%94%94%EC%9E%90%EC%9D%B8-%EC%9E%91%EC%97%85%EC%A0%84.md)<br>[전체 비교·범위](docs/revision-audit/%EB%B6%80%EB%93%9C%EB%9F%AC%EC%9A%B4%EB%94%94%EC%9E%90%EC%9D%B8-%EC%9E%91%EC%97%85%EC%A0%84.md) |
+| 버튼모션-작업전 | [자료 폴더](history/%EB%B2%84%ED%8A%BC%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%EB%B2%84%ED%8A%BC%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md)<br>[전체 비교·범위](docs/revision-audit/%EB%B2%84%ED%8A%BC%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md) |
+| 콤보-작업전 | [자료 폴더](history/%EC%BD%A4%EB%B3%B4-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%EC%BD%A4%EB%B3%B4-%EC%9E%91%EC%97%85%EC%A0%84.md)<br>[전체 비교·범위](docs/revision-audit/%EC%BD%A4%EB%B3%B4-%EC%9E%91%EC%97%85%EC%A0%84.md) |
+| 탭잔상-작업전 | [자료 폴더](history/%ED%83%AD%EC%9E%94%EC%83%81-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%ED%83%AD%EC%9E%94%EC%83%81-%EC%9E%91%EC%97%85%EC%A0%84.md)<br>[전체 비교·범위](docs/revision-audit/%ED%83%AD%EC%9E%94%EC%83%81-%EC%9E%91%EC%97%85%EC%A0%84.md) |
+| 호버대비-작업전 | [자료 폴더](history/%ED%98%B8%EB%B2%84%EB%8C%80%EB%B9%84-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%ED%98%B8%EB%B2%84%EB%8C%80%EB%B9%84-%EC%9E%91%EC%97%85%EC%A0%84.md)<br>[전체 비교·범위](docs/revision-audit/%ED%98%B8%EB%B2%84%EB%8C%80%EB%B9%84-%EC%9E%91%EC%97%85%EC%A0%84.md) |
+| 1.4.0 | [자료 폴더](history/1.4.0) | [상세 설명](docs/versions/1.4.0.md)<br>[전체 비교·범위](docs/revision-audit/1.4.0.md) |
+| 내부모션-작업전 | [자료 폴더](history/%EB%82%B4%EB%B6%80%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84) | [상세 설명](docs/versions/%EB%82%B4%EB%B6%80%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md)<br>[전체 비교·범위](docs/revision-audit/%EB%82%B4%EB%B6%80%EB%AA%A8%EC%85%98-%EC%9E%91%EC%97%85%EC%A0%84.md) |
+| 1.6.0 | [자료 폴더](history/1.6.0) | [상세 설명](docs/versions/1.6.0.md)<br>[전체 비교·범위](docs/revision-audit/1.6.0.md) |
+| 1.7.0 | [자료 폴더](history/1.7.0) | [상세 설명](docs/versions/1.7.0.md)<br>[전체 비교·범위](docs/revision-audit/1.7.0.md) |
+| 1.8.0 | [자료 폴더](history/1.8.0) | [상세 설명](docs/versions/1.8.0.md)<br>[전체 비교·범위](docs/revision-audit/1.8.0.md) |
+| 1.9.0 | [자료 폴더](history/1.9.0) | [상세 설명](docs/versions/1.9.0.md)<br>[전체 비교·범위](docs/revision-audit/1.9.0.md) |
+| 1.10.0 | [폴더](history/1.10.0/) | [설명](docs/versions/1.10.0.md)<br>[전체 비교](docs/revision-audit/1.10.0.md) |
+| 1.11.0 | [폴더](history/1.11.0/) | [설명](docs/versions/1.11.0.md)<br>[전체 비교](docs/revision-audit/1.11.0.md) |
+| 1.12.0 | [폴더](history/1.12.0/) | [설명](docs/versions/1.12.0.md)<br>[전체 비교](docs/revision-audit/1.12.0.md) |
+| 1.12.1 | [폴더](history/1.12.1/) | [설명](docs/versions/1.12.1.md)<br>[전체 비교](docs/revision-audit/1.12.1.md) |
+| 최종 | [폴더](소스/) | [설명](docs/versions/최종.md)<br>[전체 비교](docs/revision-audit/최종.md) |
+| 현행소스 | 원격 726 기준: [자료 폴더](%EC%86%8C%EC%8A%A4)<br>현재 후보: [폴더](소스/) | 원격 726 기준: [상세 설명](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md)<br>현재 후보: [설명](docs/revision-audit/현행소스.md)<br>원격 726 기준: [전체 비교·범위](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md)<br>현재 후보: [전체 비교](docs/revision-audit/현행소스.md) |
+| 고유 작업 코드·문서 | [자료 폴더](%EB%B3%B4%EC%A1%B4%EC%9E%90%EB%A3%8C/%EC%9E%91%EC%97%85%EC%86%8C%EC%8A%A4) | [상세 설명](docs/SOURCE_MATERIALS.md)<br>[전체 비교·범위](docs/2026-11-02_%EA%B3%B5%EA%B0%9C%EB%B0%98%EC%98%81%EC%9E%AC%EA%B0%9C%EA%B2%80%EC%A6%9D.md) |
 
 
 <!-- flipring-supported-input -->
@@ -457,7 +457,7 @@ HWP 5 문서와 HWPX의 실제 검사 범위, 지원하지 않는 초기 Excel 2
 
 현재 1.11.0의 지원 범위는 위 안내를 따릅니다.
 
-현행 `소스/engine.py`의 `TABLE`에는 HWP·HWPX가 없습니다. `classify()`는 목록 밖 확장자를 지원하지 않는 파일로 거부하므로 **현재 HWP·HWPX →PDF는 지원하지 않습니다.** LibreOffice 설치만으로 해당 입력이 이 앱에 연결되는 것은 아닙니다.
+현행 `소스/engine.py`의 `TABLE`에는 HWP·HWPX가 없습니다. `classify()`는 목록 밖 확장자를 지원하지 않는 파일로 거부하므로 현재 HWP·HWPX →PDF는 지원하지 않습니다. LibreOffice 설치만으로 해당 입력이 이 앱에 연결되는 것은 아닙니다.
 
 입력 분류 코드의 직접 확인이며 실제 HWP 문서 변환 시험은 실행하지 않았습니다.
 

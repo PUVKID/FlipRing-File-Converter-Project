@@ -15,6 +15,9 @@
 
 프로젝트 전체의 설명은 [LEVEL 1 - Beginner](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md)부터 [LEVEL 5 - Expert](%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)까지 같은 범위로 연결됩니다.
 
+<details open>
+<summary>LEVEL 1 · Beginner — 목적과 동작부터</summary>
+
 <a id="reading-level-1"></a>
 ## LEVEL 1 - Beginner · 목적부터 결과 확인까지
 
@@ -22,7 +25,7 @@
 
 이 자료는 여러 시점에 따로 보관한 제품 코드·설정·사용법·설계·라이선스를 찾는 목록입니다.
 
-**한 번에 실행하는 프로그램 묶음이 아닙니다.** 예를 들어 예전 PDF 화면의 코드를 찾으려면 보강 자료 파일명세에서 원래 경로를 찾고 그 차수 설명과 함께 읽습니다.
+한 번에 실행하는 프로그램 묶음이 아닙니다. 예를 들어 예전 PDF 화면의 코드를 찾으려면 보강 자료 파일명세에서 원래 경로를 찾고 그 차수 설명과 함께 읽습니다.
 
 ZIP 안의 파일은 공개 ZIP 멤버 대응 목록으로 연결합니다.
 
@@ -118,6 +121,12 @@ ZIP 안의 파일은 공개 ZIP 멤버 대응 목록으로 연결합니다.
 [프로젝트](../README.md) · [전체 차수](REVISION_INDEX.md) · [원본 자료](../%EB%B3%B4%EC%A1%B4%EC%9E%90%EB%A3%8C/%EC%9E%91%EC%97%85%EC%86%8C%EC%8A%A4)
 
 이 수준에서 이어 읽기: [원본 자료](../보존자료/작업소스) · [전체 비교·자료 범위](2026-11-02_공개반영재개검증.md) · [같은 수준 프로젝트](읽기안내/레벨1.md). 폴더는 보존 위치, 전체 비교는 실제 변경 근거이며 새 실행 결과가 아닙니다.
+
+
+</details>
+
+<details>
+<summary>LEVEL 2 · Explorer — 구성과 연결 원리</summary>
 
 <a id="reading-level-2"></a>
 ## LEVEL 2 - Explorer · 구성과 처리 관계
@@ -219,6 +228,12 @@ README는 묶음의 안내이고 files.json은 파일 단위 명세입니다. �
 
 이 수준에서 이어 읽기: [원본 자료](../보존자료/작업소스) · [전체 비교·자료 범위](2026-11-02_공개반영재개검증.md) · [같은 수준 프로젝트](읽기안내/레벨2.md). 폴더는 보존 위치, 전체 비교는 실제 변경 근거이며 새 실행 결과가 아닙니다.
 
+
+</details>
+
+<details>
+<summary>LEVEL 3 · Practitioner — 준비·실행·결과 확인</summary>
+
 <a id="reading-level-3"></a>
 ## LEVEL 3 - Practitioner · 준비·절차·오류 확인
 
@@ -318,6 +333,12 @@ README에서 보존 위치를 확인하고 실제 필요한 파일은 명세와 
 [프로젝트](../README.md) · [전체 차수](REVISION_INDEX.md) · [원본 자료](../%EB%B3%B4%EC%A1%B4%EC%9E%90%EB%A3%8C/%EC%9E%91%EC%97%85%EC%86%8C%EC%8A%A4)
 
 이 수준에서 이어 읽기: [원본 자료](../보존자료/작업소스) · [전체 비교·자료 범위](2026-11-02_공개반영재개검증.md) · [같은 수준 프로젝트](읽기안내/레벨3.md). 폴더는 보존 위치, 전체 비교는 실제 변경 근거이며 새 실행 결과가 아닙니다.
+
+
+</details>
+
+<details>
+<summary>LEVEL 4 · Advanced — 구현·설계·실패 처리</summary>
 
 <a id="reading-level-4"></a>
 ## LEVEL 4 - Advanced · 구현 경계와 변경 영향
@@ -419,6 +440,12 @@ README에서 보존 위치를 확인하고 실제 필요한 파일은 명세와 
 
 이 수준에서 이어 읽기: [원본 자료](../보존자료/작업소스) · [전체 비교·자료 범위](2026-11-02_공개반영재개검증.md) · [같은 수준 프로젝트](읽기안내/레벨4.md). 폴더는 보존 위치, 전체 비교는 실제 변경 근거이며 새 실행 결과가 아닙니다.
 
+
+</details>
+
+<details>
+<summary>LEVEL 5 · Expert — 근거·프로토콜·한계 검토</summary>
+
 <a id="reading-level-5"></a>
 ## LEVEL 5 - Expert
 
@@ -517,3 +544,6 @@ README에서 보존 위치를 확인하고 실제 필요한 파일은 명세와 
 </details>
 
 [프로젝트](../README.md) · [전체 차수](REVISION_INDEX.md) · [원본 자료](../%EB%B3%B4%EC%A1%B4%EC%9E%90%EB%A3%8C/%EC%9E%91%EC%97%85%EC%86%8C%EC%8A%A4)
+
+</details>
+
