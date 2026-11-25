@@ -5,6 +5,12 @@
 파일 변환과 PDF 편집·OCR을 한 화면에서 처리하는 Windows 앱입니다.
 
 <!-- project-levels:start -->
+## 1.13.0 · 작업 완성도 확장
+
+전후 비교·호환 안내·선택 메타데이터 정리와 작업 복구를 확장했습니다. 실행 파일·설치 파일·전체 소스 ZIP을 빌드하고 구성 파일을 대조했습니다. Windows 설치와 설치 파일 전체 대조, 새 배포 실행본의 기동을 확인했습니다. 실제 탐색기의 Shift 드래그로 PNG·PDF 생성과 원본 보존·중앙 취소를 확인했습니다. 파일 선택창·PDF·OCR·검토 도구의 라이트·다크 화면과 모션도 사용자 직접 확인을 마쳤습니다. [배포 확인 범위](docs/1.13.0_배포확인.md)를 별도로 안내합니다.
+
+[차수 설명](docs/versions/1.13.0.md) · [소스](history/1.13.0/소스/) · [직전 비교](docs/revision-audit/1.13.0-직전비교.md) · [최종 공개 소스 동기화 비교](docs/revision-audit/1.13.0-최종동기화.md)
+
 ## 1.12.1 · 문서 입력 보완
 
 ABW·DIF 입력, HWP·HWPX 그림 경계와 프리셋 간격을 보완했습니다. 실행·설치 파일과 전체 소스를 빌드하고 Windows 설치·기동을 확인했습니다. 실제 탐색기 변환·취소와 생성 파일을 대조했으며 남은 확인 항목은 상세 문서에 기록했습니다.
@@ -425,6 +431,7 @@ Windows 글꼴·운영 체제 API와 선택한 기능의 실행 파일이 필요
 | 1.10.0 | [폴더](history/1.10.0/) | [설명](docs/versions/1.10.0.md)<br>[전체 비교](docs/revision-audit/1.10.0.md) |
 | 1.11.0 | [폴더](history/1.11.0/) | [설명](docs/versions/1.11.0.md)<br>[전체 비교](docs/revision-audit/1.11.0.md) |
 | 1.12.0 | [폴더](history/1.12.0/) | [설명](docs/versions/1.12.0.md)<br>[전체 비교](docs/revision-audit/1.12.0.md) |
+| 1.13.0 | [폴더](history/1.13.0/) | [설명](docs/versions/1.13.0.md)<br>[전체 비교](docs/revision-audit/1.13.0-직전비교.md) |
 | 1.12.1 | [폴더](history/1.12.1/) | [설명](docs/versions/1.12.1.md)<br>[전체 비교](docs/revision-audit/1.12.1.md) |
 | 최종 | [폴더](소스/) | [설명](docs/versions/최종.md)<br>[전체 비교](docs/revision-audit/최종.md) |
 | 현행소스 | 원격 726 기준: [자료 폴더](%EC%86%8C%EC%8A%A4)<br>현재 후보: [폴더](소스/) | 원격 726 기준: [상세 설명](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md)<br>현재 후보: [설명](docs/revision-audit/현행소스.md)<br>원격 726 기준: [전체 비교·범위](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md)<br>현재 후보: [전체 비교](docs/revision-audit/현행소스.md) |

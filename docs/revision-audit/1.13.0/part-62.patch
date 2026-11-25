@@ -1,0 +1,1687 @@
+--- a/소스/test_ocr_process.py
++++ b/소스/test_ocr_process.py
+@@ -1,129 +1,129 @@
+-"""실제 Windows 자식의 시작 전 Job 보호·취소·실패 정리를 검사한다."""
+-from __future__ import annotations
+-
+-import ctypes
+-import os
+-from pathlib import Path
+-from types import SimpleNamespace
+-import sys
+-import tempfile
+-import threading
+-import time
+-import unittest
+-from unittest.mock import patch
+-
+-import pdf_tools as tools
+-
+-
+-@unittest.skipUnless(os.name == 'nt', 'Windows의 Job·정지 생성 전용 검사')
+-class OcrProcessTests(unittest.TestCase):
+-    def setUp(self):
+-        root = Path(__file__).resolve().parent.parent / 'work/ocr-startup-tests'
+-        root.mkdir(parents=True, exist_ok=True)
+-        self.temporary = tempfile.TemporaryDirectory(prefix='process-', dir=root)
+-        self.work = Path(self.temporary.name)
+-        self.marker = self.work / '실행증거.txt'
+-        self.cancel = threading.Event()
+-        self.processes = []
+-
+-    def tearDown(self):
+-        for process in self.processes:
+-            if process.poll() is None:
+-                process.kill()
+-            process.wait(timeout=10)
+-        self.temporary.cleanup()
+-
+-    def argv(self, marker=None):
+-        code = f"from pathlib import Path;Path({str(marker or self.marker)!r}).write_text('ran',encoding='utf-8')"
+-        return [sys.executable, '-B', '-X', 'utf8', '-c', code]
+-
+-    def test_01_delayed_assignment_cannot_execute_child(self):
+-        original = tools._ProcessTree
+-        def delayed(process):
+-            self.processes.append(process)
+-            time.sleep(0.2)
+-            self.assertIsNone(process.poll())
+-            self.assertFalse(self.marker.exists(), 'Job 할당 전 자식 코드가 실행됐습니다.')
+-            return original(process)
+-        with patch.object(tools, '_ProcessTree', side_effect=delayed):
+-            tools.run_ocr_process(self.argv(), self.work, self.cancel, timeout=10)
+-        self.assertEqual(self.processes[0].returncode, 0)
+-        self.assertEqual(self.marker.read_text(encoding='utf-8'), 'ran')
+-
+-    def test_02_assignment_denied_never_executes_and_terminates(self):
+-        def denied(process):
+-            self.processes.append(process)
+-            time.sleep(0.2)
+-            raise ctypes.WinError(5)
+-        with patch.object(tools, '_ProcessTree', side_effect=denied):
+-            with self.assertRaises(OSError) as result:
+-                tools.run_ocr_process(self.argv(), self.work, self.cancel)
+-        self.assertEqual(result.exception.winerror, 5)
+-        self.assertFalse(self.marker.exists())
+-        self.assertIsNotNone(self.processes[0].poll())
+-
+-    def test_03_cancel_after_assignment_before_resume(self):
+-        original = tools._ProcessTree
+-        def assigned(process):
+-            self.processes.append(process)
+-            tree = original(process)
+-            self.cancel.set()
+-            return tree
+-        with patch.object(tools, '_ProcessTree', side_effect=assigned):
+-            with self.assertRaises(tools.Cancelled):
+-                tools.run_ocr_process(self.argv(), self.work, self.cancel)
+-        self.assertFalse(self.marker.exists())
+-        self.assertIsNotNone(self.processes[0].poll())
+-
+-    def test_04_timeout_during_assignment_cannot_resume(self):
+-        original = tools._ProcessTree
+-        def delayed(process):
+-            self.processes.append(process)
+-            time.sleep(0.2)
+-            return original(process)
+-        with patch.object(tools, '_ProcessTree', side_effect=delayed):
+-            with self.assertRaises(tools.PdfToolError) as result:
+-                tools.run_ocr_process(self.argv(), self.work, self.cancel, timeout=0.05)
+-        self.assertEqual(result.exception.code, 'ocr_timeout')
+-        self.assertFalse(self.marker.exists())
+-        self.assertIsNotNone(self.processes[0].poll())
+-
+-    def test_05_eight_fast_children_finish_with_zero(self):
+-        original = tools._ProcessTree
+-        def assigned(process):
+-            self.processes.append(process)
+-            return original(process)
+-        with patch.object(tools, '_ProcessTree', side_effect=assigned):
+-            for number in range(8):
+-                marker = self.work / f'실행-{number}.txt'
+-                tools.run_ocr_process(self.argv(marker), self.work, self.cancel, timeout=10)
+-                self.assertEqual(marker.read_text(encoding='utf-8'), 'ran')
+-        self.assertEqual([p.returncode for p in self.processes], [0] * 8)
+-
+-    def test_06_resume_failure_terminates_without_execution(self):
+-        original = tools._ProcessTree
+-        def assigned(process):
+-            self.processes.append(process)
+-            return original(process)
+-        with patch.object(tools, '_ProcessTree', side_effect=assigned), \
+-                patch.object(tools, '_resume_ocr_process', side_effect=tools.PdfToolError('ocr_startup_state'), create=True):
+-            with self.assertRaises(tools.PdfToolError) as result:
+-                tools.run_ocr_process(self.argv(), self.work, self.cancel)
+-        self.assertEqual(result.exception.code, 'ocr_startup_state')
+-        self.assertFalse(self.marker.exists())
+-        self.assertIsNotNone(self.processes[0].poll())
+-
+-    def test_07_assignment_error_survives_cleanup_last_error(self):
+-        original = tools._ProcessTree.close
+-        def close(tree):
+-            original(tree)
+-            # 실제 실패 뒤 정리가 마지막 오류를 바꾸는 상황을 제어한다.
+-            ctypes.set_last_error(1234)
+-        with patch.object(tools._ProcessTree, 'close', close):
+-            with self.assertRaises(OSError) as result:
+-                tools._ProcessTree(SimpleNamespace(_handle=0))
+-        self.assertEqual(result.exception.winerror, 6)
+-
+-
+-if __name__ == '__main__':
+-    unittest.main()
++"""실제 Windows 자식의 시작 전 Job 보호·취소·실패 정리를 검사한다."""
++from __future__ import annotations
++
++import ctypes
++import os
++from pathlib import Path
++from types import SimpleNamespace
++import sys
++import tempfile
++import threading
++import time
++import unittest
++from unittest.mock import patch
++
++import pdf_tools as tools
++
++
++@unittest.skipUnless(os.name == 'nt', 'Windows의 Job·정지 생성 전용 검사')
++class OcrProcessTests(unittest.TestCase):
++    def setUp(self):
++        root = Path(__file__).resolve().parent.parent / 'work/ocr-startup-tests'
++        root.mkdir(parents=True, exist_ok=True)
++        self.temporary = tempfile.TemporaryDirectory(prefix='process-', dir=root)
++        self.work = Path(self.temporary.name)
++        self.marker = self.work / '실행증거.txt'
++        self.cancel = threading.Event()
++        self.processes = []
++
++    def tearDown(self):
++        for process in self.processes:
++            if process.poll() is None:
++                process.kill()
++            process.wait(timeout=10)
++        self.temporary.cleanup()
++
++    def argv(self, marker=None):
++        code = f"from pathlib import Path;Path({str(marker or self.marker)!r}).write_text('ran',encoding='utf-8')"
++        return [sys.executable, '-B', '-X', 'utf8', '-c', code]
++
++    def test_01_delayed_assignment_cannot_execute_child(self):
++        original = tools._ProcessTree
++        def delayed(process):
++            self.processes.append(process)
++            time.sleep(0.2)
++            self.assertIsNone(process.poll())
++            self.assertFalse(self.marker.exists(), 'Job 할당 전 자식 코드가 실행됐습니다.')
++            return original(process)
++        with patch.object(tools, '_ProcessTree', side_effect=delayed):
++            tools.run_ocr_process(self.argv(), self.work, self.cancel, timeout=10)
++        self.assertEqual(self.processes[0].returncode, 0)
++        self.assertEqual(self.marker.read_text(encoding='utf-8'), 'ran')
++
++    def test_02_assignment_denied_never_executes_and_terminates(self):
++        def denied(process):
++            self.processes.append(process)
++            time.sleep(0.2)
++            raise ctypes.WinError(5)
++        with patch.object(tools, '_ProcessTree', side_effect=denied):
++            with self.assertRaises(OSError) as result:
++                tools.run_ocr_process(self.argv(), self.work, self.cancel)
++        self.assertEqual(result.exception.winerror, 5)
++        self.assertFalse(self.marker.exists())
++        self.assertIsNotNone(self.processes[0].poll())
++
++    def test_03_cancel_after_assignment_before_resume(self):
++        original = tools._ProcessTree
++        def assigned(process):
++            self.processes.append(process)
++            tree = original(process)
++            self.cancel.set()
++            return tree
++        with patch.object(tools, '_ProcessTree', side_effect=assigned):
++            with self.assertRaises(tools.Cancelled):
++                tools.run_ocr_process(self.argv(), self.work, self.cancel)
++        self.assertFalse(self.marker.exists())
++        self.assertIsNotNone(self.processes[0].poll())
++
++    def test_04_timeout_during_assignment_cannot_resume(self):
++        original = tools._ProcessTree
++        def delayed(process):
++            self.processes.append(process)
++            time.sleep(0.2)
++            return original(process)
++        with patch.object(tools, '_ProcessTree', side_effect=delayed):
++            with self.assertRaises(tools.PdfToolError) as result:
++                tools.run_ocr_process(self.argv(), self.work, self.cancel, timeout=0.05)
++        self.assertEqual(result.exception.code, 'ocr_timeout')
++        self.assertFalse(self.marker.exists())
++        self.assertIsNotNone(self.processes[0].poll())
++
++    def test_05_eight_fast_children_finish_with_zero(self):
++        original = tools._ProcessTree
++        def assigned(process):
++            self.processes.append(process)
++            return original(process)
++        with patch.object(tools, '_ProcessTree', side_effect=assigned):
++            for number in range(8):
++                marker = self.work / f'실행-{number}.txt'
++                tools.run_ocr_process(self.argv(marker), self.work, self.cancel, timeout=10)
++                self.assertEqual(marker.read_text(encoding='utf-8'), 'ran')
++        self.assertEqual([p.returncode for p in self.processes], [0] * 8)
++
++    def test_06_resume_failure_terminates_without_execution(self):
++        original = tools._ProcessTree
++        def assigned(process):
++            self.processes.append(process)
++            return original(process)
++        with patch.object(tools, '_ProcessTree', side_effect=assigned), \
++                patch.object(tools, '_resume_ocr_process', side_effect=tools.PdfToolError('ocr_startup_state'), create=True):
++            with self.assertRaises(tools.PdfToolError) as result:
++                tools.run_ocr_process(self.argv(), self.work, self.cancel)
++        self.assertEqual(result.exception.code, 'ocr_startup_state')
++        self.assertFalse(self.marker.exists())
++        self.assertIsNotNone(self.processes[0].poll())
++
++    def test_07_assignment_error_survives_cleanup_last_error(self):
++        original = tools._ProcessTree.close
++        def close(tree):
++            original(tree)
++            # 실제 실패 뒤 정리가 마지막 오류를 바꾸는 상황을 제어한다.
++            ctypes.set_last_error(1234)
++        with patch.object(tools._ProcessTree, 'close', close):
++            with self.assertRaises(OSError) as result:
++                tools._ProcessTree(SimpleNamespace(_handle=0))
++        self.assertEqual(result.exception.winerror, 6)
++
++
++if __name__ == '__main__':
++    unittest.main()
+--- a/소스/test_pdf_workspace.py
++++ b/소스/test_pdf_workspace.py
+@@ -1,598 +1,598 @@
+-"""실제 PDF 페이지 편집·새 파일 저장과 Qt 작업 흐름을 검증한다."""
+-from __future__ import annotations
+-
+-import argparse
+-from concurrent.futures import Future
+-import hashlib
+-import json
+-from pathlib import Path
+-import sys
+-import tempfile
+-import threading
+-import time
+-from types import SimpleNamespace
+-import unittest
+-from unittest.mock import patch
+-
+-from pypdf import PdfReader, PdfWriter
+-from reportlab.pdfgen import canvas
+-from PySide6.QtCore import Qt, QTimer, QAbstractAnimation, QPointF
+-from PySide6.QtGui import QDropEvent
+-from PySide6.QtTest import QTest
+-from PySide6.QtWidgets import QApplication
+-import pdf_tools
+-from pdf_panel import PdfToolsPanel
+-
+-OUTPUT = Path(tempfile.gettempdir()) / "flipring-pdf-workspace-tests"
+-
+-
+-def make_pdf(path):
+-    document = canvas.Canvas(str(path), pagesize=(300, 420))
+-    for index, label in enumerate(("FIRST PAGE", "SECOND PAGE", "THIRD PAGE")):
+-        document.setFillGray(0.2 + index * 0.25)
+-        document.rect(25 + index * 20, 35, 110, 100 + index * 35, fill=1)
+-        document.setFillGray(0)
+-        document.drawString(25, 380, label)
+-        document.showPage()
+-    document.save()
+-
+-
+-def digest(path):
+-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+-
+-
+-class WorkspaceTests(unittest.TestCase):
+-    def setUp(self):
+-        self.folder = tempfile.TemporaryDirectory(dir=OUTPUT)
+-        self.root = Path(self.folder.name)
+-        self.source = self.root / "한글 원본.pdf"
+-        make_pdf(self.source)
+-        self.original = self.source.read_bytes()
+-
+-    def tearDown(self):
+-        self.assertEqual(self.source.read_bytes(), self.original)
+-        self.folder.cleanup()
+-
+-    def workspace(self):
+-        from pdf_pages import PdfWorkspace
+-        return PdfWorkspace.open(self.source)
+-
+-    def test_01_reorder_rotate_delete_and_original_hash(self):
+-        workspace = self.workspace()
+-        self.assertEqual(workspace.source_sha256, digest(self.source))
+-        workspace.reorder([2, 0, 1])
+-        workspace.rotate([0, 2], 90)
+-        workspace.delete([1])
+-        output = workspace.save(self.root / "편집.pdf")
+-        reader = PdfReader(output)
+-        self.assertEqual(len(reader.pages), 2)
+-        self.assertIn("THIRD PAGE", reader.pages[0].extract_text())
+-        self.assertIn("SECOND PAGE", reader.pages[1].extract_text())
+-        self.assertEqual([page.rotation for page in reader.pages], [90, 90])
+-        self.assertEqual(workspace.page_count, 2)
+-
+-    def test_02_extract_current_order_without_modifying_editor(self):
+-        workspace = self.workspace()
+-        workspace.reorder([2, 0, 1])
+-        workspace.rotate([0], 270)
+-        output = workspace.save(self.root / "추출.pdf", selected=[0, 2])
+-        reader = PdfReader(output)
+-        self.assertEqual(len(reader.pages), 2)
+-        self.assertIn("THIRD PAGE", reader.pages[0].extract_text())
+-        self.assertIn("SECOND PAGE", reader.pages[1].extract_text())
+-        self.assertEqual([page.rotation for page in reader.pages], [270, 0])
+-        self.assertEqual(workspace.page_count, 3)
+-
+-    def test_03_rejects_all_delete_and_invalid_indices_without_mutation(self):
+-        workspace = self.workspace()
+-        for action, code in ((lambda: workspace.delete([0, 1, 2]), "all_pages_removed"),
+-                             (lambda: workspace.reorder([1, 1, 2]), "page_range"),
+-                             (lambda: workspace.rotate([-1], 90), "page_range"),
+-                             (lambda: workspace.rotate([0], 45), "rotation"),
+-                             (lambda: workspace.save(selected=[]), "page_range")):
+-            with self.subTest(code=code), self.assertRaises(pdf_tools.PdfToolError) as caught:
+-                action()
+-            self.assertEqual(caught.exception.code, code)
+-            self.assertEqual(workspace.page_count, 3)
+-
+-    def test_04_new_name_collision_and_original_path_rejected(self):
+-        workspace = self.workspace()
+-        first = Path(workspace.save())
+-        first_bytes = first.read_bytes()
+-        second = Path(workspace.save())
+-        self.assertNotEqual(first, second)
+-        self.assertEqual(first.read_bytes(), first_bytes)
+-        for target in (self.source, first):
+-            with self.subTest(target=str(target)), self.assertRaises(pdf_tools.PdfToolError):
+-                workspace.save(target)
+-        self.assertEqual(first.read_bytes(), first_bytes)
+-
+-    def test_05_cancel_before_and_during_save_removes_partial_output(self):
+-        workspace = self.workspace()
+-        cancelled = threading.Event()
+-        cancelled.set()
+-        target = self.root / "취소.pdf"
+-        with self.assertRaises(pdf_tools.Cancelled):
+-            workspace.save(target, cancel=cancelled)
+-        self.assertFalse(target.exists())
+-        cancelled.clear()
+-
+-        def cancel_after_first(done, total, label):
+-            if done == 1:
+-                cancelled.set()
+-
+-        with self.assertRaises(pdf_tools.Cancelled):
+-            workspace.save(target, cancel=cancelled, progress=cancel_after_first)
+-        self.assertFalse(target.exists())
+-        self.assertFalse(list(self.root.glob(".flipring-pdf-*")))
+-        cancelled.clear()
+-        self.assertTrue(Path(workspace.save(target, cancel=cancelled)).is_file())
+-
+-    def test_06_missing_corrupt_encrypted_and_empty_input(self):
+-        from pdf_pages import PdfWorkspace
+-        broken = self.root / "손상.pdf"
+-        broken.write_bytes(b"broken pdf")
+-        encrypted = self.root / "암호.pdf"
+-        writer = PdfWriter()
+-        writer.add_blank_page(100, 100)
+-        writer.encrypt("secret")
+-        writer.write(encrypted)
+-        writer.close()
+-        empty = self.root / "빈.pdf"
+-        writer = PdfWriter()
+-        writer.write(empty)
+-        writer.close()
+-        for path, code in ((self.root / "없음.pdf", "input_files"), (broken, "invalid_pdf"),
+-                           (encrypted, "encrypted_pdf"), (empty, "empty_pdf")):
+-            with self.subTest(path=str(path)), self.assertRaises(pdf_tools.PdfToolError) as caught:
+-                PdfWorkspace.open(path)
+-            self.assertEqual(caught.exception.code, code)
+-
+-    def test_07_write_error_keeps_existing_files(self):
+-        workspace = self.workspace()
+-        with self.assertRaises(pdf_tools.PdfToolError):
+-            workspace.save(self.root / "없는 폴더" / "결과.pdf")
+-        existing = self.root / "기존.pdf"
+-        existing.write_bytes(b"keep this output")
+-        with self.assertRaises(pdf_tools.PdfToolError):
+-            workspace.save(existing)
+-        self.assertEqual(existing.read_bytes(), b"keep this output")
+-
+-    def test_08_real_thumbnail_rotation_and_document_handles_released(self):
+-        workspace = self.workspace()
+-        first = workspace.render(0, 180)
+-        third = workspace.render(2, 180)
+-        self.assertEqual(first.size, (129, 180))
+-        self.assertNotEqual(first.tobytes(), third.tobytes())
+-        workspace.rotate([0], 90)
+-        rotated = workspace.render(0, 180)
+-        self.assertEqual(rotated.size, (180, 129))
+-        replacement = self.root / "이름변경.pdf"
+-        self.source.rename(replacement)
+-        replacement.rename(self.source)
+-
+-    def test_09_pdfium_lock_is_shared_and_cancel_after_render_checked(self):
+-        from pdf_pages import PDFIUM_LOCK
+-        self.assertIs(PDFIUM_LOCK, pdf_tools.PDFIUM_LOCK)
+-        workspace = self.workspace()
+-        started, finished = threading.Event(), threading.Event()
+-
+-        def render():
+-            started.set()
+-            workspace.render(0, 120)
+-            finished.set()
+-
+-        with PDFIUM_LOCK:
+-            worker = threading.Thread(target=render)
+-            worker.start()
+-            self.assertTrue(started.wait(2))
+-            self.assertFalse(finished.wait(0.03))
+-        worker.join(5)
+-        self.assertTrue(finished.is_set())
+-        event = threading.Event()
+-        event.set()
+-        with self.assertRaises(pdf_tools.Cancelled):
+-            workspace.render(0, 180, cancel=event)
+-
+-
+-class WorkspacePanelTests(unittest.TestCase):
+-    @classmethod
+-    def setUpClass(cls):
+-        cls.application = QApplication.instance() or QApplication([])
+-
+-    def setUp(self):
+-        self.folder = tempfile.TemporaryDirectory(dir=OUTPUT)
+-        self.root = Path(self.folder.name)
+-        self.source = self.root / "긴 한글 파일 이름 페이지 편집 원본.pdf"
+-        make_pdf(self.source)
+-        self.before = digest(self.source)
+-        self.panel = PdfToolsPanel("ko")
+-        self.panel.resize(980, 740)
+-        self.panel.show()
+-        QTest.qWait(20)
+-        self.results = []
+-        self.panel.result_ready.connect(lambda *args: self.results.append(args))
+-
+-    def tearDown(self):
+-        self.panel.cancel()
+-        self.wait_idle()
+-        self.panel.shutdown(wait=True)
+-        self.panel.close()
+-        self.panel.deleteLater()
+-        QTest.qWait(10)
+-        self.assertEqual(digest(self.source), self.before)
+-        self.folder.cleanup()
+-
+-    def wait_idle(self):
+-        deadline = time.monotonic() + 10
+-        while (self.panel.is_busy() or getattr(self.panel, "_render_scheduled", False)) and time.monotonic() < deadline:
+-            QTest.qWait(5)
+-        self.assertFalse(self.panel.is_busy(), "PDF 작업 스레드가 제한 시간 안에 끝나야 합니다.")
+-
+-    def load(self):
+-        self.panel.load_workspace(str(self.source))
+-        self.wait_idle()
+-        self.assertIsNotNone(self.panel.workspace)
+-
+-    def test_10_load_real_thumbnails_preview_and_responsive_events(self):
+-        ticks = []
+-        timer = QTimer()
+-        timer.setInterval(1)
+-        timer.timeout.connect(lambda: ticks.append(1))
+-        timer.start()
+-        self.load()
+-        timer.stop()
+-        self.assertTrue(ticks)
+-        self.assertEqual(self.panel.pages_list.count(), 3)
+-        self.assertFalse(self.panel.pages_list.item(0).icon().isNull())
+-        self.assertFalse(self.panel.page_preview.pixmap().isNull())
+-        self.assertEqual(self.panel.workspace.source_sha256, self.before)
+-        self.panel.grab().save(str(OUTPUT / "PDF-편집-한국어.png"))
+-
+-    def test_11_multiselect_rotate_delete_extract_and_save(self):
+-        self.load()
+-        self.panel.pages_list.clearSelection()
+-        self.panel.pages_list.item(0).setSelected(True)
+-        self.panel.pages_list.item(2).setSelected(True)
+-        self.panel.rotate_selected_pages()
+-        self.wait_idle()
+-        target = self.root / "선택.pdf"
+-        self.panel.save_workspace(str(target), selected=True)
+-        self.wait_idle()
+-        reader = PdfReader(target)
+-        self.assertEqual(len(reader.pages), 2)
+-        self.assertEqual([page.rotation for page in reader.pages], [90, 90])
+-        self.assertEqual(self.panel.workspace.page_count, 3)
+-        self.panel.delete_selected_pages()
+-        self.wait_idle()
+-        self.assertEqual(self.panel.workspace.page_count, 1)
+-        output = self.root / "나머지.pdf"
+-        self.panel.save_workspace(str(output))
+-        self.wait_idle()
+-        self.assertIn("SECOND PAGE", PdfReader(output).pages[0].extract_text())
+-
+-    def test_12_page_order_model_move_and_all_delete_guard(self):
+-        self.load()
+-        model = self.panel.pages_list.model()
+-        self.assertTrue(model.moveRow(model.index(-1, -1), 2, model.index(-1, -1), 0))
+-        self.wait_idle()
+-        self.panel.pages_list.selectAll()
+-        self.panel.delete_selected_pages()
+-        self.assertEqual(self.panel.workspace.page_count, 3)
+-        self.assertIn("모든 페이지", self.panel.status.text())
+-        target = self.root / "드래그 순서.pdf"
+-        self.panel.save_workspace(str(target))
+-        self.wait_idle()
+-        self.assertIn("THIRD PAGE", PdfReader(target).pages[0].extract_text())
+-
+-    def test_13_language_and_reduced_motion_keep_selection_and_input(self):
+-        self.load()
+-        self.panel.set_reduced_motion(True)
+-        self.panel.set_language("en")
+-        self.assertIn("Save", self.panel.save_pages_button.text())
+-        self.assertIn("Page", self.panel.pages_list.item(0).text())
+-        self.panel.pages_list.setCurrentRow(1)
+-        self.wait_idle()
+-        self.panel.rotate_selected_pages()
+-        self.wait_idle()
+-        self.assertEqual(self.panel.workspace.pages[1].rotation, 90)
+-        self.assertEqual(self.panel.status_mark.animation.state(), QAbstractAnimation.Stopped)
+-        self.assertTrue(self.panel.save_pages_button.isEnabled())
+-        self.panel.grab().save(str(OUTPUT / "PDF-편집-영어-모션감소.png"))
+-        self.panel.set_language("ko")
+-        self.assertIn("저장", self.panel.save_pages_button.text())
+-
+-    def test_14_preset_roundtrip_does_not_execute_or_reuse_paths(self):
+-        self.panel.operation.setCurrentIndex(self.panel.operation.findData("recognize"))
+-        self.panel.pages.setText("1,3")
+-        self.panel.dpi.setValue(300)
+-        self.panel.output.setCurrentIndex(self.panel.output.findData("txt"))
+-        self.panel.force.setChecked(True)
+-        received = []
+-        self.panel.preset_requested.connect(received.append)
+-        self.panel.save_preset_button.click()
+-        self.assertEqual(len(received), 1)
+-        self.assertEqual(received[0]["kind"], "pdf")
+-        self.assertEqual(received[0]["format"], "pdf")
+-        saved = received[0]["options"]
+-        self.assertNotIn("paths", saved)
+-        self.panel.pages.clear()
+-        self.panel.dpi.setValue(100)
+-        self.panel.apply_preset(saved)
+-        self.assertEqual(self.panel.operation.currentData(), "recognize")
+-        self.assertEqual(self.panel.output.currentData(), "txt")
+-        self.assertEqual(self.panel.dpi.value(), 300)
+-        self.assertEqual(self.panel.pages.text(), "1,3")
+-        self.assertTrue(self.panel.force.isChecked())
+-        self.assertEqual(self.panel.input_paths(), [])
+-        self.assertFalse(self.panel.is_busy())
+-        self.assertEqual(self.results, [])
+-
+-    def test_15_invalid_preset_is_atomic_and_busy_input_unchanged(self):
+-        self.panel.dpi.setValue(200)
+-        self.assertFalse(self.panel.apply_preset({"operation": "recognize", "dpi": 9999}))
+-        self.assertEqual(self.panel.dpi.value(), 200)
+-        self.assertEqual(self.panel.operation.currentData(), "merge")
+-        self.panel.pending = 1
+-        self.panel.load_workspace(str(self.source))
+-        self.assertIsNone(self.panel.workspace)
+-        self.assertIn("다른 변환", self.panel.status.text())
+-
+-    def test_16_cancel_load_preserves_current_editor_and_retry(self):
+-        self.load()
+-        original_workspace = self.panel.workspace
+-        from pdf_pages import PdfWorkspace
+-        real_open = PdfWorkspace.open
+-
+-        def slow_open(path, cancel=None):
+-            while not cancel.wait(0.01):
+-                pass
+-            pdf_tools.check_cancel(cancel)
+-            return real_open(path, cancel=cancel)
+-
+-        with patch.object(PdfWorkspace, "open", slow_open):
+-            self.panel.load_workspace(str(self.source))
+-            QTest.qWait(15)
+-            self.panel.cancel()
+-            self.wait_idle()
+-        self.assertIs(self.panel.workspace, original_workspace)
+-        self.assertIn("취소", self.panel.status.text())
+-        self.load()
+-        self.assertTrue(self.panel.save_pages_button.isEnabled())
+-
+-    def test_17_bad_input_translates_and_save_dialog_cancel_keeps_editor(self):
+-        self.load()
+-        original_workspace = self.panel.workspace
+-        self.panel.load_workspace(str(self.root / "없음.pdf"))
+-        self.wait_idle()
+-        self.assertIs(self.panel.workspace, original_workspace)
+-        self.panel.set_language("en")
+-        self.assertIn("input", self.panel.status.text().lower())
+-        with patch("pdf_panel.QFileDialog.getSaveFileName", return_value=("", "")):
+-            self.panel.choose_workspace_save()
+-        self.assertFalse(self.panel.is_busy())
+-        self.assertIs(self.panel.workspace, original_workspace)
+-
+-    def test_18_actual_thumbnail_drop_saves_visible_order(self):
+-        self.load()
+-        page_list = self.panel.pages_list
+-        mime = page_list.mimeData([page_list.item(2)])
+-        rectangle = page_list.visualItemRect(page_list.item(0))
+-        event = QDropEvent(QPointF(rectangle.left() + 3, rectangle.top() + 3), Qt.MoveAction,
+-                           mime, Qt.LeftButton, Qt.NoModifier)
+-        page_list.dropEvent(event)
+-        self.assertTrue(event.isAccepted())
+-        self.wait_idle()
+-        target = self.root / "썸네일 드롭.pdf"
+-        self.panel.save_workspace(str(target))
+-        self.wait_idle()
+-        self.assertIn("THIRD PAGE", PdfReader(target).pages[0].extract_text())
+-
+-    def test_19_enlarged_preview_zoom_and_editor_actions_are_clear(self):
+-        self.load()
+-        self.assertFalse(self.panel.options_card.isVisible())
+-        self.panel.open_page_preview()
+-        self.assertTrue(self.panel.preview_dialog.isVisible())
+-        before = self.panel.preview_dialog.zoom_factor
+-        self.panel.preview_dialog.zoom_in_button.click()
+-        self.assertGreater(self.panel.preview_dialog.zoom_factor, before)
+-        self.panel.set_language("en")
+-        self.assertIn("Page", self.panel.preview_dialog.windowTitle())
+-        self.panel.preview_dialog.close()
+-        QTest.qWait(10)
+-
+-    def test_20_corrupt_preset_value_types_leave_options_unchanged(self):
+-        before = self.panel.snapshot_options()
+-        for options in ({"operation": []}, {"compression": {}}, {"ocr_language": []},
+-                        {"output_format": []}, {"pages": None}, {"force_ocr": 1}):
+-            with self.subTest(options=options):
+-                self.assertFalse(self.panel.apply_preset(options))
+-                self.assertEqual(self.panel.snapshot_options(), before)
+-
+-    def test_21_cancel_after_committed_save_keeps_result_record(self):
+-        self.load()
+-        target = self.root / "이미 완성한 결과.pdf"
+-        self.panel.save_workspace(str(target))
+-        deadline = time.monotonic() + 5
+-        # GUI 완료 슬롯을 처리하기 전에 디스크 저장이 끝난 경우를 제어한다.
+-        while not self.panel._future.done() and time.monotonic() < deadline:
+-            time.sleep(0.001)
+-        self.assertTrue(self.panel._future.done())
+-        self.assertTrue(target.is_file())
+-        self.panel.cancel()
+-        self.wait_idle()
+-        self.assertEqual(len(self.results), 1)
+-        self.assertEqual(Path(self.results[0][1]), target)
+-        self.assertEqual(len(PdfReader(target).pages), 3)
+-
+-    def test_22_all_pdf_operations_block_submission_when_disk_is_full(self):
+-        image = self.root / "이미지.png"
+-        from PIL import Image
+-        Image.new("RGB", (60, 80), "white").save(image)
+-        for operation in ("merge", "split", "extract", "delete", "rotate", "images_to_pdf",
+-                          "pdf_to_images", "compress", "recognize"):
+-            with self.subTest(operation=operation):
+-                self.panel.set_files([str(image if operation == "images_to_pdf" else self.source)])
+-                self.panel.operation.setCurrentIndex(self.panel.operation.findData(operation))
+-                future = Future()
+-                future.set_result(None)
+-                with patch.object(pdf_tools.shutil, "disk_usage", return_value=SimpleNamespace(free=0)) as usage, \
+-                     patch.object(self.panel._pool, "submit", return_value=future) as submit:
+-                    self.panel.start()
+-                    self.assertFalse(self.panel.is_busy())
+-                    self.assertTrue(usage.called)
+-                    submit.assert_not_called()
+-                    self.assertIn("여유 공간", self.panel.status.text())
+-                QTest.qWait(5)
+-        self.panel.set_language("en")
+-        self.assertIn("space", self.panel.status.text().lower())
+-
+-    def test_23_missing_input_and_bundled_ocr_files_block_submission(self):
+-        future = Future()
+-        future.set_result(None)
+-        self.panel.set_files([str(self.root / "누락.pdf")])
+-        with patch.object(self.panel._pool, "submit", return_value=future) as submit:
+-            self.panel.start()
+-            self.assertFalse(self.panel.is_busy())
+-            submit.assert_not_called()
+-            self.assertIn("입력 파일", self.panel.status.text())
+-        QTest.qWait(5)
+-        self.panel.set_files([str(self.source)])
+-        self.panel.operation.setCurrentIndex(self.panel.operation.findData("recognize"))
+-        missing_runtime = self.root / "없는 OCR"
+-        with patch.object(pdf_tools, "tesseract_paths", return_value=(missing_runtime / "tesseract.exe", missing_runtime / "tessdata")), \
+-             patch.object(self.panel._pool, "submit", return_value=future) as submit:
+-            self.panel.start()
+-            self.assertFalse(self.panel.is_busy())
+-            submit.assert_not_called()
+-            self.assertIn("OCR", self.panel.status.text())
+-        data = self.root / "모델 점검"
+-        data.mkdir()
+-        required = [self.root / "동봉점검.exe", data / "pdf.ttf", data / "kor.traineddata", data / "eng.traineddata"]
+-        for path in required:
+-            path.write_bytes(b"controlled existing file; never executed")
+-        for missing in required:
+-            with self.subTest(missing=missing.name):
+-                content = missing.read_bytes()
+-                missing.unlink()
+-                try:
+-                    with patch.object(pdf_tools, "tesseract_paths", return_value=(required[0], data)), \
+-                         patch.object(self.panel._pool, "submit", return_value=future) as submit:
+-                        self.panel.start()
+-                        self.assertFalse(self.panel.is_busy())
+-                        submit.assert_not_called()
+-                        self.assertIn("OCR", self.panel.status.text())
+-                finally:
+-                    missing.write_bytes(content)
+-
+-    def test_24_output_locations_follow_merge_and_per_input_publication(self):
+-        second_folder = self.root / "다른 출력 폴더"
+-        second_folder.mkdir()
+-        second = second_folder / "두번째.pdf"
+-        make_pdf(second)
+-        paths = [str(self.source), str(second)]
+-        merge = pdf_tools.preflight_request(pdf_tools.Request("merge", paths))
+-        split = pdf_tools.preflight_request(pdf_tools.Request("split", paths))
+-        self.assertEqual({Path(row["directory"]) for row in merge}, {self.source.parent})
+-        self.assertEqual({Path(row["directory"]) for row in split}, {self.source.parent, second_folder})
+-        self.assertTrue(all(row["free"] >= row["estimated"] > 0 for row in merge + split))
+-        self.assertFalse(list(self.root.rglob(".flipring-check-*")))
+-
+-    def test_25_editor_save_blocks_full_disk_without_rereading_snapshot_source(self):
+-        self.load()
+-        target = self.root / "편집 저장.pdf"
+-        future = Future()
+-        future.set_result(str(target))
+-        with patch.object(pdf_tools.shutil, "disk_usage", return_value=SimpleNamespace(free=0)), \
+-             patch.object(self.panel._pool, "submit", return_value=future) as submit:
+-            self.panel.save_workspace(str(target))
+-            self.assertFalse(self.panel.is_busy())
+-            submit.assert_not_called()
+-            self.assertFalse(target.exists())
+-        moved = self.root / "외부에서 이동한 원본.pdf"
+-        self.source.rename(moved)
+-        try:
+-            self.panel.save_workspace(str(target))
+-            self.wait_idle()
+-            self.assertEqual(len(PdfReader(target).pages), 3)
+-        finally:
+-            moved.rename(self.source)
+-
+-    def test_26_worker_preflight_rejects_space_before_pdf_processing(self):
+-        from pdf_pages import PdfWorkspace
+-        workspace = PdfWorkspace.open(self.source)
+-        target = self.root / "직접 저장.pdf"
+-        with patch.object(pdf_tools.shutil, "disk_usage", return_value=SimpleNamespace(free=0)):
+-            with self.assertRaises(pdf_tools.PdfToolError) as caught:
+-                pdf_tools.execute(pdf_tools.Request("split", [str(self.source)]))
+-            self.assertEqual(caught.exception.code, "disk_space")
+-            with self.assertRaises(pdf_tools.PdfToolError) as caught:
+-                workspace.save(target)
+-            self.assertEqual(caught.exception.code, "disk_space")
+-        self.assertFalse(target.exists())
+-        self.assertFalse(list(self.root.glob("*page-*.pdf")))
+-
+-    def test_27_output_write_failure_is_translated_and_preserves_completed_file(self):
+-        self.load()
+-        completed = self.root / "이전 완성 결과.pdf"
+-        completed.write_bytes(b"previous completed output")
+-        target = self.root / "쓰기 거부.pdf"
+-        with patch.object(pdf_tools.tempfile, "TemporaryFile", side_effect=PermissionError("controlled write refusal")):
+-            self.panel.save_workspace(str(target))
+-            self.assertFalse(self.panel.is_busy())
+-            self.assertIn("쓰기", self.panel.status.text())
+-            self.panel.set_language("en")
+-            self.assertIn("writ", self.panel.status.text().lower())
+-        self.assertFalse(target.exists())
+-        self.assertEqual(completed.read_bytes(), b"previous completed output")
+-
+-    def test_28_preflight_cancel_keeps_directory_and_avoids_probe(self):
+-        event = threading.Event()
+-        event.set()
+-        before = set(self.root.iterdir())
+-        with patch.object(pdf_tools.shutil, "disk_usage") as usage:
+-            with self.assertRaises(pdf_tools.Cancelled):
+-                pdf_tools.preflight_output(self.root, 64 * 1024 * 1024, cancel=event)
+-            usage.assert_not_called()
+-        self.assertEqual(set(self.root.iterdir()), before)
+-
+-    def test_29_real_preflight_estimate_is_visible_and_retranslated(self):
+-        self.panel.set_files([str(self.source)])
+-        self.panel.start()
+-        self.wait_idle()
+-        self.assertEqual(len(self.results), 1)
+-        self.assertTrue(Path(self.results[0][1]).is_file())
+-        self.assertIn("준비 예상", self.panel.preflight_label.text())
+-        self.assertIn("보장", self.panel.preflight_label.text())
+-        self.panel.set_language("en")
+-        self.assertIn("Estimated", self.panel.preflight_label.text())
+-        self.assertIn("guarantee", self.panel.preflight_label.text())
+-
+-    def test_30_worker_recheck_failure_replaces_old_space_summary(self):
+-        self.panel.set_files([str(self.source)])
+-        with patch.object(pdf_tools.shutil, "disk_usage", side_effect=[SimpleNamespace(free=10**12), SimpleNamespace(free=0)]):
+-            self.panel.start()
+-            self.wait_idle()
+-        self.assertIn("여유 공간", self.panel.status.text())
+-        self.assertIn("여유 공간 0 MiB", self.panel.preflight_label.text())
+-        self.assertEqual(len(self.results), 1)
+-        self.assertEqual(self.results[0][1], "")
+-        self.assertFalse(list(self.root.glob("*-merge.pdf")))
+-
+-
+-def main():
+-    global OUTPUT
+-    parser = argparse.ArgumentParser()
+-    parser.add_argument("output")
+-    args = parser.parse_args()
+-    OUTPUT = Path(args.output).resolve()
+-    OUTPUT.mkdir(parents=True, exist_ok=True)
+-    result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromModule(sys.modules[__name__]))
+-    report = {"tests": result.testsRun, "failures": len(result.failures), "errors": len(result.errors),
+-              "skipped": len(result.skipped), "success": result.wasSuccessful()}
+-    (OUTPUT / "PDF-페이지편집-검증.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+-    return int(not result.wasSuccessful())
+-
+-
+-if __name__ == "__main__":
+-    sys.exit(main())
++"""실제 PDF 페이지 편집·새 파일 저장과 Qt 작업 흐름을 검증한다."""
++from __future__ import annotations
++
++import argparse
++from concurrent.futures import Future
++import hashlib
++import json
++from pathlib import Path
++import sys
++import tempfile
++import threading
++import time
++from types import SimpleNamespace
++import unittest
++from unittest.mock import patch
++
++from pypdf import PdfReader, PdfWriter
++from reportlab.pdfgen import canvas
++from PySide6.QtCore import Qt, QTimer, QAbstractAnimation, QPointF
++from PySide6.QtGui import QDropEvent
++from PySide6.QtTest import QTest
++from PySide6.QtWidgets import QApplication
++import pdf_tools
++from pdf_panel import PdfToolsPanel
++
++OUTPUT = Path(tempfile.gettempdir()) / "flipring-pdf-workspace-tests"
++
++
++def make_pdf(path):
++    document = canvas.Canvas(str(path), pagesize=(300, 420))
++    for index, label in enumerate(("FIRST PAGE", "SECOND PAGE", "THIRD PAGE")):
++        document.setFillGray(0.2 + index * 0.25)
++        document.rect(25 + index * 20, 35, 110, 100 + index * 35, fill=1)
++        document.setFillGray(0)
++        document.drawString(25, 380, label)
++        document.showPage()
++    document.save()
++
++
++def digest(path):
++    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
++
++
++class WorkspaceTests(unittest.TestCase):
++    def setUp(self):
++        self.folder = tempfile.TemporaryDirectory(dir=OUTPUT)
++        self.root = Path(self.folder.name)
++        self.source = self.root / "한글 원본.pdf"
++        make_pdf(self.source)
++        self.original = self.source.read_bytes()
++
++    def tearDown(self):
++        self.assertEqual(self.source.read_bytes(), self.original)
++        self.folder.cleanup()
++
++    def workspace(self):
++        from pdf_pages import PdfWorkspace
++        return PdfWorkspace.open(self.source)
++
++    def test_01_reorder_rotate_delete_and_original_hash(self):
++        workspace = self.workspace()
++        self.assertEqual(workspace.source_sha256, digest(self.source))
++        workspace.reorder([2, 0, 1])
++        workspace.rotate([0, 2], 90)
++        workspace.delete([1])
++        output = workspace.save(self.root / "편집.pdf")
++        reader = PdfReader(output)
++        self.assertEqual(len(reader.pages), 2)
++        self.assertIn("THIRD PAGE", reader.pages[0].extract_text())
++        self.assertIn("SECOND PAGE", reader.pages[1].extract_text())
++        self.assertEqual([page.rotation for page in reader.pages], [90, 90])
++        self.assertEqual(workspace.page_count, 2)
++
++    def test_02_extract_current_order_without_modifying_editor(self):
++        workspace = self.workspace()
++        workspace.reorder([2, 0, 1])
++        workspace.rotate([0], 270)
++        output = workspace.save(self.root / "추출.pdf", selected=[0, 2])
++        reader = PdfReader(output)
++        self.assertEqual(len(reader.pages), 2)
++        self.assertIn("THIRD PAGE", reader.pages[0].extract_text())
++        self.assertIn("SECOND PAGE", reader.pages[1].extract_text())
++        self.assertEqual([page.rotation for page in reader.pages], [270, 0])
++        self.assertEqual(workspace.page_count, 3)
++
++    def test_03_rejects_all_delete_and_invalid_indices_without_mutation(self):
++        workspace = self.workspace()
++        for action, code in ((lambda: workspace.delete([0, 1, 2]), "all_pages_removed"),
++                             (lambda: workspace.reorder([1, 1, 2]), "page_range"),
++                             (lambda: workspace.rotate([-1], 90), "page_range"),
++                             (lambda: workspace.rotate([0], 45), "rotation"),
++                             (lambda: workspace.save(selected=[]), "page_range")):
++            with self.subTest(code=code), self.assertRaises(pdf_tools.PdfToolError) as caught:
++                action()
++            self.assertEqual(caught.exception.code, code)
++            self.assertEqual(workspace.page_count, 3)
++
++    def test_04_new_name_collision_and_original_path_rejected(self):
++        workspace = self.workspace()
++        first = Path(workspace.save())
++        first_bytes = first.read_bytes()
++        second = Path(workspace.save())
++        self.assertNotEqual(first, second)
++        self.assertEqual(first.read_bytes(), first_bytes)
++        for target in (self.source, first):
++            with self.subTest(target=str(target)), self.assertRaises(pdf_tools.PdfToolError):
++                workspace.save(target)
++        self.assertEqual(first.read_bytes(), first_bytes)
++
++    def test_05_cancel_before_and_during_save_removes_partial_output(self):
++        workspace = self.workspace()
++        cancelled = threading.Event()
++        cancelled.set()
++        target = self.root / "취소.pdf"
++        with self.assertRaises(pdf_tools.Cancelled):
++            workspace.save(target, cancel=cancelled)
++        self.assertFalse(target.exists())
++        cancelled.clear()
++
++        def cancel_after_first(done, total, label):
++            if done == 1:
++                cancelled.set()
++
++        with self.assertRaises(pdf_tools.Cancelled):
++            workspace.save(target, cancel=cancelled, progress=cancel_after_first)
++        self.assertFalse(target.exists())
++        self.assertFalse(list(self.root.glob(".flipring-pdf-*")))
++        cancelled.clear()
++        self.assertTrue(Path(workspace.save(target, cancel=cancelled)).is_file())
++
++    def test_06_missing_corrupt_encrypted_and_empty_input(self):
++        from pdf_pages import PdfWorkspace
++        broken = self.root / "손상.pdf"
++        broken.write_bytes(b"broken pdf")
++        encrypted = self.root / "암호.pdf"
++        writer = PdfWriter()
++        writer.add_blank_page(100, 100)
++        writer.encrypt("secret")
++        writer.write(encrypted)
++        writer.close()
++        empty = self.root / "빈.pdf"
++        writer = PdfWriter()
++        writer.write(empty)
++        writer.close()
++        for path, code in ((self.root / "없음.pdf", "input_files"), (broken, "invalid_pdf"),
++                           (encrypted, "encrypted_pdf"), (empty, "empty_pdf")):
++            with self.subTest(path=str(path)), self.assertRaises(pdf_tools.PdfToolError) as caught:
++                PdfWorkspace.open(path)
++            self.assertEqual(caught.exception.code, code)
++
++    def test_07_write_error_keeps_existing_files(self):
++        workspace = self.workspace()
++        with self.assertRaises(pdf_tools.PdfToolError):
++            workspace.save(self.root / "없는 폴더" / "결과.pdf")
++        existing = self.root / "기존.pdf"
++        existing.write_bytes(b"keep this output")
++        with self.assertRaises(pdf_tools.PdfToolError):
++            workspace.save(existing)
++        self.assertEqual(existing.read_bytes(), b"keep this output")
++
++    def test_08_real_thumbnail_rotation_and_document_handles_released(self):
++        workspace = self.workspace()
++        first = workspace.render(0, 180)
++        third = workspace.render(2, 180)
++        self.assertEqual(first.size, (129, 180))
++        self.assertNotEqual(first.tobytes(), third.tobytes())
++        workspace.rotate([0], 90)
++        rotated = workspace.render(0, 180)
++        self.assertEqual(rotated.size, (180, 129))
++        replacement = self.root / "이름변경.pdf"
++        self.source.rename(replacement)
++        replacement.rename(self.source)
++
++    def test_09_pdfium_lock_is_shared_and_cancel_after_render_checked(self):
++        from pdf_pages import PDFIUM_LOCK
++        self.assertIs(PDFIUM_LOCK, pdf_tools.PDFIUM_LOCK)
++        workspace = self.workspace()
++        started, finished = threading.Event(), threading.Event()
++
++        def render():
++            started.set()
++            workspace.render(0, 120)
++            finished.set()
++
++        with PDFIUM_LOCK:
++            worker = threading.Thread(target=render)
++            worker.start()
++            self.assertTrue(started.wait(2))
++            self.assertFalse(finished.wait(0.03))
++        worker.join(5)
++        self.assertTrue(finished.is_set())
++        event = threading.Event()
++        event.set()
++        with self.assertRaises(pdf_tools.Cancelled):
++            workspace.render(0, 180, cancel=event)
++
++
++class WorkspacePanelTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.application = QApplication.instance() or QApplication([])
++
++    def setUp(self):
++        self.folder = tempfile.TemporaryDirectory(dir=OUTPUT)
++        self.root = Path(self.folder.name)
++        self.source = self.root / "긴 한글 파일 이름 페이지 편집 원본.pdf"
++        make_pdf(self.source)
++        self.before = digest(self.source)
++        self.panel = PdfToolsPanel("ko")
++        self.panel.resize(980, 740)
++        self.panel.show()
++        QTest.qWait(20)
++        self.results = []
++        self.panel.result_ready.connect(lambda *args: self.results.append(args))
++
++    def tearDown(self):
++        self.panel.cancel()
++        self.wait_idle()
++        self.panel.shutdown(wait=True)
++        self.panel.close()
++        self.panel.deleteLater()
++        QTest.qWait(10)
++        self.assertEqual(digest(self.source), self.before)
++        self.folder.cleanup()
++
++    def wait_idle(self):
++        deadline = time.monotonic() + 10
++        while (self.panel.is_busy() or getattr(self.panel, "_render_scheduled", False)) and time.monotonic() < deadline:
++            QTest.qWait(5)
++        self.assertFalse(self.panel.is_busy(), "PDF 작업 스레드가 제한 시간 안에 끝나야 합니다.")
++
++    def load(self):
++        self.panel.load_workspace(str(self.source))
++        self.wait_idle()
++        self.assertIsNotNone(self.panel.workspace)
++
++    def test_10_load_real_thumbnails_preview_and_responsive_events(self):
++        ticks = []
++        timer = QTimer()
++        timer.setInterval(1)
++        timer.timeout.connect(lambda: ticks.append(1))
++        timer.start()
++        self.load()
++        timer.stop()
++        self.assertTrue(ticks)
++        self.assertEqual(self.panel.pages_list.count(), 3)
++        self.assertFalse(self.panel.pages_list.item(0).icon().isNull())
++        self.assertFalse(self.panel.page_preview.pixmap().isNull())
++        self.assertEqual(self.panel.workspace.source_sha256, self.before)
++        self.panel.grab().save(str(OUTPUT / "PDF-편집-한국어.png"))
++
++    def test_11_multiselect_rotate_delete_extract_and_save(self):
++        self.load()
++        self.panel.pages_list.clearSelection()
++        self.panel.pages_list.item(0).setSelected(True)
++        self.panel.pages_list.item(2).setSelected(True)
++        self.panel.rotate_selected_pages()
++        self.wait_idle()
++        target = self.root / "선택.pdf"
++        self.panel.save_workspace(str(target), selected=True)
++        self.wait_idle()
++        reader = PdfReader(target)
++        self.assertEqual(len(reader.pages), 2)
++        self.assertEqual([page.rotation for page in reader.pages], [90, 90])
++        self.assertEqual(self.panel.workspace.page_count, 3)
++        self.panel.delete_selected_pages()
++        self.wait_idle()
++        self.assertEqual(self.panel.workspace.page_count, 1)
++        output = self.root / "나머지.pdf"
++        self.panel.save_workspace(str(output))
++        self.wait_idle()
++        self.assertIn("SECOND PAGE", PdfReader(output).pages[0].extract_text())
++
++    def test_12_page_order_model_move_and_all_delete_guard(self):
++        self.load()
++        model = self.panel.pages_list.model()
++        self.assertTrue(model.moveRow(model.index(-1, -1), 2, model.index(-1, -1), 0))
++        self.wait_idle()
++        self.panel.pages_list.selectAll()
++        self.panel.delete_selected_pages()
++        self.assertEqual(self.panel.workspace.page_count, 3)
++        self.assertIn("모든 페이지", self.panel.status.text())
++        target = self.root / "드래그 순서.pdf"
++        self.panel.save_workspace(str(target))
++        self.wait_idle()
++        self.assertIn("THIRD PAGE", PdfReader(target).pages[0].extract_text())
++
++    def test_13_language_and_reduced_motion_keep_selection_and_input(self):
++        self.load()
++        self.panel.set_reduced_motion(True)
++        self.panel.set_language("en")
++        self.assertIn("Save", self.panel.save_pages_button.text())
++        self.assertIn("Page", self.panel.pages_list.item(0).text())
++        self.panel.pages_list.setCurrentRow(1)
++        self.wait_idle()
++        self.panel.rotate_selected_pages()
++        self.wait_idle()
++        self.assertEqual(self.panel.workspace.pages[1].rotation, 90)
++        self.assertEqual(self.panel.status_mark.animation.state(), QAbstractAnimation.Stopped)
++        self.assertTrue(self.panel.save_pages_button.isEnabled())
++        self.panel.grab().save(str(OUTPUT / "PDF-편집-영어-모션감소.png"))
++        self.panel.set_language("ko")
++        self.assertIn("저장", self.panel.save_pages_button.text())
++
++    def test_14_preset_roundtrip_does_not_execute_or_reuse_paths(self):
++        self.panel.operation.setCurrentIndex(self.panel.operation.findData("recognize"))
++        self.panel.pages.setText("1,3")
++        self.panel.dpi.setValue(300)
++        self.panel.output.setCurrentIndex(self.panel.output.findData("txt"))
++        self.panel.force.setChecked(True)
++        received = []
++        self.panel.preset_requested.connect(received.append)
++        self.panel.save_preset_button.click()
++        self.assertEqual(len(received), 1)
++        self.assertEqual(received[0]["kind"], "pdf")
++        self.assertEqual(received[0]["format"], "pdf")
++        saved = received[0]["options"]
++        self.assertNotIn("paths", saved)
++        self.panel.pages.clear()
++        self.panel.dpi.setValue(100)
++        self.panel.apply_preset(saved)
++        self.assertEqual(self.panel.operation.currentData(), "recognize")
++        self.assertEqual(self.panel.output.currentData(), "txt")
++        self.assertEqual(self.panel.dpi.value(), 300)
++        self.assertEqual(self.panel.pages.text(), "1,3")
++        self.assertTrue(self.panel.force.isChecked())
++        self.assertEqual(self.panel.input_paths(), [])
++        self.assertFalse(self.panel.is_busy())
++        self.assertEqual(self.results, [])
++
++    def test_15_invalid_preset_is_atomic_and_busy_input_unchanged(self):
++        self.panel.dpi.setValue(200)
++        self.assertFalse(self.panel.apply_preset({"operation": "recognize", "dpi": 9999}))
++        self.assertEqual(self.panel.dpi.value(), 200)
++        self.assertEqual(self.panel.operation.currentData(), "merge")
++        self.panel.pending = 1
++        self.panel.load_workspace(str(self.source))
++        self.assertIsNone(self.panel.workspace)
++        self.assertIn("다른 변환", self.panel.status.text())
++
++    def test_16_cancel_load_preserves_current_editor_and_retry(self):
++        self.load()
++        original_workspace = self.panel.workspace
++        from pdf_pages import PdfWorkspace
++        real_open = PdfWorkspace.open
++
++        def slow_open(path, cancel=None):
++            while not cancel.wait(0.01):
++                pass
++            pdf_tools.check_cancel(cancel)
++            return real_open(path, cancel=cancel)
++
++        with patch.object(PdfWorkspace, "open", slow_open):
++            self.panel.load_workspace(str(self.source))
++            QTest.qWait(15)
++            self.panel.cancel()
++            self.wait_idle()
++        self.assertIs(self.panel.workspace, original_workspace)
++        self.assertIn("취소", self.panel.status.text())
++        self.load()
++        self.assertTrue(self.panel.save_pages_button.isEnabled())
++
++    def test_17_bad_input_translates_and_save_dialog_cancel_keeps_editor(self):
++        self.load()
++        original_workspace = self.panel.workspace
++        self.panel.load_workspace(str(self.root / "없음.pdf"))
++        self.wait_idle()
++        self.assertIs(self.panel.workspace, original_workspace)
++        self.panel.set_language("en")
++        self.assertIn("input", self.panel.status.text().lower())
++        with patch("pdf_panel.QFileDialog.getSaveFileName", return_value=("", "")):
++            self.panel.choose_workspace_save()
++        self.assertFalse(self.panel.is_busy())
++        self.assertIs(self.panel.workspace, original_workspace)
++
++    def test_18_actual_thumbnail_drop_saves_visible_order(self):
++        self.load()
++        page_list = self.panel.pages_list
++        mime = page_list.mimeData([page_list.item(2)])
++        rectangle = page_list.visualItemRect(page_list.item(0))
++        event = QDropEvent(QPointF(rectangle.left() + 3, rectangle.top() + 3), Qt.MoveAction,
++                           mime, Qt.LeftButton, Qt.NoModifier)
++        page_list.dropEvent(event)
++        self.assertTrue(event.isAccepted())
++        self.wait_idle()
++        target = self.root / "썸네일 드롭.pdf"
++        self.panel.save_workspace(str(target))
++        self.wait_idle()
++        self.assertIn("THIRD PAGE", PdfReader(target).pages[0].extract_text())
++
++    def test_19_enlarged_preview_zoom_and_editor_actions_are_clear(self):
++        self.load()
++        self.assertFalse(self.panel.options_card.isVisible())
++        self.panel.open_page_preview()
++        self.assertTrue(self.panel.preview_dialog.isVisible())
++        before = self.panel.preview_dialog.zoom_factor
++        self.panel.preview_dialog.zoom_in_button.click()
++        self.assertGreater(self.panel.preview_dialog.zoom_factor, before)
++        self.panel.set_language("en")
++        self.assertIn("Page", self.panel.preview_dialog.windowTitle())
++        self.panel.preview_dialog.close()
++        QTest.qWait(10)
++
++    def test_20_corrupt_preset_value_types_leave_options_unchanged(self):
++        before = self.panel.snapshot_options()
++        for options in ({"operation": []}, {"compression": {}}, {"ocr_language": []},
++                        {"output_format": []}, {"pages": None}, {"force_ocr": 1}):
++            with self.subTest(options=options):
++                self.assertFalse(self.panel.apply_preset(options))
++                self.assertEqual(self.panel.snapshot_options(), before)
++
++    def test_21_cancel_after_committed_save_keeps_result_record(self):
++        self.load()
++        target = self.root / "이미 완성한 결과.pdf"
++        self.panel.save_workspace(str(target))
++        deadline = time.monotonic() + 5
++        # GUI 완료 슬롯을 처리하기 전에 디스크 저장이 끝난 경우를 제어한다.
++        while not self.panel._future.done() and time.monotonic() < deadline:
++            time.sleep(0.001)
++        self.assertTrue(self.panel._future.done())
++        self.assertTrue(target.is_file())
++        self.panel.cancel()
++        self.wait_idle()
++        self.assertEqual(len(self.results), 1)
++        self.assertEqual(Path(self.results[0][1]), target)
++        self.assertEqual(len(PdfReader(target).pages), 3)
++
++    def test_22_all_pdf_operations_block_submission_when_disk_is_full(self):
++        image = self.root / "이미지.png"
++        from PIL import Image
++        Image.new("RGB", (60, 80), "white").save(image)
++        for operation in ("merge", "split", "extract", "delete", "rotate", "images_to_pdf",
++                          "pdf_to_images", "compress", "recognize"):
++            with self.subTest(operation=operation):
++                self.panel.set_files([str(image if operation == "images_to_pdf" else self.source)])
++                self.panel.operation.setCurrentIndex(self.panel.operation.findData(operation))
++                future = Future()
++                future.set_result(None)
++                with patch.object(pdf_tools.shutil, "disk_usage", return_value=SimpleNamespace(free=0)) as usage, \
++                     patch.object(self.panel._pool, "submit", return_value=future) as submit:
++                    self.panel.start()
++                    self.assertFalse(self.panel.is_busy())
++                    self.assertTrue(usage.called)
++                    submit.assert_not_called()
++                    self.assertIn("여유 공간", self.panel.status.text())
++                QTest.qWait(5)
++        self.panel.set_language("en")
++        self.assertIn("space", self.panel.status.text().lower())
++
++    def test_23_missing_input_and_bundled_ocr_files_block_submission(self):
++        future = Future()
++        future.set_result(None)
++        self.panel.set_files([str(self.root / "누락.pdf")])
++        with patch.object(self.panel._pool, "submit", return_value=future) as submit:
++            self.panel.start()
++            self.assertFalse(self.panel.is_busy())
++            submit.assert_not_called()
++            self.assertIn("입력 파일", self.panel.status.text())
++        QTest.qWait(5)
++        self.panel.set_files([str(self.source)])
++        self.panel.operation.setCurrentIndex(self.panel.operation.findData("recognize"))
++        missing_runtime = self.root / "없는 OCR"
++        with patch.object(pdf_tools, "tesseract_paths", return_value=(missing_runtime / "tesseract.exe", missing_runtime / "tessdata")), \
++             patch.object(self.panel._pool, "submit", return_value=future) as submit:
++            self.panel.start()
++            self.assertFalse(self.panel.is_busy())
++            submit.assert_not_called()
++            self.assertIn("OCR", self.panel.status.text())
++        data = self.root / "모델 점검"
++        data.mkdir()
++        required = [self.root / "동봉점검.exe", data / "pdf.ttf", data / "kor.traineddata", data / "eng.traineddata"]
++        for path in required:
++            path.write_bytes(b"controlled existing file; never executed")
++        for missing in required:
++            with self.subTest(missing=missing.name):
++                content = missing.read_bytes()
++                missing.unlink()
++                try:
++                    with patch.object(pdf_tools, "tesseract_paths", return_value=(required[0], data)), \
++                         patch.object(self.panel._pool, "submit", return_value=future) as submit:
++                        self.panel.start()
++                        self.assertFalse(self.panel.is_busy())
++                        submit.assert_not_called()
++                        self.assertIn("OCR", self.panel.status.text())
++                finally:
++                    missing.write_bytes(content)
++
++    def test_24_output_locations_follow_merge_and_per_input_publication(self):
++        second_folder = self.root / "다른 출력 폴더"
++        second_folder.mkdir()
++        second = second_folder / "두번째.pdf"
++        make_pdf(second)
++        paths = [str(self.source), str(second)]
++        merge = pdf_tools.preflight_request(pdf_tools.Request("merge", paths))
++        split = pdf_tools.preflight_request(pdf_tools.Request("split", paths))
++        self.assertEqual({Path(row["directory"]) for row in merge}, {self.source.parent})
++        self.assertEqual({Path(row["directory"]) for row in split}, {self.source.parent, second_folder})
++        self.assertTrue(all(row["free"] >= row["estimated"] > 0 for row in merge + split))
++        self.assertFalse(list(self.root.rglob(".flipring-check-*")))
++
++    def test_25_editor_save_blocks_full_disk_without_rereading_snapshot_source(self):
++        self.load()
++        target = self.root / "편집 저장.pdf"
++        future = Future()
++        future.set_result(str(target))
++        with patch.object(pdf_tools.shutil, "disk_usage", return_value=SimpleNamespace(free=0)), \
++             patch.object(self.panel._pool, "submit", return_value=future) as submit:
++            self.panel.save_workspace(str(target))
++            self.assertFalse(self.panel.is_busy())
++            submit.assert_not_called()
++            self.assertFalse(target.exists())
++        moved = self.root / "외부에서 이동한 원본.pdf"
++        self.source.rename(moved)
++        try:
++            self.panel.save_workspace(str(target))
++            self.wait_idle()
++            self.assertEqual(len(PdfReader(target).pages), 3)
++        finally:
++            moved.rename(self.source)
++
++    def test_26_worker_preflight_rejects_space_before_pdf_processing(self):
++        from pdf_pages import PdfWorkspace
++        workspace = PdfWorkspace.open(self.source)
++        target = self.root / "직접 저장.pdf"
++        with patch.object(pdf_tools.shutil, "disk_usage", return_value=SimpleNamespace(free=0)):
++            with self.assertRaises(pdf_tools.PdfToolError) as caught:
++                pdf_tools.execute(pdf_tools.Request("split", [str(self.source)]))
++            self.assertEqual(caught.exception.code, "disk_space")
++            with self.assertRaises(pdf_tools.PdfToolError) as caught:
++                workspace.save(target)
++            self.assertEqual(caught.exception.code, "disk_space")
++        self.assertFalse(target.exists())
++        self.assertFalse(list(self.root.glob("*page-*.pdf")))
++
++    def test_27_output_write_failure_is_translated_and_preserves_completed_file(self):
++        self.load()
++        completed = self.root / "이전 완성 결과.pdf"
++        completed.write_bytes(b"previous completed output")
++        target = self.root / "쓰기 거부.pdf"
++        with patch.object(pdf_tools.tempfile, "TemporaryFile", side_effect=PermissionError("controlled write refusal")):
++            self.panel.save_workspace(str(target))
++            self.assertFalse(self.panel.is_busy())
++            self.assertIn("쓰기", self.panel.status.text())
++            self.panel.set_language("en")
++            self.assertIn("writ", self.panel.status.text().lower())
++        self.assertFalse(target.exists())
++        self.assertEqual(completed.read_bytes(), b"previous completed output")
++
++    def test_28_preflight_cancel_keeps_directory_and_avoids_probe(self):
++        event = threading.Event()
++        event.set()
++        before = set(self.root.iterdir())
++        with patch.object(pdf_tools.shutil, "disk_usage") as usage:
++            with self.assertRaises(pdf_tools.Cancelled):
++                pdf_tools.preflight_output(self.root, 64 * 1024 * 1024, cancel=event)
++            usage.assert_not_called()
++        self.assertEqual(set(self.root.iterdir()), before)
++
++    def test_29_real_preflight_estimate_is_visible_and_retranslated(self):
++        self.panel.set_files([str(self.source)])
++        self.panel.start()
++        self.wait_idle()
++        self.assertEqual(len(self.results), 1)
++        self.assertTrue(Path(self.results[0][1]).is_file())
++        self.assertIn("준비 예상", self.panel.preflight_label.text())
++        self.assertIn("보장", self.panel.preflight_label.text())
++        self.panel.set_language("en")
++        self.assertIn("Estimated", self.panel.preflight_label.text())
++        self.assertIn("guarantee", self.panel.preflight_label.text())
++
++    def test_30_worker_recheck_failure_replaces_old_space_summary(self):
++        self.panel.set_files([str(self.source)])
++        with patch.object(pdf_tools.shutil, "disk_usage", side_effect=[SimpleNamespace(free=10**12), SimpleNamespace(free=0)]):
++            self.panel.start()
++            self.wait_idle()
++        self.assertIn("여유 공간", self.panel.status.text())
++        self.assertIn("여유 공간 0 MiB", self.panel.preflight_label.text())
++        self.assertEqual(len(self.results), 1)
++        self.assertEqual(self.results[0][1], "")
++        self.assertFalse(list(self.root.glob("*-merge.pdf")))
++
++
++def main():
++    global OUTPUT
++    parser = argparse.ArgumentParser()
++    parser.add_argument("output")
++    args = parser.parse_args()
++    OUTPUT = Path(args.output).resolve()
++    OUTPUT.mkdir(parents=True, exist_ok=True)
++    result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromModule(sys.modules[__name__]))
++    report = {"tests": result.testsRun, "failures": len(result.failures), "errors": len(result.errors),
++              "skipped": len(result.skipped), "success": result.wasSuccessful()}
++    (OUTPUT / "PDF-페이지편집-검증.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
++    return int(not result.wasSuccessful())
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+--- a/소스/test_queue113.py
++++ b/소스/test_queue113.py
+@@ -0,0 +1,224 @@
++"""대기열 영속성·중단 경계·비공개 진단의 실제 파일 검사."""
++import copy
++import json
++from pathlib import Path
++import tempfile
++import threading
++import unittest
++from unittest.mock import patch
++from PIL import Image
++import quick_actions as core
++import queue_journal as journal
++
++
++class QueueTests(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
++        self.root = Path(self.temp.name); self.output = self.root / '결과'; self.output.mkdir()
++        self.source = self.root / '비공개이름.png'; Image.new('RGB', (20, 20), 'red').save(self.source)
++        self.records = core.collect_inputs([self.source])['inputs']; self.action = copy.deepcopy(core.BUILTINS[0])
++        self.ledger = core.OutputLedger(); self.store = journal.QueueJournal(self.root / '기록.json')
++        self.job = {'id': '1234abcd', 'inputs': self.records, 'action': self.action, 'output': str(self.output),
++                    'state': 'running', 'result': None, 'file_states': {str(self.source): 'waiting'},
++                    'checkpoints': {str(self.source): {'input_sha256': core.digest(self.source), 'state': 'waiting', 'outputs': [], 'expected': 1}}}
++    def event(self, event):
++        journal.checkpoint_event(self.job, event)
++        if event['state'] == 'completed': self.ledger.register(event.get('outputs', []))
++        self.store.save([self.job], self.ledger)
++    def run_job(self, cancel=None):
++        return core.run_action(self.records, self.action, self.output, cancel, self.event, self.job['checkpoints'])
++    def test_builtins_explicit_values(self):
++        self.assertEqual(len(core.BUILTINS), 6)
++        for row in core.BUILTINS: core.validate_action(row)
++        self.assertEqual(core.BUILTINS[3]['max_bytes'], 1024 ** 2)
++        self.assertEqual(core.BUILTINS[4]['width'], 0)
++        self.assertEqual(core.BUILTINS[5]['format'], 'webp')
++    def test_preview_matches_disk_and_batch_collisions(self):
++        (self.output / '비공개이름.jpg').write_bytes(b'keep')
++        rows = self.records * 2
++        preview = core.preview_output_names(rows, self.action, self.output)
++        result = core.run_action(rows, self.action, self.output)
++        self.assertEqual([r['path'] for r in preview], [r['path'] for r in result['outputs']])
++        self.assertEqual(Path(preview[0]['path']).name, '비공개이름 2.jpg')
++        self.assertEqual((self.output / '비공개이름.jpg').read_bytes(), b'keep')
++    def test_pdf_two_pages_preview_matches_all_collisions(self):
++        import pypdfium2 as pdfium
++        source = self.root / '두페이지.pdf'
++        with pdfium.PdfDocument.new() as document:
++            document.new_page(100, 100); document.new_page(100, 100); document.save(str(source))
++        records = core.collect_inputs([source])['inputs'] * 2
++        action = {**self.action, 'format': 'png'}
++        (self.output / '두페이지-1.png').write_bytes(b'keep')
++        before = core.digest(source)
++        preview = core.preview_output_names(records, action, self.output)
++        result = core.run_action(records, action, self.output)
++        self.assertEqual(result['status'], 'completed', result)
++        self.assertEqual([r['path'] for r in preview], [r['path'] for r in result['outputs']])
++        self.assertEqual(len(preview), 4); self.assertEqual(core.digest(source), before)
++    def test_preview_cancel_and_missing_tool_preserve_original(self):
++        token = threading.Event(); token.set(); before = core.digest(self.source)
++        with self.assertRaises((core.pdf_tools.Cancelled, core.engine.Cancelled)):
++            core.preview_output_names(self.records, self.action, self.output, token)
++        fake = self.root / '문서.docx'; fake.write_bytes(b'not opened by mocked engine')
++        action = {**self.action, 'format': 'png'}
++        with patch('quick_actions.workspace._single', side_effect=ValueError('공식 도구가 필요합니다.')):
++            with self.assertRaisesRegex(ValueError, '공식 도구'):
++                core.preview_output_names(core.collect_inputs([fake])['inputs'], action, self.output)
++        self.assertEqual(core.digest(self.source), before); self.assertFalse(list(self.output.iterdir()))
++    def test_office_preview_uses_real_temporary_engine_output(self):
++        from docx import Document
++        source = self.root / '문서.docx'; document = Document(); document.add_paragraph('Preview page one'); document.add_page_break(); document.add_paragraph('Preview page two'); document.save(str(source))
++        action = {**self.action, 'format': 'png'}; records = core.collect_inputs([source])['inputs']
++        before = core.digest(source)
++        preview = core.preview_output_names(records, action, self.output)
++        self.assertEqual(len(preview), 2); self.assertEqual(core.digest(source), before)
++        self.assertFalse(list(self.output.iterdir()))
++        result = core.run_action(records, action, self.output)
++        self.assertEqual(result['status'], 'completed', result)
++        self.assertEqual([r['path'] for r in preview], [r['path'] for r in result['outputs']])
++    def test_restore_skips_valid_completed_output(self):
++        result = self.run_job(); self.assertEqual(result['status'], 'completed', result)
++        restored = journal.recover_jobs(self.store.load()['jobs'])[0]
++        with patch('quick_actions.workspace.execute_workspace', side_effect=AssertionError('재변환 금지')):
++            again = core.run_action(self.records, self.action, self.output, completed=restored['checkpoints'])
++        self.assertEqual(again['status'], 'completed', again)
++        self.assertEqual(result['outputs'], again['outputs'])
++    def test_input_change_blocks_resume(self):
++        self.run_job(); self.source.write_bytes(b'changed')
++        recovered = journal.recover_jobs(self.store.load()['jobs'])[0]
++        self.assertEqual(recovered['state'], 'review')
++        result = core.run_action(self.records, self.action, self.output, completed=recovered['checkpoints'])
++        self.assertEqual(result['status'], 'failed')
++        self.assertEqual(len(list(self.output.glob('*.jpg'))), 1)
++    def test_output_change_blocks_resume_and_cleanup(self):
++        result = self.run_job(); target = Path(result['outputs'][0]['path']); target.write_bytes(b'changed')
++        recovered = journal.recover_jobs(self.store.load()['jobs'])[0]
++        self.assertEqual(recovered['state'], 'review')
++        again = core.run_action(self.records, self.action, self.output, completed=recovered['checkpoints'])
++        self.assertEqual(again['status'], 'failed'); self.assertTrue(self.ledger.cleanup([str(target)])['errors'])
++        self.assertEqual(target.read_bytes(), b'changed')
++    def test_crash_after_publish_before_completed_event(self):
++        def crash(event):
++            if event['state'] == 'completed': raise SystemExit('비정상 종료 모의')
++            self.event(event)
++        with self.assertRaises(SystemExit): core.run_action(self.records, self.action, self.output, on_event=crash, completed=self.job['checkpoints'])
++        restored = journal.recover_jobs(self.store.load()['jobs'])[0]
++        self.assertEqual(restored['checkpoints'][str(self.source)]['state'], 'completed')
++        again = core.run_action(self.records, self.action, self.output, completed=restored['checkpoints'])
++        self.assertEqual(again['status'], 'completed'); self.assertEqual(len(list(self.output.glob('*.jpg'))), 1)
++    def test_cancel_and_partial_failure_keep_checkpoint(self):
++        other = self.root / '둘.png'; Image.new('RGB', (20, 20), 'blue').save(other)
++        self.records += core.collect_inputs([other])['inputs']; self.job['inputs'] = self.records
++        self.job['file_states'][str(other)] = 'waiting'
++        token = threading.Event()
++        def cancel(event):
++            self.event(event)
++            if event['state'] == 'completed': token.set()
++        result = core.run_action(self.records, self.action, self.output, token, cancel)
++        self.assertEqual(result['status'], 'cancelled'); self.assertEqual(len(result['outputs']), 1)
++        count = [0]; original = core.workspace.execute_workspace
++        def fail_second(*args, **kwargs):
++            count[0] += 1
++            if count[0] == 2: raise OSError('의도한 두 번째 실패')
++            return original(*args, **kwargs)
++        with patch('quick_actions.workspace.execute_workspace', side_effect=fail_second):
++            partial = core.run_action(self.records, self.action, self.output)
++        self.assertEqual(partial['status'], 'failed'); self.assertEqual(len(partial['files']), 1)
++    def test_damaged_and_oversized_state_preserved(self):
++        self.store.path.write_bytes(b'{broken'); before = self.store.path.read_bytes()
++        with self.assertRaises(ValueError): self.store.load()
++        with self.assertRaises(ValueError): self.store.save([self.job], self.ledger)
++        self.assertEqual(self.store.path.read_bytes(), before)
++        self.store.path.write_bytes(b' ' * (journal.MAX_BYTES + 1))
++        with self.assertRaises(ValueError): journal.QueueJournal(self.store.path).load()
++    def test_invalid_state_rejected(self):
++        self.job['inputs'][0]['relative'] = '../탈출.png'
++        with self.assertRaises(ValueError): self.store.save([self.job], self.ledger)
++    def test_cleanup_undo_survives_restart_and_collision(self):
++        result = self.run_job(); path = result['outputs'][0]['path']
++        self.ledger.on_change = lambda: self.store.save([self.job], self.ledger)
++        self.assertEqual(len(self.ledger.cleanup([path])['moved']), 1)
++        value = self.store.load(); restored = core.OutputLedger(); restored.rows = value['ledger']['rows']; restored.moves = value['ledger']['moves']
++        Path(path).write_bytes(b'other'); self.assertTrue(restored.undo()['errors']); Path(path).unlink()
++        self.assertEqual(restored.undo()['restored'], [path]); self.assertEqual(core.digest(path), result['outputs'][0]['sha256'])
++    def test_shared_diagnostic_contains_only_allowlist(self):
++        self.job['state'] = 'failed'; self.job['result'] = {'error': 'SECRET /private/name.txt 문서 본문'}
++        value = journal.diagnostic([self.job]); encoded = json.dumps(value)
++        self.assertEqual(set(value), {'version', 'jobs', 'states', 'extensions', 'error_codes'})
++        for private in (str(self.root), self.source.name, self.action['name'], 'SECRET', '문서 본문'):
++            self.assertNotIn(private, encoded)
++        self.assertEqual(value['extensions'], {'png': 1})
++    def test_zip_crash_does_not_recreate_bundle(self):
++        self.action['zip'] = True
++        def crash(event):
++            if event['state'] == 'completed' and event['source'] == '': raise SystemExit('묶음 완료 직전 중단')
++            self.event(event)
++        with self.assertRaises(SystemExit):
++            core.run_action(self.records, self.action, self.output, on_event=crash, completed=self.job['checkpoints'])
++        restored = journal.recover_jobs(self.store.load()['jobs'])[0]
++        self.assertEqual(restored['checkpoints']['']['state'], 'completed')
++        with patch('quick_actions.create_bundle', side_effect=AssertionError('묶음 중복 생성 금지')):
++            result = core.run_action(self.records, self.action, self.output, completed=restored['checkpoints'])
++        self.assertEqual(result['status'], 'completed', result); self.assertEqual(len(list(self.output.glob('*.zip'))), 1)
++    def test_invalid_result_type_preserves_existing_state(self):
++        self.store.save([self.job], self.ledger); before = self.store.path.read_bytes()
++        self.job['result'] = ['invalid']
++        with self.assertRaises(ValueError): self.store.save([self.job], self.ledger)
++        self.assertEqual(self.store.path.read_bytes(), before)
++    def test_waiting_input_change_review(self):
++        self.job['state'] = 'waiting'; self.store.save([self.job], self.ledger)
++        self.assertEqual(journal.recover_jobs(self.store.load()['jobs'])[0]['state'], 'waiting')
++        self.source.write_bytes(b'changed')
++        self.assertEqual(journal.recover_jobs(self.store.load()['jobs'])[0]['state'], 'review')
++
++
++class QueueUiTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        from PySide6.QtWidgets import QApplication
++        cls.app = QApplication.instance() or QApplication([])
++    def pump(self, condition):
++        import time
++        limit = time.monotonic() + 15
++        while not condition() and time.monotonic() < limit:
++            self.app.processEvents(); time.sleep(.01)
++        self.app.processEvents(); self.assertTrue(condition())
++    def test_restart_requires_explicit_resume_and_cleanup_by_job(self):
++        from PySide6.QtCore import QSettings
++        from PySide6.QtWidgets import QWidget
++        from quick_actions_ui import QuickActionsPanel
++        with tempfile.TemporaryDirectory() as temporary:
++            root = Path(temporary); source = root / '입력.png'; Image.new('RGB', (20, 20), 'red').save(source)
++            owner = QWidget(); owner.pending = False; owner.settings = QSettings(str(root / '설정.ini'), QSettings.IniFormat)
++            panel = QuickActionsPanel(owner); self.addCleanup(panel.shutdown)
++            self.pump(lambda: not panel._tasks)
++            panel.output.setText(str(root / '결과')); panel.add_paths([str(source)])
++            self.pump(lambda: not panel._tasks); panel.pause(); panel.enqueue()
++            self.pump(lambda: not panel._tasks); self.assertEqual(panel._jobs[0]['state'], 'waiting')
++            self.assertTrue(panel.shutdown())
++            second = QuickActionsPanel(owner); self.addCleanup(second.shutdown)
++            self.pump(lambda: not second._tasks)
++            self.assertTrue(second._paused); self.assertEqual(second._jobs[0]['state'], 'waiting')
++            self.assertFalse(list((root / '결과').glob('*.jpg')))
++            second.resume(); self.pump(lambda: second._jobs[0]['state'] == 'completed' and not second.is_busy())
++            result = second._jobs[0]['result']['outputs'][0]; second.queue.setCurrentRow(0); second.cleanup_jobs()
++            self.pump(lambda: not second.is_busy()); self.assertFalse(Path(result['path']).exists())
++            self.assertTrue(second.shutdown())
++            third = QuickActionsPanel(owner); self.addCleanup(third.shutdown)
++            self.pump(lambda: not third._tasks); third.undo(); self.pump(lambda: not third.is_busy())
++            self.assertEqual(core.digest(result['path']), result['sha256'])
++    def test_delivery_busy_blocks_and_diagnostic_requires_preview(self):
++        from PySide6.QtCore import QSettings
++        from PySide6.QtWidgets import QWidget, QMessageBox
++        from quick_actions_ui import QuickActionsPanel
++        with tempfile.TemporaryDirectory() as temporary:
++            owner = QWidget(); owner.pending = False
++            owner.settings = QSettings(str(Path(temporary) / '설정.ini'), QSettings.IniFormat)
++            owner.delivery_dialogs = [type('Busy', (), {'is_busy': lambda self: True})()]
++            panel = QuickActionsPanel(owner); self.addCleanup(panel.shutdown); self.pump(lambda: not panel._tasks)
++            self.assertTrue(panel._other_busy())
++            with patch.object(QMessageBox, 'exec', return_value=QMessageBox.Cancel), patch.object(panel, 'choose_paths') as picker:
++                panel.shared_diagnostic(); picker.assert_not_called()
++
++
++if __name__ == '__main__': unittest.main()

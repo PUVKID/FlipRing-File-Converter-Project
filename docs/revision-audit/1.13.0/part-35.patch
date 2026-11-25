@@ -1,0 +1,1202 @@
+--- a/소스/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0-19.dsc.origin.json
++++ b/소스/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0-19.dsc.origin.json
+@@ -1,17 +1,17 @@
+-{
+-  "korean_time": "2026-10-21T01:44:00.927139+09:00",
+-  "argv": [
+-    "소스/licenses/OCR/ubuntu-gcc/download_one.py",
+-    "https://deb.debian.org/debian/pool/main/g/gcc-14/gcc-14_14.2.0-19.dsc",
+-    "gcc-14_14.2.0-19.dsc"
+-  ],
+-  "url": "https://deb.debian.org/debian/pool/main/g/gcc-14/gcc-14_14.2.0-19.dsc",
+-  "destination": "소스/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0-19.dsc",
+-  "final_url": "https://deb.debian.org/debian/pool/main/g/gcc-14/gcc-14_14.2.0-19.dsc",
+-  "content_type": "text/prs.lines.tag",
+-  "status": "success",
+-  "size": 47347,
+-  "sha256": "7db1e202cce66617e9134a662c877a3a773de5b612fd52179815877e0ecfb847",
+-  "changed": true,
+-  "exit_code": 0
+-}
++{
++  "korean_time": "2026-10-21T01:44:00.927139+09:00",
++  "argv": [
++    "소스/licenses/OCR/ubuntu-gcc/download_one.py",
++    "https://deb.debian.org/debian/pool/main/g/gcc-14/gcc-14_14.2.0-19.dsc",
++    "gcc-14_14.2.0-19.dsc"
++  ],
++  "url": "https://deb.debian.org/debian/pool/main/g/gcc-14/gcc-14_14.2.0-19.dsc",
++  "destination": "소스/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0-19.dsc",
++  "final_url": "https://deb.debian.org/debian/pool/main/g/gcc-14/gcc-14_14.2.0-19.dsc",
++  "content_type": "text/prs.lines.tag",
++  "status": "success",
++  "size": 47347,
++  "sha256": "7db1e202cce66617e9134a662c877a3a773de5b612fd52179815877e0ecfb847",
++  "changed": true,
++  "exit_code": 0
++}
+--- a/소스/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0.orig.tar.gz.origin.json
++++ b/소스/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0.orig.tar.gz.origin.json
+@@ -1,18 +1,18 @@
+-{
+-  "korean_time": "2026-10-21T01:44:32.171113+09:00",
+-  "argv": [
+-    "소스\\licenses\\OCR\\ubuntu-gcc\\download_one.py",
+-    "https://deb.debian.org/debian/pool/main/g/gcc-14/gcc-14_14.2.0.orig.tar.gz",
+-    "gcc-14_14.2.0.orig.tar.gz",
+-    "e162a5ef3f0077ecae598c6556908d2ab80841532df3398072a96a6df6e6aa29"
+-  ],
+-  "url": "https://deb.debian.org/debian/pool/main/g/gcc-14/gcc-14_14.2.0.orig.tar.gz",
+-  "destination": "소스/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0.orig.tar.gz",
+-  "final_url": "https://deb.debian.org/debian/pool/main/g/gcc-14/gcc-14_14.2.0.orig.tar.gz",
+-  "content_type": "application/x-gzip",
+-  "status": "success",
+-  "size": 94299633,
+-  "sha256": "e162a5ef3f0077ecae598c6556908d2ab80841532df3398072a96a6df6e6aa29",
+-  "changed": true,
+-  "exit_code": 0
+-}
++{
++  "korean_time": "2026-10-21T01:44:32.171113+09:00",
++  "argv": [
++    "소스\\licenses\\OCR\\ubuntu-gcc\\download_one.py",
++    "https://deb.debian.org/debian/pool/main/g/gcc-14/gcc-14_14.2.0.orig.tar.gz",
++    "gcc-14_14.2.0.orig.tar.gz",
++    "e162a5ef3f0077ecae598c6556908d2ab80841532df3398072a96a6df6e6aa29"
++  ],
++  "url": "https://deb.debian.org/debian/pool/main/g/gcc-14/gcc-14_14.2.0.orig.tar.gz",
++  "destination": "소스/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0.orig.tar.gz",
++  "final_url": "https://deb.debian.org/debian/pool/main/g/gcc-14/gcc-14_14.2.0.orig.tar.gz",
++  "content_type": "application/x-gzip",
++  "status": "success",
++  "size": 94299633,
++  "sha256": "e162a5ef3f0077ecae598c6556908d2ab80841532df3398072a96a6df6e6aa29",
++  "changed": true,
++  "exit_code": 0
++}
+--- a/소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb.origin.json
++++ b/소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb.origin.json
+@@ -1,18 +1,18 @@
+-{
+-  "korean_time": "2026-10-21T01:41:37.051019+09:00",
+-  "argv": [
+-    "소스/licenses/OCR/ubuntu-gcc/download_one.py",
+-    "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb",
+-    "gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb",
+-    "c898d96177574a8a7238564a1e799d8ddfed5a3d2ea005510305f9ad466a6f59"
+-  ],
+-  "url": "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb",
+-  "destination": "소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb",
+-  "final_url": "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb",
+-  "content_type": "application/vnd.debian.binary-package",
+-  "status": "success",
+-  "size": 13037152,
+-  "sha256": "c898d96177574a8a7238564a1e799d8ddfed5a3d2ea005510305f9ad466a6f59",
+-  "changed": true,
+-  "exit_code": 0
+-}
++{
++  "korean_time": "2026-10-21T01:41:37.051019+09:00",
++  "argv": [
++    "소스/licenses/OCR/ubuntu-gcc/download_one.py",
++    "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb",
++    "gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb",
++    "c898d96177574a8a7238564a1e799d8ddfed5a3d2ea005510305f9ad466a6f59"
++  ],
++  "url": "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb",
++  "destination": "소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb",
++  "final_url": "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb",
++  "content_type": "application/vnd.debian.binary-package",
++  "status": "success",
++  "size": 13037152,
++  "sha256": "c898d96177574a8a7238564a1e799d8ddfed5a3d2ea005510305f9ad466a6f59",
++  "changed": true,
++  "exit_code": 0
++}
+--- a/소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.dsc
++++ b/소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.dsc
+@@ -1,95 +1,95 @@
+------BEGIN PGP SIGNED MESSAGE-----
+-Hash: SHA512
+-
+-Format: 3.0 (native)
+-Source: gcc-mingw-w64
+-Binary: gcc-mingw-w64-bootstrap, gcc-mingw-w64, gcc-mingw-w64-i686, gcc-mingw-w64-i686-posix, gcc-mingw-w64-i686-win32, gcc-mingw-w64-x86-64, gcc-mingw-w64-x86-64-posix, gcc-mingw-w64-x86-64-win32, gcc-mingw-w64-ucrt64, g++-mingw-w64, g++-mingw-w64-i686, g++-mingw-w64-i686-posix, g++-mingw-w64-i686-win32, g++-mingw-w64-x86-64, g++-mingw-w64-x86-64-posix, g++-mingw-w64-x86-64-win32, g++-mingw-w64-ucrt64, gfortran-mingw-w64, gfortran-mingw-w64-i686, gfortran-mingw-w64-i686-posix, gfortran-mingw-w64-i686-win32, gfortran-mingw-w64-x86-64, gfortran-mingw-w64-x86-64-posix, gfortran-mingw-w64-x86-64-win32, gfortran-mingw-w64-ucrt64, gobjc-mingw-w64, gobjc-mingw-w64-i686, gobjc-mingw-w64-i686-posix, gobjc-mingw-w64-i686-win32, gobjc-mingw-w64-x86-64, gobjc-mingw-w64-x86-64-posix, gobjc-mingw-w64-x86-64-win32, gobjc-mingw-w64-ucrt64, gobjc++-mingw-w64, gobjc++-mingw-w64-i686, gobjc++-mingw-w64-i686-posix, gobjc++-mingw-w64-i686-win32, gobjc++-mingw-w64-x86-64,
+- gobjc++-mingw-w64-x86-64-posix, gobjc++-mingw-w64-x86-64-win32, gobjc++-mingw-w64-ucrt64, gnat-mingw-w64, gnat-mingw-w64-i686, gnat-mingw-w64-i686-posix, gnat-mingw-w64-i686-win32, gnat-mingw-w64-x86-64, gnat-mingw-w64-x86-64-posix, gnat-mingw-w64-x86-64-win32, gnat-mingw-w64-ucrt64, gcc-mingw-w64-i686-posix-runtime, gcc-mingw-w64-i686-win32-runtime, gcc-mingw-w64-x86-64-posix-runtime, gcc-mingw-w64-x86-64-win32-runtime, gcc-mingw-w64-ucrt64-runtime,
+- gcc-mingw-w64-base
+-Architecture: any all
+-Version: 27
+-Maintainer: Stephen Kitt <skitt@debian.org>
+-Homepage: https://www.gnu.org/software/gcc/
+-Standards-Version: 4.7.2
+-Vcs-Browser: https://salsa.debian.org/mingw-w64-team/gcc-mingw-w64
+-Vcs-Git: https://salsa.debian.org/mingw-w64-team/gcc-mingw-w64.git
+-Build-Depends: binutils-mingw-w64-i686 (>= 2.30~), binutils-mingw-w64-ucrt64, binutils-mingw-w64-x86-64 (>= 2.30~), bison, debhelper-compat (= 10), flex, g++-14 <!stage1>, gcc-14-source, gnat-14 [alpha amd64 arm64 armel armhf hppa i386 mips64el mipsel ppc64 ppc64el riscv64 s390x sh4 sparc64 x32] <!stage1>, libelf-dev, libgmp-dev, libisl-dev, libmpc-dev, libmpfr-dev, mingw-w64-i686-dev <!stage1>, mingw-w64-ucrt64-dev <!stage1>, mingw-w64-x86-64-dev <!stage1>, xz-utils, zlib1g-dev
+-Package-List:
+- g++-mingw-w64 deb devel optional arch=all profile=!stage1
+- g++-mingw-w64-i686 deb devel optional arch=all profile=!stage1
+- g++-mingw-w64-i686-posix deb devel optional arch=any profile=!stage1
+- g++-mingw-w64-i686-win32 deb devel optional arch=any profile=!stage1
+- g++-mingw-w64-ucrt64 deb devel optional arch=any profile=!stage1
+- g++-mingw-w64-x86-64 deb devel optional arch=all profile=!stage1
+- g++-mingw-w64-x86-64-posix deb devel optional arch=any profile=!stage1
+- g++-mingw-w64-x86-64-win32 deb devel optional arch=any profile=!stage1
+- gcc-mingw-w64 deb devel optional arch=all profile=!stage1
+- gcc-mingw-w64-base deb devel optional arch=any profile=!stage1
+- gcc-mingw-w64-bootstrap deb devel optional arch=any
+- gcc-mingw-w64-i686 deb devel optional arch=all profile=!stage1
+- gcc-mingw-w64-i686-posix deb devel optional arch=any profile=!stage1
+- gcc-mingw-w64-i686-posix-runtime deb devel optional arch=any profile=!stage1
+- gcc-mingw-w64-i686-win32 deb devel optional arch=any profile=!stage1
+- gcc-mingw-w64-i686-win32-runtime deb devel optional arch=any profile=!stage1
+- gcc-mingw-w64-ucrt64 deb devel optional arch=any profile=!stage1
+- gcc-mingw-w64-ucrt64-runtime deb devel optional arch=any profile=!stage1
+- gcc-mingw-w64-x86-64 deb devel optional arch=all profile=!stage1
+- gcc-mingw-w64-x86-64-posix deb devel optional arch=any profile=!stage1
+- gcc-mingw-w64-x86-64-posix-runtime deb devel optional arch=any profile=!stage1
+- gcc-mingw-w64-x86-64-win32 deb devel optional arch=any profile=!stage1
+- gcc-mingw-w64-x86-64-win32-runtime deb devel optional arch=any profile=!stage1
+- gfortran-mingw-w64 deb devel optional arch=all profile=!stage1
+- gfortran-mingw-w64-i686 deb devel optional arch=all profile=!stage1
+- gfortran-mingw-w64-i686-posix deb devel optional arch=any profile=!stage1
+- gfortran-mingw-w64-i686-win32 deb devel optional arch=any profile=!stage1
+- gfortran-mingw-w64-ucrt64 deb devel optional arch=any profile=!stage1
+- gfortran-mingw-w64-x86-64 deb devel optional arch=all profile=!stage1
+- gfortran-mingw-w64-x86-64-posix deb devel optional arch=any profile=!stage1
+- gfortran-mingw-w64-x86-64-win32 deb devel optional arch=any profile=!stage1
+- gnat-mingw-w64 deb devel optional arch=all profile=!stage1
+- gnat-mingw-w64-i686 deb devel optional arch=all profile=!stage1
+- gnat-mingw-w64-i686-posix deb devel optional arch=alpha,amd64,arm64,armel,armhf,hppa,i386,mips64el,mipsel,ppc64,ppc64el,riscv64,s390x,sh4,sparc64,x32 profile=!stage1
+- gnat-mingw-w64-i686-win32 deb devel optional arch=alpha,amd64,arm64,armel,armhf,hppa,i386,mips64el,mipsel,ppc64,ppc64el,riscv64,s390x,sh4,sparc64,x32 profile=!stage1
+- gnat-mingw-w64-ucrt64 deb devel optional arch=alpha,amd64,arm64,armel,armhf,hppa,i386,mips64el,mipsel,ppc64,ppc64el,riscv64,s390x,sh4,sparc64,x32 profile=!stage1
+- gnat-mingw-w64-x86-64 deb devel optional arch=all profile=!stage1
+- gnat-mingw-w64-x86-64-posix deb devel optional arch=alpha,amd64,arm64,armel,armhf,hppa,i386,mips64el,mipsel,ppc64,ppc64el,riscv64,s390x,sh4,sparc64,x32 profile=!stage1
+- gnat-mingw-w64-x86-64-win32 deb devel optional arch=alpha,amd64,arm64,armel,armhf,hppa,i386,mips64el,mipsel,ppc64,ppc64el,riscv64,s390x,sh4,sparc64,x32 profile=!stage1
+- gobjc++-mingw-w64 deb devel optional arch=all profile=!stage1
+- gobjc++-mingw-w64-i686 deb devel optional arch=all profile=!stage1
+- gobjc++-mingw-w64-i686-posix deb devel optional arch=any profile=!stage1
+- gobjc++-mingw-w64-i686-win32 deb devel optional arch=any profile=!stage1
+- gobjc++-mingw-w64-ucrt64 deb devel optional arch=any profile=!stage1
+- gobjc++-mingw-w64-x86-64 deb devel optional arch=all profile=!stage1
+- gobjc++-mingw-w64-x86-64-posix deb devel optional arch=any profile=!stage1
+- gobjc++-mingw-w64-x86-64-win32 deb devel optional arch=any profile=!stage1
+- gobjc-mingw-w64 deb devel optional arch=all profile=!stage1
+- gobjc-mingw-w64-i686 deb devel optional arch=all profile=!stage1
+- gobjc-mingw-w64-i686-posix deb devel optional arch=any profile=!stage1
+- gobjc-mingw-w64-i686-win32 deb devel optional arch=any profile=!stage1
+- gobjc-mingw-w64-ucrt64 deb devel optional arch=any profile=!stage1
+- gobjc-mingw-w64-x86-64 deb devel optional arch=all profile=!stage1
+- gobjc-mingw-w64-x86-64-posix deb devel optional arch=any profile=!stage1
+- gobjc-mingw-w64-x86-64-win32 deb devel optional arch=any profile=!stage1
+-Checksums-Sha1:
+- 2171842749126ae72b6b073986454e35ed3181f8 36248 gcc-mingw-w64_27.tar.xz
+-Checksums-Sha256:
+- c1bf57cbe5f952ee5a7fa8b3e91dd031474e5ce61f468628f48b00e5bcbe8e30 36248 gcc-mingw-w64_27.tar.xz
+-Files:
+- 5b4867bd944fdb63d259a5abbe551149 36248 gcc-mingw-w64_27.tar.xz
+-
+------BEGIN PGP SIGNATURE-----
+-
+-iQIzBAEBCgAdFiEEnPVX/hPLkMoq7x0ggNMC9Yhtg5wFAmfErWMACgkQgNMC9Yht
+-g5weDA//Y6P3x5LdlROFdEWCrEd3VKQVFDhHflZ++RsZGpNzhsB36XeTN5d+/1y4
+-FMYpAwTZHR7spsJPc7wzNTTBwNzxDtu3CfECDRjJgAtHavcmqFWTLTsaZdN4c7Dx
+-Fv8x+sqNvv074E0E+Iv/vonAikzwRDHS3UTDBaIotgvKrn4+iAZoMASBwEJ3lohA
+-obnjpasdxBT3URHhoCOZF18unQeODFHQpvQM4oGWjue9ktBpv/itfdq7YyquZMJT
+-K1RER30gHeT/KYn13pbwcmAhfm2ESZeXCM/qVC7OQmUQMo7NCPf1ZipbhtOPykPy
+-hpLleMdzJM3uuXieZVqJwewidpftgBEMgXaB8GcFIZUvkaL1tCnOcoU6GEc9UrFY
+-+hHZzpmfV7iR2ou4l1c0Us5/GOckJ/QsTMNhgs/AcpU+/iu7nHvaPcwjQJt606Uo
+-+1HICOZK21IwTvoLkq2w6c8I4soMRkT+4xvqm59AS7JJAkOrmKs8S0jgfR9/40Wn
+-pwqQsTnZS4UzYj1ENf/W3xWgCtGzpynDI4kl1Lg+tSTV9p89yjzltUnPrMmOcICr
+-LAL8FtWDHhl/3RqGQbAkuK5ovodxQymujCJM3mEiKi3v0NL8m3dSNNhxXQ5GqPv7
+-Rn8MhS8cajyEKb82tG65rnwrjwOUFn+g0nJfTLTZvTyoyCQvNEI=
+-=0n8y
+------END PGP SIGNATURE-----
++-----BEGIN PGP SIGNED MESSAGE-----
++Hash: SHA512
++
++Format: 3.0 (native)
++Source: gcc-mingw-w64
++Binary: gcc-mingw-w64-bootstrap, gcc-mingw-w64, gcc-mingw-w64-i686, gcc-mingw-w64-i686-posix, gcc-mingw-w64-i686-win32, gcc-mingw-w64-x86-64, gcc-mingw-w64-x86-64-posix, gcc-mingw-w64-x86-64-win32, gcc-mingw-w64-ucrt64, g++-mingw-w64, g++-mingw-w64-i686, g++-mingw-w64-i686-posix, g++-mingw-w64-i686-win32, g++-mingw-w64-x86-64, g++-mingw-w64-x86-64-posix, g++-mingw-w64-x86-64-win32, g++-mingw-w64-ucrt64, gfortran-mingw-w64, gfortran-mingw-w64-i686, gfortran-mingw-w64-i686-posix, gfortran-mingw-w64-i686-win32, gfortran-mingw-w64-x86-64, gfortran-mingw-w64-x86-64-posix, gfortran-mingw-w64-x86-64-win32, gfortran-mingw-w64-ucrt64, gobjc-mingw-w64, gobjc-mingw-w64-i686, gobjc-mingw-w64-i686-posix, gobjc-mingw-w64-i686-win32, gobjc-mingw-w64-x86-64, gobjc-mingw-w64-x86-64-posix, gobjc-mingw-w64-x86-64-win32, gobjc-mingw-w64-ucrt64, gobjc++-mingw-w64, gobjc++-mingw-w64-i686, gobjc++-mingw-w64-i686-posix, gobjc++-mingw-w64-i686-win32, gobjc++-mingw-w64-x86-64,
++ gobjc++-mingw-w64-x86-64-posix, gobjc++-mingw-w64-x86-64-win32, gobjc++-mingw-w64-ucrt64, gnat-mingw-w64, gnat-mingw-w64-i686, gnat-mingw-w64-i686-posix, gnat-mingw-w64-i686-win32, gnat-mingw-w64-x86-64, gnat-mingw-w64-x86-64-posix, gnat-mingw-w64-x86-64-win32, gnat-mingw-w64-ucrt64, gcc-mingw-w64-i686-posix-runtime, gcc-mingw-w64-i686-win32-runtime, gcc-mingw-w64-x86-64-posix-runtime, gcc-mingw-w64-x86-64-win32-runtime, gcc-mingw-w64-ucrt64-runtime,
++ gcc-mingw-w64-base
++Architecture: any all
++Version: 27
++Maintainer: Stephen Kitt <skitt@debian.org>
++Homepage: https://www.gnu.org/software/gcc/
++Standards-Version: 4.7.2
++Vcs-Browser: https://salsa.debian.org/mingw-w64-team/gcc-mingw-w64
++Vcs-Git: https://salsa.debian.org/mingw-w64-team/gcc-mingw-w64.git
++Build-Depends: binutils-mingw-w64-i686 (>= 2.30~), binutils-mingw-w64-ucrt64, binutils-mingw-w64-x86-64 (>= 2.30~), bison, debhelper-compat (= 10), flex, g++-14 <!stage1>, gcc-14-source, gnat-14 [alpha amd64 arm64 armel armhf hppa i386 mips64el mipsel ppc64 ppc64el riscv64 s390x sh4 sparc64 x32] <!stage1>, libelf-dev, libgmp-dev, libisl-dev, libmpc-dev, libmpfr-dev, mingw-w64-i686-dev <!stage1>, mingw-w64-ucrt64-dev <!stage1>, mingw-w64-x86-64-dev <!stage1>, xz-utils, zlib1g-dev
++Package-List:
++ g++-mingw-w64 deb devel optional arch=all profile=!stage1
++ g++-mingw-w64-i686 deb devel optional arch=all profile=!stage1
++ g++-mingw-w64-i686-posix deb devel optional arch=any profile=!stage1
++ g++-mingw-w64-i686-win32 deb devel optional arch=any profile=!stage1
++ g++-mingw-w64-ucrt64 deb devel optional arch=any profile=!stage1
++ g++-mingw-w64-x86-64 deb devel optional arch=all profile=!stage1
++ g++-mingw-w64-x86-64-posix deb devel optional arch=any profile=!stage1
++ g++-mingw-w64-x86-64-win32 deb devel optional arch=any profile=!stage1
++ gcc-mingw-w64 deb devel optional arch=all profile=!stage1
++ gcc-mingw-w64-base deb devel optional arch=any profile=!stage1
++ gcc-mingw-w64-bootstrap deb devel optional arch=any
++ gcc-mingw-w64-i686 deb devel optional arch=all profile=!stage1
++ gcc-mingw-w64-i686-posix deb devel optional arch=any profile=!stage1
++ gcc-mingw-w64-i686-posix-runtime deb devel optional arch=any profile=!stage1
++ gcc-mingw-w64-i686-win32 deb devel optional arch=any profile=!stage1
++ gcc-mingw-w64-i686-win32-runtime deb devel optional arch=any profile=!stage1
++ gcc-mingw-w64-ucrt64 deb devel optional arch=any profile=!stage1
++ gcc-mingw-w64-ucrt64-runtime deb devel optional arch=any profile=!stage1
++ gcc-mingw-w64-x86-64 deb devel optional arch=all profile=!stage1
++ gcc-mingw-w64-x86-64-posix deb devel optional arch=any profile=!stage1
++ gcc-mingw-w64-x86-64-posix-runtime deb devel optional arch=any profile=!stage1
++ gcc-mingw-w64-x86-64-win32 deb devel optional arch=any profile=!stage1
++ gcc-mingw-w64-x86-64-win32-runtime deb devel optional arch=any profile=!stage1
++ gfortran-mingw-w64 deb devel optional arch=all profile=!stage1
++ gfortran-mingw-w64-i686 deb devel optional arch=all profile=!stage1
++ gfortran-mingw-w64-i686-posix deb devel optional arch=any profile=!stage1
++ gfortran-mingw-w64-i686-win32 deb devel optional arch=any profile=!stage1
++ gfortran-mingw-w64-ucrt64 deb devel optional arch=any profile=!stage1
++ gfortran-mingw-w64-x86-64 deb devel optional arch=all profile=!stage1
++ gfortran-mingw-w64-x86-64-posix deb devel optional arch=any profile=!stage1
++ gfortran-mingw-w64-x86-64-win32 deb devel optional arch=any profile=!stage1
++ gnat-mingw-w64 deb devel optional arch=all profile=!stage1
++ gnat-mingw-w64-i686 deb devel optional arch=all profile=!stage1
++ gnat-mingw-w64-i686-posix deb devel optional arch=alpha,amd64,arm64,armel,armhf,hppa,i386,mips64el,mipsel,ppc64,ppc64el,riscv64,s390x,sh4,sparc64,x32 profile=!stage1
++ gnat-mingw-w64-i686-win32 deb devel optional arch=alpha,amd64,arm64,armel,armhf,hppa,i386,mips64el,mipsel,ppc64,ppc64el,riscv64,s390x,sh4,sparc64,x32 profile=!stage1
++ gnat-mingw-w64-ucrt64 deb devel optional arch=alpha,amd64,arm64,armel,armhf,hppa,i386,mips64el,mipsel,ppc64,ppc64el,riscv64,s390x,sh4,sparc64,x32 profile=!stage1
++ gnat-mingw-w64-x86-64 deb devel optional arch=all profile=!stage1
++ gnat-mingw-w64-x86-64-posix deb devel optional arch=alpha,amd64,arm64,armel,armhf,hppa,i386,mips64el,mipsel,ppc64,ppc64el,riscv64,s390x,sh4,sparc64,x32 profile=!stage1
++ gnat-mingw-w64-x86-64-win32 deb devel optional arch=alpha,amd64,arm64,armel,armhf,hppa,i386,mips64el,mipsel,ppc64,ppc64el,riscv64,s390x,sh4,sparc64,x32 profile=!stage1
++ gobjc++-mingw-w64 deb devel optional arch=all profile=!stage1
++ gobjc++-mingw-w64-i686 deb devel optional arch=all profile=!stage1
++ gobjc++-mingw-w64-i686-posix deb devel optional arch=any profile=!stage1
++ gobjc++-mingw-w64-i686-win32 deb devel optional arch=any profile=!stage1
++ gobjc++-mingw-w64-ucrt64 deb devel optional arch=any profile=!stage1
++ gobjc++-mingw-w64-x86-64 deb devel optional arch=all profile=!stage1
++ gobjc++-mingw-w64-x86-64-posix deb devel optional arch=any profile=!stage1
++ gobjc++-mingw-w64-x86-64-win32 deb devel optional arch=any profile=!stage1
++ gobjc-mingw-w64 deb devel optional arch=all profile=!stage1
++ gobjc-mingw-w64-i686 deb devel optional arch=all profile=!stage1
++ gobjc-mingw-w64-i686-posix deb devel optional arch=any profile=!stage1
++ gobjc-mingw-w64-i686-win32 deb devel optional arch=any profile=!stage1
++ gobjc-mingw-w64-ucrt64 deb devel optional arch=any profile=!stage1
++ gobjc-mingw-w64-x86-64 deb devel optional arch=all profile=!stage1
++ gobjc-mingw-w64-x86-64-posix deb devel optional arch=any profile=!stage1
++ gobjc-mingw-w64-x86-64-win32 deb devel optional arch=any profile=!stage1
++Checksums-Sha1:
++ 2171842749126ae72b6b073986454e35ed3181f8 36248 gcc-mingw-w64_27.tar.xz
++Checksums-Sha256:
++ c1bf57cbe5f952ee5a7fa8b3e91dd031474e5ce61f468628f48b00e5bcbe8e30 36248 gcc-mingw-w64_27.tar.xz
++Files:
++ 5b4867bd944fdb63d259a5abbe551149 36248 gcc-mingw-w64_27.tar.xz
++
++-----BEGIN PGP SIGNATURE-----
++
++iQIzBAEBCgAdFiEEnPVX/hPLkMoq7x0ggNMC9Yhtg5wFAmfErWMACgkQgNMC9Yht
++g5weDA//Y6P3x5LdlROFdEWCrEd3VKQVFDhHflZ++RsZGpNzhsB36XeTN5d+/1y4
++FMYpAwTZHR7spsJPc7wzNTTBwNzxDtu3CfECDRjJgAtHavcmqFWTLTsaZdN4c7Dx
++Fv8x+sqNvv074E0E+Iv/vonAikzwRDHS3UTDBaIotgvKrn4+iAZoMASBwEJ3lohA
++obnjpasdxBT3URHhoCOZF18unQeODFHQpvQM4oGWjue9ktBpv/itfdq7YyquZMJT
++K1RER30gHeT/KYn13pbwcmAhfm2ESZeXCM/qVC7OQmUQMo7NCPf1ZipbhtOPykPy
++hpLleMdzJM3uuXieZVqJwewidpftgBEMgXaB8GcFIZUvkaL1tCnOcoU6GEc9UrFY
+++hHZzpmfV7iR2ou4l1c0Us5/GOckJ/QsTMNhgs/AcpU+/iu7nHvaPcwjQJt606Uo
+++1HICOZK21IwTvoLkq2w6c8I4soMRkT+4xvqm59AS7JJAkOrmKs8S0jgfR9/40Wn
++pwqQsTnZS4UzYj1ENf/W3xWgCtGzpynDI4kl1Lg+tSTV9p89yjzltUnPrMmOcICr
++LAL8FtWDHhl/3RqGQbAkuK5ovodxQymujCJM3mEiKi3v0NL8m3dSNNhxXQ5GqPv7
++Rn8MhS8cajyEKb82tG65rnwrjwOUFn+g0nJfTLTZvTyoyCQvNEI=
++=0n8y
++-----END PGP SIGNATURE-----
+--- a/소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.dsc.origin.json
++++ b/소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.dsc.origin.json
+@@ -1,17 +1,17 @@
+-{
+-  "korean_time": "2026-10-21T01:42:36.177645+09:00",
+-  "argv": [
+-    "소스/licenses/OCR/ubuntu-gcc/download_one.py",
+-    "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64_27.dsc",
+-    "gcc-mingw-w64_27.dsc"
+-  ],
+-  "url": "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64_27.dsc",
+-  "destination": "소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.dsc",
+-  "final_url": "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64_27.dsc",
+-  "content_type": "text/prs.lines.tag",
+-  "status": "success",
+-  "size": 7737,
+-  "sha256": "492f2ba821e43a3d40817841bd32caa5d49673fe66921bf5ba9c8b81c391dfea",
+-  "changed": true,
+-  "exit_code": 0
+-}
++{
++  "korean_time": "2026-10-21T01:42:36.177645+09:00",
++  "argv": [
++    "소스/licenses/OCR/ubuntu-gcc/download_one.py",
++    "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64_27.dsc",
++    "gcc-mingw-w64_27.dsc"
++  ],
++  "url": "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64_27.dsc",
++  "destination": "소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.dsc",
++  "final_url": "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64_27.dsc",
++  "content_type": "text/prs.lines.tag",
++  "status": "success",
++  "size": 7737,
++  "sha256": "492f2ba821e43a3d40817841bd32caa5d49673fe66921bf5ba9c8b81c391dfea",
++  "changed": true,
++  "exit_code": 0
++}
+--- a/소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.tar.xz.origin.json
++++ b/소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.tar.xz.origin.json
+@@ -1,18 +1,18 @@
+-{
+-  "korean_time": "2026-10-21T01:44:00.300254+09:00",
+-  "argv": [
+-    "소스/licenses/OCR/ubuntu-gcc/download_one.py",
+-    "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64_27.tar.xz",
+-    "gcc-mingw-w64_27.tar.xz",
+-    "c1bf57cbe5f952ee5a7fa8b3e91dd031474e5ce61f468628f48b00e5bcbe8e30"
+-  ],
+-  "url": "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64_27.tar.xz",
+-  "destination": "소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.tar.xz",
+-  "final_url": "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64_27.tar.xz",
+-  "content_type": "application/x-xz",
+-  "status": "success",
+-  "size": 36248,
+-  "sha256": "c1bf57cbe5f952ee5a7fa8b3e91dd031474e5ce61f468628f48b00e5bcbe8e30",
+-  "changed": true,
+-  "exit_code": 0
+-}
++{
++  "korean_time": "2026-10-21T01:44:00.300254+09:00",
++  "argv": [
++    "소스/licenses/OCR/ubuntu-gcc/download_one.py",
++    "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64_27.tar.xz",
++    "gcc-mingw-w64_27.tar.xz",
++    "c1bf57cbe5f952ee5a7fa8b3e91dd031474e5ce61f468628f48b00e5bcbe8e30"
++  ],
++  "url": "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64_27.tar.xz",
++  "destination": "소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.tar.xz",
++  "final_url": "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64_27.tar.xz",
++  "content_type": "application/x-xz",
++  "status": "success",
++  "size": 36248,
++  "sha256": "c1bf57cbe5f952ee5a7fa8b3e91dd031474e5ce61f468628f48b00e5bcbe8e30",
++  "changed": true,
++  "exit_code": 0
++}
+--- a/소스/licenses/OCR/ubuntu-gcc/inspect_runtime.py
++++ b/소스/licenses/OCR/ubuntu-gcc/inspect_runtime.py
+@@ -1,59 +1,59 @@
+-"""공식 DEB의 두 DLL과 원본 DLL을 비교하고 패키징 원문을 읽는다."""
+-from datetime import datetime, timezone, timedelta
+-import hashlib
+-import io
+-import json
+-from pathlib import Path
+-import subprocess
+-import tarfile
+-import sys
+-
+-root = Path(__file__).resolve().parent
+-seven = Path(sys.argv[1]).resolve()
+-vendor = Path(sys.argv[2]).resolve()
+-deb = root / (sys.argv[3] if len(sys.argv) > 3 else "gcc-mingw-w64-x86-64-win32-runtime_13.2.0-6ubuntu1+26.1_amd64.deb")
+-prefix = sys.argv[4] if len(sys.argv) > 4 else "ubuntu13"
+-# 공개·출하 사본에는 자료 검증 결과만 기록하고 사적 운영 식별자는 포함하지 않습니다.
+-report = {'korean_time': datetime.now(timezone(timedelta(hours=9))).isoformat()}
+-try:
+-    raw = deb.read_bytes()
+-    assert raw[:8] == b"!<arch>\n"
+-    offset = 8
+-    while offset < len(raw):
+-        header = raw[offset:offset + 60]
+-        name = header[:16].decode("ascii").strip().rstrip("/")
+-        size = int(header[48:58])
+-        content = raw[offset + 60:offset + 60 + size]
+-        offset += 60 + size + size % 2
+-        if name.startswith("data.tar."):
+-            compressed = root / (prefix + "-" + name)
+-            compressed.write_bytes(content)
+-            break
+-    else:
+-        raise ValueError("DEB에 data.tar 압축 자료가 없습니다")
+-    command = [str(seven), "x", "-so", str(compressed)]
+-    report["extract_command"] = command
+-    unpacked = subprocess.run(command, capture_output=True, check=False)
+-    report["extract_exit_code"] = unpacked.returncode
+-    if unpacked.returncode:
+-        raise RuntimeError(unpacked.stderr.decode("utf-8", "replace"))
+-    comparison = []
+-    with tarfile.open(fileobj=io.BytesIO(unpacked.stdout), mode="r:") as archive:
+-        for member in archive:
+-            basename = Path(member.name).name
+-            if basename in {"libgcc_s_seh-1.dll", "libstdc++-6.dll"} and member.isfile():
+-                data = archive.extractfile(member).read()
+-                packaged = hashlib.sha256(data).hexdigest()
+-                original = hashlib.sha256((vendor / basename).read_bytes()).hexdigest()
+-                comparison.append({"name": basename, "member": member.name, "size": len(data),
+-                                   "packaged_sha256": packaged, "vendor_sha256": original,
+-                                   "matches": packaged == original})
+-        report["runtime_members"] = [m.name for m in archive.getmembers()]
+-    report["comparison"] = comparison
+-    report["both_match"] = len(comparison) == 2 and all(x["matches"] for x in comparison)
+-    report.update({"status": "success", "exit_code": 0, "vendor_modified": False})
+-except Exception as exc:
+-    report.update({"status": "failed", "error": repr(exc), "exit_code": 1})
+-(root / (prefix + "-runtime-comparison.json")).write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+-print(json.dumps({key: value for key, value in report.items() if key != "runtime_members"}, ensure_ascii=False))
+-sys.exit(report["exit_code"])
++"""공식 DEB의 두 DLL과 원본 DLL을 비교하고 패키징 원문을 읽는다."""
++from datetime import datetime, timezone, timedelta
++import hashlib
++import io
++import json
++from pathlib import Path
++import subprocess
++import tarfile
++import sys
++
++root = Path(__file__).resolve().parent
++seven = Path(sys.argv[1]).resolve()
++vendor = Path(sys.argv[2]).resolve()
++deb = root / (sys.argv[3] if len(sys.argv) > 3 else "gcc-mingw-w64-x86-64-win32-runtime_13.2.0-6ubuntu1+26.1_amd64.deb")
++prefix = sys.argv[4] if len(sys.argv) > 4 else "ubuntu13"
++# 공개·출하 사본에는 자료 검증 결과만 기록하고 사적 운영 식별자는 포함하지 않습니다.
++report = {'korean_time': datetime.now(timezone(timedelta(hours=9))).isoformat()}
++try:
++    raw = deb.read_bytes()
++    assert raw[:8] == b"!<arch>\n"
++    offset = 8
++    while offset < len(raw):
++        header = raw[offset:offset + 60]
++        name = header[:16].decode("ascii").strip().rstrip("/")
++        size = int(header[48:58])
++        content = raw[offset + 60:offset + 60 + size]
++        offset += 60 + size + size % 2
++        if name.startswith("data.tar."):
++            compressed = root / (prefix + "-" + name)
++            compressed.write_bytes(content)
++            break
++    else:
++        raise ValueError("DEB에 data.tar 압축 자료가 없습니다")
++    command = [str(seven), "x", "-so", str(compressed)]
++    report["extract_command"] = command
++    unpacked = subprocess.run(command, capture_output=True, check=False)
++    report["extract_exit_code"] = unpacked.returncode
++    if unpacked.returncode:
++        raise RuntimeError(unpacked.stderr.decode("utf-8", "replace"))
++    comparison = []
++    with tarfile.open(fileobj=io.BytesIO(unpacked.stdout), mode="r:") as archive:
++        for member in archive:
++            basename = Path(member.name).name
++            if basename in {"libgcc_s_seh-1.dll", "libstdc++-6.dll"} and member.isfile():
++                data = archive.extractfile(member).read()
++                packaged = hashlib.sha256(data).hexdigest()
++                original = hashlib.sha256((vendor / basename).read_bytes()).hexdigest()
++                comparison.append({"name": basename, "member": member.name, "size": len(data),
++                                   "packaged_sha256": packaged, "vendor_sha256": original,
++                                   "matches": packaged == original})
++        report["runtime_members"] = [m.name for m in archive.getmembers()]
++    report["comparison"] = comparison
++    report["both_match"] = len(comparison) == 2 and all(x["matches"] for x in comparison)
++    report.update({"status": "success", "exit_code": 0, "vendor_modified": False})
++except Exception as exc:
++    report.update({"status": "failed", "error": repr(exc), "exit_code": 1})
++(root / (prefix + "-runtime-comparison.json")).write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
++print(json.dumps({key: value for key, value in report.items() if key != "runtime_members"}, ensure_ascii=False))
++sys.exit(report["exit_code"])
+--- a/소스/licenses/OCR/ubuntu-gcc/README.md
++++ b/소스/licenses/OCR/ubuntu-gcc/README.md
+@@ -1,87 +1,55 @@
+-# GCC 런타임의 라이선스와 상응 소스
+-
+-확인일: 2026-10-21. 이 폴더 이름의 `ubuntu-gcc`는 초기 조사 분류이며, 최종 확인된 두 DLL의 실제 일치 패키지는 **Debian**입니다. 폴더명으로 Ubuntu 패키지라고 판단하지 마세요.
+-
+-## 배포 DLL과 정확히 일치한 원본 패키지
+-
+-- 패키지: `gcc-mingw-w64-x86-64-posix-runtime`
+-- 버전/아키텍처: `14.2.0-19+27+b1`, `amd64`
+-- 공식 원본: https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb
+-- 공식 선택 페이지: https://packages.debian.org/en/trixie/amd64/gcc-mingw-w64-x86-64-posix-runtime/download
+-- DEB 크기: 13,037,152바이트
+-- DEB SHA-256: `c898d96177574a8a7238564a1e799d8ddfed5a3d2ea005510305f9ad466a6f59`
+-
+-실제 압축을 풀어 다음 두 파일의 크기와 SHA-256을 제품 `vendor/tesseract`의 DLL과 비교했고, 두 파일 모두 완전히 일치했습니다. 제품 DLL은 변경하지 않았습니다.
+-
+-| DLL | DEB 내부 위치 | 바이트 수 | SHA-256 |
+-|---|---|---:|---|
+-| libgcc_s_seh-1.dll | usr/lib/gcc/x86_64-w64-mingw32/14-posix/libgcc_s_seh-1.dll | 954773 | 172cfdc9d83703ec0a0ca2cee08f6cf2a166b801717ee51a56b3a63b36bc2f83 |
+-| libstdc++-6.dll | usr/lib/gcc/x86_64-w64-mingw32/14-posix/libstdc++-6.dll | 26390974 | 5fe5d4d8f6636eb6f2dc55be99dc5dc8a6c40db1abdf592e84480d1e6985abd0 |
+-
+-패키지 자체의 `control` 메타데이터는 `Source: gcc-mingw-w64 (27)` 및 `Built-Using: gcc-14 (= 14.2.0-19)`를 명시합니다.
+-
+-원문은 `debian14-runtime-control.txt`, 비교 결과는 `debian14-runtime-comparison.json`에 있습니다.
+-
+-기록에 들어 있는 과거 PC 경로는 조사 당시의 실행 증거이며 앱 빌드에 필요한 고정 경로가 아닙니다.
+-
+-## 로컬에 포함한 상응 소스와 고지
+-
+-아래 원본 파일은 출하 물에 로컬로 포함합니다. 소스의 URL만 제공하는 방식으로 대신하지 않습니다.
+-
+-1. `gcc-mingw-w64_27.dsc`, `gcc-mingw-w64_27.tar.xz`: 정확한 MinGW 교차 빌드 패키징과 Debian 빌드 규칙입니다. 출처는 https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/ 입니다.
+-2. `gcc-14_14.2.0-19.dsc`, `gcc-14_14.2.0.orig.tar.gz`, `gcc-14_14.2.0-19.debian.tar.xz`: `Built-Using`이 지정한 GCC 14.2.0-19의 원본과 Debian 패치·패키징입니다.
+-
+-출처는 https://deb.debian.org/debian/pool/main/g/gcc-14/ 입니다.
+-3. `debian27/`, `debian-gcc14/`: 위 원본에서 읽기 편하도록 따로 꺼낸 저작권·빌드 규칙·변경 기록이며, 전체 소스는 위 원본 압축 자료에 있습니다.
+-4. `COPYING3.txt`, `COPYING.RUNTIME.txt`, `COPYING.txt`: GCC 14.2.0 원본 내부에서 그대로 꺼낸 GNU GPL 버전 3, GCC Runtime Library Exception 버전 3.1, GPL 버전 2 원문입니다.
+-
+-파일별 추가 고지와 저작권은 원본 소스 및 `debian-gcc14/copyright`를 함께 보세요.
+-
+-GCC 원본 `orig.tar.gz`에는 `gcc-14-14.2.0/gcc-14.2.0-dfsg.tar.xz`와 `newlib-4.4.0.20231231.tar.xz`가 들어 있습니다.
+-
+-이 구조를 변경하지 않고 제공하며, Debian 패치도 빠뜨리지 않습니다.
+-
+-각 DSC가 명시한 참조 파일의 SHA-256을 대조했습니다.
+-
+-원본 PGP 서명은 보존했지만 이 PC에서 서명자의 키로 검증한 것은 아닙니다.
+-
+-## 소스 확인과 빌드 규칙
+-
+-Debian 도구가 있는 Linux 환경에서 아래와 같이 각 소스를 재조립할 수 있습니다. 이는 실행 안내이며 이 Windows PC에서 GCC를 재컴 파일한 결과가 아닙니다.
+-
+-```sh
+-dpkg-source -x gcc-14_14.2.0-19.dsc
+-dpkg-source -x gcc-mingw-w64_27.dsc
+-```
+-
+-교차 런타임의 실제 빌드 절차는 `gcc-mingw-w64-27/debian/rules`가 정의합니다.
+-
+-해당 규칙은 설치된 `gcc-14-source`의 소스와 패치를 사용하고 POSIX/Win32 스레드 변형을 빌드합니다.
+-
+-원본과 같은 소스가 되려면 `gcc-14-source` 버전을 `14.2.0-19`로 맞추고, `debian/control`의 빌드 의존성을 준비해야 합니다.
+-
+-GCC 네이티브 패키징의 소스 준비법과 패치는 GCC 14 Debian 소스의 `debian/README.source` 및 `debian/rules`에 들어 있습니다.
+-
+-컴파일러와 빌드 환경의 완전한 재현, 재컴파일 결과의 바이트 동일성은 이번 확인 범위가 아닙니다.
+-
+-두 배포 DLL과 공식 Debian DEB 안의 파일이 바이트 단위로 같다는 것은 직접 확인했습니다. 이를 GCC를 직접 다시 빌드하여 동일 바이너리를 만들었다는 뜻으로 해석하지 마세요.
+-
+-## 비교 도구 재실행
+-
+-`download_one.py`와 `inspect_runtime.py`는 출처 확인용 보조 소스입니다.
+-
+-제품 실행에는 필요하지 않습니다. `inspect_runtime.py`는 7-Zip 실행 파일 위치와 제품 DLL 폴더를 명시적 인자로 받으므로 원래 개발 PC의 경로를 요구하지 않습니다.
+-
+-이 폴더에서 다음 형식으로 실행합니다.
+-
+-DEB는 위 공식 URL에서 받아 같은 폴더에 놓아야합니다.
+-
+-```powershell
+-python -B -X utf8 inspect_runtime.py "C:\사용하는도구\7z.exe" "..\..\..\vendor\tesseract" "gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb" "debian14"
+-```
+-
+-`출하목록.json`과 `SHA256SUMS.txt`가 필요한 고지·상응 소스 파일을 지정합니다.
+-
+-조사용 `*.deb`, `*-data.tar.*`, Ubuntu 13 후보 자료, 실패 기록은 배포 대상이 아닙니다.
+-
+-Ubuntu `13.2.0-6ubuntu1+26.1` 후보의 두 DLL은 제품과 일치하지 않았으므로 실제 출처로 쓰지 않습니다.
++# GCC 런타임의 라이선스와 상응 소스
++
++확인일: 2026-10-21. 이 폴더 이름의 `ubuntu-gcc`는 초기 조사 분류이며, 최종 확인된 두 DLL의 실제 일치 패키지는 **Debian**입니다. 폴더명으로 Ubuntu 패키지라고 판단하지 마세요.
++
++## 배포 DLL과 정확히 일치한 원본 패키지
++
++- 패키지: `gcc-mingw-w64-x86-64-posix-runtime`
++- 버전/아키텍처: `14.2.0-19+27+b1`, `amd64`
++- 공식 원본: https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb
++- 공식 선택 페이지: https://packages.debian.org/en/trixie/amd64/gcc-mingw-w64-x86-64-posix-runtime/download
++- DEB 크기: 13,037,152바이트
++- DEB SHA-256: `c898d96177574a8a7238564a1e799d8ddfed5a3d2ea005510305f9ad466a6f59`
++
++실제 압축을 풀어 다음 두 파일의 크기와 SHA-256을 제품 `vendor/tesseract`의 DLL과 비교했고, 두 파일 모두 완전히 일치했습니다. 제품 DLL은 변경하지 않았습니다.
++
++| DLL | DEB 내부 위치 | 바이트 수 | SHA-256 |
++|---|---|---:|---|
++| libgcc_s_seh-1.dll | usr/lib/gcc/x86_64-w64-mingw32/14-posix/libgcc_s_seh-1.dll | 954773 | 172cfdc9d83703ec0a0ca2cee08f6cf2a166b801717ee51a56b3a63b36bc2f83 |
++| libstdc++-6.dll | usr/lib/gcc/x86_64-w64-mingw32/14-posix/libstdc++-6.dll | 26390974 | 5fe5d4d8f6636eb6f2dc55be99dc5dc8a6c40db1abdf592e84480d1e6985abd0 |
++
++패키지 자체의 `control` 메타데이터는 `Source: gcc-mingw-w64 (27)` 및 `Built-Using: gcc-14 (= 14.2.0-19)`를 명시합니다. 원문은 `debian14-runtime-control.txt`, 비교 결과는 `debian14-runtime-comparison.json`에 있습니다. 기록에 들어 있는 과거 PC 경로는 조사 당시의 실행 증거이며 앱 빌드에 필요한 고정 경로가 아닙니다.
++
++## 로컬에 포함한 상응 소스와 고지
++
++아래 원본 파일은 출하물에 로컬로 포함합니다. 소스의 URL만 제공하는 방식으로 대신하지 않습니다.
++
++1. `gcc-mingw-w64_27.dsc`, `gcc-mingw-w64_27.tar.xz`: 정확한 MinGW 교차 빌드 패키징과 Debian 빌드 규칙입니다. 출처는 https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/ 입니다.
++2. `gcc-14_14.2.0-19.dsc`, `gcc-14_14.2.0.orig.tar.gz`, `gcc-14_14.2.0-19.debian.tar.xz`: `Built-Using`이 지정한 GCC 14.2.0-19의 원본과 Debian 패치·패키징입니다. 출처는 https://deb.debian.org/debian/pool/main/g/gcc-14/ 입니다.
++3. `debian27/`, `debian-gcc14/`: 위 원본에서 읽기 편하도록 따로 꺼낸 저작권·빌드 규칙·변경 기록이며, 전체 소스는 위 원본 압축 자료에 있습니다.
++4. `COPYING3.txt`, `COPYING.RUNTIME.txt`, `COPYING.txt`: GCC 14.2.0 원본 내부에서 그대로 꺼낸 GNU GPL 버전 3, GCC Runtime Library Exception 버전 3.1, GPL 버전 2 원문입니다. 파일별 추가 고지와 저작권은 원본 소스 및 `debian-gcc14/copyright`를 함께 보세요.
++
++GCC 원본 `orig.tar.gz`에는 `gcc-14-14.2.0/gcc-14.2.0-dfsg.tar.xz`와 `newlib-4.4.0.20231231.tar.xz`가 들어 있습니다. 이 구조를 변경하지 않고 제공하며, Debian 패치도 빠뜨리지 않습니다. 각 DSC가 명시한 참조 파일의 SHA-256을 대조했습니다. 원본 PGP 서명은 보존했지만 이 PC에서 서명자의 키로 검증한 것은 아닙니다.
++
++## 소스 확인과 빌드 규칙
++
++Debian 도구가 있는 Linux 환경에서 아래와 같이 각 소스를 재조립할 수 있습니다. 이는 실행 안내이며 이 Windows PC에서 GCC를 재컴파일한 결과가 아닙니다.
++
++```sh
++dpkg-source -x gcc-14_14.2.0-19.dsc
++dpkg-source -x gcc-mingw-w64_27.dsc
++```
++
++교차 런타임의 실제 빌드 절차는 `gcc-mingw-w64-27/debian/rules`가 정의합니다. 해당 규칙은 설치된 `gcc-14-source`의 소스와 패치를 사용하고 POSIX/Win32 스레드 변형을 빌드합니다. 원본과 같은 소스가 되려면 `gcc-14-source` 버전을 `14.2.0-19`로 맞추고, `debian/control`의 빌드 의존성을 준비해야 합니다. GCC 네이티브 패키징의 소스 준비법과 패치는 GCC 14 Debian 소스의 `debian/README.source` 및 `debian/rules`에 들어 있습니다. 컴파일러와 빌드 환경의 완전한 재현, 재컴파일 결과의 바이트 동일성은 이번 확인 범위가 아닙니다.
++
++두 배포 DLL과 공식 Debian DEB 안의 파일이 바이트 단위로 같다는 것은 직접 확인했습니다. 이를 GCC를 직접 다시 빌드하여 동일 바이너리를 만들었다는 뜻으로 해석하지 마세요.
++
++## 비교 도구 재실행
++
++`download_one.py`와 `inspect_runtime.py`는 출처 확인용 보조 소스입니다. 제품 실행에는 필요하지 않습니다. `inspect_runtime.py`는 7-Zip 실행 파일 위치와 제품 DLL 폴더를 명시적 인자로 받으므로 원래 개발 PC의 경로를 요구하지 않습니다. 이 폴더에서 다음 형식으로 실행합니다. DEB는 위 공식 URL에서 받아 같은 폴더에 놓아야 합니다.
++
++```powershell
++python -B -X utf8 inspect_runtime.py "C:\사용하는도구\7z.exe" "..\..\..\vendor\tesseract" "gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb" "debian14"
++```
++
++`출하목록.json`과 `SHA256SUMS.txt`가 필요한 고지·상응 소스 파일을 지정합니다. 조사용 `*.deb`, `*-data.tar.*`, Ubuntu 13 후보 자료, 실패 기록은 배포 대상이 아닙니다. Ubuntu `13.2.0-6ubuntu1+26.1` 후보의 두 DLL은 제품과 일치하지 않았으므로 실제 출처로 쓰지 않습니다.
+--- a/소스/licenses/OCR/ubuntu-gcc/SHA256SUMS.txt
++++ b/소스/licenses/OCR/ubuntu-gcc/SHA256SUMS.txt
+@@ -1,28 +1,28 @@
+-48d0f8f4862710e2eb722a6c50343c1a91b9279fbc900ef68da2a874e7eefeb9  README.md
+-231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c  COPYING.txt
+-8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  COPYING3.txt
+-9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74  COPYING.RUNTIME.txt
+-492f2ba821e43a3d40817841bd32caa5d49673fe66921bf5ba9c8b81c391dfea  gcc-mingw-w64_27.dsc
+-c1bf57cbe5f952ee5a7fa8b3e91dd031474e5ce61f468628f48b00e5bcbe8e30  gcc-mingw-w64_27.tar.xz
+-7db1e202cce66617e9134a662c877a3a773de5b612fd52179815877e0ecfb847  gcc-14_14.2.0-19.dsc
+-e162a5ef3f0077ecae598c6556908d2ab80841532df3398072a96a6df6e6aa29  gcc-14_14.2.0.orig.tar.gz
+-31cbab4bafa48aa1c540497bd8098cbcf98e673778f927651ed944709f687781  gcc-14_14.2.0-19.debian.tar.xz
+-7b8227d4d37179d44fd752b6654b15065cbbb628c4860801ac50bd3a8e8474e4  debian14-runtime-comparison.json
+-c337735ffef8f8b7925181ceed849504a19c00f6538770cfa6efae2d70f2ac80  debian14-runtime-control.txt
+-4f5ebf26934263dbf9596ee64206939fe1b4e9319fe731447ec267e192f624b8  download_one.py
+-82a0f72231b1f0b9276784b8e1c4efb756d56dedf7114b207a1fcf5b7a8695f0  inspect_runtime.py
+-62d67f1e764bd3b342dd84a8bdfdeaeba34f625d50981fcb8e141f21df653bae  finalize_sources.py
+-534993c328dd2ac9439cca693328e42936773d96361de249589d702c420e662c  debian27/rules
+-f891d7e0c56f503a92c7258d540b3d8215852d8387cbca8f1f07c6f4b6e67da6  debian27/copyright
+-40bf1a4b1b7dc1a1abb391a84ac73168dbfa9979cc482303a3f2e50d3618c0c3  debian27/control
+-5a4cfcad5966c6c73a76cfb20e646a1c6a24aa86ba5f68c47bf8c33fdff27767  debian27/changelog
+-5a90bab597f87910b61564ce34aeedf66a35dd22a2c68b13686e95f17df1c3d9  debian-gcc14/rules
+-20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79  debian-gcc14/copyright
+-419cba6d5fc2c44b61de0e67756a6b9ec4e87efa506f3df1c248dee611345b23  debian-gcc14/README.source
+-23b451e790b66adc6fd008447a384c6863e72ed18ad556a68aa22e35c7ef2938  debian-gcc14/changelog
+-c27dd42c22587f0dacce7b7e407d686c27c4635e051581342a522812e1ef5411  gcc-mingw-w64_27.dsc.origin.json
+-6274dcf123b38acaac1d906b402995a802220c8a5531ffd9e951b43a4e0bc9df  gcc-mingw-w64_27.tar.xz.origin.json
+-64950154d9071a1275ba01bc300fff7237b1dec32110e1d8cc25f41dbff7a816  gcc-14_14.2.0-19.dsc.origin.json
+-17315466f12bc6d8948139a630581d79d8a2fd8ca63f168f8c8c98a85fc75ca2  gcc-14_14.2.0.orig.tar.gz.origin.json
+-c802435ceb555799b5100ce04e23ecc8cde1d9b7a0a6ae5e323106102a47ec5b  gcc-14_14.2.0-19.debian.tar.xz.origin.json
+-b4582157bd4ac480b966437c33423479db3d1f6f334964e829310286020afad0  gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb.origin.json
++48d0f8f4862710e2eb722a6c50343c1a91b9279fbc900ef68da2a874e7eefeb9  README.md
++231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c  COPYING.txt
++8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  COPYING3.txt
++9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74  COPYING.RUNTIME.txt
++492f2ba821e43a3d40817841bd32caa5d49673fe66921bf5ba9c8b81c391dfea  gcc-mingw-w64_27.dsc
++c1bf57cbe5f952ee5a7fa8b3e91dd031474e5ce61f468628f48b00e5bcbe8e30  gcc-mingw-w64_27.tar.xz
++7db1e202cce66617e9134a662c877a3a773de5b612fd52179815877e0ecfb847  gcc-14_14.2.0-19.dsc
++e162a5ef3f0077ecae598c6556908d2ab80841532df3398072a96a6df6e6aa29  gcc-14_14.2.0.orig.tar.gz
++31cbab4bafa48aa1c540497bd8098cbcf98e673778f927651ed944709f687781  gcc-14_14.2.0-19.debian.tar.xz
++7b8227d4d37179d44fd752b6654b15065cbbb628c4860801ac50bd3a8e8474e4  debian14-runtime-comparison.json
++c337735ffef8f8b7925181ceed849504a19c00f6538770cfa6efae2d70f2ac80  debian14-runtime-control.txt
++4f5ebf26934263dbf9596ee64206939fe1b4e9319fe731447ec267e192f624b8  download_one.py
++82a0f72231b1f0b9276784b8e1c4efb756d56dedf7114b207a1fcf5b7a8695f0  inspect_runtime.py
++62d67f1e764bd3b342dd84a8bdfdeaeba34f625d50981fcb8e141f21df653bae  finalize_sources.py
++534993c328dd2ac9439cca693328e42936773d96361de249589d702c420e662c  debian27/rules
++f891d7e0c56f503a92c7258d540b3d8215852d8387cbca8f1f07c6f4b6e67da6  debian27/copyright
++40bf1a4b1b7dc1a1abb391a84ac73168dbfa9979cc482303a3f2e50d3618c0c3  debian27/control
++5a4cfcad5966c6c73a76cfb20e646a1c6a24aa86ba5f68c47bf8c33fdff27767  debian27/changelog
++5a90bab597f87910b61564ce34aeedf66a35dd22a2c68b13686e95f17df1c3d9  debian-gcc14/rules
++20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79  debian-gcc14/copyright
++419cba6d5fc2c44b61de0e67756a6b9ec4e87efa506f3df1c248dee611345b23  debian-gcc14/README.source
++23b451e790b66adc6fd008447a384c6863e72ed18ad556a68aa22e35c7ef2938  debian-gcc14/changelog
++c27dd42c22587f0dacce7b7e407d686c27c4635e051581342a522812e1ef5411  gcc-mingw-w64_27.dsc.origin.json
++6274dcf123b38acaac1d906b402995a802220c8a5531ffd9e951b43a4e0bc9df  gcc-mingw-w64_27.tar.xz.origin.json
++64950154d9071a1275ba01bc300fff7237b1dec32110e1d8cc25f41dbff7a816  gcc-14_14.2.0-19.dsc.origin.json
++17315466f12bc6d8948139a630581d79d8a2fd8ca63f168f8c8c98a85fc75ca2  gcc-14_14.2.0.orig.tar.gz.origin.json
++c802435ceb555799b5100ce04e23ecc8cde1d9b7a0a6ae5e323106102a47ec5b  gcc-14_14.2.0-19.debian.tar.xz.origin.json
++b4582157bd4ac480b966437c33423479db3d1f6f334964e829310286020afad0  gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb.origin.json
+--- a/소스/licenses/OCR/ubuntu-gcc/출하목록.json
++++ b/소스/licenses/OCR/ubuntu-gcc/출하목록.json
+@@ -1,161 +1,161 @@
+-{
+-  "actual_origin": "Debian",
+-  "package": "gcc-mingw-w64-x86-64-posix-runtime",
+-  "version": "14.2.0-19+27+b1",
+-  "built_using": "gcc-14 (= 14.2.0-19)",
+-  "files": [
+-    {
+-      "path": "README.md",
+-      "size": 5499,
+-      "sha256": "48d0f8f4862710e2eb722a6c50343c1a91b9279fbc900ef68da2a874e7eefeb9"
+-    },
+-    {
+-      "path": "COPYING.txt",
+-      "size": 18002,
+-      "sha256": "231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c"
+-    },
+-    {
+-      "path": "COPYING3.txt",
+-      "size": 35147,
+-      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+-    },
+-    {
+-      "path": "COPYING.RUNTIME.txt",
+-      "size": 3324,
+-      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
+-    },
+-    {
+-      "path": "gcc-mingw-w64_27.dsc",
+-      "size": 7737,
+-      "sha256": "492f2ba821e43a3d40817841bd32caa5d49673fe66921bf5ba9c8b81c391dfea"
+-    },
+-    {
+-      "path": "gcc-mingw-w64_27.tar.xz",
+-      "size": 36248,
+-      "sha256": "c1bf57cbe5f952ee5a7fa8b3e91dd031474e5ce61f468628f48b00e5bcbe8e30"
+-    },
+-    {
+-      "path": "gcc-14_14.2.0-19.dsc",
+-      "size": 47347,
+-      "sha256": "7db1e202cce66617e9134a662c877a3a773de5b612fd52179815877e0ecfb847"
+-    },
+-    {
+-      "path": "gcc-14_14.2.0.orig.tar.gz",
+-      "size": 94299633,
+-      "sha256": "e162a5ef3f0077ecae598c6556908d2ab80841532df3398072a96a6df6e6aa29"
+-    },
+-    {
+-      "path": "gcc-14_14.2.0-19.debian.tar.xz",
+-      "size": 2577016,
+-      "sha256": "31cbab4bafa48aa1c540497bd8098cbcf98e673778f927651ed944709f687781"
+-    },
+-    {
+-      "path": "debian14-runtime-comparison.json",
+-      "size": 2358,
+-      "sha256": "7b8227d4d37179d44fd752b6654b15065cbbb628c4860801ac50bd3a8e8474e4"
+-    },
+-    {
+-      "path": "debian14-runtime-control.txt",
+-      "size": 890,
+-      "sha256": "c337735ffef8f8b7925181ceed849504a19c00f6538770cfa6efae2d70f2ac80"
+-    },
+-    {
+-      "path": "download_one.py",
+-      "size": 1655,
+-      "sha256": "4f5ebf26934263dbf9596ee64206939fe1b4e9319fe731447ec267e192f624b8"
+-    },
+-    {
+-      "path": "inspect_runtime.py",
+-      "size": 3031,
+-      "sha256": "82a0f72231b1f0b9276784b8e1c4efb756d56dedf7114b207a1fcf5b7a8695f0"
+-    },
+-    {
+-      "path": "finalize_sources.py",
+-      "size": 5372,
+-      "sha256": "62d67f1e764bd3b342dd84a8bdfdeaeba34f625d50981fcb8e141f21df653bae"
+-    },
+-    {
+-      "path": "debian27/rules",
+-      "size": 16681,
+-      "sha256": "534993c328dd2ac9439cca693328e42936773d96361de249589d702c420e662c"
+-    },
+-    {
+-      "path": "debian27/copyright",
+-      "size": 75729,
+-      "sha256": "f891d7e0c56f503a92c7258d540b3d8215852d8387cbca8f1f07c6f4b6e67da6"
+-    },
+-    {
+-      "path": "debian27/control",
+-      "size": 37328,
+-      "sha256": "40bf1a4b1b7dc1a1abb391a84ac73168dbfa9979cc482303a3f2e50d3618c0c3"
+-    },
+-    {
+-      "path": "debian27/changelog",
+-      "size": 28689,
+-      "sha256": "5a4cfcad5966c6c73a76cfb20e646a1c6a24aa86ba5f68c47bf8c33fdff27767"
+-    },
+-    {
+-      "path": "debian-gcc14/rules",
+-      "size": 2984,
+-      "sha256": "5a90bab597f87910b61564ce34aeedf66a35dd22a2c68b13686e95f17df1c3d9"
+-    },
+-    {
+-      "path": "debian-gcc14/copyright",
+-      "size": 69004,
+-      "sha256": "20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79"
+-    },
+-    {
+-      "path": "debian-gcc14/README.source",
+-      "size": 1288,
+-      "sha256": "419cba6d5fc2c44b61de0e67756a6b9ec4e87efa506f3df1c248dee611345b23"
+-    },
+-    {
+-      "path": "debian-gcc14/changelog",
+-      "size": 761264,
+-      "sha256": "23b451e790b66adc6fd008447a384c6863e72ed18ad556a68aa22e35c7ef2938"
+-    },
+-    {
+-      "path": "gcc-mingw-w64_27.dsc.origin.json",
+-      "size": 690,
+-      "sha256": "c27dd42c22587f0dacce7b7e407d686c27c4635e051581342a522812e1ef5411"
+-    },
+-    {
+-      "path": "gcc-mingw-w64_27.tar.xz.origin.json",
+-      "size": 776,
+-      "sha256": "6274dcf123b38acaac1d906b402995a802220c8a5531ffd9e951b43a4e0bc9df"
+-    },
+-    {
+-      "path": "gcc-14_14.2.0-19.dsc.origin.json",
+-      "size": 670,
+-      "sha256": "64950154d9071a1275ba01bc300fff7237b1dec32110e1d8cc25f41dbff7a816"
+-    },
+-    {
+-      "path": "gcc-14_14.2.0.orig.tar.gz.origin.json",
+-      "size": 774,
+-      "sha256": "17315466f12bc6d8948139a630581d79d8a2fd8ca63f168f8c8c98a85fc75ca2"
+-    },
+-    {
+-      "path": "gcc-14_14.2.0-19.debian.tar.xz.origin.json",
+-      "size": 796,
+-      "sha256": "c802435ceb555799b5100ce04e23ecc8cde1d9b7a0a6ae5e323106102a47ec5b"
+-    },
+-    {
+-      "path": "gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb.origin.json",
+-      "size": 985,
+-      "sha256": "b4582157bd4ac480b966437c33423479db3d1f6f334964e829310286020afad0"
+-    }
+-  ],
+-  "include_metadata": [
+-    "출하목록.json",
+-    "SHA256SUMS.txt"
+-  ],
+-  "exclude": [
+-    "*.deb",
+-    "*-data.tar.*",
+-    "Ubuntu13 후보 자료",
+-    "실패 출처 기록"
+-  ],
+-  "vendor_modified": false,
+-  "compiler_rebuild_tested": false,
+-  "pgp_signature_verified": false
+-}
++{
++  "actual_origin": "Debian",
++  "package": "gcc-mingw-w64-x86-64-posix-runtime",
++  "version": "14.2.0-19+27+b1",
++  "built_using": "gcc-14 (= 14.2.0-19)",
++  "files": [
++    {
++      "path": "README.md",
++      "size": 5499,
++      "sha256": "48d0f8f4862710e2eb722a6c50343c1a91b9279fbc900ef68da2a874e7eefeb9"
++    },
++    {
++      "path": "COPYING.txt",
++      "size": 18002,
++      "sha256": "231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c"
++    },
++    {
++      "path": "COPYING3.txt",
++      "size": 35147,
++      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
++    },
++    {
++      "path": "COPYING.RUNTIME.txt",
++      "size": 3324,
++      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74"
++    },
++    {
++      "path": "gcc-mingw-w64_27.dsc",
++      "size": 7737,
++      "sha256": "492f2ba821e43a3d40817841bd32caa5d49673fe66921bf5ba9c8b81c391dfea"
++    },
++    {
++      "path": "gcc-mingw-w64_27.tar.xz",
++      "size": 36248,
++      "sha256": "c1bf57cbe5f952ee5a7fa8b3e91dd031474e5ce61f468628f48b00e5bcbe8e30"
++    },
++    {
++      "path": "gcc-14_14.2.0-19.dsc",
++      "size": 47347,
++      "sha256": "7db1e202cce66617e9134a662c877a3a773de5b612fd52179815877e0ecfb847"
++    },
++    {
++      "path": "gcc-14_14.2.0.orig.tar.gz",
++      "size": 94299633,
++      "sha256": "e162a5ef3f0077ecae598c6556908d2ab80841532df3398072a96a6df6e6aa29"
++    },
++    {
++      "path": "gcc-14_14.2.0-19.debian.tar.xz",
++      "size": 2577016,
++      "sha256": "31cbab4bafa48aa1c540497bd8098cbcf98e673778f927651ed944709f687781"
++    },
++    {
++      "path": "debian14-runtime-comparison.json",
++      "size": 2358,
++      "sha256": "7b8227d4d37179d44fd752b6654b15065cbbb628c4860801ac50bd3a8e8474e4"
++    },
++    {
++      "path": "debian14-runtime-control.txt",
++      "size": 890,
++      "sha256": "c337735ffef8f8b7925181ceed849504a19c00f6538770cfa6efae2d70f2ac80"
++    },
++    {
++      "path": "download_one.py",
++      "size": 1655,
++      "sha256": "4f5ebf26934263dbf9596ee64206939fe1b4e9319fe731447ec267e192f624b8"
++    },
++    {
++      "path": "inspect_runtime.py",
++      "size": 3031,
++      "sha256": "82a0f72231b1f0b9276784b8e1c4efb756d56dedf7114b207a1fcf5b7a8695f0"
++    },
++    {
++      "path": "finalize_sources.py",
++      "size": 5372,
++      "sha256": "62d67f1e764bd3b342dd84a8bdfdeaeba34f625d50981fcb8e141f21df653bae"
++    },
++    {
++      "path": "debian27/rules",
++      "size": 16681,
++      "sha256": "534993c328dd2ac9439cca693328e42936773d96361de249589d702c420e662c"
++    },
++    {
++      "path": "debian27/copyright",
++      "size": 75729,
++      "sha256": "f891d7e0c56f503a92c7258d540b3d8215852d8387cbca8f1f07c6f4b6e67da6"
++    },
++    {
++      "path": "debian27/control",
++      "size": 37328,
++      "sha256": "40bf1a4b1b7dc1a1abb391a84ac73168dbfa9979cc482303a3f2e50d3618c0c3"
++    },
++    {
++      "path": "debian27/changelog",
++      "size": 28689,
++      "sha256": "5a4cfcad5966c6c73a76cfb20e646a1c6a24aa86ba5f68c47bf8c33fdff27767"
++    },
++    {
++      "path": "debian-gcc14/rules",
++      "size": 2984,
++      "sha256": "5a90bab597f87910b61564ce34aeedf66a35dd22a2c68b13686e95f17df1c3d9"
++    },
++    {
++      "path": "debian-gcc14/copyright",
++      "size": 69004,
++      "sha256": "20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79"
++    },
++    {
++      "path": "debian-gcc14/README.source",
++      "size": 1288,
++      "sha256": "419cba6d5fc2c44b61de0e67756a6b9ec4e87efa506f3df1c248dee611345b23"
++    },
++    {
++      "path": "debian-gcc14/changelog",
++      "size": 761264,
++      "sha256": "23b451e790b66adc6fd008447a384c6863e72ed18ad556a68aa22e35c7ef2938"
++    },
++    {
++      "path": "gcc-mingw-w64_27.dsc.origin.json",
++      "size": 690,
++      "sha256": "c27dd42c22587f0dacce7b7e407d686c27c4635e051581342a522812e1ef5411"
++    },
++    {
++      "path": "gcc-mingw-w64_27.tar.xz.origin.json",
++      "size": 776,
++      "sha256": "6274dcf123b38acaac1d906b402995a802220c8a5531ffd9e951b43a4e0bc9df"
++    },
++    {
++      "path": "gcc-14_14.2.0-19.dsc.origin.json",
++      "size": 670,
++      "sha256": "64950154d9071a1275ba01bc300fff7237b1dec32110e1d8cc25f41dbff7a816"
++    },
++    {
++      "path": "gcc-14_14.2.0.orig.tar.gz.origin.json",
++      "size": 774,
++      "sha256": "17315466f12bc6d8948139a630581d79d8a2fd8ca63f168f8c8c98a85fc75ca2"
++    },
++    {
++      "path": "gcc-14_14.2.0-19.debian.tar.xz.origin.json",
++      "size": 796,
++      "sha256": "c802435ceb555799b5100ce04e23ecc8cde1d9b7a0a6ae5e323106102a47ec5b"
++    },
++    {
++      "path": "gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb.origin.json",
++      "size": 985,
++      "sha256": "b4582157bd4ac480b966437c33423479db3d1f6f334964e829310286020afad0"
++    }
++  ],
++  "include_metadata": [
++    "출하목록.json",
++    "SHA256SUMS.txt"
++  ],
++  "exclude": [
++    "*.deb",
++    "*-data.tar.*",
++    "Ubuntu13 후보 자료",
++    "실패 출처 기록"
++  ],
++  "vendor_modified": false,
++  "compiler_rebuild_tested": false,
++  "pgp_signature_verified": false
++}
+--- a/소스/licenses/OCR/xz/xz/COPYING
++++ b/소스/licenses/OCR/xz/xz/COPYING
+@@ -1,70 +1,70 @@
+-
+-XZ Utils Licensing
+-==================
+-
+-    Different licenses apply to different files in this package. Here
+-    is a summary of which licenses apply to which parts of this package:
+-
+-      - liblzma is under the BSD Zero Clause License (0BSD).
+-
+-      - The command line tools xz, xzdec, lzmadec, and lzmainfo are
+-        under 0BSD except that, on systems that don't have a usable
+-        getopt_long, GNU getopt_long is compiled and linked in from the
+-        'lib' directory. The getopt_long code is under GNU LGPLv2.1+.
+-
+-      - The scripts to grep, diff, and view compressed files have been
+-        adapted from GNU gzip. These scripts (xzgrep, xzdiff, xzless,
+-        and xzmore) are under GNU GPLv2+. The man pages of the scripts
+-        are under 0BSD; they aren't based on the man pages of GNU gzip.
+-
+-      - Most of the XZ Utils specific documentation that is in
+-        plain text files (like README, INSTALL, PACKAGERS, NEWS,
+-        and ChangeLog) are under 0BSD unless stated otherwise in
+-        the file itself. The files xz-file-format.txt and
+-        lzma-file-format.xt are in the public domain but may
+-        be distributed under the terms of 0BSD too.
+-
+-      - Translated messages and man pages are under 0BSD except that
+-        some old translations are in the public domain.
+-
+-      - Test files and test code in the 'tests' directory, and
+-        debugging utilities in the 'debug' directory are under
+-        the BSD Zero Clause License (0BSD).
+-
+-      - The GNU Autotools based build system contains files that are
+-        under GNU GPLv2+, GNU GPLv3+, and a few permissive licenses.
+-        These files don't affect the licensing of the binaries being
+-        built.
+-
+-      - The 'extra' directory contains files that are under various
+-        free software licenses. These aren't built or installed as
+-        part of XZ Utils.
+-
+-    The following command may be helpful in finding per-file license
+-    information. It works on xz.git and on a clean file tree extracted
+-    from a release tarball.
+-
+-        sh build-aux/license-check.sh -v
+-
+-    For the files under the BSD Zero Clause License (0BSD), if
+-    a copyright notice is needed, the following is sufficient:
+-
+-        Copyright (C) The XZ Utils authors and contributors
+-
+-    If you copy significant amounts of 0BSD-licensed code from XZ Utils
+-    into your project, acknowledging this somewhere in your software is
+-    polite (especially if it is proprietary, non-free software), but
+-    it is not legally required by the license terms. Here is an example
+-    of a good notice to put into "about box" or into documentation:
+-
+-        This software includes code from XZ Utils <https://tukaani.org/xz/>.
+-
+-    The following license texts are included in the following files:
+-      - COPYING.0BSD: BSD Zero Clause License
+-      - COPYING.LGPLv2.1: GNU Lesser General Public License version 2.1
+-      - COPYING.GPLv2: GNU General Public License version 2
+-      - COPYING.GPLv3: GNU General Public License version 3
+-
+-    If you have questions, don't hesitate to ask for more information.
+-    The contact information is in the README file.
+-
++
++XZ Utils Licensing
++==================
++
++    Different licenses apply to different files in this package. Here
++    is a summary of which licenses apply to which parts of this package:
++
++      - liblzma is under the BSD Zero Clause License (0BSD).
++
++      - The command line tools xz, xzdec, lzmadec, and lzmainfo are
++        under 0BSD except that, on systems that don't have a usable
++        getopt_long, GNU getopt_long is compiled and linked in from the
++        'lib' directory. The getopt_long code is under GNU LGPLv2.1+.
++
++      - The scripts to grep, diff, and view compressed files have been
++        adapted from GNU gzip. These scripts (xzgrep, xzdiff, xzless,
++        and xzmore) are under GNU GPLv2+. The man pages of the scripts
++        are under 0BSD; they aren't based on the man pages of GNU gzip.
++
++      - Most of the XZ Utils specific documentation that is in
++        plain text files (like README, INSTALL, PACKAGERS, NEWS,
++        and ChangeLog) are under 0BSD unless stated otherwise in
++        the file itself. The files xz-file-format.txt and
++        lzma-file-format.xt are in the public domain but may
++        be distributed under the terms of 0BSD too.
++
++      - Translated messages and man pages are under 0BSD except that
++        some old translations are in the public domain.
++
++      - Test files and test code in the 'tests' directory, and
++        debugging utilities in the 'debug' directory are under
++        the BSD Zero Clause License (0BSD).
++
++      - The GNU Autotools based build system contains files that are
++        under GNU GPLv2+, GNU GPLv3+, and a few permissive licenses.
++        These files don't affect the licensing of the binaries being
++        built.
++
++      - The 'extra' directory contains files that are under various
++        free software licenses. These aren't built or installed as
++        part of XZ Utils.
++
++    The following command may be helpful in finding per-file license
++    information. It works on xz.git and on a clean file tree extracted
++    from a release tarball.
++
++        sh build-aux/license-check.sh -v
++
++    For the files under the BSD Zero Clause License (0BSD), if
++    a copyright notice is needed, the following is sufficient:
++
++        Copyright (C) The XZ Utils authors and contributors
++
++    If you copy significant amounts of 0BSD-licensed code from XZ Utils
++    into your project, acknowledging this somewhere in your software is
++    polite (especially if it is proprietary, non-free software), but
++    it is not legally required by the license terms. Here is an example
++    of a good notice to put into "about box" or into documentation:
++
++        This software includes code from XZ Utils <https://tukaani.org/xz/>.
++
++    The following license texts are included in the following files:
++      - COPYING.0BSD: BSD Zero Clause License
++      - COPYING.LGPLv2.1: GNU Lesser General Public License version 2.1
++      - COPYING.GPLv2: GNU General Public License version 2
++      - COPYING.GPLv3: GNU General Public License version 3
++
++    If you have questions, don't hesitate to ask for more information.
++    The contact information is in the README file.
++
+--- a/소스/licenses/OCR/xz/xz/COPYING.0BSD
++++ b/소스/licenses/OCR/xz/xz/COPYING.0BSD
+@@ -1,11 +1,11 @@
+-Permission to use, copy, modify, and/or distribute this
+-software for any purpose with or without fee is hereby granted.
+-
+-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+-WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+-WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
+-THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
+-CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+-NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++Permission to use, copy, modify, and/or distribute this
++software for any purpose with or without fee is hereby granted.
++
++THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
++WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
++WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL
++THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR
++CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
++LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
++NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
++CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.

@@ -1,0 +1,1504 @@
+--- a/소스/requirements-documents-test.txt
++++ b/소스/requirements-documents-test.txt
+@@ -1,2 +1,2 @@
+-# 실제 HWP 원형 표본 검증에만 사용하며 제품 엔진 의존성과 구분합니다.
+-olefile==0.47
++# 실제 HWP 원형 표본 검증에만 사용하며 제품 엔진 의존성과 구분합니다.
++olefile==0.47
+--- a/소스/restore_document_runtime.py
++++ b/소스/restore_document_runtime.py
+@@ -1,99 +1,99 @@
+-"""공식 고정 버전의 문서 런타임과 상응 소스를 해시 검증 후 복원합니다."""
+-from __future__ import annotations
+-
+-import hashlib
+-import json
+-from pathlib import Path, PurePosixPath
+-import shutil
+-import tempfile
+-import urllib.request
+-import zipfile
+-
+-ROOT = Path(__file__).resolve().parent
+-
+-
+-def digest(path):
+-    with path.open("rb") as stream:
+-        return hashlib.file_digest(stream, "sha256").hexdigest()
+-
+-
+-def checked_download(url, target, size, sha256):
+-    """기존 파일을 덮어쓰지 않으며 새 다운로드의 길이와 원문 해시를 확인합니다."""
+-    if target.exists():
+-        if target.stat().st_size != size or digest(target) != sha256:
+-            raise RuntimeError("기존 파일의 크기나 해시가 다릅니다. 보존 후 확인해 주세요: " + str(target))
+-        return
+-    target.parent.mkdir(parents=True, exist_ok=True)
+-    with tempfile.TemporaryDirectory(prefix="document-download-", dir=target.parent) as folder:
+-        incoming = Path(folder) / "download.bin"
+-        request = urllib.request.Request(url, headers={"User-Agent": "FlipRing-build"})
+-        with urllib.request.urlopen(request, timeout=60) as response, incoming.open("xb") as output:
+-            received = 0
+-            while chunk := response.read(1024 * 1024):
+-                received += len(chunk)
+-                if received > size:
+-                    raise RuntimeError("다운로드가 고정 크기를 초과했습니다.")
+-                output.write(chunk)
+-        if incoming.stat().st_size != size or digest(incoming) != sha256:
+-            raise RuntimeError("공식 다운로드의 크기 또는 SHA-256이 일치하지 않습니다.")
+-        with target.open("xb") as output, incoming.open("rb") as source:
+-            shutil.copyfileobj(source, output)
+-
+-
+-def verify_java(manifest):
+-    entries = [item for item in manifest["files"] if item["path"].startswith("vendor/java/")]
+-    expected = {item["path"][len("vendor/java/"):] for item in entries}
+-    actual = {p.relative_to(ROOT / "vendor/java").as_posix() for p in (ROOT / "vendor/java").rglob("*") if p.is_file()}
+-    if expected != actual:
+-        raise RuntimeError("Java 파일 목록이 고정 배포 원문과 다릅니다.")
+-    for item in entries:
+-        path = ROOT / item["path"]
+-        if path.stat().st_size != item["bytes"] or digest(path) != item["sha256"]:
+-            raise RuntimeError("Java 원문 해시가 다릅니다: " + item["path"])
+-
+-
+-def main():
+-    notices = ROOT / "licenses/Temurin17"
+-    manifest = json.loads((notices / "출하목록.json").read_text(encoding="utf-8"))
+-    package = manifest["runtime_archive"]
+-    target = ROOT / "vendor/java"
+-    if not target.exists():
+-        work = ROOT.parent / "work/document-runtime-restore"
+-        work.mkdir(parents=True, exist_ok=True)
+-        with tempfile.TemporaryDirectory(prefix="restore-", dir=work) as folder:
+-            stage = Path(folder)
+-            archive = stage / package["name"]
+-            checked_download(package["link"], archive, package["size"], package["checksum"])
+-            with zipfile.ZipFile(archive) as zipped:
+-                for item in zipped.infolist():
+-                    name = PurePosixPath(item.filename)
+-                    if name.is_absolute() or ".." in name.parts or ":" in item.filename or "\\" in item.filename:
+-                        raise RuntimeError("Java 압축 경로가 올바르지 않습니다.")
+-                    if (item.external_attr >> 16) & 0o170000 == 0o120000:
+-                        raise RuntimeError("Java 압축에 링크가 포함되어 있습니다.")
+-                zipped.extractall(stage / "expanded")
+-            roots = [p for p in (stage / "expanded").iterdir() if p.is_dir()]
+-            if len(roots) != 1 or not (roots[0] / "bin/java.exe").is_file():
+-                raise RuntimeError("Java 압축 구조가 고정 버전과 다릅니다.")
+-            target.parent.mkdir(parents=True, exist_ok=True)
+-            shutil.copytree(roots[0], target)
+-    verify_java(manifest)
+-    source = manifest["source_archive"]
+-    checked_download(source["browser_download_url"], notices / source["name"], source["size"], source["digest"].split(":", 1)[1])
+-    for name in ("NOTICE", "release"):
+-        checked = target / name
+-        destination = notices / name
+-        if checked.is_file() and not destination.exists():
+-            with checked.open("rb") as origin, destination.open("xb") as output:
+-                shutil.copyfileobj(origin, output)
+-    if not (notices / "legal").exists():
+-        shutil.copytree(target / "legal", notices / "legal")
+-    h2o = json.loads((ROOT / "licenses/H2Orestart/원본출처.json").read_text(encoding="utf-8"))
+-    for entry, path in ((h2o["binary"], ROOT / h2o["binary"]["file"]),
+-                        (h2o["source"], ROOT / "licenses/H2Orestart" / h2o["source"]["file"])):
+-        checked_download(entry["url"], path, entry["bytes"], entry["sha256"])
+-    print("문서 런타임의 고정 버전·해시와 전체 상응 소스를 확인했습니다.")
+-
+-
+-if __name__ == "__main__":
+-    main()
++"""공식 고정 버전의 문서 런타임과 상응 소스를 해시 검증 후 복원합니다."""
++from __future__ import annotations
++
++import hashlib
++import json
++from pathlib import Path, PurePosixPath
++import shutil
++import tempfile
++import urllib.request
++import zipfile
++
++ROOT = Path(__file__).resolve().parent
++
++
++def digest(path):
++    with path.open("rb") as stream:
++        return hashlib.file_digest(stream, "sha256").hexdigest()
++
++
++def checked_download(url, target, size, sha256):
++    """기존 파일을 덮어쓰지 않으며 새 다운로드의 길이와 원문 해시를 확인합니다."""
++    if target.exists():
++        if target.stat().st_size != size or digest(target) != sha256:
++            raise RuntimeError("기존 파일의 크기나 해시가 다릅니다. 보존 후 확인해 주세요: " + str(target))
++        return
++    target.parent.mkdir(parents=True, exist_ok=True)
++    with tempfile.TemporaryDirectory(prefix="document-download-", dir=target.parent) as folder:
++        incoming = Path(folder) / "download.bin"
++        request = urllib.request.Request(url, headers={"User-Agent": "FlipRing-build"})
++        with urllib.request.urlopen(request, timeout=60) as response, incoming.open("xb") as output:
++            received = 0
++            while chunk := response.read(1024 * 1024):
++                received += len(chunk)
++                if received > size:
++                    raise RuntimeError("다운로드가 고정 크기를 초과했습니다.")
++                output.write(chunk)
++        if incoming.stat().st_size != size or digest(incoming) != sha256:
++            raise RuntimeError("공식 다운로드의 크기 또는 SHA-256이 일치하지 않습니다.")
++        with target.open("xb") as output, incoming.open("rb") as source:
++            shutil.copyfileobj(source, output)
++
++
++def verify_java(manifest):
++    entries = [item for item in manifest["files"] if item["path"].startswith("vendor/java/")]
++    expected = {item["path"][len("vendor/java/"):] for item in entries}
++    actual = {p.relative_to(ROOT / "vendor/java").as_posix() for p in (ROOT / "vendor/java").rglob("*") if p.is_file()}
++    if expected != actual:
++        raise RuntimeError("Java 파일 목록이 고정 배포 원문과 다릅니다.")
++    for item in entries:
++        path = ROOT / item["path"]
++        if path.stat().st_size != item["bytes"] or digest(path) != item["sha256"]:
++            raise RuntimeError("Java 원문 해시가 다릅니다: " + item["path"])
++
++
++def main():
++    notices = ROOT / "licenses/Temurin17"
++    manifest = json.loads((notices / "출하목록.json").read_text(encoding="utf-8"))
++    package = manifest["runtime_archive"]
++    target = ROOT / "vendor/java"
++    if not target.exists():
++        work = ROOT.parent / "work/document-runtime-restore"
++        work.mkdir(parents=True, exist_ok=True)
++        with tempfile.TemporaryDirectory(prefix="restore-", dir=work) as folder:
++            stage = Path(folder)
++            archive = stage / package["name"]
++            checked_download(package["link"], archive, package["size"], package["checksum"])
++            with zipfile.ZipFile(archive) as zipped:
++                for item in zipped.infolist():
++                    name = PurePosixPath(item.filename)
++                    if name.is_absolute() or ".." in name.parts or ":" in item.filename or "\\" in item.filename:
++                        raise RuntimeError("Java 압축 경로가 올바르지 않습니다.")
++                    if (item.external_attr >> 16) & 0o170000 == 0o120000:
++                        raise RuntimeError("Java 압축에 링크가 포함되어 있습니다.")
++                zipped.extractall(stage / "expanded")
++            roots = [p for p in (stage / "expanded").iterdir() if p.is_dir()]
++            if len(roots) != 1 or not (roots[0] / "bin/java.exe").is_file():
++                raise RuntimeError("Java 압축 구조가 고정 버전과 다릅니다.")
++            target.parent.mkdir(parents=True, exist_ok=True)
++            shutil.copytree(roots[0], target)
++    verify_java(manifest)
++    source = manifest["source_archive"]
++    checked_download(source["browser_download_url"], notices / source["name"], source["size"], source["digest"].split(":", 1)[1])
++    for name in ("NOTICE", "release"):
++        checked = target / name
++        destination = notices / name
++        if checked.is_file() and not destination.exists():
++            with checked.open("rb") as origin, destination.open("xb") as output:
++                shutil.copyfileobj(origin, output)
++    if not (notices / "legal").exists():
++        shutil.copytree(target / "legal", notices / "legal")
++    h2o = json.loads((ROOT / "licenses/H2Orestart/원본출처.json").read_text(encoding="utf-8"))
++    for entry, path in ((h2o["binary"], ROOT / h2o["binary"]["file"]),
++                        (h2o["source"], ROOT / "licenses/H2Orestart" / h2o["source"]["file"])):
++        checked_download(entry["url"], path, entry["bytes"], entry["sha256"])
++    print("문서 런타임의 고정 버전·해시와 전체 상응 소스를 확인했습니다.")
++
++
++if __name__ == "__main__":
++    main()
+--- a/소스/studio_ui.py
++++ b/소스/studio_ui.py
+@@ -1,419 +1,419 @@
+-"""작업 공간의 내비게이션과 파일 상태를 그리는 Qt 전용 구성 요소."""
+-from __future__ import annotations
+-
+-from theme_manager import theme_color, ring_color, is_dark
+-
+-import math
+-from ui_motion import start_motion, set_reduced_motion
+-
+-from PySide6.QtCore import Qt, Signal, QVariantAnimation, QEasingCurve, QRectF, QPointF, QSignalBlocker, QSize
+-from PySide6.QtGui import QColor, QPainter, QPen, QPainterPath, QFont, QPixmap, QIcon
+-from PySide6.QtSvg import QSvgRenderer
+-from PySide6.QtWidgets import QWidget, QAbstractButton, QFrame, QVBoxLayout, QLabel, QSizePolicy, QCheckBox, QStyledItemDelegate, QStyle
+-
+-
+-def svg_icon(path, color="#5a5a5a"):
+-    """공식 SVG 원문은 보존하고 표시 색상만 메모리에서 바꾼다."""
+-    renderer = QSvgRenderer(path.read_bytes().replace(b"currentColor", color.encode("ascii")))
+-    if not renderer.isValid():
+-        raise RuntimeError(f"UI icon could not be loaded: {path}")
+-    icon = QIcon()
+-    for side in (16, 20, 24, 32, 40, 48, 64):
+-        pixmap = QPixmap(side, side)
+-        pixmap.fill(Qt.transparent)
+-        painter = QPainter(pixmap)
+-        renderer.render(painter)
+-        painter.end()
+-        icon.addPixmap(pixmap)
+-    return icon
+-
+-
+-class StudioCard(QFrame):
+-    def __init__(self, parent=None):
+-        super().__init__(parent)
+-        self.setObjectName("studioCard")
+-        self.setAttribute(Qt.WA_StyledBackground, True)
+-
+-
+-class HistoryDelegate(QStyledItemDelegate):
+-    """저장 데이터는 그대로 두고 파일·결과·시각을 구분해 표시한다."""
+-
+-    def sizeHint(self, option, index):
+-        return QSize(280, 86)
+-
+-    def paint(self, painter, option, index):
+-        row = index.data(Qt.UserRole + 3)
+-        if not isinstance(row, dict):
+-            return super().paint(painter, option, index)
+-        painter.save()
+-        painter.setRenderHint(QPainter.Antialiasing)
+-        rectangle = QRectF(option.rect).adjusted(4, 3, -4, -3)
+-        painter.setPen(Qt.NoPen)
+-        painter.setBrush(theme_color("#eeeeee" if option.state & QStyle.State_Selected else "#ffffff"))
+-        painter.drawRoundedRect(rectangle, 10, 10)
+-        icon = QRectF(rectangle.left() + 16, rectangle.top() + 17, 42, 44)
+-        painter.setBrush(theme_color("#f1f1f1"))
+-        painter.drawRoundedRect(icon, 9, 9)
+-        font = option.font
+-        font.setPixelSize(9)
+-        font.setWeight(QFont.Medium)
+-        painter.setFont(font)
+-        painter.setPen(theme_color("#666666"))
+-        painter.drawText(icon, Qt.AlignCenter, row["format"])
+-        left = rectangle.left() + 74
+-        width = max(20, rectangle.width() - 94)
+-        font.setPixelSize(13)
+-        font.setWeight(QFont.Medium)
+-        painter.setFont(font)
+-        painter.setPen(theme_color("#303030"))
+-        painter.drawText(QRectF(left, rectangle.top() + 15, width, 22), Qt.AlignLeft | Qt.AlignVCenter,
+-                         painter.fontMetrics().elidedText(row["source"], Qt.ElideMiddle, int(width)))
+-        font.setPixelSize(11)
+-        font.setWeight(QFont.Normal)
+-        painter.setFont(font)
+-        painter.setPen(theme_color("#737373"))
+-        detail = row["time"] + "   ·   " + row["detail"]
+-        painter.drawText(QRectF(left, rectangle.top() + 40, width, 20), Qt.AlignLeft | Qt.AlignVCenter,
+-                         painter.fontMetrics().elidedText(detail, Qt.ElideMiddle, int(width)))
+-        painter.restore()
+-
+-
+-class Toggle(QCheckBox):
+-    """QCheckBox의 상태·키보드·시그널을 유지하는 작은 전환 스위치."""
+-
+-    def __init__(self, parent=None):
+-        super().__init__(parent)
+-        self.amount = 0.0
+-        self.setFixedHeight(38)
+-        self.setCursor(Qt.PointingHandCursor)
+-        self.motion = QVariantAnimation(self)
+-        self.motion.setDuration(180)
+-        self.motion.setEasingCurve(QEasingCurve.InOutSine)
+-        self.motion.valueChanged.connect(self._frame)
+-        self.toggled.connect(self._transition)
+-
+-    def sizeHint(self):
+-        return QSize(200, 38)
+-
+-    def minimumSizeHint(self):
+-        return QSize(140, 38)
+-
+-    def hitButton(self, position):
+-        return self.rect().contains(position)
+-
+-    def _frame(self, value):
+-        self.amount = float(value)
+-        self.update()
+-
+-    def _transition(self, checked):
+-        self.motion.stop()
+-        if not self.isVisible():
+-            self.amount = float(checked)
+-            self.update()
+-            return
+-        with QSignalBlocker(self.motion):
+-            self.motion.setStartValue(self.amount)
+-            self.motion.setEndValue(float(checked))
+-            self.motion.setCurrentTime(0)
+-        start_motion(self.motion)
+-
+-    def hideEvent(self, event):
+-        self.motion.stop()
+-        self.amount = float(self.isChecked())
+-        super().hideEvent(event)
+-
+-    def paintEvent(self, event):
+-        painter = QPainter(self)
+-        painter.setRenderHint(QPainter.Antialiasing)
+-        painter.setPen(theme_color("#424242" if self.isEnabled() else "#999999"))
+-        painter.drawText(QRectF(0, 0, self.width() - 52, self.height()),
+-                         Qt.AlignVCenter | Qt.AlignLeft | Qt.TextWordWrap, self.text())
+-        shade = round(220 - 166 * self.amount)
+-        painter.setPen(Qt.NoPen)
+-        painter.setBrush(theme_color(shade, shade, shade))
+-        x, y = self.width() - 39, (self.height() - 22) / 2
+-        painter.drawRoundedRect(QRectF(x, y, 38, 22), 11, 11)
+-        painter.setBrush(theme_color("#ffffff"))
+-        painter.drawEllipse(QRectF(x + 3 + 16 * self.amount, y + 3, 16, 16))
+-        if self.hasFocus():
+-            painter.setPen(QPen(theme_color("#888888"), 1))
+-            painter.setBrush(Qt.NoBrush)
+-            painter.drawRoundedRect(QRectF(self.rect()).adjusted(0.5, 0.5, -0.5, -0.5), 6, 6)
+-        painter.end()
+-
+-
+-class NavButton(QAbstractButton):
+-    """입력 영역을 고정하고 명암만 바꾸는 사이드 내비게이션."""
+-
+-    def __init__(self, symbol, parent=None):
+-        super().__init__(parent)
+-        self.symbol = symbol
+-        self.svg_icons = None
+-        self.hovered = False
+-        self.amount = 0.0
+-        self.setCheckable(True)
+-        self.setAutoExclusive(True)
+-        self.setFocusPolicy(Qt.StrongFocus)
+-        self.setCursor(Qt.PointingHandCursor)
+-        self.setFixedHeight(46)
+-        self.motion = QVariantAnimation(self)
+-        self.motion.setDuration(170)
+-        self.motion.setEasingCurve(QEasingCurve.InOutSine)
+-        self.motion.valueChanged.connect(self._frame)
+-        self.toggled.connect(self.transition)
+-
+-    def set_svg(self, path):
+-        self.svg_icons = {(dark, selected): svg_icon(path, color)
+-                          for dark, selected, color in ((False, False, "#474747"), (False, True, "#0c0c0c"),
+-                                                       (True, False, "#b8b8b8"), (True, True, "#f3f3f3"))}
+-
+-    def _frame(self, value):
+-        self.amount = float(value)
+-        self.update()
+-
+-    def transition(self):
+-        target = 1.0 if self.hovered or self.isChecked() else 0.0
+-        self.motion.stop()
+-        if abs(target - self.amount) < 0.001:
+-            self.update()
+-            return
+-        with QSignalBlocker(self.motion):
+-            self.motion.setStartValue(self.amount)
+-            self.motion.setEndValue(target)
+-            self.motion.setCurrentTime(0)
+-        start_motion(self.motion)
+-
+-    def enterEvent(self, event):
+-        self.hovered = True
+-        self.transition()
+-        super().enterEvent(event)
+-
+-    def leaveEvent(self, event):
+-        self.hovered = False
+-        self.transition()
+-        super().leaveEvent(event)
+-
+-    def hideEvent(self, event):
+-        self.motion.stop()
+-        self.amount = 1.0 if self.isChecked() else 0.0
+-        self.hovered = False
+-        super().hideEvent(event)
+-
+-    def paintEvent(self, event):
+-        painter = QPainter(self)
+-        painter.setRenderHint(QPainter.Antialiasing)
+-        painter.setPen(Qt.NoPen)
+-        painter.setBrush(ring_color(255, 255, 255, round(20 * self.amount)))
+-        painter.drawRoundedRect(QRectF(self.rect()).adjusted(0, 1, 0, -1), 10, 10)
+-        if self.isChecked():
+-            painter.setBrush(ring_color('#eeeeee'))
+-            painter.drawRoundedRect(QRectF(3, 13, 3, self.height() - 26), 1.5, 1.5)
+-        color = ring_color("#f3f3f3" if self.isChecked() else "#b8b8b8")
+-        painter.setPen(QPen(color, 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+-        painter.setBrush(Qt.NoBrush)
+-        if self.svg_icons is not None:
+-            self.svg_icons[(is_dark(), self.isChecked())].paint(painter, 16, round(self.height() / 2 - 10), 20, 20)
+-        font = self.font()
+-        font.setWeight(QFont.Medium if self.isChecked() else QFont.Normal)
+-        painter.setFont(font)
+-        painter.drawText(QRectF(46, 0, self.width() - 58, self.height()), Qt.AlignVCenter | Qt.AlignLeft, self.text())
+-        if self.hasFocus():
+-            painter.setPen(QPen(ring_color("#909090"), 1))
+-            painter.drawRoundedRect(QRectF(self.rect()).adjusted(1, 2, -1, -2), 9, 9)
+-        painter.end()
+-
+-
+-class OrbitVisual(QWidget):
+-    """파일 상태에 반응하는 중심 링. 유한 애니메이션 외에는 다시 그리지 않는다."""
+-
+-    def __init__(self, parent=None):
+-        super().__init__(parent)
+-        self.setMinimumSize(240, 220)
+-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+-        self.phase = 0.0
+-        self.approach = 0.0
+-        self.state = "file"
+-        self.formats = ["PNG", "JPG", "PDF", "WEBP"]
+-        self.intro = QVariantAnimation(self)
+-        self.intro.setDuration(720)
+-        self.intro.setEasingCurve(QEasingCurve.OutCubic)
+-        self.intro.setStartValue(0.0)
+-        self.intro.setEndValue(1.0)
+-        self.intro.valueChanged.connect(self._intro_frame)
+-        self.motion = QVariantAnimation(self)
+-        self.motion.setDuration(230)
+-        self.motion.setEasingCurve(QEasingCurve.InOutSine)
+-        self.motion.valueChanged.connect(self._approach_frame)
+-
+-    def _intro_frame(self, value):
+-        self.phase = float(value)
+-        self.update()
+-
+-    def _approach_frame(self, value):
+-        self.approach = float(value)
+-        self.update()
+-
+-    def set_approach(self, active):
+-        target = 1.0 if active else 0.0
+-        self.motion.stop()
+-        if abs(target - self.approach) < 0.001:
+-            return
+-        with QSignalBlocker(self.motion):
+-            self.motion.setStartValue(self.approach)
+-            self.motion.setEndValue(target)
+-            self.motion.setCurrentTime(0)
+-        start_motion(self.motion)
+-
+-    def respond(self, formats=None, state="file"):
+-        self.state = state
+-        if formats:
+-            self.formats = [value.upper() for value in formats[:4]]
+-        self.intro.stop()
+-        self.intro.setCurrentTime(0)
+-        # 같은 0시각에서는 신호가 생략되므로 숨김 때 바뀐 그리기값도 직접 맞춘다.
+-        self._intro_frame(float(self.intro.currentValue()))
+-        start_motion(self.intro)
+-
+-    def showEvent(self, event):
+-        super().showEvent(event)
+-        self.respond(state=self.state)
+-
+-    def hideEvent(self, event):
+-        self.intro.stop()
+-        self.motion.stop()
+-        self.phase = 1.0
+-        self.approach = 0.0
+-        super().hideEvent(event)
+-
+-    def paintEvent(self, event):
+-        painter = QPainter(self)
+-        painter.setRenderHint(QPainter.Antialiasing)
+-        center = QPointF(self.width() / 2, self.height() / 2)
+-        radius = min(self.width() * 0.32, self.height() * 0.38, 116)
+-        radius *= 0.86 + 0.14 * self.phase + 0.055 * self.approach
+-        painter.translate(center)
+-        painter.setBrush(Qt.NoBrush)
+-        painter.setPen(QPen(theme_color("#eeeeee"), 1))
+-        painter.drawEllipse(QPointF(), radius + 29, radius + 29)
+-        painter.drawEllipse(QPointF(), radius + 15, radius + 15)
+-        for index in range(3):
+-            painter.save()
+-            painter.rotate(index * 60 + (1 - self.phase) * 35 + self.approach * 12)
+-            painter.setPen(QPen(theme_color(120 + index * 35, 120 + index * 35, 120 + index * 35), 1.2))
+-            painter.drawEllipse(QRectF(-radius, -radius * 0.46, radius * 2, radius * 0.92))
+-            painter.restore()
+-        painter.setPen(Qt.NoPen)
+-        painter.setBrush(theme_color("#202020"))
+-        painter.drawEllipse(QPointF(), 35 + self.approach * 3, 35 + self.approach * 3)
+-        painter.setPen(QPen(theme_color("#ffffff"), 1.7, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+-        painter.setBrush(Qt.NoBrush)
+-        if self.state == "complete":
+-            path = QPainterPath(QPointF(-12, 0))
+-            path.lineTo(-3, 9)
+-            path.lineTo(14, -10)
+-            painter.drawPath(path)
+-        elif self.state == "error":
+-            painter.drawLine(-9, -9, 9, 9)
+-            painter.drawLine(9, -9, -9, 9)
+-        elif self.state == "working":
+-            painter.drawArc(QRectF(-13, -13, 26, 26), round(self.phase * 120 * 16), 260 * 16)
+-        elif self.state in {"cancelling", "cancelled"}:
+-            painter.drawLine(-9, 0, 9, 0)
+-            if self.state == "cancelling":
+-                painter.drawArc(QRectF(-14, -14, 28, 28), round(self.phase * 120 * 16), 240 * 16)
+-        else:
+-            painter.drawRoundedRect(QRectF(-10, -14, 21, 28), 3, 3)
+-            painter.drawLine(-5, -4, 6, -4)
+-            painter.drawLine(-5, 2, 6, 2)
+-            painter.drawLine(-5, 8, 2, 8)
+-        font = self.font()
+-        font.setPixelSize(10)
+-        font.setWeight(QFont.Medium)
+-        painter.setFont(font)
+-        for index, label in enumerate(self.formats):
+-            progress = min(1.0, max(0.0, (self.phase - index * 0.12) / 0.64))
+-            if progress <= 0:
+-                continue
+-            angle = math.radians(-60 + index * 90 + self.approach * 4)
+-            distance = (radius + 18) * (0.5 + 0.5 * progress)
+-            point = QPointF(math.cos(angle) * distance, math.sin(angle) * distance)
+-            rectangle = QRectF(point.x() - 27, point.y() - 12, 54, 24)
+-            painter.setPen(QPen(theme_color("#e6e6e6"), 1))
+-            painter.setBrush(theme_color("#ffffff"))
+-            painter.drawRoundedRect(rectangle, 12, 12)
+-            painter.setPen(theme_color("#5a5a5a"))
+-            painter.drawText(rectangle, Qt.AlignCenter, label)
+-        painter.end()
+-
+-
+-class FileDropCard(StudioCard):
+-    clicked = Signal()
+-    files_dropped = Signal(list)
+-
+-    def __init__(self, validator, accept_copy, parent=None):
+-        super().__init__(parent)
+-        self.validator = validator
+-        self.accept_copy = accept_copy
+-        self.setObjectName("dropCard")
+-        self.setAcceptDrops(True)
+-        self.setCursor(Qt.PointingHandCursor)
+-        self.setFocusPolicy(Qt.StrongFocus)
+-        self.body = QVBoxLayout(self)
+-        self.body.setContentsMargins(26, 20, 26, 24)
+-        self.body.setSpacing(8)
+-        self.orbit = OrbitVisual()
+-        self.body.addWidget(self.orbit, 1)
+-        self.title = QLabel()
+-        self.title.setObjectName("dropTitle")
+-        self.title.setAlignment(Qt.AlignCenter)
+-        self.body.addWidget(self.title)
+-        self.caption = QLabel()
+-        self.caption.setObjectName("muted")
+-        self.caption.setAlignment(Qt.AlignCenter)
+-        self.caption.setWordWrap(True)
+-        self.body.addWidget(self.caption)
+-
+-    def enterEvent(self, event):
+-        self.orbit.set_approach(True)
+-        super().enterEvent(event)
+-
+-    def leaveEvent(self, event):
+-        self.orbit.set_approach(False)
+-        super().leaveEvent(event)
+-
+-    def dragEnterEvent(self, event):
+-        if event.possibleActions() & Qt.CopyAction and self.validator(event.mimeData()):
+-            self.accept_copy(event)
+-            self.orbit.set_approach(True)
+-        else:
+-            event.ignore()
+-
+-    def dragMoveEvent(self, event):
+-        self.dragEnterEvent(event)
+-
+-    def dragLeaveEvent(self, event):
+-        self.orbit.set_approach(False)
+-        event.accept()
+-
+-    def dropEvent(self, event):
+-        paths = self.validator(event.mimeData())
+-        if not paths or not event.possibleActions() & Qt.CopyAction:
+-            event.ignore()
+-            return
+-        self.accept_copy(event)
+-        self.orbit.set_approach(False)
+-        self.files_dropped.emit(paths)
+-
+-    def mouseReleaseEvent(self, event):
+-        if event.button() == Qt.LeftButton and self.rect().contains(event.position().toPoint()):
+-            self.clicked.emit()
+-            event.accept()
+-        else:
+-            super().mouseReleaseEvent(event)
+-
+-    def keyPressEvent(self, event):
+-        if event.key() in (Qt.Key_Return, Qt.Key_Enter, Qt.Key_Space):
+-            self.clicked.emit()
+-            event.accept()
+-        else:
+-            super().keyPressEvent(event)
++"""작업 공간의 내비게이션과 파일 상태를 그리는 Qt 전용 구성 요소."""
++from __future__ import annotations
++
++from theme_manager import theme_color, ring_color, is_dark
++
++import math
++from ui_motion import start_motion, set_reduced_motion
++
++from PySide6.QtCore import Qt, Signal, QVariantAnimation, QEasingCurve, QRectF, QPointF, QSignalBlocker, QSize
++from PySide6.QtGui import QColor, QPainter, QPen, QPainterPath, QFont, QPixmap, QIcon
++from PySide6.QtSvg import QSvgRenderer
++from PySide6.QtWidgets import QWidget, QAbstractButton, QFrame, QVBoxLayout, QLabel, QSizePolicy, QCheckBox, QStyledItemDelegate, QStyle
++
++
++def svg_icon(path, color="#5a5a5a"):
++    """공식 SVG 원문은 보존하고 표시 색상만 메모리에서 바꾼다."""
++    renderer = QSvgRenderer(path.read_bytes().replace(b"currentColor", color.encode("ascii")))
++    if not renderer.isValid():
++        raise RuntimeError(f"UI icon could not be loaded: {path}")
++    icon = QIcon()
++    for side in (16, 20, 24, 32, 40, 48, 64):
++        pixmap = QPixmap(side, side)
++        pixmap.fill(Qt.transparent)
++        painter = QPainter(pixmap)
++        renderer.render(painter)
++        painter.end()
++        icon.addPixmap(pixmap)
++    return icon
++
++
++class StudioCard(QFrame):
++    def __init__(self, parent=None):
++        super().__init__(parent)
++        self.setObjectName("studioCard")
++        self.setAttribute(Qt.WA_StyledBackground, True)
++
++
++class HistoryDelegate(QStyledItemDelegate):
++    """저장 데이터는 그대로 두고 파일·결과·시각을 구분해 표시한다."""
++
++    def sizeHint(self, option, index):
++        return QSize(280, 86)
++
++    def paint(self, painter, option, index):
++        row = index.data(Qt.UserRole + 3)
++        if not isinstance(row, dict):
++            return super().paint(painter, option, index)
++        painter.save()
++        painter.setRenderHint(QPainter.Antialiasing)
++        rectangle = QRectF(option.rect).adjusted(4, 3, -4, -3)
++        painter.setPen(Qt.NoPen)
++        painter.setBrush(theme_color("#eeeeee" if option.state & QStyle.State_Selected else "#ffffff"))
++        painter.drawRoundedRect(rectangle, 10, 10)
++        icon = QRectF(rectangle.left() + 16, rectangle.top() + 17, 42, 44)
++        painter.setBrush(theme_color("#f1f1f1"))
++        painter.drawRoundedRect(icon, 9, 9)
++        font = option.font
++        font.setPixelSize(9)
++        font.setWeight(QFont.Medium)
++        painter.setFont(font)
++        painter.setPen(theme_color("#666666"))
++        painter.drawText(icon, Qt.AlignCenter, row["format"])
++        left = rectangle.left() + 74
++        width = max(20, rectangle.width() - 94)
++        font.setPixelSize(13)
++        font.setWeight(QFont.Medium)
++        painter.setFont(font)
++        painter.setPen(theme_color("#303030"))
++        painter.drawText(QRectF(left, rectangle.top() + 15, width, 22), Qt.AlignLeft | Qt.AlignVCenter,
++                         painter.fontMetrics().elidedText(row["source"], Qt.ElideMiddle, int(width)))
++        font.setPixelSize(11)
++        font.setWeight(QFont.Normal)
++        painter.setFont(font)
++        painter.setPen(theme_color("#737373"))
++        detail = row["time"] + "   ·   " + row["detail"]
++        painter.drawText(QRectF(left, rectangle.top() + 40, width, 20), Qt.AlignLeft | Qt.AlignVCenter,
++                         painter.fontMetrics().elidedText(detail, Qt.ElideMiddle, int(width)))
++        painter.restore()
++
++
++class Toggle(QCheckBox):
++    """QCheckBox의 상태·키보드·시그널을 유지하는 작은 전환 스위치."""
++
++    def __init__(self, parent=None):
++        super().__init__(parent)
++        self.amount = 0.0
++        self.setFixedHeight(38)
++        self.setCursor(Qt.PointingHandCursor)
++        self.motion = QVariantAnimation(self)
++        self.motion.setDuration(180)
++        self.motion.setEasingCurve(QEasingCurve.InOutSine)
++        self.motion.valueChanged.connect(self._frame)
++        self.toggled.connect(self._transition)
++
++    def sizeHint(self):
++        return QSize(200, 38)
++
++    def minimumSizeHint(self):
++        return QSize(140, 38)
++
++    def hitButton(self, position):
++        return self.rect().contains(position)
++
++    def _frame(self, value):
++        self.amount = float(value)
++        self.update()
++
++    def _transition(self, checked):
++        self.motion.stop()
++        if not self.isVisible():
++            self.amount = float(checked)
++            self.update()
++            return
++        with QSignalBlocker(self.motion):
++            self.motion.setStartValue(self.amount)
++            self.motion.setEndValue(float(checked))
++            self.motion.setCurrentTime(0)
++        start_motion(self.motion)
++
++    def hideEvent(self, event):
++        self.motion.stop()
++        self.amount = float(self.isChecked())
++        super().hideEvent(event)
++
++    def paintEvent(self, event):
++        painter = QPainter(self)
++        painter.setRenderHint(QPainter.Antialiasing)
++        painter.setPen(theme_color("#424242" if self.isEnabled() else "#999999"))
++        painter.drawText(QRectF(0, 0, self.width() - 52, self.height()),
++                         Qt.AlignVCenter | Qt.AlignLeft | Qt.TextWordWrap, self.text())
++        shade = round(220 - 166 * self.amount)
++        painter.setPen(Qt.NoPen)
++        painter.setBrush(theme_color(shade, shade, shade))
++        x, y = self.width() - 39, (self.height() - 22) / 2
++        painter.drawRoundedRect(QRectF(x, y, 38, 22), 11, 11)
++        painter.setBrush(theme_color("#ffffff"))
++        painter.drawEllipse(QRectF(x + 3 + 16 * self.amount, y + 3, 16, 16))
++        if self.hasFocus():
++            painter.setPen(QPen(theme_color("#888888"), 1))
++            painter.setBrush(Qt.NoBrush)
++            painter.drawRoundedRect(QRectF(self.rect()).adjusted(0.5, 0.5, -0.5, -0.5), 6, 6)
++        painter.end()
++
++
++class NavButton(QAbstractButton):
++    """입력 영역을 고정하고 명암만 바꾸는 사이드 내비게이션."""
++
++    def __init__(self, symbol, parent=None):
++        super().__init__(parent)
++        self.symbol = symbol
++        self.svg_icons = None
++        self.hovered = False
++        self.amount = 0.0
++        self.setCheckable(True)
++        self.setAutoExclusive(True)
++        self.setFocusPolicy(Qt.StrongFocus)
++        self.setCursor(Qt.PointingHandCursor)
++        self.setFixedHeight(46)
++        self.motion = QVariantAnimation(self)
++        self.motion.setDuration(170)
++        self.motion.setEasingCurve(QEasingCurve.InOutSine)
++        self.motion.valueChanged.connect(self._frame)
++        self.toggled.connect(self.transition)
++
++    def set_svg(self, path):
++        self.svg_icons = {(dark, selected): svg_icon(path, color)
++                          for dark, selected, color in ((False, False, "#474747"), (False, True, "#0c0c0c"),
++                                                       (True, False, "#b8b8b8"), (True, True, "#f3f3f3"))}
++
++    def _frame(self, value):
++        self.amount = float(value)
++        self.update()
++
++    def transition(self):
++        target = 1.0 if self.hovered or self.isChecked() else 0.0
++        self.motion.stop()
++        if abs(target - self.amount) < 0.001:
++            self.update()
++            return
++        with QSignalBlocker(self.motion):
++            self.motion.setStartValue(self.amount)
++            self.motion.setEndValue(target)
++            self.motion.setCurrentTime(0)
++        start_motion(self.motion)
++
++    def enterEvent(self, event):
++        self.hovered = True
++        self.transition()
++        super().enterEvent(event)
++
++    def leaveEvent(self, event):
++        self.hovered = False
++        self.transition()
++        super().leaveEvent(event)
++
++    def hideEvent(self, event):
++        self.motion.stop()
++        self.amount = 1.0 if self.isChecked() else 0.0
++        self.hovered = False
++        super().hideEvent(event)
++
++    def paintEvent(self, event):
++        painter = QPainter(self)
++        painter.setRenderHint(QPainter.Antialiasing)
++        painter.setPen(Qt.NoPen)
++        painter.setBrush(ring_color(255, 255, 255, round(20 * self.amount)))
++        painter.drawRoundedRect(QRectF(self.rect()).adjusted(0, 1, 0, -1), 10, 10)
++        if self.isChecked():
++            painter.setBrush(ring_color('#eeeeee'))
++            painter.drawRoundedRect(QRectF(3, 13, 3, self.height() - 26), 1.5, 1.5)
++        color = ring_color("#f3f3f3" if self.isChecked() else "#b8b8b8")
++        painter.setPen(QPen(color, 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
++        painter.setBrush(Qt.NoBrush)
++        if self.svg_icons is not None:
++            self.svg_icons[(is_dark(), self.isChecked())].paint(painter, 16, round(self.height() / 2 - 10), 20, 20)
++        font = self.font()
++        font.setWeight(QFont.Medium if self.isChecked() else QFont.Normal)
++        painter.setFont(font)
++        painter.drawText(QRectF(46, 0, self.width() - 58, self.height()), Qt.AlignVCenter | Qt.AlignLeft, self.text())
++        if self.hasFocus():
++            painter.setPen(QPen(ring_color("#909090"), 1))
++            painter.drawRoundedRect(QRectF(self.rect()).adjusted(1, 2, -1, -2), 9, 9)
++        painter.end()
++
++
++class OrbitVisual(QWidget):
++    """파일 상태에 반응하는 중심 링. 유한 애니메이션 외에는 다시 그리지 않는다."""
++
++    def __init__(self, parent=None):
++        super().__init__(parent)
++        self.setMinimumSize(240, 220)
++        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
++        self.phase = 0.0
++        self.approach = 0.0
++        self.state = "file"
++        self.formats = ["PNG", "JPG", "PDF", "WEBP"]
++        self.intro = QVariantAnimation(self)
++        self.intro.setDuration(720)
++        self.intro.setEasingCurve(QEasingCurve.OutCubic)
++        self.intro.setStartValue(0.0)
++        self.intro.setEndValue(1.0)
++        self.intro.valueChanged.connect(self._intro_frame)
++        self.motion = QVariantAnimation(self)
++        self.motion.setDuration(230)
++        self.motion.setEasingCurve(QEasingCurve.InOutSine)
++        self.motion.valueChanged.connect(self._approach_frame)
++
++    def _intro_frame(self, value):
++        self.phase = float(value)
++        self.update()
++
++    def _approach_frame(self, value):
++        self.approach = float(value)
++        self.update()
++
++    def set_approach(self, active):
++        target = 1.0 if active else 0.0
++        self.motion.stop()
++        if abs(target - self.approach) < 0.001:
++            return
++        with QSignalBlocker(self.motion):
++            self.motion.setStartValue(self.approach)
++            self.motion.setEndValue(target)
++            self.motion.setCurrentTime(0)
++        start_motion(self.motion)
++
++    def respond(self, formats=None, state="file"):
++        self.state = state
++        if formats:
++            self.formats = [value.upper() for value in formats[:4]]
++        self.intro.stop()
++        self.intro.setCurrentTime(0)
++        # 같은 0시각에서는 신호가 생략되므로 숨김 때 바뀐 그리기값도 직접 맞춘다.
++        self._intro_frame(float(self.intro.currentValue()))
++        start_motion(self.intro)
++
++    def showEvent(self, event):
++        super().showEvent(event)
++        self.respond(state=self.state)
++
++    def hideEvent(self, event):
++        self.intro.stop()
++        self.motion.stop()
++        self.phase = 1.0
++        self.approach = 0.0
++        super().hideEvent(event)
++
++    def paintEvent(self, event):
++        painter = QPainter(self)
++        painter.setRenderHint(QPainter.Antialiasing)
++        center = QPointF(self.width() / 2, self.height() / 2)
++        radius = min(self.width() * 0.32, self.height() * 0.38, 116)
++        radius *= 0.86 + 0.14 * self.phase + 0.055 * self.approach
++        painter.translate(center)
++        painter.setBrush(Qt.NoBrush)
++        painter.setPen(QPen(theme_color("#eeeeee"), 1))
++        painter.drawEllipse(QPointF(), radius + 29, radius + 29)
++        painter.drawEllipse(QPointF(), radius + 15, radius + 15)
++        for index in range(3):
++            painter.save()
++            painter.rotate(index * 60 + (1 - self.phase) * 35 + self.approach * 12)
++            painter.setPen(QPen(theme_color(120 + index * 35, 120 + index * 35, 120 + index * 35), 1.2))
++            painter.drawEllipse(QRectF(-radius, -radius * 0.46, radius * 2, radius * 0.92))
++            painter.restore()
++        painter.setPen(Qt.NoPen)
++        painter.setBrush(theme_color("#202020"))
++        painter.drawEllipse(QPointF(), 35 + self.approach * 3, 35 + self.approach * 3)
++        painter.setPen(QPen(theme_color("#ffffff"), 1.7, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
++        painter.setBrush(Qt.NoBrush)
++        if self.state == "complete":
++            path = QPainterPath(QPointF(-12, 0))
++            path.lineTo(-3, 9)
++            path.lineTo(14, -10)
++            painter.drawPath(path)
++        elif self.state == "error":
++            painter.drawLine(-9, -9, 9, 9)
++            painter.drawLine(9, -9, -9, 9)
++        elif self.state == "working":
++            painter.drawArc(QRectF(-13, -13, 26, 26), round(self.phase * 120 * 16), 260 * 16)
++        elif self.state in {"cancelling", "cancelled"}:
++            painter.drawLine(-9, 0, 9, 0)
++            if self.state == "cancelling":
++                painter.drawArc(QRectF(-14, -14, 28, 28), round(self.phase * 120 * 16), 240 * 16)
++        else:
++            painter.drawRoundedRect(QRectF(-10, -14, 21, 28), 3, 3)
++            painter.drawLine(-5, -4, 6, -4)
++            painter.drawLine(-5, 2, 6, 2)
++            painter.drawLine(-5, 8, 2, 8)
++        font = self.font()
++        font.setPixelSize(10)
++        font.setWeight(QFont.Medium)
++        painter.setFont(font)
++        for index, label in enumerate(self.formats):
++            progress = min(1.0, max(0.0, (self.phase - index * 0.12) / 0.64))
++            if progress <= 0:
++                continue
++            angle = math.radians(-60 + index * 90 + self.approach * 4)
++            distance = (radius + 18) * (0.5 + 0.5 * progress)
++            point = QPointF(math.cos(angle) * distance, math.sin(angle) * distance)
++            rectangle = QRectF(point.x() - 27, point.y() - 12, 54, 24)
++            painter.setPen(QPen(theme_color("#e6e6e6"), 1))
++            painter.setBrush(theme_color("#ffffff"))
++            painter.drawRoundedRect(rectangle, 12, 12)
++            painter.setPen(theme_color("#5a5a5a"))
++            painter.drawText(rectangle, Qt.AlignCenter, label)
++        painter.end()
++
++
++class FileDropCard(StudioCard):
++    clicked = Signal()
++    files_dropped = Signal(list)
++
++    def __init__(self, validator, accept_copy, parent=None):
++        super().__init__(parent)
++        self.validator = validator
++        self.accept_copy = accept_copy
++        self.setObjectName("dropCard")
++        self.setAcceptDrops(True)
++        self.setCursor(Qt.PointingHandCursor)
++        self.setFocusPolicy(Qt.StrongFocus)
++        self.body = QVBoxLayout(self)
++        self.body.setContentsMargins(26, 20, 26, 24)
++        self.body.setSpacing(8)
++        self.orbit = OrbitVisual()
++        self.body.addWidget(self.orbit, 1)
++        self.title = QLabel()
++        self.title.setObjectName("dropTitle")
++        self.title.setAlignment(Qt.AlignCenter)
++        self.body.addWidget(self.title)
++        self.caption = QLabel()
++        self.caption.setObjectName("muted")
++        self.caption.setAlignment(Qt.AlignCenter)
++        self.caption.setWordWrap(True)
++        self.body.addWidget(self.caption)
++
++    def enterEvent(self, event):
++        self.orbit.set_approach(True)
++        super().enterEvent(event)
++
++    def leaveEvent(self, event):
++        self.orbit.set_approach(False)
++        super().leaveEvent(event)
++
++    def dragEnterEvent(self, event):
++        if event.possibleActions() & Qt.CopyAction and self.validator(event.mimeData()):
++            self.accept_copy(event)
++            self.orbit.set_approach(True)
++        else:
++            event.ignore()
++
++    def dragMoveEvent(self, event):
++        self.dragEnterEvent(event)
++
++    def dragLeaveEvent(self, event):
++        self.orbit.set_approach(False)
++        event.accept()
++
++    def dropEvent(self, event):
++        paths = self.validator(event.mimeData())
++        if not paths or not event.possibleActions() & Qt.CopyAction:
++            event.ignore()
++            return
++        self.accept_copy(event)
++        self.orbit.set_approach(False)
++        self.files_dropped.emit(paths)
++
++    def mouseReleaseEvent(self, event):
++        if event.button() == Qt.LeftButton and self.rect().contains(event.position().toPoint()):
++            self.clicked.emit()
++            event.accept()
++        else:
++            super().mouseReleaseEvent(event)
++
++    def keyPressEvent(self, event):
++        if event.key() in (Qt.Key_Return, Qt.Key_Enter, Qt.Key_Space):
++            self.clicked.emit()
++            event.accept()
++        else:
++            super().keyPressEvent(event)
+--- a/소스/test-fixtures/공식휠_출처와해시.json
++++ b/소스/test-fixtures/공식휠_출처와해시.json
+@@ -1,86 +1,86 @@
+-{
+-  "kst": "2026-11-10T05:57:16.578862+09:00",
+-  "records": [
+-    {
+-      "package": "pillow-heif",
+-      "version": "1.8.1",
+-      "requires_dist": [
+-        "pillow>=11.1.0",
+-        "sphinx>=4.4; extra == \"docs\"",
+-        "sphinx-issues>=3.0.1; extra == \"docs\"",
+-        "sphinx-rtd-theme>=1.0; extra == \"docs\"",
+-        "pytest; extra == \"tests-min\"",
+-        "defusedxml; extra == \"tests-min\"",
+-        "packaging; extra == \"tests-min\"",
+-        "pytest; extra == \"tests\"",
+-        "defusedxml; extra == \"tests\"",
+-        "packaging; extra == \"tests\"",
+-        "numpy; extra == \"tests\"",
+-        "pympler; extra == \"tests\"",
+-        "pytest; extra == \"dev\"",
+-        "defusedxml; extra == \"dev\"",
+-        "packaging; extra == \"dev\"",
+-        "numpy; extra == \"dev\"",
+-        "pympler; extra == \"dev\"",
+-        "opencv-python==5.0.0.93; extra == \"dev\"",
+-        "pre-commit; extra == \"dev\"",
+-        "pylint; extra == \"dev\"",
+-        "mypy; extra == \"dev\"",
+-        "coverage; extra == \"dev\"",
+-        "setuptools; extra == \"dev\""
+-      ],
+-      "license_expression": null,
+-      "license": "BSD-3-Clause",
+-      "metadata_url": "https://pypi.org/pypi/pillow-heif/1.8.1/json",
+-      "metadata_sha256": "be24270f84139920abbca7fb0281e465f6d1d3fab2b097af23aebe64e7fd4862",
+-      "filename": "pillow_heif-1.8.1-cp312-cp312-win_amd64.whl",
+-      "url": "https://files.pythonhosted.org/packages/db/fd/2ff579be4694ac68cc73bfaafe1abc255bd658b678bfb3b33922784ddaf0/pillow_heif-1.8.1-cp312-cp312-win_amd64.whl",
+-      "bytes": 6604108,
+-      "sha256": "ce0ff957ad901a5a6bf8cd22ea26c4304bab7cf2f93d0a2f03046487e5711910",
+-      "seconds": 0.1720000000204891,
+-      "official_sha256_matches": true
+-    },
+-    {
+-      "package": "pillow",
+-      "version": "13.0.0",
+-      "requires_dist": [
+-        "furo; extra == \"docs\"",
+-        "olefile; extra == \"docs\"",
+-        "sphinx>=8.2; extra == \"docs\"",
+-        "sphinx-autobuild; extra == \"docs\"",
+-        "sphinx-copybutton; extra == \"docs\"",
+-        "sphinx-inline-tabs; extra == \"docs\"",
+-        "sphinxext-opengraph; extra == \"docs\"",
+-        "olefile; extra == \"fpx\"",
+-        "olefile; extra == \"mic\"",
+-        "arro3-compute; extra == \"test-arrow\"",
+-        "arro3-core; extra == \"test-arrow\"",
+-        "nanoarrow; extra == \"test-arrow\"",
+-        "pyarrow; extra == \"test-arrow\"",
+-        "coverage>=7.4.2; extra == \"tests\"",
+-        "defusedxml; extra == \"tests\"",
+-        "markdown2; extra == \"tests\"",
+-        "olefile; extra == \"tests\"",
+-        "packaging; extra == \"tests\"",
+-        "psutil; (sys_platform == \"linux\" or sys_platform == \"darwin\") and extra == \"tests\"",
+-        "pytest; extra == \"tests\"",
+-        "pytest-cov; extra == \"tests\"",
+-        "pytest-timeout; extra == \"tests\"",
+-        "pytest-xdist; extra == \"tests\"",
+-        "setuptools; extra == \"tests\"",
+-        "trove-classifiers>=2024.10.12; extra == \"tests\"",
+-        "defusedxml; extra == \"xmp\""
+-      ],
+-      "license_expression": "MIT-CMU",
+-      "license": null,
+-      "metadata_url": "https://pypi.org/pypi/Pillow/13.0.0/json",
+-      "metadata_sha256": "183d4151cbc909acf39d4d5d48469d6bc66d5516e7f506854241839d0611b69e",
+-      "filename": "pillow-13.0.0-cp312-cp312-win_amd64.whl",
+-      "url": "https://files.pythonhosted.org/packages/ff/cd/73a79ecdc822076002eb24b5e1e4a530b0bb5310fcb6d239abbec877110b/pillow-13.0.0-cp312-cp312-win_amd64.whl",
+-      "bytes": 7272166,
+-      "sha256": "ff3fe9eb621fbb9db4c4be33ab946f6bac5f98ab50ca8d3260503653656c961b",
+-      "seconds": 0.0940000000409782,
+-      "official_sha256_matches": true
+-    }
+-  ]
++{
++  "kst": "2026-11-10T05:57:16.578862+09:00",
++  "records": [
++    {
++      "package": "pillow-heif",
++      "version": "1.8.1",
++      "requires_dist": [
++        "pillow>=11.1.0",
++        "sphinx>=4.4; extra == \"docs\"",
++        "sphinx-issues>=3.0.1; extra == \"docs\"",
++        "sphinx-rtd-theme>=1.0; extra == \"docs\"",
++        "pytest; extra == \"tests-min\"",
++        "defusedxml; extra == \"tests-min\"",
++        "packaging; extra == \"tests-min\"",
++        "pytest; extra == \"tests\"",
++        "defusedxml; extra == \"tests\"",
++        "packaging; extra == \"tests\"",
++        "numpy; extra == \"tests\"",
++        "pympler; extra == \"tests\"",
++        "pytest; extra == \"dev\"",
++        "defusedxml; extra == \"dev\"",
++        "packaging; extra == \"dev\"",
++        "numpy; extra == \"dev\"",
++        "pympler; extra == \"dev\"",
++        "opencv-python==5.0.0.93; extra == \"dev\"",
++        "pre-commit; extra == \"dev\"",
++        "pylint; extra == \"dev\"",
++        "mypy; extra == \"dev\"",
++        "coverage; extra == \"dev\"",
++        "setuptools; extra == \"dev\""
++      ],
++      "license_expression": null,
++      "license": "BSD-3-Clause",
++      "metadata_url": "https://pypi.org/pypi/pillow-heif/1.8.1/json",
++      "metadata_sha256": "be24270f84139920abbca7fb0281e465f6d1d3fab2b097af23aebe64e7fd4862",
++      "filename": "pillow_heif-1.8.1-cp312-cp312-win_amd64.whl",
++      "url": "https://files.pythonhosted.org/packages/db/fd/2ff579be4694ac68cc73bfaafe1abc255bd658b678bfb3b33922784ddaf0/pillow_heif-1.8.1-cp312-cp312-win_amd64.whl",
++      "bytes": 6604108,
++      "sha256": "ce0ff957ad901a5a6bf8cd22ea26c4304bab7cf2f93d0a2f03046487e5711910",
++      "seconds": 0.1720000000204891,
++      "official_sha256_matches": true
++    },
++    {
++      "package": "pillow",
++      "version": "13.0.0",
++      "requires_dist": [
++        "furo; extra == \"docs\"",
++        "olefile; extra == \"docs\"",
++        "sphinx>=8.2; extra == \"docs\"",
++        "sphinx-autobuild; extra == \"docs\"",
++        "sphinx-copybutton; extra == \"docs\"",
++        "sphinx-inline-tabs; extra == \"docs\"",
++        "sphinxext-opengraph; extra == \"docs\"",
++        "olefile; extra == \"fpx\"",
++        "olefile; extra == \"mic\"",
++        "arro3-compute; extra == \"test-arrow\"",
++        "arro3-core; extra == \"test-arrow\"",
++        "nanoarrow; extra == \"test-arrow\"",
++        "pyarrow; extra == \"test-arrow\"",
++        "coverage>=7.4.2; extra == \"tests\"",
++        "defusedxml; extra == \"tests\"",
++        "markdown2; extra == \"tests\"",
++        "olefile; extra == \"tests\"",
++        "packaging; extra == \"tests\"",
++        "psutil; (sys_platform == \"linux\" or sys_platform == \"darwin\") and extra == \"tests\"",
++        "pytest; extra == \"tests\"",
++        "pytest-cov; extra == \"tests\"",
++        "pytest-timeout; extra == \"tests\"",
++        "pytest-xdist; extra == \"tests\"",
++        "setuptools; extra == \"tests\"",
++        "trove-classifiers>=2024.10.12; extra == \"tests\"",
++        "defusedxml; extra == \"xmp\""
++      ],
++      "license_expression": "MIT-CMU",
++      "license": null,
++      "metadata_url": "https://pypi.org/pypi/Pillow/13.0.0/json",
++      "metadata_sha256": "183d4151cbc909acf39d4d5d48469d6bc66d5516e7f506854241839d0611b69e",
++      "filename": "pillow-13.0.0-cp312-cp312-win_amd64.whl",
++      "url": "https://files.pythonhosted.org/packages/ff/cd/73a79ecdc822076002eb24b5e1e4a530b0bb5310fcb6d239abbec877110b/pillow-13.0.0-cp312-cp312-win_amd64.whl",
++      "bytes": 7272166,
++      "sha256": "ff3fe9eb621fbb9db4c4be33ab946f6bac5f98ab50ca8d3260503653656c961b",
++      "seconds": 0.0940000000409782,
++      "official_sha256_matches": true
++    }
++  ]
+ }--- a/소스/test-fixtures/생성조건과출처.json
++++ b/소스/test-fixtures/생성조건과출처.json
+@@ -1,48 +1,48 @@
+-{
+-  "kst": "2026-11-10T05:59:47.583355+09:00",
+-  "creator": "PUVKID",
+-  "external_pixel_sources": [],
+-  "procedure": "48×36 RGB 수평·수직 그라데이션, 6픽셀 체크, 빨간 사각형, 초록 타원, 검정·흰색·기본색 띠를 직접 계산",
+-  "width": 48,
+-  "height": 36,
+-  "mode": "RGB",
+-  "bit_depth": 8,
+-  "alpha": false,
+-  "frames": 1,
+-  "icc_profile": null,
+-  "save_parameters": {
+-    "quality": 90,
+-    "chroma": "420",
+-    "color_primaries": 1,
+-    "transfer_characteristics": 13,
+-    "matrix_coefficients": 6,
+-    "full_range_flag": 1
+-  },
+-  "pillow_version": "13.0.0",
+-  "pillow_heif_version": "1.8.1",
+-  "libheif_and_encoder": {
+-    "libheif": "1.23.6",
+-    "HEIF": "x265 HEVC encoder (4.3+1-e9b8812)",
+-    "AVIF": "",
+-    "encoders": {
+-      "x265": "x265 HEVC encoder (4.3+1-e9b8812)",
+-      "mask": "mask"
+-    },
+-    "decoders": {
+-      "libde265": "libde265 HEVC decoder, version 1.1.3"
+-    }
+-  },
+-  "generator_sha256": "29eb9545d8495adf0ae6de3288035fa892055b05229c630cb76ba4b0ee817de3",
+-  "files": [
+-    {
+-      "filename": "자체색상패턴.png",
+-      "bytes": 445,
+-      "sha256": "4ab18e5ccaeddebb2db033626ffe38e9fa059b9451753bab332daddd6d3cea97"
+-    },
+-    {
+-      "filename": "sample.heic",
+-      "bytes": 1954,
+-      "sha256": "41a469918bea92bed4d831ee03a583c74d9ce526e9aa7299510502e1774cd44e"
+-    }
+-  ]
++{
++  "kst": "2026-11-10T05:59:47.583355+09:00",
++  "creator": "PUVKID",
++  "external_pixel_sources": [],
++  "procedure": "48×36 RGB 수평·수직 그라데이션, 6픽셀 체크, 빨간 사각형, 초록 타원, 검정·흰색·기본색 띠를 직접 계산",
++  "width": 48,
++  "height": 36,
++  "mode": "RGB",
++  "bit_depth": 8,
++  "alpha": false,
++  "frames": 1,
++  "icc_profile": null,
++  "save_parameters": {
++    "quality": 90,
++    "chroma": "420",
++    "color_primaries": 1,
++    "transfer_characteristics": 13,
++    "matrix_coefficients": 6,
++    "full_range_flag": 1
++  },
++  "pillow_version": "13.0.0",
++  "pillow_heif_version": "1.8.1",
++  "libheif_and_encoder": {
++    "libheif": "1.23.6",
++    "HEIF": "x265 HEVC encoder (4.3+1-e9b8812)",
++    "AVIF": "",
++    "encoders": {
++      "x265": "x265 HEVC encoder (4.3+1-e9b8812)",
++      "mask": "mask"
++    },
++    "decoders": {
++      "libde265": "libde265 HEVC decoder, version 1.1.3"
++    }
++  },
++  "generator_sha256": "29eb9545d8495adf0ae6de3288035fa892055b05229c630cb76ba4b0ee817de3",
++  "files": [
++    {
++      "filename": "자체색상패턴.png",
++      "bytes": 445,
++      "sha256": "4ab18e5ccaeddebb2db033626ffe38e9fa059b9451753bab332daddd6d3cea97"
++    },
++    {
++      "filename": "sample.heic",
++      "bytes": 1954,
++      "sha256": "41a469918bea92bed4d831ee03a583c74d9ce526e9aa7299510502e1774cd44e"
++    }
++  ]
+ }--- a/소스/test-fixtures/생성환경_준비.py
++++ b/소스/test-fixtures/생성환경_준비.py
+@@ -1,26 +1,26 @@
+-"""고정 공식 휠의 SHA를 확인해 이 도구 폴더에만 생성 의존성을 준비한다."""
+-from pathlib import Path
+-import hashlib,json,subprocess,sys,urllib.request
+-root=Path(__file__).resolve().parent
+-metadata=json.loads((root/'공식휠_출처와해시.json').read_text(encoding='utf-8'))
+-downloads=root/'공식휠';downloads.mkdir(exist_ok=True)
+-paths=[]
+-for package in metadata['records']:
+-    path=downloads/package['filename']
+-    assert path.parent==downloads and package['url'].startswith('https://files.pythonhosted.org/')
+-    if not path.exists():
+-        part=path.with_suffix(path.suffix+'.part')
+-        assert not part.exists(), '미완료 다운로드 원문을 먼저 확인해 주세요.'
+-        with urllib.request.urlopen(package['url'],timeout=30) as response,part.open('wb') as output:
+-            while chunk:=response.read(1024*1024):output.write(chunk)
+-        assert part.stat().st_size==package['bytes']
+-        assert hashlib.sha256(part.read_bytes()).hexdigest()==package['sha256']
+-        part.rename(path)
+-    assert path.stat().st_size==package['bytes']
+-    assert hashlib.sha256(path.read_bytes()).hexdigest()==package['sha256']
+-    paths.append(str(path))
+-target=root/'생성전용환경'
+-if target.exists():
+-    raise SystemExit('생성전용환경이 이미 있습니다. 기존 환경을 덮어쓰지 않았습니다.')
+-subprocess.run([sys.executable,'-I','-B','-X','utf8','-m','pip','install','--disable-pip-version-check',
+-    '--no-cache-dir','--no-index','--no-deps','--no-compile','--target',str(target),*paths],check=True,timeout=120)
++"""고정 공식 휠의 SHA를 확인해 이 도구 폴더에만 생성 의존성을 준비한다."""
++from pathlib import Path
++import hashlib,json,subprocess,sys,urllib.request
++root=Path(__file__).resolve().parent
++metadata=json.loads((root/'공식휠_출처와해시.json').read_text(encoding='utf-8'))
++downloads=root/'공식휠';downloads.mkdir(exist_ok=True)
++paths=[]
++for package in metadata['records']:
++    path=downloads/package['filename']
++    assert path.parent==downloads and package['url'].startswith('https://files.pythonhosted.org/')
++    if not path.exists():
++        part=path.with_suffix(path.suffix+'.part')
++        assert not part.exists(), '미완료 다운로드 원문을 먼저 확인해 주세요.'
++        with urllib.request.urlopen(package['url'],timeout=30) as response,part.open('wb') as output:
++            while chunk:=response.read(1024*1024):output.write(chunk)
++        assert part.stat().st_size==package['bytes']
++        assert hashlib.sha256(part.read_bytes()).hexdigest()==package['sha256']
++        part.rename(path)
++    assert path.stat().st_size==package['bytes']
++    assert hashlib.sha256(path.read_bytes()).hexdigest()==package['sha256']
++    paths.append(str(path))
++target=root/'생성전용환경'
++if target.exists():
++    raise SystemExit('생성전용환경이 이미 있습니다. 기존 환경을 덮어쓰지 않았습니다.')
++subprocess.run([sys.executable,'-I','-B','-X','utf8','-m','pip','install','--disable-pip-version-check',
++    '--no-cache-dir','--no-index','--no-deps','--no-compile','--target',str(target),*paths],check=True,timeout=120)
+--- a/소스/test-fixtures/자체HEIC_생성.py
++++ b/소스/test-fixtures/자체HEIC_생성.py
+@@ -1,30 +1,30 @@
+-"""외부 이미지 없이 색상·기하 패턴을 계산하여 공개 시험 후보를 만든다."""
+-from pathlib import Path
+-import sys,json,hashlib,datetime
+-root=Path(__file__).resolve().parent
+-sys.path.insert(0,str(root/'생성전용환경'))
+-from PIL import Image,ImageDraw
+-import PIL,pillow_heif
+-assert Path(PIL.__file__).resolve().is_relative_to(root/'생성전용환경')
+-assert Path(pillow_heif.__file__).resolve().is_relative_to(root/'생성전용환경')
+-pillow_heif.register_heif_opener()
+-output=root/'자체시험자료';output.mkdir(exist_ok=True)
+-png=output/'자체색상패턴.png';heic=output/'sample.heic'
+-assert not png.exists() and not heic.exists()
+-width,height=48,36
+-image=Image.new('RGB',(width,height))
+-for y in range(height):
+-    for x in range(width):
+-        image.putpixel((x,y),(x*255//(width-1),y*255//(height-1),32 if (x//6+y//6)%2 else 224))
+-draw=ImageDraw.Draw(image)
+-draw.rectangle((2,2,11,11),fill=(255,0,0))
+-draw.ellipse((28,5,43,20),fill=(0,255,0))
+-colors=((0,0,0),(255,255,255),(255,0,0),(0,255,0),(0,0,255),(0,255,255),(255,0,255),(255,255,0))
+-for index,color in enumerate(colors):draw.rectangle((index*6,28,index*6+5,35),fill=color)
+-image.save(png,format='PNG')
+-parameters=dict(quality=90,chroma='420',color_primaries=1,transfer_characteristics=13,matrix_coefficients=6,full_range_flag=1)
+-image.save(heic,format='HEIF',**parameters)
+-files=[{'filename':p.name,'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in (png,heic)]
+-record={'kst':datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).isoformat(),'creator':'PUVKID','external_pixel_sources':[],'procedure':'48×36 RGB 수평·수직 그라데이션, 6픽셀 체크, 빨간 사각형, 초록 타원, 검정·흰색·기본색 띠를 직접 계산','width':width,'height':height,'mode':'RGB','bit_depth':8,'alpha':False,'frames':1,'icc_profile':None,'save_parameters':parameters,'pillow_version':PIL.__version__,'pillow_heif_version':pillow_heif.__version__,'libheif_and_encoder':pillow_heif.libheif_info(),'generator_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'files':files}
+-(root/'생성조건과출처.json').write_bytes(json.dumps(record,ensure_ascii=False,indent=2).encode('utf-8'))
+-print(json.dumps(record,ensure_ascii=False))
++"""외부 이미지 없이 색상·기하 패턴을 계산하여 공개 시험 후보를 만든다."""
++from pathlib import Path
++import sys,json,hashlib,datetime
++root=Path(__file__).resolve().parent
++sys.path.insert(0,str(root/'생성전용환경'))
++from PIL import Image,ImageDraw
++import PIL,pillow_heif
++assert Path(PIL.__file__).resolve().is_relative_to(root/'생성전용환경')
++assert Path(pillow_heif.__file__).resolve().is_relative_to(root/'생성전용환경')
++pillow_heif.register_heif_opener()
++output=root/'자체시험자료';output.mkdir(exist_ok=True)
++png=output/'자체색상패턴.png';heic=output/'sample.heic'
++assert not png.exists() and not heic.exists()
++width,height=48,36
++image=Image.new('RGB',(width,height))
++for y in range(height):
++    for x in range(width):
++        image.putpixel((x,y),(x*255//(width-1),y*255//(height-1),32 if (x//6+y//6)%2 else 224))
++draw=ImageDraw.Draw(image)
++draw.rectangle((2,2,11,11),fill=(255,0,0))
++draw.ellipse((28,5,43,20),fill=(0,255,0))
++colors=((0,0,0),(255,255,255),(255,0,0),(0,255,0),(0,0,255),(0,255,255),(255,0,255),(255,255,0))
++for index,color in enumerate(colors):draw.rectangle((index*6,28,index*6+5,35),fill=color)
++image.save(png,format='PNG')
++parameters=dict(quality=90,chroma='420',color_primaries=1,transfer_characteristics=13,matrix_coefficients=6,full_range_flag=1)
++image.save(heic,format='HEIF',**parameters)
++files=[{'filename':p.name,'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in (png,heic)]
++record={'kst':datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=9))).isoformat(),'creator':'PUVKID','external_pixel_sources':[],'procedure':'48×36 RGB 수평·수직 그라데이션, 6픽셀 체크, 빨간 사각형, 초록 타원, 검정·흰색·기본색 띠를 직접 계산','width':width,'height':height,'mode':'RGB','bit_depth':8,'alpha':False,'frames':1,'icc_profile':None,'save_parameters':parameters,'pillow_version':PIL.__version__,'pillow_heif_version':pillow_heif.__version__,'libheif_and_encoder':pillow_heif.libheif_info(),'generator_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'files':files}
++(root/'생성조건과출처.json').write_bytes(json.dumps(record,ensure_ascii=False,indent=2).encode('utf-8'))
++print(json.dumps(record,ensure_ascii=False))
+--- a/소스/test-fixtures/자체HEIC_출처와재생성.md
++++ b/소스/test-fixtures/자체HEIC_출처와재생성.md
+@@ -1,38 +1,26 @@
+-# 자체 HEIC 시험 자료의 출처와 재생성
+-
+-PUVKID의 파일 변환 검사를 위해 색상과 도형을 직접 계산한 시험 자료입니다. 외부 사진이나 기존 시험 사진의 픽셀을 사용하지 않았습니다. `자체HEIC_생성.py`가 수평·수직 그라데이션, 체크 패턴, 사각형·타원, 검정·흰색·기본색 띠를 만듭니다.
+-
+-- 크기 48×36, RGB 8 비트, 단일 이미지, 알파 없음, ICC 없음, 4:2:0 색차 표본화입니다.
+-- HEIC NCLX는 color_primaries =1, transfer_characteristics =13, matrix_coefficients =6, full_range_flag =1입니다.
+-- 저장 품질 90은 손 실 인코딩 조건입니다. PNG 원본과 HEIC가 픽셀까지 같다고 주장하지 않습니다.
+-- 실제 생성 환경은 Python3.12.14, Pillow13.0.0, pillow-heif1.8.1, libheif1.23.6, x2654.3 +1-e9b8812입니다. 원본 PNG·HEIC해시는 생성 조건과 출처.json에 있습니다.
+-
+-생성 도구만 사용할 별도 빈 폴더에 `자체HEIC_생성.py`, `생성환경_준비.py`, `공식휠_출처와해시.json`을 복사하고 Windows x64 CPython3.12에서 다음 순서로 실행합니다. 이미 있는 시험 자료와 환경을 덮어 쓰지 않도록 검사합니다.
+-
+-```powershell
+-python -B -X utf8 생성환경_준비.py
+-python -I -B -X utf8 자체HEIC_생성.py
+-```
+-
+-의존성은 해당 폴더의 생성 전용 환경에만 설치됩니다.
+-
+-앱에는 읽기 전용 pi-heif-decoder를 계속 사용하며 이 생성용 인코더를 추가하지 않습니다.
+-
+-공식 휠 주소·크기·SHA256을 고정하고 내려 받은 바이트를 확인합니다.
+-
+-설치된 생성 환경과 휠은 개발용이므로 앱 실행 파일에 포함할 필요가 없습니다.
+-
+-의존성 자체의 라이선스는 각 공식 배포 물에 따릅니다.
+-
+-생성 코드는 동일한 패턴을 계산합니다. 다른 라이브러리·운영체제 조합에서 HEIC 파일 바이트가 동일하다는 보장은 하지 않습니다. 이번 저장 파일의 실제 해시와 인코더 버전을 구분해 확인해 주세요. 이 단일 RGB 자료는 알파·HDR·다중 프레임 이미지 전체의 검증을 대신하지 않습니다.
+-
+-실제 앱 환경의 pi-heif-decoder1.7.0.post4에서 읽기와 PNG/JPG/TIFF/AVIF 변환을 확인했습니다.
+-
+-PNG/TIFF 출력은 디코딩한 HEIC의 픽셀과 같았고, 각 변환 전후 입력 파일 해시를 보존했습니다.
+-
+-이는 이 후보에 대한 변환 확인이며 기존 전체 검사·설치 본·모든 HEIC 호환 검증은 아닙니다.
+-
+-공식 출처: [pillow-heif PyPI](https://pypi.org/project/pillow-heif/1.8.1/), [Pillow PyPI](https://pypi.org/project/Pillow/13.0.0/), [공식 이미지 저장 문서](https://pillow-heif.readthedocs.io/en/latest/saving-images.html).
+-
+-
+-생성 결과는 별도 작업 폴더의 `자체시험자료` 하위에 `sample.heic`와 `자체색상패턴.png`로 저장됩니다. 생성 도구를 소스 폴더에서 실행하지 말고 위의 빈 폴더 복사 절차를 사용해 주세요.
++# 자체 HEIC 시험 자료의 출처와 재생성
++
++PUVKID의 파일 변환 검사를 위해 색상과 도형을 직접 계산한 시험 자료입니다. 외부 사진이나 기존 시험 사진의 픽셀을 사용하지 않았습니다. `자체HEIC_생성.py`가 수평·수직 그라데이션, 체크 패턴, 사각형·타원, 검정·흰색·기본색 띠를 만듭니다.
++
++- 크기 48×36, RGB 8비트, 단일 이미지, 알파 없음, ICC 없음, 4:2:0 색차 표본화입니다.
++- HEIC NCLX는 color_primaries=1, transfer_characteristics=13, matrix_coefficients=6, full_range_flag=1입니다.
++- 저장 품질90은 손실 인코딩 조건입니다. PNG 원본과 HEIC가 픽셀까지 같다고 주장하지 않습니다.
++- 실제 생성 환경은 Python3.12.14, Pillow13.0.0, pillow-heif1.8.1, libheif1.23.6, x2654.3+1-e9b8812입니다. 원본 PNG·HEIC 해시는 생성조건과출처.json에 있습니다.
++
++생성 도구만 사용할 별도 빈 폴더에 `자체HEIC_생성.py`, `생성환경_준비.py`, `공식휠_출처와해시.json`을 복사하고 Windows x64 CPython3.12에서 다음 순서로 실행합니다. 이미 있는 시험 자료와 환경을 덮어쓰지 않도록 검사합니다.
++
++```powershell
++python -B -X utf8 생성환경_준비.py
++python -I -B -X utf8 자체HEIC_생성.py
++```
++
++의존성은 해당 폴더의 생성전용환경에만 설치됩니다. 앱에는 읽기 전용 pi-heif-decoder를 계속 사용하며 이 생성용 인코더를 추가하지 않습니다. 공식 휠 주소·크기·SHA256을 고정하고 내려받은 바이트를 확인합니다. 설치된 생성 환경과 휠은 개발용이므로 앱 실행 파일에 포함할 필요가 없습니다. 의존성 자체의 라이선스는 각 공식 배포물에 따릅니다.
++
++생성 코드는 동일한 패턴을 계산합니다. 다른 라이브러리·운영체제 조합에서 HEIC 파일 바이트가 동일하다는 보장은 하지 않습니다. 이번 저장 파일의 실제 해시와 인코더 버전을 구분해 확인해 주세요. 이 단일 RGB 자료는 알파·HDR·다중 프레임 이미지 전체의 검증을 대신하지 않습니다.
++
++실제 앱 환경의 pi-heif-decoder1.7.0.post4에서 읽기와 PNG/JPG/TIFF/AVIF 변환을 확인했습니다. PNG/TIFF 출력은 디코딩한 HEIC의 픽셀과 같았고, 각 변환 전후 입력 파일 해시를 보존했습니다. 이는 이 후보에 대한 변환 확인이며 기존 전체 검사·설치본·모든 HEIC 호환 검증은 아닙니다.
++
++공식 출처: [pillow-heif PyPI](https://pypi.org/project/pillow-heif/1.8.1/), [Pillow PyPI](https://pypi.org/project/Pillow/13.0.0/), [공식 이미지 저장 문서](https://pillow-heif.readthedocs.io/en/latest/saving-images.html).
++
++
++생성 결과는 별도 작업 폴더의 `자체시험자료` 하위에 `sample.heic`와 `자체색상패턴.png`로 저장됩니다. 생성 도구를 소스 폴더에서 실행하지 말고 위의 빈 폴더 복사 절차를 사용해 주세요.

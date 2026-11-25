@@ -10,9 +10,9 @@ import subprocess
 import sys
 import zipfile
 
-SOURCE_ZIP_NAME = "플립링-1.12.1-전체소스.zip"
-RELEASE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.12.1"
-SOURCE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/download/v1.12.1/" + "FlipRing-1.12.1-Source.zip"
+SOURCE_ZIP_NAME = "플립링-1.13.0-전체소스.zip"
+RELEASE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.13.0"
+SOURCE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/download/v1.13.0/" + "FlipRing-1.13.0-Source.zip"
 
 
 class DeliveryError(RuntimeError):
@@ -190,7 +190,7 @@ def verify_source_manifest(root, prepared, manifest, archive):
     entries, excluded = classified_entries(root, prepared["config"])
     if manifest.get("entries") != entries or manifest.get("excluded") != excluded:
         raise DeliveryError("전체 소스 분류와 외부 manifest가 다릅니다.")
-    if (manifest.get("file") != SOURCE_ZIP_NAME or manifest.get("version") != "1.12.1"
+    if (manifest.get("file") != SOURCE_ZIP_NAME or manifest.get("version") != "1.13.0"
             or manifest.get("release_url") != RELEASE_URL or manifest.get("source_url") != SOURCE_URL):
         raise DeliveryError("전체 소스의 버전·파일명·예정 URL이 다릅니다.")
     archive = reject_links(archive)
@@ -253,7 +253,7 @@ class ArchiveResolver:
 
 
 def runtime_notice(manifest):
-    return ("플립링 1.12.1 전체 상응 소스\n파일: " + manifest["file"] + "\nSHA-256: " + manifest["sha256"]
+    return ("플립링 1.13.0 전체 상응 소스\n파일: " + manifest["file"] + "\nSHA-256: " + manifest["sha256"]
             + "\n동일 Release: " + manifest["release_url"] + "\n정확 소스 자산: " + manifest["source_url"]
             + "\n고객 배포 폴더의 같은 전체 소스 ZIP과 원문 고지·패치·빌드 방법을 보존해 주세요.\n"
             "온라인 재배포자는 같은 장소에서 무료로 동등한 상응 소스 접근을 제공할 수 있습니다.\n"

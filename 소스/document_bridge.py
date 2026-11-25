@@ -197,7 +197,8 @@ def convert(request):
     try:
         context = uno.getComponentContext()
         resolver = context.ServiceManager.createInstanceWithContext("com.sun.star.bridge.UnoUrlResolver", context)
-        deadline = time.monotonic() + 25
+        # 새 격리 프로필의 연결이 25초에 근접한 관측에 따라 시작 대기를 60초로 제한한다.
+        deadline = time.monotonic() + 60
         while True:
             try:
                 remote = resolver.resolve("uno:" + listener)

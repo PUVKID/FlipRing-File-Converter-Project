@@ -1,0 +1,1275 @@
+--- a/소스/배포구성.json
++++ b/소스/배포구성.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": 1,
+-  "version": "1.12.1",
++  "version": "1.13.0",
+   "source_roots": [
+     "소스",
+     "검사도구",
+@@ -12,16 +12,27 @@
+   ],
+   "reviewed_public_docs": [
+     "docs/2026-11-20_빠른작업과테마_설계.md",
+-    "docs/2026-11-20_배포전전체기능_확인.md"
++    "docs/2026-11-20_배포전전체기능_확인.md",
++    "docs/2026-11-25_13가지기능_사용안내.md",
++    "docs/2026-11-25_유사제품_공식자료비교.md",
++    "docs/2026-11-25_1.13.0_공개변경기록.md",
++    "docs/2026-11-25_1.13.0_다섯수준설명.md",
++    "docs/2026-11-25_문서와배포자료보완.md"
+   ],
+   "required": [
++    "검사도구/HWP그림경계검사1121.py",
+     "검사도구/documents_suites110.py",
+     "검사도구/new_suites19.py",
+     "검사도구/regression19.py",
+     "검사도구/release_capture.py",
+     "검사도구/run_documents_suite110.py",
+     "검사도구/run_new_suite19.py",
++    "검사도구/대표문서입력검사1121.py",
+     "소스/1.10-문서지원안내.md",
++    "소스/1.12-기능50항목.md",
++    "소스/1.12-빠른작업안내.md",
++    "소스/1.12.1-문서입력보완.md",
++    "소스/1.13-새기능안내.md",
+     "소스/1.7-새기능안내.md",
+     "소스/1.8-화면안내.md",
+     "소스/1.9-확장안내.md",
+@@ -48,6 +59,8 @@
+     "소스/assets/lucide/sliders-horizontal.svg",
+     "소스/assets/lucide/x.svg",
+     "소스/build.py",
++    "소스/delivery_tools.py",
++    "소스/delivery_ui.py",
+     "소스/document_bridge.py",
+     "소스/document_formats.py",
+     "소스/document_hwp.py",
+@@ -70,8 +83,14 @@
+     "소스/licenses/GCC-RUNTIME-EXCEPTION.txt",
+     "소스/licenses/GPL-3.0.txt",
+     "소스/licenses/H2Orestart/COPYING",
++    "소스/licenses/H2Orestart/H2Orestart-v0.8.0-original.oxt",
+     "소스/licenses/H2Orestart/H2Orestart-v0.8.0-source.tar.gz",
++    "소스/licenses/H2Orestart/수정과_재빌드안내.md",
++    "소스/licenses/H2Orestart/수정빌드_명세.json",
++    "소스/licenses/H2Orestart/수정소스/soffice/ConvGraphics.java",
+     "소스/licenses/H2Orestart/원본출처.json",
++    "소스/licenses/H2Orestart/재빌드.py",
++    "소스/licenses/H2Orestart/전체그림경계-수정.patch",
+     "소스/licenses/HEIC-GNU-runtime/GCC-PKGINFO.txt",
+     "소스/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.LIB",
+     "소스/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.RUNTIME",
+@@ -528,6 +547,9 @@
+     "소스/pdf_panel.py",
+     "소스/pdf_tools.py",
+     "소스/preview_panel.py",
++    "소스/queue_journal.py",
++    "소스/quick_actions.py",
++    "소스/quick_actions_ui.py",
+     "소스/requirements-documents-test.txt",
+     "소스/requirements-lock.txt",
+     "소스/restore_document_runtime.py",
+@@ -540,9 +562,12 @@
+     "소스/test-fixtures/자체HEIC_출처와재생성.md",
+     "소스/test-fixtures/자체색상패턴.png",
+     "소스/test_conversion_matrix.py",
++    "소스/test_delivery113.py",
++    "소스/test_design113.py",
+     "소스/test_document_external.py",
+     "소스/test_document_formats.py",
+     "소스/test_document_hwp.py",
++    "소스/test_document_import1121.py",
+     "소스/test_document_security.py",
+     "소스/test_document_shutdown.py",
+     "소스/test_document_xlsb.py",
+@@ -556,11 +581,17 @@
+     "소스/test_ocr_process.py",
+     "소스/test_pdf_tools.py",
+     "소스/test_pdf_workspace.py",
++    "소스/test_queue113.py",
++    "소스/test_quick_actions112.py",
++    "소스/test_release113.py",
+     "소스/test_simple_ui111.py",
++    "소스/test_theme_install112.py",
+     "소스/test_workbench.py",
+     "소스/test_workspace_core.py",
+     "소스/test_workspace_ui.py",
+     "소스/test_배포도구.py",
++    "소스/theme_manager.py",
++    "소스/tool_installer.py",
+     "소스/ui_motion.py",
+     "소스/vendor/7zip/7z.dll",
+     "소스/vendor/7zip/7z.exe",
+@@ -962,28 +993,10 @@
+     "소스/배포구성.json",
+     "소스/배포빌드.py",
+     "소스/빌드방법.md",
+-    "소스/사용안내.txt",
+-    "소스/quick_actions.py",
+-    "소스/quick_actions_ui.py",
+-    "소스/theme_manager.py",
+-    "소스/tool_installer.py",
+-    "소스/test_quick_actions112.py",
+-    "소스/test_theme_install112.py",
+-    "소스/1.12-빠른작업안내.md",
+-    "소스/1.12-기능50항목.md",
+-    "소스/test_document_import1121.py",
+-    "검사도구/대표문서입력검사1121.py",
+-    "소스/1.12.1-문서입력보완.md",
+-    "소스/licenses/H2Orestart/H2Orestart-v0.8.0-original.oxt",
+-    "소스/licenses/H2Orestart/수정과_재빌드안내.md",
+-    "소스/licenses/H2Orestart/수정빌드_명세.json",
+-    "소스/licenses/H2Orestart/재빌드.py",
+-    "소스/licenses/H2Orestart/전체그림경계-수정.patch",
+-    "소스/licenses/H2Orestart/수정소스/soffice/ConvGraphics.java",
+-    "검사도구/HWP그림경계검사1121.py"
++    "소스/사용안내.txt"
+   ],
+   "excluded_files": {
+-    "ROUTING-LESSONS.md": "비공개 운영·실패 이력",
++    "ROUTING-LESSONS.md": "비공개 작업 실패와 운영 기록. 제품·검사 소스는 별도 모두 포함.",
+     "소스/검토기록.md": "비공개 운영 검토 기록",
+     "AGENTS.md": "개인·작업자 운영 지침이며 제품·빌드 입력 아님",
+     "AGENTS.override.md": "개인·작업자 운영 지침이며 제품·빌드 입력 아님",
+@@ -1009,7 +1022,10 @@
+     "docs/2026-11-13_HWP양방향_요구사항.md": "이전 내부 설계·작업 문서. 공개 안내는 소스/1.12-빠른작업안내.md와 공개 차수 문서에 별도 보존.",
+     "docs/2026-11-13_문서변환_초기화개선.md": "이전 내부 설계·작업 문서. 공개 안내는 소스/1.12-빠른작업안내.md와 공개 차수 문서에 별도 보존.",
+     "docs/2026-11-14_HWP저장_구현과검증.md": "이전 내부 설계·작업 문서. 공개 안내는 소스/1.12-빠른작업안내.md와 공개 차수 문서에 별도 보존.",
+-    "docs/검증/문서51_독립검사_요약.json": "이전 내부 설계·작업·검증 기록. 제품 소스와 필수 고지·빌드 입력이 아니며 로컬에 보존."
++    "docs/검증/문서51_독립검사_요약.json": "이전 내부 설계·작업·검증 기록. 제품 소스와 필수 고지·빌드 입력이 아니며 로컬에 보존.",
++    "docs/2026-11-25_작업완성도_설계.md": "로컬 운영과 작업 계획을 포함한 비공개 기록. 제품 구현과 공개 사용 안내는 별도 보존.",
++    "docs/2026-11-25_구현계획.md": "로컬 운영과 작업 계획을 포함한 비공개 기록. 제품 구현과 공개 사용 안내는 별도 보존.",
++    "docs/2026-11-25_작업완성도_구현계획.md": "로컬 운영과 비공개 작업 계획. 공개 사용 안내와 실제 전체 소스는 별도 포함."
+   },
+   "excluded_dirs": {
+     "work": "비공개 작업·중간본·운영 이력",
+@@ -1117,5 +1133,5 @@
+     }
+   ],
+   "separation_reason": "528499332바이트의 정확10개 원 archive는 전체소스ZIP에 보존하고 실행부에서만 분리. 동등한 동일 Release 접근의 실제 게시 검증은 별도.",
+-  "source_zip": "플립링-1.12.1-전체소스.zip"
++  "source_zip": "플립링-1.13.0-전체소스.zip"
+ }
+--- a/소스/배포빌드.py
++++ b/소스/배포빌드.py
+@@ -10,9 +10,9 @@
+ import sys
+ import zipfile
+ 
+-SOURCE_ZIP_NAME = "플립링-1.12.1-전체소스.zip"
+-RELEASE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.12.1"
+-SOURCE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/download/v1.12.1/" + "FlipRing-1.12.1-Source.zip"
++SOURCE_ZIP_NAME = "플립링-1.13.0-전체소스.zip"
++RELEASE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.13.0"
++SOURCE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/download/v1.13.0/" + "FlipRing-1.13.0-Source.zip"
+ 
+ 
+ class DeliveryError(RuntimeError):
+@@ -190,7 +190,7 @@
+     entries, excluded = classified_entries(root, prepared["config"])
+     if manifest.get("entries") != entries or manifest.get("excluded") != excluded:
+         raise DeliveryError("전체 소스 분류와 외부 manifest가 다릅니다.")
+-    if (manifest.get("file") != SOURCE_ZIP_NAME or manifest.get("version") != "1.12.1"
++    if (manifest.get("file") != SOURCE_ZIP_NAME or manifest.get("version") != "1.13.0"
+             or manifest.get("release_url") != RELEASE_URL or manifest.get("source_url") != SOURCE_URL):
+         raise DeliveryError("전체 소스의 버전·파일명·예정 URL이 다릅니다.")
+     archive = reject_links(archive)
+@@ -253,7 +253,7 @@
+ 
+ 
+ def runtime_notice(manifest):
+-    return ("플립링 1.12.1 전체 상응 소스\n파일: " + manifest["file"] + "\nSHA-256: " + manifest["sha256"]
++    return ("플립링 1.13.0 전체 상응 소스\n파일: " + manifest["file"] + "\nSHA-256: " + manifest["sha256"]
+             + "\n동일 Release: " + manifest["release_url"] + "\n정확 소스 자산: " + manifest["source_url"]
+             + "\n고객 배포 폴더의 같은 전체 소스 ZIP과 원문 고지·패치·빌드 방법을 보존해 주세요.\n"
+             "온라인 재배포자는 같은 장소에서 무료로 동등한 상응 소스 접근을 제공할 수 있습니다.\n"
+--- a/소스/빌드방법.md
++++ b/소스/빌드방법.md
+@@ -1,3 +1,21 @@
++# 플립링 1.13.0 빌드
++
++현재 제품 버전은 **1.13.0**입니다. 아래에 보존된 1.12.1·1.11·1.10 설명은 해당 시점 기록입니다. 실행 파일 이름과 설정 규약은 그대로 유지합니다.
++
++| 항목 | 현재 기준 | 확인 범위 |
++|---|---|---|
++| 전체 소스 | `플립링-1.13.0-전체소스.zip` | 제품·빌드·검사 코드, 자산, 상응 소스와 라이선스 포함 |
++| 새 기능 | `1.13-새기능안내.md` | 영속 대기열, 결과 이름, 호환 안내, 개인정보 제거, 비교와 OCR 검토 |
++| 개발 환경 | Python 3.12 x64·고정 의존성·Inno Setup 6 | 입력 트리 밖에 개발 환경과 작업·출력 폴더를 준비 |
++| 필요한 검사 | `test_queue113`, `test_delivery113`, `test_release113`, `test_design113` | 변경 영향 확인에 집중하며 유효한 기존 결과는 재사용 |
++| 배포 절차 | 준비 → 전체 소스 동결 → 컴파일 → 묶음 확인 | 빌드 성공과 실제 실행·설치 확인은 구분 |
++
++ZIP을 풀면 `소스`와 `검사도구`를 나란히 유지합니다. 아래 기존 재현 명령의 출력·작업 폴더는 새 빈 경로로 지정합니다. `배포빌드.py`의 버전과 소스 ZIP 이름은 1.13.0으로 갱신되어 있습니다. 공개 주소는 실제 게시 전까지 예정 주소이며 게시 완료를 뜻하지 않습니다.
++
++모든 형식에서 문서 배치·수식·폰트가 완벽히 보존된다고 보장하지 않습니다. 호환 안내는 사전 경고이고, 전후 비교는 실제 출력물을 검토하는 별도 단계입니다. 이름 미리보기에서 문서의 실제 페이지 수 확인을 위해 임시 변환이 수행될 수 있습니다. 원본과 지정 결과 폴더는 보존합니다.
++
++---
++
+ # 1.12.1 빌드
+ 
+ 현재 소스의 버전은 1.12.1입니다. 아래 명령의 출력·작업 폴더는 새 1.12.1 경로로 지정하세요. 기존 전체 회귀 검사는 변경 없는 코드에 대해 반복 실행할 필요가 없습니다. 문서 입력 수리는 test_document_import1121과 실제 문서 변환으로 확인합니다. 변경 없는 기존 기능의 유효한 근거는 재사용하며 실행본·설치본 확인은 별도로 구분합니다.
+--- a/검사도구/documents_suites110.py
++++ b/검사도구/documents_suites110.py
+@@ -1,67 +1,67 @@
+-"""문서 확장의 정책·Qt·실제 Office 검사를 순차 실행하고 원문을 결합합니다."""
+-from datetime import datetime
+-import hashlib
+-import json
+-from pathlib import Path
+-import sys
+-import time
+-import uuid
+-
+-TOOLS = Path(__file__).resolve().parent
+-ROOT = TOOLS.parent
+-sys.path.insert(0, str(TOOLS))
+-from release_capture import run_check
+-from run_documents_suite110 import COUNTS
+-
+-TIMEOUTS = {"test_document_formats": 30, "test_document_xlsb": 30, "test_documents_ui110": 60,
+-            "test_documents_integration": 180, "test_document_external": 210, "test_document_security": 90,
+-            "test_document_shutdown": 30}
+-TOTAL_BUDGET_SECONDS = 600
+-
+-
+-def hashes(directory):
+-    return {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(directory.glob("*.py"))}
+-
+-
+-def main():
+-    started = time.monotonic()
+-    folder = ROOT / "work/documents-suites110" / uuid.uuid4().hex
+-    folder.mkdir(parents=True)
+-    before, tools_before = hashes(ROOT / "소스"), hashes(TOOLS)
+-    checks = [dict(id=name, cwd=str(ROOT / "소스"), timeout_seconds=TIMEOUTS[name],
+-                   argv=[sys.executable, "-B", "-X", "utf8", str(TOOLS / "run_documents_suite110.py"),
+-                         name, str(folder / (name + "-stats.json"))]) for name in COUNTS]
+-    report = dict(started=datetime.now().astimezone().isoformat(), checks=checks, expected_counts=COUNTS,
+-                  source_before=before, tools_before=tools_before, total_budget_seconds=TOTAL_BUDGET_SECONDS)
+-    (folder / "start.json").write_text(json.dumps(report, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+-    results = []
+-    for check in checks:
+-        result = run_check(check)
+-        results.append(result)
+-        (folder / (check["id"]+".json")).write_text(json.dumps(result, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+-    after, tools_after = hashes(ROOT / "소스"), hashes(TOOLS)
+-    elapsed = time.monotonic() - started
+-    passed = before == after and tools_before == tools_after and elapsed <= TOTAL_BUDGET_SECONDS
+-    passed &= all(item["status"] == "passed" and item["output_complete"] for item in results)
+-    actual, observed = [], 0
+-    for check in checks:
+-        path = folder / (check["id"]+"-stats.json")
+-        if not path.is_file():
+-            passed = False
+-            continue
+-        stats = json.loads(path.read_text(encoding="utf-8"))
+-        observed += stats["tests"]
+-        actual.extend(stats["actual"])
+-        passed &= stats["passed"] and stats["tests"] == COUNTS[check["id"]]
+-        passed &= stats["expected"] == stats["actual"] and not any(stats[k] for k in ("failures", "errors", "skipped"))
+-    passed &= observed == len(actual) == len(set(actual)) == sum(COUNTS.values())
+-    report.update(passed=bool(passed), source_after=after, tools_after=tools_after, results=results,
+-                  observed_total=observed, actual_ids=actual, elapsed_seconds=elapsed,
+-                  finished=datetime.now().astimezone().isoformat())
+-    (folder / "result.json").write_text(json.dumps(report, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+-    print(json.dumps(dict(passed=bool(passed), path=str(folder), observed_total=observed, seconds=elapsed), ensure_ascii=False))
+-    return int(not passed)
+-
+-
+-if __name__ == "__main__":
+-    sys.exit(main())
++"""문서 확장의 정책·Qt·실제 Office 검사를 순차 실행하고 원문을 결합합니다."""
++from datetime import datetime
++import hashlib
++import json
++from pathlib import Path
++import sys
++import time
++import uuid
++
++TOOLS = Path(__file__).resolve().parent
++ROOT = TOOLS.parent
++sys.path.insert(0, str(TOOLS))
++from release_capture import run_check
++from run_documents_suite110 import COUNTS
++
++TIMEOUTS = {"test_document_formats": 30, "test_document_xlsb": 30, "test_documents_ui110": 60,
++            "test_documents_integration": 180, "test_document_external": 210, "test_document_security": 90,
++            "test_document_shutdown": 30}
++TOTAL_BUDGET_SECONDS = 600
++
++
++def hashes(directory):
++    return {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(directory.glob("*.py"))}
++
++
++def main():
++    started = time.monotonic()
++    folder = ROOT / "work/documents-suites110" / uuid.uuid4().hex
++    folder.mkdir(parents=True)
++    before, tools_before = hashes(ROOT / "소스"), hashes(TOOLS)
++    checks = [dict(id=name, cwd=str(ROOT / "소스"), timeout_seconds=TIMEOUTS[name],
++                   argv=[sys.executable, "-B", "-X", "utf8", str(TOOLS / "run_documents_suite110.py"),
++                         name, str(folder / (name + "-stats.json"))]) for name in COUNTS]
++    report = dict(started=datetime.now().astimezone().isoformat(), checks=checks, expected_counts=COUNTS,
++                  source_before=before, tools_before=tools_before, total_budget_seconds=TOTAL_BUDGET_SECONDS)
++    (folder / "start.json").write_text(json.dumps(report, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
++    results = []
++    for check in checks:
++        result = run_check(check)
++        results.append(result)
++        (folder / (check["id"]+".json")).write_text(json.dumps(result, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
++    after, tools_after = hashes(ROOT / "소스"), hashes(TOOLS)
++    elapsed = time.monotonic() - started
++    passed = before == after and tools_before == tools_after and elapsed <= TOTAL_BUDGET_SECONDS
++    passed &= all(item["status"] == "passed" and item["output_complete"] for item in results)
++    actual, observed = [], 0
++    for check in checks:
++        path = folder / (check["id"]+"-stats.json")
++        if not path.is_file():
++            passed = False
++            continue
++        stats = json.loads(path.read_text(encoding="utf-8"))
++        observed += stats["tests"]
++        actual.extend(stats["actual"])
++        passed &= stats["passed"] and stats["tests"] == COUNTS[check["id"]]
++        passed &= stats["expected"] == stats["actual"] and not any(stats[k] for k in ("failures", "errors", "skipped"))
++    passed &= observed == len(actual) == len(set(actual)) == sum(COUNTS.values())
++    report.update(passed=bool(passed), source_after=after, tools_after=tools_after, results=results,
++                  observed_total=observed, actual_ids=actual, elapsed_seconds=elapsed,
++                  finished=datetime.now().astimezone().isoformat())
++    (folder / "result.json").write_text(json.dumps(report, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
++    print(json.dumps(dict(passed=bool(passed), path=str(folder), observed_total=observed, seconds=elapsed), ensure_ascii=False))
++    return int(not passed)
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+--- a/검사도구/release_capture.py
++++ b/검사도구/release_capture.py
+@@ -1,234 +1,234 @@
+-"""Windows 검사 출력의 단일 소유·유한 수집과 후손 종료를 제공한다."""
+-from __future__ import annotations
+-
+-import codecs
+-import ctypes
+-from ctypes import wintypes
+-import json
+-import msvcrt
+-import os
+-from pathlib import Path
+-import subprocess
+-import sys
+-import time
+-
+-MAX_CAPTURE_BYTES = 64 * 1024
+-MAX_DOCUMENT_BYTES = 64 * 1024
+-DRAIN_SECONDS = 1.0
+-POLL_SECONDS = 0.005
+-
+-
+-class WindowsJob:
+-    """장벽 뒤에 시작하는 검사와 후손을 같은 종료 범위에 넣는다."""
+-
+-    def __init__(self):
+-        class Basic(ctypes.Structure):
+-            _fields_ = [("PerProcessUserTimeLimit", ctypes.c_int64), ("PerJobUserTimeLimit", ctypes.c_int64),
+-                        ("LimitFlags", wintypes.DWORD), ("MinimumWorkingSetSize", ctypes.c_size_t),
+-                        ("MaximumWorkingSetSize", ctypes.c_size_t), ("ActiveProcessLimit", wintypes.DWORD),
+-                        ("Affinity", ctypes.c_size_t), ("PriorityClass", wintypes.DWORD), ("SchedulingClass", wintypes.DWORD)]
+-
+-        class Io(ctypes.Structure):
+-            _fields_ = [(name, ctypes.c_uint64) for name in ("ReadOperationCount", "WriteOperationCount", "OtherOperationCount",
+-                                                         "ReadTransferCount", "WriteTransferCount", "OtherTransferCount")]
+-
+-        class Extended(ctypes.Structure):
+-            _fields_ = [("BasicLimitInformation", Basic), ("IoInfo", Io), ("ProcessMemoryLimit", ctypes.c_size_t),
+-                        ("JobMemoryLimit", ctypes.c_size_t), ("PeakProcessMemoryUsed", ctypes.c_size_t),
+-                        ("PeakJobMemoryUsed", ctypes.c_size_t)]
+-
+-        self.kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+-        self.kernel.CreateJobObjectW.argtypes = [ctypes.c_void_p, wintypes.LPCWSTR]
+-        self.kernel.CreateJobObjectW.restype = wintypes.HANDLE
+-        self.kernel.SetInformationJobObject.argtypes = [wintypes.HANDLE, ctypes.c_int, ctypes.c_void_p, wintypes.DWORD]
+-        self.kernel.SetInformationJobObject.restype = wintypes.BOOL
+-        self.kernel.AssignProcessToJobObject.argtypes = [wintypes.HANDLE, wintypes.HANDLE]
+-        self.kernel.AssignProcessToJobObject.restype = wintypes.BOOL
+-        self.kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+-        self.kernel.CloseHandle.restype = wintypes.BOOL
+-        self.handle = self.kernel.CreateJobObjectW(None, None)
+-        if not self.handle:
+-            raise ctypes.WinError(ctypes.get_last_error())
+-        info = Extended()
+-        info.BasicLimitInformation.LimitFlags = 0x2000
+-        if not self.kernel.SetInformationJobObject(self.handle, 9, ctypes.byref(info), ctypes.sizeof(info)):
+-            error = ctypes.WinError(ctypes.get_last_error())
+-            self.close()
+-            raise error
+-
+-    def assign(self, process):
+-        if not self.kernel.AssignProcessToJobObject(self.handle, int(process._handle)):
+-            raise ctypes.WinError(ctypes.get_last_error())
+-
+-    def close(self):
+-        if self.handle:
+-            if not self.kernel.CloseHandle(self.handle):
+-                raise ctypes.WinError(ctypes.get_last_error())
+-            self.handle = None
+-
+-
+-class PipeReader:
+-    """같은 호출자만 파이프를 조회·읽기·닫기하며 읽기 스레드는 만들지 않는다."""
+-
+-    def __init__(self, stream):
+-        self.fd = stream.fileno()
+-        self.handle = msvcrt.get_osfhandle(self.fd)
+-        self.kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+-        self.kernel.PeekNamedPipe.argtypes = [wintypes.HANDLE, ctypes.c_void_p, wintypes.DWORD,
+-                                             ctypes.c_void_p, ctypes.POINTER(wintypes.DWORD), ctypes.c_void_p]
+-        self.kernel.PeekNamedPipe.restype = wintypes.BOOL
+-
+-    def read_available(self):
+-        """None은 아직 없음, 빈 바이트는 EOF이며 그 밖의 오류는 숨기지 않는다."""
+-        available = wintypes.DWORD()
+-        if not self.kernel.PeekNamedPipe(self.handle, None, 0, None, ctypes.byref(available), None):
+-            error = ctypes.get_last_error()
+-            if error == 109:
+-                return b""
+-            raise ctypes.WinError(error)
+-        if not available.value:
+-            return None
+-        # bufsize=0인 파이프에 다른 소비자가 없어 확인한 가용량보다 많이 기다리지 않는다.
+-        return os.read(self.fd, min(4096, available.value))
+-
+-
+-def run_check(check: dict) -> dict:
+-    result = {key: check[key] for key in ("id", "argv", "cwd", "timeout_seconds")}
+-    started = time.monotonic()
+-    deadline = started + check["timeout_seconds"]
+-    captured = bytearray()
+-    output_bytes = 0
+-    invalid_utf8 = False
+-    validator = codecs.getincrementaldecoder("utf-8")(errors="surrogateescape")
+-    process = job = reader = None
+-    eof = False
+-    capture_error = None
+-    cleanup_errors = []
+-
+-    def consume(chunk):
+-        nonlocal output_bytes, invalid_utf8
+-        output_bytes += len(chunk)
+-        invalid_utf8 |= any(0xDC80 <= ord(char) <= 0xDCFF for char in validator.decode(chunk, final=False))
+-        captured.extend(chunk[:max(0, MAX_CAPTURE_BYTES - len(captured))])
+-
+-    try:
+-        if os.name != "nt":
+-            raise OSError("이 수집기는 Windows 전용입니다.")
+-        payload = json.dumps({"argv": check["argv"], "cwd": check["cwd"]}).encode("utf-8")
+-        if len(payload) > MAX_DOCUMENT_BYTES:
+-            raise ValueError("검사 실행 인수 크기 상한 초과")
+-        job = WindowsJob()
+-        process = subprocess.Popen([sys.executable, "-B", "-X", "utf8", str(Path(__file__).resolve()), "--run-child"],
+-                                   cwd=check["cwd"], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+-                                   stderr=subprocess.STDOUT, shell=False, bufsize=0,
+-                                   creationflags=subprocess.CREATE_NO_WINDOW)
+-        job.assign(process)
+-        reader = PipeReader(process.stdout)
+-        # Python 3.12 Windows 파이프의 비차단 쓰기로 래퍼 기동 지연도 같은 deadline에 둔다.
+-        os.set_blocking(process.stdin.fileno(), False)
+-        sent = 0
+-        while True:
+-            if time.monotonic() >= deadline:
+-                result.update(status="timeout", exit_code=None, error="제한 시간 초과: 검사와 자식 프로세스의 종료를 요청했습니다.")
+-                break
+-            if not process.stdin.closed:
+-                if sent < len(payload):
+-                    try:
+-                        sent += os.write(process.stdin.fileno(), payload[sent:sent + 4096])
+-                    except BlockingIOError:
+-                        pass
+-                if sent == len(payload):
+-                    process.stdin.close()
+-            chunk = reader.read_available()
+-            if chunk == b"":
+-                eof = True
+-            elif chunk:
+-                consume(chunk)
+-            code = process.poll()
+-            if code is not None:
+-                result.update(status="passed" if code == 0 else "failed", exit_code=code)
+-                break
+-            if not chunk:
+-                time.sleep(min(POLL_SECONDS, max(0, deadline - time.monotonic())))
+-    except (OSError, ValueError) as exc:
+-        capture_error = str(exc)
+-        result.update(status="error", exit_code=None, error=capture_error)
+-    finally:
+-        if job:
+-            try:
+-                # 정상 종료 때 파이프를 붙든 후손도 종료한 뒤 남은 출력만 유한하게 비운다.
+-                job.close()
+-            except OSError as exc:
+-                cleanup_errors.append(str(exc))
+-        if process:
+-            if process.poll() is None:
+-                try:
+-                    process.kill()
+-                except OSError as exc:
+-                    cleanup_errors.append(str(exc))
+-            try:
+-                process.wait(timeout=0.5)
+-            except (OSError, subprocess.TimeoutExpired) as exc:
+-                cleanup_errors.append(str(exc))
+-            drain_deadline = time.monotonic() + DRAIN_SECONDS
+-            if reader and not capture_error:
+-                try:
+-                    while not eof and time.monotonic() < drain_deadline:
+-                        chunk = reader.read_available()
+-                        if chunk == b"":
+-                            eof = True
+-                        elif chunk:
+-                            consume(chunk)
+-                        else:
+-                            time.sleep(POLL_SECONDS)
+-                except (OSError, ValueError) as exc:
+-                    capture_error = str(exc)
+-            for stream in (process.stdin, process.stdout):
+-                if stream and not stream.closed:
+-                    try:
+-                        stream.close()
+-                    except OSError as exc:
+-                        cleanup_errors.append(str(exc))
+-    if eof:
+-        invalid_utf8 |= any(0xDC80 <= ord(char) <= 0xDCFF for char in validator.decode(b"", final=True))
+-    complete = eof and not capture_error
+-    if not complete or cleanup_errors:
+-        detail = capture_error or ("출력 EOF 미확인: 수집이 완료되지 않았습니다." if not eof else
+-                                   "프로세스·파이프 종료 오류: " + "; ".join(cleanup_errors))
+-        result["capture_error"] = detail
+-        result["cleanup_errors"] = cleanup_errors
+-        if result.get("status") == "passed":
+-            result.update(status="error", error=detail)
+-    truncated = output_bytes > len(captured)
+-    decoder = codecs.getincrementaldecoder("utf-8")(errors="backslashreplace")
+-    output = decoder.decode(captured, final=complete and not truncated)
+-    boundary_bytes = len(decoder.getstate()[0])
+-    display = output.encode("utf-8")
+-    display_truncated = len(display) > MAX_CAPTURE_BYTES
+-    if display_truncated:
+-        output = display[:MAX_CAPTURE_BYTES].decode("utf-8", errors="ignore")
+-    result.update(duration_seconds=round(time.monotonic() - started, 3), output=output,
+-                  output_bytes=output_bytes, captured_bytes=len(captured), output_truncated=truncated or display_truncated,
+-                  capture_boundary_omitted_bytes=boundary_bytes, output_invalid_utf8=invalid_utf8,
+-                  output_display_truncated=display_truncated, output_complete=complete,
+-                  output_bytes_complete=complete,
+-                  output_note=("출력 수집 미완료: 바이트 수는 관측한 범위입니다." if not complete else
+-                               "출력 상한으로 나머지를 생략했습니다." if truncated or display_truncated else "전체 출력입니다."))
+-    return result
+-
+-
+-def child_main():
+-    # stdin EOF는 부모의 Job 할당이 끝난 뒤에만 전달된다.
+-    raw = sys.stdin.buffer.read(MAX_DOCUMENT_BYTES + 1)
+-    if len(raw) > MAX_DOCUMENT_BYTES:
+-        return 125
+-    data = json.loads(raw.decode("utf-8"))
+-    try:
+-        return subprocess.call(data["argv"], cwd=data["cwd"], stdin=subprocess.DEVNULL, shell=False)
+-    except (OSError, ValueError) as exc:
+-        print(str(exc), flush=True)
+-        return 126
+-
+-
+-if __name__ == "__main__" and sys.argv[1:] == ["--run-child"]:
+-    sys.exit(child_main())
++"""Windows 검사 출력의 단일 소유·유한 수집과 후손 종료를 제공한다."""
++from __future__ import annotations
++
++import codecs
++import ctypes
++from ctypes import wintypes
++import json
++import msvcrt
++import os
++from pathlib import Path
++import subprocess
++import sys
++import time
++
++MAX_CAPTURE_BYTES = 64 * 1024
++MAX_DOCUMENT_BYTES = 64 * 1024
++DRAIN_SECONDS = 1.0
++POLL_SECONDS = 0.005
++
++
++class WindowsJob:
++    """장벽 뒤에 시작하는 검사와 후손을 같은 종료 범위에 넣는다."""
++
++    def __init__(self):
++        class Basic(ctypes.Structure):
++            _fields_ = [("PerProcessUserTimeLimit", ctypes.c_int64), ("PerJobUserTimeLimit", ctypes.c_int64),
++                        ("LimitFlags", wintypes.DWORD), ("MinimumWorkingSetSize", ctypes.c_size_t),
++                        ("MaximumWorkingSetSize", ctypes.c_size_t), ("ActiveProcessLimit", wintypes.DWORD),
++                        ("Affinity", ctypes.c_size_t), ("PriorityClass", wintypes.DWORD), ("SchedulingClass", wintypes.DWORD)]
++
++        class Io(ctypes.Structure):
++            _fields_ = [(name, ctypes.c_uint64) for name in ("ReadOperationCount", "WriteOperationCount", "OtherOperationCount",
++                                                         "ReadTransferCount", "WriteTransferCount", "OtherTransferCount")]
++
++        class Extended(ctypes.Structure):
++            _fields_ = [("BasicLimitInformation", Basic), ("IoInfo", Io), ("ProcessMemoryLimit", ctypes.c_size_t),
++                        ("JobMemoryLimit", ctypes.c_size_t), ("PeakProcessMemoryUsed", ctypes.c_size_t),
++                        ("PeakJobMemoryUsed", ctypes.c_size_t)]
++
++        self.kernel = ctypes.WinDLL("kernel32", use_last_error=True)
++        self.kernel.CreateJobObjectW.argtypes = [ctypes.c_void_p, wintypes.LPCWSTR]
++        self.kernel.CreateJobObjectW.restype = wintypes.HANDLE
++        self.kernel.SetInformationJobObject.argtypes = [wintypes.HANDLE, ctypes.c_int, ctypes.c_void_p, wintypes.DWORD]
++        self.kernel.SetInformationJobObject.restype = wintypes.BOOL
++        self.kernel.AssignProcessToJobObject.argtypes = [wintypes.HANDLE, wintypes.HANDLE]
++        self.kernel.AssignProcessToJobObject.restype = wintypes.BOOL
++        self.kernel.CloseHandle.argtypes = [wintypes.HANDLE]
++        self.kernel.CloseHandle.restype = wintypes.BOOL
++        self.handle = self.kernel.CreateJobObjectW(None, None)
++        if not self.handle:
++            raise ctypes.WinError(ctypes.get_last_error())
++        info = Extended()
++        info.BasicLimitInformation.LimitFlags = 0x2000
++        if not self.kernel.SetInformationJobObject(self.handle, 9, ctypes.byref(info), ctypes.sizeof(info)):
++            error = ctypes.WinError(ctypes.get_last_error())
++            self.close()
++            raise error
++
++    def assign(self, process):
++        if not self.kernel.AssignProcessToJobObject(self.handle, int(process._handle)):
++            raise ctypes.WinError(ctypes.get_last_error())
++
++    def close(self):
++        if self.handle:
++            if not self.kernel.CloseHandle(self.handle):
++                raise ctypes.WinError(ctypes.get_last_error())
++            self.handle = None
++
++
++class PipeReader:
++    """같은 호출자만 파이프를 조회·읽기·닫기하며 읽기 스레드는 만들지 않는다."""
++
++    def __init__(self, stream):
++        self.fd = stream.fileno()
++        self.handle = msvcrt.get_osfhandle(self.fd)
++        self.kernel = ctypes.WinDLL("kernel32", use_last_error=True)
++        self.kernel.PeekNamedPipe.argtypes = [wintypes.HANDLE, ctypes.c_void_p, wintypes.DWORD,
++                                             ctypes.c_void_p, ctypes.POINTER(wintypes.DWORD), ctypes.c_void_p]
++        self.kernel.PeekNamedPipe.restype = wintypes.BOOL
++
++    def read_available(self):
++        """None은 아직 없음, 빈 바이트는 EOF이며 그 밖의 오류는 숨기지 않는다."""
++        available = wintypes.DWORD()
++        if not self.kernel.PeekNamedPipe(self.handle, None, 0, None, ctypes.byref(available), None):
++            error = ctypes.get_last_error()
++            if error == 109:
++                return b""
++            raise ctypes.WinError(error)
++        if not available.value:
++            return None
++        # bufsize=0인 파이프에 다른 소비자가 없어 확인한 가용량보다 많이 기다리지 않는다.
++        return os.read(self.fd, min(4096, available.value))
++
++
++def run_check(check: dict) -> dict:
++    result = {key: check[key] for key in ("id", "argv", "cwd", "timeout_seconds")}
++    started = time.monotonic()
++    deadline = started + check["timeout_seconds"]
++    captured = bytearray()
++    output_bytes = 0
++    invalid_utf8 = False
++    validator = codecs.getincrementaldecoder("utf-8")(errors="surrogateescape")
++    process = job = reader = None
++    eof = False
++    capture_error = None
++    cleanup_errors = []
++
++    def consume(chunk):
++        nonlocal output_bytes, invalid_utf8
++        output_bytes += len(chunk)
++        invalid_utf8 |= any(0xDC80 <= ord(char) <= 0xDCFF for char in validator.decode(chunk, final=False))
++        captured.extend(chunk[:max(0, MAX_CAPTURE_BYTES - len(captured))])
++
++    try:
++        if os.name != "nt":
++            raise OSError("이 수집기는 Windows 전용입니다.")
++        payload = json.dumps({"argv": check["argv"], "cwd": check["cwd"]}).encode("utf-8")
++        if len(payload) > MAX_DOCUMENT_BYTES:
++            raise ValueError("검사 실행 인수 크기 상한 초과")
++        job = WindowsJob()
++        process = subprocess.Popen([sys.executable, "-B", "-X", "utf8", str(Path(__file__).resolve()), "--run-child"],
++                                   cwd=check["cwd"], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
++                                   stderr=subprocess.STDOUT, shell=False, bufsize=0,
++                                   creationflags=subprocess.CREATE_NO_WINDOW)
++        job.assign(process)
++        reader = PipeReader(process.stdout)
++        # Python 3.12 Windows 파이프의 비차단 쓰기로 래퍼 기동 지연도 같은 deadline에 둔다.
++        os.set_blocking(process.stdin.fileno(), False)
++        sent = 0
++        while True:
++            if time.monotonic() >= deadline:
++                result.update(status="timeout", exit_code=None, error="제한 시간 초과: 검사와 자식 프로세스의 종료를 요청했습니다.")
++                break
++            if not process.stdin.closed:
++                if sent < len(payload):
++                    try:
++                        sent += os.write(process.stdin.fileno(), payload[sent:sent + 4096])
++                    except BlockingIOError:
++                        pass
++                if sent == len(payload):
++                    process.stdin.close()
++            chunk = reader.read_available()
++            if chunk == b"":
++                eof = True
++            elif chunk:
++                consume(chunk)
++            code = process.poll()
++            if code is not None:
++                result.update(status="passed" if code == 0 else "failed", exit_code=code)
++                break
++            if not chunk:
++                time.sleep(min(POLL_SECONDS, max(0, deadline - time.monotonic())))
++    except (OSError, ValueError) as exc:
++        capture_error = str(exc)
++        result.update(status="error", exit_code=None, error=capture_error)
++    finally:
++        if job:
++            try:
++                # 정상 종료 때 파이프를 붙든 후손도 종료한 뒤 남은 출력만 유한하게 비운다.
++                job.close()
++            except OSError as exc:
++                cleanup_errors.append(str(exc))
++        if process:
++            if process.poll() is None:
++                try:
++                    process.kill()
++                except OSError as exc:
++                    cleanup_errors.append(str(exc))
++            try:
++                process.wait(timeout=0.5)
++            except (OSError, subprocess.TimeoutExpired) as exc:
++                cleanup_errors.append(str(exc))
++            drain_deadline = time.monotonic() + DRAIN_SECONDS
++            if reader and not capture_error:
++                try:
++                    while not eof and time.monotonic() < drain_deadline:
++                        chunk = reader.read_available()
++                        if chunk == b"":
++                            eof = True
++                        elif chunk:
++                            consume(chunk)
++                        else:
++                            time.sleep(POLL_SECONDS)
++                except (OSError, ValueError) as exc:
++                    capture_error = str(exc)
++            for stream in (process.stdin, process.stdout):
++                if stream and not stream.closed:
++                    try:
++                        stream.close()
++                    except OSError as exc:
++                        cleanup_errors.append(str(exc))
++    if eof:
++        invalid_utf8 |= any(0xDC80 <= ord(char) <= 0xDCFF for char in validator.decode(b"", final=True))
++    complete = eof and not capture_error
++    if not complete or cleanup_errors:
++        detail = capture_error or ("출력 EOF 미확인: 수집이 완료되지 않았습니다." if not eof else
++                                   "프로세스·파이프 종료 오류: " + "; ".join(cleanup_errors))
++        result["capture_error"] = detail
++        result["cleanup_errors"] = cleanup_errors
++        if result.get("status") == "passed":
++            result.update(status="error", error=detail)
++    truncated = output_bytes > len(captured)
++    decoder = codecs.getincrementaldecoder("utf-8")(errors="backslashreplace")
++    output = decoder.decode(captured, final=complete and not truncated)
++    boundary_bytes = len(decoder.getstate()[0])
++    display = output.encode("utf-8")
++    display_truncated = len(display) > MAX_CAPTURE_BYTES
++    if display_truncated:
++        output = display[:MAX_CAPTURE_BYTES].decode("utf-8", errors="ignore")
++    result.update(duration_seconds=round(time.monotonic() - started, 3), output=output,
++                  output_bytes=output_bytes, captured_bytes=len(captured), output_truncated=truncated or display_truncated,
++                  capture_boundary_omitted_bytes=boundary_bytes, output_invalid_utf8=invalid_utf8,
++                  output_display_truncated=display_truncated, output_complete=complete,
++                  output_bytes_complete=complete,
++                  output_note=("출력 수집 미완료: 바이트 수는 관측한 범위입니다." if not complete else
++                               "출력 상한으로 나머지를 생략했습니다." if truncated or display_truncated else "전체 출력입니다."))
++    return result
++
++
++def child_main():
++    # stdin EOF는 부모의 Job 할당이 끝난 뒤에만 전달된다.
++    raw = sys.stdin.buffer.read(MAX_DOCUMENT_BYTES + 1)
++    if len(raw) > MAX_DOCUMENT_BYTES:
++        return 125
++    data = json.loads(raw.decode("utf-8"))
++    try:
++        return subprocess.call(data["argv"], cwd=data["cwd"], stdin=subprocess.DEVNULL, shell=False)
++    except (OSError, ValueError) as exc:
++        print(str(exc), flush=True)
++        return 126
++
++
++if __name__ == "__main__" and sys.argv[1:] == ["--run-child"]:
++    sys.exit(child_main())
+--- a/검사도구/run_documents_suite110.py
++++ b/검사도구/run_documents_suite110.py
+@@ -1,54 +1,54 @@
+-"""문서 확장 검사의 실제 ID·건너뜀·수행 수를 기록합니다."""
+-import json
+-import os
+-from pathlib import Path
+-import sys
+-import tempfile
+-import unittest
+-
+-ROOT = Path(__file__).resolve().parents[1]
+-SOURCE = ROOT / "소스"
+-COUNTS = {"test_document_formats": 14, "test_document_xlsb": 12, "test_documents_ui110": 4,
+-          "test_documents_integration": 7, "test_document_external": 8, "test_document_security": 2,
+-          "test_document_shutdown": 4}
+-
+-
+-def flatten(suite):
+-    for item in suite:
+-        if isinstance(item, unittest.TestSuite):
+-            yield from flatten(item)
+-        else:
+-            yield item
+-
+-
+-def main():
+-    module, output = sys.argv[1], Path(sys.argv[2])
+-    if module not in COUNTS:
+-        raise SystemExit("등록되지 않은 문서 검사입니다.")
+-    os.chdir(SOURCE)
+-    os.environ["QT_QPA_PLATFORM"] = "offscreen:configfile=offscreen-monitor.json"
+-    temp = ROOT.parent / "work/t110" / output.parent.name[:10] / str(list(COUNTS).index(module))
+-    temp.mkdir(parents=True, exist_ok=False)
+-    os.environ["TEMP"] = os.environ["TMP"] = str(temp)
+-    tempfile.tempdir = str(temp)
+-    sys.path.insert(0, str(SOURCE))
+-    suite = unittest.defaultTestLoader.loadTestsFromName(module)
+-    expected = [test.id() for test in flatten(suite)]
+-    actual = []
+-
+-    class Result(unittest.TextTestResult):
+-        def startTest(self, test):
+-            actual.append(test.id())
+-            super().startTest(test)
+-
+-    result = unittest.TextTestRunner(verbosity=2, resultclass=Result).run(suite)
+-    data = dict(expected=expected, actual=actual, tests=result.testsRun, expected_count=COUNTS[module],
+-                failures=len(result.failures), errors=len(result.errors), skipped=len(result.skipped))
+-    data["passed"] = (len(expected) == COUNTS[module] == len(set(expected)) and actual == expected
+-                      and result.testsRun == COUNTS[module] and result.wasSuccessful() and not result.skipped)
+-    output.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+-    return int(not data["passed"])
+-
+-
+-if __name__ == "__main__":
+-    sys.exit(main())
++"""문서 확장 검사의 실제 ID·건너뜀·수행 수를 기록합니다."""
++import json
++import os
++from pathlib import Path
++import sys
++import tempfile
++import unittest
++
++ROOT = Path(__file__).resolve().parents[1]
++SOURCE = ROOT / "소스"
++COUNTS = {"test_document_formats": 14, "test_document_xlsb": 12, "test_documents_ui110": 4,
++          "test_documents_integration": 7, "test_document_external": 8, "test_document_security": 2,
++          "test_document_shutdown": 4}
++
++
++def flatten(suite):
++    for item in suite:
++        if isinstance(item, unittest.TestSuite):
++            yield from flatten(item)
++        else:
++            yield item
++
++
++def main():
++    module, output = sys.argv[1], Path(sys.argv[2])
++    if module not in COUNTS:
++        raise SystemExit("등록되지 않은 문서 검사입니다.")
++    os.chdir(SOURCE)
++    os.environ["QT_QPA_PLATFORM"] = "offscreen:configfile=offscreen-monitor.json"
++    temp = ROOT.parent / "work/t110" / output.parent.name[:10] / str(list(COUNTS).index(module))
++    temp.mkdir(parents=True, exist_ok=False)
++    os.environ["TEMP"] = os.environ["TMP"] = str(temp)
++    tempfile.tempdir = str(temp)
++    sys.path.insert(0, str(SOURCE))
++    suite = unittest.defaultTestLoader.loadTestsFromName(module)
++    expected = [test.id() for test in flatten(suite)]
++    actual = []
++
++    class Result(unittest.TextTestResult):
++        def startTest(self, test):
++            actual.append(test.id())
++            super().startTest(test)
++
++    result = unittest.TextTestRunner(verbosity=2, resultclass=Result).run(suite)
++    data = dict(expected=expected, actual=actual, tests=result.testsRun, expected_count=COUNTS[module],
++                failures=len(result.failures), errors=len(result.errors), skipped=len(result.skipped))
++    data["passed"] = (len(expected) == COUNTS[module] == len(set(expected)) and actual == expected
++                      and result.testsRun == COUNTS[module] and result.wasSuccessful() and not result.skipped)
++    output.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
++    return int(not data["passed"])
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+--- a/검사도구/대표문서입력검사1121.py
++++ b/검사도구/대표문서입력검사1121.py
+@@ -1,171 +1,171 @@
+-"""합성 템플릿과 HWP 출력을 실제 LibreOffice로 읽어 내용 보존을 확인합니다."""
+-from pathlib import Path
+-import hashlib
+-import json
+-import sys
+-import zipfile
+-import xml.etree.ElementTree as ET
+-
+-ROOT = Path(__file__).resolve().parents[1]
+-SOURCE = ROOT / '소스'
+-sys.path.insert(0, str(SOURCE))
+-MARKER = 'FlipRing template 1121'
+-
+-LEGACY = {'dot': ('문서', 'MS Word 97 Vorlage'),
+-          'pot': ('프레젠테이션', 'MS PowerPoint 97 Vorlage'),
+-          'pps': ('프레젠테이션', 'MS PowerPoint 97 AutoPlay'),
+-          'xlt': ('스프레드시트', 'MS Excel 97 Vorlage/Template')}
+-OPENXML = {'dotm': ('docx', 'application/vnd.ms-word.template.macroEnabledTemplate.main+xml'),
+-           'potx': ('pptx', 'application/vnd.openxmlformats-officedocument.presentationml.template.main+xml'),
+-           'potm': ('pptx', 'application/vnd.ms-powerpoint.template.macroEnabled.main+xml'),
+-           'ppsm': ('pptx', 'application/vnd.ms-powerpoint.slideshow.macroEnabled.main+xml'),
+-           'xltm': ('xlsx', 'application/vnd.ms-excel.template.macroEnabled.main+xml')}
+-
+-def sha(path):
+-    return hashlib.sha256(path.read_bytes()).hexdigest()
+-
+-def make_base(directory, extension):
+-    path = directory / ('입력.' + extension)
+-    if extension == 'docx':
+-        from docx import Document
+-        d = Document()
+-        d.add_paragraph(MARKER)
+-        d.save(path)
+-    elif extension == 'pptx':
+-        from pptx import Presentation
+-        d = Presentation()
+-        d.slides.add_slide(d.slide_layouts[1]).shapes.title.text = MARKER
+-        d.save(path)
+-    else:
+-        from openpyxl import Workbook
+-        d = Workbook()
+-        d.active.append([MARKER, 123])
+-        d.save(path)
+-    return path
+-
+-def output_text(path):
+-    if path.suffix == '.docx':
+-        from docx import Document
+-        d = Document(path)
+-        return '\n'.join(p.text for p in d.paragraphs) + '\n'.join(c.text for t in d.tables for row in t.rows for c in row.cells)
+-    if path.suffix == '.pptx':
+-        from pptx import Presentation
+-        return '\n'.join(s.text for slide in Presentation(path).slides for s in slide.shapes if s.has_text_frame)
+-    from openpyxl import load_workbook
+-    d = load_workbook(path, read_only=True, data_only=False)
+-    try:
+-        return '\n'.join(str(v) for sheet in d for row in sheet.values for v in row if v is not None)
+-    finally:
+-        d.close()
+-
+-def office_export(source, target, profile, family, filter_name):
+-    import engine
+-    import document_formats as formats
+-    import document_process
+-    profile.mkdir()
+-    formats.write_secure_profile(profile)
+-    # 이 추가 필터는 합성 시험 입력 생성에만 쓰며 제품 지원표는 변경하지 않습니다.
+-    helper = profile / 'create_fixture.py'
+-    helper.write_text('import sys\nfrom pathlib import Path\nsys.path.insert(0,' + repr(str(SOURCE)) + ')\nimport document_bridge as b\nb.EXPORT_FILTERS={k:dict(v) for k,v in b.EXPORT_FILTERS.items()}\nb.EXPORT_FILTERS[' + repr(family) + '][' + repr(target.suffix[1:]) + ']=' + repr(filter_name) + '\nraise SystemExit(b.main())\n', encoding='utf-8')
+-    request = dict(source=str(source),output=str(target),profile=str(profile),office=engine.tool('soffice'),family=family,extension=source.suffix[1:],target=target.suffix[1:])
+-    manifest = profile / 'request.json'
+-    manifest.write_text(json.dumps(request,ensure_ascii=False),encoding='utf-8')
+-    document_process.run_bridge([formats.office_python(request['office']),'-B','-X','utf8',helper,manifest],profile,None,lambda:None,timeout=90)
+-
+-def create_input(directory, extension):
+-    target = directory / ('실제입력.' + extension)
+-    if extension in LEGACY:
+-        family, name = LEGACY[extension]
+-        source = make_base(directory, {'문서':'docx','프레젠테이션':'pptx','스프레드시트':'xlsx'}[family])
+-        office_export(source,target,directory/'profile',family,name)
+-    elif extension in OPENXML:
+-        base, content_type = OPENXML[extension]
+-        source = make_base(directory,base)
+-        main = {'docx':'/word/document.xml','pptx':'/ppt/presentation.xml','xlsx':'/xl/workbook.xml'}[base]
+-        with zipfile.ZipFile(source) as package, zipfile.ZipFile(target,'w',zipfile.ZIP_DEFLATED) as output:
+-            for entry in package.infolist():
+-                data = package.read(entry)
+-                if entry.filename == '[Content_Types].xml':
+-                    root = ET.fromstring(data)
+-                    item = next(x for x in root if x.get('PartName') == main)
+-                    # 형식 탐지기가 기본 네임스페이스 선언을 그대로 읽도록 원본 XML 표현을 보존한다.
+-                    original = item.get('ContentType').encode('utf-8')
+-                    assert data.count(original) == 1
+-                    data = data.replace(original, content_type.encode('utf-8'))
+-                output.writestr(entry,data)
+-    elif extension in ('sxw','stw'):
+-        mimetype = 'application/vnd.sun.xml.writer' + ('.template' if extension == 'stw' else '')
+-        body = '<?xml version="1.0" encoding="UTF-8"?><office:document-content xmlns:office="http://openoffice.org/2000/office" xmlns:text="http://openoffice.org/2000/text" office:class="text" office:version="1.0"><office:body><text:p>' + MARKER + '</text:p></office:body></office:document-content>'
+-        manifest = '<?xml version="1.0"?><manifest:manifest xmlns:manifest="http://openoffice.org/2001/manifest"><manifest:file-entry manifest:media-type="' + mimetype + '" manifest:full-path="/"/><manifest:file-entry manifest:media-type="text/xml" manifest:full-path="content.xml"/></manifest:manifest>'
+-        with zipfile.ZipFile(target,'w',zipfile.ZIP_DEFLATED) as package:
+-            package.writestr('mimetype',mimetype)
+-            package.writestr('content.xml',body)
+-            package.writestr('META-INF/manifest.xml',manifest)
+-    elif extension == 'slk':
+-        target.write_text('ID;PFlipRing\nC;X1;Y1;K"' + MARKER + '"\nC;X2;Y1;K123\nE\n',encoding='ascii')
+-    return target
+-
+-def check_case(directory, extension):
+-    import engine
+-    directory.mkdir(parents=True,exist_ok=False)
+-    if extension == 'hwp_roundtrip':
+-        return check_hwp_roundtrip(directory)
+-    source = create_input(directory,extension)
+-    before = sha(source)
+-    family = engine.classify(source)[0]
+-    output = Path(engine.convert(source,{'문서':'docx','프레젠테이션':'pptx','스프레드시트':'xlsx'}[family]))
+-    assert MARKER in output_text(output), '합성 입력의 실제 본문 누락'
+-    assert before == sha(source), '원본 변경'
+-    return dict(extension=extension,result='passed',source_sha256=before,output_sha256=sha(output),source_preserved=True)
+-
+-def check_hwp_roundtrip(directory):
+-    import engine
+-    from docx import Document
+-    from docx.shared import Inches
+-    from PIL import Image
+-    source = directory / '한글표그림.docx'
+-    picture = directory / '그림.png'
+-    Image.new('RGB',(100,60),(30,80,150)).save(picture)
+-    document = Document()
+-    document.add_paragraph(MARKER)
+-    run = document.add_paragraph().add_run('한글 보존 PUVKID')
+-    run.bold = True
+-    run.italic = True
+-    table = document.add_table(rows=2,cols=2)
+-    for cell,value in zip([c for row in table.rows for c in row.cells],['항목','값','변환','123']):
+-        cell.text = value
+-    document.add_picture(str(picture),width=Inches(1))
+-    document.save(source)
+-    before = sha(source)
+-    results = []
+-    for extension in ('hwp','hwpx'):
+-        native = Path(engine.convert(source,extension))
+-        native_before = sha(native)
+-        returned = Path(engine.convert(native,'docx'))
+-        text = output_text(returned)
+-        assert MARKER in text and '한글 보존 PUVKID' in text
+-        result_document = Document(returned)
+-        assert any(len(t.rows)>=2 and len(t.columns)>=2 and t.cell(1,0).text=='변환' and t.cell(1,1).text=='123' for t in result_document.tables), '표 내용 누락'
+-        with zipfile.ZipFile(returned) as package:
+-            assert any(name.startswith('word/media/') for name in package.namelist()), '포함 그림 누락'
+-        assert sha(native) == native_before
+-        results.append(dict(extension=extension,native_sha256=native_before,returned_sha256=sha(returned),text=True,table=True,image=True))
+-    assert sha(source) == before
+-    return dict(result='passed',source_preserved=True,source_sha256=before,reader='LibreOffice/H2Orestart',results=results)
+-
+-def main():
+-    base = Path(sys.argv[1]).resolve()
+-    if len(sys.argv) > 2:
+-        print(json.dumps(check_case(base/sys.argv[2],sys.argv[2]),ensure_ascii=False))
+-        return
+-    sys.path.insert(0,str(ROOT/'검사도구'))
+-    from release_capture import run_check
+-    results = []
+-    for extension in [*LEGACY,*OPENXML,'sxw','stw','slk']:
+-        result = run_check(dict(id=extension,argv=[sys.executable,'-B','-X','utf8',str(Path(__file__).resolve()),str(base),extension],cwd=str(SOURCE),timeout_seconds=180))
+-        results.append(result)
+-        (base.parent/'문서템플릿_검사결과1121.json').write_text(json.dumps(results,ensure_ascii=False,indent=2),encoding='utf-8')
+-        print(json.dumps({k:result.get(k) for k in ('id','status','exit_code','duration_seconds')},ensure_ascii=False),flush=True)
+-
+-if __name__ == '__main__':
+-    main()
++"""합성 템플릿과 HWP 출력을 실제 LibreOffice로 읽어 내용 보존을 확인합니다."""
++from pathlib import Path
++import hashlib
++import json
++import sys
++import zipfile
++import xml.etree.ElementTree as ET
++
++ROOT = Path(__file__).resolve().parents[1]
++SOURCE = ROOT / '소스'
++sys.path.insert(0, str(SOURCE))
++MARKER = 'FlipRing template 1121'
++
++LEGACY = {'dot': ('문서', 'MS Word 97 Vorlage'),
++          'pot': ('프레젠테이션', 'MS PowerPoint 97 Vorlage'),
++          'pps': ('프레젠테이션', 'MS PowerPoint 97 AutoPlay'),
++          'xlt': ('스프레드시트', 'MS Excel 97 Vorlage/Template')}
++OPENXML = {'dotm': ('docx', 'application/vnd.ms-word.template.macroEnabledTemplate.main+xml'),
++           'potx': ('pptx', 'application/vnd.openxmlformats-officedocument.presentationml.template.main+xml'),
++           'potm': ('pptx', 'application/vnd.ms-powerpoint.template.macroEnabled.main+xml'),
++           'ppsm': ('pptx', 'application/vnd.ms-powerpoint.slideshow.macroEnabled.main+xml'),
++           'xltm': ('xlsx', 'application/vnd.ms-excel.template.macroEnabled.main+xml')}
++
++def sha(path):
++    return hashlib.sha256(path.read_bytes()).hexdigest()
++
++def make_base(directory, extension):
++    path = directory / ('입력.' + extension)
++    if extension == 'docx':
++        from docx import Document
++        d = Document()
++        d.add_paragraph(MARKER)
++        d.save(path)
++    elif extension == 'pptx':
++        from pptx import Presentation
++        d = Presentation()
++        d.slides.add_slide(d.slide_layouts[1]).shapes.title.text = MARKER
++        d.save(path)
++    else:
++        from openpyxl import Workbook
++        d = Workbook()
++        d.active.append([MARKER, 123])
++        d.save(path)
++    return path
++
++def output_text(path):
++    if path.suffix == '.docx':
++        from docx import Document
++        d = Document(path)
++        return '\n'.join(p.text for p in d.paragraphs) + '\n'.join(c.text for t in d.tables for row in t.rows for c in row.cells)
++    if path.suffix == '.pptx':
++        from pptx import Presentation
++        return '\n'.join(s.text for slide in Presentation(path).slides for s in slide.shapes if s.has_text_frame)
++    from openpyxl import load_workbook
++    d = load_workbook(path, read_only=True, data_only=False)
++    try:
++        return '\n'.join(str(v) for sheet in d for row in sheet.values for v in row if v is not None)
++    finally:
++        d.close()
++
++def office_export(source, target, profile, family, filter_name):
++    import engine
++    import document_formats as formats
++    import document_process
++    profile.mkdir()
++    formats.write_secure_profile(profile)
++    # 이 추가 필터는 합성 시험 입력 생성에만 쓰며 제품 지원표는 변경하지 않습니다.
++    helper = profile / 'create_fixture.py'
++    helper.write_text('import sys\nfrom pathlib import Path\nsys.path.insert(0,' + repr(str(SOURCE)) + ')\nimport document_bridge as b\nb.EXPORT_FILTERS={k:dict(v) for k,v in b.EXPORT_FILTERS.items()}\nb.EXPORT_FILTERS[' + repr(family) + '][' + repr(target.suffix[1:]) + ']=' + repr(filter_name) + '\nraise SystemExit(b.main())\n', encoding='utf-8')
++    request = dict(source=str(source),output=str(target),profile=str(profile),office=engine.tool('soffice'),family=family,extension=source.suffix[1:],target=target.suffix[1:])
++    manifest = profile / 'request.json'
++    manifest.write_text(json.dumps(request,ensure_ascii=False),encoding='utf-8')
++    document_process.run_bridge([formats.office_python(request['office']),'-B','-X','utf8',helper,manifest],profile,None,lambda:None,timeout=90)
++
++def create_input(directory, extension):
++    target = directory / ('실제입력.' + extension)
++    if extension in LEGACY:
++        family, name = LEGACY[extension]
++        source = make_base(directory, {'문서':'docx','프레젠테이션':'pptx','스프레드시트':'xlsx'}[family])
++        office_export(source,target,directory/'profile',family,name)
++    elif extension in OPENXML:
++        base, content_type = OPENXML[extension]
++        source = make_base(directory,base)
++        main = {'docx':'/word/document.xml','pptx':'/ppt/presentation.xml','xlsx':'/xl/workbook.xml'}[base]
++        with zipfile.ZipFile(source) as package, zipfile.ZipFile(target,'w',zipfile.ZIP_DEFLATED) as output:
++            for entry in package.infolist():
++                data = package.read(entry)
++                if entry.filename == '[Content_Types].xml':
++                    root = ET.fromstring(data)
++                    item = next(x for x in root if x.get('PartName') == main)
++                    # 형식 탐지기가 기본 네임스페이스 선언을 그대로 읽도록 원본 XML 표현을 보존한다.
++                    original = item.get('ContentType').encode('utf-8')
++                    assert data.count(original) == 1
++                    data = data.replace(original, content_type.encode('utf-8'))
++                output.writestr(entry,data)
++    elif extension in ('sxw','stw'):
++        mimetype = 'application/vnd.sun.xml.writer' + ('.template' if extension == 'stw' else '')
++        body = '<?xml version="1.0" encoding="UTF-8"?><office:document-content xmlns:office="http://openoffice.org/2000/office" xmlns:text="http://openoffice.org/2000/text" office:class="text" office:version="1.0"><office:body><text:p>' + MARKER + '</text:p></office:body></office:document-content>'
++        manifest = '<?xml version="1.0"?><manifest:manifest xmlns:manifest="http://openoffice.org/2001/manifest"><manifest:file-entry manifest:media-type="' + mimetype + '" manifest:full-path="/"/><manifest:file-entry manifest:media-type="text/xml" manifest:full-path="content.xml"/></manifest:manifest>'
++        with zipfile.ZipFile(target,'w',zipfile.ZIP_DEFLATED) as package:
++            package.writestr('mimetype',mimetype)
++            package.writestr('content.xml',body)
++            package.writestr('META-INF/manifest.xml',manifest)
++    elif extension == 'slk':
++        target.write_text('ID;PFlipRing\nC;X1;Y1;K"' + MARKER + '"\nC;X2;Y1;K123\nE\n',encoding='ascii')
++    return target
++
++def check_case(directory, extension):
++    import engine
++    directory.mkdir(parents=True,exist_ok=False)
++    if extension == 'hwp_roundtrip':
++        return check_hwp_roundtrip(directory)
++    source = create_input(directory,extension)
++    before = sha(source)
++    family = engine.classify(source)[0]
++    output = Path(engine.convert(source,{'문서':'docx','프레젠테이션':'pptx','스프레드시트':'xlsx'}[family]))
++    assert MARKER in output_text(output), '합성 입력의 실제 본문 누락'
++    assert before == sha(source), '원본 변경'
++    return dict(extension=extension,result='passed',source_sha256=before,output_sha256=sha(output),source_preserved=True)
++
++def check_hwp_roundtrip(directory):
++    import engine
++    from docx import Document
++    from docx.shared import Inches
++    from PIL import Image
++    source = directory / '한글표그림.docx'
++    picture = directory / '그림.png'
++    Image.new('RGB',(100,60),(30,80,150)).save(picture)
++    document = Document()
++    document.add_paragraph(MARKER)
++    run = document.add_paragraph().add_run('한글 보존 PUVKID')
++    run.bold = True
++    run.italic = True
++    table = document.add_table(rows=2,cols=2)
++    for cell,value in zip([c for row in table.rows for c in row.cells],['항목','값','변환','123']):
++        cell.text = value
++    document.add_picture(str(picture),width=Inches(1))
++    document.save(source)
++    before = sha(source)
++    results = []
++    for extension in ('hwp','hwpx'):
++        native = Path(engine.convert(source,extension))
++        native_before = sha(native)
++        returned = Path(engine.convert(native,'docx'))
++        text = output_text(returned)
++        assert MARKER in text and '한글 보존 PUVKID' in text
++        result_document = Document(returned)
++        assert any(len(t.rows)>=2 and len(t.columns)>=2 and t.cell(1,0).text=='변환' and t.cell(1,1).text=='123' for t in result_document.tables), '표 내용 누락'
++        with zipfile.ZipFile(returned) as package:
++            assert any(name.startswith('word/media/') for name in package.namelist()), '포함 그림 누락'
++        assert sha(native) == native_before
++        results.append(dict(extension=extension,native_sha256=native_before,returned_sha256=sha(returned),text=True,table=True,image=True))
++    assert sha(source) == before
++    return dict(result='passed',source_preserved=True,source_sha256=before,reader='LibreOffice/H2Orestart',results=results)
++
++def main():
++    base = Path(sys.argv[1]).resolve()
++    if len(sys.argv) > 2:
++        print(json.dumps(check_case(base/sys.argv[2],sys.argv[2]),ensure_ascii=False))
++        return
++    sys.path.insert(0,str(ROOT/'검사도구'))
++    from release_capture import run_check
++    results = []
++    for extension in [*LEGACY,*OPENXML,'sxw','stw','slk']:
++        result = run_check(dict(id=extension,argv=[sys.executable,'-B','-X','utf8',str(Path(__file__).resolve()),str(base),extension],cwd=str(SOURCE),timeout_seconds=180))
++        results.append(result)
++        (base.parent/'문서템플릿_검사결과1121.json').write_text(json.dumps(results,ensure_ascii=False,indent=2),encoding='utf-8')
++        print(json.dumps({k:result.get(k) for k in ('id','status','exit_code','duration_seconds')},ensure_ascii=False),flush=True)
++
++if __name__ == '__main__':
++    main()

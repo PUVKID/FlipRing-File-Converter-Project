@@ -1,0 +1,2725 @@
+{
+  "baseline_commit": "ec919d497890c8490d0f934d9e636f94f0389230",
+  "scope": "기존 공개 최상위 소스의 실제 300개 경로와 현재 공개 원문. 실제 1.12.1 직전 비교와 구분.",
+  "files": [
+    {
+      "path": "검사도구/documents_suites110.py",
+      "change": "동일",
+      "before_bytes": 3313,
+      "before_sha256": "0583f83c5053267af2dadd6a7f91fc9e4181f03a968fca2f3dcd0a12f3f4b6ea",
+      "bytes": 3313,
+      "sha256": "0583f83c5053267af2dadd6a7f91fc9e4181f03a968fca2f3dcd0a12f3f4b6ea",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "검사도구/release_capture.py",
+      "change": "동일",
+      "before_bytes": 11159,
+      "before_sha256": "0ad1cee45fbd4eaeba1989e168f337c6cd0b2e732176501361940938f4f9c67f",
+      "bytes": 11159,
+      "sha256": "0ad1cee45fbd4eaeba1989e168f337c6cd0b2e732176501361940938f4f9c67f",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "검사도구/run_documents_suite110.py",
+      "change": "동일",
+      "before_bytes": 2144,
+      "before_sha256": "7b84c92902c2fe6a95e42730b2697613dc988cdca9e3174953def20f1871dacb",
+      "bytes": 2144,
+      "sha256": "7b84c92902c2fe6a95e42730b2697613dc988cdca9e3174953def20f1871dacb",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "검사도구/대표문서입력검사1121.py",
+      "change": "동일",
+      "before_bytes": 9337,
+      "before_sha256": "743120a337ecf4bb6ab2681e4f8f644ecb782d5a0760bf3cafab7e8856e375a2",
+      "bytes": 9337,
+      "sha256": "743120a337ecf4bb6ab2681e4f8f644ecb782d5a0760bf3cafab7e8856e375a2",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/1.10-문서지원안내.md",
+      "change": "수정",
+      "before_bytes": 5092,
+      "before_sha256": "1283758efcea638a5117a4d9018e90671a267d171df118c1de1e88055344f2fd",
+      "bytes": 5116,
+      "sha256": "ea96bd17fe4a178ee513d300efb5675d18423ae94f3382b3d8ea92d1264c5ed0",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/1.13-새기능안내.md",
+      "change": "추가",
+      "before_bytes": null,
+      "before_sha256": null,
+      "bytes": 6667,
+      "sha256": "ccc34923eee6aea7a76765c20f1b30354113d14601212530cfcc798ad9229138",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/1.7-새기능안내.md",
+      "change": "수정",
+      "before_bytes": 4685,
+      "before_sha256": "81f9afe6b45349f54a557147c082cf4e912bbb7f1b1521f5b645f9012a04827a",
+      "bytes": 4680,
+      "sha256": "6c812afba5f4d2ff99fdb4cac4b58466368d62ec7bba26b3d9815e5f5e774fb7",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/1.8-화면안내.md",
+      "change": "수정",
+      "before_bytes": 2184,
+      "before_sha256": "6c780f4539d66fc798d7e508754b4fe886cc5241001f2bd599258b57202c03b1",
+      "bytes": 2503,
+      "sha256": "d4f291d83677a2eac4b0e41c922e903836aabf37ddd61afe62fe9110c558f8a5",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/1.9-확장안내.md",
+      "change": "수정",
+      "before_bytes": 1903,
+      "before_sha256": "22cd35030d203f3faadbfdc57d0f7998c3237387268d65c568d7b285702b9ac4",
+      "bytes": 1900,
+      "sha256": "dbac95d9f210fc1c72f93f6a0f50723c808ab3b9871abddff256866ac748905c",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/FlipRing.spec",
+      "change": "동일",
+      "before_bytes": 1449,
+      "before_sha256": "fc560d292a5bb89cda1cd6af09f4f6b171f7a6fcd8a215f67e313bd04c65177a",
+      "bytes": 1449,
+      "sha256": "fc560d292a5bb89cda1cd6af09f4f6b171f7a6fcd8a215f67e313bd04c65177a",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/LICENSE.txt",
+      "change": "동일",
+      "before_bytes": 1396,
+      "before_sha256": "8c7b2363b1bd25e3428416587833dbe61098d211f30420582879ec4810cbf52f",
+      "bytes": 1396,
+      "sha256": "8c7b2363b1bd25e3428416587833dbe61098d211f30420582879ec4810cbf52f",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/app.py",
+      "change": "수정",
+      "before_bytes": 97164,
+      "before_sha256": "e1d919143c1e60ed3057fcdf510cfdd29f0de0515d1cb10894eea584b018ab7b",
+      "bytes": 98974,
+      "sha256": "92db4cf799ea56dc417d4b35c7188e76e9552d6f82750f452d037863c8066ebe",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/assets/NanumGothic-OFL.txt",
+      "change": "동일",
+      "before_bytes": 5398,
+      "before_sha256": "9413f0aaff51c59be2ff01113a28759b491e6fd67172c3d0a666e6354af18883",
+      "bytes": 5398,
+      "sha256": "9413f0aaff51c59be2ff01113a28759b491e6fd67172c3d0a666e6354af18883",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/assets/combo-chevron.svg",
+      "change": "동일",
+      "before_bytes": 214,
+      "before_sha256": "8b5dac9eed1bf0e5dd5fab90746f6d47f5ed028fba92f0abf7fbcbb917e94c39",
+      "bytes": 214,
+      "sha256": "8b5dac9eed1bf0e5dd5fab90746f6d47f5ed028fba92f0abf7fbcbb917e94c39",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/assets/lucide/arrow-left-right.svg",
+      "change": "동일",
+      "before_bytes": 313,
+      "before_sha256": "2d64da427cbb3f14e522658459903829575b09ec15162c1a69ea6ad341a4359a",
+      "bytes": 313,
+      "sha256": "2d64da427cbb3f14e522658459903829575b09ec15162c1a69ea6ad341a4359a",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/assets/lucide/arrow-up-right.svg",
+      "change": "동일",
+      "before_bytes": 260,
+      "before_sha256": "50b2503b9d11881142255466b7e3461d022b919735841c321d72003ac9959fe1",
+      "bytes": 260,
+      "sha256": "50b2503b9d11881142255466b7e3461d022b919735841c321d72003ac9959fe1",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/assets/lucide/check.svg",
+      "change": "동일",
+      "before_bytes": 239,
+      "before_sha256": "7f33acc9a77a61659531044525fc008edebe215bf4dcf1c789c8674ad3277db0",
+      "bytes": 239,
+      "sha256": "7f33acc9a77a61659531044525fc008edebe215bf4dcf1c789c8674ad3277db0",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/assets/lucide/file-up.svg",
+      "change": "동일",
+      "before_bytes": 427,
+      "before_sha256": "0bd753699aed9b50bcbde59b12e1409329bb9291c0aa523dd4553497cd665c0b",
+      "bytes": 427,
+      "sha256": "0bd753699aed9b50bcbde59b12e1409329bb9291c0aa523dd4553497cd665c0b",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/assets/lucide/file.svg",
+      "change": "동일",
+      "before_bytes": 373,
+      "before_sha256": "499039795d7412d67664ff79d2eb6b7412e746b24c18c8fd8aba383c24ddada0",
+      "bytes": 373,
+      "sha256": "499039795d7412d67664ff79d2eb6b7412e746b24c18c8fd8aba383c24ddada0",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/assets/lucide/folder-open.svg",
+      "change": "동일",
+      "before_bytes": 401,
+      "before_sha256": "ee57452b40e71df310214091dd9da1941a397c83197b8ff8d7ae66dd4242578b",
+      "bytes": 401,
+      "sha256": "ee57452b40e71df310214091dd9da1941a397c83197b8ff8d7ae66dd4242578b",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/assets/lucide/info.svg",
+      "change": "동일",
+      "before_bytes": 294,
+      "before_sha256": "bc977a64eb96f3e9c1041ffd09a3fceb70e3e65c02b571f76064062ed31f3cb9",
+      "bytes": 294,
+      "sha256": "bc977a64eb96f3e9c1041ffd09a3fceb70e3e65c02b571f76064062ed31f3cb9",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/assets/lucide/plus.svg",
+      "change": "동일",
+      "before_bytes": 256,
+      "before_sha256": "7f6af73bf1ff6c4bca3f18351c8d1bdec6749c0c2530c4de5da85d520c21df17",
+      "bytes": 256,
+      "sha256": "7f6af73bf1ff6c4bca3f18351c8d1bdec6749c0c2530c4de5da85d520c21df17",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/assets/lucide/rotate-ccw-clock.svg",
+      "change": "동일",
+      "before_bytes": 324,
+      "before_sha256": "a98ff758157910b9fc9d42d5d5dc80c2f4e037afa5f8ea4dee5f5649f03d438d",
+      "bytes": 324,
+      "sha256": "a98ff758157910b9fc9d42d5d5dc80c2f4e037afa5f8ea4dee5f5649f03d438d",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/assets/lucide/scan-text.svg",
+      "change": "동일",
+      "before_bytes": 435,
+      "before_sha256": "6c05f5346bf0a9c7cdf6132f7ae3428ea932e2206ace2480f41a3d3bdc6efd80",
+      "bytes": 435,
+      "sha256": "6c05f5346bf0a9c7cdf6132f7ae3428ea932e2206ace2480f41a3d3bdc6efd80",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/assets/lucide/sliders-horizontal.svg",
+      "change": "동일",
+      "before_bytes": 422,
+      "before_sha256": "e43a00e5eb684e6cbb61083bed2528d7a3fa5f265693eb2b5f314cd432aa65f4",
+      "bytes": 422,
+      "sha256": "e43a00e5eb684e6cbb61083bed2528d7a3fa5f265693eb2b5f314cd432aa65f4",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/assets/lucide/x.svg",
+      "change": "동일",
+      "before_bytes": 260,
+      "before_sha256": "4a9cdab38fbb96162e7dace28e33f4ca0e49d8963a6162abc3d4691b7d675117",
+      "bytes": 260,
+      "sha256": "4a9cdab38fbb96162e7dace28e33f4ca0e49d8963a6162abc3d4691b7d675117",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/build.py",
+      "change": "수정",
+      "before_bytes": 20063,
+      "before_sha256": "df5ca864dea1354a0f02943d61cf33ea7c4331f7f5b4bf09382d7b4c3d902057",
+      "bytes": 20335,
+      "sha256": "ea2ce97a829bda05fadd4ca0be33e6b2b976a331565cd792dd86247c32e1703b",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/delivery_tools.py",
+      "change": "추가",
+      "before_bytes": null,
+      "before_sha256": null,
+      "bytes": 20912,
+      "sha256": "88914a474b3e2cf7c656a37012bb9add7cd70aca40d8ef6c2d86097b9cbaa1ff",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/delivery_ui.py",
+      "change": "추가",
+      "before_bytes": null,
+      "before_sha256": null,
+      "bytes": 21217,
+      "sha256": "1560ecf94dbb02950657047295b542470ffc4e909e4cce5af97b4d85e45bca8c",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/document_bridge.py",
+      "change": "수정",
+      "before_bytes": 12944,
+      "before_sha256": "1f0a2f238f984d7b9f627e6d0f7c1ac8bf4cae4e6ae8d8c15d407994efba2db4",
+      "bytes": 13064,
+      "sha256": "a5f3680324be5dd4bb4ab4b2b09040a0bbfe713732f4f997f5cfe3fe7fc95cb8",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/document_formats.py",
+      "change": "동일",
+      "before_bytes": 14910,
+      "before_sha256": "848f7d524cf3cf3ea1d3d17f18f95f2339138db8b691c7736391b0ebd945f437",
+      "bytes": 14910,
+      "sha256": "848f7d524cf3cf3ea1d3d17f18f95f2339138db8b691c7736391b0ebd945f437",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/document_hwp.py",
+      "change": "동일",
+      "before_bytes": 26159,
+      "before_sha256": "d87f289db0211280c3195e5e35411b10da66df4ed630f219edce1d3fef2af43d",
+      "bytes": 26159,
+      "sha256": "d87f289db0211280c3195e5e35411b10da66df4ed630f219edce1d3fef2af43d",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/document_process.py",
+      "change": "동일",
+      "before_bytes": 13787,
+      "before_sha256": "32fc8aaf44749f03968296bdb8fb725490e8e18f4b3aa4d882d5e4720657ae2a",
+      "bytes": 13787,
+      "sha256": "32fc8aaf44749f03968296bdb8fb725490e8e18f4b3aa4d882d5e4720657ae2a",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/document_xlsb.py",
+      "change": "동일",
+      "before_bytes": 9360,
+      "before_sha256": "db55b014f5af43e9b466a8ffc9bf405fd5ba98911731662a69208761a9755ed0",
+      "bytes": 9360,
+      "sha256": "db55b014f5af43e9b466a8ffc9bf405fd5ba98911731662a69208761a9755ed0",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/fixed_viewport.py",
+      "change": "동일",
+      "before_bytes": 2468,
+      "before_sha256": "357b4f0a6ab3e95f1b655801f71e719ede4230d9c8ec91ff77c2d7cce01e1aa5",
+      "bytes": 2468,
+      "sha256": "357b4f0a6ab3e95f1b655801f71e719ede4230d9c8ec91ff77c2d7cce01e1aa5",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/flipring_workflow.py",
+      "change": "동일",
+      "before_bytes": 6873,
+      "before_sha256": "2959f12fe2b89498c5d29e3e1318f0da89ff96eaf06a52c628ad2e11a313398e",
+      "bytes": 6873,
+      "sha256": "2959f12fe2b89498c5d29e3e1318f0da89ff96eaf06a52c628ad2e11a313398e",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/hwp_worker.py",
+      "change": "동일",
+      "before_bytes": 3300,
+      "before_sha256": "515fef5a6933038139622fee47455052ab313be2b3f5535c810f301cd69edea1",
+      "bytes": 3300,
+      "sha256": "515fef5a6933038139622fee47455052ab313be2b3f5535c810f301cd69edea1",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/inspection_tools.py",
+      "change": "동일",
+      "before_bytes": 18781,
+      "before_sha256": "d0bd72a5be32edcd8dc87bdf5582aba3cffe700613f36131dc40a8e2bf844007",
+      "bytes": 18781,
+      "sha256": "d0bd72a5be32edcd8dc87bdf5582aba3cffe700613f36131dc40a8e2bf844007",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/inspection_ui.py",
+      "change": "수정",
+      "before_bytes": 36160,
+      "before_sha256": "1fa980701e4f7630b3be1b6f8036de15f543596ada21085ae9513c0ba7c3a36f",
+      "bytes": 38840,
+      "sha256": "59d69b39558baf011f2865a16aaf64fa617b8769aa331f6057e9202571dbf7d2",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/installer.iss",
+      "change": "수정",
+      "before_bytes": 1222,
+      "before_sha256": "5da6d5ce0a4d5bca015f4200e75248e7ce0820aef5218cb5bb269df1a8f79031",
+      "bytes": 1222,
+      "sha256": "cf3d4657812dcf0d8a2dc6d46db5b96fb88254cdf2e5c17024cfe0daa0dc696c",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/7Zip/unRarLicense.txt",
+      "change": "동일",
+      "before_bytes": 1921,
+      "before_sha256": "17bd9fa4399092c777536fff045b41df76ec9d2ac4c9b8e7345d3b8b6ccc7976",
+      "bytes": 1921,
+      "sha256": "17bd9fa4399092c777536fff045b41df76ec9d2ac4c9b8e7345d3b8b6ccc7976",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/GCC-RUNTIME-EXCEPTION.txt",
+      "change": "동일",
+      "before_bytes": 3324,
+      "before_sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+      "bytes": 3324,
+      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/GPL-3.0.txt",
+      "change": "동일",
+      "before_bytes": 35149,
+      "before_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/H2Orestart/COPYING",
+      "change": "동일",
+      "before_bytes": 35129,
+      "before_sha256": "2fcbc59fd6474f7451a53b73bb38648034eeb71fcd3613330b0ffd6296d94784",
+      "bytes": 35129,
+      "sha256": "2fcbc59fd6474f7451a53b73bb38648034eeb71fcd3613330b0ffd6296d94784",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.LIB",
+      "change": "동일",
+      "before_bytes": 26527,
+      "before_sha256": "a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861",
+      "bytes": 26527,
+      "sha256": "a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING.RUNTIME",
+      "change": "동일",
+      "before_bytes": 3324,
+      "before_sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+      "bytes": 3324,
+      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/COPYING3",
+      "change": "동일",
+      "before_bytes": 35147,
+      "before_sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "bytes": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/GCC-원문고지/gcc-libs/README",
+      "change": "동일",
+      "before_bytes": 236,
+      "before_sha256": "33400d067fa3e2bd670a0868dcdb60c9486e8f559b675cf9ff1ff55d4e0d06ab",
+      "bytes": 236,
+      "sha256": "33400d067fa3e2bd670a0868dcdb60c9486e8f559b675cf9ff1ff55d4e0d06ab",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/WINPTHREAD-원문고지/libwinpthread/COPYING",
+      "change": "동일",
+      "before_bytes": 2883,
+      "before_sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
+      "bytes": 2883,
+      "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/libheif/windows/mingw-w64-libheif/PKGBUILD",
+      "change": "동일",
+      "before_bytes": 2484,
+      "before_sha256": "216f26f9dfa169b467af26001c9da6864054bb17f433d7612bb109cf4e17b7b1",
+      "bytes": 2484,
+      "sha256": "216f26f9dfa169b467af26001c9da6864054bb17f433d7612bb109cf4e17b7b1",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/pyproject.toml",
+      "change": "동일",
+      "before_bytes": 3033,
+      "before_sha256": "a5cb5be4340e98bb35776130f9df8bae845da5ab8b0160490b8e7bece36aa075",
+      "bytes": 3033,
+      "sha256": "a5cb5be4340e98bb35776130f9df8bae845da5ab8b0160490b8e7bece36aa075",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/pi-heif-원본빌드방법/setup.py",
+      "change": "동일",
+      "before_bytes": 12778,
+      "before_sha256": "4b7786c05de87319ffc380265c91d776917f5a2d4fe31f3beb63cfe2c178c6f8",
+      "bytes": 12778,
+      "sha256": "4b7786c05de87319ffc380265c91d776917f5a2d4fe31f3beb63cfe2c178c6f8",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/읽어주세요.md",
+      "change": "수정",
+      "before_bytes": 3323,
+      "before_sha256": "e2e331dc04a7b1026644936f2e58d1b86b365f06868e60d248deffe3e0d73c9e",
+      "bytes": 3330,
+      "sha256": "280d93a25999fce85879a23f36c73264ade0de631b89aa2d710b95766c724411",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-gcc-16.2.0-3/.SRCINFO",
+      "change": "동일",
+      "before_bytes": 8081,
+      "before_sha256": "460257cf5496b17611ed36c01272e42fb41ae06cfc404374b1a2538970dc8158",
+      "bytes": 8081,
+      "sha256": "460257cf5496b17611ed36c01272e42fb41ae06cfc404374b1a2538970dc8158",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-gcc-16.2.0-3/PKGBUILD",
+      "change": "동일",
+      "before_bytes": 25852,
+      "before_sha256": "226e4b4d6a5786b66eaf260181b5260934a77ee1d6548ef9d1f735ebaae30f1d",
+      "bytes": 25852,
+      "sha256": "226e4b4d6a5786b66eaf260181b5260934a77ee1d6548ef9d1f735ebaae30f1d",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1/.SRCINFO",
+      "change": "동일",
+      "before_bytes": 1390,
+      "before_sha256": "7c7488d882e286b56785565ba11d2982092bb62e96008e2ee535e94f0b1174c1",
+      "bytes": 1390,
+      "sha256": "7c7488d882e286b56785565ba11d2982092bb62e96008e2ee535e94f0b1174c1",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/HEIC-GNU-runtime/패키지-빌드방법/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1/PKGBUILD",
+      "change": "동일",
+      "before_bytes": 4484,
+      "before_sha256": "7e5cec4463bd044cddeeb584dc6aab3e91dee5afd088d382e90c6232d0dd4e17",
+      "bytes": 4484,
+      "sha256": "7e5cec4463bd044cddeeb584dc6aab3e91dee5afd088d382e90c6232d0dd4e17",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/LGPL-3.0.txt",
+      "change": "동일",
+      "before_bytes": 7652,
+      "before_sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
+      "bytes": 7652,
+      "sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Lucide/LICENSE",
+      "change": "동일",
+      "before_bytes": 3208,
+      "before_sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+      "bytes": 3208,
+      "sha256": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Mesa-LICENSE.html",
+      "change": "동일",
+      "before_bytes": 18044,
+      "before_sha256": "9e0c5f9cba3e7b810ca8ee1f306073e80f6d18d89f05497eb7a4b9f487ff7c5d",
+      "bytes": 18044,
+      "sha256": "9e0c5f9cba3e7b810ca8ee1f306073e80f6d18d89f05497eb7a4b9f487ff7c5d",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/NanumGothic-OFL.txt",
+      "change": "동일",
+      "before_bytes": 5398,
+      "before_sha256": "9413f0aaff51c59be2ff01113a28759b491e6fd67172c3d0a666e6354af18883",
+      "bytes": 5398,
+      "sha256": "9413f0aaff51c59be2ff01113a28759b491e6fd67172c3d0a666e6354af18883",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/GPL-3.0.txt",
+      "change": "동일",
+      "before_bytes": 35149,
+      "before_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/brotli/brotli/LICENSE",
+      "change": "동일",
+      "before_bytes": 1084,
+      "before_sha256": "3d180008e36922a4e8daec11c34c7af264fed5962d07924aea928c38e8663c94",
+      "bytes": 1084,
+      "sha256": "3d180008e36922a4e8daec11c34c7af264fed5962d07924aea928c38e8663c94",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/bzip2/bzip2/LICENSE",
+      "change": "동일",
+      "before_bytes": 1896,
+      "before_sha256": "c6dbbf828498be844a89eaa3b84adbab3199e342eb5cb2ed2f0d4ba7ec0f38a3",
+      "bytes": 1896,
+      "sha256": "c6dbbf828498be844a89eaa3b84adbab3199e342eb5cb2ed2f0d4ba7ec0f38a3",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/curl-winssl/curl/LICENSE",
+      "change": "동일",
+      "before_bytes": 1088,
+      "before_sha256": "82f2f4427d6545ee5aaac4f0b80428da6cc8ba41c2cf5da3a03680ec327b9681",
+      "bytes": 1088,
+      "sha256": "82f2f4427d6545ee5aaac4f0b80428da6cc8ba41c2cf5da3a03680ec327b9681",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/expat/expat/COPYING",
+      "change": "동일",
+      "before_bytes": 1144,
+      "before_sha256": "31b15de82aa19a845156169a17a5488bf597e561b2c318d159ed583139b25e87",
+      "bytes": 1144,
+      "sha256": "31b15de82aa19a845156169a17a5488bf597e561b2c318d159ed583139b25e87",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/gettext-runtime/gettext-runtime/COPYING",
+      "change": "동일",
+      "before_bytes": 495,
+      "before_sha256": "7ef2cdfe58e0c0460657b6598b49af29d4e03c1e41cbaf0e1da1eb8ad74b95d0",
+      "bytes": 495,
+      "sha256": "7ef2cdfe58e0c0460657b6598b49af29d4e03c1e41cbaf0e1da1eb8ad74b95d0",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/gettext-runtime/gettext-runtime/intl/COPYING.LIB",
+      "change": "동일",
+      "before_bytes": 26419,
+      "before_sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95",
+      "bytes": 26419,
+      "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/gettext-runtime/gettext-runtime/libasprintf/COPYING",
+      "change": "동일",
+      "before_bytes": 65,
+      "before_sha256": "03133addae5b99a6148c538300e6d97074453089be1423b741bd081f18e2b298",
+      "bytes": 65,
+      "sha256": "03133addae5b99a6148c538300e6d97074453089be1423b741bd081f18e2b298",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/gettext-runtime/gettext-runtime/libasprintf/COPYING.LIB",
+      "change": "동일",
+      "before_bytes": 26419,
+      "before_sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95",
+      "bytes": 26419,
+      "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/jbigkit/jbigkit/COPYING",
+      "change": "동일",
+      "before_bytes": 17982,
+      "before_sha256": "91df39d1816bfb17a4dda2d3d2c83b1f6f2d38d53e53e41e8f97ad5ac46a0cad",
+      "bytes": 17982,
+      "sha256": "91df39d1816bfb17a4dda2d3d2c83b1f6f2d38d53e53e41e8f97ad5ac46a0cad",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/leptonica/leptonica/LICENSE",
+      "change": "동일",
+      "before_bytes": 1521,
+      "before_sha256": "87829abb5bbb00b55a107365da89e9a33f86c4250169e5a1e5588505be7d5806",
+      "bytes": 1521,
+      "sha256": "87829abb5bbb00b55a107365da89e9a33f86c4250169e5a1e5588505be7d5806",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/lerc/lerc/LICENSE",
+      "change": "동일",
+      "before_bytes": 9198,
+      "before_sha256": "77a8b761727c75e2167b15bfdf61b2c0bcf8792271228bebe80779106ad00671",
+      "bytes": 9198,
+      "sha256": "77a8b761727c75e2167b15bfdf61b2c0bcf8792271228bebe80779106ad00671",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libarchive/libarchive/LICENSE",
+      "change": "동일",
+      "before_bytes": 3089,
+      "before_sha256": "30e556b3959e3985d66efefec5eaac51d4995053caa1d3cffe6eb916f146f229",
+      "bytes": 3089,
+      "sha256": "30e556b3959e3985d66efefec5eaac51d4995053caa1d3cffe6eb916f146f229",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libb2/libb2/LICENSE",
+      "change": "동일",
+      "before_bytes": 6556,
+      "before_sha256": "6a1ee543e5282cd9061881edf462e6fdab181f328da71fc2c9a6950a80e94d01",
+      "bytes": 6556,
+      "sha256": "6a1ee543e5282cd9061881edf462e6fdab181f328da71fc2c9a6950a80e94d01",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libdeflate/libdeflate/COPYING",
+      "change": "동일",
+      "before_bytes": 1078,
+      "before_sha256": "4ad69099cb4374836fd27583d9991e2838cd86b6e4666ab26b2d32582c91e73a",
+      "bytes": 1078,
+      "sha256": "4ad69099cb4374836fd27583d9991e2838cd86b6e4666ab26b2d32582c91e73a",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libiconv/libiconv/COPYING",
+      "change": "동일",
+      "before_bytes": 35147,
+      "before_sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "bytes": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libiconv/libiconv/COPYING.LIB",
+      "change": "동일",
+      "before_bytes": 26419,
+      "before_sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95",
+      "bytes": 26419,
+      "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libiconv/libiconv/README",
+      "change": "동일",
+      "before_bytes": 5741,
+      "before_sha256": "4ae66e61d1c6593c84c47105b368d579bcee1af566dbb959ec63a0c48425dcf4",
+      "bytes": 5741,
+      "sha256": "4ae66e61d1c6593c84c47105b368d579bcee1af566dbb959ec63a0c48425dcf4",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libiconv/libiconv/libcharset/COPYING.LIB",
+      "change": "동일",
+      "before_bytes": 26419,
+      "before_sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95",
+      "bytes": 26419,
+      "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/LICENSE.md",
+      "change": "동일",
+      "before_bytes": 5620,
+      "before_sha256": "2189dc45a8fe96204069f8124caa53a148dfdc193f50f584c6ca7849a6072872",
+      "bytes": 5620,
+      "sha256": "2189dc45a8fe96204069f8124caa53a148dfdc193f50f584c6ca7849a6072872",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.ijg",
+      "change": "동일",
+      "before_bytes": 12799,
+      "before_sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+      "bytes": 12799,
+      "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md",
+      "change": "동일",
+      "before_bytes": 17784,
+      "before_sha256": "c553459fc4ea1f69526f0edf0c8ff6c4002fda5b76094abefabdc3de1ee62c10",
+      "bytes": 17784,
+      "sha256": "c553459fc4ea1f69526f0edf0c8ff6c4002fda5b76094abefabdc3de1ee62c10",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/simd/jsimdext.inc",
+      "change": "동일",
+      "before_bytes": 15563,
+      "before_sha256": "68c5d236785edf75344cebe8b9bec36568bd35c96eb72cc67ffecd66c17dbd74",
+      "bytes": 15563,
+      "sha256": "68c5d236785edf75344cebe8b9bec36568bd35c96eb72cc67ffecd66c17dbd74",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libpng/libpng/LICENSE",
+      "change": "동일",
+      "before_bytes": 5345,
+      "before_sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526",
+      "bytes": 5345,
+      "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libpsl/libpsl/COPYING",
+      "change": "동일",
+      "before_bytes": 1060,
+      "before_sha256": "322392e6001b2b3b0fca705dc9f11f26e12441188ecde50eb1d22909980b2925",
+      "bytes": 1060,
+      "sha256": "322392e6001b2b3b0fca705dc9f11f26e12441188ecde50eb1d22909980b2925",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libssh2-wincng/libssh2/LICENSE",
+      "change": "동일",
+      "before_bytes": 1959,
+      "before_sha256": "f7f9633cf9ff2f1333f3d7ce46973a8716a4d2a2815ad56f30d437d5fea7bafe",
+      "bytes": 1959,
+      "sha256": "f7f9633cf9ff2f1333f3d7ce46973a8716a4d2a2815ad56f30d437d5fea7bafe",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libtiff/libtiff/LICENSE.md",
+      "change": "동일",
+      "before_bytes": 2416,
+      "before_sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade",
+      "bytes": 2416,
+      "sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libunistring/libunistring/LICENSE",
+      "change": "동일",
+      "before_bytes": 35149,
+      "before_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libunistring/libunistring/LICENSE.LIB",
+      "change": "동일",
+      "before_bytes": 7639,
+      "before_sha256": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c",
+      "bytes": 7639,
+      "sha256": "a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libwebp/libwebp/COPYING",
+      "change": "동일",
+      "before_bytes": 1496,
+      "before_sha256": "5aec868f669e384a22372a4e8a1a6cd7d44c64cd451f960ca69cc170d1e13acf",
+      "bytes": 1496,
+      "sha256": "5aec868f669e384a22372a4e8a1a6cd7d44c64cd451f960ca69cc170d1e13acf",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/libwinpthread/libwinpthread/COPYING",
+      "change": "동일",
+      "before_bytes": 2883,
+      "before_sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
+      "bytes": 2883,
+      "sha256": "63263614cdd29f2f93cba85e992f041b31f9fc7b4033692f31269489a8a1b177",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/openjpeg2/openjpeg/LICENSE",
+      "change": "동일",
+      "before_bytes": 2112,
+      "before_sha256": "a6af136f3e15038a666b61f376612a07d9a4e48cb7c01adbf3e33b3f14ab49b6",
+      "bytes": 2112,
+      "sha256": "a6af136f3e15038a666b61f376612a07d9a4e48cb7c01adbf3e33b3f14ab49b6",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/COPYING.RUNTIME.txt",
+      "change": "동일",
+      "before_bytes": 3324,
+      "before_sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+      "bytes": 3324,
+      "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/COPYING.txt",
+      "change": "동일",
+      "before_bytes": 18002,
+      "before_sha256": "231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c",
+      "bytes": 18002,
+      "sha256": "231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/COPYING3.txt",
+      "change": "동일",
+      "before_bytes": 35147,
+      "before_sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "bytes": 35147,
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/README.md",
+      "change": "수정",
+      "before_bytes": 5516,
+      "before_sha256": "129a1ec002980d4aa376fac3d0b04ef5d0a43dac39ed287cabdc0ee3dc86fc85",
+      "bytes": 5499,
+      "sha256": "48d0f8f4862710e2eb722a6c50343c1a91b9279fbc900ef68da2a874e7eefeb9",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/SHA256SUMS.txt",
+      "change": "동일",
+      "before_bytes": 2561,
+      "before_sha256": "dcd7ffa8fc2cecd5055dc19b22c8c2ede37fb81d671a514e278160b4ca41a3f4",
+      "bytes": 2561,
+      "sha256": "dcd7ffa8fc2cecd5055dc19b22c8c2ede37fb81d671a514e278160b4ca41a3f4",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/debian-gcc14/README.source",
+      "change": "동일",
+      "before_bytes": 1288,
+      "before_sha256": "419cba6d5fc2c44b61de0e67756a6b9ec4e87efa506f3df1c248dee611345b23",
+      "bytes": 1288,
+      "sha256": "419cba6d5fc2c44b61de0e67756a6b9ec4e87efa506f3df1c248dee611345b23",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/debian-gcc14/changelog",
+      "change": "동일",
+      "before_bytes": 761264,
+      "before_sha256": "23b451e790b66adc6fd008447a384c6863e72ed18ad556a68aa22e35c7ef2938",
+      "bytes": 761264,
+      "sha256": "23b451e790b66adc6fd008447a384c6863e72ed18ad556a68aa22e35c7ef2938",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/debian-gcc14/copyright",
+      "change": "동일",
+      "before_bytes": 69004,
+      "before_sha256": "20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79",
+      "bytes": 69004,
+      "sha256": "20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/debian-gcc14/rules",
+      "change": "동일",
+      "before_bytes": 2984,
+      "before_sha256": "5a90bab597f87910b61564ce34aeedf66a35dd22a2c68b13686e95f17df1c3d9",
+      "bytes": 2984,
+      "sha256": "5a90bab597f87910b61564ce34aeedf66a35dd22a2c68b13686e95f17df1c3d9",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/debian14-runtime-comparison.json",
+      "change": "동일",
+      "before_bytes": 2358,
+      "before_sha256": "7b8227d4d37179d44fd752b6654b15065cbbb628c4860801ac50bd3a8e8474e4",
+      "bytes": 2358,
+      "sha256": "7b8227d4d37179d44fd752b6654b15065cbbb628c4860801ac50bd3a8e8474e4",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/debian14-runtime-control.txt",
+      "change": "동일",
+      "before_bytes": 890,
+      "before_sha256": "c337735ffef8f8b7925181ceed849504a19c00f6538770cfa6efae2d70f2ac80",
+      "bytes": 890,
+      "sha256": "c337735ffef8f8b7925181ceed849504a19c00f6538770cfa6efae2d70f2ac80",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/debian27/changelog",
+      "change": "동일",
+      "before_bytes": 28689,
+      "before_sha256": "5a4cfcad5966c6c73a76cfb20e646a1c6a24aa86ba5f68c47bf8c33fdff27767",
+      "bytes": 28689,
+      "sha256": "5a4cfcad5966c6c73a76cfb20e646a1c6a24aa86ba5f68c47bf8c33fdff27767",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/debian27/control",
+      "change": "동일",
+      "before_bytes": 37328,
+      "before_sha256": "40bf1a4b1b7dc1a1abb391a84ac73168dbfa9979cc482303a3f2e50d3618c0c3",
+      "bytes": 37328,
+      "sha256": "40bf1a4b1b7dc1a1abb391a84ac73168dbfa9979cc482303a3f2e50d3618c0c3",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/debian27/copyright",
+      "change": "동일",
+      "before_bytes": 75729,
+      "before_sha256": "f891d7e0c56f503a92c7258d540b3d8215852d8387cbca8f1f07c6f4b6e67da6",
+      "bytes": 75729,
+      "sha256": "f891d7e0c56f503a92c7258d540b3d8215852d8387cbca8f1f07c6f4b6e67da6",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/debian27/rules",
+      "change": "동일",
+      "before_bytes": 16681,
+      "before_sha256": "534993c328dd2ac9439cca693328e42936773d96361de249589d702c420e662c",
+      "bytes": 16681,
+      "sha256": "534993c328dd2ac9439cca693328e42936773d96361de249589d702c420e662c",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/download_one.py",
+      "change": "동일",
+      "before_bytes": 1655,
+      "before_sha256": "4f5ebf26934263dbf9596ee64206939fe1b4e9319fe731447ec267e192f624b8",
+      "bytes": 1655,
+      "sha256": "4f5ebf26934263dbf9596ee64206939fe1b4e9319fe731447ec267e192f624b8",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/finalize_sources.py",
+      "change": "동일",
+      "before_bytes": 5372,
+      "before_sha256": "62d67f1e764bd3b342dd84a8bdfdeaeba34f625d50981fcb8e141f21df653bae",
+      "bytes": 5372,
+      "sha256": "62d67f1e764bd3b342dd84a8bdfdeaeba34f625d50981fcb8e141f21df653bae",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0-19.debian.tar.xz.origin.json",
+      "change": "동일",
+      "before_bytes": 796,
+      "before_sha256": "c802435ceb555799b5100ce04e23ecc8cde1d9b7a0a6ae5e323106102a47ec5b",
+      "bytes": 796,
+      "sha256": "c802435ceb555799b5100ce04e23ecc8cde1d9b7a0a6ae5e323106102a47ec5b",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0-19.dsc",
+      "change": "동일",
+      "before_bytes": 47347,
+      "before_sha256": "7db1e202cce66617e9134a662c877a3a773de5b612fd52179815877e0ecfb847",
+      "bytes": 47347,
+      "sha256": "7db1e202cce66617e9134a662c877a3a773de5b612fd52179815877e0ecfb847",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0-19.dsc.origin.json",
+      "change": "동일",
+      "before_bytes": 670,
+      "before_sha256": "64950154d9071a1275ba01bc300fff7237b1dec32110e1d8cc25f41dbff7a816",
+      "bytes": 670,
+      "sha256": "64950154d9071a1275ba01bc300fff7237b1dec32110e1d8cc25f41dbff7a816",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0.orig.tar.gz.origin.json",
+      "change": "동일",
+      "before_bytes": 774,
+      "before_sha256": "17315466f12bc6d8948139a630581d79d8a2fd8ca63f168f8c8c98a85fc75ca2",
+      "bytes": 774,
+      "sha256": "17315466f12bc6d8948139a630581d79d8a2fd8ca63f168f8c8c98a85fc75ca2",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb.origin.json",
+      "change": "동일",
+      "before_bytes": 985,
+      "before_sha256": "b4582157bd4ac480b966437c33423479db3d1f6f334964e829310286020afad0",
+      "bytes": 985,
+      "sha256": "b4582157bd4ac480b966437c33423479db3d1f6f334964e829310286020afad0",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.dsc",
+      "change": "동일",
+      "before_bytes": 7737,
+      "before_sha256": "492f2ba821e43a3d40817841bd32caa5d49673fe66921bf5ba9c8b81c391dfea",
+      "bytes": 7737,
+      "sha256": "492f2ba821e43a3d40817841bd32caa5d49673fe66921bf5ba9c8b81c391dfea",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.dsc.origin.json",
+      "change": "동일",
+      "before_bytes": 690,
+      "before_sha256": "c27dd42c22587f0dacce7b7e407d686c27c4635e051581342a522812e1ef5411",
+      "bytes": 690,
+      "sha256": "c27dd42c22587f0dacce7b7e407d686c27c4635e051581342a522812e1ef5411",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64_27.tar.xz.origin.json",
+      "change": "동일",
+      "before_bytes": 776,
+      "before_sha256": "6274dcf123b38acaac1d906b402995a802220c8a5531ffd9e951b43a4e0bc9df",
+      "bytes": 776,
+      "sha256": "6274dcf123b38acaac1d906b402995a802220c8a5531ffd9e951b43a4e0bc9df",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/inspect_runtime.py",
+      "change": "동일",
+      "before_bytes": 3031,
+      "before_sha256": "82a0f72231b1f0b9276784b8e1c4efb756d56dedf7114b207a1fcf5b7a8695f0",
+      "bytes": 3031,
+      "sha256": "82a0f72231b1f0b9276784b8e1c4efb756d56dedf7114b207a1fcf5b7a8695f0",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/ubuntu-gcc/출하목록.json",
+      "change": "동일",
+      "before_bytes": 4905,
+      "before_sha256": "5dddda71a2e2068033f5634425bcdb1472e966e37286372ac0b399ccb5f54403",
+      "bytes": 4905,
+      "sha256": "5dddda71a2e2068033f5634425bcdb1472e966e37286372ac0b399ccb5f54403",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/xz/xz/COPYING",
+      "change": "동일",
+      "before_bytes": 3119,
+      "before_sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8",
+      "bytes": 3119,
+      "sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/xz/xz/COPYING.0BSD",
+      "change": "동일",
+      "before_bytes": 607,
+      "before_sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1",
+      "bytes": 607,
+      "sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/xz/xz/COPYING.GPLv2",
+      "change": "동일",
+      "before_bytes": 17984,
+      "before_sha256": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6",
+      "bytes": 17984,
+      "sha256": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/xz/xz/COPYING.GPLv3",
+      "change": "동일",
+      "before_bytes": 35149,
+      "before_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/xz/xz/COPYING.LGPLv2.1",
+      "change": "동일",
+      "before_bytes": 26419,
+      "before_sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95",
+      "bytes": 26419,
+      "sha256": "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/zlib/zlib/LICENSE",
+      "change": "동일",
+      "before_bytes": 1002,
+      "before_sha256": "e32ff4e00d9d94930537635291da39e7e612703334bf6fde8c7f1686fe8a45a2",
+      "bytes": 1002,
+      "sha256": "e32ff4e00d9d94930537635291da39e7e612703334bf6fde8c7f1686fe8a45a2",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/zstd/zstd/LICENSE",
+      "change": "동일",
+      "before_bytes": 1549,
+      "before_sha256": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8",
+      "bytes": 1549,
+      "sha256": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/모델과실행.json",
+      "change": "동일",
+      "before_bytes": 1694,
+      "before_sha256": "8a2a60fedafa72b68b3f2d3fe1a5f3a0f75379d64ee6e6ab3ef49d1f840d58e9",
+      "bytes": 1694,
+      "sha256": "8a2a60fedafa72b68b3f2d3fe1a5f3a0f75379d64ee6e6ab3ef49d1f840d58e9",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OCR/읽어주세요.md",
+      "change": "수정",
+      "before_bytes": 3195,
+      "before_sha256": "ce39d1f70495db9308ed38f8410e57c4a00354652c970e8126979a218c3e458d",
+      "bytes": 3217,
+      "sha256": "bfa34f798177e0f419b3caea6f608ddfbfa3f22e99e7e45747c62be95832c47f",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/OpenSSL-LICENSE.txt",
+      "change": "동일",
+      "before_bytes": 10175,
+      "before_sha256": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a",
+      "bytes": 10175,
+      "sha256": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/SUIT/OFL.txt",
+      "change": "동일",
+      "before_bytes": 4380,
+      "before_sha256": "30d101ee3c35ef629d622d933d261a27b2f60223e0a3b0f36791e569c2b9daa9",
+      "bytes": 4380,
+      "sha256": "30d101ee3c35ef629d622d933d261a27b2f60223e0a3b0f36791e569c2b9daa9",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/NOTICE",
+      "change": "동일",
+      "before_bytes": 2400,
+      "before_sha256": "c02756bcd9fa8191bf0fda4451bc018414dd44ee35bf09922c24377a475e4b5a",
+      "bytes": 2400,
+      "sha256": "c02756bcd9fa8191bf0fda4451bc018414dd44ee35bf09922c24377a475e4b5a",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/OpenJDK17U-jdk-sources_17.0.21_9.tar.gz.json",
+      "change": "동일",
+      "before_bytes": 29061,
+      "before_sha256": "a69c1a03dd84d2b9f83aee5321e4ea1d6616b1ff319dcd86034b514b77582ce5",
+      "bytes": 29061,
+      "sha256": "a69c1a03dd84d2b9f83aee5321e4ea1d6616b1ff319dcd86034b514b77582ce5",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/OpenJDK17U-jre_x64_windows_hotspot_17.0.21_9.zip.json",
+      "change": "동일",
+      "before_bytes": 29079,
+      "before_sha256": "9530f46d1054ce0b8ffc59ea35bcf8f8fcbb7e454e57e632b7afa341ed0dae42",
+      "bytes": 29079,
+      "sha256": "9530f46d1054ce0b8ffc59ea35bcf8f8fcbb7e454e57e632b7afa341ed0dae42",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.base/ADDITIONAL_LICENSE_INFO",
+      "change": "동일",
+      "before_bytes": 2114,
+      "before_sha256": "a69bce275ba7a3570af6579cb0f55682cd75fedfcd49e0e8e9022270c447c916",
+      "bytes": 2114,
+      "sha256": "a69bce275ba7a3570af6579cb0f55682cd75fedfcd49e0e8e9022270c447c916",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.base/ASSEMBLY_EXCEPTION",
+      "change": "동일",
+      "before_bytes": 1522,
+      "before_sha256": "a44eb7b5caf5534c6ef536b21edb40b4d6babf91bf97d9d45596868618b2c6fb",
+      "bytes": 1522,
+      "sha256": "a44eb7b5caf5534c6ef536b21edb40b4d6babf91bf97d9d45596868618b2c6fb",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.base/LICENSE",
+      "change": "동일",
+      "before_bytes": 19274,
+      "before_sha256": "4b9abebc4338048a7c2dc184e9f800deb349366bdf28eb23c2677a77b4c87726",
+      "bytes": 19274,
+      "sha256": "4b9abebc4338048a7c2dc184e9f800deb349366bdf28eb23c2677a77b4c87726",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.base/aes.md",
+      "change": "동일",
+      "before_bytes": 1444,
+      "before_sha256": "45c6d4da48325edfbff3dcf71c704e504c057904435ed23c6d57046d551eb69d",
+      "bytes": 1444,
+      "sha256": "45c6d4da48325edfbff3dcf71c704e504c057904435ed23c6d57046d551eb69d",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.base/asm.md",
+      "change": "동일",
+      "before_bytes": 1584,
+      "before_sha256": "1ff912740e84e024711def5fa482ffbb46eff64559760c467352dfa7c39a3307",
+      "bytes": 1584,
+      "sha256": "1ff912740e84e024711def5fa482ffbb46eff64559760c467352dfa7c39a3307",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.base/c-libutl.md",
+      "change": "동일",
+      "before_bytes": 1556,
+      "before_sha256": "bef40679922d6fdfb7e4ddb223ad6722300f6054ba737bbf6188d60fcec517f9",
+      "bytes": 1556,
+      "sha256": "bef40679922d6fdfb7e4ddb223ad6722300f6054ba737bbf6188d60fcec517f9",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.base/cldr.md",
+      "change": "동일",
+      "before_bytes": 9130,
+      "before_sha256": "f2bd33ded550a05d59e8f659416ef382490504548d846e6388b1dffd273aa077",
+      "bytes": 9130,
+      "sha256": "f2bd33ded550a05d59e8f659416ef382490504548d846e6388b1dffd273aa077",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.base/icu.md",
+      "change": "동일",
+      "before_bytes": 11086,
+      "before_sha256": "af0057e8553906083f69c2fb9fe9ed4ae8bc2340a0b1e376a424702f00300b29",
+      "bytes": 11086,
+      "sha256": "af0057e8553906083f69c2fb9fe9ed4ae8bc2340a0b1e376a424702f00300b29",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.base/public_suffix.md",
+      "change": "동일",
+      "before_bytes": 17785,
+      "before_sha256": "e7705b408e894e91c93968640773b1532cd9927f8a7f178020aa3c3f38c8b363",
+      "bytes": 17785,
+      "sha256": "e7705b408e894e91c93968640773b1532cd9927f8a7f178020aa3c3f38c8b363",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.base/siphash.md",
+      "change": "동일",
+      "before_bytes": 8256,
+      "before_sha256": "5a792b5a74ad2a5f3d6a7ad8b7a841116e58a772c18bc6e392320a365b222c76",
+      "bytes": 8256,
+      "sha256": "5a792b5a74ad2a5f3d6a7ad8b7a841116e58a772c18bc6e392320a365b222c76",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.base/unicode.md",
+      "change": "동일",
+      "before_bytes": 2384,
+      "before_sha256": "5e4e6623a21a63f9bc16ea54af4133b8038e490c0d499a74676f9e5a61b9c5b2",
+      "bytes": 2384,
+      "sha256": "5e4e6623a21a63f9bc16ea54af4133b8038e490c0d499a74676f9e5a61b9c5b2",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.base/wepoll.md",
+      "change": "동일",
+      "before_bytes": 1454,
+      "before_sha256": "3ac2992770080453b98c42afa807ba4b2c1738ef756b92a55c645f55e7df48f0",
+      "bytes": 1454,
+      "sha256": "3ac2992770080453b98c42afa807ba4b2c1738ef756b92a55c645f55e7df48f0",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.base/zlib.md",
+      "change": "동일",
+      "before_bytes": 1010,
+      "before_sha256": "c9c70c36a1f0325e8788771906202d42ba6ab4205caca44ec0f665707e83226b",
+      "bytes": 1010,
+      "sha256": "c9c70c36a1f0325e8788771906202d42ba6ab4205caca44ec0f665707e83226b",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.desktop/colorimaging.md",
+      "change": "동일",
+      "before_bytes": 167,
+      "before_sha256": "04d61e3e8e71dd452ebe52008af5378d9f6640d14578aeb515dc5375973b0189",
+      "bytes": 167,
+      "sha256": "04d61e3e8e71dd452ebe52008af5378d9f6640d14578aeb515dc5375973b0189",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.desktop/freetype.md",
+      "change": "동일",
+      "before_bytes": 30465,
+      "before_sha256": "553e804baecb7de7129d77c7259a6b70037d1893f1c600b41b35201695fb7758",
+      "bytes": 30465,
+      "sha256": "553e804baecb7de7129d77c7259a6b70037d1893f1c600b41b35201695fb7758",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.desktop/giflib.md",
+      "change": "동일",
+      "before_bytes": 1689,
+      "before_sha256": "206aab89ec75968e48a6a1ed6df7d8b9bfb7aea12cbe4c9345d93e5d97460a25",
+      "bytes": 1689,
+      "sha256": "206aab89ec75968e48a6a1ed6df7d8b9bfb7aea12cbe4c9345d93e5d97460a25",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.desktop/harfbuzz.md",
+      "change": "동일",
+      "before_bytes": 3629,
+      "before_sha256": "5ec7cba7f8e7fc3a089213140aab6fa1b3bd5bf8a91bf8bddb3b8d315fc5f7d0",
+      "bytes": 3629,
+      "sha256": "5ec7cba7f8e7fc3a089213140aab6fa1b3bd5bf8a91bf8bddb3b8d315fc5f7d0",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.desktop/jpeg.md",
+      "change": "동일",
+      "before_bytes": 3475,
+      "before_sha256": "580be596216ee11e2554b24ce944973acaede2ebf5ffba34a6bd8cc441c05043",
+      "bytes": 3475,
+      "sha256": "580be596216ee11e2554b24ce944973acaede2ebf5ffba34a6bd8cc441c05043",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.desktop/lcms.md",
+      "change": "동일",
+      "before_bytes": 2654,
+      "before_sha256": "843f9f6fa9c3f8109fcf4d5fe74caf7f2ae8e9bcd92238e4aff2d428c932b24b",
+      "bytes": 2654,
+      "sha256": "843f9f6fa9c3f8109fcf4d5fe74caf7f2ae8e9bcd92238e4aff2d428c932b24b",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.desktop/libpng.md",
+      "change": "동일",
+      "before_bytes": 7519,
+      "before_sha256": "f73afb394792f3aeecd959e89487603677a430e56b44eba596d8b572accfd540",
+      "bytes": 7519,
+      "sha256": "f73afb394792f3aeecd959e89487603677a430e56b44eba596d8b572accfd540",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.desktop/mesa3d.md",
+      "change": "동일",
+      "before_bytes": 5732,
+      "before_sha256": "63f4e6f75caebbccb95d903fb43e46ac7111b3624d0a34f146b276d7d9e7b152",
+      "bytes": 5732,
+      "sha256": "63f4e6f75caebbccb95d903fb43e46ac7111b3624d0a34f146b276d7d9e7b152",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.xml.crypto/santuario.md",
+      "change": "동일",
+      "before_bytes": 11505,
+      "before_sha256": "d08690d25f660f145c73365d260ed522cd0aace8a0e1396706551b7a1ae8c9a3",
+      "bytes": 11505,
+      "sha256": "d08690d25f660f145c73365d260ed522cd0aace8a0e1396706551b7a1ae8c9a3",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.xml/bcel.md",
+      "change": "동일",
+      "before_bytes": 11196,
+      "before_sha256": "cd578186ad93de46cca29ec8ace2b11f9da751987f3f140e6095c528596cc8c1",
+      "bytes": 11196,
+      "sha256": "cd578186ad93de46cca29ec8ace2b11f9da751987f3f140e6095c528596cc8c1",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.xml/dom.md",
+      "change": "동일",
+      "before_bytes": 3761,
+      "before_sha256": "6686e8877667584a3a7c07344baadca1a03e29f677162d87c3c0811e990d1148",
+      "bytes": 3761,
+      "sha256": "6686e8877667584a3a7c07344baadca1a03e29f677162d87c3c0811e990d1148",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.xml/jcup.md",
+      "change": "동일",
+      "before_bytes": 1448,
+      "before_sha256": "8d5dcfdf50455a3c34c753a98f21e953248af200415a9084e3f102cb6c43b8bf",
+      "bytes": 1448,
+      "sha256": "8d5dcfdf50455a3c34c753a98f21e953248af200415a9084e3f102cb6c43b8bf",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.xml/xalan.md",
+      "change": "동일",
+      "before_bytes": 13494,
+      "before_sha256": "ea67226be5cfe19c7e79725c2c24a16676323264d69f9747c528de0b44541b03",
+      "bytes": 13494,
+      "sha256": "ea67226be5cfe19c7e79725c2c24a16676323264d69f9747c528de0b44541b03",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/java.xml/xerces.md",
+      "change": "동일",
+      "before_bytes": 11852,
+      "before_sha256": "472224f99de833f4f4c19f2f8a0317f22114e1c641f5d77ffa3a4280a1b80176",
+      "bytes": 11852,
+      "sha256": "472224f99de833f4f4c19f2f8a0317f22114e1c641f5d77ffa3a4280a1b80176",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/jdk.crypto.cryptoki/pkcs11cryptotoken.md",
+      "change": "동일",
+      "before_bytes": 4095,
+      "before_sha256": "1f36ff1342a581142c858f90064e20633d43529ac82adb85345bd902a14e18b2",
+      "bytes": 4095,
+      "sha256": "1f36ff1342a581142c858f90064e20633d43529ac82adb85345bd902a14e18b2",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/jdk.crypto.cryptoki/pkcs11wrapper.md",
+      "change": "동일",
+      "before_bytes": 2131,
+      "before_sha256": "371974b1fca3744a3892c7ee1fcc593b8b4281fc218f4cafd2f709e9df5fd81d",
+      "bytes": 2131,
+      "sha256": "371974b1fca3744a3892c7ee1fcc593b8b4281fc218f4cafd2f709e9df5fd81d",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/jdk.dynalink/dynalink.md",
+      "change": "동일",
+      "before_bytes": 1502,
+      "before_sha256": "17312591cabee3ef6c34ed8897d92e4e361ba9cea41ec00dcd61a322a8fc2cdb",
+      "bytes": 1502,
+      "sha256": "17312591cabee3ef6c34ed8897d92e4e361ba9cea41ec00dcd61a322a8fc2cdb",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/jdk.localedata/thaidict.md",
+      "change": "동일",
+      "before_bytes": 1346,
+      "before_sha256": "c326144a2351c9608fa708b5d7d3c5a3da03e82b66479b128e9db4969539824a",
+      "bytes": 1346,
+      "sha256": "c326144a2351c9608fa708b5d7d3c5a3da03e82b66479b128e9db4969539824a",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/altgraph/LICENSE",
+      "change": "동일",
+      "before_bytes": 1002,
+      "before_sha256": "6c194d6db0c64d45535d10c95142b9b0cda7b7dcc7f1ddee302b3d536f3dbe46",
+      "bytes": 1002,
+      "sha256": "6c194d6db0c64d45535d10c95142b9b0cda7b7dcc7f1ddee302b3d536f3dbe46",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/altgraph/METADATA",
+      "change": "동일",
+      "before_bytes": 7519,
+      "before_sha256": "dc60641dba229a3aef09f764f562c38d908b930c92615af2e626af31d6ff19b5",
+      "bytes": 7519,
+      "sha256": "dc60641dba229a3aef09f764f562c38d908b930c92615af2e626af31d6ff19b5",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/cssselect2/METADATA",
+      "change": "동일",
+      "before_bytes": 2941,
+      "before_sha256": "bb65ac3244a599d7bba63168f2ccea5849a4b2b1339568eab0ad933a8a44e475",
+      "bytes": 2941,
+      "sha256": "bb65ac3244a599d7bba63168f2ccea5849a4b2b1339568eab0ad933a8a44e475",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/cssselect2/licenses/LICENSE",
+      "change": "동일",
+      "before_bytes": 1548,
+      "before_sha256": "6fd97229a1d1b0f6a8b41e109f413426dbc0874b1e03746d66cc33282601c2c2",
+      "bytes": 1548,
+      "sha256": "6fd97229a1d1b0f6a8b41e109f413426dbc0874b1e03746d66cc33282601c2c2",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/et_xmlfile/METADATA",
+      "change": "동일",
+      "before_bytes": 2711,
+      "before_sha256": "0e97d7ea909ed0fbe03d88bc8b6f58677cee1b07bd3353ce361cd2405915204e",
+      "bytes": 2711,
+      "sha256": "0e97d7ea909ed0fbe03d88bc8b6f58677cee1b07bd3353ce361cd2405915204e",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/openpyxl/METADATA",
+      "change": "동일",
+      "before_bytes": 2510,
+      "before_sha256": "23f80ca9830dd89435da1710f26deda8f81e5409287e74540210c72627a4ad96",
+      "bytes": 2510,
+      "sha256": "23f80ca9830dd89435da1710f26deda8f81e5409287e74540210c72627a4ad96",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/packaging/METADATA",
+      "change": "동일",
+      "before_bytes": 3544,
+      "before_sha256": "70fdb89fc4d4a9a043bf7372b8972bcc883fddff34ab55e9cf80d73875384763",
+      "bytes": 3544,
+      "sha256": "70fdb89fc4d4a9a043bf7372b8972bcc883fddff34ab55e9cf80d73875384763",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/packaging/licenses/LICENSE",
+      "change": "동일",
+      "before_bytes": 197,
+      "before_sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48",
+      "bytes": 197,
+      "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/packaging/licenses/LICENSE.APACHE",
+      "change": "동일",
+      "before_bytes": 10174,
+      "before_sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "bytes": 10174,
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/packaging/licenses/LICENSE.BSD",
+      "change": "동일",
+      "before_bytes": 1344,
+      "before_sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5",
+      "bytes": 1344,
+      "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/pefile/LICENSE",
+      "change": "동일",
+      "before_bytes": 1083,
+      "before_sha256": "b44409c067c6da52bfb54bb6624fb11a7b52157c3a13ae1400232f8196e86ad3",
+      "bytes": 1083,
+      "sha256": "b44409c067c6da52bfb54bb6624fb11a7b52157c3a13ae1400232f8196e86ad3",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/pefile/METADATA",
+      "change": "동일",
+      "before_bytes": 1355,
+      "before_sha256": "8ad83a5f8659e8da6eeaabf2dafa0eebb8c05832a3def16a5db4dd0d52e72474",
+      "bytes": 1355,
+      "sha256": "8ad83a5f8659e8da6eeaabf2dafa0eebb8c05832a3def16a5db4dd0d52e72474",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/pi-heif-decoder/licenses/LICENSE.txt",
+      "change": "동일",
+      "before_bytes": 1546,
+      "before_sha256": "9e2635f155b00af5a46cb2f2c9b052072ec546d59837ee74efc9cba2cbb83f3d",
+      "bytes": 1546,
+      "sha256": "9e2635f155b00af5a46cb2f2c9b052072ec546d59837ee74efc9cba2cbb83f3d",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/pi-heif-decoder/licenses/LICENSES_bundled.txt",
+      "change": "동일",
+      "before_bytes": 327,
+      "before_sha256": "5335a401c42f1761e56e393e45aac1c4cbd55e6d9ca9176595177b6b0fba26d9",
+      "bytes": 327,
+      "sha256": "5335a401c42f1761e56e393e45aac1c4cbd55e6d9ca9176595177b6b0fba26d9",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/pyinstaller-hooks-contrib/METADATA",
+      "change": "동일",
+      "before_bytes": 16042,
+      "before_sha256": "686e63d76cb494d44c4533ed64a7d797970a1253493a4f875d39defc190396c4",
+      "bytes": 16042,
+      "sha256": "686e63d76cb494d44c4533ed64a7d797970a1253493a4f875d39defc190396c4",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/pyinstaller-hooks-contrib/licenses/LICENSE",
+      "change": "동일",
+      "before_bytes": 27666,
+      "before_sha256": "91d0baaff00773038e72c0a1fc9d5d2d38706b7a2b9c04f34296608f931b9cd0",
+      "bytes": 27666,
+      "sha256": "91d0baaff00773038e72c0a1fc9d5d2d38706b7a2b9c04f34296608f931b9cd0",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/pyinstaller/METADATA",
+      "change": "동일",
+      "before_bytes": 8517,
+      "before_sha256": "2991d3dcd53fe9966b8c16586322a7f9bbc564dd4752c190bd4fe8d6747f7046",
+      "bytes": 8517,
+      "sha256": "2991d3dcd53fe9966b8c16586322a7f9bbc564dd4752c190bd4fe8d6747f7046",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/pyinstaller/licenses/COPYING.txt",
+      "change": "동일",
+      "before_bytes": 32604,
+      "before_sha256": "0598064c7d2718e38d7914a7d08343b2fa008e3bea9ebba2aa7a6ffa5900dd64",
+      "bytes": 32604,
+      "sha256": "0598064c7d2718e38d7914a7d08343b2fa008e3bea9ebba2aa7a6ffa5900dd64",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/pypdf/METADATA",
+      "change": "동일",
+      "before_bytes": 7639,
+      "before_sha256": "3925a75c81106ba7f048e0424e94740852099c166699f2afba934249dc527ebc",
+      "bytes": 7639,
+      "sha256": "3925a75c81106ba7f048e0424e94740852099c166699f2afba934249dc527ebc",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/pypdf/licenses/LICENSE",
+      "change": "동일",
+      "before_bytes": 1605,
+      "before_sha256": "a97ac230e5f33ef10a5367a850eb01f91f1a0b064e34742c7794d2294557f524",
+      "bytes": 1605,
+      "sha256": "a97ac230e5f33ef10a5367a850eb01f91f1a0b064e34742c7794d2294557f524",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/agg23.txt",
+      "change": "동일",
+      "before_bytes": 725,
+      "before_sha256": "c110d3ea2ad77467ce0dcff7d3337e6c8be8049a5103f4b9bd5fd911a77972e5",
+      "bytes": 725,
+      "sha256": "c110d3ea2ad77467ce0dcff7d3337e6c8be8049a5103f4b9bd5fd911a77972e5",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/freetype.txt",
+      "change": "동일",
+      "before_bytes": 6741,
+      "before_sha256": "f4b133e25df1f86ad3ffea453aa0e613f0474f34778dbbb3e437e7b2724937d8",
+      "bytes": 6741,
+      "sha256": "f4b133e25df1f86ad3ffea453aa0e613f0474f34778dbbb3e437e7b2724937d8",
+      "comparison": "바이너리 크기·SHA-256"
+    },
+    {
+      "path": "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/lcms.txt",
+      "change": "동일",
+      "before_bytes": 1353,
+      "before_sha256": "7312b68c5b25e9bf2b828706fb4e29588f22705112f411fd42e1f7d84c3d139a",
+      "bytes": 1353,
+      "sha256": "7312b68c5b25e9bf2b828706fb4e29588f22705112f411fd42e1f7d84c3d139a",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libopenjpeg.txt",
+      "change": "동일",
+      "before_bytes": 1794,
+      "before_sha256": "c5ab0890a737c2dfa7ba675036554f6d17741d98629b0c2a145354d00617e6b2",
+      "bytes": 1794,
+      "sha256": "c5ab0890a737c2dfa7ba675036554f6d17741d98629b0c2a145354d00617e6b2",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/pdfium.txt",
+      "change": "동일",
+      "before_bytes": 12818,
+      "before_sha256": "961eacd9633fff6d051db7208b755e9210e30efac7adec3e6a6d52798f0ccf0e",
+      "bytes": 12818,
+      "sha256": "961eacd9633fff6d051db7208b755e9210e30efac7adec3e6a6d52798f0ccf0e",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/zlib.txt",
+      "change": "동일",
+      "before_bytes": 1332,
+      "before_sha256": "33fd641c9f3b0e0be64bc78fea9e94807674cdd70c48477599226cb8956565fe",
+      "bytes": 1332,
+      "sha256": "33fd641c9f3b0e0be64bc78fea9e94807674cdd70c48477599226cb8956565fe",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/python-docx/METADATA",
+      "change": "동일",
+      "before_bytes": 2022,
+      "before_sha256": "4c4cc819ebe6de4aca44daccfd3f9173e6f46d9ed900ad1c388ff9efb7b6b1d7",
+      "bytes": 2022,
+      "sha256": "4c4cc819ebe6de4aca44daccfd3f9173e6f46d9ed900ad1c388ff9efb7b6b1d7",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/python-docx/licenses/LICENSE",
+      "change": "동일",
+      "before_bytes": 1104,
+      "before_sha256": "7652f271e46d0d533e9dc463f3b5fcbdcacf4d6a9c8d6b554d15efd0f37f6132",
+      "bytes": 1104,
+      "sha256": "7652f271e46d0d533e9dc463f3b5fcbdcacf4d6a9c8d6b554d15efd0f37f6132",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/python-hwpx/METADATA",
+      "change": "동일",
+      "before_bytes": 17383,
+      "before_sha256": "5ab68643b0f10ca287a9ec35924153e271b38958382a4032347aeb1e77a6a80b",
+      "bytes": 17383,
+      "sha256": "5ab68643b0f10ca287a9ec35924153e271b38958382a4032347aeb1e77a6a80b",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/python-hwpx/licenses/LICENSE",
+      "change": "동일",
+      "before_bytes": 9688,
+      "before_sha256": "fee6f3e30bfe064913de5de0bbe42e1fb2467958ee458199a192bde5e36c0875",
+      "bytes": 9688,
+      "sha256": "fee6f3e30bfe064913de5de0bbe42e1fb2467958ee458199a192bde5e36c0875",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/python-hwpx/licenses/NOTICE",
+      "change": "동일",
+      "before_bytes": 3837,
+      "before_sha256": "85edcf04b5e72192b4b0db28cdcf92010da3bd68d5eb5828ca559467c1cf8b7b",
+      "bytes": 3837,
+      "sha256": "85edcf04b5e72192b4b0db28cdcf92010da3bd68d5eb5828ca559467c1cf8b7b",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/python-pptx/LICENSE",
+      "change": "동일",
+      "before_bytes": 1104,
+      "before_sha256": "7652f271e46d0d533e9dc463f3b5fcbdcacf4d6a9c8d6b554d15efd0f37f6132",
+      "bytes": 1104,
+      "sha256": "7652f271e46d0d533e9dc463f3b5fcbdcacf4d6a9c8d6b554d15efd0f37f6132",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/python-pptx/METADATA",
+      "change": "동일",
+      "before_bytes": 2503,
+      "before_sha256": "d38c6af5f1817cc528706264d8343cd1c95dbdec5672f29b944f54f79134a3a2",
+      "bytes": 2503,
+      "sha256": "d38c6af5f1817cc528706264d8343cd1c95dbdec5672f29b944f54f79134a3a2",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/pywin32-ctypes/METADATA",
+      "change": "동일",
+      "before_bytes": 3909,
+      "before_sha256": "1e3767d3faff4d5b9c347160883831098d1f25acf4306b02c9acdcc6bfb5883b",
+      "bytes": 3909,
+      "sha256": "1e3767d3faff4d5b9c347160883831098d1f25acf4306b02c9acdcc6bfb5883b",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/rarfile/METADATA",
+      "change": "동일",
+      "before_bytes": 4555,
+      "before_sha256": "07fa8bf389799afa721f81a15bc04c34b9f1bab2335ba7856ac09e1f9052d9ac",
+      "bytes": 4555,
+      "sha256": "07fa8bf389799afa721f81a15bc04c34b9f1bab2335ba7856ac09e1f9052d9ac",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/rarfile/licenses/LICENSE",
+      "change": "동일",
+      "before_bytes": 756,
+      "before_sha256": "351350167805c294c7b3e170081ce1265445c46fbeb3e999e13b616c90c64a20",
+      "bytes": 756,
+      "sha256": "351350167805c294c7b3e170081ce1265445c46fbeb3e999e13b616c90c64a20",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/reportlab/METADATA",
+      "change": "동일",
+      "before_bytes": 1638,
+      "before_sha256": "eaf25ccdf6556f532b6efbc78104a0d47832b67dd1cf9b747a142a1c68e9fbaa",
+      "bytes": 1638,
+      "sha256": "eaf25ccdf6556f532b6efbc78104a0d47832b67dd1cf9b747a142a1c68e9fbaa",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/reportlab/licenses/LICENSE",
+      "change": "동일",
+      "before_bytes": 1707,
+      "before_sha256": "ef831761646313921375fc2cb888e8eeaf7da213d0b92852c10c42f3a0b4d138",
+      "bytes": 1707,
+      "sha256": "ef831761646313921375fc2cb888e8eeaf7da213d0b92852c10c42f3a0b4d138",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/setuptools/LICENSE",
+      "change": "동일",
+      "before_bytes": 1023,
+      "before_sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741",
+      "bytes": 1023,
+      "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/setuptools/METADATA",
+      "change": "동일",
+      "before_bytes": 3563,
+      "before_sha256": "bdd67d4d16cf0bf3b893e7d18cd3d2d774adb82f37ed985bc7770c607226b35b",
+      "bytes": 3563,
+      "sha256": "bdd67d4d16cf0bf3b893e7d18cd3d2d774adb82f37ed985bc7770c607226b35b",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/setuptools/licenses/LICENSE",
+      "change": "동일",
+      "before_bytes": 1076,
+      "before_sha256": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d",
+      "bytes": 1076,
+      "sha256": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/setuptools/licenses/LICENSE.APACHE",
+      "change": "동일",
+      "before_bytes": 10174,
+      "before_sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "bytes": 10174,
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/setuptools/licenses/LICENSE.BSD",
+      "change": "동일",
+      "before_bytes": 1344,
+      "before_sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5",
+      "bytes": 1344,
+      "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/setuptools/licenses/LICENSE.txt",
+      "change": "동일",
+      "before_bytes": 1107,
+      "before_sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654",
+      "bytes": 1107,
+      "sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/svglib/METADATA",
+      "change": "동일",
+      "before_bytes": 14081,
+      "before_sha256": "23a9e2c20edf5aecc9be4d3eadc0e469e2488fe38feba21060e14c2858fa419c",
+      "bytes": 14081,
+      "sha256": "23a9e2c20edf5aecc9be4d3eadc0e469e2488fe38feba21060e14c2858fa419c",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/svglib/licenses/LICENSE.txt",
+      "change": "동일",
+      "before_bytes": 7637,
+      "before_sha256": "9ccf26cfe845e0eb8bb58053e47366e7ab6b697ae010f7650978d4b71b7d1fc1",
+      "bytes": 7637,
+      "sha256": "9ccf26cfe845e0eb8bb58053e47366e7ab6b697ae010f7650978d4b71b7d1fc1",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/test-dependencies/olefile-0.47-LICENSE.txt",
+      "change": "동일",
+      "before_bytes": 2846,
+      "before_sha256": "cf1498d5b834b3758a89d06d224a1502c54a28b3a852f46130b761deaa4890d1",
+      "bytes": 2846,
+      "sha256": "cf1498d5b834b3758a89d06d224a1502c54a28b3a852f46130b761deaa4890d1",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/tinycss2/METADATA",
+      "change": "동일",
+      "before_bytes": 3007,
+      "before_sha256": "97a184ce0b479d613e7bb4bbc693067ae4c04e5665fd78e8381252f855bcab59",
+      "bytes": 3007,
+      "sha256": "97a184ce0b479d613e7bb4bbc693067ae4c04e5665fd78e8381252f855bcab59",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/tinycss2/licenses/LICENSE",
+      "change": "동일",
+      "before_bytes": 1534,
+      "before_sha256": "6b94acee20ec9f2709333134f3ba70322535fb420af0ce8c1455d9cbe297f1d5",
+      "bytes": 1534,
+      "sha256": "6b94acee20ec9f2709333134f3ba70322535fb420af0ce8c1455d9cbe297f1d5",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/typing_extensions/METADATA",
+      "change": "동일",
+      "before_bytes": 3310,
+      "before_sha256": "b05084ca1d50879865178d9fff9fabeab61bdfb1f361bfbde95421ffc8f9be46",
+      "bytes": 3310,
+      "sha256": "b05084ca1d50879865178d9fff9fabeab61bdfb1f361bfbde95421ffc8f9be46",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/typing_extensions/licenses/LICENSE",
+      "change": "동일",
+      "before_bytes": 13936,
+      "before_sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf",
+      "bytes": 13936,
+      "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/webencodings/METADATA",
+      "change": "동일",
+      "before_bytes": 3426,
+      "before_sha256": "3d9819d1209e5b56d4c6315efca7d5ca452ba7e55d4c3617ec63555c099bfb70",
+      "bytes": 3426,
+      "sha256": "3d9819d1209e5b56d4c6315efca7d5ca452ba7e55d4c3617ec63555c099bfb70",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/webencodings/licenses/LICENSE",
+      "change": "동일",
+      "before_bytes": 1519,
+      "before_sha256": "e06ef33485e7498ad592887c41fa79cc8a7fecde576c7210e11bfdddef58040e",
+      "bytes": 1519,
+      "sha256": "e06ef33485e7498ad592887c41fa79cc8a7fecde576c7210e11bfdddef58040e",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/xlsxwriter/LICENSE.txt",
+      "change": "동일",
+      "before_bytes": 1349,
+      "before_sha256": "cf08b60a4ded986b58a617cb8304373bda5c4eff42fb4e30d7597b616e116e87",
+      "bytes": 1349,
+      "sha256": "cf08b60a4ded986b58a617cb8304373bda5c4eff42fb4e30d7597b616e116e87",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/licenses/xlsxwriter/METADATA",
+      "change": "동일",
+      "before_bytes": 2712,
+      "before_sha256": "10d504f188e087f07a06b9038ed0535f37ac072c232e60c075ddb0aedb7b7d78",
+      "bytes": 2712,
+      "sha256": "10d504f188e087f07a06b9038ed0535f37ac072c232e60c075ddb0aedb7b7d78",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/offscreen-monitor.json",
+      "change": "동일",
+      "before_bytes": 141,
+      "before_sha256": "286c010caaf6c1e673d942e907c09274e0cb43870670653d45f263afa2c0c139",
+      "bytes": 141,
+      "sha256": "286c010caaf6c1e673d942e907c09274e0cb43870670653d45f263afa2c0c139",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/package.py",
+      "change": "동일",
+      "before_bytes": 18546,
+      "before_sha256": "8b11784dee19b71b3b009b63b22a6022db63da3591068e16bb604132906da575",
+      "bytes": 18546,
+      "sha256": "8b11784dee19b71b3b009b63b22a6022db63da3591068e16bb604132906da575",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/pdf_lock.py",
+      "change": "동일",
+      "before_bytes": 147,
+      "before_sha256": "886a099f8965ef6a9db14ddaea3dc5067ab8247d524482ff3cafc8ad78c62b0a",
+      "bytes": 147,
+      "sha256": "886a099f8965ef6a9db14ddaea3dc5067ab8247d524482ff3cafc8ad78c62b0a",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/pdf_pages.py",
+      "change": "동일",
+      "before_bytes": 7563,
+      "before_sha256": "0eddd9a48630f382531e7019788de34a0a466e47b10bb3ab9a6c83564b746e2d",
+      "bytes": 7563,
+      "sha256": "0eddd9a48630f382531e7019788de34a0a466e47b10bb3ab9a6c83564b746e2d",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/pdf_tools.py",
+      "change": "동일",
+      "before_bytes": 38287,
+      "before_sha256": "014b480c958e620e7e6038aff0fa9b1eda28a397539044ca2e68c58380e20f94",
+      "bytes": 38287,
+      "sha256": "014b480c958e620e7e6038aff0fa9b1eda28a397539044ca2e68c58380e20f94",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/preview_panel.py",
+      "change": "동일",
+      "before_bytes": 6930,
+      "before_sha256": "e0097a08083cd0ac09aa4bac661b03d313483dc47cb003d0acac2162f2329555",
+      "bytes": 6930,
+      "sha256": "e0097a08083cd0ac09aa4bac661b03d313483dc47cb003d0acac2162f2329555",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/queue_journal.py",
+      "change": "추가",
+      "before_bytes": null,
+      "before_sha256": null,
+      "bytes": 11871,
+      "sha256": "d7c97ed5e1a70af803bcfcf8a46a0af949687c707b2bb584100df6859df707e3",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/quick_actions.py",
+      "change": "수정",
+      "before_bytes": 18849,
+      "before_sha256": "68f17c1e68ff298d024ba490deab48eb84cb58d714e2ac0fae08ce94b8416740",
+      "bytes": 26914,
+      "sha256": "0aa7b5f897b8233765dd8d3abf74b49fd6362c8ba4d3f3bc7d4f3120b5105147",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/quick_actions_ui.py",
+      "change": "수정",
+      "before_bytes": 41822,
+      "before_sha256": "a7962f7f64af5fa16807ce3977b7c2eee6b26fdb429ddde9f22f4aa86c49d16d",
+      "bytes": 49458,
+      "sha256": "d235bd199afb5ee0299fd255aa7086d5595db75d81087035bc0c06faf37266e1",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/requirements-documents-test.txt",
+      "change": "동일",
+      "before_bytes": 111,
+      "before_sha256": "87265dd72410f6daceb2c3b2e6598abe48b8840f96bccbb04495a44a2f32aab3",
+      "bytes": 111,
+      "sha256": "87265dd72410f6daceb2c3b2e6598abe48b8840f96bccbb04495a44a2f32aab3",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/restore_document_runtime.py",
+      "change": "동일",
+      "before_bytes": 5112,
+      "before_sha256": "1139faef25d8e5821bc5ebf78722a869f8ede54b2dec74e84691abba54f16363",
+      "bytes": 5112,
+      "sha256": "1139faef25d8e5821bc5ebf78722a869f8ede54b2dec74e84691abba54f16363",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/studio_ui.py",
+      "change": "동일",
+      "before_bytes": 16703,
+      "before_sha256": "8fa947bf77f7339f8c02380b77779c7a1d4fbb0c5c79ef06d2636e48046db6c4",
+      "bytes": 16703,
+      "sha256": "8fa947bf77f7339f8c02380b77779c7a1d4fbb0c5c79ef06d2636e48046db6c4",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test-fixtures/공식휠_출처와해시.json",
+      "change": "동일",
+      "before_bytes": 3665,
+      "before_sha256": "21fb9584da5c4c091893a33ff3a94c4e520aff40b53d5a98beac1aa55bdee754",
+      "bytes": 3665,
+      "sha256": "21fb9584da5c4c091893a33ff3a94c4e520aff40b53d5a98beac1aa55bdee754",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test-fixtures/생성조건과출처.json",
+      "change": "동일",
+      "before_bytes": 1347,
+      "before_sha256": "dacb0d91a04164c22164d9f364a084eb12d96f3166766fbdd660ef2a2063d4ed",
+      "bytes": 1347,
+      "sha256": "dacb0d91a04164c22164d9f364a084eb12d96f3166766fbdd660ef2a2063d4ed",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test-fixtures/생성환경_준비.py",
+      "change": "동일",
+      "before_bytes": 1590,
+      "before_sha256": "2d4c0676ebf49b800810ccc5c685d9d510f82a19d6a0e4c11cb157e1fe2282c5",
+      "bytes": 1590,
+      "sha256": "2d4c0676ebf49b800810ccc5c685d9d510f82a19d6a0e4c11cb157e1fe2282c5",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test-fixtures/자체HEIC_생성.py",
+      "change": "동일",
+      "before_bytes": 2300,
+      "before_sha256": "29eb9545d8495adf0ae6de3288035fa892055b05229c630cb76ba4b0ee817de3",
+      "bytes": 2300,
+      "sha256": "29eb9545d8495adf0ae6de3288035fa892055b05229c630cb76ba4b0ee817de3",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test-fixtures/자체HEIC_출처와재생성.md",
+      "change": "수정",
+      "before_bytes": 3021,
+      "before_sha256": "0faa75b5ffce4c23d915b31b948379198639dc8374f8cd6fe0a173bed8441619",
+      "bytes": 3000,
+      "sha256": "e2bf920209dd73afa08984e16bd5105c413f8bde204d8f94ebd91bf82081a314",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_conversion_matrix.py",
+      "change": "동일",
+      "before_bytes": 16249,
+      "before_sha256": "61c1ee5677fdea77b98868d919db90bfa8937409018969e41ddcdb83ba8970a9",
+      "bytes": 16249,
+      "sha256": "61c1ee5677fdea77b98868d919db90bfa8937409018969e41ddcdb83ba8970a9",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_delivery113.py",
+      "change": "추가",
+      "before_bytes": null,
+      "before_sha256": null,
+      "bytes": 17703,
+      "sha256": "0774421df3696c1e74d9c30e0cccfd1ee0429775a5ac9d7a9ca8ff9be9b00b3e",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_design113.py",
+      "change": "추가",
+      "before_bytes": null,
+      "before_sha256": null,
+      "bytes": 5945,
+      "sha256": "27cf131eaa51f37cc37a5fa1be95a823247f141c500df851dfcd87d4068bd864",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_document_external.py",
+      "change": "동일",
+      "before_bytes": 12428,
+      "before_sha256": "75ea3d724b7cf980b5f02b3366c8a100481c2fb80b063898be9f150646daa084",
+      "bytes": 12428,
+      "sha256": "75ea3d724b7cf980b5f02b3366c8a100481c2fb80b063898be9f150646daa084",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_document_formats.py",
+      "change": "동일",
+      "before_bytes": 10657,
+      "before_sha256": "295a873464f8904aae047c0c8ea23deabab7301f3f1178d9fdafc99933b7049c",
+      "bytes": 10657,
+      "sha256": "295a873464f8904aae047c0c8ea23deabab7301f3f1178d9fdafc99933b7049c",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_document_hwp.py",
+      "change": "동일",
+      "before_bytes": 16151,
+      "before_sha256": "a49ac1aba95c1c3d0a94d47d558462a5a33b73f2d351d14439377bd8159ecfbb",
+      "bytes": 16151,
+      "sha256": "a49ac1aba95c1c3d0a94d47d558462a5a33b73f2d351d14439377bd8159ecfbb",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_document_import1121.py",
+      "change": "동일",
+      "before_bytes": 5340,
+      "before_sha256": "85ea01044761ebaae91c9782b611a2d134cbb94441adbe53a55a535782ac2fac",
+      "bytes": 5340,
+      "sha256": "85ea01044761ebaae91c9782b611a2d134cbb94441adbe53a55a535782ac2fac",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_document_security.py",
+      "change": "동일",
+      "before_bytes": 7385,
+      "before_sha256": "e48edf57d7fa539eaf39d453d7dd9adb1ccaec511f14de543b2eca506ba425a5",
+      "bytes": 7385,
+      "sha256": "e48edf57d7fa539eaf39d453d7dd9adb1ccaec511f14de543b2eca506ba425a5",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_document_shutdown.py",
+      "change": "동일",
+      "before_bytes": 5365,
+      "before_sha256": "8874b9525d231ca89697c325a30321c9577f92204cee83e4b5c55b2b5889d761",
+      "bytes": 5365,
+      "sha256": "8874b9525d231ca89697c325a30321c9577f92204cee83e4b5c55b2b5889d761",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_document_xlsb.py",
+      "change": "동일",
+      "before_bytes": 7512,
+      "before_sha256": "c1fbcf038a6f42eee4a654c86c88fa8930d8cd0461697028c7e776b01b258b8b",
+      "bytes": 7512,
+      "sha256": "c1fbcf038a6f42eee4a654c86c88fa8930d8cd0461697028c7e776b01b258b8b",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_documents_integration.py",
+      "change": "동일",
+      "before_bytes": 6584,
+      "before_sha256": "b3c01ca0738117a57f939eb0bf64ba1bf438049b584fbd74a46099ce608e1a33",
+      "bytes": 6584,
+      "sha256": "b3c01ca0738117a57f939eb0bf64ba1bf438049b584fbd74a46099ce608e1a33",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_engine.py",
+      "change": "동일",
+      "before_bytes": 6669,
+      "before_sha256": "7111c87a4899343e7766a9e82cbd81df80177094280a1ec937b46f579407e3a3",
+      "bytes": 6669,
+      "sha256": "7111c87a4899343e7766a9e82cbd81df80177094280a1ec937b46f579407e3a3",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_hwp_worker.py",
+      "change": "동일",
+      "before_bytes": 11652,
+      "before_sha256": "74c85e191deb7d905b33d08fd3126596d00fbf932db9ef5a1b216170c1c78eaf",
+      "bytes": 11652,
+      "sha256": "74c85e191deb7d905b33d08fd3126596d00fbf932db9ef5a1b216170c1c78eaf",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_ocr_process.py",
+      "change": "동일",
+      "before_bytes": 5665,
+      "before_sha256": "92a5a75215970669044bac5e893c6e159b53ca7aa562a8d80f6251ae02b4d9d4",
+      "bytes": 5665,
+      "sha256": "92a5a75215970669044bac5e893c6e159b53ca7aa562a8d80f6251ae02b4d9d4",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_pdf_workspace.py",
+      "change": "동일",
+      "before_bytes": 27600,
+      "before_sha256": "da16cf732b25a0c045c96a445e1cf3a551f5ed57accc884b0f23cbcdd044333d",
+      "bytes": 27600,
+      "sha256": "da16cf732b25a0c045c96a445e1cf3a551f5ed57accc884b0f23cbcdd044333d",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_queue113.py",
+      "change": "추가",
+      "before_bytes": null,
+      "before_sha256": null,
+      "bytes": 15486,
+      "sha256": "087511ec77817326b40e7ae6d2383fbb3203772183b3a8936ad50eb529abbd52",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_release113.py",
+      "change": "추가",
+      "before_bytes": null,
+      "before_sha256": null,
+      "bytes": 6037,
+      "sha256": "24042a4ee1028cebc10775137f685e371d91a1ef919ef2cdda6d4f4d6aa4bc0d",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_workbench.py",
+      "change": "동일",
+      "before_bytes": 24337,
+      "before_sha256": "e89f983b049f15cf033c73a842b264104e7df65e247ad6d1f89c78081ce771b0",
+      "bytes": 24337,
+      "sha256": "e89f983b049f15cf033c73a842b264104e7df65e247ad6d1f89c78081ce771b0",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_workspace_core.py",
+      "change": "동일",
+      "before_bytes": 33500,
+      "before_sha256": "7fa421b53dd755e082b59bdd99ebfcc4e80921229ace2a5de95db8643bf5577a",
+      "bytes": 33500,
+      "sha256": "7fa421b53dd755e082b59bdd99ebfcc4e80921229ace2a5de95db8643bf5577a",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/test_배포도구.py",
+      "change": "동일",
+      "before_bytes": 39057,
+      "before_sha256": "03b7ab6d138caec3bac6a56b2962bc2d1fdace1c9e63699dd2453bb48ba3d1a5",
+      "bytes": 39057,
+      "sha256": "03b7ab6d138caec3bac6a56b2962bc2d1fdace1c9e63699dd2453bb48ba3d1a5",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/theme_manager.py",
+      "change": "동일",
+      "before_bytes": 4893,
+      "before_sha256": "7b8a889169ecff3fbaa84f6af8455623993084f29bfd28e196bbb542d2e2b14b",
+      "bytes": 4893,
+      "sha256": "7b8a889169ecff3fbaa84f6af8455623993084f29bfd28e196bbb542d2e2b14b",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/tool_installer.py",
+      "change": "동일",
+      "before_bytes": 4422,
+      "before_sha256": "639472bde91e248b4f821f99f35f0811296b154767b57548e5dafea790afa8a3",
+      "bytes": 4422,
+      "sha256": "639472bde91e248b4f821f99f35f0811296b154767b57548e5dafea790afa8a3",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/ui_motion.py",
+      "change": "수정",
+      "before_bytes": 38832,
+      "before_sha256": "ea6a9693ab0de05b558d1d4aafec6a10f827d5d1703d0cd4fb7b71d39d39aba7",
+      "bytes": 40816,
+      "sha256": "25d9a4763a93ccd4c7af42358e124a5b9b92718789d7cc507b2ba26b1da0cab9",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/conf/security/policy/README.txt",
+      "change": "동일",
+      "before_bytes": 2390,
+      "before_sha256": "6da0747334b0fea7592fd92614b2bbc8b126535e129b1fee483774d914e98eb5",
+      "bytes": 2390,
+      "sha256": "6da0747334b0fea7592fd92614b2bbc8b126535e129b1fee483774d914e98eb5",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.base/ADDITIONAL_LICENSE_INFO",
+      "change": "동일",
+      "before_bytes": 2114,
+      "before_sha256": "a69bce275ba7a3570af6579cb0f55682cd75fedfcd49e0e8e9022270c447c916",
+      "bytes": 2114,
+      "sha256": "a69bce275ba7a3570af6579cb0f55682cd75fedfcd49e0e8e9022270c447c916",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.base/ASSEMBLY_EXCEPTION",
+      "change": "동일",
+      "before_bytes": 1522,
+      "before_sha256": "a44eb7b5caf5534c6ef536b21edb40b4d6babf91bf97d9d45596868618b2c6fb",
+      "bytes": 1522,
+      "sha256": "a44eb7b5caf5534c6ef536b21edb40b4d6babf91bf97d9d45596868618b2c6fb",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.base/LICENSE",
+      "change": "동일",
+      "before_bytes": 19274,
+      "before_sha256": "4b9abebc4338048a7c2dc184e9f800deb349366bdf28eb23c2677a77b4c87726",
+      "bytes": 19274,
+      "sha256": "4b9abebc4338048a7c2dc184e9f800deb349366bdf28eb23c2677a77b4c87726",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.base/aes.md",
+      "change": "동일",
+      "before_bytes": 1444,
+      "before_sha256": "45c6d4da48325edfbff3dcf71c704e504c057904435ed23c6d57046d551eb69d",
+      "bytes": 1444,
+      "sha256": "45c6d4da48325edfbff3dcf71c704e504c057904435ed23c6d57046d551eb69d",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.base/asm.md",
+      "change": "동일",
+      "before_bytes": 1584,
+      "before_sha256": "1ff912740e84e024711def5fa482ffbb46eff64559760c467352dfa7c39a3307",
+      "bytes": 1584,
+      "sha256": "1ff912740e84e024711def5fa482ffbb46eff64559760c467352dfa7c39a3307",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.base/c-libutl.md",
+      "change": "동일",
+      "before_bytes": 1556,
+      "before_sha256": "bef40679922d6fdfb7e4ddb223ad6722300f6054ba737bbf6188d60fcec517f9",
+      "bytes": 1556,
+      "sha256": "bef40679922d6fdfb7e4ddb223ad6722300f6054ba737bbf6188d60fcec517f9",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.base/cldr.md",
+      "change": "동일",
+      "before_bytes": 9130,
+      "before_sha256": "f2bd33ded550a05d59e8f659416ef382490504548d846e6388b1dffd273aa077",
+      "bytes": 9130,
+      "sha256": "f2bd33ded550a05d59e8f659416ef382490504548d846e6388b1dffd273aa077",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.base/icu.md",
+      "change": "동일",
+      "before_bytes": 11086,
+      "before_sha256": "af0057e8553906083f69c2fb9fe9ed4ae8bc2340a0b1e376a424702f00300b29",
+      "bytes": 11086,
+      "sha256": "af0057e8553906083f69c2fb9fe9ed4ae8bc2340a0b1e376a424702f00300b29",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.base/public_suffix.md",
+      "change": "동일",
+      "before_bytes": 17785,
+      "before_sha256": "e7705b408e894e91c93968640773b1532cd9927f8a7f178020aa3c3f38c8b363",
+      "bytes": 17785,
+      "sha256": "e7705b408e894e91c93968640773b1532cd9927f8a7f178020aa3c3f38c8b363",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.base/siphash.md",
+      "change": "동일",
+      "before_bytes": 8256,
+      "before_sha256": "5a792b5a74ad2a5f3d6a7ad8b7a841116e58a772c18bc6e392320a365b222c76",
+      "bytes": 8256,
+      "sha256": "5a792b5a74ad2a5f3d6a7ad8b7a841116e58a772c18bc6e392320a365b222c76",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.base/unicode.md",
+      "change": "동일",
+      "before_bytes": 2384,
+      "before_sha256": "5e4e6623a21a63f9bc16ea54af4133b8038e490c0d499a74676f9e5a61b9c5b2",
+      "bytes": 2384,
+      "sha256": "5e4e6623a21a63f9bc16ea54af4133b8038e490c0d499a74676f9e5a61b9c5b2",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.base/wepoll.md",
+      "change": "동일",
+      "before_bytes": 1454,
+      "before_sha256": "3ac2992770080453b98c42afa807ba4b2c1738ef756b92a55c645f55e7df48f0",
+      "bytes": 1454,
+      "sha256": "3ac2992770080453b98c42afa807ba4b2c1738ef756b92a55c645f55e7df48f0",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.base/zlib.md",
+      "change": "동일",
+      "before_bytes": 1010,
+      "before_sha256": "c9c70c36a1f0325e8788771906202d42ba6ab4205caca44ec0f665707e83226b",
+      "bytes": 1010,
+      "sha256": "c9c70c36a1f0325e8788771906202d42ba6ab4205caca44ec0f665707e83226b",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.desktop/colorimaging.md",
+      "change": "동일",
+      "before_bytes": 167,
+      "before_sha256": "04d61e3e8e71dd452ebe52008af5378d9f6640d14578aeb515dc5375973b0189",
+      "bytes": 167,
+      "sha256": "04d61e3e8e71dd452ebe52008af5378d9f6640d14578aeb515dc5375973b0189",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.desktop/freetype.md",
+      "change": "동일",
+      "before_bytes": 30465,
+      "before_sha256": "553e804baecb7de7129d77c7259a6b70037d1893f1c600b41b35201695fb7758",
+      "bytes": 30465,
+      "sha256": "553e804baecb7de7129d77c7259a6b70037d1893f1c600b41b35201695fb7758",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.desktop/giflib.md",
+      "change": "동일",
+      "before_bytes": 1689,
+      "before_sha256": "206aab89ec75968e48a6a1ed6df7d8b9bfb7aea12cbe4c9345d93e5d97460a25",
+      "bytes": 1689,
+      "sha256": "206aab89ec75968e48a6a1ed6df7d8b9bfb7aea12cbe4c9345d93e5d97460a25",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.desktop/harfbuzz.md",
+      "change": "동일",
+      "before_bytes": 3629,
+      "before_sha256": "5ec7cba7f8e7fc3a089213140aab6fa1b3bd5bf8a91bf8bddb3b8d315fc5f7d0",
+      "bytes": 3629,
+      "sha256": "5ec7cba7f8e7fc3a089213140aab6fa1b3bd5bf8a91bf8bddb3b8d315fc5f7d0",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.desktop/jpeg.md",
+      "change": "동일",
+      "before_bytes": 3475,
+      "before_sha256": "580be596216ee11e2554b24ce944973acaede2ebf5ffba34a6bd8cc441c05043",
+      "bytes": 3475,
+      "sha256": "580be596216ee11e2554b24ce944973acaede2ebf5ffba34a6bd8cc441c05043",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.desktop/lcms.md",
+      "change": "동일",
+      "before_bytes": 2654,
+      "before_sha256": "843f9f6fa9c3f8109fcf4d5fe74caf7f2ae8e9bcd92238e4aff2d428c932b24b",
+      "bytes": 2654,
+      "sha256": "843f9f6fa9c3f8109fcf4d5fe74caf7f2ae8e9bcd92238e4aff2d428c932b24b",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.desktop/libpng.md",
+      "change": "동일",
+      "before_bytes": 7519,
+      "before_sha256": "f73afb394792f3aeecd959e89487603677a430e56b44eba596d8b572accfd540",
+      "bytes": 7519,
+      "sha256": "f73afb394792f3aeecd959e89487603677a430e56b44eba596d8b572accfd540",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.desktop/mesa3d.md",
+      "change": "동일",
+      "before_bytes": 5732,
+      "before_sha256": "63f4e6f75caebbccb95d903fb43e46ac7111b3624d0a34f146b276d7d9e7b152",
+      "bytes": 5732,
+      "sha256": "63f4e6f75caebbccb95d903fb43e46ac7111b3624d0a34f146b276d7d9e7b152",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.xml.crypto/santuario.md",
+      "change": "동일",
+      "before_bytes": 11505,
+      "before_sha256": "d08690d25f660f145c73365d260ed522cd0aace8a0e1396706551b7a1ae8c9a3",
+      "bytes": 11505,
+      "sha256": "d08690d25f660f145c73365d260ed522cd0aace8a0e1396706551b7a1ae8c9a3",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.xml/bcel.md",
+      "change": "동일",
+      "before_bytes": 11196,
+      "before_sha256": "cd578186ad93de46cca29ec8ace2b11f9da751987f3f140e6095c528596cc8c1",
+      "bytes": 11196,
+      "sha256": "cd578186ad93de46cca29ec8ace2b11f9da751987f3f140e6095c528596cc8c1",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.xml/dom.md",
+      "change": "동일",
+      "before_bytes": 3761,
+      "before_sha256": "6686e8877667584a3a7c07344baadca1a03e29f677162d87c3c0811e990d1148",
+      "bytes": 3761,
+      "sha256": "6686e8877667584a3a7c07344baadca1a03e29f677162d87c3c0811e990d1148",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.xml/jcup.md",
+      "change": "동일",
+      "before_bytes": 1448,
+      "before_sha256": "8d5dcfdf50455a3c34c753a98f21e953248af200415a9084e3f102cb6c43b8bf",
+      "bytes": 1448,
+      "sha256": "8d5dcfdf50455a3c34c753a98f21e953248af200415a9084e3f102cb6c43b8bf",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.xml/xalan.md",
+      "change": "동일",
+      "before_bytes": 13494,
+      "before_sha256": "ea67226be5cfe19c7e79725c2c24a16676323264d69f9747c528de0b44541b03",
+      "bytes": 13494,
+      "sha256": "ea67226be5cfe19c7e79725c2c24a16676323264d69f9747c528de0b44541b03",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/java.xml/xerces.md",
+      "change": "동일",
+      "before_bytes": 11852,
+      "before_sha256": "472224f99de833f4f4c19f2f8a0317f22114e1c641f5d77ffa3a4280a1b80176",
+      "bytes": 11852,
+      "sha256": "472224f99de833f4f4c19f2f8a0317f22114e1c641f5d77ffa3a4280a1b80176",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/jdk.crypto.cryptoki/pkcs11cryptotoken.md",
+      "change": "동일",
+      "before_bytes": 4095,
+      "before_sha256": "1f36ff1342a581142c858f90064e20633d43529ac82adb85345bd902a14e18b2",
+      "bytes": 4095,
+      "sha256": "1f36ff1342a581142c858f90064e20633d43529ac82adb85345bd902a14e18b2",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/jdk.crypto.cryptoki/pkcs11wrapper.md",
+      "change": "동일",
+      "before_bytes": 2131,
+      "before_sha256": "371974b1fca3744a3892c7ee1fcc593b8b4281fc218f4cafd2f709e9df5fd81d",
+      "bytes": 2131,
+      "sha256": "371974b1fca3744a3892c7ee1fcc593b8b4281fc218f4cafd2f709e9df5fd81d",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/jdk.dynalink/dynalink.md",
+      "change": "동일",
+      "before_bytes": 1502,
+      "before_sha256": "17312591cabee3ef6c34ed8897d92e4e361ba9cea41ec00dcd61a322a8fc2cdb",
+      "bytes": 1502,
+      "sha256": "17312591cabee3ef6c34ed8897d92e4e361ba9cea41ec00dcd61a322a8fc2cdb",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/java/legal/jdk.localedata/thaidict.md",
+      "change": "동일",
+      "before_bytes": 1346,
+      "before_sha256": "c326144a2351c9608fa708b5d7d3c5a3da03e82b66479b128e9db4969539824a",
+      "bytes": 1346,
+      "sha256": "c326144a2351c9608fa708b5d7d3c5a3da03e82b66479b128e9db4969539824a",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/tesseract/doc/LICENSE",
+      "change": "동일",
+      "before_bytes": 11358,
+      "before_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/tesseract/doc/README.md",
+      "change": "수정",
+      "before_bytes": 8160,
+      "before_sha256": "33b491c89c37a9d0f38a484d9d17a992189a7564efe0d7544dbdeb110f54933a",
+      "bytes": 8152,
+      "sha256": "35ca53a67a2895ebdc2cf6777fc5808c1b0c5df650b896b79c82b2c4a004bd76",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/vendor/tesseract/doc/tessdata_fast-README.md",
+      "change": "수정",
+      "before_bytes": 4356,
+      "before_sha256": "4d8642bec35134f7f378887ee309577b3707ae2772b63b0d21cadd955f17ee66",
+      "bytes": 4353,
+      "sha256": "22fee9835bff02fb7013aa9786a2144ae3d4c219083089375985a62808e7215e",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/version-info.txt",
+      "change": "수정",
+      "before_bytes": 519,
+      "before_sha256": "69e72eade7cade54da28612261ac93fd2d6fc0bb7329e873594343285ea79aed",
+      "bytes": 519,
+      "sha256": "9c1e41e38812c5d74074705124d61edb4319855d2a98b6f9b1c9107701249421",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/workspace_core.py",
+      "change": "동일",
+      "before_bytes": 47697,
+      "before_sha256": "1a14962e55fe5d067655c25902b08caf769313726ab57bf8427d7896ac7efb66",
+      "bytes": 47697,
+      "sha256": "1a14962e55fe5d067655c25902b08caf769313726ab57bf8427d7896ac7efb66",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/배포구성.json",
+      "change": "수정",
+      "before_bytes": 65786,
+      "before_sha256": "a41b90da3248450b94fe94bc0d92e484d90b266eda3165192bd5b8152eb05566",
+      "bytes": 67094,
+      "sha256": "e182cc6e4ea93b0264b195a14fba86e92808382065b565e4bb3740efb18136fa",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/배포빌드.py",
+      "change": "수정",
+      "before_bytes": 17055,
+      "before_sha256": "34be5dd3064a9cf71112f9932a3623ba1afde52f21e26aa3d15d84e36dcb4839",
+      "bytes": 17055,
+      "sha256": "0daff7d8af2352317d5a5257237c446fbf27220bcf2d78ca59ddbb70f7a7fb36",
+      "comparison": "텍스트 전체 차이"
+    },
+    {
+      "path": "소스/빌드방법.md",
+      "change": "수정",
+      "before_bytes": 33546,
+      "before_sha256": "ec440ffe2d2533ce853193b5984eea7dc5d2c4b0a50bc221aa71a7988a9cc1da",
+      "bytes": 35400,
+      "sha256": "9e1db1ce8206eb690f09c6d6c9b961b233d29e414319b7cba2e1325672e3a0a6",
+      "comparison": "텍스트 전체 차이"
+    }
+  ],
+  "parts": [
+    {
+      "path": "part-001.patch",
+      "bytes": 179984,
+      "sha256": "68ff9696c4c7690a6bcd75f0a0382930a2f86693498dc5ebb219b9bb91baf7ac"
+    },
+    {
+      "path": "part-002.patch",
+      "bytes": 179992,
+      "sha256": "f7ae61d7afd9c8d40db15b2f27ab6c0aa8ddc361de770bfc857990824c043342"
+    },
+    {
+      "path": "part-003.patch",
+      "bytes": 145096,
+      "sha256": "1464342f648a8abf78c8f89bcd69803238710db336f2ec739c6d6f0b39b0d468"
+    }
+  ],
+  "joined_bytes": 505072,
+  "joined_sha256": "4f645f7bd220425ab216dc6255d092f58d3df459f7701ec1d68c5515ddb366a5"
+}

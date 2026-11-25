@@ -1,0 +1,2765 @@
+--- 공개기준/소스/1.10-문서지원안내.md
++++ 최종공개/소스/1.10-문서지원안내.md
+@@ -1,12 +1,16 @@
+ # 플립링 1.10 문서 지원
+ 
+-Word, PowerPoint, Excel의 구형·최신·매크로·템플릿 문서와 OpenDocument, 한글, 전자책·텍스트의 대표 형식을 입력할 수 있도록 확장했습니다. 실제 입력·출력 목록은 앱의 도구 화면에서 구분해 보여 줍니다. 지원되는 모든 형식을 서로 변환할 수 있다는 뜻은 아닙니다.
++Word, PowerPoint, Excel의 구형·최신·매크로·템플릿 문서와 OpenDocument, 한글, 전자책·텍스트의 대표 형식을 입력할 수 있도록 확장했습니다.  
++실제 입력·출력 목록은 앱의 도구 화면에서 구분해 보여 줍니다.  
++지원되는 모든 형식을 서로 변환할 수 있다는 뜻은 아닙니다.
+ 
+-- 한글: HWP·HWPX 입력의 기존 DOCX·ODT·PDF 등 출력을 유지합니다. 1.11에서는 HWP5 ↔HWPX와 DOCX/TXT →HWP/HWPX의 제한 저장을 추가합니다.
++- 한글: HWP·HWPX 입력의 기존 DOCX·ODT·PDF 등 출력을 유지합니다.  
++  1.11에서는 HWP5 ↔HWPX와 DOCX/TXT →HWP/HWPX의 제한 저장을 추가합니다.
+ - Word: DOC·DOCX·DOCM·DOT 계열, ODT·OTT·FODT·RTF 등 입력. DOCX·DOC·ODT·RTF·TXT·HTML·EPUB·PDF와 페이지 이미지 출력.
+ - PowerPoint: PPT·PPTX·PPTM·POT·PPS 계열과 ODP·OTP·FODP 등 입력. PPTX·PPT·ODP·PDF·페이지 이미지·텍스트 출력.
+ - Excel: XLS·XLSX·XLSB·XLSM·XLT 계열과 ODS·OTS·FODS·CSV·TSV·DIF·SLK 등 입력. XLSX·XLS·ODS·CSV·TSV·PDF·HTML 출력.
+-- 그 외: 텍스트·Markdown·HTML·전자책 및 엔진이 읽을 수 있는 iWork·WordPerfect·AbiWord 등의 대표 입력을 제공합니다. 해당 프로그램 전용 기능의 호환 여부는 문서마다 다릅니다.
++- 그 외: 텍스트·Markdown·HTML·전자책 및 엔진이 읽을 수 있는 iWork·WordPerfect·AbiWord 등의 대표 입력을 제공합니다.  
++  해당 프로그램 전용 기능의 호환 여부는 문서마다 다릅니다.
+ 
+ 구 엑셀 XLS는 최신 Excel 형식과 별도로 지원합니다.
+ 
+@@ -16,9 +20,15 @@
+ 
+ 모든 문서의 고급 서식이나 오래된 파생 형식을 완벽하게 처리한다고 보장하지 않습니다.
+ 
+-CSV·TSV는 여러 시트를 보존하지 않으며 첫 시트의 표시 값을 저장합니다. 수식과 서식을 보존하려면 XLSX·XLS·ODS를 선택하세요. PPT를 TXT로 저장하면 텍스트만 남습니다. 변환 뒤 차트·글꼴·페이지 배치·수식을 확인하세요.
++CSV·TSV는 여러 시트를 보존하지 않으며 첫 시트의 표시 값을 저장합니다.  
++수식과 서식을 보존하려면 XLSX·XLS·ODS를 선택하세요.  
++PPT를 TXT로 저장하면 텍스트만 남습니다.  
++변환 뒤 차트·글꼴·페이지 배치·수식을 확인하세요.
+ 
+-Office 변환에는 LibreOffice가 필요합니다. HWP/HWPX용 H2Orestart와 Java는 앱 폴더에 포함합니다. OCR·PDF 기능과 기존 Shift 드래 그 원형 메뉴는 유지합니다. 입력·출력 지원 범위와 실제 검사 완료 범위는 구분하며, 검사 결과는 해당 차수의 검증 문서를 확인하세요.
++Office 변환에는 LibreOffice가 필요합니다.  
++HWP/HWPX용 H2Orestart와 Java는 앱 폴더에 포함합니다.  
++OCR·PDF 기능과 기존 Shift 드래 그 원형 메뉴는 유지합니다.  
++입력·출력 지원 범위와 실제 검사 완료 범위는 구분하며, 검사 결과는 해당 차수의 검증 문서를 확인하세요.
+ 
+ ## 초기 XLSB 변종의 제한과 빈 결과 차단
+ 
+--- 공개기준/소스/1.13-새기능안내.md
++++ 최종공개/소스/1.13-새기능안내.md
+@@ -0,0 +1,23 @@
++# 플립링 1.13.0 사용 안내
++
++빠른 작업에서 파일이나 폴더를 추가하고 결과 폴더와 작업을 선택합니다. **원본은 보존하며 결과는 새 이름으로 저장합니다.** 이 안내는 제작 중인 소스 기준이며, 진행 중인 기능과 제한을 함께 표시합니다.
++
++| 기능과 구분 | 사용 순서 | 주의와 제한 |
++|---|---|---|
++| **1. 전후 비교** · 기존 비교 유지, 문서 비교 추가 | 결과를 선택해 원본과 결과를 보거나, `호환 안내 · 개인정보 · 문서 비교`의 `전후 비교` 탭에서 두 파일을 고르고 `문서 전후 비교`를 누릅니다. 페이지 번호를 바꿔 비교합니다. | 이미지·PDF 미리보기와 추출 텍스트 차이를 활용합니다. 문서 비교는 도우미가 필요할 수 있으며 화면과 텍스트의 일치가 모든 서식·내용의 완전한 보존을 뜻하지 않습니다. |
++| **2. 파일별 호환 안내** · 신규 연결 | 같은 도구의 `호환 안내` 탭에서 파일과 출력 형식을 고르고 `호환 확인`을 누릅니다. 글꼴·수식·매크로 등 안내를 읽고 변환 여부를 결정합니다. | 제한된 내부 검사입니다. 흔적이 발견되지 않아도 내용이나 배치가 보존된다는 보장은 없습니다. 보호 문서·복잡한 개체와 도우미 요구를 확인하세요. |
++| **3. 실패 작업 재시도** · 기존 유지 | 대기열 처리 후 `실패 작업 재시도`를 누릅니다. 이미 완료한 입력은 제외하고 실패한 나머지를 다시 처리합니다. | ZIP 묶음 단계만 실패한 경우 해당 단계만 재시도할 수 있습니다. 원인과 결과를 확인하세요. |
++| **4. 목표 용량** · 기존 유지 | 작업 설정의 `목표 KiB`에 원하는 크기를 입력하고 변환합니다. 0은 제한 없음입니다. 결과의 목표 달성 여부를 확인합니다. | 이미지·PDF 출력에서 지원합니다. 목표에 못 미쳐도 결과를 보존하며 미달성으로 표시합니다. |
++| **5. 사용자 작업 저장** · 기존 유지 | 형식·품질·크기·이름 규칙 등을 정하고 `작업 저장`을 눌러 이름을 입력합니다. 이후 저장한 작업을 선택해 사용합니다. | 빠른 작업 설정을 저장하며 입력 파일과 결과 경로를 저장 작업에 포함하지 않습니다. |
++| **6. 작업 묶음 정리와 되돌리기** · 작업 단위 확장 | 대기열에서 작업을 선택하고 `선택 작업 묶음 정리`를 누릅니다. 보관한 결과를 되돌리려면 `정리 되돌리기`를 누릅니다. | 영구 삭제가 아니라 앱이 만든 결과를 보관 위치로 옮깁니다. 해시가 바뀌었거나 복원 이름이 충돌하면 보호 안내를 확인하세요. |
++| **7. 폴더 구조 유지** · 기존 유지 | `폴더 추가`로 입력하고 결과 폴더를 지정한 뒤 대기열에 넣습니다. 필요하면 확장자 필터를 설정합니다. | 선택 폴더 아래의 상대 구조를 결과에 반영합니다. 연결 파일·폴더는 따라가지 않으며 건너뛴 항목은 확인해야 합니다. |
++| **8. 메일·인쇄·웹 용도** · 기본 작업 추가 | 빠른 작업 목록에서 용도를 고르고 필요에 따라 설정을 바꿔 저장합니다. | 메일용은 JPG 품질 80·너비 1600px·목표 1MiB, 인쇄용은 PDF 품질 95·크기 자동·목표 없음, 웹용은 WebP 품질 80·너비 1920px·목표 512KiB입니다. 목표는 달성을 보장하지 않습니다. |
++| **9. 개인정보 선택 제거** · 신규 | `호환 안내 · 개인정보 · 문서 비교`의 `개인정보` 탭에서 파일을 고르고 `메타데이터 탐지`를 누릅니다. 제거할 항목을 선택하고 저장 폴더를 지정한 후 `선택 제거 사본 저장`을 누릅니다. | PDF·OOXML·JPEG·PNG의 지원되는 탐지 항목만 선택 제거합니다. 다른 형식은 선택 제거를 지원하지 않습니다. 원본은 그대로이며 본문·첨부·댓글 등은 별도 검토가 필요합니다. |
++| **10. OCR 위치와 읽기 순서** · 기존 교정 확장 | OCR 교정에서 파일을 선택해 `문자 인식`을 실행하고 `인식 위치와 읽기 순서 보기`를 켭니다. 번호와 목록을 선택해 페이지의 실제 인식 위치를 확인하고 텍스트를 교정합니다. | 번호가 없는 원본 글자·표를 직접 대조하세요. 자동 누락 검출을 보장하지 않습니다. 기존 교정 텍스트를 보존합니다. |
++| **11. 결과 이름 충돌 미리보기** · 확장 | 입력·작업·결과 폴더를 정하고 `이름 미리보기`에서 예정 이름을 확인합니다. | 기존 파일과 같은 묶음의 이름을 고려합니다. 실행 중 외부 변경이 있으면 실제 이름이 달라질 수 있습니다. PDF는 실제 페이지 수를 반영합니다. 문서는 명시적인 미리보기에서 안전한 임시 변환으로 결과 수를 확인합니다. Office 연결 대기를 보완한 소스에서 2페이지 문서의 예정 이름과 실제 결과 이름 일치, 원본 보존을 확인했습니다. 느린 최초 시작의 세부 원인은 미측정이며 새 배포본 확인은 별도입니다. |
++| **12. 중단 후 이어하기** · 신규 | 다시 시작하면 복구된 대기열 상태를 확인하고 `계속`을 직접 누릅니다. 재확인 필요 항목은 입력과 결과를 살핀 뒤 안내에 따라 처리합니다. | 자동 실행하지 않습니다. 입력과 완료 결과의 SHA-256을 확인하며 변경·중단 경계는 재확인이 필요합니다. 오래되거나 손상된 기록은 보존하고 오류를 표시합니다. |
++| **13. 공유 진단** · 신규 | `공유 진단 미리보기`를 눌러 표시 내용을 확인한 뒤 저장하거나 취소합니다. | 허용된 버전·상태·형식·오류 분류만 담습니다. 경로·파일명·문서 본문·원문 오류·실제 설정값은 제외합니다. 일반 `요약 저장`은 공유 진단과 별개입니다. |
++
++라이트·다크·시스템 테마와 기존 문서 작업은 계속 사용할 수 있습니다. 변환이나 정리 전에는 대상과 저장 위치를 확인하고, 결과는 사용 목적에 맞게 직접 검토하세요.
++
++내부 도구는 **호환 안내·개인정보·전후 비교** 탭으로 나뉩니다. 각 탭의 안내를 따라 현재 작업에 필요한 항목만 선택합니다. 입력 중 테두리 강조는 반복하지 않으며, 진행률과 선택 피드백은 간격을 두고 표시합니다. 움직임 축소를 켜도 최종 상태와 작업 결과는 그대로 반영합니다.
+--- 공개기준/소스/1.7-새기능안내.md
++++ 최종공개/소스/1.7-새기능안내.md
+@@ -24,7 +24,7 @@
+ 
+ 탐색기에서 파일을 드래그하며 기본 Shift 키를 누르면 원형 메뉴를 사용합니다. 원하는 형식에 놓아 변환하고 중앙에 놓아 취소합니다. 기록의 결과 항목을 왼쪽 마우스로 두 번 클릭하면 탐색기에서 해당 파일을 선택하며 파일을 실행하지 않습니다.
+ 
+-오디오·영상에는 FFmpeg, 일부 문서·전자 책에는 Pandoc, Office에는 LibreOffice가 별도로 필요합니다. RAR용 7-Zip 해제 도구와 OCR 엔진·한 영 모델은 동봉합니다. 7-Zip의 원문 고지와 동일 버전 전체 상응 소스는 `licenses/7Zip`에 있습니다.
++오디오·영상에는 FFmpeg, 일부 문서·전자책에는 Pandoc, Office에는 LibreOffice가 별도로 필요합니다. RAR용 7-Zip 해제 도구와 OCR 엔진·한영 모델은 동봉합니다. 7-Zip의 원문 고지와 동일 버전 전체 상응 소스는 `licenses/7Zip`에 있습니다.
+ 
+ ## 추가 검사 재현
+ 
+@@ -41,10 +41,4 @@
+ 
+ 변환 조합 검사는 외부 도우미와 각 입력 형식의 시험 자료를 사용합니다. 성공·실패·도우미 부재·입력 자료 부재를 구분한 보고서를 확인해야 합니다. 검사 통과와 실제 Windows 탐색기에서의 Shift/OLE 입력 확인은 별개입니다. 오프스크린 Qt 검사를 실제 화면 조작으로 표현하지 않습니다.
+ 
+-RAR 입력은 사용 권한을 확인한 별도 RAR 파일을 `--rar-fixture 파일경로`로 지정합니다.
+-
+-지정하지 않으면 해당 입력은 시험 자료 부재로 기록하며 통과로 취급하지 않습니다.
+-
+-이번 개발에서 사용한 자료는 ISC 고지가 있는 `markokr/rarfile` 저장소의 `test/files/unicode.rar`이며 자료·출처·해시는 개발 검증 폴더에 보존합니다.
+-
+-고객 프로그램에는 이 외부 시험 파일을 포함하지 않습니다.
++RAR 입력은 사용 권한을 확인한 별도 RAR 파일을 `--rar-fixture 파일경로`로 지정합니다. 지정하지 않으면 해당 입력은 시험 자료 부재로 기록하며 통과로 취급하지 않습니다. 이번 개발에서 사용한 자료는 ISC 고지가 있는 `markokr/rarfile` 저장소의 `test/files/unicode.rar`이며 자료·출처·해시는 개발 검증 폴더에 보존합니다. 고객 프로그램에는 이 외부 시험 파일을 포함하지 않습니다.
+--- 공개기준/소스/1.8-화면안내.md
++++ 최종공개/소스/1.8-화면안내.md
+@@ -1,23 +1,37 @@
+-# 플립링 1.8 화면 안내
+-
+-<!-- user-levels:start -->
+-**수준별 전체 안내:** [LEVEL 1 - Beginner](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) · [LEVEL 2 - Explorer](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) · [LEVEL 3 - Practitioner](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) · [LEVEL 4 - Advanced](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) · [LEVEL 5 - Expert](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md)
+-<!-- user-levels:end -->
+-
+-기본 창은 1160×820 논리 픽셀의 고정 크기입니다. Windows 배율에 따라 실제 픽셀 수가 달라집니다. 사용 가능한 화면이 작으면 그 영역 안으로 고정 크기를 맞추고 필요한 내용은 스크롤로 확인합니다.
+-
+-메뉴의 현재 위치와 본문 경계, 프리셋·작업 목록·실행·원본과 결과 비교의 구분을 보강합니다. 흑백·회색과 SUIT 글꼴을 사용합니다. 한국어와 영어는 설정에서 선택합니다.
+-
+-창 맞춤과 스크롤은 `fixed_viewport.py`, 이미지 고배율 처리는 `preview_panel.py`와 `pdf_panel.py`가 담당합니다.
+-
+-이 모듈들을 전체 소스와 함께 복사해야하며 PyInstaller가 자동으로 포함합니다. `test_fixed_layout.py`는 이 릴리스의 화면 크기·배율 검사를 담당합니다.
+-
+-기존 변환 엔진과 설정 데이터 형식은 유지합니다.
+-
+-개발용 Qt 오프 스크린 렌더 검사는 실제 Windows의 디스플레이 배율 변경이나 탐색기 Shift 드래그 검사와 구분합니다. 세부 검증 결과는 프로젝트의 릴리스 기록에 보관합니다.
+-
+-다음 명령은 `소스` 폴더에서 실행합니다. 동봉한 `offscreen-monitor.json`은 실제 모니터 설정을 바꾸지 않고 Qt 가상 화면 크기만 지정합니다.
+-
++# 플립링 1.8 화면 안내
++
++<!-- user-levels:start -->
++<details>
++<summary>읽기 수준 선택</summary>
++
++| 레벨 | 읽는 목적 |
++| --- | --- |
++| [LEVEL 1 - Beginner](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A81.md) | 목적과 입력·출력을 쉬운 말로 이해하기 |
++| [LEVEL 2 - Explorer](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A82.md) | 주요 기능과 전체 처리 흐름 살펴보기 |
++| [LEVEL 3 - Practitioner](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A83.md) | 설정·실행 순서와 결과 확인하기 |
++| [LEVEL 4 - Advanced](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A84.md) | 구현 선택과 조건·한계 비교하기 |
++| [LEVEL 5 - Expert](../docs/%EC%9D%BD%EA%B8%B0%EC%95%88%EB%82%B4/%EB%A0%88%EB%B2%A85.md) | 세부 근거와 재현 조건 검토하기 |
++
++</details>
++<!-- user-levels:end -->
++
++기본 창은 1160×820 논리 픽셀의 고정 크기입니다.  
++Windows 배율에 따라 실제 픽셀 수가 달라집니다.  
++사용 가능한 화면이 작으면 그 영역 안으로 고정 크기를 맞추고 필요한 내용은 스크롤로 확인합니다.
++
++메뉴의 현재 위치와 본문 경계, 프리셋·작업 목록·실행·원본과 결과 비교의 구분을 보강합니다. 흑백·회색과 SUIT 글꼴을 사용합니다. 한국어와 영어는 설정에서 선택합니다.
++
++창 맞춤과 스크롤은 `fixed_viewport.py`, 이미지 고배율 처리는 `preview_panel.py`와 `pdf_panel.py`가 담당합니다.
++
++이 모듈들을 전체 소스와 함께 복사해야하며 PyInstaller가 자동으로 포함합니다. `test_fixed_layout.py`는 이 릴리스의 화면 크기·배율 검사를 담당합니다.
++
++기존 변환 엔진과 설정 데이터 형식은 유지합니다.
++
++개발용 Qt 오프 스크린 렌더 검사는 실제 Windows의 디스플레이 배율 변경이나 탐색기 Shift 드래그 검사와 구분합니다.  
++세부 검증 결과는 프로젝트의 릴리스 기록에 보관합니다.
++
++다음 명령은 `소스` 폴더에서 실행합니다. 동봉한 `offscreen-monitor.json`은 실제 모니터 설정을 바꾸지 않고 Qt 가상 화면 크기만 지정합니다.
++
+ ```powershell
+ $env:QT_QPA_PLATFORM = "offscreen:configfile=offscreen-monitor.json"
+ $env:QT_SCALE_FACTOR = "1.5"
+--- 공개기준/소스/1.9-확장안내.md
++++ 최종공개/소스/1.9-확장안내.md
+@@ -2,7 +2,7 @@
+ 
+ 새 작업 공간에서 파일을 모아 목표 형식·용량·페이지 규격을 지정하고, 검토한 처리 순서를 레시피로 저장하는 버전입니다.
+ 
+-Ctrl +K 명령 창, 원본을 보존한 이름 규칙 복사, 파일 카드 조합, 결과 비교, 기록 검색·필터·복사, 감시 폴더, 휠 개인화, 클립 보드 입력과 직접 시작한 영역 캡처를 추가합니다. PDF·OCR 검토에서는 실제 인식 신뢰도와 위치를 확인하고 텍스트를 수정하여 TXT·PDF·DOCX·XLSX로 저장합니다.
++Ctrl+K 명령창, 원본을 보존한 이름 규칙 복사, 파일 카드 조합, 결과 비교, 기록 검색·필터·복사, 감시 폴더, 휠 개인화, 클립보드 입력과 직접 시작한 영역 캡처를 추가합니다. PDF·OCR 검토에서는 실제 인식 신뢰도와 위치를 확인하고 텍스트를 수정하여 TXT·PDF·DOCX·XLSX로 저장합니다.
+ 
+ 개인정보 후보는 검토 보조입니다. 사용자가 확인한 영역만 새로운 결과 파일에 가립니다. 자동 탐지가 모든 개인정보를 발견한다는 보장은 없습니다. 압축 목표를 달성하지 못한 경우 달성한 것으로 표시하지 않습니다. 원본을 덮어쓰지 않습니다.
+ 
+--- 공개기준/소스/app.py
++++ 최종공개/소스/app.py
+@@ -50,7 +50,7 @@
+                        install_motion_system, SURFACE_STYLE, MotionMessageBox, decorate_message)
+ 
+ VERSION = 3
+-RELEASE_VERSION = "1.12.1"
++RELEASE_VERSION = "1.13.0"
+ APPNAME = "플립링"
+ AUTOSTART_NAME = "FlipRing19"
+ DATA = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "PUVKID" / "FlipRing19"
+@@ -1047,6 +1047,10 @@
+         from quick_actions_ui import QuickActionsPanel
+         self.quick_actions_panel = QuickActionsPanel(self, self.language)
+         self.tabs.addTab(self.quick_actions_panel, self.text('quick_actions'))
++        self.delivery_dialogs = []
++        self.delivery_button = self.button('', self.open_delivery_tools)
++        self.delivery_button.setText('Compatibility · privacy · comparison' if self.language == 'en' else '호환 안내 · 개인정보 · 문서 비교')
++        self.quick_actions_panel.body_layout.addWidget(self.delivery_button)
+         quick_nav = NavButton('convert')
+         quick_nav.set_svg(engine.asset('lucide/arrow-left-right.svg'))
+         quick_nav.clicked.connect(lambda: self.tabs.setCurrentIndex(7))
+@@ -1180,6 +1184,8 @@
+         set_reduced_motion(self, enabled)
+         self.pdf_panel.set_reduced_motion(enabled)
+         self.workspace_panel.set_reduced_motion(enabled)
++        for dialog in getattr(self, 'delivery_dialogs', []):
++            dialog.set_reduced_motion(enabled)
+ 
+     def run_selected(self):
+         fmt = self.output_combo.currentData()
+@@ -1323,6 +1329,10 @@
+     def retranslate(self):
+         # 표시 문자열만 갱신한다. 항목 재생성·키 데이터 변경·자동 시작 토글은 하지 않는다.
+         apply_language(self.language)
++        if hasattr(self, 'delivery_button'):
++            self.delivery_button.setText('Compatibility · privacy · comparison' if self.language == 'en' else '호환 안내 · 개인정보 · 문서 비교')
++        for dialog in getattr(self, 'delivery_dialogs', []):
++            dialog.set_language(self.language)
+         with QSignalBlocker(self.language_combo):
+             self.language_combo.setCurrentIndex(self.language_combo.findData(self.language))
+         with QSignalBlocker(self.trigger):
+@@ -1464,7 +1474,26 @@
+ 
+     def work_busy(self):
+         return bool(self.pending or self.pdf_panel.is_busy() or self.workspace_panel.is_busy()
+-                    or self.quick_actions_panel.is_busy())
++                    or self.quick_actions_panel.is_busy()
++                    or any(dialog.is_busy() for dialog in getattr(self, 'delivery_dialogs', [])))
++
++    def open_delivery_tools(self):
++        from delivery_ui import open_dialog
++        if self.work_busy():
++            self.notify(self.text('busy_title'), self.text('busy_message'))
++            return
++        rows = getattr(self.quick_actions_panel, '_inputs', [])
++        paths = [row['source'] for row in rows] or list(self.paths)
++        # 창을 하나만 유지해 변환과 별도 도구의 동시 실행을 막는다.
++        if self.delivery_dialogs:
++            self.delivery_dialogs[0].show()
++            self.delivery_dialogs[0].raise_()
++            self.delivery_dialogs[0].activateWindow()
++            return
++        dialog = open_dialog(self, self.language, paths)
++        self.delivery_dialogs.append(dialog)
++        dialog.result_ready.connect(self.pdf_finished)
++        dialog.set_reduced_motion(self.reduced_motion_toggle.isChecked())
+ 
+     def apply_style(self):
+         style = """
+@@ -1629,6 +1658,8 @@
+         self.timer.stop()
+         self.workspace_panel.shutdown()
+         self.quick_actions_panel.shutdown()
++        for dialog in getattr(self, 'delivery_dialogs', []):
++            dialog.shutdown()
+         self.wheel.hide()
+         self.pool.shutdown(wait=False)
+         self.tray.hide()
+--- 공개기준/소스/build.py
++++ 최종공개/소스/build.py
+@@ -1,272 +1,272 @@
+-"""Windows 배포 입력 준비와 소스 불변 컴파일을 분리한다."""
+-import argparse
+-import importlib.metadata as metadata
+-import importlib.util
+-import json
+-import os
+-from pathlib import Path
+-import shutil
+-import sys
+-import platform
+-import re
+-from datetime import datetime, timezone, timedelta
+-import 배포빌드 as delivery
+-
+-ROOT = Path(__file__).resolve().parent
+-
+-SPEC = "from pathlib import Path\nimport os\nsource = Path(os.environ['FLIPRING_SOURCE'])\n# Windows 배포에 필요한 Qt 기본 모듈만 포함한다.\nfrom PyInstaller.utils.hooks import collect_data_files\na = Analysis([str(source / 'app.py')], pathex=[str(source)], binaries=[], datas=[(str(source / 'assets'), 'assets'), (str(source / 'vendor'), 'vendor'), (str(source / 'document_bridge.py'), '.'), (str(source / 'document_formats.py'), '.'), (str(source / 'document_xlsb.py'), '.')] + collect_data_files('pypdfium2_raw') + collect_data_files('hwpx'), hiddenimports=['PIL.AvifImagePlugin', 'PIL.WebPImagePlugin'], excludes=['tkinter', 'PySide6.QtWebEngineCore', 'PySide6.QtQml', 'PySide6.QtQuick', 'olefile'])\nblocked = ('Qt6Pdf', 'Qt6Qml', 'Qt6Quick', 'Qt6VirtualKeyboard')\ndef required(entry):\n    path = entry[0].replace('\\\\', '/')\n    if any(part in path for part in blocked): return False\n    if '/plugins/platforminputcontexts/' in path or '/plugins/qmltooling/' in path: return False\n    if path.endswith('/qpdf.dll'): return False\n    return True\na.binaries = [entry for entry in a.binaries if required(entry)]\npyz = PYZ(a.pure)\nexe = EXE(pyz, a.scripts, [], exclude_binaries=True, name='FlipRing', debug=False, bootloader_ignore_signals=False, strip=False, upx=False, console=False, icon=str(source / 'assets/app.ico'), version=str(source / 'version-info.txt'))\ncoll = COLLECT(exe, a.binaries, a.datas, strip=False, upx=False, name='FlipRing')\n"
+-ISS = '; PUVKID 무료 배포판 설치 구성\n[Setup]\nAppId=PUVKID.FlipRing19\nAppName=FlipRing\nAppVersion=1.12.1\nAppPublisher=PUVKID\nDefaultDirName={localappdata}\\Programs\\FlipRing19\nDefaultGroupName=FlipRing\nUsePreviousAppDir=no\nPrivilegesRequired=lowest\nArchitecturesAllowed=x64compatible\nArchitecturesInstallIn64BitMode=x64compatible\nMinVersion=10.0\nOutputDir={#GetEnv(\'FLIPRING_INSTALLER\')}\nOutputBaseFilename=FlipRing-Setup\nSetupIconFile={#GetEnv(\'FLIPRING_SOURCE\')}\\assets\\app.ico\nUninstallDisplayIcon={app}\\FlipRing.exe\nCompression=lzma2\nSolidCompression=yes\nWizardStyle=modern\nCloseApplications=yes\nRestartApplications=no\nLicenseFile={#GetEnv(\'FLIPRING_SOURCE\')}\\LICENSE.txt\nInfoAfterFile={#GetEnv(\'FLIPRING_PROGRAM\')}\\사용안내.txt\n[Languages]\nName: "english"; MessagesFile: "compiler:Default.isl"\nName: "korean"; MessagesFile: "compiler:Languages\\Korean.isl"\n[Files]\nSource: "{#GetEnv(\'FLIPRING_PROGRAM\')}\\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs\n[Registry]\nRoot: HKCU; Subkey: "Software\\Microsoft\\Windows\\CurrentVersion\\Run"; ValueName: "FlipRing19"; Flags: uninsdeletevalue\n[Run]\nFilename: "{app}\\FlipRing.exe"; Description: "FlipRing"; Flags: nowait postinstall skipifsilent\n'
+-VERSION = "VSVersionInfo(\n  ffi=FixedFileInfo(filevers=(1,12,1,0), prodvers=(1,12,1,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),\n  kids=[StringFileInfo([StringTable('040904B0', [\n    StringStruct('CompanyName','PUVKID'), StringStruct('FileDescription','FlipRing'),\n    StringStruct('FileVersion','1.12.1'), StringStruct('ProductVersion','1.12.1'),\n    StringStruct('ProductName','FlipRing'), StringStruct('OriginalFilename','FlipRing.exe')\n  ])]), VarFileInfo([VarStruct('Translation',[1033,1200])])]\n)\n"
+-
+-COMPILER_PROBE = "[Setup]\nAppName=FlipRingCompilerProbe\nAppVersion=1\nDefaultDirName={tmp}\\FlipRingCompilerProbe\nUninstallable=no\nOutput=no\nOutputDir=\nOutputManifestFile=\n"
+-
+-
+-def capture_compiler_probe(check):
+-    """설치 파일 없는 진단도 기존 Windows Job·유한 출력·시간 제한으로 실행한다."""
+-    path = ROOT.parent / "검사도구/release_capture.py"
+-    spec = importlib.util.spec_from_file_location("flipring_compiler_probe_capture", path)
+-    module = importlib.util.module_from_spec(spec)
+-    spec.loader.exec_module(module)
+-    previous = {name: os.environ.get(name) for name in ("TEMP", "TMP")}
+-    try:
+-        os.environ.update(TEMP=str(Path(check["cwd"]) / "임시"), TMP=str(Path(check["cwd"]) / "임시"))
+-        return module.run_check(check)
+-    finally:
+-        for name, value in previous.items():
+-            if value is None:
+-                os.environ.pop(name, None)
+-            else:
+-                os.environ[name] = value
+-
+-
+-def probe_compiler(compiler, probe_root):
+-    """PE 속성 대신 실제 엔진의 성공한 무출력 컴파일로 정확 버전과 두 파일을 확인한다."""
+-    probe = delivery.external_path(ROOT, probe_root)
+-    if probe.is_relative_to((ROOT.parent / "검사도구").resolve()) or probe.exists():
+-        raise delivery.DeliveryError("진단은 제품 입력·검사도구 밖의 새 작업 폴더만 허용합니다.")
+-    compiler = delivery.reject_links(compiler).resolve()
+-    engine = delivery.reject_links(compiler.with_name("ISCmplr.dll"))
+-    if not compiler.is_file() or not engine.is_file():
+-        raise delivery.DeliveryError("실제 ISCC 실행기와 ISCmplr.dll이 모두 필요합니다.")
+-    before = {"compiler_sha256": delivery.digest(compiler), "compiler_bytes": compiler.stat().st_size,
+-              "compiler_engine_sha256": delivery.digest(engine), "compiler_engine_bytes": engine.stat().st_size}
+-    probe.mkdir(parents=True)
+-    (probe / "임시").mkdir()
+-    script = probe / "진단.iss"
+-    script.write_text(COMPILER_PROBE, encoding="utf-8-sig", newline="\n")
+-    check = {"id": "inno-engine-probe", "argv": [str(compiler), "/O-", str(script)], "cwd": str(probe), "timeout_seconds": 15}
+-    delivery.save_new(probe / "실행요청.json", {"kst": datetime.now(timezone(timedelta(hours=9))).isoformat(), "check": check})
+-    result = capture_compiler_probe(check)
+-    delivery.save_new(probe / "실행결과.json", result)
+-    (probe / "실행원문.log").write_bytes(result.get("output", "").encode("utf-8"))
+-    names = {entry["path"] for entry in delivery.snapshot(probe)}
+-    if names - {"진단.iss", "실행요청.json", "실행결과.json", "실행원문.log"}:
+-        raise delivery.DeliveryError("무출력 엔진 진단에서 예상하지 않은 산출물이 생겼습니다.")
+-    if (result.get("status") != "passed" or result.get("exit_code") != 0 or not result.get("output_complete")
+-            or not result.get("output_bytes_complete") or result.get("output_truncated") or result.get("output_invalid_utf8")
+-            or result.get("capture_error") or result.get("cleanup_errors")):
+-        raise delivery.DeliveryError("엔진 진단의 실패·시간 초과·출력 미완료를 발견했습니다. 외부 진단 원문을 확인하세요.")
+-    text = result["output"]
+-    if result.get("output_bytes") != result.get("captured_bytes") or len(text.encode("utf-8")) != result.get("output_bytes"):
+-        raise delivery.DeliveryError("엔진 진단 출력의 실제 바이트 수가 일치하지 않습니다.")
+-    versions = re.findall(r"^Compiler engine version: Inno Setup (\d+\.\d+\.\d+(?:\.\d+)?)\r?$", text, re.MULTILINE)
+-    if len(versions) != 1 or not versions[0].startswith("6.") or re.search(r"^\s*Error(?:\s|:)", text, re.MULTILINE | re.IGNORECASE):
+-        raise delivery.DeliveryError("성공한 실제 Inno Setup 6 엔진 버전을 하나로 확인할 수 없습니다.")
+-    after = {"compiler_sha256": delivery.digest(compiler), "compiler_bytes": compiler.stat().st_size,
+-             "compiler_engine_sha256": delivery.digest(engine), "compiler_engine_bytes": engine.stat().st_size}
+-    if after != before or script.read_text(encoding="utf-8-sig") != COMPILER_PROBE:
+-        raise delivery.DeliveryError("엔진 진단 중 실행기·엔진 DLL·진단 입력이 바뀌었습니다.")
+-    return {"compiler_version": versions[0], **before}
+-
+-
+-def environment(compiler, probe_root):
+-    """고정 의존성과 실제 엔진 버전·ISCC/엔진 DLL 해시를 준비/빌드 양쪽에서 대조한다."""
+-    import struct
+-    if os.name != "nt" or sys.version_info[:2] != (3, 12) or struct.calcsize("P") != 8:
+-        raise delivery.DeliveryError("Windows·Python 3.12 x64 환경이 필요합니다.")
+-    compiler = delivery.reject_links(compiler).resolve(strict=True)
+-    packages = {}
+-    for line in (ROOT / "requirements-lock.txt").read_text(encoding="utf-8").splitlines():
+-        if "==" not in line:
+-            continue
+-        package, expected = line.split("==", 1)
+-        actual = metadata.version(package)
+-        if actual != expected:
+-            raise delivery.DeliveryError("고정 의존 버전 불일치: " + package + ": " + actual + " != " + expected)
+-        packages[package] = actual
+-    return {"python": platform.python_version(), "python_sha256": delivery.digest(sys.executable),
+-            "packages": packages, **probe_compiler(compiler, probe_root)}
+-
+-
+-def collect_legal_notices(source, packages):
+-    """패키지별 원문 목록을 먼저 확정하고 오래된 overlay 파일은 거부한다."""
+-    licenses = source / "licenses"
+-    inventory = []
+-    generated = []
+-    for package in packages:
+-        dist = metadata.distribution(package)
+-        target = licenses / package
+-        planned = {}
+-        inventory.append({"name": dist.metadata["Name"], "version": dist.version,
+-                          "homepage": dist.metadata.get("Home-page", ""),
+-                          "license": dist.metadata.get("License-Expression", dist.metadata.get("License", ""))})
+-        for file in dist.files or []:
+-            value = str(file).replace("\\", "/")
+-            if ".dist-info/" in value and (any(x in value.lower() for x in ("license", "copying", "notice")) or value.endswith("METADATA")):
+-                original = Path(dist.locate_file(file))
+-                if original.is_file():
+-                    planned[value.split(".dist-info/", 1)[1]] = original
+-        if package == "pypdfium2":
+-            import pypdfium2_raw
+-            for original in Path(pypdfium2_raw.__file__).parent.rglob("*"):
+-                if original.is_file() and any(x in original.name.lower() for x in ("license", "notice", "copyright")):
+-                    planned[original.name] = original
+-        if package == "python-hwpx":
+-            # 정확 출하 원문과 출처는 고지 overlay에도 같은 항목으로 포함한다.
+-            for relative in ("sources/python_hwpx-6.12.0.tar.gz", "원본출처.json"):
+-                planned[relative] = source / "licenses/python-hwpx" / relative
+-        if not planned:
+-            raise delivery.DeliveryError("패키지 원문 고지·메타데이터를 찾을 수 없습니다: " + package)
+-        existing = {entry["path"] for entry in delivery.snapshot(target)} if target.exists() else set()
+-        if existing - set(planned):
+-            raise delivery.DeliveryError("오래된 패키지 고지 overlay 발견: " + package + ": " + repr(sorted(existing - set(planned))))
+-        for relative, original in planned.items():
+-            destination = target / delivery.relative_name(relative)
+-            destination.parent.mkdir(parents=True, exist_ok=True)
+-            if package == "python-hwpx" and relative in ("sources/python_hwpx-6.12.0.tar.gz", "원본출처.json"):
+-                if not original.is_file():
+-                    raise delivery.DeliveryError("상응 소스·출처 원문이 없습니다: " + str(original))
+-            else:
+-                shutil.copy2(original, destination)
+-            generated.append(destination.relative_to(source.parent).as_posix())
+-    (licenses / "구성요소.json").write_text(json.dumps(inventory, ensure_ascii=False, indent=2), encoding="utf-8")
+-    shutil.copy2(source / "assets/NanumGothic-OFL.txt", licenses / "NanumGothic-OFL.txt")
+-    shutil.copy2(Path(sys.base_prefix) / "LICENSE.txt", licenses / "Python-LICENSE.txt")
+-    generated.extend(["소스/licenses/구성요소.json", "소스/licenses/NanumGothic-OFL.txt", "소스/licenses/Python-LICENSE.txt"])
+-    return generated
+-
+-
+-def generate_build_inputs(source):
+-    from PIL import Image, ImageDraw
+-    image = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
+-    draw = ImageDraw.Draw(image)
+-    draw.ellipse((8, 8, 248, 248), fill="#202020", outline="#eeeeee", width=14)
+-    draw.ellipse((88, 88, 168, 168), outline="#eeeeee", width=14)
+-    image.save(source / "assets/app.ico", sizes=[(16, 16), (32, 32), (48, 48), (128, 128), (256, 256)])
+-    for filename, text in (("FlipRing.spec", SPEC), ("version-info.txt", VERSION), ("installer.iss", ISS)):
+-        (source / filename).write_text(text, encoding="utf-8-sig" if filename.endswith(".iss") else "utf-8", newline="\n")
+-
+-
+-def prepare(source, output, work, compiler):
+-    source = source.resolve(strict=True)
+-    root = source.parent
+-    output = delivery.external_path(root, output)
+-    work = delivery.external_path(root, work)
+-    if output == work or output.is_relative_to(work) or work.is_relative_to(output):
+-        raise delivery.DeliveryError("작업 폴더와 배포 폴더는 서로 분리해야 합니다.")
+-    if output.exists() or work.exists():
+-        raise delivery.DeliveryError("중단·이전 결과를 재사용하지 않습니다. 없는 새 폴더를 지정하세요.")
+-    config = delivery.load(source / "배포구성.json")
+-    # 고지 생성 전에 권한 보류 시험 입력과 정확 상응 소스 누락부터 거부한다.
+-    delivery.classified_entries(root, config)
+-    work.mkdir(parents=True)
+-    tools = environment(compiler, work / "컴파일러준비확인")
+-    legal_generated = collect_legal_notices(source, tools["packages"])
+-    generate_build_inputs(source)
+-    output.mkdir(parents=True)
+-    return {"schema": 1, "config": config, "config_path": "소스/배포구성.json", "source_root": str(root), "source_tree": delivery.snapshot(root),
+-            "environment": tools, "generated_files": sorted(set((legal_generated or []) + ["소스/FlipRing.spec", "소스/version-info.txt", "소스/installer.iss", "소스/assets/app.ico"]))}
+-
+-
+-def run_owned(source, argv, env, work, identity, timeout):
+-    """기존 Windows Job 수집기로 유한 출력·시간·소유 후손 종료를 유지한다."""
+-    path = source.parent / "검사도구/release_capture.py"
+-    spec = importlib.util.spec_from_file_location("flipring_release_capture", path)
+-    module = importlib.util.module_from_spec(spec)
+-    spec.loader.exec_module(module)
+-    # Inno 경고와 정상 로그를 보존하며 이 실행의 독립 수집 인스턴스만 한정한다.
+-    if identity == "inno":
+-        module.MAX_CAPTURE_BYTES = 256 * 1024
+-    previous = os.environ.copy()
+-    try:
+-        os.environ.update(env)
+-        result = module.run_check({"id": identity, "argv": argv, "cwd": str(source), "timeout_seconds": timeout})
+-    finally:
+-        os.environ.clear()
+-        os.environ.update(previous)
+-    delivery.save_new(work / (identity + ".json"), result)
+-    # 종료0과 출력 수집 성공을 구분하며 실패 원JSON은 위에서 먼저 보존한다.
+-    text = result.get("output")
+-    counts = (result.get("output_bytes"), result.get("captured_bytes"))
+-    valid_bytes = (isinstance(text, str) and all(type(value) is int and value >= 0 for value in counts)
+-                   and counts[0] == counts[1] == len(text.encode("utf-8")))
+-    if (result.get("status") != "passed" or type(result.get("exit_code")) is not int or result["exit_code"] != 0
+-            or result.get("output_complete") is not True or result.get("output_bytes_complete") is not True
+-            or result.get("output_truncated") is not False or result.get("output_invalid_utf8") is not False
+-            or result.get("output_display_truncated", False) is not False
+-            or result.get("capture_boundary_omitted_bytes", 0) != 0 or not valid_bytes
+-            or result.get("capture_error") or result.get("cleanup_errors") or result.get("error")):
+-        raise delivery.DeliveryError("컴파일 실패 또는 UTF-8 출력 수집 실패. 실행 원문을 보존했습니다: " + identity)
+-
+-
+-def compile_prepared(source, prepared, manifest, output, work, compiler):
+-    source = source.resolve(strict=True)
+-    root = source.parent
+-    output = delivery.external_path(root, output)
+-    work = delivery.external_path(root, work)
+-    delivery.verify_source_manifest(root, prepared, manifest, output / delivery.SOURCE_ZIP_NAME)
+-    if environment(compiler, work / "컴파일러재확인") != prepared["environment"]:
+-        raise delivery.DeliveryError("준비 이후 Python·고정 의존성·컴파일러가 변경됐습니다.")
+-    if (output / "프로그램").exists() or (output / "설치파일").exists() or (work / "pyinstaller.json").exists():
+-        raise delivery.DeliveryError("기존·중단 컴파일 산출물 재사용을 거부합니다.")
+-    env = os.environ.copy()
+-    env.update(PYTHONDONTWRITEBYTECODE="1", PYTHONUTF8="1", PYINSTALLER_CONFIG_DIR=str(work / "pyinstaller-config"),
+-               FLIPRING_SOURCE=str(source), FLIPRING_PROGRAM=str(output / "프로그램/FlipRing"),
+-               FLIPRING_INSTALLER=str(output / "설치파일"), TEMP=str(work / "temp"), TMP=str(work / "temp"))
+-    (work / "temp").mkdir()
+-    env["PATH"] = os.pathsep.join([str(Path(sys.executable).parent), sys.base_prefix,
+-                                    str(Path(os.environ["WINDIR"]) / "System32"), os.environ["WINDIR"]])
+-    try:
+-        run_owned(source, [sys.executable, "-B", "-X", "utf8", "-m", "PyInstaller", "--noconfirm", "--clean", "--distpath", str(output / "프로그램"),
+-                          "--workpath", str(work / "build-cache"), str(source / "FlipRing.spec")], env, work, "pyinstaller", 600)
+-    finally:
+-        delivery.assert_tree(root, prepared["source_tree"])
+-    program = output / "프로그램/FlipRing"
+-    delivery.stage_legal(source, program, manifest, prepared["config"])
+-    shutil.copy2(source / "LICENSE.txt", program / "LICENSE.txt")
+-    notice = (source / "사용안내.txt").read_text(encoding="utf-8") + "\n" + delivery.runtime_notice(manifest)
+-    (program / "사용안내.txt").write_text(notice, encoding="utf-8", newline="\n")
+-    try:
+-        run_owned(source, [str(compiler), str(source / "installer.iss")], env, work, "inno", 600)
+-    finally:
+-        delivery.assert_tree(root, prepared["source_tree"])
+-    print("컴파일 종료. 별도 package 검증·실제 실행·설치·독립 검토·원격 검증이 필요합니다.")
+-
+-
+-def main():
+-    parser = argparse.ArgumentParser(description=__doc__)
+-    parser.add_argument("--prepare-only", action="store_true")
+-    parser.add_argument("--prepared", type=Path)
+-    parser.add_argument("--source-manifest", type=Path)
+-    parser.add_argument("--output-root", type=Path, required=True)
+-    parser.add_argument("--work-root", type=Path, required=True)
+-    parser.add_argument("--iscc", type=Path, required=True)
+-    parser.add_argument("--manifest", type=Path)
+-    args = parser.parse_args()
+-    if args.prepare_only:
+-        if args.prepared or args.source_manifest or not args.manifest:
+-            parser.error("prepare-only에는 새 외부 --manifest만 지정하세요.")
+-        delivery.external_path(ROOT.parent, args.manifest)
+-        result = prepare(ROOT, args.output_root, args.work_root, args.iscc)
+-        delivery.save_new(args.manifest, result)
+-    else:
+-        if not args.prepared or not args.source_manifest:
+-            parser.error("컴파일에는 --prepared와 --source-manifest가 필요합니다.")
+-        compile_prepared(ROOT, delivery.load(args.prepared), delivery.load(args.source_manifest), args.output_root, args.work_root, args.iscc)
+-
+-
+-if __name__ == "__main__":
+-    try:
+-        main()
+-    except (delivery.DeliveryError, OSError, ValueError) as error:
+-        raise SystemExit("빌드 중단: " + str(error)) from error
++"""Windows 배포 입력 준비와 소스 불변 컴파일을 분리한다."""
++import argparse
++import importlib.metadata as metadata
++import importlib.util
++import json
++import os
++from pathlib import Path
++import shutil
++import sys
++import platform
++import re
++from datetime import datetime, timezone, timedelta
++import 배포빌드 as delivery
++
++ROOT = Path(__file__).resolve().parent
++
++SPEC = "from pathlib import Path\nimport os\nsource = Path(os.environ['FLIPRING_SOURCE'])\n# Windows 배포에 필요한 Qt 기본 모듈만 포함한다.\nfrom PyInstaller.utils.hooks import collect_data_files\na = Analysis([str(source / 'app.py')], pathex=[str(source)], binaries=[], datas=[(str(source / 'assets'), 'assets'), (str(source / 'vendor'), 'vendor'), (str(source / 'document_bridge.py'), '.'), (str(source / 'document_formats.py'), '.'), (str(source / 'document_xlsb.py'), '.')] + collect_data_files('pypdfium2_raw') + collect_data_files('hwpx'), hiddenimports=['PIL.AvifImagePlugin', 'PIL.WebPImagePlugin'], excludes=['tkinter', 'PySide6.QtWebEngineCore', 'PySide6.QtQml', 'PySide6.QtQuick', 'olefile'])\nblocked = ('Qt6Pdf', 'Qt6Qml', 'Qt6Quick', 'Qt6VirtualKeyboard')\ndef required(entry):\n    path = entry[0].replace('\\\\', '/')\n    if any(part in path for part in blocked): return False\n    if '/plugins/platforminputcontexts/' in path or '/plugins/qmltooling/' in path: return False\n    if path.endswith('/qpdf.dll'): return False\n    return True\na.binaries = [entry for entry in a.binaries if required(entry)]\npyz = PYZ(a.pure)\nexe = EXE(pyz, a.scripts, [], exclude_binaries=True, name='FlipRing', debug=False, bootloader_ignore_signals=False, strip=False, upx=False, console=False, icon=str(source / 'assets/app.ico'), version=str(source / 'version-info.txt'))\ncoll = COLLECT(exe, a.binaries, a.datas, strip=False, upx=False, name='FlipRing')\n"
++ISS = '; PUVKID 무료 배포판 설치 구성\n[Setup]\nAppId=PUVKID.FlipRing19\nAppName=FlipRing\nAppVersion=1.13.0\nAppPublisher=PUVKID\nDefaultDirName={localappdata}\\Programs\\FlipRing19\nDefaultGroupName=FlipRing\nUsePreviousAppDir=no\nPrivilegesRequired=lowest\nArchitecturesAllowed=x64compatible\nArchitecturesInstallIn64BitMode=x64compatible\nMinVersion=10.0\nOutputDir={#GetEnv(\'FLIPRING_INSTALLER\')}\nOutputBaseFilename=FlipRing-Setup\nSetupIconFile={#GetEnv(\'FLIPRING_SOURCE\')}\\assets\\app.ico\nUninstallDisplayIcon={app}\\FlipRing.exe\nCompression=lzma2\nSolidCompression=yes\nWizardStyle=modern\nCloseApplications=yes\nRestartApplications=no\nLicenseFile={#GetEnv(\'FLIPRING_SOURCE\')}\\LICENSE.txt\nInfoAfterFile={#GetEnv(\'FLIPRING_PROGRAM\')}\\사용안내.txt\n[Languages]\nName: "english"; MessagesFile: "compiler:Default.isl"\nName: "korean"; MessagesFile: "compiler:Languages\\Korean.isl"\n[Files]\nSource: "{#GetEnv(\'FLIPRING_PROGRAM\')}\\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs\n[Registry]\nRoot: HKCU; Subkey: "Software\\Microsoft\\Windows\\CurrentVersion\\Run"; ValueName: "FlipRing19"; Flags: uninsdeletevalue\n[Run]\nFilename: "{app}\\FlipRing.exe"; Description: "FlipRing"; Flags: nowait postinstall skipifsilent\n'
++VERSION = "VSVersionInfo(\n  ffi=FixedFileInfo(filevers=(1,13,0,0), prodvers=(1,13,0,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),\n  kids=[StringFileInfo([StringTable('040904B0', [\n    StringStruct('CompanyName','PUVKID'), StringStruct('FileDescription','FlipRing'),\n    StringStruct('FileVersion','1.13.0'), StringStruct('ProductVersion','1.13.0'),\n    StringStruct('ProductName','FlipRing'), StringStruct('OriginalFilename','FlipRing.exe')\n  ])]), VarFileInfo([VarStruct('Translation',[1033,1200])])]\n)\n"
++
++COMPILER_PROBE = "[Setup]\nAppName=FlipRingCompilerProbe\nAppVersion=1\nDefaultDirName={tmp}\\FlipRingCompilerProbe\nUninstallable=no\nOutput=no\nOutputDir=\nOutputManifestFile=\n"
++
++
++def capture_compiler_probe(check):
++    """설치 파일 없는 진단도 기존 Windows Job·유한 출력·시간 제한으로 실행한다."""
++    path = ROOT.parent / "검사도구/release_capture.py"
++    spec = importlib.util.spec_from_file_location("flipring_compiler_probe_capture", path)
++    module = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(module)
++    previous = {name: os.environ.get(name) for name in ("TEMP", "TMP")}
++    try:
++        os.environ.update(TEMP=str(Path(check["cwd"]) / "임시"), TMP=str(Path(check["cwd"]) / "임시"))
++        return module.run_check(check)
++    finally:
++        for name, value in previous.items():
++            if value is None:
++                os.environ.pop(name, None)
++            else:
++                os.environ[name] = value
++
++
++def probe_compiler(compiler, probe_root):
++    """PE 속성 대신 실제 엔진의 성공한 무출력 컴파일로 정확 버전과 두 파일을 확인한다."""
++    probe = delivery.external_path(ROOT, probe_root)
++    if probe.is_relative_to((ROOT.parent / "검사도구").resolve()) or probe.exists():
++        raise delivery.DeliveryError("진단은 제품 입력·검사도구 밖의 새 작업 폴더만 허용합니다.")
++    compiler = delivery.reject_links(compiler).resolve()
++    engine = delivery.reject_links(compiler.with_name("ISCmplr.dll"))
++    if not compiler.is_file() or not engine.is_file():
++        raise delivery.DeliveryError("실제 ISCC 실행기와 ISCmplr.dll이 모두 필요합니다.")
++    before = {"compiler_sha256": delivery.digest(compiler), "compiler_bytes": compiler.stat().st_size,
++              "compiler_engine_sha256": delivery.digest(engine), "compiler_engine_bytes": engine.stat().st_size}
++    probe.mkdir(parents=True)
++    (probe / "임시").mkdir()
++    script = probe / "진단.iss"
++    script.write_text(COMPILER_PROBE, encoding="utf-8-sig", newline="\n")
++    check = {"id": "inno-engine-probe", "argv": [str(compiler), "/O-", str(script)], "cwd": str(probe), "timeout_seconds": 15}
++    delivery.save_new(probe / "실행요청.json", {"kst": datetime.now(timezone(timedelta(hours=9))).isoformat(), "check": check})
++    result = capture_compiler_probe(check)
++    delivery.save_new(probe / "실행결과.json", result)
++    (probe / "실행원문.log").write_bytes(result.get("output", "").encode("utf-8"))
++    names = {entry["path"] for entry in delivery.snapshot(probe)}
++    if names - {"진단.iss", "실행요청.json", "실행결과.json", "실행원문.log"}:
++        raise delivery.DeliveryError("무출력 엔진 진단에서 예상하지 않은 산출물이 생겼습니다.")
++    if (result.get("status") != "passed" or result.get("exit_code") != 0 or not result.get("output_complete")
++            or not result.get("output_bytes_complete") or result.get("output_truncated") or result.get("output_invalid_utf8")
++            or result.get("capture_error") or result.get("cleanup_errors")):
++        raise delivery.DeliveryError("엔진 진단의 실패·시간 초과·출력 미완료를 발견했습니다. 외부 진단 원문을 확인하세요.")
++    text = result["output"]
++    if result.get("output_bytes") != result.get("captured_bytes") or len(text.encode("utf-8")) != result.get("output_bytes"):
++        raise delivery.DeliveryError("엔진 진단 출력의 실제 바이트 수가 일치하지 않습니다.")
++    versions = re.findall(r"^Compiler engine version: Inno Setup (\d+\.\d+\.\d+(?:\.\d+)?)\r?$", text, re.MULTILINE)
++    if len(versions) != 1 or not versions[0].startswith("6.") or re.search(r"^\s*Error(?:\s|:)", text, re.MULTILINE | re.IGNORECASE):
++        raise delivery.DeliveryError("성공한 실제 Inno Setup 6 엔진 버전을 하나로 확인할 수 없습니다.")
++    after = {"compiler_sha256": delivery.digest(compiler), "compiler_bytes": compiler.stat().st_size,
++             "compiler_engine_sha256": delivery.digest(engine), "compiler_engine_bytes": engine.stat().st_size}
++    if after != before or script.read_text(encoding="utf-8-sig") != COMPILER_PROBE:
++        raise delivery.DeliveryError("엔진 진단 중 실행기·엔진 DLL·진단 입력이 바뀌었습니다.")
++    return {"compiler_version": versions[0], **before}
++
++
++def environment(compiler, probe_root):
++    """고정 의존성과 실제 엔진 버전·ISCC/엔진 DLL 해시를 준비/빌드 양쪽에서 대조한다."""
++    import struct
++    if os.name != "nt" or sys.version_info[:2] != (3, 12) or struct.calcsize("P") != 8:
++        raise delivery.DeliveryError("Windows·Python 3.12 x64 환경이 필요합니다.")
++    compiler = delivery.reject_links(compiler).resolve(strict=True)
++    packages = {}
++    for line in (ROOT / "requirements-lock.txt").read_text(encoding="utf-8").splitlines():
++        if "==" not in line:
++            continue
++        package, expected = line.split("==", 1)
++        actual = metadata.version(package)
++        if actual != expected:
++            raise delivery.DeliveryError("고정 의존 버전 불일치: " + package + ": " + actual + " != " + expected)
++        packages[package] = actual
++    return {"python": platform.python_version(), "python_sha256": delivery.digest(sys.executable),
++            "packages": packages, **probe_compiler(compiler, probe_root)}
++
++
++def collect_legal_notices(source, packages):
++    """패키지별 원문 목록을 먼저 확정하고 오래된 overlay 파일은 거부한다."""
++    licenses = source / "licenses"
++    inventory = []
++    generated = []
++    for package in packages:
++        dist = metadata.distribution(package)
++        target = licenses / package
++        planned = {}
++        inventory.append({"name": dist.metadata["Name"], "version": dist.version,
++                          "homepage": dist.metadata.get("Home-page", ""),
++                          "license": dist.metadata.get("License-Expression", dist.metadata.get("License", ""))})
++        for file in dist.files or []:
++            value = str(file).replace("\\", "/")
++            if ".dist-info/" in value and (any(x in value.lower() for x in ("license", "copying", "notice")) or value.endswith("METADATA")):
++                original = Path(dist.locate_file(file))
++                if original.is_file():
++                    planned[value.split(".dist-info/", 1)[1]] = original
++        if package == "pypdfium2":
++            import pypdfium2_raw
++            for original in Path(pypdfium2_raw.__file__).parent.rglob("*"):
++                if original.is_file() and any(x in original.name.lower() for x in ("license", "notice", "copyright")):
++                    planned[original.name] = original
++        if package == "python-hwpx":
++            # 정확 출하 원문과 출처는 고지 overlay에도 같은 항목으로 포함한다.
++            for relative in ("sources/python_hwpx-6.12.0.tar.gz", "원본출처.json"):
++                planned[relative] = source / "licenses/python-hwpx" / relative
++        if not planned:
++            raise delivery.DeliveryError("패키지 원문 고지·메타데이터를 찾을 수 없습니다: " + package)
++        existing = {entry["path"] for entry in delivery.snapshot(target)} if target.exists() else set()
++        if existing - set(planned):
++            raise delivery.DeliveryError("오래된 패키지 고지 overlay 발견: " + package + ": " + repr(sorted(existing - set(planned))))
++        for relative, original in planned.items():
++            destination = target / delivery.relative_name(relative)
++            destination.parent.mkdir(parents=True, exist_ok=True)
++            if package == "python-hwpx" and relative in ("sources/python_hwpx-6.12.0.tar.gz", "원본출처.json"):
++                if not original.is_file():
++                    raise delivery.DeliveryError("상응 소스·출처 원문이 없습니다: " + str(original))
++            else:
++                shutil.copy2(original, destination)
++            generated.append(destination.relative_to(source.parent).as_posix())
++    (licenses / "구성요소.json").write_text(json.dumps(inventory, ensure_ascii=False, indent=2), encoding="utf-8")
++    shutil.copy2(source / "assets/NanumGothic-OFL.txt", licenses / "NanumGothic-OFL.txt")
++    shutil.copy2(Path(sys.base_prefix) / "LICENSE.txt", licenses / "Python-LICENSE.txt")
++    generated.extend(["소스/licenses/구성요소.json", "소스/licenses/NanumGothic-OFL.txt", "소스/licenses/Python-LICENSE.txt"])
++    return generated
++
++
++def generate_build_inputs(source):
++    from PIL import Image, ImageDraw
++    image = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
++    draw = ImageDraw.Draw(image)
++    draw.ellipse((8, 8, 248, 248), fill="#202020", outline="#eeeeee", width=14)
++    draw.ellipse((88, 88, 168, 168), outline="#eeeeee", width=14)
++    image.save(source / "assets/app.ico", sizes=[(16, 16), (32, 32), (48, 48), (128, 128), (256, 256)])
++    for filename, text in (("FlipRing.spec", SPEC), ("version-info.txt", VERSION), ("installer.iss", ISS)):
++        (source / filename).write_text(text, encoding="utf-8-sig" if filename.endswith(".iss") else "utf-8", newline="\n")
++
++
++def prepare(source, output, work, compiler):
++    source = source.resolve(strict=True)
++    root = source.parent
++    output = delivery.external_path(root, output)
++    work = delivery.external_path(root, work)
++    if output == work or output.is_relative_to(work) or work.is_relative_to(output):
++        raise delivery.DeliveryError("작업 폴더와 배포 폴더는 서로 분리해야 합니다.")
++    if output.exists() or work.exists():
++        raise delivery.DeliveryError("중단·이전 결과를 재사용하지 않습니다. 없는 새 폴더를 지정하세요.")
++    config = delivery.load(source / "배포구성.json")
++    # 고지 생성 전에 권한 보류 시험 입력과 정확 상응 소스 누락부터 거부한다.
++    delivery.classified_entries(root, config)
++    work.mkdir(parents=True)
++    tools = environment(compiler, work / "컴파일러준비확인")
++    legal_generated = collect_legal_notices(source, tools["packages"])
++    generate_build_inputs(source)
++    output.mkdir(parents=True)
++    return {"schema": 1, "config": config, "config_path": "소스/배포구성.json", "source_root": str(root), "source_tree": delivery.snapshot(root),
++            "environment": tools, "generated_files": sorted(set((legal_generated or []) + ["소스/FlipRing.spec", "소스/version-info.txt", "소스/installer.iss", "소스/assets/app.ico"]))}
++
++
++def run_owned(source, argv, env, work, identity, timeout):
++    """기존 Windows Job 수집기로 유한 출력·시간·소유 후손 종료를 유지한다."""
++    path = source.parent / "검사도구/release_capture.py"
++    spec = importlib.util.spec_from_file_location("flipring_release_capture", path)
++    module = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(module)
++    # Inno 경고와 정상 로그를 보존하며 이 실행의 독립 수집 인스턴스만 한정한다.
++    if identity == "inno":
++        module.MAX_CAPTURE_BYTES = 256 * 1024
++    previous = os.environ.copy()
++    try:
++        os.environ.update(env)
++        result = module.run_check({"id": identity, "argv": argv, "cwd": str(source), "timeout_seconds": timeout})
++    finally:
++        os.environ.clear()
++        os.environ.update(previous)
++    delivery.save_new(work / (identity + ".json"), result)
++    # 종료0과 출력 수집 성공을 구분하며 실패 원JSON은 위에서 먼저 보존한다.
++    text = result.get("output")
++    counts = (result.get("output_bytes"), result.get("captured_bytes"))
++    valid_bytes = (isinstance(text, str) and all(type(value) is int and value >= 0 for value in counts)
++                   and counts[0] == counts[1] == len(text.encode("utf-8")))
++    if (result.get("status") != "passed" or type(result.get("exit_code")) is not int or result["exit_code"] != 0
++            or result.get("output_complete") is not True or result.get("output_bytes_complete") is not True
++            or result.get("output_truncated") is not False or result.get("output_invalid_utf8") is not False
++            or result.get("output_display_truncated", False) is not False
++            or result.get("capture_boundary_omitted_bytes", 0) != 0 or not valid_bytes
++            or result.get("capture_error") or result.get("cleanup_errors") or result.get("error")):
++        raise delivery.DeliveryError("컴파일 실패 또는 UTF-8 출력 수집 실패. 실행 원문을 보존했습니다: " + identity)
++
++
++def compile_prepared(source, prepared, manifest, output, work, compiler):
++    source = source.resolve(strict=True)
++    root = source.parent
++    output = delivery.external_path(root, output)
++    work = delivery.external_path(root, work)
++    delivery.verify_source_manifest(root, prepared, manifest, output / delivery.SOURCE_ZIP_NAME)
++    if environment(compiler, work / "컴파일러재확인") != prepared["environment"]:
++        raise delivery.DeliveryError("준비 이후 Python·고정 의존성·컴파일러가 변경됐습니다.")
++    if (output / "프로그램").exists() or (output / "설치파일").exists() or (work / "pyinstaller.json").exists():
++        raise delivery.DeliveryError("기존·중단 컴파일 산출물 재사용을 거부합니다.")
++    env = os.environ.copy()
++    env.update(PYTHONDONTWRITEBYTECODE="1", PYTHONUTF8="1", PYINSTALLER_CONFIG_DIR=str(work / "pyinstaller-config"),
++               FLIPRING_SOURCE=str(source), FLIPRING_PROGRAM=str(output / "프로그램/FlipRing"),
++               FLIPRING_INSTALLER=str(output / "설치파일"), TEMP=str(work / "temp"), TMP=str(work / "temp"))
++    (work / "temp").mkdir()
++    env["PATH"] = os.pathsep.join([str(Path(sys.executable).parent), sys.base_prefix,
++                                    str(Path(os.environ["WINDIR"]) / "System32"), os.environ["WINDIR"]])
++    try:
++        run_owned(source, [sys.executable, "-B", "-X", "utf8", "-m", "PyInstaller", "--noconfirm", "--clean", "--distpath", str(output / "프로그램"),
++                          "--workpath", str(work / "build-cache"), str(source / "FlipRing.spec")], env, work, "pyinstaller", 600)
++    finally:
++        delivery.assert_tree(root, prepared["source_tree"])
++    program = output / "프로그램/FlipRing"
++    delivery.stage_legal(source, program, manifest, prepared["config"])
++    shutil.copy2(source / "LICENSE.txt", program / "LICENSE.txt")
++    notice = (source / "사용안내.txt").read_text(encoding="utf-8") + "\n" + delivery.runtime_notice(manifest)
++    (program / "사용안내.txt").write_text(notice, encoding="utf-8", newline="\n")
++    try:
++        run_owned(source, [str(compiler), str(source / "installer.iss")], env, work, "inno", 600)
++    finally:
++        delivery.assert_tree(root, prepared["source_tree"])
++    print("컴파일 종료. 별도 package 검증·실제 실행·설치·독립 검토·원격 검증이 필요합니다.")
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--prepare-only", action="store_true")
++    parser.add_argument("--prepared", type=Path)
++    parser.add_argument("--source-manifest", type=Path)
++    parser.add_argument("--output-root", type=Path, required=True)
++    parser.add_argument("--work-root", type=Path, required=True)
++    parser.add_argument("--iscc", type=Path, required=True)
++    parser.add_argument("--manifest", type=Path)
++    args = parser.parse_args()
++    if args.prepare_only:
++        if args.prepared or args.source_manifest or not args.manifest:
++            parser.error("prepare-only에는 새 외부 --manifest만 지정하세요.")
++        delivery.external_path(ROOT.parent, args.manifest)
++        result = prepare(ROOT, args.output_root, args.work_root, args.iscc)
++        delivery.save_new(args.manifest, result)
++    else:
++        if not args.prepared or not args.source_manifest:
++            parser.error("컴파일에는 --prepared와 --source-manifest가 필요합니다.")
++        compile_prepared(ROOT, delivery.load(args.prepared), delivery.load(args.source_manifest), args.output_root, args.work_root, args.iscc)
++
++
++if __name__ == "__main__":
++    try:
++        main()
++    except (delivery.DeliveryError, OSError, ValueError) as error:
++        raise SystemExit("빌드 중단: " + str(error)) from error
+--- 공개기준/소스/delivery_tools.py
++++ 최종공개/소스/delivery_tools.py
+@@ -0,0 +1,397 @@
++"""원본 보존형 호환 안내·선택 메타데이터 정리·문서 비교. 결과는 로컬 전용이다."""
++from __future__ import annotations
++
++from collections import Counter
++from hashlib import sha256
++from pathlib import Path, PurePosixPath
++import stat
++import struct
++import tempfile
++import unicodedata
++import zipfile
++import zlib
++
++from PIL import Image, ExifTags
++from lxml import etree
++from pypdf import PdfWriter
++from pypdf.generic import NameObject
++
++import engine
++import inspection_tools
++from document_formats import validate_input, support_matrix, _safe_xml_import
++from document_hwp import MAX_FILE, MAX_TOTAL, MAX_XML, require_regular, bounded_read
++from pdf_tools import check_cancel, reader_for, publish, preflight_output, source_context
++
++OOXML = set('docx docm dotx dotm xlsx xlsm xltx xltm xlsb pptx pptm potx potm ppsx ppsm'.split())
++IMAGE_EDIT = {'jpg', 'jpeg', 'png'}
++LIMITATION = {
++    'ko': '본문·첨부·댓글·변경 이력에 있는 개인정보는 별도 검토해야 합니다. 탐지되지 않음은 보존·완전 제거 보장이 아닙니다.',
++    'en': 'Review personal data in content, attachments, comments and revisions separately. No finding is not a guarantee of preservation or complete removal.',
++}
++
++
++class DeliveryError(ValueError):
++    """기계 코드와 한영 로컬 안내를 함께 보존한다."""
++    def __init__(self, code, ko, en):
++        super().__init__(ko)
++        self.code, self.ko, self.en = code, ko, en
++
++
++def _package(source, cancel):
++    """기존 문서 한도와 XML 선언 방어를 재사용하되 외부 관계는 실행하지 않고 탐지한다."""
++    validate_input(source, source.suffix[1:].lower())
++    result, total, seen = {}, 0, set()
++    with zipfile.ZipFile(source) as archive:
++        entries = archive.infolist()
++        if len(entries) > 4096:
++            raise ValueError('ZIP 항목 수 제한 초과')
++        for item in entries:
++            check_cancel(cancel)
++            name = item.orig_filename
++            normalized = unicodedata.normalize('NFC', name).casefold()
++            if (normalized in seen or '\x00' in name or '\\' in name or ':' in name or
++                    name.startswith('/') or '..' in PurePosixPath(name).parts or
++                    stat.S_ISLNK(item.external_attr >> 16) or item.flag_bits & 1 or
++                    item.compress_type not in {zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED}):
++                raise ValueError('안전하지 않은 ZIP 항목')
++            seen.add(normalized)
++            total += item.file_size
++            if (item.file_size > MAX_FILE or total > MAX_TOTAL or
++                    item.file_size > max(1, item.compress_size) * 1000):
++                raise ValueError('ZIP 압축 해제 제한 초과')
++            with archive.open(item) as stream:
++                data = stream.read(min(MAX_FILE, item.file_size) + 1)
++            if len(data) != item.file_size:
++                raise ValueError('ZIP 실제 크기 불일치')
++            if name.lower().endswith(('.xml', '.rels')):
++                if len(data) > MAX_XML:
++                    raise ValueError('XML 크기 제한 초과')
++                _safe_xml_import(data, 'docx')
++            result[name] = data
++    return result
++
++
++def _xml(data):
++    _safe_xml_import(data, 'docx')
++    return etree.fromstring(data, etree.XMLParser(resolve_entities=False, no_network=True))
++
++
++def compatibility_report(path, target, cancel=None):
++    check_cancel(cancel)
++    source = require_regular(path)
++    extension = source.suffix[1:].lower()
++    target = str(target).lower().lstrip('.')
++    row = next((r for r in support_matrix() if extension in r['inputs']), None)
++    report = {'path': str(source), 'source': extension, 'format': target, 'local_only': True,
++              'supported': target in engine.targets([source]), 'checked': False,
++              'macros': None, 'formulas': None, 'fonts': [], 'external_links': None,
++              'notes': {'ko': [row['notes']] if row else [], 'en': []},
++              'limitations': dict(LIMITATION)}
++    if extension in OOXML:
++        parts = _package(source, cancel)
++        macros, formulas, external, fonts = False, 0, 0, set()
++        for name, data in parts.items():
++            check_cancel(cancel)
++            macros |= name.lower().endswith('vbaproject.bin')
++            if name.lower().endswith(('.xml', '.rels')):
++                root = _xml(data)
++                for node in root.iter():
++                    if not isinstance(node.tag, str):
++                        continue
++                    local = node.tag.rsplit('}', 1)[-1]
++                    if local in {'f', 'formula', 'oMath', 'fldSimple', 'instrText'}:
++                        formulas += 1
++                    if local == 'Relationship' and node.get('TargetMode', '').lower() == 'external':
++                        external += 1
++                    if local in {'rFonts', 'font', 'latin', 'ea', 'cs', 'name'}:
++                        for key, value in node.attrib.items():
++                            if key.rsplit('}', 1)[-1] in {'ascii', 'hAnsi', 'eastAsia', 'cs', 'typeface', 'name', 'val'}:
++                                fonts.add(value)
++        report.update(checked=True, macros=macros, formulas=formulas,
++                      external_links=external, fonts=sorted(fonts))
++    else:
++        report['notes']['ko'].append('이 형식의 내부 매크로·수식·글꼴·외부 링크는 검사하지 못했습니다.')
++        report['notes']['en'].append('Internal macros, formulas, fonts and external links were not inspected for this format.')
++    report['notes']['ko'].append('출력에 따라 매크로·수식·글꼴·배치가 달라질 수 있습니다. 원본과 실제 결과를 비교하세요.')
++    report['notes']['en'].append('Macros, formulas, fonts and layout may change on export. Compare the actual result with the original.')
++    if row:
++        report['notes']['en'].append('Only the advertised output formats are supported. Dedicated Office features and embedded objects may change; CSV/TSV contains the first sheet and displayed values. HWP input/output requires the configured local document tools.')
++    check_cancel(cancel)
++    return report
++
++
++def _exif_items(exif):
++    entries = []
++    for key in sorted(exif):
++        if key in {34665, 34853, 40965}:
++            # GPS는 실제 하위 키·값을 보여주고 그룹 자체도 명시 선택한다.
++            value = dict(exif.get_ifd(key))
++        else:
++            value = exif[key]
++        entries.append({'key': f'exif:{key}', 'label': ExifTags.TAGS.get(key, str(key)), 'value': str(value)})
++    return entries
++
++
++def _jpeg_segments(raw):
++    if not raw.startswith(b'\xff\xd8'):
++        raise ValueError('JPEG 서명 오류')
++    yield None, raw[:2]
++    offset = 2
++    while offset < len(raw):
++        start = offset
++        if raw[offset] != 255:
++            raise ValueError('JPEG 마커 오류')
++        while offset < len(raw) and raw[offset] == 255:
++            offset += 1
++        if offset >= len(raw):
++            raise ValueError('JPEG 마커 누락')
++        marker = raw[offset]
++        offset += 1
++        if marker in {0xDA, 0xD9}:
++            yield marker, raw[start:]
++            return
++        if marker == 1 or 0xD0 <= marker <= 0xD7:
++            yield marker, raw[start:offset]
++            continue
++        length = int.from_bytes(raw[offset:offset + 2], 'big')
++        if length < 2 or offset + length > len(raw):
++            raise ValueError('JPEG 세그먼트 길이 오류')
++        end = offset + length
++        yield marker, raw[start:end]
++        offset = end
++    raise ValueError('JPEG 영상 데이터 누락')
++
++
++def _jpeg_payload(segment):
++    """채움 FF와 마커, 길이 필드를 건너뛰어 실제 세그먼트 내용을 반환한다."""
++    offset = 0
++    while offset < len(segment) and segment[offset] == 255:
++        offset += 1
++    return segment[offset + 3:]
++
++
++def _png_chunks(raw):
++    if not raw.startswith(b'\x89PNG\r\n\x1a\n'):
++        raise ValueError('PNG 서명 오류')
++    offset = 8
++    while offset < len(raw):
++        size = int.from_bytes(raw[offset:offset + 4], 'big')
++        end = offset + size + 12
++        if end > len(raw):
++            raise ValueError('PNG 청크 길이 오류')
++        kind, data = raw[offset + 4:offset + 8], raw[offset + 8:end - 4]
++        if zlib.crc32(kind + data) != int.from_bytes(raw[end - 4:end], 'big'):
++            raise ValueError('PNG 청크 CRC 오류')
++        yield kind, data, raw[offset:end]
++        offset = end
++        if kind == b'IEND':
++            if offset != len(raw):
++                raise ValueError('PNG 종료 뒤 추가 데이터')
++            return
++    raise ValueError('PNG 종료 누락')
++
++
++def metadata_report(path, cancel=None):
++    check_cancel(cancel)
++    source = require_regular(path)
++    extension = source.suffix[1:].lower()
++    entries = []
++    supported = extension in OOXML | IMAGE_EDIT | {'pdf'}
++    with source_context(source):
++        if extension in OOXML:
++            parts = _package(source, cancel)
++            for name in ('docProps/core.xml', 'docProps/app.xml', 'docProps/custom.xml'):
++                if name not in parts:
++                    continue
++                for index, node in enumerate(_xml(parts[name])):
++                    if not isinstance(node.tag, str):
++                        continue
++                    entries.append({'key': f'ooxml:{name}:{index}',
++                                    'label': node.get('name') or node.tag.rsplit('}', 1)[-1],
++                                    'value': ''.join(node.itertext()),
++                                    'fingerprint': sha256(etree.tostring(node, method='c14n', with_tail=False)).hexdigest()})
++        elif extension == 'pdf':
++            reader = reader_for(source)
++            try:
++                for key, value in (reader.metadata or {}).items():
++                    entries.append({'key': 'pdf:' + str(key), 'label': str(key), 'value': str(value)})
++                if '/Metadata' in reader.trailer['/Root']:
++                    data = reader.trailer['/Root']['/Metadata'].get_data()
++                    if len(data) > MAX_XML:
++                        raise ValueError('PDF XMP 크기 제한 초과')
++                    entries.append({'key': 'pdf:xmp', 'label': 'XMP (전체 / entire packet)',
++                                    'value': data.decode('utf-8', errors='replace')})
++            finally:
++                reader.close()
++        elif extension in IMAGE_EDIT:
++            raw = bounded_read(source)
++            with Image.open(source) as image:
++                entries.extend(_exif_items(image.getexif()))
++            if extension in {'jpg', 'jpeg'}:
++                for index, (marker, segment) in enumerate(_jpeg_segments(raw)):
++                    if marker not in {0xFE, 0xE1, 0xED}:
++                        continue
++                    payload = _jpeg_payload(segment)
++                    if marker == 0xFE or (marker == 0xE1 and not payload.startswith(b'Exif\x00\x00')) or marker == 0xED:
++                        entries.append({'key': f'jpeg:{index}', 'label': 'JPEG comment / XMP / IPTC',
++                                        'value': repr(payload[:4096]),
++                                        'fingerprint': sha256(bytes([marker]) + payload).hexdigest()})
++            else:
++                for index, (kind, data, _) in enumerate(_png_chunks(raw)):
++                    if kind in {b'tEXt', b'iTXt', b'zTXt'}:
++                        entries.append({'key': f'png:{index}', 'label': kind.decode() + ': ' + data.split(b'\x00')[0].decode('latin1'),
++                                        'value': repr(data[:4096]),
++                                        'fingerprint': sha256(kind + data).hexdigest()})
++    check_cancel(cancel)
++    return {'path': str(source), 'source': extension, 'format': extension, 'local_only': True,
++            'supported': supported, 'entries': entries, 'limitations': dict(LIMITATION),
++            'notice': {'ko': ('JPEG/PNG 영상 데이터를 재압축하지 않습니다.' if extension in IMAGE_EDIT else
++                              'PDF는 전체 문서 객체를 복제합니다. 전자서명 유효성·프로그램별 동작의 동일성은 보장하지 않습니다.' if extension == 'pdf' else
++                              '선택한 속성만 제거하며 나머지 ZIP 부분은 내용 바이트를 보존합니다.' if extension in OOXML else
++                              '이 형식의 선택 메타데이터 정리는 지원하지 않습니다. 원본을 변경하지 않았습니다.'),
++                       'en': ('JPEG/PNG image data is not recompressed.' if extension in IMAGE_EDIT else
++                              'PDF document objects are cloned; digital signature validity and identical application behavior are not guaranteed.' if extension == 'pdf' else
++                              'Only selected properties are removed; other ZIP parts retain their content bytes.' if extension in OOXML else
++                              'Selective metadata removal is unsupported for this format. The original was not modified.')}}
++
++
++def _verify_metadata_removed(before, after, keys):
++    """위치 키는 삭제 뒤 재색인되므로 원문 지문과 개수로 미선택 항목을 대조한다."""
++    stable_keys = {key for key in keys if key.startswith(('exif:', 'pdf:'))}
++    if stable_keys & {entry['key'] for entry in after['entries']}:
++        raise ValueError('선택한 메타데이터가 남아 있습니다.')
++
++    def indexed_entries(entries, excluded):
++        return Counter((entry['key'].rsplit(':', 1)[0], entry['fingerprint'])
++                       for entry in entries if entry['key'].startswith(('ooxml:', 'jpeg:', 'png:'))
++                       and entry['key'] not in excluded)
++
++    if indexed_entries(before['entries'], keys) != indexed_entries(after['entries'], set()):
++        raise ValueError('선택한 메타데이터 제거 또는 미선택 항목 보존을 확인하지 못했습니다.')
++
++
++def strip_metadata(path, keys, output_dir, cancel=None):
++    check_cancel(cancel)
++    source = require_regular(path)
++    output = inspection_tools._output(output_dir)
++    report = metadata_report(source, cancel)
++    if not report['supported']:
++        raise DeliveryError('unsupported_metadata', report['notice']['ko'], report['notice']['en'])
++    keys = set(keys)
++    if not keys or not keys <= {entry['key'] for entry in report['entries']}:
++        raise DeliveryError('metadata_keys', '현재 탐지한 항목을 하나 이상 선택하세요.', 'Select one or more currently detected metadata entries.')
++    preflight_output(output, source.stat().st_size * 3 + 4 * 1024 * 1024, cancel)
++    extension = report['source']
++    with source_context(source), tempfile.TemporaryDirectory(prefix='.flipring-metadata-', dir=output) as folder:
++        destination = Path(folder) / ('clean' + source.suffix)
++        if extension in OOXML:
++            parts = _package(source, cancel)
++            for name in ('docProps/core.xml', 'docProps/app.xml', 'docProps/custom.xml'):
++                selected = [key for key in keys if key.startswith(f'ooxml:{name}:')]
++                if selected:
++                    root = _xml(parts[name])
++                    for index, node in reversed(list(enumerate(root))):
++                        if f'ooxml:{name}:{index}' in keys:
++                            root.remove(node)
++                    parts[name] = etree.tostring(root, xml_declaration=True, encoding='UTF-8')
++            with zipfile.ZipFile(source) as original, zipfile.ZipFile(destination, 'x') as cleaned:
++                cleaned.comment = original.comment
++                for item in original.infolist():
++                    check_cancel(cancel)
++                    cleaned.writestr(item, parts[item.filename])
++        elif extension == 'pdf':
++            reader = reader_for(source)
++            writer = PdfWriter()
++            try:
++                writer.clone_document_from_reader(reader)
++                if writer._info is not None:
++                    info = writer._info.get_object()
++                    for key in keys:
++                        if key.startswith('pdf:/'):
++                            info.pop(NameObject(key[4:]), None)
++                if 'pdf:xmp' in keys:
++                    writer._root_object.pop(NameObject('/Metadata'), None)
++                check_cancel(cancel)
++                with destination.open('xb') as stream:
++                    writer.write(stream)
++            finally:
++                writer.close()
++                reader.close()
++        else:
++            raw = bounded_read(source)
++            with Image.open(source) as image:
++                exif = image.getexif()
++                for key in keys:
++                    if key.startswith('exif:'):
++                        del exif[int(key[5:])]
++                exif_data = exif.tobytes() if len(exif) else b''
++            if extension in {'jpg', 'jpeg'}:
++                pieces = []
++                for index, (marker, segment) in enumerate(_jpeg_segments(raw)):
++                    check_cancel(cancel)
++                    if f'jpeg:{index}' in keys:
++                        continue
++                    payload = _jpeg_payload(segment) if marker == 0xE1 else b''
++                    if marker == 0xE1 and payload.startswith(b'Exif\x00\x00') and any(k.startswith('exif:') for k in keys):
++                        if exif_data:
++                            if len(exif_data) > 65533:
++                                raise ValueError('JPEG EXIF 크기 제한 초과')
++                            prefix = segment[:len(segment) - len(payload) - 2]
++                            segment = prefix + struct.pack('>H', len(exif_data) + 2) + exif_data
++                        else:
++                            continue
++                    pieces.append(segment)
++                with destination.open('xb') as stream:
++                    stream.write(b''.join(pieces))
++            else:
++                pieces = [raw[:8]]
++                for index, (kind, data, chunk) in enumerate(_png_chunks(raw)):
++                    check_cancel(cancel)
++                    if f'png:{index}' in keys:
++                        continue
++                    if kind == b'eXIf' and any(k.startswith('exif:') for k in keys):
++                        if not exif_data:
++                            continue
++                        data = exif_data[6:]
++                        chunk = struct.pack('>I', len(data)) + kind + data + struct.pack('>I', zlib.crc32(kind + data))
++                    pieces.append(chunk)
++                with destination.open('xb') as stream:
++                    stream.write(b''.join(pieces))
++        check_cancel(cancel)
++        # 실제 사본을 다시 읽어 선택 제거를 확인한 후에만 배타적으로 발행한다.
++        after = metadata_report(destination, cancel)
++        _verify_metadata_removed(report, after, keys)
++        return publish(destination, output / source.stem, 'metadata', cancel)
++
++
++def compare_documents(left, right, cancel=None, page=0):
++    """문서는 임시 사본을 변환하므로 입력 폴더에도 변환 결과를 남기지 않는다."""
++    check_cancel(cancel)
++    sources = [require_regular(path) for path in (left, right)]
++    with tempfile.TemporaryDirectory(prefix='.flipring-compare-') as folder:
++        prepared = []
++        for index, source in enumerate(sources):
++            check_cancel(cancel)
++            if source.suffix.lower() == '.pdf' or engine.classify(source)[0] == '이미지':
++                prepared.append(source)
++            else:
++                work = Path(folder) / str(index)
++                work.mkdir()
++                copied = work / source.name
++                with source.open('rb') as original, copied.open('xb') as stream:
++                    while block := original.read(1024 * 1024):
++                        check_cancel(cancel)
++                        stream.write(block)
++                prepared.append(Path(engine.convert(copied, 'pdf', cancel=cancel)))
++        result = inspection_tools.compare_files(*prepared, cancel=cancel)
++        images = []
++        for index, path in enumerate(prepared):
++            check_cancel(cancel)
++            count = result['left' if index == 0 else 'right']['page_count']
++            images.append(inspection_tools.render_page(path, page, 120) if page < count else None)
++        for key, source in zip(('left', 'right'), sources):
++            result[key]['path'] = str(source)
++        result.update(images=images, page=page, local_only=True,
++                      limitations={'ko': '실제 렌더와 추출 텍스트 비교입니다. 픽셀·의미의 완전 동일성을 자동 판정하지 않습니다.',
++                                   'en': 'Actual rendered pages and extracted text are compared. Complete pixel or semantic equivalence is not automatically determined.'})
++        return result
+--- 공개기준/소스/delivery_ui.py
++++ 최종공개/소스/delivery_ui.py
+@@ -0,0 +1,402 @@
++"""로컬 전용 호환·선택 메타데이터·문서 전후 비교 대화상자."""
++from pathlib import Path
++import json
++import threading
++
++from PySide6.QtCore import Qt, QThread, Signal, QSize
++from PySide6.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
++                               QComboBox, QLineEdit, QListWidget, QListWidgetItem,
++                               QPlainTextEdit, QFileDialog, QSpinBox, QSplitter, QScrollArea,
++                               QGridLayout, QTabWidget, QWidget)
++import delivery_tools as tools
++import engine
++from inspection_ui import PageCanvas
++from pdf_tools import Cancelled
++from ui_motion import make_file_dialog, install_surface_motions, set_reduced_motion
++from theme_manager import manager
++from fixed_viewport import fit_window
++
++
++class _Job(QThread):
++    completed = Signal(object)
++    failed = Signal(object)
++
++    def __init__(self, operation, parent):
++        super().__init__(parent)
++        self.operation, self.cancel = operation, threading.Event()
++
++    def run(self):
++        try:
++            self.completed.emit(self.operation(self.cancel))
++        except Exception as error:
++            self.failed.emit(error)
++
++
++class DeliveryDialog(QDialog):
++    result_ready = Signal(str, str, str)
++
++    def __init__(self, parent=None, language='ko', paths=None):
++        super().__init__(parent)
++        self.language, self.job, self._closing = language, None, False
++        self._gate_owner, self._action, self._source_at_start = None, '', ''
++        self.resize(900, 760)
++        layout = QVBoxLayout(self)
++        layout.setContentsMargins(24, 24, 24, 20)
++        layout.setSpacing(16)
++        self.notice = QLabel()
++        self.notice.setWordWrap(True)
++        row = QHBoxLayout()
++        self.source_combo, self.second_combo, self.target_combo = QComboBox(), QComboBox(), QComboBox()
++        self.add_button = QPushButton()
++        self.source_label = QLabel()
++        layout.addWidget(self.source_label)
++        row.addWidget(self.source_combo, 1)
++        row.addWidget(self.add_button)
++        layout.addLayout(row)
++        self.tabs = QTabWidget()
++        self.tabs.setDocumentMode(True)
++        self.tabs.setStyleSheet("QTabWidget::pane {border:0;} QTabBar::tab {padding:10px 18px;border:0;border-bottom:2px solid transparent;} QTabBar::tab:selected {border-bottom-color:#242424;}")
++        layout.addWidget(self.tabs, 2)
++        self.compatibility_page, self.privacy_page, self.compare_page = QWidget(), QWidget(), QWidget()
++        for page in (self.compatibility_page, self.privacy_page, self.compare_page):
++            self.tabs.addTab(page, '')
++        compatibility = QVBoxLayout(self.compatibility_page)
++        compatibility.setContentsMargins(0, 16, 0, 0)
++        compatibility.setSpacing(12)
++        self.compatibility_button, self.metadata_button = QPushButton(), QPushButton()
++        self.strip_button, self.compare_button, self.cancel_button = QPushButton(), QPushButton(), QPushButton()
++        self.target_label = QLabel()
++        compatibility.addWidget(self.target_label)
++        compatibility.addWidget(self.target_combo)
++        compatibility.addWidget(self.compatibility_button)
++        compatibility.addStretch()
++        privacy = QVBoxLayout(self.privacy_page)
++        privacy.setContentsMargins(0, 16, 0, 0)
++        privacy.setSpacing(12)
++        privacy.addWidget(self.metadata_button)
++        self.metadata_list = QListWidget()
++        privacy.addWidget(self.metadata_list, 1)
++        options = QHBoxLayout()
++        self.output_edit, self.folder_button = QLineEdit(), QPushButton()
++        options.addWidget(self.output_edit, 1)
++        options.addWidget(self.folder_button)
++        privacy.addLayout(options)
++        privacy.addWidget(self.strip_button)
++        compare = QVBoxLayout(self.compare_page)
++        compare.setContentsMargins(0, 16, 0, 0)
++        compare.setSpacing(12)
++        compare_options = QHBoxLayout()
++        self.page_spin = QSpinBox()
++        self.page_spin.setRange(1, 1)
++        # NoButtons는 상속된 Qt 스타일에서 편집 영역을 1px로 만들 수 있어 영역만 명시한다.
++        self.page_spin.setStyleSheet('QSpinBox::up-button,QSpinBox::down-button {width:0px;height:0px;}')
++        self.page_spin.setFixedWidth(90)
++        self.previous_page_button, self.next_page_button = QPushButton('−'), QPushButton('+')
++        for button in (self.previous_page_button, self.next_page_button):
++            button.setFixedWidth(38)
++        self.previous_page_button.clicked.connect(self.page_spin.stepDown)
++        self.next_page_button.clicked.connect(self.page_spin.stepUp)
++        self.page_spin.valueChanged.connect(self._sync_page_buttons)
++        self.second_label = QLabel()
++        compare.addWidget(self.second_label)
++        compare_options.addWidget(self.second_combo, 1)
++        compare_options.addWidget(self.previous_page_button)
++        compare_options.addWidget(self.page_spin)
++        compare_options.addWidget(self.next_page_button)
++        compare.addLayout(compare_options)
++        compare.addWidget(self.compare_button)
++        split = QSplitter()
++        self.left_canvas, self.right_canvas = PageCanvas(), PageCanvas()
++        self.left_label, self.right_label = QLabel(), QLabel()
++        for canvas, label in zip((self.left_canvas, self.right_canvas), (self.left_label, self.right_label)):
++            panel = QWidget()
++            column = QVBoxLayout(panel)
++            column.setContentsMargins(0, 0, 0, 0)
++            column.addWidget(label)
++            scroll = QScrollArea()
++            scroll.setWidget(canvas)
++            column.addWidget(scroll, 1)
++            split.addWidget(panel)
++        compare.addWidget(split, 1)
++        layout.addWidget(self.notice)
++        self.details, self.status = QPlainTextEdit(), QLabel()
++        self.details.setReadOnly(True)
++        self.status.setWordWrap(True)
++        layout.addWidget(self.details, 1)
++        footer = QHBoxLayout()
++        footer.addWidget(self.status, 1)
++        footer.addWidget(self.cancel_button)
++        layout.addLayout(footer)
++        self._tab_results = {}
++        self._active_tab = 0
++        self._root_layout = layout
++        self.tabs.currentChanged.connect(self._tab_changed)
++        self._paths = []
++        self.add_paths(paths or [])
++        self.add_button.clicked.connect(self._choose_files)
++        self.folder_button.clicked.connect(self._choose_folder)
++        self.source_combo.currentIndexChanged.connect(self._source_changed)
++        self.second_combo.currentIndexChanged.connect(self._invalidate_compare)
++        self.compatibility_button.clicked.connect(self._compatibility)
++        self.metadata_button.clicked.connect(self._metadata)
++        self.strip_button.clicked.connect(self._strip)
++        self.compare_button.clicked.connect(self._compare)
++        self.cancel_button.clicked.connect(self._cancel)
++        self._source_changed()
++        self.set_language(language)
++        self._set_busy(False)
++        self._tab_changed(0)
++        install_surface_motions(self)
++        manager()._style(self)
++        fit_window(self, QSize(900, 760))
++
++    def _tr(self, ko, en):
++        return ko if self.language == 'ko' else en
++
++    def set_language(self, language):
++        self.language = language
++        self.setWindowTitle(self._tr('파일 완성도 도구', 'File delivery tools'))
++        for index, (ko, en) in enumerate((('호환 안내', 'Compatibility'), ('개인정보', 'Privacy'), ('전후 비교', 'Compare'))):
++            self.tabs.setTabText(index, self._tr(ko, en))
++        for label, ko, en in ((self.source_label, '원본 파일', 'Source file'),
++                              (self.target_label, '출력 형식', 'Output format'),
++                              (self.second_label, '비교할 파일', 'Comparison file'),
++                              (self.left_label, '원본', 'Original'),
++                              (self.right_label, '비교 파일', 'Comparison')):
++            label.setText(self._tr(ko, en))
++        self.source_combo.setPlaceholderText(self._tr('파일을 선택하세요', 'Choose a file'))
++        self.second_combo.setPlaceholderText(self._tr('비교할 파일을 선택하세요', 'Choose a comparison file'))
++        self.target_combo.setPlaceholderText(self._tr('출력 형식을 선택하세요', 'Choose an output format'))
++        self.target_combo.setAccessibleName(self._tr('출력 형식', 'Output format'))
++        self.details.setPlaceholderText(self._tr('검사 결과가 여기에 표시됩니다.', 'Inspection results appear here.'))
++        self.left_canvas.placeholder = self._tr('파일을 선택한 뒤 비교를 실행하세요.', 'Choose files, then run comparison.')
++        self.right_canvas.placeholder = self._tr('비교 결과가 여기에 표시됩니다.', 'Comparison appears here.')
++        self.left_canvas.update()
++        self.right_canvas.update()
++        self.previous_page_button.setToolTip(self._tr('이전 페이지', 'Previous page'))
++        self.next_page_button.setToolTip(self._tr('다음 페이지', 'Next page'))
++        self.previous_page_button.setAccessibleName(self.previous_page_button.toolTip())
++        self.next_page_button.setAccessibleName(self.next_page_button.toolTip())
++        self.source_combo.setAccessibleName(self._tr('원본 파일', 'Source file'))
++        self.second_combo.setAccessibleName(self._tr('비교할 파일', 'Comparison file'))
++        self._update_notice()
++        for widget, ko, en in ((self.add_button, '파일 선택', 'Choose files'),
++                               (self.folder_button, '저장 폴더', 'Output folder'),
++                               (self.compatibility_button, '호환 확인', 'Compatibility'),
++                               (self.metadata_button, '메타데이터 탐지', 'Inspect metadata'),
++                               (self.strip_button, '선택 제거 사본 저장', 'Save selected removal'),
++                               (self.compare_button, '문서 전후 비교', 'Compare documents'),
++                               (self.cancel_button, '취소', 'Cancel')):
++            widget.setText(self._tr(ko, en))
++        self.output_edit.setPlaceholderText(self._tr('새 사본 저장 폴더', 'Folder for new copies'))
++        self.page_spin.setPrefix(self._tr('페이지 ', 'Page '))
++        # 언어를 바꿀 때 사용자가 선택한 제거 항목과 검사 결과는 보존한다.
++        if not self.status.text():
++            self.status.setText(self._tr('파일과 작업을 선택하세요.', 'Choose files and an action.'))
++
++    def _update_notice(self):
++        notices = (
++            ('출력 형식을 고르고 호환 확인을 누르세요. 서식 보존을 보장하는 검사는 아닙니다.',
++             'Choose an output format, then check compatibility. This does not guarantee formatting preservation.'),
++            ('탐지 후 제거할 항목을 선택하세요. 원본을 보존하며 새 사본에만 적용합니다. 본문·첨부·댓글은 별도로 검토하세요.',
++             'Inspect, then select metadata to remove in a new copy. Originals are preserved. Review content, attachments and comments separately.'),
++            ('비교할 파일을 고르고 문서 전후 비교를 누르세요. 페이지별 화면과 텍스트 차이를 함께 확인합니다.',
++             'Choose a comparison file, then compare documents. Review page images alongside extracted text differences.'),
++        )
++        self.notice.setText(self._tr(*notices[self.tabs.currentIndex()]))
++
++    def _tab_changed(self, index):
++        # 탭마다 검사 결과를 보존하여 다른 작업의 결과와 혼동하지 않게 한다.
++        self._tab_results[self._active_tab] = self.details.toPlainText()
++        self._active_tab = index
++        self.details.setPlainText(self._tab_results.get(index, ''))
++        self._update_notice()
++        # 짧은 호환 입력은 내용 높이만 차지하고, 비교 화면에는 미리보기 공간을 배정한다.
++        self.tabs.setMaximumHeight((190, 370, 16777215)[index])
++        self._root_layout.setStretchFactor(self.tabs, (0, 2, 3)[index])
++
++    def _sync_page_buttons(self, *unused):
++        idle = not self.is_busy()
++        self.previous_page_button.setEnabled(idle and self.page_spin.value() > self.page_spin.minimum())
++        self.next_page_button.setEnabled(idle and self.page_spin.value() < self.page_spin.maximum())
++
++    def set_reduced_motion(self, enabled):
++        set_reduced_motion(self, enabled)
++
++    def add_paths(self, paths):
++        for path in paths:
++            value = str(path)
++            if value not in self._paths and Path(value).is_file():
++                self._paths.append(value)
++                self.source_combo.addItem(Path(value).name, value)
++                self.second_combo.addItem(Path(value).name, value)
++        if self.second_combo.count() > 1:
++            self.second_combo.setCurrentIndex(1)
++
++    def _source_changed(self, *unused):
++        self.metadata_list.clear()
++        self._tab_results.clear()
++        self.details.clear()
++        self.target_combo.clear()
++        source = self.source_combo.currentData()
++        if source:
++            self.target_combo.addItems(engine.targets([Path(source)]))
++        self._invalidate_compare()
++
++    def _invalidate_compare(self, *unused):
++        self.left_canvas.set_image(None)
++        self.right_canvas.set_image(None)
++        self._tab_results.pop(2, None)
++        if self.tabs.currentIndex() == 2:
++            self.details.clear()
++        self.page_spin.setMaximum(1)
++        self._sync_page_buttons()
++
++    def _choose_files(self):
++        dialog = make_file_dialog(self, 'pick_files_title')
++        dialog.setFileMode(QFileDialog.ExistingFiles)
++        if dialog.exec():
++            self.add_paths(dialog.selectedFiles())
++
++    def _choose_folder(self):
++        dialog = make_file_dialog(self, 'pick_folder_title', folder=True)
++        if dialog.exec():
++            self.output_edit.setText(dialog.selectedFiles()[0])
++
++    def _compatibility(self):
++        source, target = self.source_combo.currentData(), self.target_combo.currentText()
++        self._start(lambda cancel: tools.compatibility_report(source, target, cancel), 'compatibility')
++
++    def _metadata(self):
++        source = self.source_combo.currentData()
++        self._start(lambda cancel: tools.metadata_report(source, cancel), 'metadata')
++
++    def _strip(self):
++        source, output = self.source_combo.currentData(), self.output_edit.text()
++        keys = [self.metadata_list.item(i).data(Qt.UserRole) for i in range(self.metadata_list.count())
++                if self.metadata_list.item(i).checkState() == Qt.Checked]
++        self._start(lambda cancel: tools.strip_metadata(source, keys, output, cancel), 'strip')
++
++    def _compare(self):
++        left, right, page = self.source_combo.currentData(), self.second_combo.currentData(), self.page_spin.value() - 1
++        self._start(lambda cancel: tools.compare_documents(left, right, cancel, page), 'compare')
++
++    def _start(self, operation, action):
++        if self.is_busy():
++            return False
++        owner = self.parentWidget()
++        if owner is not None and callable(getattr(owner, 'work_busy', None)) and owner.work_busy():
++            self.status.setText(self._tr('다른 작업이 끝난 뒤 실행하세요.', 'Wait for the other operation to finish.'))
++            return False
++        self._action, self._source_at_start = action, self.source_combo.currentData() or ''
++        if owner is not None and type(getattr(owner, 'pending', None)) is int:
++            owner.pending += 1
++            self._gate_owner = owner
++        self.job = _Job(operation, self)
++        self.job.completed.connect(self._completed)
++        self.job.failed.connect(self._failed)
++        self.job.finished.connect(self._finished)
++        self._set_busy(True)
++        self.status.setText(self._tr('처리 중 · 취소할 수 있습니다.', 'Working · Cancellation is available.'))
++        self.job.start()
++        return True
++
++    def _set_busy(self, busy):
++        self.tabs.tabBar().setEnabled(not busy)
++        for widget in (self.source_combo, self.second_combo, self.target_combo, self.add_button,
++                       self.output_edit, self.folder_button, self.metadata_list, self.page_spin,
++                       self.compatibility_button, self.metadata_button, self.strip_button, self.compare_button):
++            widget.setEnabled(not busy)
++        self.cancel_button.setEnabled(busy)
++        self._sync_page_buttons()
++
++    def _completed(self, result):
++        if self._action == 'strip':
++            self.status.setText(self._tr('원본 보존 · 새 사본: ', 'Original preserved · New copy: ') + str(result))
++            self.result_ready.emit(self._source_at_start, str(result), '')
++            return
++        if self._action == 'metadata':
++            self.metadata_list.clear()
++            for entry in result['entries']:
++                item = QListWidgetItem(entry['label'] + ': ' + entry['value'])
++                item.setData(Qt.UserRole, entry['key'])
++                item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
++                item.setCheckState(Qt.Unchecked)
++                self.metadata_list.addItem(item)
++            self.details.setPlainText(result['notice'][self.language] + '\n' + result['limitations'][self.language])
++        elif self._action == 'compare':
++            for canvas, image in zip((self.left_canvas, self.right_canvas), result['images']):
++                canvas.set_image(image)
++            self.page_spin.setMaximum(max(result['left']['page_count'], result['right']['page_count']))
++            self._sync_page_buttons()
++            self.details.setPlainText((result['text_diff'] or self._tr('추출 텍스트가 같습니다.', 'Extracted text is identical.')) + '\n' + result['limitations'][self.language])
++        else:
++            labels = [('source', '입력 형식', 'Input format'), ('format', '출력 형식', 'Output format'),
++                      ('supported', '변환 지원', 'Conversion supported'), ('checked', '내부 제한 검사', 'Limited internal inspection'),
++                      ('macros', '매크로 흔적', 'Macro evidence'), ('formulas', '수식·필드 흔적 수', 'Formula / field evidence count'),
++                      ('fonts', '글꼴 흔적', 'Font evidence'), ('external_links', '외부 관계 수', 'External relationship count')]
++            lines = [self._tr(ko, en) + ': ' + json.dumps(result[key], ensure_ascii=False) for key, ko, en in labels]
++            lines.extend(result['notes'][self.language])
++            lines.append(result['limitations'][self.language])
++            self.details.setPlainText('\n'.join(lines))
++        self.status.setText(self._tr('완료 · 결과는 로컬 전용입니다.', 'Complete · Results are local only.'))
++
++    def _failed(self, error):
++        if isinstance(error, (Cancelled, engine.Cancelled)):
++            message = self._tr('취소됨 · 원본을 보존했습니다.', 'Cancelled · Originals preserved.')
++        elif isinstance(error, tools.DeliveryError):
++            message = self._tr(error.ko, error.en)
++        else:
++            message = self._tr('처리에 실패했습니다. 파일과 도구 상태를 확인하세요.', 'Processing failed. Check the file and tool availability.')
++            message += '\n' + str(error) if self.language == 'ko' else '\n' + type(error).__name__
++        self.status.setText(message)
++        if self._action == 'strip' and not isinstance(error, (Cancelled, engine.Cancelled)):
++            self.result_ready.emit(self._source_at_start, '', message)
++
++    def _finished(self):
++        job, self.job = self.job, None
++        if self._gate_owner is not None:
++            self._gate_owner.pending -= 1
++            self._gate_owner = None
++        self._set_busy(False)
++        if job:
++            job.deleteLater()
++        if self._closing:
++            self.close()
++
++    def _cancel(self):
++        if self.job:
++            self.job.cancel.set()
++            self.cancel_button.setEnabled(False)
++
++    def is_busy(self):
++        return self.job is not None
++
++    def shutdown(self):
++        self._cancel()
++        return not self.is_busy()
++
++    def reject(self):
++        if self.is_busy():
++            self._closing = True
++            self._cancel()
++        else:
++            super().reject()
++
++    def closeEvent(self, event):
++        if self.is_busy():
++            self._closing = True
++            self._cancel()
++            event.ignore()
++        else:
++            super().closeEvent(event)
++
++    def showEvent(self, event):
++        self._closing = False
++        super().showEvent(event)
++
++
++def open_dialog(parent=None, language='ko', paths=None):
++    dialog = DeliveryDialog(parent, language, paths)
++    dialog.show()
++    return dialog
+--- 공개기준/소스/document_bridge.py
++++ 최종공개/소스/document_bridge.py
+@@ -197,7 +197,8 @@
+     try:
+         context = uno.getComponentContext()
+         resolver = context.ServiceManager.createInstanceWithContext("com.sun.star.bridge.UnoUrlResolver", context)
+-        deadline = time.monotonic() + 25
++        # 새 격리 프로필의 연결이 25초에 근접한 관측에 따라 시작 대기를 60초로 제한한다.
++        deadline = time.monotonic() + 60
+         while True:
+             try:
+                 remote = resolver.resolve("uno:" + listener)
+--- 공개기준/소스/inspection_ui.py
++++ 최종공개/소스/inspection_ui.py
+@@ -11,7 +11,7 @@
+ from PySide6.QtWidgets import (QDialog, QWidget, QLabel, QPushButton, QVBoxLayout,
+                                QHBoxLayout, QComboBox, QLineEdit, QPlainTextEdit,
+                                QScrollArea, QListWidget, QListWidgetItem, QSpinBox,
+-                               QProgressBar, QFileDialog, QSplitter)
++                               QProgressBar, QFileDialog, QSplitter, QCheckBox)
+ 
+ import inspection_tools as tools
+ from pdf_tools import Cancelled, PdfToolError, check_cancel
+@@ -45,6 +45,7 @@
+         self.zoom = 100
+         self.regions = []
+         self.words = []
++        self.show_order = False
+         self.highlight = None
+         self.drawing = False
+         self.anchor = None
+@@ -93,7 +94,15 @@
+             return
+         painter.setRenderHint(QPainter.SmoothPixmapTransform)
+         painter.drawImage(self.image_rect(), self.image)
+-        for word in self.words:
++        for number, word in enumerate(self.words, 1):
++            if self.show_order:
++                box = self._box(word['rect'])
++                painter.setPen(QPen(QColor('#24589a'), 1))
++                painter.drawRect(box)
++                badge = QRectF(box.left(), max(0, box.top() - 17), 30, 17)
++                painter.fillRect(badge, QColor('#183c68'))
++                painter.setPen(QColor('white'))
++                painter.drawText(badge, Qt.AlignCenter, str(number))
+             if word['confidence'] is not None and word['confidence'] < 70:
+                 painter.setPen(QPen(QColor('#555555'), 1, Qt.DashLine))
+                 painter.drawRect(self._box(word['rect']))
+@@ -261,6 +270,13 @@
+         self.metadata.setWordWrap(True)
+         self.metadata.setTextInteractionFlags(Qt.TextSelectableByMouse)
+         content.addWidget(self.metadata)
++        self.reading_order = QCheckBox()
++        self.reading_order.toggled.connect(self._reading_order_changed)
++        self.page_spin.valueChanged.connect(self._reading_order_changed)
++        content.addWidget(self.reading_order)
++        self.ocr_review_hint = QLabel()
++        self.ocr_review_hint.setWordWrap(True)
++        content.addWidget(self.ocr_review_hint)
+         self.candidate_list = QListWidget()
+         self.candidate_list.setMinimumHeight(110)
+         self.candidate_list.setMaximumHeight(165)
+@@ -337,6 +353,10 @@
+ 
+     def set_language(self, language):
+         self.language = 'en' if language == 'en' else 'ko'
++        self.reading_order.setText(self._tr('인식 위치와 읽기 순서 보기', 'Show recognition positions and reading order'))
++        self.ocr_review_hint.setText(self._tr(
++            '번호는 현재 페이지의 실제 인식 순서입니다. 목록을 누르면 위치로 이동합니다. 번호가 없는 글자·표를 원본과 대조해 누락을 확인하고 오른쪽 텍스트를 교정하세요. 자동 누락 검출을 보장하지 않습니다.',
++            'Numbers show the actual recognition order on the current page. Select a row to locate it. Compare unnumbered text and tables with the original and correct the text on the right. Missing text is not detected automatically.'))
+         titles = [('OCR 교정', 'OCR correction'), ('파일 비교', 'File comparison'),
+                   ('결과 검사', 'Result inspection'), ('영역 가림', 'Redact regions')]
+         for index, (ko, en) in enumerate(titles):
+@@ -373,6 +393,8 @@
+         set_reduced_motion(self, enabled)
+ 
+     def _set_mode_visibility(self):
++        self.reading_order.setVisible(self.mode == 'ocr')
++        self.ocr_review_hint.setVisible(self.mode == 'ocr')
+         self.second_combo.setVisible(self.mode == 'compare')
+         self.canvas_scrolls[1].setVisible(self.mode == 'compare')
+         self.editor.setVisible(self.mode in {'ocr', 'compare'})
+@@ -522,7 +544,7 @@
+         for widget in (self.mode_combo, self.source_combo, self.second_combo, self.add_button,
+                        self.page_spin, self.ocr_language, self.run_button, self.export_button,
+                        self.output_edit, self.folder_button, self.clear_button, self.region_widget,
+-                       self.candidate_list):
++                       self.candidate_list, self.reading_order):
+             widget.setEnabled(not busy)
+         self.cancel_button.setEnabled(busy)
+         self.progress.setRange(0, 0 if busy else 1)
+@@ -540,6 +562,8 @@
+             self.page_spin.blockSignals(False)
+             self._show_info(result['infos'])
+             self._update_overlays()
++            if self.mode == 'ocr' and self.reading_order.isChecked():
++                self._refresh_candidates()
+             if self.mode == 'compare':
+                 self.status.setText(self._tr('미리보기 준비 · 두 파일 비교를 실행하세요.',
+                                              'Preview ready · Run comparison for these two files.'))
+@@ -685,11 +709,21 @@
+         page = self.page_spin.value() - 1
+         self.left_canvas.regions = [r['rect'] for r in self.rectangles if r['page'] == page]
+         self.left_canvas.words = [w for w in (self.recognized or {}).get('words', []) if w['page'] == page]
++        self.left_canvas.show_order = self.mode == 'ocr' and self.reading_order.isChecked()
+         self.left_canvas.update()
++
++    def _reading_order_changed(self, enabled):
++        self._update_overlays()
++        self._refresh_candidates()
+ 
+     def _refresh_candidates(self):
+         self.candidate_list.clear()
+         values = self.rectangles if self.mode == 'redact' else self.findings
++        if self.mode == 'ocr' and self.reading_order.isChecked():
++            page = self.page_spin.value() - 1
++            values = [dict(word, kind='reading_order', score=word['confidence'], order=number)
++                      for number, word in enumerate(
++                          [w for w in (self.recognized or {}).get('words', []) if w['page'] == page], 1)]
+         names = {'blank': ('빈 페이지 후보', 'Blank page candidate'), 'duplicate': ('중복 페이지 후보', 'Duplicate page candidate'),
+                  'blur': ('흐림 후보', 'Blur candidate'), 'edge': ('가장자리 잘림 후보', 'Edge content candidate'),
+                  'email': ('이메일 후보', 'Email candidate'), 'phone': ('전화번호 후보', 'Phone candidate'),
+@@ -697,6 +731,8 @@
+         for value in values:
+             label = self._tr('직접 지정한 가림 영역', 'User selected redaction region') if self.mode == 'redact' else self._tr(*names.get(value['kind'], ('검토 후보', 'Review candidate')))
+             text = f"{value['page'] + 1} · {label}"
++            if value.get('order'):
++                text = f"{value['page'] + 1} · #{value['order']}"
+             if value.get('text'):
+                 text += f" · {value['text']} · {value['score']:.1f}%"
+             elif 'score' in value:
+@@ -718,6 +754,9 @@
+         if self.page_spin.value() != value['page'] + 1:
+             self.page_spin.setValue(value['page'] + 1)
+         self.left_canvas.highlight = value.get('rect')
++        if value.get('rect'):
++            center = self.left_canvas._box(value['rect']).center()
++            self.canvas_scrolls[0].ensureVisible(int(center.x()), int(center.y()), 30, 30)
+         if self.mode == 'redact' and 'rect' in value:
+             for field, number in zip(self.region_fields, value['rect']):
+                 field.setText(f'{number:.8g}')
+--- 공개기준/소스/installer.iss
++++ 최종공개/소스/installer.iss
+@@ -2,7 +2,7 @@
+ [Setup]
+ AppId=PUVKID.FlipRing19
+ AppName=FlipRing
+-AppVersion=1.12.1
++AppVersion=1.13.0
+ AppPublisher=PUVKID
+ DefaultDirName={localappdata}\Programs\FlipRing19
+ DefaultGroupName=FlipRing
+--- 공개기준/소스/licenses/HEIC-GNU-runtime/읽어주세요.md
++++ 최종공개/소스/licenses/HEIC-GNU-runtime/읽어주세요.md
+@@ -1,28 +1,24 @@
+-# HEIC 디코더의 GNU 런타임 자료
+-
+-이 자료는 pi-heif-decoder 1.7.0.post4 Windows wheel에 포함되어 플립 링 프로그램에 동봉된 GNU 런 타임 DLL 세 개에 대응합니다. OCR용 Tesseract의 Debian GCC 14 DLL과 다른 구성 요소이므로 별도 GCC 16.2.0 소스를 제공합니다.
+-
+-- libgcc_s_seh와 libstdc ++: 공식 MSYS2 gcc-libs 16.2.0-3 원본의 PE .text 섹션 SHA-256이 각각 wheel DLL과 동일합니다.
+-- libwinpthread: 공식 MSYS2 libwinpthread 14.0.0.r375.g9c1abbbf5-1 DLL 의 전체 SHA-256이 wheel DLL과 동일합니다.
+-- libgcc와 libstdc ++는 wheel 배포 과정에서 DLL 이름과 수입 이름에 해시가 붙어 전체 바이너리 SHA-256은 다릅니다. 수입 DLL 이름의 해시를 정규화하면 원본 수입 심벌 목록이 같으며 .data와 .idata 섹션의 변경은 기록에 보존했습니다. 전체 바이너리를 재컴 파일하여 동일성을 입증한 것은 아닙니다.
+-
+-GCC-PKGINFO.txt와 WINPTHREAD-PKGINFO.txt에 정확한 원본 패키지·버전·빌드 정보를, HEIC-GNU-대조 JSON에 본문 섹션·수입 목록·다운로드 해시를 보관합니다.
+-각 .src.tar.zst는 MSYS2의 전체 소스 패키지이며 원본 GCC tar.xz 또는 mingw-w64 Git 소스·패치·PKGBUILD·. SRCINFO를 포함합니다. 패키지-빌드 방법에도 원본 PKGBUILD와 . SRCINFO를 별도로 보관합니다.
+-GCC-원문고지와 WINPTHREAD-원문고지에는 원문 저작권·GPL·LGPL·GCC Runtime Library Exception 등의 해당 고지가 있습니다.
+-
+-## 소스 제공과 재현
+-
+-GCC Runtime Library Exception이 있더라도 별도 libstdc ++ 바이너리를 재배포할 때에는 해당 GPL의 상응 소스 조건을 준수해야하므로 이 자료를 프로그램 licenses 폴더에도 함께 동봉합니다.
+-공식 설명: https://www.gnu.org/licenses/gcc-exception-3.1-faq.html
+-MSYS2 MinGW64 환경에서 해당 소스 패키지를 풀어 정확한 PKGBUILD와 패치를 사용하여 makepkg-mingw로 빌드할 수 있습니다. 컴파일러·런 타임 버전과 패키지 리 비전은 PKGINFO의 값을 사용합니다.
+-pi-heif-원본 빌드 방법에는 정확한 배포 소스의 setup.py·pyproject.toml·Windows libheif PKGBUILD를 원문 그대로 보관합니다.
+-
+-해당 PKGBUILD는 MSYS2 gcc-libs 의존성을 사용하고 Python 확장 빌드는 MSYS2 라이브러리를 연결합니다. wheel 생성 전에 delvewheel을 준비하는 설정도 포함합니다.
+-
+-전체 디코더 소스는 인접 HEIC-소스 폴더의 pi_heif_decoder-1.7.0.post4.tar.gz에 있습니다.
+-재빌드·호환 동적 DLL 교체·수정 디버깅을 위한 역 공학에 추가 제한을 두지 않습니다. 원본 DLL을 수정하거나 교체하지 않고 자료만 보완했습니다.
+-
+-## 확인 범위
+-
+-원본 배포 패키지의 DLL과 실제 설치된 wheel·프로그램 DLL을 직접 비교했습니다. MSYS2 소스 아카이브 다운로드 해시는 로컬에서 계산했으며 원격 PGP 서명 검증이나 컴파일러 재빌드는 수행하지 않았습니다.
+-수입 이름의 해시 정규화와 실행 코드 섹션 동일성을 근거로 원본 패키지를 대응했으며, libgcc/libstdc++의 전체 바이트가 같다고 주장하지 않습니다. 원문 라이선스가 이 설명보다 우선합니다.
++# HEIC 디코더의 GNU 런타임 자료
++
++이 자료는 pi-heif-decoder 1.7.0.post4 Windows wheel에 포함되어 플립링 프로그램에 동봉된 GNU 런타임 DLL 세 개에 대응합니다. OCR용 Tesseract의 Debian GCC 14 DLL과 다른 구성요소이므로 별도 GCC 16.2.0 소스를 제공합니다.
++
++- libgcc_s_seh와 libstdc++: 공식 MSYS2 gcc-libs 16.2.0-3 원본의 PE .text 섹션 SHA-256이 각각 wheel DLL과 동일합니다.
++- libwinpthread: 공식 MSYS2 libwinpthread 14.0.0.r375.g9c1abbbf5-1 DLL의 전체 SHA-256이 wheel DLL과 동일합니다.
++- libgcc와 libstdc++는 wheel 배포 과정에서 DLL 이름과 수입 이름에 해시가 붙어 전체 바이너리 SHA-256은 다릅니다. 수입 DLL 이름의 해시를 정규화하면 원본 수입 심벌 목록이 같으며 .data와 .idata 섹션의 변경은 기록에 보존했습니다. 전체 바이너리를 재컴파일하여 동일성을 입증한 것은 아닙니다.
++
++GCC-PKGINFO.txt와 WINPTHREAD-PKGINFO.txt에 정확한 원본 패키지·버전·빌드 정보를, HEIC-GNU-대조 JSON에 본문 섹션·수입 목록·다운로드 해시를 보관합니다.
++각 .src.tar.zst는 MSYS2의 전체 소스 패키지이며 원본 GCC tar.xz 또는 mingw-w64 Git 소스·패치·PKGBUILD·.SRCINFO를 포함합니다. 패키지-빌드방법에도 원본 PKGBUILD와 .SRCINFO를 별도로 보관합니다.
++GCC-원문고지와 WINPTHREAD-원문고지에는 원문 저작권·GPL·LGPL·GCC Runtime Library Exception 등의 해당 고지가 있습니다.
++
++## 소스 제공과 재현
++
++GCC Runtime Library Exception이 있더라도 별도 libstdc++ 바이너리를 재배포할 때에는 해당 GPL의 상응 소스 조건을 준수해야 하므로 이 자료를 프로그램 licenses 폴더에도 함께 동봉합니다.
++공식 설명: https://www.gnu.org/licenses/gcc-exception-3.1-faq.html
++MSYS2 MinGW64 환경에서 해당 소스 패키지를 풀어 정확한 PKGBUILD와 패치를 사용하여 makepkg-mingw로 빌드할 수 있습니다. 컴파일러·런타임 버전과 패키지 리비전은 PKGINFO의 값을 사용합니다.
++pi-heif-원본빌드방법에는 정확한 배포 소스의 setup.py·pyproject.toml·Windows libheif PKGBUILD를 원문 그대로 보관합니다. 해당 PKGBUILD는 MSYS2 gcc-libs 의존성을 사용하고 Python 확장 빌드는 MSYS2 라이브러리를 연결합니다. wheel 생성 전에 delvewheel을 준비하는 설정도 포함합니다. 전체 디코더 소스는 인접 HEIC-소스 폴더의 pi_heif_decoder-1.7.0.post4.tar.gz에 있습니다.
++재빌드·호환 동적 DLL 교체·수정 디버깅을 위한 역공학에 추가 제한을 두지 않습니다. 원본 DLL을 수정하거나 교체하지 않고 자료만 보완했습니다.
++
++## 확인 범위
++
++원본 배포 패키지의 DLL과 실제 설치된 wheel·프로그램 DLL을 직접 비교했습니다. MSYS2 소스 아카이브 다운로드 해시는 로컬에서 계산했으며 원격 PGP 서명 검증이나 컴파일러 재빌드는 수행하지 않았습니다.
++수입 이름의 해시 정규화와 실행 코드 섹션 동일성을 근거로 원본 패키지를 대응했으며, libgcc/libstdc++의 전체 바이트가 같다고 주장하지 않습니다. 원문 라이선스가 이 설명보다 우선합니다.
+--- 공개기준/소스/licenses/OCR/ubuntu-gcc/README.md
++++ 최종공개/소스/licenses/OCR/ubuntu-gcc/README.md
+@@ -18,70 +18,38 @@
+ | libgcc_s_seh-1.dll | usr/lib/gcc/x86_64-w64-mingw32/14-posix/libgcc_s_seh-1.dll | 954773 | 172cfdc9d83703ec0a0ca2cee08f6cf2a166b801717ee51a56b3a63b36bc2f83 |
+ | libstdc++-6.dll | usr/lib/gcc/x86_64-w64-mingw32/14-posix/libstdc++-6.dll | 26390974 | 5fe5d4d8f6636eb6f2dc55be99dc5dc8a6c40db1abdf592e84480d1e6985abd0 |
+ 
+-패키지 자체의 `control` 메타데이터는 `Source: gcc-mingw-w64 (27)` 및 `Built-Using: gcc-14 (= 14.2.0-19)`를 명시합니다.
+-
+-원문은 `debian14-runtime-control.txt`, 비교 결과는 `debian14-runtime-comparison.json`에 있습니다.
+-
+-기록에 들어 있는 과거 PC 경로는 조사 당시의 실행 증거이며 앱 빌드에 필요한 고정 경로가 아닙니다.
++패키지 자체의 `control` 메타데이터는 `Source: gcc-mingw-w64 (27)` 및 `Built-Using: gcc-14 (= 14.2.0-19)`를 명시합니다. 원문은 `debian14-runtime-control.txt`, 비교 결과는 `debian14-runtime-comparison.json`에 있습니다. 기록에 들어 있는 과거 PC 경로는 조사 당시의 실행 증거이며 앱 빌드에 필요한 고정 경로가 아닙니다.
+ 
+ ## 로컬에 포함한 상응 소스와 고지
+ 
+-아래 원본 파일은 출하 물에 로컬로 포함합니다. 소스의 URL만 제공하는 방식으로 대신하지 않습니다.
++아래 원본 파일은 출하물에 로컬로 포함합니다. 소스의 URL만 제공하는 방식으로 대신하지 않습니다.
+ 
+ 1. `gcc-mingw-w64_27.dsc`, `gcc-mingw-w64_27.tar.xz`: 정확한 MinGW 교차 빌드 패키징과 Debian 빌드 규칙입니다. 출처는 https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/ 입니다.
+-2. `gcc-14_14.2.0-19.dsc`, `gcc-14_14.2.0.orig.tar.gz`, `gcc-14_14.2.0-19.debian.tar.xz`: `Built-Using`이 지정한 GCC 14.2.0-19의 원본과 Debian 패치·패키징입니다.
++2. `gcc-14_14.2.0-19.dsc`, `gcc-14_14.2.0.orig.tar.gz`, `gcc-14_14.2.0-19.debian.tar.xz`: `Built-Using`이 지정한 GCC 14.2.0-19의 원본과 Debian 패치·패키징입니다. 출처는 https://deb.debian.org/debian/pool/main/g/gcc-14/ 입니다.
++3. `debian27/`, `debian-gcc14/`: 위 원본에서 읽기 편하도록 따로 꺼낸 저작권·빌드 규칙·변경 기록이며, 전체 소스는 위 원본 압축 자료에 있습니다.
++4. `COPYING3.txt`, `COPYING.RUNTIME.txt`, `COPYING.txt`: GCC 14.2.0 원본 내부에서 그대로 꺼낸 GNU GPL 버전 3, GCC Runtime Library Exception 버전 3.1, GPL 버전 2 원문입니다. 파일별 추가 고지와 저작권은 원본 소스 및 `debian-gcc14/copyright`를 함께 보세요.
+ 
+-출처는 https://deb.debian.org/debian/pool/main/g/gcc-14/ 입니다.
+-3. `debian27/`, `debian-gcc14/`: 위 원본에서 읽기 편하도록 따로 꺼낸 저작권·빌드 규칙·변경 기록이며, 전체 소스는 위 원본 압축 자료에 있습니다.
+-4. `COPYING3.txt`, `COPYING.RUNTIME.txt`, `COPYING.txt`: GCC 14.2.0 원본 내부에서 그대로 꺼낸 GNU GPL 버전 3, GCC Runtime Library Exception 버전 3.1, GPL 버전 2 원문입니다.
+-
+-파일별 추가 고지와 저작권은 원본 소스 및 `debian-gcc14/copyright`를 함께 보세요.
+-
+-GCC 원본 `orig.tar.gz`에는 `gcc-14-14.2.0/gcc-14.2.0-dfsg.tar.xz`와 `newlib-4.4.0.20231231.tar.xz`가 들어 있습니다.
+-
+-이 구조를 변경하지 않고 제공하며, Debian 패치도 빠뜨리지 않습니다.
+-
+-각 DSC가 명시한 참조 파일의 SHA-256을 대조했습니다.
+-
+-원본 PGP 서명은 보존했지만 이 PC에서 서명자의 키로 검증한 것은 아닙니다.
++GCC 원본 `orig.tar.gz`에는 `gcc-14-14.2.0/gcc-14.2.0-dfsg.tar.xz`와 `newlib-4.4.0.20231231.tar.xz`가 들어 있습니다. 이 구조를 변경하지 않고 제공하며, Debian 패치도 빠뜨리지 않습니다. 각 DSC가 명시한 참조 파일의 SHA-256을 대조했습니다. 원본 PGP 서명은 보존했지만 이 PC에서 서명자의 키로 검증한 것은 아닙니다.
+ 
+ ## 소스 확인과 빌드 규칙
+ 
+-Debian 도구가 있는 Linux 환경에서 아래와 같이 각 소스를 재조립할 수 있습니다. 이는 실행 안내이며 이 Windows PC에서 GCC를 재컴 파일한 결과가 아닙니다.
++Debian 도구가 있는 Linux 환경에서 아래와 같이 각 소스를 재조립할 수 있습니다. 이는 실행 안내이며 이 Windows PC에서 GCC를 재컴파일한 결과가 아닙니다.
+ 
+ ```sh
+ dpkg-source -x gcc-14_14.2.0-19.dsc
+ dpkg-source -x gcc-mingw-w64_27.dsc
+ ```
+ 
+-교차 런타임의 실제 빌드 절차는 `gcc-mingw-w64-27/debian/rules`가 정의합니다.
+-
+-해당 규칙은 설치된 `gcc-14-source`의 소스와 패치를 사용하고 POSIX/Win32 스레드 변형을 빌드합니다.
+-
+-원본과 같은 소스가 되려면 `gcc-14-source` 버전을 `14.2.0-19`로 맞추고, `debian/control`의 빌드 의존성을 준비해야 합니다.
+-
+-GCC 네이티브 패키징의 소스 준비법과 패치는 GCC 14 Debian 소스의 `debian/README.source` 및 `debian/rules`에 들어 있습니다.
+-
+-컴파일러와 빌드 환경의 완전한 재현, 재컴파일 결과의 바이트 동일성은 이번 확인 범위가 아닙니다.
++교차 런타임의 실제 빌드 절차는 `gcc-mingw-w64-27/debian/rules`가 정의합니다. 해당 규칙은 설치된 `gcc-14-source`의 소스와 패치를 사용하고 POSIX/Win32 스레드 변형을 빌드합니다. 원본과 같은 소스가 되려면 `gcc-14-source` 버전을 `14.2.0-19`로 맞추고, `debian/control`의 빌드 의존성을 준비해야 합니다. GCC 네이티브 패키징의 소스 준비법과 패치는 GCC 14 Debian 소스의 `debian/README.source` 및 `debian/rules`에 들어 있습니다. 컴파일러와 빌드 환경의 완전한 재현, 재컴파일 결과의 바이트 동일성은 이번 확인 범위가 아닙니다.
+ 
+ 두 배포 DLL과 공식 Debian DEB 안의 파일이 바이트 단위로 같다는 것은 직접 확인했습니다. 이를 GCC를 직접 다시 빌드하여 동일 바이너리를 만들었다는 뜻으로 해석하지 마세요.
+ 
+ ## 비교 도구 재실행
+ 
+-`download_one.py`와 `inspect_runtime.py`는 출처 확인용 보조 소스입니다.
+-
+-제품 실행에는 필요하지 않습니다. `inspect_runtime.py`는 7-Zip 실행 파일 위치와 제품 DLL 폴더를 명시적 인자로 받으므로 원래 개발 PC의 경로를 요구하지 않습니다.
+-
+-이 폴더에서 다음 형식으로 실행합니다.
+-
+-DEB는 위 공식 URL에서 받아 같은 폴더에 놓아야합니다.
++`download_one.py`와 `inspect_runtime.py`는 출처 확인용 보조 소스입니다. 제품 실행에는 필요하지 않습니다. `inspect_runtime.py`는 7-Zip 실행 파일 위치와 제품 DLL 폴더를 명시적 인자로 받으므로 원래 개발 PC의 경로를 요구하지 않습니다. 이 폴더에서 다음 형식으로 실행합니다. DEB는 위 공식 URL에서 받아 같은 폴더에 놓아야 합니다.
+ 
+ ```powershell
+ python -B -X utf8 inspect_runtime.py "C:\사용하는도구\7z.exe" "..\..\..\vendor\tesseract" "gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb" "debian14"
+ ```
+ 
+-`출하목록.json`과 `SHA256SUMS.txt`가 필요한 고지·상응 소스 파일을 지정합니다.
+-
+-조사용 `*.deb`, `*-data.tar.*`, Ubuntu 13 후보 자료, 실패 기록은 배포 대상이 아닙니다.
+-
+-Ubuntu `13.2.0-6ubuntu1+26.1` 후보의 두 DLL은 제품과 일치하지 않았으므로 실제 출처로 쓰지 않습니다.
++`출하목록.json`과 `SHA256SUMS.txt`가 필요한 고지·상응 소스 파일을 지정합니다. 조사용 `*.deb`, `*-data.tar.*`, Ubuntu 13 후보 자료, 실패 기록은 배포 대상이 아닙니다. Ubuntu `13.2.0-6ubuntu1+26.1` 후보의 두 DLL은 제품과 일치하지 않았으므로 실제 출처로 쓰지 않습니다.
+--- 공개기준/소스/licenses/OCR/읽어주세요.md
++++ 최종공개/소스/licenses/OCR/읽어주세요.md
+@@ -1,26 +1,26 @@
+-# OCR 구성요소와 소스
+-
+-플립 링의 OCR은 Tesseract를 별도 프로세스로 실행합니다. PUVKID가 OCR 엔진의 원저작자라고 주장하지 않습니다.
+-Tesseract 5.5.3.20260724 공식 Windows 실행 파일과 필요한 DLL만 원본 그대로 동봉합니다. 별도 관리자 설치는 필요하지 않습니다.
+-Tesseract 자체의 Apache-2.0 원문은 vendor/tesseract/doc/LICENSE에 있고 원본 저자 목록도 같은 doc에 있습니다.
+-libjbig의 원본 소스 jbig.c는 GPL 버전 2 또는 이후 버전 선택을 허용합니다. 이 OCR 결합 구성의 배포에는 GPL 버전 3을 선택하며 GPL-3.0.txt를 동봉합니다. Apache-2.0과 각 의존성의 원문 고지도 그대로 유지합니다.
+-플립링의 별도 Python/Qt 프로그램과 OCR 프로세스는 별개이며 각 부분의 고지는 함께 제공됩니다. 이 설명이 구성요소 원문 라이선스를 대체하지 않습니다.
+-
+-MSYS2-구성 요소.json에는 DLL과 정확히 SHA-256이 일치한 25개 MSYS2 바이너리 패키지, 버전, 라이선스, 원본 패키지 URL, 전체 소스 아카이브 URL과 해시를 기록했습니다.
+-giflib 5.2.2와 libjpeg-turbo 3.1.3은 Tesseract가 선언한 버전과 동일한 원본 고지·소스를 보존했습니다. 이 두 허용 라이선스 패키지의 바이너리 해시가 동일하다는 검증은 하지 못했습니다.
+-각 패키지 폴더의 원문 고지와 PKGINFO.txt, sources의 .src.tar.zst에는 원본 소스·패치·PKGBUILD·. SRCINFO가 있습니다. 바이너리만 제공하는 원격 링크 안내로 대체하지 않습니다.
+-GCC 런타임 두 DLL의 별도 소스·고지·대응 기록은 ubuntu-gcc 폴더에 보관합니다.
+-
+-## 빌드와 교체
+-
+-Tesseract 전체 소스는 sources/tesseract-5.5.3.tar.gz에 있습니다. 해당 소스의 nsis/build.sh와 .github/workflows/installer-for-windows.yml이 공식 Windows 빌드 절차이며 Ubuntu 24.04에서 MinGW64를 사용합니다.
+-이 절차는 처음 작성 당시 현재 MSYS2 저장소를 조회하므로 역사적 의존성을 재현할 때에는 구성요소 목록의 정확한 .src.tar.zst·PKGBUILD·패치를 사용해야 합니다.
+-MSYS2 소스 묶음은 MSYS2 환경에서 풀어 PKGBUILD의 makepkg-mingw 절차로 빌드할 수 있습니다. gcc 런타임은 ubuntu-gcc의 원본 패키지 빌드 안내를 따릅니다.
+-라이브러리와 실행 파일은 동적으로 분리되어 있습니다. 해당 라이선스가 허용하는 수정·재빌드·호환 DLL 교체·수정 사항 디버깅을 위한 역공학을 제한하지 않습니다.
+-수정한 라이브러리를 배포할 때에는 해당 라이선스의 수정 표시·상응 소스 등 조건도 따르세요.
+-
+-## 언어 자료
+-
+-eng·kor·osd는 tesseract-ocr/tessdata_fast의 고정 커밋 87416418657359cb625c412a48b6e1d6d41c29bd에서 내려받았습니다. 모델과 실행.json에 SHA-256이 있습니다.
+-언어 자료의 Apache-2.0 원문은 vendor/tesseract/doc/tessdata_fast-LICENSE에 있습니다.
+-Windows 글꼴 파일은 동봉하지 않습니다. OCR용 tessdata/pdf.ttf는 공식 Tesseract 배포 자료이며 UI 시스템 글꼴과 별개입니다.
++# OCR 구성요소와 소스
++
++플립링의 OCR은 Tesseract를 별도 프로세스로 실행합니다. PUVKID가 OCR 엔진의 원저작자라고 주장하지 않습니다.
++Tesseract 5.5.3.20260724 공식 Windows 실행 파일과 필요한 DLL만 원본 그대로 동봉합니다. 별도 관리자 설치는 필요하지 않습니다.
++Tesseract 자체의 Apache-2.0 원문은 vendor/tesseract/doc/LICENSE에 있고 원본 저자 목록도 같은 doc에 있습니다.
++libjbig의 원본 소스 jbig.c는 GPL 버전 2 또는 이후 버전 선택을 허용합니다. 이 OCR 결합 구성의 배포에는 GPL 버전 3을 선택하며 GPL-3.0.txt를 동봉합니다. Apache-2.0과 각 의존성의 원문 고지도 그대로 유지합니다.
++플립링의 별도 Python/Qt 프로그램과 OCR 프로세스는 별개이며 각 부분의 고지는 함께 제공됩니다. 이 설명이 구성요소 원문 라이선스를 대체하지 않습니다.
++
++MSYS2-구성요소.json에는 DLL과 정확히 SHA-256이 일치한 25개 MSYS2 바이너리 패키지, 버전, 라이선스, 원본 패키지 URL, 전체 소스 아카이브 URL과 해시를 기록했습니다.
++giflib 5.2.2와 libjpeg-turbo 3.1.3은 Tesseract가 선언한 버전과 동일한 원본 고지·소스를 보존했습니다. 이 두 허용 라이선스 패키지의 바이너리 해시가 동일하다는 검증은 하지 못했습니다.
++각 패키지 폴더의 원문 고지와 PKGINFO.txt, sources의 .src.tar.zst에는 원본 소스·패치·PKGBUILD·.SRCINFO가 있습니다. 바이너리만 제공하는 원격 링크 안내로 대체하지 않습니다.
++GCC 런타임 두 DLL의 별도 소스·고지·대응 기록은 ubuntu-gcc 폴더에 보관합니다.
++
++## 빌드와 교체
++
++Tesseract 전체 소스는 sources/tesseract-5.5.3.tar.gz에 있습니다. 해당 소스의 nsis/build.sh와 .github/workflows/installer-for-windows.yml이 공식 Windows 빌드 절차이며 Ubuntu 24.04에서 MinGW64를 사용합니다.
++이 절차는 처음 작성 당시 현재 MSYS2 저장소를 조회하므로 역사적 의존성을 재현할 때에는 구성요소 목록의 정확한 .src.tar.zst·PKGBUILD·패치를 사용해야 합니다.
++MSYS2 소스 묶음은 MSYS2 환경에서 풀어 PKGBUILD의 makepkg-mingw 절차로 빌드할 수 있습니다. gcc 런타임은 ubuntu-gcc의 원본 패키지 빌드 안내를 따릅니다.
++라이브러리와 실행 파일은 동적으로 분리되어 있습니다. 해당 라이선스가 허용하는 수정·재빌드·호환 DLL 교체·수정 사항 디버깅을 위한 역공학을 제한하지 않습니다.
++수정한 라이브러리를 배포할 때에는 해당 라이선스의 수정 표시·상응 소스 등 조건도 따르세요.
++
++## 언어 자료
++
++eng·kor·osd는 tesseract-ocr/tessdata_fast의 고정 커밋 87416418657359cb625c412a48b6e1d6d41c29bd에서 내려받았습니다. 모델과실행.json에 SHA-256이 있습니다.
++언어 자료의 Apache-2.0 원문은 vendor/tesseract/doc/tessdata_fast-LICENSE에 있습니다.
++Windows 글꼴 파일은 동봉하지 않습니다. OCR용 tessdata/pdf.ttf는 공식 Tesseract 배포 자료이며 UI 시스템 글꼴과 별개입니다.
+--- 공개기준/소스/queue_journal.py
++++ 최종공개/소스/queue_journal.py
+@@ -0,0 +1,204 @@
++"""사용자가 명시적으로 이어가는 로컬 작업·결과 소유권 기록."""
++from __future__ import annotations
++import copy
++import json
++import os
++from pathlib import Path
++import re
++import tempfile
++import threading
++import quick_actions as core
++
++MAX_BYTES = 16 * 1024 * 1024
++STATES = {'waiting', 'running', 'completed', 'failed', 'cancelled', 'review'}
++
++
++def _hash(value):
++    return isinstance(value, str) and re.fullmatch('[0-9a-f]{64}', value) is not None
++
++
++def _owned(row):
++    if not isinstance(row, dict) or not {'path', 'source', 'sha256', 'size'} <= row.keys():
++        raise ValueError('결과 기록 형식을 확인해 주세요.')
++    if not _hash(row['sha256']) or type(row['size']) is not int or row['size'] < 0:
++        raise ValueError('결과 해시·크기 기록을 확인해 주세요.')
++    if not isinstance(row['source'], str) or not isinstance(row['path'], str) or not Path(row['path']).is_absolute():
++        raise ValueError('결과 경로 기록을 확인해 주세요.')
++    return copy.deepcopy(row)
++
++
++def _validate(value):
++    if not isinstance(value, dict) or set(value) != {'version', 'jobs', 'ledger'} or type(value['version']) is not int or value['version'] != 1:
++        raise ValueError('지원하지 않는 대기열 기록입니다.')
++    jobs, ledger = value['jobs'], value['ledger']
++    if not isinstance(jobs, list) or len(jobs) > 1000 or not isinstance(ledger, dict) or set(ledger) != {'rows', 'moves'}:
++        raise ValueError('대기열 기록 한도를 확인해 주세요.')
++    count, identifiers = 0, set()
++    for job in jobs:
++        if not isinstance(job, dict) or not {'id', 'inputs', 'action', 'output', 'state', 'file_states', 'checkpoints'} <= job.keys():
++            raise ValueError('작업 기록 형식을 확인해 주세요.')
++        if not isinstance(job['id'], str) or not re.fullmatch('[0-9a-f]{8}', job['id']) or job['id'] in identifiers:
++            raise ValueError('작업 식별자를 확인해 주세요.')
++        identifiers.add(job['id'])
++        core.validate_action(job['action'])
++        if job['state'] not in STATES or not isinstance(job['output'], str) or not Path(job['output']).is_absolute():
++            raise ValueError('작업 상태·결과 경로를 확인해 주세요.')
++        if not isinstance(job['inputs'], list) or not isinstance(job['checkpoints'], dict) or not isinstance(job['file_states'], dict):
++            raise ValueError('파일 작업 기록을 확인해 주세요.')
++        count += len(job['inputs'])
++        if count > core.MAX_FILES:
++            raise ValueError('복구 가능한 입력은 최대 10,000개입니다.')
++        result = job.get('result')
++        if result is not None:
++            if not isinstance(result, dict) or result.get('status') not in STATES or not isinstance(result.get('error'), str):
++                raise ValueError('작업 결과 상태를 확인해 주세요.')
++            if not isinstance(result.get('outputs'), list) or not isinstance(result.get('files'), list) or not isinstance(result.get('warnings'), list):
++                raise ValueError('작업 결과 목록을 확인해 주세요.')
++            if any(not isinstance(text, str) for text in result['warnings']):
++                raise ValueError('작업 경고 기록을 확인해 주세요.')
++            for row in result['outputs']:
++                _owned(row)
++            for row in result['files']:
++                if not isinstance(row, dict) or not isinstance(row.get('source'), str) or row.get('state') not in STATES:
++                    raise ValueError('파일 결과 상태를 확인해 주세요.')
++        if 'retried' in job and type(job['retried']) is not bool:
++            raise ValueError('재시도 기록을 확인해 주세요.')
++        if 'bundle_rows' in job:
++            if not isinstance(job['bundle_rows'], list) or not isinstance(job.get('previous'), dict):
++                raise ValueError('묶음 재시도 기록을 확인해 주세요.')
++            for row in job['bundle_rows']:
++                _owned(row)
++                if not Path(row['path']).is_relative_to(Path(job['output'])):
++                    raise ValueError('묶음 입력이 결과 폴더 밖에 있습니다.')
++        sources = set()
++        for row in job['inputs']:
++            if not isinstance(row, dict) or set(row) != {'source', 'relative'} or not all(isinstance(v, str) for v in row.values()):
++                raise ValueError('입력 기록 형식을 확인해 주세요.')
++            relative = Path(row['relative'])
++            if not Path(row['source']).is_absolute() or relative.anchor or relative.drive or '..' in relative.parts or not relative.name:
++                raise ValueError('입력 경로 기록을 확인해 주세요.')
++            for part in relative.parts:
++                core.workspace._name(part)
++            sources.add(row['source'])
++        if set(job['file_states']) != sources or any(v not in STATES for v in job['file_states'].values()):
++            raise ValueError('파일 상태 기록을 확인해 주세요.')
++        for source, checkpoint in job['checkpoints'].items():
++            if source not in sources | {''} or not isinstance(checkpoint, dict) or not _hash(checkpoint.get('input_sha256')):
++                raise ValueError('입력 해시 기록을 확인해 주세요.')
++            if checkpoint.get('state') not in STATES or type(checkpoint.get('expected', 1)) is not int or checkpoint.get('expected', 1) < 1:
++                raise ValueError('완료 기록을 확인해 주세요.')
++            for row in checkpoint.get('outputs', []):
++                _owned(row)
++                if not Path(row['path']).is_relative_to(Path(job['output'])):
++                    raise ValueError('결과가 작업 폴더 밖에 있습니다.')
++    if not isinstance(ledger['rows'], dict) or not isinstance(ledger['moves'], list) or len(ledger['rows']) > 20000 or len(ledger['moves']) > 20000:
++        raise ValueError('결과 보관 기록 한도를 확인해 주세요.')
++    for path, row in ledger['rows'].items():
++        _owned(row)
++        if path != row['path']:
++            raise ValueError('결과 소유권 기록이 일치하지 않습니다.')
++    for row in ledger['moves']:
++        if not isinstance(row, dict) or set(row) != {'original', 'stored', 'sha256'} or not _hash(row['sha256']):
++            raise ValueError('보관 기록을 확인해 주세요.')
++        original, stored = Path(row['original']), Path(row['stored'])
++        if not original.is_absolute() or stored.parent != original.parent / '.flipring-undo':
++            raise ValueError('보관 경로 기록을 확인해 주세요.')
++        if str(original) not in ledger['rows'] or ledger['rows'][str(original)]['sha256'] != row['sha256']:
++            raise ValueError('보관 소유권이 일치하지 않습니다.')
++    return copy.deepcopy(value)
++
++
++class QueueJournal:
++    def __init__(self, path):
++        self.path = Path(path)
++        self.lock = threading.RLock()
++        self.blocked = False
++
++    def load(self):
++        with self.lock:
++            try:
++                if not self.path.exists():
++                    return {'version': 1, 'jobs': [], 'ledger': {'rows': {}, 'moves': []}}
++                core.safe_path(self.path)
++                if self.path.stat().st_size > MAX_BYTES:
++                    raise ValueError('대기열 기록은 16MiB 이하여야 합니다.')
++                return _validate(json.loads(self.path.read_text(encoding='utf-8')))
++            except Exception:
++                self.blocked = True
++                raise
++
++    def save(self, jobs, ledger):
++        with self.lock:
++            if self.blocked:
++                raise ValueError('손상된 기록은 덮어쓰지 않습니다. 기록 파일을 별도 보존하고 확인해 주세요.')
++            value = _validate({'version': 1, 'jobs': jobs, 'ledger': {'rows': ledger.rows, 'moves': ledger.moves}})
++            data = json.dumps(value, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
++            if len(data) > MAX_BYTES:
++                raise ValueError('대기열 기록은 16MiB 이하여야 합니다.')
++            core.safe_path(self.path, exists=False)
++            self.path.parent.mkdir(parents=True, exist_ok=True)
++            with tempfile.NamedTemporaryFile(dir=self.path.parent, delete=False) as stream:
++                temporary = Path(stream.name)
++                stream.write(data)
++                stream.flush()
++                os.fsync(stream.fileno())
++            try:
++                temporary.replace(self.path)
++            finally:
++                temporary.unlink(missing_ok=True)
++
++
++def checkpoint_event(job, event):
++    source, state = event['source'], event['state']
++    if state == 'publishing':
++        point = job['checkpoints'].setdefault(source, {'input_sha256': event['input_sha256'],
++                'state': 'running', 'outputs': [], 'expected': event.get('expected', 1)})
++        point['expected'] = event.get('expected', 1)
++        owned = copy.deepcopy(event['owned'])
++        owned['constraints_met'] = not job['action']['max_bytes'] or owned['size'] <= job['action']['max_bytes']
++        point['outputs'].append(owned)
++    elif state == 'publication_conflict':
++        point = job['checkpoints'][source]
++        point['outputs'] = [r for r in point['outputs'] if r['path'] != event['owned']['path']]
++    elif state == 'completed' and 'outputs' in event:
++        job['checkpoints'][source] = {'input_sha256': event['input_sha256'], 'state': 'completed',
++                                      'outputs': copy.deepcopy(event['outputs']), 'expected': len(event['outputs'])}
++
++
++def recover_jobs(jobs):
++    """파일 내용을 검사하고 복구 상태만 반환한다. 자동 실행하지 않는다."""
++    # 입력과 결과가 일치한 항목만 완료로 인정한다.
++    jobs = copy.deepcopy(jobs)
++    for job in jobs:
++        for source, point in job['checkpoints'].items():
++            try:
++                valid = (not source or core.digest(source) == point['input_sha256'])
++                valid = valid and len(point['outputs']) == point.get('expected', 1) and bool(point['outputs'])
++                valid = valid and all(core.digest(row['path']) == row['sha256'] for row in point['outputs'])
++            except (OSError, ValueError):
++                valid = False
++            if not point.get('outputs') and point.get('state') == 'waiting':
++                try: valid = not source or core.digest(source) == point['input_sha256']
++                except (OSError, ValueError): valid = False
++                point['state'] = 'waiting' if valid else 'review'
++            else:
++                point['state'] = 'completed' if valid else 'review'
++            if source:
++                job['file_states'][source] = point['state']
++        if any(p['state'] == 'review' for p in job['checkpoints'].values()):
++            job['state'] = 'review'
++        elif job['state'] in {'running', 'waiting', 'review'}:
++            job['state'] = 'waiting'
++    return jobs
++
++
++def diagnostic(jobs, version='1.13.0'):
++    """공유 정보는 고정된 허용 목록에서 새로 구성한다."""
++    from collections import Counter
++    statuses = Counter(j['state'] for j in jobs if j.get('state') in STATES)
++    allowed = {'jpg', 'jpeg', 'png', 'webp', 'pdf', 'docx', 'xlsx', 'pptx', 'txt', 'hwp', 'hwpx', 'zip'}
++    extensions = Counter((Path(r['source']).suffix.lower().lstrip('.') if Path(r['source']).suffix.lower().lstrip('.') in allowed else 'other')
++                         for j in jobs for r in j.get('inputs', []))
++    return {'version': version if version == '1.13.0' else 'unknown', 'jobs': len(jobs),
++            'states': dict(statuses), 'extensions': dict(extensions),
++            'error_codes': {'TASK_FAILED': statuses.get('failed', 0), 'REVIEW_REQUIRED': statuses.get('review', 0)}}
+--- 공개기준/소스/quick_actions.py
++++ 최종공개/소스/quick_actions.py
+@@ -1,367 +1,520 @@
+-"""빠른 작업: 안전한 폴더 입력, 레시피 연결, 결과 보존과 복원."""
+-from __future__ import annotations
+-
+-import copy
+-import hashlib
+-import json
+-import os
+-from pathlib import Path
+-import shutil
+-import stat
+-import tempfile
+-import threading
+-import uuid
+-import zipfile
+-
+-import engine
+-import pdf_tools
+-import workspace_core as workspace
+-
+-BUILTINS = [
+-    {"version": 1, "name": "사진 JPG", "format": "jpg", "quality": 85, "width": 0, "height": 0,
+-     "max_bytes": 0, "zip": False, "template": "{name}", "extensions": ""},
+-    {"version": 1, "name": "제출용 JPG + ZIP", "format": "jpg", "quality": 80, "width": 1600, "height": 0,
+-     "max_bytes": 1024 * 1024, "zip": True, "template": "{name}_{index:03d}", "extensions": ""},
+-    {"version": 1, "name": "문서 PDF", "format": "pdf", "quality": 85, "width": 0, "height": 0,
+-     "max_bytes": 0, "zip": False, "template": "{name}", "extensions": ""},
+-]
+-MAX_FILES = 10000
+-
+-
+-def safe_path(raw, *, exists=True):
+-    """해결 전에 모든 조상의 연결·재분석 지점을 거부한다."""
+-    path = Path(os.path.abspath(os.fspath(raw)))
+-    for part in (path, *path.parents):
+-        try:
+-            info = part.lstat()
+-        except FileNotFoundError:
+-            if part == path and exists:
+-                raise ValueError("입력이 없거나 이동되었습니다: " + str(path))
+-            continue
+-        if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & 0x400:
+-            raise ValueError("연결 파일·폴더는 따라가지 않습니다: " + str(part))
+-    return path
+-
+-
+-def validate_action(raw):
+-    if not isinstance(raw, dict) or set(raw) != set(BUILTINS[0]):
+-        raise ValueError("빠른 작업 JSON 필드를 확인해 주세요.")
+-    value = copy.deepcopy(raw)
+-    if type(value["version"]) is not int or value["version"] != 1:
+-        raise ValueError("지원하는 빠른 작업 버전은 1입니다.")
+-    recipe = {"version": 1, "name": value["name"], "steps": [
+-        {"op": "convert", "format": value["format"], "quality": value["quality"]},
+-        {"op": "rename", "template": value["template"]}]}
+-    normalized = workspace.validate_recipe(recipe)
+-    value["name"] = normalized["name"]
+-    value["format"] = normalized["steps"][0]["format"]
+-    for key in ("width", "height"):
+-        workspace._number(value[key], key, 0, 12000)
+-    workspace._number(value["max_bytes"], "max_bytes", 0, 1024 ** 5)
+-    if type(value["zip"]) is not bool:
+-        raise ValueError("ZIP 옵션을 확인해 주세요.")
+-    if not isinstance(value["extensions"], str) or len(value["extensions"]) > 512:
+-        raise ValueError("확장자 필터를 확인해 주세요.")
+-    for ext in value["extensions"].replace(";", ",").split(","):
+-        if ext.strip() and not ext.strip().lstrip(".").isalnum():
+-            raise ValueError("확장자는 쉼표로 구분해 주세요.")
+-    return value
+-
+-
+-class ActionStore:
+-    """경로를 포함하지 않는 빠른 작업만 원자 저장한다. 손상된 원본은 보존한다."""
+-    def __init__(self, path):
+-        self.path = Path(path)
+-
+-    def load(self):
+-        if not self.path.exists():
+-            return []
+-        if self.path.stat().st_size > 2 * 1024 * 1024:
+-            raise ValueError("빠른 작업 파일은 2MiB 이하여야 합니다.")
+-        rows = json.loads(self.path.read_text(encoding="utf-8"))
+-        if not isinstance(rows, list) or len(rows) > 1000:
+-            raise ValueError("빠른 작업 목록을 확인해 주세요.")
+-        rows = [validate_action(row) for row in rows]
+-        if len({row["name"].casefold() for row in rows}) != len(rows):
+-            raise ValueError("같은 작업 이름이 있습니다.")
+-        return rows
+-
+-    def write(self, rows):
+-        self.load()
+-        rows = [validate_action(row) for row in rows]
+-        if len(rows) > 1000 or len({r["name"].casefold() for r in rows}) != len(rows):
+-            raise ValueError("작업 수 또는 중복 이름을 확인해 주세요.")
+-        encoded = json.dumps(rows, ensure_ascii=False, indent=2).encode("utf-8")
+-        if len(encoded) > 2 * 1024 * 1024:
+-            raise ValueError("빠른 작업 파일은 2MiB 이하여야 합니다.")
+-        self.path.parent.mkdir(parents=True, exist_ok=True)
+-        with tempfile.NamedTemporaryFile(dir=self.path.parent, delete=False) as stream:
+-            temporary = Path(stream.name)
+-            stream.write(encoded)
+-        try:
+-            temporary.replace(self.path)
+-        finally:
+-            temporary.unlink(missing_ok=True)
+-
+-    def save(self, action, old_name=None):
+-        action = validate_action(action)
+-        rows = [r for r in self.load() if r["name"] != old_name]
+-        if any(r["name"].casefold() == action["name"].casefold() for r in rows):
+-            raise ValueError("이미 사용 중인 작업 이름입니다.")
+-        self.write([*rows, action])
+-
+-    def delete(self, name):
+-        self.write([r for r in self.load() if r["name"] != name])
+-
+-
+-def collect_inputs(paths, extensions="", cancel=None):
+-    allowed = {x.strip().lower().lstrip(".") for x in extensions.replace(";", ",").split(",") if x.strip()}
+-    records, skipped, seen = [], [], set()
+-
+-    def add(raw, relative):
+-        pdf_tools.check_cancel(cancel)
+-        try:
+-            path = safe_path(raw)
+-            info = path.stat()
+-            if path.name.startswith((".", "~")) or path.suffix.lower() in (".tmp", ".temp", ".part") or getattr(info, "st_file_attributes", 0) & 2:
+-                return
+-            if not path.is_file() or (allowed and path.suffix.lower().lstrip(".") not in allowed):
+-                return
+-            key = os.path.normcase(str(path))
+-            if key not in seen:
+-                seen.add(key)
+-                records.append({"source": str(path), "relative": str(relative)})
+-                if len(records) > MAX_FILES:
+-                    raise ValueError("한 번에 최대 10,000개 파일을 추가할 수 있습니다.")
+-        except (OSError, ValueError) as error:
+-            if len(records) > MAX_FILES:
+-                raise
+-            skipped.append(str(error))
+-
+-    for raw in paths:
+-        pdf_tools.check_cancel(cancel)
+-        try:
+-            root = safe_path(raw)
+-            if root.is_dir():
+-                for directory, names, files in os.walk(root, followlinks=False):
+-                    pdf_tools.check_cancel(cancel)
+-                    retained = []
+-                    for name in sorted(names):
+-                        child = Path(directory) / name
+-                        try:
+-                            safe_path(child)
+-                            if not name.startswith((".", "~")) and not getattr(child.stat(), "st_file_attributes", 0) & 2:
+-                                retained.append(name)
+-                        except (OSError, ValueError) as error:
+-                            skipped.append(str(error))
+-                    names[:] = retained
+-                    for name in sorted(files):
+-                        path = Path(directory) / name
+-                        add(path, Path(root.name) / path.relative_to(root))
+-            else:
+-                add(root, Path(root.name))
+-        except (OSError, ValueError) as error:
+-            skipped.append(str(error))
+-    if len(records) > MAX_FILES:
+-        raise ValueError("한 번에 최대 10,000개 파일을 추가할 수 있습니다.")
+-    return {"inputs": records, "skipped": skipped}
+-
+-
+-def output_name(record, action, index):
+-    source = Path(record["source"])
+-    name = action["template"].format(name=engine.stem(source), index=index, date=workspace.date.today().isoformat())
+-    workspace._name(name)
+-    return name + "." + action["format"]
+-
+-
+-def preflight(records, action, output, cancel=None):
+-    action = validate_action(action)
+-    directory = safe_path(output, exists=False)
+-    directory.mkdir(parents=True, exist_ok=True)
+-    safe_path(directory)
+-    reports = []
+-    for index, record in enumerate(records, 1):
+-        pdf_tools.check_cancel(cancel)
+-        report = {"source": record["source"], "ok": False, "error": "", "estimated": 0}
+-        try:
+-            source = safe_path(record["source"])
+-            if not source.is_file():
+-                raise ValueError("일반 파일이 아닙니다.")
+-            _, extension = engine.classify(source)
+-            if extension != action["format"] and action["format"] not in engine.targets([source]):
+-                raise ValueError("지원하지 않는 출력 형식입니다.")
+-            missing = engine.requirement(source, action["format"])
+-            if missing:
+-                raise ValueError(str(missing) + " 도구가 필요합니다.")
+-            if (action["width"] or action["height"]) and extension not in workspace._IMAGE_FORMATS:
+-                raise ValueError("크기 조절 입력은 이미지만 지원합니다.")
+-            if action["max_bytes"] and action["format"] not in workspace._IMAGE_FORMATS | {"pdf"}:
+-                raise ValueError("목표 용량은 이미지·PDF 출력에서 지원합니다.")
+-            output_name(record, action, index)
+-            relative = Path(record["relative"])
+-            if relative.anchor or relative.drive or ".." in relative.parts or not relative.name:
+-                raise ValueError("입력 상대 경로를 확인해 주세요.")
+-            for part in relative.parts:
+-                workspace._name(part)
+-            report["estimated"] = source.stat().st_size * (8 if action["zip"] else 4)
+-            with source.open("rb") as stream:
+-                stream.read(1)
+-            report["ok"] = True
+-        except (OSError, ValueError) as error:
+-            report["error"] = str(error)
+-        reports.append(report)
+-    estimated = sum(row["estimated"] for row in reports) + 64 * 1024 * 1024
+-    free = shutil.disk_usage(directory).free
+-    with tempfile.TemporaryFile(dir=directory) as stream:
+-        stream.write(b"check")
+-    return {"files": reports, "estimated": estimated, "free": free,
+-            "ok": bool(records) and all(r["ok"] for r in reports) and free >= estimated,
+-            "error": "" if free >= estimated else "보수적인 예상 필요 공간보다 여유 공간이 부족합니다."}
+-
+-
+-def digest(path, cancel=None):
+-    result = hashlib.sha256()
+-    with safe_path(path).open("rb") as stream:
+-        while chunk := stream.read(1024 * 1024):
+-            pdf_tools.check_cancel(cancel)
+-            result.update(chunk)
+-    return result.hexdigest()
+-
+-
+-def run_action(records, action, output, cancel=None, on_event=None):
+-    """중간 산출물은 임시 폴더에 두고 최종 결과만 새 이름으로 발행한다."""
+-    cancel = cancel if cancel is not None else threading.Event()
+-    action = validate_action(action)
+-    result = {"status": "running", "outputs": [], "files": [], "error": "", "warnings": [],
+-              "action": action, "inputs": copy.deepcopy(records), "output_dir": str(output)}
+-    emit = on_event or (lambda value: None)
+-    try:
+-        report = preflight(records, action, output, cancel)
+-        result["preflight"] = report
+-        if not report["ok"]:
+-            raise ValueError(report["error"] or "\n".join(r["source"] + ": " + r["error"] for r in report["files"] if not r["ok"]))
+-        directory = safe_path(output)
+-        for index, record in enumerate(records, 1):
+-            pdf_tools.check_cancel(cancel)
+-            emit({"index": index, "total": len(records), "source": record["source"], "state": "running"})
+-            source = safe_path(record["source"])
+-            target_dir = directory / Path(record["relative"]).parent
+-            safe_path(target_dir, exists=False)
+-            target_dir.mkdir(parents=True, exist_ok=True)
+-            steps = []
+-            if action["width"] or action["height"]:
+-                steps.append({"op": "resize", **{key: action[key] for key in ("width", "height") if action[key]}})
+-            steps.append({"op": "convert", "format": action["format"], "quality": action["quality"]})
+-            recipe = {"version": 1, "name": action["name"], "steps": steps}
+-            target = {"max_bytes": action["max_bytes"], "quality": action["quality"]} if action["max_bytes"] else {}
+-            with tempfile.TemporaryDirectory(prefix=".flipring-quick-", dir=directory) as work:
+-                produced = workspace.execute_workspace([str(source)], recipe, target, work, cancel)
+-                if produced["status"] == "cancelled":
+-                    raise pdf_tools.Cancelled()
+-                if produced["status"] != "completed":
+-                    raise ValueError(produced["error"] or "변환을 완료하지 못했습니다.")
+-                for number, item in enumerate(produced["outputs"], 1):
+-                    safe_path(target_dir)
+-                    name = output_name(record, action, index)
+-                    if len(produced["outputs"]) > 1:
+-                        name = Path(name).stem + f"-{number}" + Path(name).suffix
+-                    destination = workspace._publish(item, target_dir, name, cancel)
+-                    # 발행 직후부터 소유 결과로 기록하여 취소 중에도 결과가 유실되지 않는다.
+-                    owned = {"path": destination, "source": str(source), "sha256": "", "size": Path(destination).stat().st_size}
+-                    result["outputs"].append(owned)
+-                    owned["sha256"] = digest(destination)
+-                    owned["constraints_met"] = not action["max_bytes"] or owned["size"] <= action["max_bytes"]
+-                    if not owned["constraints_met"]:
+-                        result["warnings"].append(f"목표 용량 미달성: {Path(destination).name}")
+-            result["files"].append({"source": str(source), "state": "completed"})
+-            emit({"index": index, "total": len(records), "source": str(source), "state": "completed"})
+-        if action["zip"]:
+-            result["bundle_pending"] = True
+-            result["outputs"].append(create_bundle(result["outputs"], directory, cancel))
+-            result["bundle_pending"] = False
+-        result["status"] = "completed"
+-    except (pdf_tools.Cancelled, engine.Cancelled):
+-        result["status"] = "cancelled"
+-    except Exception as error:
+-        result["status"], result["error"] = "failed", str(error)
+-    return result
+-
+-
+-def create_bundle(rows, output, cancel=None):
+-    """이미 완료된 결과를 다시 변환하지 않고 ZIP 단계만 재시도할 수 있다."""
+-    directory = safe_path(output)
+-    with tempfile.TemporaryDirectory(prefix=".flipring-zip-", dir=directory) as work:
+-        archive = Path(work) / "submission.zip"
+-        with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as stream:
+-            for row in rows:
+-                pdf_tools.check_cancel(cancel)
+-                path = safe_path(row["path"])
+-                if digest(path, cancel) != row["sha256"]:
+-                    raise ValueError("변경된 결과로 ZIP을 만들지 않았습니다: " + str(path))
+-                with path.open("rb") as source, stream.open(str(path.relative_to(directory)).replace("\\", "/"), "w") as target:
+-                    while chunk := source.read(1024 * 1024):
+-                        pdf_tools.check_cancel(cancel)
+-                        target.write(chunk)
+-        path = workspace._publish(archive, directory, "제출용.zip", cancel)
+-        return {"path": path, "source": "", "sha256": digest(path), "size": Path(path).stat().st_size, "constraints_met": True}
+-
+-
+-class OutputLedger:
+-    """현재 세션 소유 결과만 해시 검증 후 보관 폴더로 이동한다. 영구 삭제하지 않는다."""
+-    def __init__(self):
+-        self.rows = {}
+-        self.moves = []
+-
+-    def register(self, rows):
+-        for row in rows:
+-            if row.get("sha256"):
+-                self.rows[row["path"]] = copy.deepcopy(row)
+-
+-    def cleanup(self, paths):
+-        moved, errors = [], []
+-        for raw in dict.fromkeys(paths):
+-            try:
+-                row = self.rows.get(str(raw))
+-                if not row:
+-                    raise ValueError("현재 세션에서 생성한 결과만 정리할 수 있습니다.")
+-                path = safe_path(raw)
+-                if digest(path) != row["sha256"]:
+-                    raise ValueError("변경된 결과를 보존했습니다: " + str(path))
+-                folder = path.parent / ".flipring-undo"
+-                safe_path(folder, exists=False)
+-                folder.mkdir(exist_ok=True)
+-                target = folder / (uuid.uuid4().hex + path.suffix)
+-                path.rename(target)
+-                move = {"original": str(path), "stored": str(target), "sha256": row["sha256"]}
+-                self.moves.append(move)
+-                moved.append(move)
+-                if digest(target) != row["sha256"]:
+-                    raise ValueError("정리 중 변경을 발견했습니다. 보관 파일을 유지합니다: " + str(target))
+-            except (OSError, ValueError) as error:
+-                errors.append(str(error))
+-        return {"moved": moved, "errors": errors}
+-
+-    def undo(self):
+-        restored, errors = [], []
+-        for row in list(reversed(self.moves)):
+-            try:
+-                stored = safe_path(row["stored"])
+-                original = safe_path(row["original"], exists=False)
+-                if original.exists():
+-                    raise ValueError("같은 이름의 파일이 있어 덮어쓰지 않았습니다: " + str(original))
+-                if digest(stored) != row["sha256"]:
+-                    raise ValueError("보관 결과가 변경되어 복원하지 않았습니다.")
+-                path = workspace._publish(stored, original.parent, original.name)
+-                # 원본 경로 충돌 시 새 결과도 보존하며 실제 복원 위치를 알린다.
+-                if digest(path) != row["sha256"] or digest(stored) != row["sha256"]:
+-                    raise ValueError("복원 중 변경을 발견했습니다. 두 파일을 모두 보존했습니다.")
+-                stored.unlink()
+-                self.moves.remove(row)
+-                restored.append(path)
+-                owned = self.rows.pop(row["original"], None)
+-                if owned:
+-                    owned["path"] = path
+-                    self.rows[path] = owned
+-            except (OSError, ValueError) as error:
+-                errors.append(str(error))
+-        return {"restored": restored, "errors": errors}
++"""빠른 작업: 안전한 폴더 입력, 레시피 연결, 결과 보존과 복원."""
++from __future__ import annotations
++
++import copy
++import hashlib
++import json
++import os
++from pathlib import Path
++import shutil
++import stat
++import tempfile
++import threading
++import uuid
++import zipfile
++
++import engine
++import pdf_tools
++import workspace_core as workspace
++
++BUILTINS = [
++    {"version": 1, "name": "사진 JPG", "format": "jpg", "quality": 85, "width": 0, "height": 0,
++     "max_bytes": 0, "zip": False, "template": "{name}", "extensions": ""},
++    {"version": 1, "name": "제출용 JPG + ZIP", "format": "jpg", "quality": 80, "width": 1600, "height": 0,
++     "max_bytes": 1024 * 1024, "zip": True, "template": "{name}_{index:03d}", "extensions": ""},
++    {"version": 1, "name": "문서 PDF", "format": "pdf", "quality": 85, "width": 0, "height": 0,
++     "max_bytes": 0, "zip": False, "template": "{name}", "extensions": ""},
++]
++for _name, _format, _quality, _width, _limit in (
++    ("메일용 JPG · 1600px / 1MiB", "jpg", 80, 1600, 1024 * 1024),
++    ("인쇄용 PDF · 원본 크기", "pdf", 95, 0, 0),
++    ("웹용 WebP · 1920px / 512KiB", "webp", 80, 1920, 512 * 1024),
++):
++    BUILTINS.append({**BUILTINS[0], "name": _name, "format": _format,
++                     "quality": _quality, "width": _width, "max_bytes": _limit})
++MAX_FILES = 10000
++
++
++def safe_path(raw, *, exists=True):
++    """해결 전에 모든 조상의 연결·재분석 지점을 거부한다."""
++    path = Path(os.path.abspath(os.fspath(raw)))
++    for part in (path, *path.parents):
++        try:
++            info = part.lstat()
++        except FileNotFoundError:
++            if part == path and exists:
++                raise ValueError("입력이 없거나 이동되었습니다: " + str(path))
++            continue
++        if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & 0x400:
++            raise ValueError("연결 파일·폴더는 따라가지 않습니다: " + str(part))
++    return path
++
++
++def validate_action(raw):
++    if not isinstance(raw, dict) or set(raw) != set(BUILTINS[0]):
++        raise ValueError("빠른 작업 JSON 필드를 확인해 주세요.")
++    value = copy.deepcopy(raw)
++    if type(value["version"]) is not int or value["version"] != 1:
++        raise ValueError("지원하는 빠른 작업 버전은 1입니다.")
++    recipe = {"version": 1, "name": value["name"], "steps": [
++        {"op": "convert", "format": value["format"], "quality": value["quality"]},
++        {"op": "rename", "template": value["template"]}]}
++    normalized = workspace.validate_recipe(recipe)
++    value["name"] = normalized["name"]
++    value["format"] = normalized["steps"][0]["format"]
++    for key in ("width", "height"):
++        workspace._number(value[key], key, 0, 12000)
++    workspace._number(value["max_bytes"], "max_bytes", 0, 1024 ** 5)
++    if type(value["zip"]) is not bool:
++        raise ValueError("ZIP 옵션을 확인해 주세요.")
++    if not isinstance(value["extensions"], str) or len(value["extensions"]) > 512:
++        raise ValueError("확장자 필터를 확인해 주세요.")
++    for ext in value["extensions"].replace(";", ",").split(","):
++        if ext.strip() and not ext.strip().lstrip(".").isalnum():
++            raise ValueError("확장자는 쉼표로 구분해 주세요.")
++    return value
++
++
++class ActionStore:
++    """경로를 포함하지 않는 빠른 작업만 원자 저장한다. 손상된 원본은 보존한다."""
++    def __init__(self, path):
++        self.path = Path(path)
++
++    def load(self):
++        if not self.path.exists():
++            return []
++        if self.path.stat().st_size > 2 * 1024 * 1024:
++            raise ValueError("빠른 작업 파일은 2MiB 이하여야 합니다.")
++        rows = json.loads(self.path.read_text(encoding="utf-8"))
++        if not isinstance(rows, list) or len(rows) > 1000:
++            raise ValueError("빠른 작업 목록을 확인해 주세요.")
++        rows = [validate_action(row) for row in rows]
++        if len({row["name"].casefold() for row in rows}) != len(rows):
++            raise ValueError("같은 작업 이름이 있습니다.")
++        return rows
++
++    def write(self, rows):
++        self.load()
++        rows = [validate_action(row) for row in rows]
++        if len(rows) > 1000 or len({r["name"].casefold() for r in rows}) != len(rows):
++            raise ValueError("작업 수 또는 중복 이름을 확인해 주세요.")
++        encoded = json.dumps(rows, ensure_ascii=False, indent=2).encode("utf-8")
++        if len(encoded) > 2 * 1024 * 1024:
++            raise ValueError("빠른 작업 파일은 2MiB 이하여야 합니다.")
++        self.path.parent.mkdir(parents=True, exist_ok=True)
++        with tempfile.NamedTemporaryFile(dir=self.path.parent, delete=False) as stream:
++            temporary = Path(stream.name)
++            stream.write(encoded)
++        try:
++            temporary.replace(self.path)
++        finally:
++            temporary.unlink(missing_ok=True)
++
++    def save(self, action, old_name=None):
++        action = validate_action(action)
++        rows = [r for r in self.load() if r["name"] != old_name]
++        if any(r["name"].casefold() == action["name"].casefold() for r in rows):
++            raise ValueError("이미 사용 중인 작업 이름입니다.")
++        self.write([*rows, action])
++
++    def delete(self, name):
++        self.write([r for r in self.load() if r["name"] != name])
++
++
++def collect_inputs(paths, extensions="", cancel=None):
++    allowed = {x.strip().lower().lstrip(".") for x in extensions.replace(";", ",").split(",") if x.strip()}
++    records, skipped, seen = [], [], set()
++
++    def add(raw, relative):
++        pdf_tools.check_cancel(cancel)
++        try:
++            path = safe_path(raw)
++            info = path.stat()
++            if path.name.startswith((".", "~")) or path.suffix.lower() in (".tmp", ".temp", ".part") or getattr(info, "st_file_attributes", 0) & 2:
++                return
++            if not path.is_file() or (allowed and path.suffix.lower().lstrip(".") not in allowed):
++                return
++            key = os.path.normcase(str(path))
++            if key not in seen:
++                seen.add(key)
++                records.append({"source": str(path), "relative": str(relative)})
++                if len(records) > MAX_FILES:
++                    raise ValueError("한 번에 최대 10,000개 파일을 추가할 수 있습니다.")
++        except (OSError, ValueError) as error:
++            if len(records) > MAX_FILES:
++                raise
++            skipped.append(str(error))
++
++    for raw in paths:
++        pdf_tools.check_cancel(cancel)
++        try:
++            root = safe_path(raw)
++            if root.is_dir():
++                for directory, names, files in os.walk(root, followlinks=False):
++                    pdf_tools.check_cancel(cancel)
++                    retained = []
++                    for name in sorted(names):
++                        child = Path(directory) / name
++                        try:
++                            safe_path(child)
++                            if not name.startswith((".", "~")) and not getattr(child.stat(), "st_file_attributes", 0) & 2:
++                                retained.append(name)
++                        except (OSError, ValueError) as error:
++                            skipped.append(str(error))
++                    names[:] = retained
++                    for name in sorted(files):
++                        path = Path(directory) / name
++                        add(path, Path(root.name) / path.relative_to(root))
++            else:
++                add(root, Path(root.name))
++        except (OSError, ValueError) as error:
++            skipped.append(str(error))
++    if len(records) > MAX_FILES:
++        raise ValueError("한 번에 최대 10,000개 파일을 추가할 수 있습니다.")
++    return {"inputs": records, "skipped": skipped}
++
++
++def output_name(record, action, index):
++    source = Path(record["source"])
++    name = action["template"].format(name=engine.stem(source), index=index, date=workspace.date.today().isoformat())
++    workspace._name(name)
++    return name + "." + action["format"]
++
++
++def _preview_count(record, action, cancel):
++    """실제 엔진이 분리하는 결과 수만 확인하고 사용자 폴더에는 발행하지 않는다."""
++    source = safe_path(record['source'])
++    _, extension = engine.classify(source)
++    if (action['width'] or action['height']) and extension not in workspace._IMAGE_FORMATS:
++        raise ValueError('크기 조절 입력은 이미지만 지원합니다.')
++    target = action['format']
++    if target == extension or target not in ('jpg', 'png') or extension in workspace._IMAGE_FORMATS:
++        return 1
++    before = digest(source, cancel)
++    if extension == 'pdf':
++        import pypdfium2 as pdfium
++        from pdf_lock import PDFIUM_LOCK
++        while not PDFIUM_LOCK.acquire(timeout=.1):
++            pdf_tools.check_cancel(cancel)
++        try:
++            with pdfium.PdfDocument(str(source)) as document:
++                count = len(document)
++        finally:
++            PDFIUM_LOCK.release()
++    else:
++        # 문서 페이지 재배치는 실제 변환 없이 추정하지 않는다.
++        with tempfile.TemporaryDirectory(prefix='.flipring-name-preview-') as work:
++            count = len(workspace._single(source, {'op': 'convert', 'format': target,
++                            'quality': action['quality']}, Path(work), cancel))
++    if digest(source, cancel) != before:
++        raise ValueError('미리보기 중 입력이 변경되었습니다.')
++    if count < 1:
++        raise ValueError('예정 결과가 없는 입력입니다.')
++    return count
++
++
++def preview_output_names(records, action, output, cancel=None):
++    """디스크와 입력 묶음의 모든 실제 예정 이름에 발행 번호 규칙을 적용한다."""
++    action = validate_action(action)
++    directory = safe_path(output, exists=False)
++    reserved, rows = set(), []
++    for index, record in enumerate(records, 1):
++        pdf_tools.check_cancel(cancel)
++        relative = Path(record['relative'])
++        if relative.anchor or relative.drive or '..' in relative.parts:
++            raise ValueError('입력 상대 경로를 확인해 주세요.')
++        for part in relative.parts:
++            workspace._name(part)
++        folder = safe_path(directory / relative.parent, exists=False)
++        count = _preview_count(record, action, cancel)
++        base_name = output_name(record, action, index)
++        for part in range(1, count + 1):
++            name = (Path(base_name).stem + f'-{part}' + Path(base_name).suffix) if count > 1 else base_name
++            suffix = '.tar.gz' if name.lower().endswith('.tar.gz') else Path(name).suffix
++            stem = name[:-len(suffix)] if suffix else name
++            for number in range(1, 100000):
++                pdf_tools.check_cancel(cancel)
++                candidate = folder / (name if number == 1 else f'{stem} {number}{suffix}')
++                key = os.path.normcase(str(candidate))
++                if key not in reserved and not candidate.exists():
++                    reserved.add(key)
++                    rows.append({'source': record['source'], 'path': str(candidate)})
++                    break
++            else:
++                raise ValueError('새 결과 파일 이름을 만들지 못했습니다.')
++    if action['zip']:
++        name = '제출용.zip'
++        for number in range(1, 100000):
++            candidate = directory / (name if number == 1 else f'제출용 {number}.zip')
++            if os.path.normcase(str(candidate)) not in reserved and not candidate.exists():
++                rows.append({'source': '', 'path': str(candidate)})
++                break
++        else:

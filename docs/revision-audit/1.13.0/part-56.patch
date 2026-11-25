@@ -1,0 +1,1356 @@
+--- a/소스/preview_panel.py
++++ b/소스/preview_panel.py
+@@ -1,128 +1,128 @@
+-"""실제 원본과 결과를 읽는 작은 미리보기. PDFium 사용 중에는 UI를 기다리게 하지 않는다."""
+-from pathlib import Path
+-from PIL import Image, ImageOps
+-from PySide6.QtCore import Qt, Signal
+-from PySide6.QtGui import QImage, QPixmap
+-from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel, QPushButton
+-import pypdfium2 as pdfium
+-import engine
+-from pdf_lock import PDFIUM_LOCK
+-
+-class PreviewPanel(QWidget):
+-    reveal_requested = Signal(str)
+-
+-    def __init__(self, parent=None):
+-        super().__init__(parent)
+-        self.language = 'ko'
+-        self.paths = ('', '')
+-        self.images = [QImage(), QImage()]
+-        row = QHBoxLayout(self)
+-        row.setContentsMargins(0, 0, 0, 0)
+-        self.panels = []
+-        for index in range(2):
+-            column = QVBoxLayout()
+-            column.setAlignment(Qt.AlignTop)
+-            column.setSpacing(4)
+-            title, picture, info, button = QLabel(), QLabel(), QLabel(), QPushButton()
+-            title.setStyleSheet('font-weight:600;border-bottom:1px solid #dedede;padding-bottom:5px;')
+-            picture.setAlignment(Qt.AlignCenter)
+-            picture.setMinimumSize(100, 95)
+-            picture.setFixedHeight(140)
+-            picture.setStyleSheet('background:#f1f1f1;border-radius:8px;')
+-            info.setWordWrap(True)
+-            info.setMinimumHeight(48)
+-            info.setTextInteractionFlags(Qt.TextSelectableByMouse)
+-            button.clicked.connect(lambda checked=False, i=index: self.reveal_requested.emit(self.paths[i]))
+-            for item in (title, picture, info, button): column.addWidget(item)
+-            row.addLayout(column, 1)
+-            self.panels.append((title, picture, info, button))
+-        self.set_paths('', '')
+-
+-    def set_language(self, language):
+-        self.language = language
+-        self.set_paths(*self.paths)
+-
+-    def set_paths(self, source, result=''):
+-        self.paths = (str(source) if source else '', str(result) if result else '')
+-        en = self.language == 'en'
+-        for index, (title, picture, info, button) in enumerate(self.panels):
+-            title.setText(('Original' if index == 0 else 'Result') if en else ('원본' if index == 0 else '결과'))
+-            button.setText('Select in Explorer' if en else '탐색기에서 선택')
+-            picture.clear()
+-            self.images[index] = QImage()
+-            path = Path(self.paths[index]) if self.paths[index] else None
+-            button.setEnabled(bool(path and path.exists()))
+-            if path is None:
+-                info.setText(('Select a file' if index == 0 else 'Run to preview the result') if en else ('파일을 선택하세요' if index == 0 else '실행 후 결과를 확인하세요'))
+-                continue
+-            metadata = path.name
+-            try:
+-                size = path.stat().st_size
+-                metadata = f'{path.name}\n{size:,} bytes'
+-                image = None
+-                if path.is_dir():
+-                    raise ValueError('Folder preview is not supported.' if en else '폴더 미리보기는 지원하지 않습니다.')
+-                try:
+-                    kind, extension = engine.classify(path)
+-                except ValueError:
+-                    kind, extension = None, ''
+-                if kind in ('문서', '프레젠테이션', '스프레드시트'):
+-                    # 문서 내용을 실행하거나 변환하지 않고 파일 정보만 표시한다.
+-                    picture.setText(extension.upper())
+-                    detail = ('Convert to PDF to preview pages. File information only; contents have not been validated.'
+-                              if en else 'PDF로 변환한 뒤 페이지를 미리 볼 수 있습니다. 파일 정보만 표시하며 내용 유효성은 아직 확인하지 않았습니다.')
+-                    info.setText(f'{metadata}\n{detail}')
+-                    continue
+-                if path.suffix.lower() == '.pdf':
+-                    if not PDFIUM_LOCK.acquire(blocking=False):
+-                        raise ValueError('PDF is busy. Select again after completion.' if en else 'PDF 처리 중입니다. 완료 후 다시 선택하세요.')
+-                    try:
+-                        doc = pdfium.PdfDocument(str(path))
+-                        try:
+-                            metadata += f' · {len(doc)} ' + ('pages' if en else '페이지')
+-                            if not len(doc): raise ValueError('Empty PDF' if en else '페이지가 없는 PDF입니다.')
+-                            page = doc[0]
+-                            try:
+-                                width, height = page.get_size()
+-                                bitmap = page.render(scale=min(1.0, 500 / max(width, height)))
+-                                try: image = bitmap.to_pil().convert('RGB').copy()
+-                                finally: bitmap.close()
+-                            finally: page.close()
+-                        finally: doc.close()
+-                    finally: PDFIUM_LOCK.release()
+-                else:
+-                    with Image.open(path) as opened:
+-                        metadata += f' · {opened.width} × {opened.height} px'
+-                        image = ImageOps.exif_transpose(opened)
+-                        image.thumbnail((500, 300))
+-                        image = image.convert('RGBA').copy()
+-                image = image.convert('RGBA')
+-                qimage = QImage(image.tobytes(), image.width, image.height, image.width * 4, QImage.Format_RGBA8888).copy()
+-                self.images[index] = qimage
+-                self._fit_picture(index)
+-                info.setText(metadata)
+-            except Exception as exc:
+-                picture.setText('Preview unavailable' if en else '미리보기 불가')
+-                detail = str(exc) if isinstance(exc, (ValueError, FileNotFoundError)) else ('Unsupported or unreadable format' if en else '지원하지 않거나 읽을 수 없는 형식입니다')
+-                info.setText(f'{metadata}\n{detail}')
+-
+-    def _fit_picture(self, index):
+-        image = self.images[index]
+-        if image.isNull():
+-            return
+-        picture = self.panels[index][1]
+-        ratio = picture.devicePixelRatioF()
+-        size = picture.contentsRect().size()
+-        scaled = image.scaled(max(1, round((size.width() - 8) * ratio)),
+-                              max(1, round((size.height() - 8) * ratio)),
+-                              Qt.KeepAspectRatio, Qt.SmoothTransformation)
+-        pixmap = QPixmap.fromImage(scaled)
+-        pixmap.setDevicePixelRatio(ratio)
+-        picture.setPixmap(pixmap)
+-
+-    def resizeEvent(self, event):
+-        super().resizeEvent(event)
+-        # 렌더한 이미지 캐시만 사용하며 파일이나 PDF를 다시 열지 않는다.
+-        if hasattr(self, 'panels'):
+-            for index in range(len(self.panels)):
+-                self._fit_picture(index)
++"""실제 원본과 결과를 읽는 작은 미리보기. PDFium 사용 중에는 UI를 기다리게 하지 않는다."""
++from pathlib import Path
++from PIL import Image, ImageOps
++from PySide6.QtCore import Qt, Signal
++from PySide6.QtGui import QImage, QPixmap
++from PySide6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QLabel, QPushButton
++import pypdfium2 as pdfium
++import engine
++from pdf_lock import PDFIUM_LOCK
++
++class PreviewPanel(QWidget):
++    reveal_requested = Signal(str)
++
++    def __init__(self, parent=None):
++        super().__init__(parent)
++        self.language = 'ko'
++        self.paths = ('', '')
++        self.images = [QImage(), QImage()]
++        row = QHBoxLayout(self)
++        row.setContentsMargins(0, 0, 0, 0)
++        self.panels = []
++        for index in range(2):
++            column = QVBoxLayout()
++            column.setAlignment(Qt.AlignTop)
++            column.setSpacing(4)
++            title, picture, info, button = QLabel(), QLabel(), QLabel(), QPushButton()
++            title.setStyleSheet('font-weight:600;border-bottom:1px solid #dedede;padding-bottom:5px;')
++            picture.setAlignment(Qt.AlignCenter)
++            picture.setMinimumSize(100, 95)
++            picture.setFixedHeight(140)
++            picture.setStyleSheet('background:#f1f1f1;border-radius:8px;')
++            info.setWordWrap(True)
++            info.setMinimumHeight(48)
++            info.setTextInteractionFlags(Qt.TextSelectableByMouse)
++            button.clicked.connect(lambda checked=False, i=index: self.reveal_requested.emit(self.paths[i]))
++            for item in (title, picture, info, button): column.addWidget(item)
++            row.addLayout(column, 1)
++            self.panels.append((title, picture, info, button))
++        self.set_paths('', '')
++
++    def set_language(self, language):
++        self.language = language
++        self.set_paths(*self.paths)
++
++    def set_paths(self, source, result=''):
++        self.paths = (str(source) if source else '', str(result) if result else '')
++        en = self.language == 'en'
++        for index, (title, picture, info, button) in enumerate(self.panels):
++            title.setText(('Original' if index == 0 else 'Result') if en else ('원본' if index == 0 else '결과'))
++            button.setText('Select in Explorer' if en else '탐색기에서 선택')
++            picture.clear()
++            self.images[index] = QImage()
++            path = Path(self.paths[index]) if self.paths[index] else None
++            button.setEnabled(bool(path and path.exists()))
++            if path is None:
++                info.setText(('Select a file' if index == 0 else 'Run to preview the result') if en else ('파일을 선택하세요' if index == 0 else '실행 후 결과를 확인하세요'))
++                continue
++            metadata = path.name
++            try:
++                size = path.stat().st_size
++                metadata = f'{path.name}\n{size:,} bytes'
++                image = None
++                if path.is_dir():
++                    raise ValueError('Folder preview is not supported.' if en else '폴더 미리보기는 지원하지 않습니다.')
++                try:
++                    kind, extension = engine.classify(path)
++                except ValueError:
++                    kind, extension = None, ''
++                if kind in ('문서', '프레젠테이션', '스프레드시트'):
++                    # 문서 내용을 실행하거나 변환하지 않고 파일 정보만 표시한다.
++                    picture.setText(extension.upper())
++                    detail = ('Convert to PDF to preview pages. File information only; contents have not been validated.'
++                              if en else 'PDF로 변환한 뒤 페이지를 미리 볼 수 있습니다. 파일 정보만 표시하며 내용 유효성은 아직 확인하지 않았습니다.')
++                    info.setText(f'{metadata}\n{detail}')
++                    continue
++                if path.suffix.lower() == '.pdf':
++                    if not PDFIUM_LOCK.acquire(blocking=False):
++                        raise ValueError('PDF is busy. Select again after completion.' if en else 'PDF 처리 중입니다. 완료 후 다시 선택하세요.')
++                    try:
++                        doc = pdfium.PdfDocument(str(path))
++                        try:
++                            metadata += f' · {len(doc)} ' + ('pages' if en else '페이지')
++                            if not len(doc): raise ValueError('Empty PDF' if en else '페이지가 없는 PDF입니다.')
++                            page = doc[0]
++                            try:
++                                width, height = page.get_size()
++                                bitmap = page.render(scale=min(1.0, 500 / max(width, height)))
++                                try: image = bitmap.to_pil().convert('RGB').copy()
++                                finally: bitmap.close()
++                            finally: page.close()
++                        finally: doc.close()
++                    finally: PDFIUM_LOCK.release()
++                else:
++                    with Image.open(path) as opened:
++                        metadata += f' · {opened.width} × {opened.height} px'
++                        image = ImageOps.exif_transpose(opened)
++                        image.thumbnail((500, 300))
++                        image = image.convert('RGBA').copy()
++                image = image.convert('RGBA')
++                qimage = QImage(image.tobytes(), image.width, image.height, image.width * 4, QImage.Format_RGBA8888).copy()
++                self.images[index] = qimage
++                self._fit_picture(index)
++                info.setText(metadata)
++            except Exception as exc:
++                picture.setText('Preview unavailable' if en else '미리보기 불가')
++                detail = str(exc) if isinstance(exc, (ValueError, FileNotFoundError)) else ('Unsupported or unreadable format' if en else '지원하지 않거나 읽을 수 없는 형식입니다')
++                info.setText(f'{metadata}\n{detail}')
++
++    def _fit_picture(self, index):
++        image = self.images[index]
++        if image.isNull():
++            return
++        picture = self.panels[index][1]
++        ratio = picture.devicePixelRatioF()
++        size = picture.contentsRect().size()
++        scaled = image.scaled(max(1, round((size.width() - 8) * ratio)),
++                              max(1, round((size.height() - 8) * ratio)),
++                              Qt.KeepAspectRatio, Qt.SmoothTransformation)
++        pixmap = QPixmap.fromImage(scaled)
++        pixmap.setDevicePixelRatio(ratio)
++        picture.setPixmap(pixmap)
++
++    def resizeEvent(self, event):
++        super().resizeEvent(event)
++        # 렌더한 이미지 캐시만 사용하며 파일이나 PDF를 다시 열지 않는다.
++        if hasattr(self, 'panels'):
++            for index in range(len(self.panels)):
++                self._fit_picture(index)
+--- a/소스/queue_journal.py
++++ b/소스/queue_journal.py
+@@ -0,0 +1,204 @@
++"""사용자가 명시적으로 이어가는 로컬 작업·결과 소유권 기록."""
++from __future__ import annotations
++import copy
++import json
++import os
++from pathlib import Path
++import re
++import tempfile
++import threading
++import quick_actions as core
++
++MAX_BYTES = 16 * 1024 * 1024
++STATES = {'waiting', 'running', 'completed', 'failed', 'cancelled', 'review'}
++
++
++def _hash(value):
++    return isinstance(value, str) and re.fullmatch('[0-9a-f]{64}', value) is not None
++
++
++def _owned(row):
++    if not isinstance(row, dict) or not {'path', 'source', 'sha256', 'size'} <= row.keys():
++        raise ValueError('결과 기록 형식을 확인해 주세요.')
++    if not _hash(row['sha256']) or type(row['size']) is not int or row['size'] < 0:
++        raise ValueError('결과 해시·크기 기록을 확인해 주세요.')
++    if not isinstance(row['source'], str) or not isinstance(row['path'], str) or not Path(row['path']).is_absolute():
++        raise ValueError('결과 경로 기록을 확인해 주세요.')
++    return copy.deepcopy(row)
++
++
++def _validate(value):
++    if not isinstance(value, dict) or set(value) != {'version', 'jobs', 'ledger'} or type(value['version']) is not int or value['version'] != 1:
++        raise ValueError('지원하지 않는 대기열 기록입니다.')
++    jobs, ledger = value['jobs'], value['ledger']
++    if not isinstance(jobs, list) or len(jobs) > 1000 or not isinstance(ledger, dict) or set(ledger) != {'rows', 'moves'}:
++        raise ValueError('대기열 기록 한도를 확인해 주세요.')
++    count, identifiers = 0, set()
++    for job in jobs:
++        if not isinstance(job, dict) or not {'id', 'inputs', 'action', 'output', 'state', 'file_states', 'checkpoints'} <= job.keys():
++            raise ValueError('작업 기록 형식을 확인해 주세요.')
++        if not isinstance(job['id'], str) or not re.fullmatch('[0-9a-f]{8}', job['id']) or job['id'] in identifiers:
++            raise ValueError('작업 식별자를 확인해 주세요.')
++        identifiers.add(job['id'])
++        core.validate_action(job['action'])
++        if job['state'] not in STATES or not isinstance(job['output'], str) or not Path(job['output']).is_absolute():
++            raise ValueError('작업 상태·결과 경로를 확인해 주세요.')
++        if not isinstance(job['inputs'], list) or not isinstance(job['checkpoints'], dict) or not isinstance(job['file_states'], dict):
++            raise ValueError('파일 작업 기록을 확인해 주세요.')
++        count += len(job['inputs'])
++        if count > core.MAX_FILES:
++            raise ValueError('복구 가능한 입력은 최대 10,000개입니다.')
++        result = job.get('result')
++        if result is not None:
++            if not isinstance(result, dict) or result.get('status') not in STATES or not isinstance(result.get('error'), str):
++                raise ValueError('작업 결과 상태를 확인해 주세요.')
++            if not isinstance(result.get('outputs'), list) or not isinstance(result.get('files'), list) or not isinstance(result.get('warnings'), list):
++                raise ValueError('작업 결과 목록을 확인해 주세요.')
++            if any(not isinstance(text, str) for text in result['warnings']):
++                raise ValueError('작업 경고 기록을 확인해 주세요.')
++            for row in result['outputs']:
++                _owned(row)
++            for row in result['files']:
++                if not isinstance(row, dict) or not isinstance(row.get('source'), str) or row.get('state') not in STATES:
++                    raise ValueError('파일 결과 상태를 확인해 주세요.')
++        if 'retried' in job and type(job['retried']) is not bool:
++            raise ValueError('재시도 기록을 확인해 주세요.')
++        if 'bundle_rows' in job:
++            if not isinstance(job['bundle_rows'], list) or not isinstance(job.get('previous'), dict):
++                raise ValueError('묶음 재시도 기록을 확인해 주세요.')
++            for row in job['bundle_rows']:
++                _owned(row)
++                if not Path(row['path']).is_relative_to(Path(job['output'])):
++                    raise ValueError('묶음 입력이 결과 폴더 밖에 있습니다.')
++        sources = set()
++        for row in job['inputs']:
++            if not isinstance(row, dict) or set(row) != {'source', 'relative'} or not all(isinstance(v, str) for v in row.values()):
++                raise ValueError('입력 기록 형식을 확인해 주세요.')
++            relative = Path(row['relative'])
++            if not Path(row['source']).is_absolute() or relative.anchor or relative.drive or '..' in relative.parts or not relative.name:
++                raise ValueError('입력 경로 기록을 확인해 주세요.')
++            for part in relative.parts:
++                core.workspace._name(part)
++            sources.add(row['source'])
++        if set(job['file_states']) != sources or any(v not in STATES for v in job['file_states'].values()):
++            raise ValueError('파일 상태 기록을 확인해 주세요.')
++        for source, checkpoint in job['checkpoints'].items():
++            if source not in sources | {''} or not isinstance(checkpoint, dict) or not _hash(checkpoint.get('input_sha256')):
++                raise ValueError('입력 해시 기록을 확인해 주세요.')
++            if checkpoint.get('state') not in STATES or type(checkpoint.get('expected', 1)) is not int or checkpoint.get('expected', 1) < 1:
++                raise ValueError('완료 기록을 확인해 주세요.')
++            for row in checkpoint.get('outputs', []):
++                _owned(row)
++                if not Path(row['path']).is_relative_to(Path(job['output'])):
++                    raise ValueError('결과가 작업 폴더 밖에 있습니다.')
++    if not isinstance(ledger['rows'], dict) or not isinstance(ledger['moves'], list) or len(ledger['rows']) > 20000 or len(ledger['moves']) > 20000:
++        raise ValueError('결과 보관 기록 한도를 확인해 주세요.')
++    for path, row in ledger['rows'].items():
++        _owned(row)
++        if path != row['path']:
++            raise ValueError('결과 소유권 기록이 일치하지 않습니다.')
++    for row in ledger['moves']:
++        if not isinstance(row, dict) or set(row) != {'original', 'stored', 'sha256'} or not _hash(row['sha256']):
++            raise ValueError('보관 기록을 확인해 주세요.')
++        original, stored = Path(row['original']), Path(row['stored'])
++        if not original.is_absolute() or stored.parent != original.parent / '.flipring-undo':
++            raise ValueError('보관 경로 기록을 확인해 주세요.')
++        if str(original) not in ledger['rows'] or ledger['rows'][str(original)]['sha256'] != row['sha256']:
++            raise ValueError('보관 소유권이 일치하지 않습니다.')
++    return copy.deepcopy(value)
++
++
++class QueueJournal:
++    def __init__(self, path):
++        self.path = Path(path)
++        self.lock = threading.RLock()
++        self.blocked = False
++
++    def load(self):
++        with self.lock:
++            try:
++                if not self.path.exists():
++                    return {'version': 1, 'jobs': [], 'ledger': {'rows': {}, 'moves': []}}
++                core.safe_path(self.path)
++                if self.path.stat().st_size > MAX_BYTES:
++                    raise ValueError('대기열 기록은 16MiB 이하여야 합니다.')
++                return _validate(json.loads(self.path.read_text(encoding='utf-8')))
++            except Exception:
++                self.blocked = True
++                raise
++
++    def save(self, jobs, ledger):
++        with self.lock:
++            if self.blocked:
++                raise ValueError('손상된 기록은 덮어쓰지 않습니다. 기록 파일을 별도 보존하고 확인해 주세요.')
++            value = _validate({'version': 1, 'jobs': jobs, 'ledger': {'rows': ledger.rows, 'moves': ledger.moves}})
++            data = json.dumps(value, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
++            if len(data) > MAX_BYTES:
++                raise ValueError('대기열 기록은 16MiB 이하여야 합니다.')
++            core.safe_path(self.path, exists=False)
++            self.path.parent.mkdir(parents=True, exist_ok=True)
++            with tempfile.NamedTemporaryFile(dir=self.path.parent, delete=False) as stream:
++                temporary = Path(stream.name)
++                stream.write(data)
++                stream.flush()
++                os.fsync(stream.fileno())
++            try:
++                temporary.replace(self.path)
++            finally:
++                temporary.unlink(missing_ok=True)
++
++
++def checkpoint_event(job, event):
++    source, state = event['source'], event['state']
++    if state == 'publishing':
++        point = job['checkpoints'].setdefault(source, {'input_sha256': event['input_sha256'],
++                'state': 'running', 'outputs': [], 'expected': event.get('expected', 1)})
++        point['expected'] = event.get('expected', 1)
++        owned = copy.deepcopy(event['owned'])
++        owned['constraints_met'] = not job['action']['max_bytes'] or owned['size'] <= job['action']['max_bytes']
++        point['outputs'].append(owned)
++    elif state == 'publication_conflict':
++        point = job['checkpoints'][source]
++        point['outputs'] = [r for r in point['outputs'] if r['path'] != event['owned']['path']]
++    elif state == 'completed' and 'outputs' in event:
++        job['checkpoints'][source] = {'input_sha256': event['input_sha256'], 'state': 'completed',
++                                      'outputs': copy.deepcopy(event['outputs']), 'expected': len(event['outputs'])}
++
++
++def recover_jobs(jobs):
++    """파일 내용을 검사하고 복구 상태만 반환한다. 자동 실행하지 않는다."""
++    # 입력과 결과가 일치한 항목만 완료로 인정한다.
++    jobs = copy.deepcopy(jobs)
++    for job in jobs:
++        for source, point in job['checkpoints'].items():
++            try:
++                valid = (not source or core.digest(source) == point['input_sha256'])
++                valid = valid and len(point['outputs']) == point.get('expected', 1) and bool(point['outputs'])
++                valid = valid and all(core.digest(row['path']) == row['sha256'] for row in point['outputs'])
++            except (OSError, ValueError):
++                valid = False
++            if not point.get('outputs') and point.get('state') == 'waiting':
++                try: valid = not source or core.digest(source) == point['input_sha256']
++                except (OSError, ValueError): valid = False
++                point['state'] = 'waiting' if valid else 'review'
++            else:
++                point['state'] = 'completed' if valid else 'review'
++            if source:
++                job['file_states'][source] = point['state']
++        if any(p['state'] == 'review' for p in job['checkpoints'].values()):
++            job['state'] = 'review'
++        elif job['state'] in {'running', 'waiting', 'review'}:
++            job['state'] = 'waiting'
++    return jobs
++
++
++def diagnostic(jobs, version='1.13.0'):
++    """공유 정보는 고정된 허용 목록에서 새로 구성한다."""
++    from collections import Counter
++    statuses = Counter(j['state'] for j in jobs if j.get('state') in STATES)
++    allowed = {'jpg', 'jpeg', 'png', 'webp', 'pdf', 'docx', 'xlsx', 'pptx', 'txt', 'hwp', 'hwpx', 'zip'}
++    extensions = Counter((Path(r['source']).suffix.lower().lstrip('.') if Path(r['source']).suffix.lower().lstrip('.') in allowed else 'other')
++                         for j in jobs for r in j.get('inputs', []))
++    return {'version': version if version == '1.13.0' else 'unknown', 'jobs': len(jobs),
++            'states': dict(statuses), 'extensions': dict(extensions),
++            'error_codes': {'TASK_FAILED': statuses.get('failed', 0), 'REVIEW_REQUIRED': statuses.get('review', 0)}}
+--- a/소스/quick_actions.py
++++ b/소스/quick_actions.py
+@@ -1,367 +1,520 @@
+-"""빠른 작업: 안전한 폴더 입력, 레시피 연결, 결과 보존과 복원."""
+-from __future__ import annotations
+-
+-import copy
+-import hashlib
+-import json
+-import os
+-from pathlib import Path
+-import shutil
+-import stat
+-import tempfile
+-import threading
+-import uuid
+-import zipfile
+-
+-import engine
+-import pdf_tools
+-import workspace_core as workspace
+-
+-BUILTINS = [
+-    {"version": 1, "name": "사진 JPG", "format": "jpg", "quality": 85, "width": 0, "height": 0,
+-     "max_bytes": 0, "zip": False, "template": "{name}", "extensions": ""},
+-    {"version": 1, "name": "제출용 JPG + ZIP", "format": "jpg", "quality": 80, "width": 1600, "height": 0,
+-     "max_bytes": 1024 * 1024, "zip": True, "template": "{name}_{index:03d}", "extensions": ""},
+-    {"version": 1, "name": "문서 PDF", "format": "pdf", "quality": 85, "width": 0, "height": 0,
+-     "max_bytes": 0, "zip": False, "template": "{name}", "extensions": ""},
+-]
+-MAX_FILES = 10000
+-
+-
+-def safe_path(raw, *, exists=True):
+-    """해결 전에 모든 조상의 연결·재분석 지점을 거부한다."""
+-    path = Path(os.path.abspath(os.fspath(raw)))
+-    for part in (path, *path.parents):
+-        try:
+-            info = part.lstat()
+-        except FileNotFoundError:
+-            if part == path and exists:
+-                raise ValueError("입력이 없거나 이동되었습니다: " + str(path))
+-            continue
+-        if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & 0x400:
+-            raise ValueError("연결 파일·폴더는 따라가지 않습니다: " + str(part))
+-    return path
+-
+-
+-def validate_action(raw):
+-    if not isinstance(raw, dict) or set(raw) != set(BUILTINS[0]):
+-        raise ValueError("빠른 작업 JSON 필드를 확인해 주세요.")
+-    value = copy.deepcopy(raw)
+-    if type(value["version"]) is not int or value["version"] != 1:
+-        raise ValueError("지원하는 빠른 작업 버전은 1입니다.")
+-    recipe = {"version": 1, "name": value["name"], "steps": [
+-        {"op": "convert", "format": value["format"], "quality": value["quality"]},
+-        {"op": "rename", "template": value["template"]}]}
+-    normalized = workspace.validate_recipe(recipe)
+-    value["name"] = normalized["name"]
+-    value["format"] = normalized["steps"][0]["format"]
+-    for key in ("width", "height"):
+-        workspace._number(value[key], key, 0, 12000)
+-    workspace._number(value["max_bytes"], "max_bytes", 0, 1024 ** 5)
+-    if type(value["zip"]) is not bool:
+-        raise ValueError("ZIP 옵션을 확인해 주세요.")
+-    if not isinstance(value["extensions"], str) or len(value["extensions"]) > 512:
+-        raise ValueError("확장자 필터를 확인해 주세요.")
+-    for ext in value["extensions"].replace(";", ",").split(","):
+-        if ext.strip() and not ext.strip().lstrip(".").isalnum():
+-            raise ValueError("확장자는 쉼표로 구분해 주세요.")
+-    return value
+-
+-
+-class ActionStore:
+-    """경로를 포함하지 않는 빠른 작업만 원자 저장한다. 손상된 원본은 보존한다."""
+-    def __init__(self, path):
+-        self.path = Path(path)
+-
+-    def load(self):
+-        if not self.path.exists():
+-            return []
+-        if self.path.stat().st_size > 2 * 1024 * 1024:
+-            raise ValueError("빠른 작업 파일은 2MiB 이하여야 합니다.")
+-        rows = json.loads(self.path.read_text(encoding="utf-8"))
+-        if not isinstance(rows, list) or len(rows) > 1000:
+-            raise ValueError("빠른 작업 목록을 확인해 주세요.")
+-        rows = [validate_action(row) for row in rows]
+-        if len({row["name"].casefold() for row in rows}) != len(rows):
+-            raise ValueError("같은 작업 이름이 있습니다.")
+-        return rows
+-
+-    def write(self, rows):
+-        self.load()
+-        rows = [validate_action(row) for row in rows]
+-        if len(rows) > 1000 or len({r["name"].casefold() for r in rows}) != len(rows):
+-            raise ValueError("작업 수 또는 중복 이름을 확인해 주세요.")
+-        encoded = json.dumps(rows, ensure_ascii=False, indent=2).encode("utf-8")
+-        if len(encoded) > 2 * 1024 * 1024:
+-            raise ValueError("빠른 작업 파일은 2MiB 이하여야 합니다.")
+-        self.path.parent.mkdir(parents=True, exist_ok=True)
+-        with tempfile.NamedTemporaryFile(dir=self.path.parent, delete=False) as stream:
+-            temporary = Path(stream.name)
+-            stream.write(encoded)
+-        try:
+-            temporary.replace(self.path)
+-        finally:
+-            temporary.unlink(missing_ok=True)
+-
+-    def save(self, action, old_name=None):
+-        action = validate_action(action)
+-        rows = [r for r in self.load() if r["name"] != old_name]
+-        if any(r["name"].casefold() == action["name"].casefold() for r in rows):
+-            raise ValueError("이미 사용 중인 작업 이름입니다.")
+-        self.write([*rows, action])
+-
+-    def delete(self, name):
+-        self.write([r for r in self.load() if r["name"] != name])
+-
+-
+-def collect_inputs(paths, extensions="", cancel=None):
+-    allowed = {x.strip().lower().lstrip(".") for x in extensions.replace(";", ",").split(",") if x.strip()}
+-    records, skipped, seen = [], [], set()
+-
+-    def add(raw, relative):
+-        pdf_tools.check_cancel(cancel)
+-        try:
+-            path = safe_path(raw)
+-            info = path.stat()
+-            if path.name.startswith((".", "~")) or path.suffix.lower() in (".tmp", ".temp", ".part") or getattr(info, "st_file_attributes", 0) & 2:
+-                return
+-            if not path.is_file() or (allowed and path.suffix.lower().lstrip(".") not in allowed):
+-                return
+-            key = os.path.normcase(str(path))
+-            if key not in seen:
+-                seen.add(key)
+-                records.append({"source": str(path), "relative": str(relative)})
+-                if len(records) > MAX_FILES:
+-                    raise ValueError("한 번에 최대 10,000개 파일을 추가할 수 있습니다.")
+-        except (OSError, ValueError) as error:
+-            if len(records) > MAX_FILES:
+-                raise
+-            skipped.append(str(error))
+-
+-    for raw in paths:
+-        pdf_tools.check_cancel(cancel)
+-        try:
+-            root = safe_path(raw)
+-            if root.is_dir():
+-                for directory, names, files in os.walk(root, followlinks=False):
+-                    pdf_tools.check_cancel(cancel)
+-                    retained = []
+-                    for name in sorted(names):
+-                        child = Path(directory) / name
+-                        try:
+-                            safe_path(child)
+-                            if not name.startswith((".", "~")) and not getattr(child.stat(), "st_file_attributes", 0) & 2:
+-                                retained.append(name)
+-                        except (OSError, ValueError) as error:
+-                            skipped.append(str(error))
+-                    names[:] = retained
+-                    for name in sorted(files):
+-                        path = Path(directory) / name
+-                        add(path, Path(root.name) / path.relative_to(root))
+-            else:
+-                add(root, Path(root.name))
+-        except (OSError, ValueError) as error:
+-            skipped.append(str(error))
+-    if len(records) > MAX_FILES:
+-        raise ValueError("한 번에 최대 10,000개 파일을 추가할 수 있습니다.")
+-    return {"inputs": records, "skipped": skipped}
+-
+-
+-def output_name(record, action, index):
+-    source = Path(record["source"])
+-    name = action["template"].format(name=engine.stem(source), index=index, date=workspace.date.today().isoformat())
+-    workspace._name(name)
+-    return name + "." + action["format"]
+-
+-
+-def preflight(records, action, output, cancel=None):
+-    action = validate_action(action)
+-    directory = safe_path(output, exists=False)
+-    directory.mkdir(parents=True, exist_ok=True)
+-    safe_path(directory)
+-    reports = []
+-    for index, record in enumerate(records, 1):
+-        pdf_tools.check_cancel(cancel)
+-        report = {"source": record["source"], "ok": False, "error": "", "estimated": 0}
+-        try:
+-            source = safe_path(record["source"])
+-            if not source.is_file():
+-                raise ValueError("일반 파일이 아닙니다.")
+-            _, extension = engine.classify(source)
+-            if extension != action["format"] and action["format"] not in engine.targets([source]):
+-                raise ValueError("지원하지 않는 출력 형식입니다.")
+-            missing = engine.requirement(source, action["format"])
+-            if missing:
+-                raise ValueError(str(missing) + " 도구가 필요합니다.")
+-            if (action["width"] or action["height"]) and extension not in workspace._IMAGE_FORMATS:
+-                raise ValueError("크기 조절 입력은 이미지만 지원합니다.")
+-            if action["max_bytes"] and action["format"] not in workspace._IMAGE_FORMATS | {"pdf"}:
+-                raise ValueError("목표 용량은 이미지·PDF 출력에서 지원합니다.")
+-            output_name(record, action, index)
+-            relative = Path(record["relative"])
+-            if relative.anchor or relative.drive or ".." in relative.parts or not relative.name:
+-                raise ValueError("입력 상대 경로를 확인해 주세요.")
+-            for part in relative.parts:
+-                workspace._name(part)
+-            report["estimated"] = source.stat().st_size * (8 if action["zip"] else 4)
+-            with source.open("rb") as stream:
+-                stream.read(1)
+-            report["ok"] = True
+-        except (OSError, ValueError) as error:
+-            report["error"] = str(error)
+-        reports.append(report)
+-    estimated = sum(row["estimated"] for row in reports) + 64 * 1024 * 1024
+-    free = shutil.disk_usage(directory).free
+-    with tempfile.TemporaryFile(dir=directory) as stream:
+-        stream.write(b"check")
+-    return {"files": reports, "estimated": estimated, "free": free,
+-            "ok": bool(records) and all(r["ok"] for r in reports) and free >= estimated,
+-            "error": "" if free >= estimated else "보수적인 예상 필요 공간보다 여유 공간이 부족합니다."}
+-
+-
+-def digest(path, cancel=None):
+-    result = hashlib.sha256()
+-    with safe_path(path).open("rb") as stream:
+-        while chunk := stream.read(1024 * 1024):
+-            pdf_tools.check_cancel(cancel)
+-            result.update(chunk)
+-    return result.hexdigest()
+-
+-
+-def run_action(records, action, output, cancel=None, on_event=None):
+-    """중간 산출물은 임시 폴더에 두고 최종 결과만 새 이름으로 발행한다."""
+-    cancel = cancel if cancel is not None else threading.Event()
+-    action = validate_action(action)
+-    result = {"status": "running", "outputs": [], "files": [], "error": "", "warnings": [],
+-              "action": action, "inputs": copy.deepcopy(records), "output_dir": str(output)}
+-    emit = on_event or (lambda value: None)
+-    try:
+-        report = preflight(records, action, output, cancel)
+-        result["preflight"] = report
+-        if not report["ok"]:
+-            raise ValueError(report["error"] or "\n".join(r["source"] + ": " + r["error"] for r in report["files"] if not r["ok"]))
+-        directory = safe_path(output)
+-        for index, record in enumerate(records, 1):
+-            pdf_tools.check_cancel(cancel)
+-            emit({"index": index, "total": len(records), "source": record["source"], "state": "running"})
+-            source = safe_path(record["source"])
+-            target_dir = directory / Path(record["relative"]).parent
+-            safe_path(target_dir, exists=False)
+-            target_dir.mkdir(parents=True, exist_ok=True)
+-            steps = []
+-            if action["width"] or action["height"]:
+-                steps.append({"op": "resize", **{key: action[key] for key in ("width", "height") if action[key]}})
+-            steps.append({"op": "convert", "format": action["format"], "quality": action["quality"]})
+-            recipe = {"version": 1, "name": action["name"], "steps": steps}
+-            target = {"max_bytes": action["max_bytes"], "quality": action["quality"]} if action["max_bytes"] else {}
+-            with tempfile.TemporaryDirectory(prefix=".flipring-quick-", dir=directory) as work:
+-                produced = workspace.execute_workspace([str(source)], recipe, target, work, cancel)
+-                if produced["status"] == "cancelled":
+-                    raise pdf_tools.Cancelled()
+-                if produced["status"] != "completed":
+-                    raise ValueError(produced["error"] or "변환을 완료하지 못했습니다.")
+-                for number, item in enumerate(produced["outputs"], 1):
+-                    safe_path(target_dir)
+-                    name = output_name(record, action, index)
+-                    if len(produced["outputs"]) > 1:
+-                        name = Path(name).stem + f"-{number}" + Path(name).suffix
+-                    destination = workspace._publish(item, target_dir, name, cancel)
+-                    # 발행 직후부터 소유 결과로 기록하여 취소 중에도 결과가 유실되지 않는다.
+-                    owned = {"path": destination, "source": str(source), "sha256": "", "size": Path(destination).stat().st_size}
+-                    result["outputs"].append(owned)
+-                    owned["sha256"] = digest(destination)
+-                    owned["constraints_met"] = not action["max_bytes"] or owned["size"] <= action["max_bytes"]
+-                    if not owned["constraints_met"]:
+-                        result["warnings"].append(f"목표 용량 미달성: {Path(destination).name}")
+-            result["files"].append({"source": str(source), "state": "completed"})
+-            emit({"index": index, "total": len(records), "source": str(source), "state": "completed"})
+-        if action["zip"]:
+-            result["bundle_pending"] = True
+-            result["outputs"].append(create_bundle(result["outputs"], directory, cancel))
+-            result["bundle_pending"] = False
+-        result["status"] = "completed"
+-    except (pdf_tools.Cancelled, engine.Cancelled):
+-        result["status"] = "cancelled"
+-    except Exception as error:
+-        result["status"], result["error"] = "failed", str(error)
+-    return result
+-
+-
+-def create_bundle(rows, output, cancel=None):
+-    """이미 완료된 결과를 다시 변환하지 않고 ZIP 단계만 재시도할 수 있다."""
+-    directory = safe_path(output)
+-    with tempfile.TemporaryDirectory(prefix=".flipring-zip-", dir=directory) as work:
+-        archive = Path(work) / "submission.zip"
+-        with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as stream:
+-            for row in rows:
+-                pdf_tools.check_cancel(cancel)
+-                path = safe_path(row["path"])
+-                if digest(path, cancel) != row["sha256"]:
+-                    raise ValueError("변경된 결과로 ZIP을 만들지 않았습니다: " + str(path))
+-                with path.open("rb") as source, stream.open(str(path.relative_to(directory)).replace("\\", "/"), "w") as target:
+-                    while chunk := source.read(1024 * 1024):
+-                        pdf_tools.check_cancel(cancel)
+-                        target.write(chunk)
+-        path = workspace._publish(archive, directory, "제출용.zip", cancel)
+-        return {"path": path, "source": "", "sha256": digest(path), "size": Path(path).stat().st_size, "constraints_met": True}
+-
+-
+-class OutputLedger:
+-    """현재 세션 소유 결과만 해시 검증 후 보관 폴더로 이동한다. 영구 삭제하지 않는다."""
+-    def __init__(self):
+-        self.rows = {}
+-        self.moves = []
+-
+-    def register(self, rows):
+-        for row in rows:
+-            if row.get("sha256"):
+-                self.rows[row["path"]] = copy.deepcopy(row)
+-
+-    def cleanup(self, paths):
+-        moved, errors = [], []
+-        for raw in dict.fromkeys(paths):
+-            try:
+-                row = self.rows.get(str(raw))
+-                if not row:
+-                    raise ValueError("현재 세션에서 생성한 결과만 정리할 수 있습니다.")
+-                path = safe_path(raw)
+-                if digest(path) != row["sha256"]:
+-                    raise ValueError("변경된 결과를 보존했습니다: " + str(path))
+-                folder = path.parent / ".flipring-undo"
+-                safe_path(folder, exists=False)
+-                folder.mkdir(exist_ok=True)
+-                target = folder / (uuid.uuid4().hex + path.suffix)
+-                path.rename(target)
+-                move = {"original": str(path), "stored": str(target), "sha256": row["sha256"]}
+-                self.moves.append(move)
+-                moved.append(move)
+-                if digest(target) != row["sha256"]:
+-                    raise ValueError("정리 중 변경을 발견했습니다. 보관 파일을 유지합니다: " + str(target))
+-            except (OSError, ValueError) as error:
+-                errors.append(str(error))
+-        return {"moved": moved, "errors": errors}
+-
+-    def undo(self):
+-        restored, errors = [], []
+-        for row in list(reversed(self.moves)):
+-            try:
+-                stored = safe_path(row["stored"])
+-                original = safe_path(row["original"], exists=False)
+-                if original.exists():
+-                    raise ValueError("같은 이름의 파일이 있어 덮어쓰지 않았습니다: " + str(original))
+-                if digest(stored) != row["sha256"]:
+-                    raise ValueError("보관 결과가 변경되어 복원하지 않았습니다.")
+-                path = workspace._publish(stored, original.parent, original.name)
+-                # 원본 경로 충돌 시 새 결과도 보존하며 실제 복원 위치를 알린다.
+-                if digest(path) != row["sha256"] or digest(stored) != row["sha256"]:
+-                    raise ValueError("복원 중 변경을 발견했습니다. 두 파일을 모두 보존했습니다.")
+-                stored.unlink()
+-                self.moves.remove(row)
+-                restored.append(path)
+-                owned = self.rows.pop(row["original"], None)
+-                if owned:
+-                    owned["path"] = path
+-                    self.rows[path] = owned
+-            except (OSError, ValueError) as error:
+-                errors.append(str(error))
+-        return {"restored": restored, "errors": errors}
++"""빠른 작업: 안전한 폴더 입력, 레시피 연결, 결과 보존과 복원."""
++from __future__ import annotations
++
++import copy
++import hashlib
++import json
++import os
++from pathlib import Path
++import shutil
++import stat
++import tempfile
++import threading
++import uuid
++import zipfile
++
++import engine
++import pdf_tools
++import workspace_core as workspace
++
++BUILTINS = [
++    {"version": 1, "name": "사진 JPG", "format": "jpg", "quality": 85, "width": 0, "height": 0,
++     "max_bytes": 0, "zip": False, "template": "{name}", "extensions": ""},
++    {"version": 1, "name": "제출용 JPG + ZIP", "format": "jpg", "quality": 80, "width": 1600, "height": 0,
++     "max_bytes": 1024 * 1024, "zip": True, "template": "{name}_{index:03d}", "extensions": ""},
++    {"version": 1, "name": "문서 PDF", "format": "pdf", "quality": 85, "width": 0, "height": 0,
++     "max_bytes": 0, "zip": False, "template": "{name}", "extensions": ""},
++]
++for _name, _format, _quality, _width, _limit in (
++    ("메일용 JPG · 1600px / 1MiB", "jpg", 80, 1600, 1024 * 1024),
++    ("인쇄용 PDF · 원본 크기", "pdf", 95, 0, 0),
++    ("웹용 WebP · 1920px / 512KiB", "webp", 80, 1920, 512 * 1024),
++):
++    BUILTINS.append({**BUILTINS[0], "name": _name, "format": _format,
++                     "quality": _quality, "width": _width, "max_bytes": _limit})
++MAX_FILES = 10000
++
++
++def safe_path(raw, *, exists=True):
++    """해결 전에 모든 조상의 연결·재분석 지점을 거부한다."""
++    path = Path(os.path.abspath(os.fspath(raw)))
++    for part in (path, *path.parents):
++        try:
++            info = part.lstat()
++        except FileNotFoundError:
++            if part == path and exists:
++                raise ValueError("입력이 없거나 이동되었습니다: " + str(path))
++            continue
++        if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & 0x400:
++            raise ValueError("연결 파일·폴더는 따라가지 않습니다: " + str(part))
++    return path
++
++
++def validate_action(raw):
++    if not isinstance(raw, dict) or set(raw) != set(BUILTINS[0]):
++        raise ValueError("빠른 작업 JSON 필드를 확인해 주세요.")
++    value = copy.deepcopy(raw)
++    if type(value["version"]) is not int or value["version"] != 1:
++        raise ValueError("지원하는 빠른 작업 버전은 1입니다.")
++    recipe = {"version": 1, "name": value["name"], "steps": [
++        {"op": "convert", "format": value["format"], "quality": value["quality"]},
++        {"op": "rename", "template": value["template"]}]}
++    normalized = workspace.validate_recipe(recipe)
++    value["name"] = normalized["name"]
++    value["format"] = normalized["steps"][0]["format"]
++    for key in ("width", "height"):
++        workspace._number(value[key], key, 0, 12000)
++    workspace._number(value["max_bytes"], "max_bytes", 0, 1024 ** 5)
++    if type(value["zip"]) is not bool:
++        raise ValueError("ZIP 옵션을 확인해 주세요.")
++    if not isinstance(value["extensions"], str) or len(value["extensions"]) > 512:
++        raise ValueError("확장자 필터를 확인해 주세요.")
++    for ext in value["extensions"].replace(";", ",").split(","):
++        if ext.strip() and not ext.strip().lstrip(".").isalnum():
++            raise ValueError("확장자는 쉼표로 구분해 주세요.")
++    return value
++
++
++class ActionStore:
++    """경로를 포함하지 않는 빠른 작업만 원자 저장한다. 손상된 원본은 보존한다."""
++    def __init__(self, path):
++        self.path = Path(path)
++
++    def load(self):
++        if not self.path.exists():
++            return []
++        if self.path.stat().st_size > 2 * 1024 * 1024:
++            raise ValueError("빠른 작업 파일은 2MiB 이하여야 합니다.")
++        rows = json.loads(self.path.read_text(encoding="utf-8"))
++        if not isinstance(rows, list) or len(rows) > 1000:
++            raise ValueError("빠른 작업 목록을 확인해 주세요.")
++        rows = [validate_action(row) for row in rows]
++        if len({row["name"].casefold() for row in rows}) != len(rows):
++            raise ValueError("같은 작업 이름이 있습니다.")
++        return rows
++
++    def write(self, rows):
++        self.load()
++        rows = [validate_action(row) for row in rows]
++        if len(rows) > 1000 or len({r["name"].casefold() for r in rows}) != len(rows):
++            raise ValueError("작업 수 또는 중복 이름을 확인해 주세요.")
++        encoded = json.dumps(rows, ensure_ascii=False, indent=2).encode("utf-8")
++        if len(encoded) > 2 * 1024 * 1024:
++            raise ValueError("빠른 작업 파일은 2MiB 이하여야 합니다.")
++        self.path.parent.mkdir(parents=True, exist_ok=True)
++        with tempfile.NamedTemporaryFile(dir=self.path.parent, delete=False) as stream:
++            temporary = Path(stream.name)
++            stream.write(encoded)
++        try:
++            temporary.replace(self.path)
++        finally:
++            temporary.unlink(missing_ok=True)
++
++    def save(self, action, old_name=None):
++        action = validate_action(action)
++        rows = [r for r in self.load() if r["name"] != old_name]
++        if any(r["name"].casefold() == action["name"].casefold() for r in rows):
++            raise ValueError("이미 사용 중인 작업 이름입니다.")
++        self.write([*rows, action])
++
++    def delete(self, name):
++        self.write([r for r in self.load() if r["name"] != name])
++
++
++def collect_inputs(paths, extensions="", cancel=None):
++    allowed = {x.strip().lower().lstrip(".") for x in extensions.replace(";", ",").split(",") if x.strip()}
++    records, skipped, seen = [], [], set()
++
++    def add(raw, relative):
++        pdf_tools.check_cancel(cancel)
++        try:
++            path = safe_path(raw)
++            info = path.stat()
++            if path.name.startswith((".", "~")) or path.suffix.lower() in (".tmp", ".temp", ".part") or getattr(info, "st_file_attributes", 0) & 2:
++                return
++            if not path.is_file() or (allowed and path.suffix.lower().lstrip(".") not in allowed):
++                return
++            key = os.path.normcase(str(path))
++            if key not in seen:
++                seen.add(key)
++                records.append({"source": str(path), "relative": str(relative)})
++                if len(records) > MAX_FILES:
++                    raise ValueError("한 번에 최대 10,000개 파일을 추가할 수 있습니다.")
++        except (OSError, ValueError) as error:
++            if len(records) > MAX_FILES:
++                raise
++            skipped.append(str(error))
++
++    for raw in paths:
++        pdf_tools.check_cancel(cancel)
++        try:
++            root = safe_path(raw)
++            if root.is_dir():
++                for directory, names, files in os.walk(root, followlinks=False):
++                    pdf_tools.check_cancel(cancel)
++                    retained = []
++                    for name in sorted(names):
++                        child = Path(directory) / name
++                        try:
++                            safe_path(child)
++                            if not name.startswith((".", "~")) and not getattr(child.stat(), "st_file_attributes", 0) & 2:
++                                retained.append(name)
++                        except (OSError, ValueError) as error:
++                            skipped.append(str(error))
++                    names[:] = retained
++                    for name in sorted(files):
++                        path = Path(directory) / name
++                        add(path, Path(root.name) / path.relative_to(root))
++            else:
++                add(root, Path(root.name))
++        except (OSError, ValueError) as error:
++            skipped.append(str(error))
++    if len(records) > MAX_FILES:
++        raise ValueError("한 번에 최대 10,000개 파일을 추가할 수 있습니다.")
++    return {"inputs": records, "skipped": skipped}
++
++
++def output_name(record, action, index):
++    source = Path(record["source"])
++    name = action["template"].format(name=engine.stem(source), index=index, date=workspace.date.today().isoformat())
++    workspace._name(name)
++    return name + "." + action["format"]
++
++
++def _preview_count(record, action, cancel):
++    """실제 엔진이 분리하는 결과 수만 확인하고 사용자 폴더에는 발행하지 않는다."""
++    source = safe_path(record['source'])
++    _, extension = engine.classify(source)
++    if (action['width'] or action['height']) and extension not in workspace._IMAGE_FORMATS:
++        raise ValueError('크기 조절 입력은 이미지만 지원합니다.')
++    target = action['format']
++    if target == extension or target not in ('jpg', 'png') or extension in workspace._IMAGE_FORMATS:
++        return 1
++    before = digest(source, cancel)
++    if extension == 'pdf':
++        import pypdfium2 as pdfium
++        from pdf_lock import PDFIUM_LOCK
++        while not PDFIUM_LOCK.acquire(timeout=.1):
++            pdf_tools.check_cancel(cancel)
++        try:
++            with pdfium.PdfDocument(str(source)) as document:
++                count = len(document)
++        finally:
++            PDFIUM_LOCK.release()
++    else:
++        # 문서 페이지 재배치는 실제 변환 없이 추정하지 않는다.
++        with tempfile.TemporaryDirectory(prefix='.flipring-name-preview-') as work:
++            count = len(workspace._single(source, {'op': 'convert', 'format': target,
++                            'quality': action['quality']}, Path(work), cancel))
++    if digest(source, cancel) != before:
++        raise ValueError('미리보기 중 입력이 변경되었습니다.')
++    if count < 1:
++        raise ValueError('예정 결과가 없는 입력입니다.')
++    return count
++
++
++def preview_output_names(records, action, output, cancel=None):
++    """디스크와 입력 묶음의 모든 실제 예정 이름에 발행 번호 규칙을 적용한다."""
++    action = validate_action(action)
++    directory = safe_path(output, exists=False)
++    reserved, rows = set(), []
++    for index, record in enumerate(records, 1):
++        pdf_tools.check_cancel(cancel)
++        relative = Path(record['relative'])
++        if relative.anchor or relative.drive or '..' in relative.parts:
++            raise ValueError('입력 상대 경로를 확인해 주세요.')
++        for part in relative.parts:
++            workspace._name(part)
++        folder = safe_path(directory / relative.parent, exists=False)
++        count = _preview_count(record, action, cancel)
++        base_name = output_name(record, action, index)
++        for part in range(1, count + 1):
++            name = (Path(base_name).stem + f'-{part}' + Path(base_name).suffix) if count > 1 else base_name
++            suffix = '.tar.gz' if name.lower().endswith('.tar.gz') else Path(name).suffix
++            stem = name[:-len(suffix)] if suffix else name
++            for number in range(1, 100000):
++                pdf_tools.check_cancel(cancel)
++                candidate = folder / (name if number == 1 else f'{stem} {number}{suffix}')
++                key = os.path.normcase(str(candidate))
++                if key not in reserved and not candidate.exists():
++                    reserved.add(key)
++                    rows.append({'source': record['source'], 'path': str(candidate)})
++                    break
++            else:
++                raise ValueError('새 결과 파일 이름을 만들지 못했습니다.')
++    if action['zip']:
++        name = '제출용.zip'
++        for number in range(1, 100000):
++            candidate = directory / (name if number == 1 else f'제출용 {number}.zip')
++            if os.path.normcase(str(candidate)) not in reserved and not candidate.exists():
++                rows.append({'source': '', 'path': str(candidate)})
++                break
++        else:
++            raise ValueError('묶음 결과 이름을 만들지 못했습니다.')
++    return rows
++
++
++def _tracked_publish(item, folder, name, source, input_hash, emit, cancel, expected_count=1):
++    """발행 예정 해시를 먼저 기록하고 배타 생성하여 중단 경계를 복구한다."""
++    expected_hash = digest(item, cancel)
++    suffix = ".tar.gz" if name.lower().endswith(".tar.gz") else Path(name).suffix
++    stem = name[:-len(suffix)] if suffix else name
++    for number in range(1, 100000):
++        pdf_tools.check_cancel(cancel)
++        path = folder / (name if number == 1 else f"{stem} {number}{suffix}")
++        if path.exists():
++            continue
++        owned = {"path": str(path), "source": str(source), "sha256": expected_hash,
++                 "size": Path(item).stat().st_size, "constraints_met": True}
++        # 이 신호의 수신자는 파일 생성 전에 영속 저장을 마친다.
++        emit({"state": "publishing", "source": str(source), "input_sha256": input_hash,
++              "owned": owned, "expected": expected_count})
++        try:
++            stream = path.open("xb")
++        except FileExistsError:
++            emit({"state": "publication_conflict", "source": str(source), "owned": owned, "expected": expected_count})
++            continue
++        try:
++            with stream, Path(item).open("rb") as origin:
++                while block := origin.read(1024 * 1024):
++                    pdf_tools.check_cancel(cancel)
++                    stream.write(block)
++                stream.flush()
++                os.fsync(stream.fileno())
++            if digest(path) != expected_hash:
++                raise ValueError("결과 발행 중 변경을 발견했습니다.")
++            return str(path)
++        except BaseException:
++            path.unlink(missing_ok=True)
++            raise
++    raise ValueError("새 결과 파일 이름을 만들지 못했습니다.")
++
++
++def preflight(records, action, output, cancel=None):
++    action = validate_action(action)
++    directory = safe_path(output, exists=False)
++    directory.mkdir(parents=True, exist_ok=True)
++    safe_path(directory)
++    reports = []
++    for index, record in enumerate(records, 1):
++        pdf_tools.check_cancel(cancel)
++        report = {"source": record["source"], "ok": False, "error": "", "estimated": 0}
++        try:
++            source = safe_path(record["source"])
++            if not source.is_file():
++                raise ValueError("일반 파일이 아닙니다.")
++            _, extension = engine.classify(source)
++            if extension != action["format"] and action["format"] not in engine.targets([source]):
++                raise ValueError("지원하지 않는 출력 형식입니다.")
++            missing = engine.requirement(source, action["format"])
++            if missing:
++                raise ValueError(str(missing) + " 도구가 필요합니다.")
++            if (action["width"] or action["height"]) and extension not in workspace._IMAGE_FORMATS:
++                raise ValueError("크기 조절 입력은 이미지만 지원합니다.")
++            if action["max_bytes"] and action["format"] not in workspace._IMAGE_FORMATS | {"pdf"}:
++                raise ValueError("목표 용량은 이미지·PDF 출력에서 지원합니다.")
++            output_name(record, action, index)
++            relative = Path(record["relative"])
++            if relative.anchor or relative.drive or ".." in relative.parts or not relative.name:
++                raise ValueError("입력 상대 경로를 확인해 주세요.")
++            for part in relative.parts:
++                workspace._name(part)
++            report["estimated"] = source.stat().st_size * (8 if action["zip"] else 4)
++            with source.open("rb") as stream:
++                stream.read(1)
++            report["ok"] = True
++        except (OSError, ValueError) as error:
++            report["error"] = str(error)
++        reports.append(report)
++    estimated = sum(row["estimated"] for row in reports) + 64 * 1024 * 1024
++    free = shutil.disk_usage(directory).free
++    with tempfile.TemporaryFile(dir=directory) as stream:
++        stream.write(b"check")
++    return {"files": reports, "estimated": estimated, "free": free,
++            "ok": bool(records) and all(r["ok"] for r in reports) and free >= estimated,
++            "error": "" if free >= estimated else "보수적인 예상 필요 공간보다 여유 공간이 부족합니다."}
++
++
++def digest(path, cancel=None):
++    result = hashlib.sha256()
++    with safe_path(path).open("rb") as stream:
++        while chunk := stream.read(1024 * 1024):
++            pdf_tools.check_cancel(cancel)
++            result.update(chunk)
++    return result.hexdigest()
++
++
++def run_action(records, action, output, cancel=None, on_event=None, completed=None):
++    """중간 산출물은 임시 폴더에 두고 최종 결과만 새 이름으로 발행한다."""
++    cancel = cancel if cancel is not None else threading.Event()
++    action = validate_action(action)
++    result = {"status": "running", "outputs": [], "files": [], "error": "", "warnings": [],
++              "action": action, "inputs": copy.deepcopy(records), "output_dir": str(output)}
++    emit = on_event or (lambda value: None)
++    completed = completed or {}
++    try:
++        report = preflight(records, action, output, cancel)
++        result["preflight"] = report
++        if not report["ok"]:
++            raise ValueError(report["error"] or "\n".join(r["source"] + ": " + r["error"] for r in report["files"] if not r["ok"]))
++        directory = safe_path(output)
++        for index, record in enumerate(records, 1):
++            pdf_tools.check_cancel(cancel)
++            emit({"index": index, "total": len(records), "source": record["source"], "state": "running"})
++            source = safe_path(record["source"])
++            input_hash = digest(source, cancel)
++            previous = completed.get(str(source))
++            if previous:
++                if previous.get("input_sha256") != input_hash:
++                    raise ValueError("입력이 변경되어 이어하기를 보류했습니다.")
++                if previous.get("state") == "completed" and previous.get("outputs") and all(
++                        digest(row["path"], cancel) == row["sha256"] for row in previous["outputs"]):
++                    result["outputs"].extend(copy.deepcopy(previous["outputs"]))
++                    result["files"].append({"source": str(source), "state": "completed"})
++                    emit({"index": index, "total": len(records), "source": str(source), "state": "completed",
++                          "input_sha256": input_hash, "outputs": previous["outputs"]})
++                    continue
++                if previous.get("outputs") or previous.get("intent"):
++                    raise ValueError("완료 결과 확인이 필요하여 중복 변환을 보류했습니다.")
++            file_outputs = []
++            target_dir = directory / Path(record["relative"]).parent
++            safe_path(target_dir, exists=False)
++            target_dir.mkdir(parents=True, exist_ok=True)
++            steps = []
++            if action["width"] or action["height"]:
++                steps.append({"op": "resize", **{key: action[key] for key in ("width", "height") if action[key]}})
++            steps.append({"op": "convert", "format": action["format"], "quality": action["quality"]})
++            recipe = {"version": 1, "name": action["name"], "steps": steps}
++            target = {"max_bytes": action["max_bytes"], "quality": action["quality"]} if action["max_bytes"] else {}
++            with tempfile.TemporaryDirectory(prefix=".flipring-quick-", dir=directory) as work:
++                produced = workspace.execute_workspace([str(source)], recipe, target, work, cancel)
++                if produced["status"] == "cancelled":
++                    raise pdf_tools.Cancelled()
++                if produced["status"] != "completed":
++                    raise ValueError(produced["error"] or "변환을 완료하지 못했습니다.")
++                if digest(source, cancel) != input_hash:
++                    raise ValueError("변환 중 입력이 변경되어 발행하지 않았습니다.")
++                for number, item in enumerate(produced["outputs"], 1):
++                    safe_path(target_dir)
++                    name = output_name(record, action, index)
++                    if len(produced["outputs"]) > 1:
++                        name = Path(name).stem + f"-{number}" + Path(name).suffix
++                    destination = _tracked_publish(item, target_dir, name, source, input_hash, emit, cancel, len(produced["outputs"]))
++                    # 발행 직후부터 소유 결과로 기록하여 취소 중에도 결과가 유실되지 않는다.
++                    owned = {"path": destination, "source": str(source), "sha256": "", "size": Path(destination).stat().st_size}
++                    result["outputs"].append(owned)
++                    file_outputs.append(owned)
++                    owned["sha256"] = digest(destination)
++                    owned["constraints_met"] = not action["max_bytes"] or owned["size"] <= action["max_bytes"]
++                    if not owned["constraints_met"]:
++                        result["warnings"].append(f"목표 용량 미달성: {Path(destination).name}")
++            result["files"].append({"source": str(source), "state": "completed"})
++            emit({"index": index, "total": len(records), "source": str(source), "state": "completed",
++                  "input_sha256": input_hash, "outputs": copy.deepcopy(file_outputs)})
++        if action["zip"]:
++            result["bundle_pending"] = True
++            bundle_point = completed.get('')
++            if bundle_point and bundle_point.get('outputs'):
++                if bundle_point['state'] != 'completed' or any(digest(r['path']) != r['sha256'] for r in bundle_point['outputs']):
++                    raise ValueError("묶음 결과 확인이 필요하여 중복 생성을 보류했습니다.")
++                result['outputs'].extend(copy.deepcopy(bundle_point['outputs']))
++            else:
++                bundle = create_bundle(result["outputs"], directory, cancel, on_event=emit)
++                result["outputs"].append(bundle)
++                emit({'state': 'completed', 'source': '', 'input_sha256': '0' * 64, 'outputs': [bundle]})
++            result["bundle_pending"] = False
++        result["status"] = "completed"
++    except (pdf_tools.Cancelled, engine.Cancelled):
++        result["status"] = "cancelled"
++    except Exception as error:
++        result["status"], result["error"] = "failed", str(error)
++    return result
++
++
++def create_bundle(rows, output, cancel=None, on_event=None):
++    """이미 완료된 결과를 다시 변환하지 않고 ZIP 단계만 재시도할 수 있다."""
++    directory = safe_path(output)
++    with tempfile.TemporaryDirectory(prefix=".flipring-zip-", dir=directory) as work:
++        archive = Path(work) / "submission.zip"
++        with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as stream:
++            for row in rows:
++                pdf_tools.check_cancel(cancel)
++                path = safe_path(row["path"])
++                if digest(path, cancel) != row["sha256"]:
++                    raise ValueError("변경된 결과로 ZIP을 만들지 않았습니다: " + str(path))
++                with path.open("rb") as source, stream.open(str(path.relative_to(directory)).replace("\\", "/"), "w") as target:
++                    while chunk := source.read(1024 * 1024):
++                        pdf_tools.check_cancel(cancel)
++                        target.write(chunk)
++        path = (_tracked_publish(archive, directory, "제출용.zip", "", "0" * 64, on_event, cancel)
++                if on_event else workspace._publish(archive, directory, "제출용.zip", cancel))
++        return {"path": path, "source": "", "sha256": digest(path), "size": Path(path).stat().st_size, "constraints_met": True}
++
++
++class OutputLedger:
++    """현재 세션 소유 결과만 해시 검증 후 보관 폴더로 이동한다. 영구 삭제하지 않는다."""
++    def __init__(self, on_change=None):
++        self.on_change = on_change or (lambda: None)
++        self.rows = {}
++        self.moves = []
++
++    def register(self, rows):
++        for row in rows:
++            if row.get("sha256"):
++                self.rows[row["path"]] = copy.deepcopy(row)
++
++    def cleanup(self, paths):
++        moved, errors = [], []
++        for raw in dict.fromkeys(paths):
++            try:
++                row = self.rows.get(str(raw))
++                if not row:
++                    raise ValueError("현재 세션에서 생성한 결과만 정리할 수 있습니다.")
++                path = safe_path(raw)
++                if digest(path) != row["sha256"]:
++                    raise ValueError("변경된 결과를 보존했습니다: " + str(path))
++                folder = path.parent / ".flipring-undo"
++                safe_path(folder, exists=False)
++                folder.mkdir(exist_ok=True)
++                target = folder / (uuid.uuid4().hex + path.suffix)
++                move = {"original": str(path), "stored": str(target), "sha256": row["sha256"]}
++                self.moves.append(move)
++                try:
++                    self.on_change()
++                    path.rename(target)
++                except BaseException:
++                    self.moves.remove(move)
++                    raise
++                self.on_change()
++                moved.append(move)
++                if digest(target) != row["sha256"]:
++                    raise ValueError("정리 중 변경을 발견했습니다. 보관 파일을 유지합니다: " + str(target))
++            except (OSError, ValueError) as error:
++                errors.append(str(error))
++        return {"moved": moved, "errors": errors}
++
++    def undo(self):
++        restored, errors = [], []
++        for row in list(reversed(self.moves)):
++            try:
++                stored = safe_path(row["stored"])
++                original = safe_path(row["original"], exists=False)
++                if original.exists():
++                    raise ValueError("같은 이름의 파일이 있어 덮어쓰지 않았습니다: " + str(original))
++                if digest(stored) != row["sha256"]:
++                    raise ValueError("보관 결과가 변경되어 복원하지 않았습니다.")
++                path = workspace._publish(stored, original.parent, original.name)
++                # 원본 경로 충돌 시 새 결과도 보존하며 실제 복원 위치를 알린다.
++                if digest(path) != row["sha256"] or digest(stored) != row["sha256"]:
++                    raise ValueError("복원 중 변경을 발견했습니다. 두 파일을 모두 보존했습니다.")
++                stored.unlink()
++                self.moves.remove(row)
++                restored.append(path)
++                owned = self.rows.pop(row["original"], None)
++                if owned:
++                    owned["path"] = path
++                    self.rows[path] = owned
++                self.on_change()
++            except (OSError, ValueError) as error:
++                errors.append(str(error))
++        return {"restored": restored, "errors": errors}

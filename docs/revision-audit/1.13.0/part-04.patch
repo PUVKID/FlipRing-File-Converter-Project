@@ -1,0 +1,1047 @@
+--- a/소스/document_bridge.py
++++ b/소스/document_bridge.py
+@@ -1,267 +1,268 @@
+-"""LibreOffice 전용 Python에서 실행하는 격리 문서 변환기.
+-
+-앱의 Python·Qt DLL과 UNO 런타임을 섞지 않고 고유 로컬 파이프로만 연결한다.
+-"""
+-from __future__ import annotations
+-
+-import json
+-import os
+-from pathlib import Path
+-import subprocess
+-import sys
+-import time
+-import uuid
+-
+-from document_formats import EXPORT_FILTERS, prepare_import_source
+-from document_xlsb import ensure_loaded_sheets
+-
+-
+-def _property(name, value):
+-    import uno
+-    prop = uno.createUnoStruct("com.sun.star.beans.PropertyValue")
+-    prop.Name, prop.Value = name, value
+-    return prop
+-
+-
+-def load_options(handler, source_extension):
+-    """문서 자체 정책보다 강한 보안과 메인 스레드 실행 조건을 고정한다."""
+-    options = {"Hidden": True, "ReadOnly": True, "Silent": True, "AsTemplate": False,
+-               "MacroExecutionMode": 0, "UpdateDocMode": 0, "InteractionHandler": handler,
+-               "OnMainThread": True}
+-    if source_extension in ("hwp", "hwpx"):
+-        options["FilterName"] = "Hwp2002_File"
+-    if source_extension in ("csv", "tsv"):
+-        options["FilterName"] = "Text - txt - csv (StarCalc)"
+-        options["FilterOptions"] = ("9" if source_extension == "tsv" else "44") + ",34,76,1,,0,false,true,true,false,false,0"
+-    elif source_extension == "dif":
+-        # 읽기 전 정규화한 UTF-8을 명시해 시스템 설정과 확인창에 의존하지 않는다.
+-        options["FilterName"] = "DIF"
+-        options["FilterOptions"] = "76"
+-    return options
+-
+-
+-def export_options(handler, filter_name, target=None):
+-    """정규화와 최종 저장의 덮어쓰기·실행 조건을 함께 적용한다."""
+-    options = {"FilterName": filter_name, "Overwrite": False, "InteractionHandler": handler,
+-               "OnMainThread": True}
+-    if target in ("csv", "tsv"):
+-        options["FilterOptions"] = ("9" if target == "tsv" else "44") + ",34,76,1,,0,false,true,true,false,false,0"
+-    elif target == "txt":
+-        options["FilterOptions"] = "UTF8,LF"
+-    if target == "pdf":
+-        options["FilterData"] = (_property("ExportBookmarks", True), _property("ExportFormFields", False))
+-    return options
+-
+-
+-def abort_interaction(interaction, abort_type):
+-    """승인·재시도 대신 UNO의 명시적인 중단 continuation만 선택한다."""
+-    for continuation in interaction.getContinuations():
+-        abort = continuation.queryInterface(abort_type)
+-        if abort is not None:
+-            abort.select()
+-            return
+-
+-
+-def _stop(process):
+-    """이번 변환이 직접 시작한 프로세스와 자식만 회수한다."""
+-    if process.poll() is None:
+-        if os.name == "nt":
+-            subprocess.run(["taskkill", "/PID", str(process.pid), "/T", "/F"],
+-                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+-                           creationflags=subprocess.CREATE_NO_WINDOW, timeout=15)
+-        else:
+-            process.terminate()
+-        if process.poll() is None:
+-            process.kill()
+-    process.wait(timeout=15)
+-
+-
+-def _plain_slide_text(document):
+-    result = []
+-    def visit(shape):
+-        if hasattr(shape, "getString"):
+-            value = shape.getString()
+-            if value:
+-                result.append(value)
+-        if hasattr(shape, "getCount") and hasattr(shape, "getByIndex"):
+-            for index in range(shape.getCount()):
+-                visit(shape.getByIndex(index))
+-    pages = document.getDrawPages()
+-    for index in range(pages.getCount()):
+-        result.append(f"--- {index + 1} ---")
+-        page = pages.getByIndex(index)
+-        for item in range(page.getCount()):
+-            visit(page.getByIndex(item))
+-    return "\n".join(result) + "\n"
+-
+-
+-def _shutdown_office(document, desktop, process, primary_error):
+-    """본변환의 첫 오류와 종료 실패를 보존하고 죽은 UNO를 재호출하지 않는다."""
+-    failures = []
+-    if primary_error is None:
+-        try:
+-            if document is not None:
+-                document.close(True)
+-            if desktop is not None and not desktop.terminate():
+-                raise RuntimeError("격리한 LibreOffice가 종료 요청을 거부했습니다.")
+-        except BaseException as error:
+-            failures.append(error)
+-    try:
+-        if primary_error is not None or failures:
+-            _stop(process)
+-        else:
+-            try:
+-                code = process.wait(timeout=5)
+-            except subprocess.TimeoutExpired:
+-                # 강제 회수에 성공해도 정상 종료 제한을 넘긴 변환은 실패다.
+-                failures.append(RuntimeError("LibreOffice가 정상 종료 제한 5초를 넘겼습니다."))
+-                _stop(process)
+-            else:
+-                if code != 0:
+-                    failures.append(RuntimeError(f"LibreOffice 직접 프로세스가 비정상 종료했습니다: {code}"))
+-    except BaseException as error:
+-        failures.append(error)
+-    if primary_error is not None:
+-        if failures:
+-            detail = " / ".join(type(error).__name__ + ": " + str(error) for error in failures)
+-            raise primary_error from RuntimeError("문서 정리 실패: " + detail)
+-        raise primary_error
+-    if failures:
+-        if len(failures) > 1:
+-            detail = " / ".join(type(error).__name__ + ": " + str(error) for error in failures[1:])
+-            raise failures[0] from RuntimeError("추가 문서 정리 실패: " + detail)
+-        raise failures[0]
+-
+-
+-def convert(request):
+-    import uno
+-    import unohelper
+-    from com.sun.star.task import XInteractionHandler
+-
+-    class AbortInteractions(unohelper.Base, XInteractionHandler):
+-        """암호·복구·외부 연결 확인창을 승인하지 않는다."""
+-        def __init__(self):
+-            self.seen = False
+-            self.password = False
+-
+-        def handle(self, interaction):
+-            self.seen = True
+-            value = interaction.getRequest()
+-            self.password = self.password or "password" in type(value).__name__.lower()
+-            abort_interaction(interaction, uno.getTypeByName("com.sun.star.task.XInteractionAbort"))
+-
+-    source, output, profile = (Path(request[key]).resolve() for key in ("source", "output", "profile"))
+-    if output.exists():
+-        raise ValueError("이미 있는 문서 결과는 덮어쓰지 않습니다.")
+-    source = prepare_import_source(source, request["extension"], profile)
+-    family, target = request["family"], request["target"]
+-    if target != "txt" or family != "프레젠테이션":
+-        filter_name = EXPORT_FILTERS.get(family, {}).get(target)
+-        if not filter_name:
+-            raise ValueError("허용되지 않은 문서 출력입니다.")
+-    else:
+-        filter_name = None
+-    flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
+-    env = dict(os.environ)
+-    env["UNO_PATH"] = str(Path(request["office"]).parent)
+-    if request.get("java"):
+-        java_home = Path(request["java"]).resolve().parent.parent
+-        env["JAVA_HOME"] = str(java_home)
+-        env["UNO_JAVA_JFW_JREHOME"] = java_home.as_uri()
+-        # 확장의 원문 포함 로그도 이 변환의 일회용 프로필 안에 머문다.
+-        env["JAVA_TOOL_OPTIONS"] = '-Duser.home="' + str(profile) + '"'
+-    if request.get("oxt"):
+-        unopkg = Path(request["office"]).parent / ("unopkg.com" if os.name == "nt" else "unopkg")
+-        command = [str(unopkg), f"-env:UserInstallation={profile.as_uri()}",
+-                   "add", "--force", "--suppress-license", request["oxt"]]
+-        install = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+-                                   stdin=subprocess.DEVNULL, creationflags=flags, env=env)
+-        try:
+-            stdout, stderr = install.communicate(timeout=45)
+-        except subprocess.TimeoutExpired:
+-            _stop(install)
+-            raise RuntimeError("격리한 HWP 확장 준비 시간이 초과되었습니다.")
+-        if install.returncode:
+-            raise RuntimeError("격리한 HWP 확장을 준비하지 못했습니다. Java 설치와 LibreOffice 비트수를 확인해 주세요.\n" +
+-                               (stderr or stdout).decode("utf-8", "replace")[-600:])
+-
+-    pipe = "flipring_" + uuid.uuid4().hex
+-    listener = f"pipe,name={pipe};urp;StarOffice.ComponentContext"
+-    process = subprocess.Popen([request["office"], f"-env:UserInstallation={profile.as_uri()}",
+-                                "--headless", "--nologo", "--nodefault", "--norestore", "--nofirststartwizard",
+-                                "--accept=" + listener], stdin=subprocess.DEVNULL,
+-                               stdout=subprocess.DEVNULL, stderr=sys.stderr,
+-                               creationflags=flags, env=env)
+-    document = desktop = None
+-    primary_error = None
+-    try:
+-        context = uno.getComponentContext()
+-        resolver = context.ServiceManager.createInstanceWithContext("com.sun.star.bridge.UnoUrlResolver", context)
+-        deadline = time.monotonic() + 25
+-        while True:
+-            try:
+-                remote = resolver.resolve("uno:" + listener)
+-                break
+-            except Exception:
+-                if process.poll() is not None:
+-                    raise RuntimeError("LibreOffice가 문서 연결 전에 종료되었습니다.")
+-                if time.monotonic() >= deadline:
+-                    raise RuntimeError("LibreOffice 문서 연결 시간이 초과되었습니다.")
+-                time.sleep(0.1)
+-        desktop = remote.ServiceManager.createInstanceWithContext("com.sun.star.frame.Desktop", remote)
+-        handler = AbortInteractions()
+-        properties = tuple(_property(name, value) for name, value in load_options(handler, request["extension"]).items())
+-        document = desktop.loadComponentFromURL(source.as_uri(), "_blank", 0, properties)
+-        if document is None:
+-            raise ValueError("암호·손상·복구 요청 또는 지원하지 않는 실제 문서 형식으로 열기를 거부했습니다.")
+-        services = {"문서": "com.sun.star.text.TextDocument", "프레젠테이션": "com.sun.star.presentation.PresentationDocument",
+-                    "스프레드시트": "com.sun.star.sheet.SpreadsheetDocument"}
+-        if not document.supportsService(services[family]):
+-            raise ValueError("확장자와 실제 문서 종류가 일치하지 않습니다.")
+-        if request["extension"] == "xlsb":
+-            ensure_loaded_sheets(document, request["xlsb_sheets"])
+-        if family == "문서" and target == "doc":
+-            # OOXML 표의 직접 DOC 내보내기 손실을 실제 대조했으므로 ODT로 정규화한다.
+-            normalized = output.parent / "legacy-normalization.odt"
+-            document.storeToURL(normalized.as_uri(), tuple(_property(name, value) for name, value in
+-                                                         export_options(handler, "writer8").items()))
+-            document.close(True)
+-            document = None
+-            properties = tuple(_property(name, value) for name, value in load_options(handler, "odt").items())
+-            document = desktop.loadComponentFromURL(normalized.as_uri(), "_blank", 0, properties)
+-            if document is None or not document.supportsService(services[family]):
+-                raise RuntimeError("구형 Word 문서를 위한 중간 형식을 확인하지 못했습니다.")
+-        if filter_name is None:
+-            output.write_bytes(_plain_slide_text(document).encode("utf-8"))
+-        else:
+-            if family == "스프레드시트" and target in ("csv", "tsv"):
+-                document.getCurrentController().setActiveSheet(document.getSheets().getByIndex(0))
+-            export = export_options(handler, filter_name, target)
+-            document.storeToURL(output.as_uri(), tuple(_property(name, value) for name, value in export.items()))
+-        if not output.is_file() or (output.stat().st_size == 0 and target != "txt"):
+-            raise RuntimeError("문서 변환기가 결과를 만들지 못했습니다.")
+-        return {"ok": True, "family": family, "target": target, "bytes": output.stat().st_size,
+-                "macro_execution_mode": 0, "update_doc_mode": 0, "interactions_aborted": handler.seen}
+-    except BaseException as error:
+-        primary_error = error
+-        raise
+-    finally:
+-        _shutdown_office(document, desktop, process, primary_error)
+-
+-
+-def main():
+-    request = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+-    try:
+-        result = convert(request)
+-    except Exception as error:
+-        result = {"ok": False, "error": str(error)}
+-        if error.__cause__ is not None:
+-            result["cause"] = str(error.__cause__)
+-        print(json.dumps(result, ensure_ascii=False), file=sys.stderr)
+-        return 1
+-    print(json.dumps(result, ensure_ascii=False))
+-    return 0
+-
+-
+-if __name__ == "__main__":
+-    raise SystemExit(main())
++"""LibreOffice 전용 Python에서 실행하는 격리 문서 변환기.
++
++앱의 Python·Qt DLL과 UNO 런타임을 섞지 않고 고유 로컬 파이프로만 연결한다.
++"""
++from __future__ import annotations
++
++import json
++import os
++from pathlib import Path
++import subprocess
++import sys
++import time
++import uuid
++
++from document_formats import EXPORT_FILTERS, prepare_import_source
++from document_xlsb import ensure_loaded_sheets
++
++
++def _property(name, value):
++    import uno
++    prop = uno.createUnoStruct("com.sun.star.beans.PropertyValue")
++    prop.Name, prop.Value = name, value
++    return prop
++
++
++def load_options(handler, source_extension):
++    """문서 자체 정책보다 강한 보안과 메인 스레드 실행 조건을 고정한다."""
++    options = {"Hidden": True, "ReadOnly": True, "Silent": True, "AsTemplate": False,
++               "MacroExecutionMode": 0, "UpdateDocMode": 0, "InteractionHandler": handler,
++               "OnMainThread": True}
++    if source_extension in ("hwp", "hwpx"):
++        options["FilterName"] = "Hwp2002_File"
++    if source_extension in ("csv", "tsv"):
++        options["FilterName"] = "Text - txt - csv (StarCalc)"
++        options["FilterOptions"] = ("9" if source_extension == "tsv" else "44") + ",34,76,1,,0,false,true,true,false,false,0"
++    elif source_extension == "dif":
++        # 읽기 전 정규화한 UTF-8을 명시해 시스템 설정과 확인창에 의존하지 않는다.
++        options["FilterName"] = "DIF"
++        options["FilterOptions"] = "76"
++    return options
++
++
++def export_options(handler, filter_name, target=None):
++    """정규화와 최종 저장의 덮어쓰기·실행 조건을 함께 적용한다."""
++    options = {"FilterName": filter_name, "Overwrite": False, "InteractionHandler": handler,
++               "OnMainThread": True}
++    if target in ("csv", "tsv"):
++        options["FilterOptions"] = ("9" if target == "tsv" else "44") + ",34,76,1,,0,false,true,true,false,false,0"
++    elif target == "txt":
++        options["FilterOptions"] = "UTF8,LF"
++    if target == "pdf":
++        options["FilterData"] = (_property("ExportBookmarks", True), _property("ExportFormFields", False))
++    return options
++
++
++def abort_interaction(interaction, abort_type):
++    """승인·재시도 대신 UNO의 명시적인 중단 continuation만 선택한다."""
++    for continuation in interaction.getContinuations():
++        abort = continuation.queryInterface(abort_type)
++        if abort is not None:
++            abort.select()
++            return
++
++
++def _stop(process):
++    """이번 변환이 직접 시작한 프로세스와 자식만 회수한다."""
++    if process.poll() is None:
++        if os.name == "nt":
++            subprocess.run(["taskkill", "/PID", str(process.pid), "/T", "/F"],
++                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
++                           creationflags=subprocess.CREATE_NO_WINDOW, timeout=15)
++        else:
++            process.terminate()
++        if process.poll() is None:
++            process.kill()
++    process.wait(timeout=15)
++
++
++def _plain_slide_text(document):
++    result = []
++    def visit(shape):
++        if hasattr(shape, "getString"):
++            value = shape.getString()
++            if value:
++                result.append(value)
++        if hasattr(shape, "getCount") and hasattr(shape, "getByIndex"):
++            for index in range(shape.getCount()):
++                visit(shape.getByIndex(index))
++    pages = document.getDrawPages()
++    for index in range(pages.getCount()):
++        result.append(f"--- {index + 1} ---")
++        page = pages.getByIndex(index)
++        for item in range(page.getCount()):
++            visit(page.getByIndex(item))
++    return "\n".join(result) + "\n"
++
++
++def _shutdown_office(document, desktop, process, primary_error):
++    """본변환의 첫 오류와 종료 실패를 보존하고 죽은 UNO를 재호출하지 않는다."""
++    failures = []
++    if primary_error is None:
++        try:
++            if document is not None:
++                document.close(True)
++            if desktop is not None and not desktop.terminate():
++                raise RuntimeError("격리한 LibreOffice가 종료 요청을 거부했습니다.")
++        except BaseException as error:
++            failures.append(error)
++    try:
++        if primary_error is not None or failures:
++            _stop(process)
++        else:
++            try:
++                code = process.wait(timeout=5)
++            except subprocess.TimeoutExpired:
++                # 강제 회수에 성공해도 정상 종료 제한을 넘긴 변환은 실패다.
++                failures.append(RuntimeError("LibreOffice가 정상 종료 제한 5초를 넘겼습니다."))
++                _stop(process)
++            else:
++                if code != 0:
++                    failures.append(RuntimeError(f"LibreOffice 직접 프로세스가 비정상 종료했습니다: {code}"))
++    except BaseException as error:
++        failures.append(error)
++    if primary_error is not None:
++        if failures:
++            detail = " / ".join(type(error).__name__ + ": " + str(error) for error in failures)
++            raise primary_error from RuntimeError("문서 정리 실패: " + detail)
++        raise primary_error
++    if failures:
++        if len(failures) > 1:
++            detail = " / ".join(type(error).__name__ + ": " + str(error) for error in failures[1:])
++            raise failures[0] from RuntimeError("추가 문서 정리 실패: " + detail)
++        raise failures[0]
++
++
++def convert(request):
++    import uno
++    import unohelper
++    from com.sun.star.task import XInteractionHandler
++
++    class AbortInteractions(unohelper.Base, XInteractionHandler):
++        """암호·복구·외부 연결 확인창을 승인하지 않는다."""
++        def __init__(self):
++            self.seen = False
++            self.password = False
++
++        def handle(self, interaction):
++            self.seen = True
++            value = interaction.getRequest()
++            self.password = self.password or "password" in type(value).__name__.lower()
++            abort_interaction(interaction, uno.getTypeByName("com.sun.star.task.XInteractionAbort"))
++
++    source, output, profile = (Path(request[key]).resolve() for key in ("source", "output", "profile"))
++    if output.exists():
++        raise ValueError("이미 있는 문서 결과는 덮어쓰지 않습니다.")
++    source = prepare_import_source(source, request["extension"], profile)
++    family, target = request["family"], request["target"]
++    if target != "txt" or family != "프레젠테이션":
++        filter_name = EXPORT_FILTERS.get(family, {}).get(target)
++        if not filter_name:
++            raise ValueError("허용되지 않은 문서 출력입니다.")
++    else:
++        filter_name = None
++    flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
++    env = dict(os.environ)
++    env["UNO_PATH"] = str(Path(request["office"]).parent)
++    if request.get("java"):
++        java_home = Path(request["java"]).resolve().parent.parent
++        env["JAVA_HOME"] = str(java_home)
++        env["UNO_JAVA_JFW_JREHOME"] = java_home.as_uri()
++        # 확장의 원문 포함 로그도 이 변환의 일회용 프로필 안에 머문다.
++        env["JAVA_TOOL_OPTIONS"] = '-Duser.home="' + str(profile) + '"'
++    if request.get("oxt"):
++        unopkg = Path(request["office"]).parent / ("unopkg.com" if os.name == "nt" else "unopkg")
++        command = [str(unopkg), f"-env:UserInstallation={profile.as_uri()}",
++                   "add", "--force", "--suppress-license", request["oxt"]]
++        install = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
++                                   stdin=subprocess.DEVNULL, creationflags=flags, env=env)
++        try:
++            stdout, stderr = install.communicate(timeout=45)
++        except subprocess.TimeoutExpired:
++            _stop(install)
++            raise RuntimeError("격리한 HWP 확장 준비 시간이 초과되었습니다.")
++        if install.returncode:
++            raise RuntimeError("격리한 HWP 확장을 준비하지 못했습니다. Java 설치와 LibreOffice 비트수를 확인해 주세요.\n" +
++                               (stderr or stdout).decode("utf-8", "replace")[-600:])
++
++    pipe = "flipring_" + uuid.uuid4().hex
++    listener = f"pipe,name={pipe};urp;StarOffice.ComponentContext"
++    process = subprocess.Popen([request["office"], f"-env:UserInstallation={profile.as_uri()}",
++                                "--headless", "--nologo", "--nodefault", "--norestore", "--nofirststartwizard",
++                                "--accept=" + listener], stdin=subprocess.DEVNULL,
++                               stdout=subprocess.DEVNULL, stderr=sys.stderr,
++                               creationflags=flags, env=env)
++    document = desktop = None
++    primary_error = None
++    try:
++        context = uno.getComponentContext()
++        resolver = context.ServiceManager.createInstanceWithContext("com.sun.star.bridge.UnoUrlResolver", context)
++        # 새 격리 프로필의 연결이 25초에 근접한 관측에 따라 시작 대기를 60초로 제한한다.
++        deadline = time.monotonic() + 60
++        while True:
++            try:
++                remote = resolver.resolve("uno:" + listener)
++                break
++            except Exception:
++                if process.poll() is not None:
++                    raise RuntimeError("LibreOffice가 문서 연결 전에 종료되었습니다.")
++                if time.monotonic() >= deadline:
++                    raise RuntimeError("LibreOffice 문서 연결 시간이 초과되었습니다.")
++                time.sleep(0.1)
++        desktop = remote.ServiceManager.createInstanceWithContext("com.sun.star.frame.Desktop", remote)
++        handler = AbortInteractions()
++        properties = tuple(_property(name, value) for name, value in load_options(handler, request["extension"]).items())
++        document = desktop.loadComponentFromURL(source.as_uri(), "_blank", 0, properties)
++        if document is None:
++            raise ValueError("암호·손상·복구 요청 또는 지원하지 않는 실제 문서 형식으로 열기를 거부했습니다.")
++        services = {"문서": "com.sun.star.text.TextDocument", "프레젠테이션": "com.sun.star.presentation.PresentationDocument",
++                    "스프레드시트": "com.sun.star.sheet.SpreadsheetDocument"}
++        if not document.supportsService(services[family]):
++            raise ValueError("확장자와 실제 문서 종류가 일치하지 않습니다.")
++        if request["extension"] == "xlsb":
++            ensure_loaded_sheets(document, request["xlsb_sheets"])
++        if family == "문서" and target == "doc":
++            # OOXML 표의 직접 DOC 내보내기 손실을 실제 대조했으므로 ODT로 정규화한다.
++            normalized = output.parent / "legacy-normalization.odt"
++            document.storeToURL(normalized.as_uri(), tuple(_property(name, value) for name, value in
++                                                         export_options(handler, "writer8").items()))
++            document.close(True)
++            document = None
++            properties = tuple(_property(name, value) for name, value in load_options(handler, "odt").items())
++            document = desktop.loadComponentFromURL(normalized.as_uri(), "_blank", 0, properties)
++            if document is None or not document.supportsService(services[family]):
++                raise RuntimeError("구형 Word 문서를 위한 중간 형식을 확인하지 못했습니다.")
++        if filter_name is None:
++            output.write_bytes(_plain_slide_text(document).encode("utf-8"))
++        else:
++            if family == "스프레드시트" and target in ("csv", "tsv"):
++                document.getCurrentController().setActiveSheet(document.getSheets().getByIndex(0))
++            export = export_options(handler, filter_name, target)
++            document.storeToURL(output.as_uri(), tuple(_property(name, value) for name, value in export.items()))
++        if not output.is_file() or (output.stat().st_size == 0 and target != "txt"):
++            raise RuntimeError("문서 변환기가 결과를 만들지 못했습니다.")
++        return {"ok": True, "family": family, "target": target, "bytes": output.stat().st_size,
++                "macro_execution_mode": 0, "update_doc_mode": 0, "interactions_aborted": handler.seen}
++    except BaseException as error:
++        primary_error = error
++        raise
++    finally:
++        _shutdown_office(document, desktop, process, primary_error)
++
++
++def main():
++    request = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
++    try:
++        result = convert(request)
++    except Exception as error:
++        result = {"ok": False, "error": str(error)}
++        if error.__cause__ is not None:
++            result["cause"] = str(error.__cause__)
++        print(json.dumps(result, ensure_ascii=False), file=sys.stderr)
++        return 1
++    print(json.dumps(result, ensure_ascii=False))
++    return 0
++
++
++if __name__ == "__main__":
++    raise SystemExit(main())
+--- a/소스/document_formats.py
++++ b/소스/document_formats.py
+@@ -1,253 +1,253 @@
+-"""대표 문서의 읽기·쓰기 방향과 로컬 도우미를 한곳에서 정의한다."""
+-from __future__ import annotations
+-
+-import os
+-from pathlib import Path
+-import shutil
+-import xml.parsers.expat as expat
+-import zipfile
+-
+-
+-DOCUMENT_INPUTS = "hwp hwpx doc docx docm dot dotx dotm odt ott fodt rtf txt md html xhtml epub pages wpd abw sxw stw"
+-PRESENTATION_INPUTS = "ppt pptx pptm pot potx potm pps ppsx ppsm odp otp fodp key"
+-SPREADSHEET_INPUTS = "xls xlsx xlsb xlsm xlt xltx xltm ods ots fods csv tsv dif slk numbers"
+-DOCUMENT_OUTPUTS = "docx doc odt rtf md txt epub html pdf jpg png hwp hwpx"
+-NATIVE_HWP_INPUTS = frozenset({"docx", "txt", "hwp", "hwpx"})
+-PRESENTATION_OUTPUTS = "pptx ppt odp pdf jpg png txt"
+-SPREADSHEET_OUTPUTS = "xlsx xls ods csv tsv pdf html"
+-SIMPLE_TEXT = {"md", "txt", "html", "xhtml", "epub"}
+-OFFICE_DOCUMENTS = set(DOCUMENT_INPUTS.split()) - SIMPLE_TEXT
+-
+-EXPORT_FILTERS = {
+-    "문서": {"docx": "Office Open XML Text", "doc": "MS Word 97", "odt": "writer8",
+-             "rtf": "Rich Text Format", "txt": "Text (encoded)", "html": "HTML (StarWriter)",
+-             "pdf": "writer_pdf_Export", "epub": "EPUB"},
+-    "프레젠테이션": {"pptx": "Impress MS PowerPoint 2007 XML", "ppt": "MS PowerPoint 97",
+-                    "odp": "impress8", "pdf": "impress_pdf_Export"},
+-    "스프레드시트": {"xlsx": "Calc MS Excel 2007 XML", "xls": "MS Excel 97", "ods": "calc8",
+-                    "csv": "Text - txt - csv (StarCalc)", "tsv": "Text - txt - csv (StarCalc)",
+-                    "pdf": "calc_pdf_Export", "html": "HTML (StarCalc)"},
+-}
+-
+-
+-def support_matrix():
+-    """입력 전용 형식과 출력 전용 형식을 혼동하지 않는 정적 안내를 반환한다."""
+-    return [
+-        {"kind": "문서", "inputs": DOCUMENT_INPUTS.split(), "outputs": DOCUMENT_OUTPUTS.split(),
+-         "notes": "DOCX/TXT/HWP5/HWPX에서 HWP/HWPX로 제한 저장합니다. 다른 출력의 HWP 읽기는 LibreOffice·H2Orestart·Java가 필요합니다. 복잡한 개체·보호 문서는 거부하며 매크로는 실행하지 않습니다."},
+-        {"kind": "프레젠테이션", "inputs": PRESENTATION_INPUTS.split(), "outputs": PRESENTATION_OUTPUTS.split(),
+-         "notes": "전용 효과·글꼴·차트는 원본과 다를 수 있습니다. TXT는 슬라이드의 텍스트만 저장합니다."},
+-        {"kind": "스프레드시트", "inputs": SPREADSHEET_INPUTS.split(), "outputs": SPREADSHEET_OUTPUTS.split(),
+-         "notes": "XLSB·매크로·템플릿은 입력 전용입니다. CSV/TSV는 첫 시트이며 수식 대신 표시값을 저장합니다."},
+-    ]
+-
+-
+-def office_python(office_path):
+-    """실제 LibreOffice 설치의 UNO Python만 선택한다."""
+-    if not office_path:
+-        return None
+-    program = Path(office_path).resolve().parent
+-    candidate = program / ("python.exe" if os.name == "nt" else "python")
+-    return str(candidate) if candidate.is_file() else None
+-
+-
+-def java_path():
+-    """설치 상태 표시에서는 프로세스를 실행하지 않고 실제 파일만 찾는다."""
+-    exe = "java.exe" if os.name == "nt" else "java"
+-    roots = [Path(__file__).resolve().parent / "vendor/java"]
+-    if os.environ.get("JAVA_HOME"):
+-        roots.append(Path(os.environ["JAVA_HOME"]))
+-    for root in roots:
+-        if (root / "bin" / exe).is_file():
+-            return str((root / "bin" / exe).resolve())
+-    found = shutil.which(exe)
+-    if found:
+-        return found
+-    if os.name == "nt":
+-        # Java 설치 프로그램의 공인 등록 위치와 앱별 사용자 설치 위치만 살핀다.
+-        import winreg
+-        for hive in (winreg.HKEY_CURRENT_USER, winreg.HKEY_LOCAL_MACHINE):
+-            for key in (r"SOFTWARE\JavaSoft\JRE", r"SOFTWARE\JavaSoft\Java Runtime Environment",
+-                        r"SOFTWARE\JavaSoft\JDK", r"SOFTWARE\JavaSoft\Java Development Kit"):
+-                try:
+-                    with winreg.OpenKey(hive, key) as handle:
+-                        version = winreg.QueryValueEx(handle, "CurrentVersion")[0]
+-                    with winreg.OpenKey(hive, key + "\\" + version) as handle:
+-                        location = Path(winreg.QueryValueEx(handle, "JavaHome")[0])
+-                    if (location / "bin" / exe).is_file():
+-                        return str(location / "bin" / exe)
+-                except OSError:
+-                    continue
+-        local = Path(os.environ.get("LOCALAPPDATA", ""))
+-        for base in (local / "Programs/Eclipse Adoptium", local / "Programs/Java", local / "Programs/FlipRing-Java"):
+-            if base.is_dir():
+-                for candidate in sorted(base.glob("*/bin/java.exe"), reverse=True):
+-                    if candidate.is_file():
+-                        return str(candidate)
+-    return None
+-
+-
+-def hwp_status(office_path):
+-    extension = Path(__file__).resolve().parent / "vendor/h2orestart/H2Orestart.oxt"
+-    java = java_path()
+-    code = ("missing_office" if not office_path else "missing_bridge" if not office_python(office_path)
+-            else "missing_oxt" if not extension.is_file() else "missing_java" if not java else "ready")
+-    messages = {"missing_office": "LibreOffice를 설치해 주세요.",
+-                "missing_bridge": "이 LibreOffice 설치에 UNO Python이 없습니다. 공식 Windows 설치본을 사용해 주세요.",
+-                "missing_oxt": "H2Orestart 확장 파일이 없습니다. 전체 프로그램 폴더를 확인해 주세요.",
+-                "missing_java": "HWP/HWPX를 읽으려면 LibreOffice와 같은 비트수의 Java가 필요합니다.",
+-                "ready": "HWP/HWPX 읽기에 필요한 파일이 있습니다. 실제 문서 호환 여부는 변환 시 검사합니다."}
+-    return {"ready": code == "ready", "code": code, "message": messages[code],
+-            "oxt": str(extension) if extension.is_file() else None, "java": java}
+-
+-
+-def write_secure_profile(profile):
+-    """일회용 프로필에서 능동 콘텐츠를 차단하고 사이드바 초기 생성을 끈다."""
+-    profile = Path(profile)
+-    user = profile / "user"
+-    user.mkdir(parents=True, exist_ok=True)
+-    # 일회용 프로필의 반복 준비를 줄이기 위해 OpenCL을 끈다.
+-    values = [("/org.openoffice.Office.Common/Security/Scripting", "MacroSecurityLevel", "3"),
+-              ("/org.openoffice.Office.Common/Security/Scripting", "DisableMacrosExecution", "true"),
+-              ("/org.openoffice.Office.Common/Security/Scripting", "DisableActiveContent", "true"),
+-              ("/org.openoffice.Office.Common/Security/Scripting", "BlockUntrustedRefererLinks", "true"),
+-              ("/org.openoffice.Office.Common/Load", "UpdateDocMode", "0"),
+-              ("/org.openoffice.Office.Common/Misc", "UseOpenCL", "false")]
+-    body = ['<?xml version="1.0" encoding="UTF-8"?>',
+-            '<oor:items xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema">']
+-    body += [f'<item oor:path="{path}"><prop oor:name="{name}" oor:op="fuse"><value>{value}</value></prop></item>'
+-             for path, name, value in values]
+-    # 새 프로필에서는 이전 창 상태 대신 모듈별 초기 생성 조건을 명시한다.
+-    body.append('<item oor:path="/org.openoffice.Office.Views/Windows">')
+-    for module in ("scalc", "sdraw", "simpress", "smath", "swriter"):
+-        body += [f'<node oor:name="{module}/10336" oor:op="fuse">',
+-                 '<prop oor:name="Visible"><value>false</value></prop>',
+-                 '<node oor:name="UserData"><prop oor:name="Data" oor:type="xs:string" oor:op="fuse"><value></value></prop></node>',
+-                 '</node>']
+-    body.append('</item>')
+-    body.append('</oor:items>')
+-    (user / "registrymodifications.xcu").write_bytes(("\n".join(body) + "\n").encode("utf-8"))
+-
+-
+-def _safe_xml_import(raw, extension):
+-    """인코딩에 관계없이 엔터티를 거부하고 정형 AbiWord DTD만 제거한다."""
+-    parser = expat.ParserCreate()
+-    spans = []
+-
+-    def reject_entity(*_arguments):
+-        raise ValueError("외부 엔터티가 있는 문서는 변환하지 않습니다.")
+-
+-    def doctype(name, system_id, public_id, internal_subset):
+-        allowed = (extension == "abw" and name == "abiword" and not internal_subset
+-                   and public_id == "-//ABISOURCE//DTD AWML 1.0 Strict//EN"
+-                   and system_id == "http://www.abisource.com/awml.dtd")
+-        if not allowed:
+-            reject_entity()
+-        # Expat의 위치는 선언 끝 '>'의 원본 바이트 위치다. UTF-16도 변환하지 않는다.
+-        codec = "utf-16-le" if raw.startswith((b"\xff\xfe", b"<\x00")) else (
+-            "utf-16-be" if raw.startswith((b"\xfe\xff", b"\x00<")) else "ascii")
+-        token, closing = "<!DOCTYPE".encode(codec), ">".encode(codec)
+-        end = parser.CurrentByteIndex
+-        start = raw.rfind(token, 0, end)
+-        if start < 0 or raw[end:end + len(closing)] != closing:
+-            raise ValueError("AbiWord 문서 선언의 위치를 안전하게 확인하지 못했습니다.")
+-        spans.append((start, end + len(closing)))
+-
+-    parser.StartDoctypeDeclHandler = doctype
+-    parser.EntityDeclHandler = reject_entity
+-    parser.ExternalEntityRefHandler = reject_entity
+-    parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_NEVER)
+-    try:
+-        parser.Parse(raw, True)
+-    except expat.ExpatError as exc:
+-        raise ValueError("XML 문서가 손상되었습니다.") from exc
+-    for start, end in reversed(spans):
+-        raw = raw[:start] + raw[end:]
+-    return raw
+-
+-
+-def prepare_import_source(source, extension, profile):
+-    """원본을 보존하며 문서 선언·텍스트 인코딩을 일회용 사본에서 정규화한다."""
+-    source = Path(source)
+-    if extension == "dif":
+-        # 앱의 기존 텍스트 입력 우선순위와 동일하며 시스템 문자집합에 의존하지 않는다.
+-        raw = source.read_bytes()
+-        if raw.startswith((b"\xff\xfe", b"\xfe\xff")):
+-            content = raw.decode("utf-16")
+-        else:
+-            for encoding in ("utf-8-sig", "cp949", "cp1252"):
+-                try:
+-                    content = raw.decode(encoding)
+-                    break
+-                except UnicodeDecodeError:
+-                    continue
+-            else:
+-                raise ValueError("DIF 텍스트 인코딩을 확인해 주세요.")
+-        normalized = content.encode("utf-8")
+-        if normalized == raw:
+-            return source
+-        copied = Path(profile) / "text-import.dif"
+-        with copied.open("xb") as stream:
+-            stream.write(normalized)
+-        return copied
+-    if extension != "abw":
+-        return source
+-    raw = source.read_bytes()
+-    normalized = _safe_xml_import(raw, extension)
+-    if normalized == raw:
+-        return source
+-    copied = Path(profile) / "abiword-import.abw"
+-    with copied.open("xb") as stream:
+-        stream.write(normalized)
+-    return copied
+-
+-
+-def validate_input(source, extension):
+-    """확장자만 바꾼 가짜 문서·깨진 ZIP·암호화 패키지를 조기에 거부한다."""
+-    source = Path(source)
+-    with source.open("rb") as stream:
+-        header = stream.read(32)
+-    if not header:
+-        raise ValueError("비어 있는 문서는 변환할 수 없습니다.")
+-    packages = {"docx": "word/document.xml", "docm": "word/document.xml", "dotx": "word/document.xml",
+-                "dotm": "word/document.xml", "xlsx": "xl/workbook.xml", "xlsm": "xl/workbook.xml",
+-                "xltx": "xl/workbook.xml", "xltm": "xl/workbook.xml", "xlsb": "xl/workbook.bin",
+-                "pptx": "ppt/presentation.xml", "pptm": "ppt/presentation.xml", "potx": "ppt/presentation.xml",
+-                "potm": "ppt/presentation.xml", "ppsx": "ppt/presentation.xml", "ppsm": "ppt/presentation.xml"}
+-    zipped = set(packages) | {"odt", "ott", "ods", "ots", "odp", "otp", "sxw", "stw", "hwpx", "pages", "numbers", "key"}
+-    if extension in zipped:
+-        if header.startswith(b"\xd0\xcf\x11\xe0"):
+-            raise ValueError("암호화된 문서이거나 확장자와 실제 형식이 다릅니다. 암호를 해제한 복사본을 사용해 주세요.")
+-        try:
+-            with zipfile.ZipFile(source) as package:
+-                names = set(package.namelist())
+-                if any(item.flag_bits & 1 for item in package.infolist()):
+-                    raise ValueError("암호화된 ZIP 문서는 지원하지 않습니다.")
+-                if extension in packages and packages[extension] not in names:
+-                    raise ValueError("문서의 필수 본문이 없거나 확장자와 실제 형식이 다릅니다.")
+-                if extension in {"odt", "ott", "ods", "ots", "odp", "otp", "sxw", "stw"} and "content.xml" not in names:
+-                    raise ValueError("OpenDocument 본문이 없습니다.")
+-                if extension == "hwpx" and not any(name.startswith("Contents/section") and name.endswith(".xml") for name in names):
+-                    raise ValueError("HWPX 본문이 없습니다.")
+-                if extension in {"pages", "numbers", "key"} and not any(name.endswith((".iwa", "index.xml", "index.apxl", "index.xml.gz", "index.apxl.gz")) for name in names):
+-                    raise ValueError("지원 가능한 iWork 본문이 없습니다.")
+-                for item in package.infolist():
+-                    if item.filename.startswith("META-INF/") and item.filename.endswith("manifest.xml"):
+-                        if item.file_size > 8 * 1024 * 1024:
+-                            raise ValueError("문서 매니페스트가 비정상적으로 큽니다.")
+-                        if b"encryption-data" in package.read(item):
+-                            raise ValueError("암호화된 OpenDocument는 지원하지 않습니다.")
+-        except zipfile.BadZipFile as exc:
+-            raise ValueError("문서 패키지가 손상되었거나 실제 형식이 다릅니다.") from exc
+-    elif extension in {"doc", "dot", "xls", "xlt", "ppt", "pot", "pps"}:
+-        # 초기 Excel BIFF2/3/4는 OLE 컨테이너를 쓰지 않는다.
+-        old_biff = extension in {"xls", "xlt"} and header[:2] in (b"\x09\x00", b"\x09\x02", b"\x09\x04", b"\x09\x08")
+-        if not header.startswith(b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1") and not old_biff:
+-            raise ValueError("구형 Office 문서의 실제 파일 형식을 확인할 수 없습니다.")
+-    elif extension == "hwp":
+-        if not header.startswith((b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1", b"HWP Document File")):
+-            raise ValueError("HWP 파일의 실제 형식을 확인할 수 없습니다.")
+-    elif extension == "rtf" and not header.lstrip().startswith(b"{\\rtf"):
+-        raise ValueError("RTF 문서의 실제 형식을 확인할 수 없습니다.")
+-    elif extension in {"fodt", "fods", "fodp", "abw"}:
+-        _safe_xml_import(source.read_bytes(), extension)
++"""대표 문서의 읽기·쓰기 방향과 로컬 도우미를 한곳에서 정의한다."""
++from __future__ import annotations
++
++import os
++from pathlib import Path
++import shutil
++import xml.parsers.expat as expat
++import zipfile
++
++
++DOCUMENT_INPUTS = "hwp hwpx doc docx docm dot dotx dotm odt ott fodt rtf txt md html xhtml epub pages wpd abw sxw stw"
++PRESENTATION_INPUTS = "ppt pptx pptm pot potx potm pps ppsx ppsm odp otp fodp key"
++SPREADSHEET_INPUTS = "xls xlsx xlsb xlsm xlt xltx xltm ods ots fods csv tsv dif slk numbers"
++DOCUMENT_OUTPUTS = "docx doc odt rtf md txt epub html pdf jpg png hwp hwpx"
++NATIVE_HWP_INPUTS = frozenset({"docx", "txt", "hwp", "hwpx"})
++PRESENTATION_OUTPUTS = "pptx ppt odp pdf jpg png txt"
++SPREADSHEET_OUTPUTS = "xlsx xls ods csv tsv pdf html"
++SIMPLE_TEXT = {"md", "txt", "html", "xhtml", "epub"}
++OFFICE_DOCUMENTS = set(DOCUMENT_INPUTS.split()) - SIMPLE_TEXT
++
++EXPORT_FILTERS = {
++    "문서": {"docx": "Office Open XML Text", "doc": "MS Word 97", "odt": "writer8",
++             "rtf": "Rich Text Format", "txt": "Text (encoded)", "html": "HTML (StarWriter)",
++             "pdf": "writer_pdf_Export", "epub": "EPUB"},
++    "프레젠테이션": {"pptx": "Impress MS PowerPoint 2007 XML", "ppt": "MS PowerPoint 97",
++                    "odp": "impress8", "pdf": "impress_pdf_Export"},
++    "스프레드시트": {"xlsx": "Calc MS Excel 2007 XML", "xls": "MS Excel 97", "ods": "calc8",
++                    "csv": "Text - txt - csv (StarCalc)", "tsv": "Text - txt - csv (StarCalc)",
++                    "pdf": "calc_pdf_Export", "html": "HTML (StarCalc)"},
++}
++
++
++def support_matrix():
++    """입력 전용 형식과 출력 전용 형식을 혼동하지 않는 정적 안내를 반환한다."""
++    return [
++        {"kind": "문서", "inputs": DOCUMENT_INPUTS.split(), "outputs": DOCUMENT_OUTPUTS.split(),
++         "notes": "DOCX/TXT/HWP5/HWPX에서 HWP/HWPX로 제한 저장합니다. 다른 출력의 HWP 읽기는 LibreOffice·H2Orestart·Java가 필요합니다. 복잡한 개체·보호 문서는 거부하며 매크로는 실행하지 않습니다."},
++        {"kind": "프레젠테이션", "inputs": PRESENTATION_INPUTS.split(), "outputs": PRESENTATION_OUTPUTS.split(),
++         "notes": "전용 효과·글꼴·차트는 원본과 다를 수 있습니다. TXT는 슬라이드의 텍스트만 저장합니다."},
++        {"kind": "스프레드시트", "inputs": SPREADSHEET_INPUTS.split(), "outputs": SPREADSHEET_OUTPUTS.split(),
++         "notes": "XLSB·매크로·템플릿은 입력 전용입니다. CSV/TSV는 첫 시트이며 수식 대신 표시값을 저장합니다."},
++    ]
++
++
++def office_python(office_path):
++    """실제 LibreOffice 설치의 UNO Python만 선택한다."""
++    if not office_path:
++        return None
++    program = Path(office_path).resolve().parent
++    candidate = program / ("python.exe" if os.name == "nt" else "python")
++    return str(candidate) if candidate.is_file() else None
++
++
++def java_path():
++    """설치 상태 표시에서는 프로세스를 실행하지 않고 실제 파일만 찾는다."""
++    exe = "java.exe" if os.name == "nt" else "java"
++    roots = [Path(__file__).resolve().parent / "vendor/java"]
++    if os.environ.get("JAVA_HOME"):
++        roots.append(Path(os.environ["JAVA_HOME"]))
++    for root in roots:
++        if (root / "bin" / exe).is_file():
++            return str((root / "bin" / exe).resolve())
++    found = shutil.which(exe)
++    if found:
++        return found
++    if os.name == "nt":
++        # Java 설치 프로그램의 공인 등록 위치와 앱별 사용자 설치 위치만 살핀다.
++        import winreg
++        for hive in (winreg.HKEY_CURRENT_USER, winreg.HKEY_LOCAL_MACHINE):
++            for key in (r"SOFTWARE\JavaSoft\JRE", r"SOFTWARE\JavaSoft\Java Runtime Environment",
++                        r"SOFTWARE\JavaSoft\JDK", r"SOFTWARE\JavaSoft\Java Development Kit"):
++                try:
++                    with winreg.OpenKey(hive, key) as handle:
++                        version = winreg.QueryValueEx(handle, "CurrentVersion")[0]
++                    with winreg.OpenKey(hive, key + "\\" + version) as handle:
++                        location = Path(winreg.QueryValueEx(handle, "JavaHome")[0])
++                    if (location / "bin" / exe).is_file():
++                        return str(location / "bin" / exe)
++                except OSError:
++                    continue
++        local = Path(os.environ.get("LOCALAPPDATA", ""))
++        for base in (local / "Programs/Eclipse Adoptium", local / "Programs/Java", local / "Programs/FlipRing-Java"):
++            if base.is_dir():
++                for candidate in sorted(base.glob("*/bin/java.exe"), reverse=True):
++                    if candidate.is_file():
++                        return str(candidate)
++    return None
++
++
++def hwp_status(office_path):
++    extension = Path(__file__).resolve().parent / "vendor/h2orestart/H2Orestart.oxt"
++    java = java_path()
++    code = ("missing_office" if not office_path else "missing_bridge" if not office_python(office_path)
++            else "missing_oxt" if not extension.is_file() else "missing_java" if not java else "ready")
++    messages = {"missing_office": "LibreOffice를 설치해 주세요.",
++                "missing_bridge": "이 LibreOffice 설치에 UNO Python이 없습니다. 공식 Windows 설치본을 사용해 주세요.",
++                "missing_oxt": "H2Orestart 확장 파일이 없습니다. 전체 프로그램 폴더를 확인해 주세요.",
++                "missing_java": "HWP/HWPX를 읽으려면 LibreOffice와 같은 비트수의 Java가 필요합니다.",
++                "ready": "HWP/HWPX 읽기에 필요한 파일이 있습니다. 실제 문서 호환 여부는 변환 시 검사합니다."}
++    return {"ready": code == "ready", "code": code, "message": messages[code],
++            "oxt": str(extension) if extension.is_file() else None, "java": java}
++
++
++def write_secure_profile(profile):
++    """일회용 프로필에서 능동 콘텐츠를 차단하고 사이드바 초기 생성을 끈다."""
++    profile = Path(profile)
++    user = profile / "user"
++    user.mkdir(parents=True, exist_ok=True)
++    # 일회용 프로필의 반복 준비를 줄이기 위해 OpenCL을 끈다.
++    values = [("/org.openoffice.Office.Common/Security/Scripting", "MacroSecurityLevel", "3"),
++              ("/org.openoffice.Office.Common/Security/Scripting", "DisableMacrosExecution", "true"),
++              ("/org.openoffice.Office.Common/Security/Scripting", "DisableActiveContent", "true"),
++              ("/org.openoffice.Office.Common/Security/Scripting", "BlockUntrustedRefererLinks", "true"),
++              ("/org.openoffice.Office.Common/Load", "UpdateDocMode", "0"),
++              ("/org.openoffice.Office.Common/Misc", "UseOpenCL", "false")]
++    body = ['<?xml version="1.0" encoding="UTF-8"?>',
++            '<oor:items xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema">']
++    body += [f'<item oor:path="{path}"><prop oor:name="{name}" oor:op="fuse"><value>{value}</value></prop></item>'
++             for path, name, value in values]
++    # 새 프로필에서는 이전 창 상태 대신 모듈별 초기 생성 조건을 명시한다.
++    body.append('<item oor:path="/org.openoffice.Office.Views/Windows">')
++    for module in ("scalc", "sdraw", "simpress", "smath", "swriter"):
++        body += [f'<node oor:name="{module}/10336" oor:op="fuse">',
++                 '<prop oor:name="Visible"><value>false</value></prop>',
++                 '<node oor:name="UserData"><prop oor:name="Data" oor:type="xs:string" oor:op="fuse"><value></value></prop></node>',
++                 '</node>']
++    body.append('</item>')
++    body.append('</oor:items>')
++    (user / "registrymodifications.xcu").write_bytes(("\n".join(body) + "\n").encode("utf-8"))
++
++
++def _safe_xml_import(raw, extension):
++    """인코딩에 관계없이 엔터티를 거부하고 정형 AbiWord DTD만 제거한다."""
++    parser = expat.ParserCreate()
++    spans = []
++
++    def reject_entity(*_arguments):
++        raise ValueError("외부 엔터티가 있는 문서는 변환하지 않습니다.")
++
++    def doctype(name, system_id, public_id, internal_subset):
++        allowed = (extension == "abw" and name == "abiword" and not internal_subset
++                   and public_id == "-//ABISOURCE//DTD AWML 1.0 Strict//EN"
++                   and system_id == "http://www.abisource.com/awml.dtd")
++        if not allowed:
++            reject_entity()
++        # Expat의 위치는 선언 끝 '>'의 원본 바이트 위치다. UTF-16도 변환하지 않는다.
++        codec = "utf-16-le" if raw.startswith((b"\xff\xfe", b"<\x00")) else (
++            "utf-16-be" if raw.startswith((b"\xfe\xff", b"\x00<")) else "ascii")
++        token, closing = "<!DOCTYPE".encode(codec), ">".encode(codec)
++        end = parser.CurrentByteIndex
++        start = raw.rfind(token, 0, end)
++        if start < 0 or raw[end:end + len(closing)] != closing:
++            raise ValueError("AbiWord 문서 선언의 위치를 안전하게 확인하지 못했습니다.")
++        spans.append((start, end + len(closing)))
++
++    parser.StartDoctypeDeclHandler = doctype
++    parser.EntityDeclHandler = reject_entity
++    parser.ExternalEntityRefHandler = reject_entity
++    parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_NEVER)
++    try:
++        parser.Parse(raw, True)
++    except expat.ExpatError as exc:
++        raise ValueError("XML 문서가 손상되었습니다.") from exc
++    for start, end in reversed(spans):
++        raw = raw[:start] + raw[end:]
++    return raw
++
++
++def prepare_import_source(source, extension, profile):
++    """원본을 보존하며 문서 선언·텍스트 인코딩을 일회용 사본에서 정규화한다."""
++    source = Path(source)
++    if extension == "dif":
++        # 앱의 기존 텍스트 입력 우선순위와 동일하며 시스템 문자집합에 의존하지 않는다.
++        raw = source.read_bytes()
++        if raw.startswith((b"\xff\xfe", b"\xfe\xff")):
++            content = raw.decode("utf-16")
++        else:
++            for encoding in ("utf-8-sig", "cp949", "cp1252"):
++                try:
++                    content = raw.decode(encoding)
++                    break
++                except UnicodeDecodeError:
++                    continue
++            else:
++                raise ValueError("DIF 텍스트 인코딩을 확인해 주세요.")
++        normalized = content.encode("utf-8")
++        if normalized == raw:
++            return source
++        copied = Path(profile) / "text-import.dif"
++        with copied.open("xb") as stream:
++            stream.write(normalized)
++        return copied
++    if extension != "abw":
++        return source
++    raw = source.read_bytes()
++    normalized = _safe_xml_import(raw, extension)
++    if normalized == raw:
++        return source
++    copied = Path(profile) / "abiword-import.abw"
++    with copied.open("xb") as stream:
++        stream.write(normalized)
++    return copied
++
++
++def validate_input(source, extension):
++    """확장자만 바꾼 가짜 문서·깨진 ZIP·암호화 패키지를 조기에 거부한다."""
++    source = Path(source)
++    with source.open("rb") as stream:
++        header = stream.read(32)
++    if not header:
++        raise ValueError("비어 있는 문서는 변환할 수 없습니다.")
++    packages = {"docx": "word/document.xml", "docm": "word/document.xml", "dotx": "word/document.xml",
++                "dotm": "word/document.xml", "xlsx": "xl/workbook.xml", "xlsm": "xl/workbook.xml",
++                "xltx": "xl/workbook.xml", "xltm": "xl/workbook.xml", "xlsb": "xl/workbook.bin",
++                "pptx": "ppt/presentation.xml", "pptm": "ppt/presentation.xml", "potx": "ppt/presentation.xml",
++                "potm": "ppt/presentation.xml", "ppsx": "ppt/presentation.xml", "ppsm": "ppt/presentation.xml"}
++    zipped = set(packages) | {"odt", "ott", "ods", "ots", "odp", "otp", "sxw", "stw", "hwpx", "pages", "numbers", "key"}
++    if extension in zipped:
++        if header.startswith(b"\xd0\xcf\x11\xe0"):
++            raise ValueError("암호화된 문서이거나 확장자와 실제 형식이 다릅니다. 암호를 해제한 복사본을 사용해 주세요.")
++        try:
++            with zipfile.ZipFile(source) as package:
++                names = set(package.namelist())
++                if any(item.flag_bits & 1 for item in package.infolist()):
++                    raise ValueError("암호화된 ZIP 문서는 지원하지 않습니다.")
++                if extension in packages and packages[extension] not in names:
++                    raise ValueError("문서의 필수 본문이 없거나 확장자와 실제 형식이 다릅니다.")
++                if extension in {"odt", "ott", "ods", "ots", "odp", "otp", "sxw", "stw"} and "content.xml" not in names:
++                    raise ValueError("OpenDocument 본문이 없습니다.")
++                if extension == "hwpx" and not any(name.startswith("Contents/section") and name.endswith(".xml") for name in names):
++                    raise ValueError("HWPX 본문이 없습니다.")
++                if extension in {"pages", "numbers", "key"} and not any(name.endswith((".iwa", "index.xml", "index.apxl", "index.xml.gz", "index.apxl.gz")) for name in names):
++                    raise ValueError("지원 가능한 iWork 본문이 없습니다.")
++                for item in package.infolist():
++                    if item.filename.startswith("META-INF/") and item.filename.endswith("manifest.xml"):
++                        if item.file_size > 8 * 1024 * 1024:
++                            raise ValueError("문서 매니페스트가 비정상적으로 큽니다.")
++                        if b"encryption-data" in package.read(item):
++                            raise ValueError("암호화된 OpenDocument는 지원하지 않습니다.")
++        except zipfile.BadZipFile as exc:
++            raise ValueError("문서 패키지가 손상되었거나 실제 형식이 다릅니다.") from exc
++    elif extension in {"doc", "dot", "xls", "xlt", "ppt", "pot", "pps"}:
++        # 초기 Excel BIFF2/3/4는 OLE 컨테이너를 쓰지 않는다.
++        old_biff = extension in {"xls", "xlt"} and header[:2] in (b"\x09\x00", b"\x09\x02", b"\x09\x04", b"\x09\x08")
++        if not header.startswith(b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1") and not old_biff:
++            raise ValueError("구형 Office 문서의 실제 파일 형식을 확인할 수 없습니다.")
++    elif extension == "hwp":
++        if not header.startswith((b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1", b"HWP Document File")):
++            raise ValueError("HWP 파일의 실제 형식을 확인할 수 없습니다.")
++    elif extension == "rtf" and not header.lstrip().startswith(b"{\\rtf"):
++        raise ValueError("RTF 문서의 실제 형식을 확인할 수 없습니다.")
++    elif extension in {"fodt", "fods", "fodp", "abw"}:
++        _safe_xml_import(source.read_bytes(), extension)

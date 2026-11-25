@@ -1,0 +1,48 @@
+{
+  "kst": "2026-11-10T05:59:47.583355+09:00",
+  "creator": "PUVKID",
+  "external_pixel_sources": [],
+  "procedure": "48×36 RGB 수평·수직 그라데이션, 6픽셀 체크, 빨간 사각형, 초록 타원, 검정·흰색·기본색 띠를 직접 계산",
+  "width": 48,
+  "height": 36,
+  "mode": "RGB",
+  "bit_depth": 8,
+  "alpha": false,
+  "frames": 1,
+  "icc_profile": null,
+  "save_parameters": {
+    "quality": 90,
+    "chroma": "420",
+    "color_primaries": 1,
+    "transfer_characteristics": 13,
+    "matrix_coefficients": 6,
+    "full_range_flag": 1
+  },
+  "pillow_version": "13.0.0",
+  "pillow_heif_version": "1.8.1",
+  "libheif_and_encoder": {
+    "libheif": "1.23.6",
+    "HEIF": "x265 HEVC encoder (4.3+1-e9b8812)",
+    "AVIF": "",
+    "encoders": {
+      "x265": "x265 HEVC encoder (4.3+1-e9b8812)",
+      "mask": "mask"
+    },
+    "decoders": {
+      "libde265": "libde265 HEVC decoder, version 1.1.3"
+    }
+  },
+  "generator_sha256": "29eb9545d8495adf0ae6de3288035fa892055b05229c630cb76ba4b0ee817de3",
+  "files": [
+    {
+      "filename": "자체색상패턴.png",
+      "bytes": 445,
+      "sha256": "4ab18e5ccaeddebb2db033626ffe38e9fa059b9451753bab332daddd6d3cea97"
+    },
+    {
+      "filename": "sample.heic",
+      "bytes": 1954,
+      "sha256": "41a469918bea92bed4d831ee03a583c74d9ce526e9aa7299510502e1774cd44e"
+    }
+  ]
+}

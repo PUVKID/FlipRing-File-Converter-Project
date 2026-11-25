@@ -1,0 +1,1167 @@
+--- a/소스/licenses/typing_extensions/licenses/LICENSE
++++ b/소스/licenses/typing_extensions/licenses/LICENSE
+@@ -1,279 +1,279 @@
+-A. HISTORY OF THE SOFTWARE
+-==========================
+-
+-Python was created in the early 1990s by Guido van Rossum at Stichting
+-Mathematisch Centrum (CWI, see https://www.cwi.nl) in the Netherlands
+-as a successor of a language called ABC.  Guido remains Python's
+-principal author, although it includes many contributions from others.
+-
+-In 1995, Guido continued his work on Python at the Corporation for
+-National Research Initiatives (CNRI, see https://www.cnri.reston.va.us)
+-in Reston, Virginia where he released several versions of the
+-software.
+-
+-In May 2000, Guido and the Python core development team moved to
+-BeOpen.com to form the BeOpen PythonLabs team.  In October of the same
+-year, the PythonLabs team moved to Digital Creations, which became
+-Zope Corporation.  In 2001, the Python Software Foundation (PSF, see
+-https://www.python.org/psf/) was formed, a non-profit organization
+-created specifically to own Python-related Intellectual Property.
+-Zope Corporation was a sponsoring member of the PSF.
+-
+-All Python releases are Open Source (see https://opensource.org for
+-the Open Source Definition).  Historically, most, but not all, Python
+-releases have also been GPL-compatible; the table below summarizes
+-the various releases.
+-
+-    Release         Derived     Year        Owner       GPL-
+-                    from                                compatible? (1)
+-
+-    0.9.0 thru 1.2              1991-1995   CWI         yes
+-    1.3 thru 1.5.2  1.2         1995-1999   CNRI        yes
+-    1.6             1.5.2       2000        CNRI        no
+-    2.0             1.6         2000        BeOpen.com  no
+-    1.6.1           1.6         2001        CNRI        yes (2)
+-    2.1             2.0+1.6.1   2001        PSF         no
+-    2.0.1           2.0+1.6.1   2001        PSF         yes
+-    2.1.1           2.1+2.0.1   2001        PSF         yes
+-    2.1.2           2.1.1       2002        PSF         yes
+-    2.1.3           2.1.2       2002        PSF         yes
+-    2.2 and above   2.1.1       2001-now    PSF         yes
+-
+-Footnotes:
+-
+-(1) GPL-compatible doesn't mean that we're distributing Python under
+-    the GPL.  All Python licenses, unlike the GPL, let you distribute
+-    a modified version without making your changes open source.  The
+-    GPL-compatible licenses make it possible to combine Python with
+-    other software that is released under the GPL; the others don't.
+-
+-(2) According to Richard Stallman, 1.6.1 is not GPL-compatible,
+-    because its license has a choice of law clause.  According to
+-    CNRI, however, Stallman's lawyer has told CNRI's lawyer that 1.6.1
+-    is "not incompatible" with the GPL.
+-
+-Thanks to the many outside volunteers who have worked under Guido's
+-direction to make these releases possible.
+-
+-
+-B. TERMS AND CONDITIONS FOR ACCESSING OR OTHERWISE USING PYTHON
+-===============================================================
+-
+-Python software and documentation are licensed under the
+-Python Software Foundation License Version 2.
+-
+-Starting with Python 3.8.6, examples, recipes, and other code in
+-the documentation are dual licensed under the PSF License Version 2
+-and the Zero-Clause BSD license.
+-
+-Some software incorporated into Python is under different licenses.
+-The licenses are listed with code falling under that license.
+-
+-
+-PYTHON SOFTWARE FOUNDATION LICENSE VERSION 2
+---------------------------------------------
+-
+-1. This LICENSE AGREEMENT is between the Python Software Foundation
+-("PSF"), and the Individual or Organization ("Licensee") accessing and
+-otherwise using this software ("Python") in source or binary form and
+-its associated documentation.
+-
+-2. Subject to the terms and conditions of this License Agreement, PSF hereby
+-grants Licensee a nonexclusive, royalty-free, world-wide license to reproduce,
+-analyze, test, perform and/or display publicly, prepare derivative works,
+-distribute, and otherwise use Python alone or in any derivative version,
+-provided, however, that PSF's License Agreement and PSF's notice of copyright,
+-i.e., "Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010,
+-2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023 Python Software Foundation;
+-All Rights Reserved" are retained in Python alone or in any derivative version
+-prepared by Licensee.
+-
+-3. In the event Licensee prepares a derivative work that is based on
+-or incorporates Python or any part thereof, and wants to make
+-the derivative work available to others as provided herein, then
+-Licensee hereby agrees to include in any such work a brief summary of
+-the changes made to Python.
+-
+-4. PSF is making Python available to Licensee on an "AS IS"
+-basis.  PSF MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR
+-IMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, PSF MAKES NO AND
+-DISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS
+-FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON WILL NOT
+-INFRINGE ANY THIRD PARTY RIGHTS.
+-
+-5. PSF SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON
+-FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS
+-A RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON,
+-OR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.
+-
+-6. This License Agreement will automatically terminate upon a material
+-breach of its terms and conditions.
+-
+-7. Nothing in this License Agreement shall be deemed to create any
+-relationship of agency, partnership, or joint venture between PSF and
+-Licensee.  This License Agreement does not grant permission to use PSF
+-trademarks or trade name in a trademark sense to endorse or promote
+-products or services of Licensee, or any third party.
+-
+-8. By copying, installing or otherwise using Python, Licensee
+-agrees to be bound by the terms and conditions of this License
+-Agreement.
+-
+-
+-BEOPEN.COM LICENSE AGREEMENT FOR PYTHON 2.0
+--------------------------------------------
+-
+-BEOPEN PYTHON OPEN SOURCE LICENSE AGREEMENT VERSION 1
+-
+-1. This LICENSE AGREEMENT is between BeOpen.com ("BeOpen"), having an
+-office at 160 Saratoga Avenue, Santa Clara, CA 95051, and the
+-Individual or Organization ("Licensee") accessing and otherwise using
+-this software in source or binary form and its associated
+-documentation ("the Software").
+-
+-2. Subject to the terms and conditions of this BeOpen Python License
+-Agreement, BeOpen hereby grants Licensee a non-exclusive,
+-royalty-free, world-wide license to reproduce, analyze, test, perform
+-and/or display publicly, prepare derivative works, distribute, and
+-otherwise use the Software alone or in any derivative version,
+-provided, however, that the BeOpen Python License is retained in the
+-Software, alone or in any derivative version prepared by Licensee.
+-
+-3. BeOpen is making the Software available to Licensee on an "AS IS"
+-basis.  BEOPEN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR
+-IMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, BEOPEN MAKES NO AND
+-DISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS
+-FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE SOFTWARE WILL NOT
+-INFRINGE ANY THIRD PARTY RIGHTS.
+-
+-4. BEOPEN SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF THE
+-SOFTWARE FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS
+-AS A RESULT OF USING, MODIFYING OR DISTRIBUTING THE SOFTWARE, OR ANY
+-DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.
+-
+-5. This License Agreement will automatically terminate upon a material
+-breach of its terms and conditions.
+-
+-6. This License Agreement shall be governed by and interpreted in all
+-respects by the law of the State of California, excluding conflict of
+-law provisions.  Nothing in this License Agreement shall be deemed to
+-create any relationship of agency, partnership, or joint venture
+-between BeOpen and Licensee.  This License Agreement does not grant
+-permission to use BeOpen trademarks or trade names in a trademark
+-sense to endorse or promote products or services of Licensee, or any
+-third party.  As an exception, the "BeOpen Python" logos available at
+-http://www.pythonlabs.com/logos.html may be used according to the
+-permissions granted on that web page.
+-
+-7. By copying, installing or otherwise using the software, Licensee
+-agrees to be bound by the terms and conditions of this License
+-Agreement.
+-
+-
+-CNRI LICENSE AGREEMENT FOR PYTHON 1.6.1
+----------------------------------------
+-
+-1. This LICENSE AGREEMENT is between the Corporation for National
+-Research Initiatives, having an office at 1895 Preston White Drive,
+-Reston, VA 20191 ("CNRI"), and the Individual or Organization
+-("Licensee") accessing and otherwise using Python 1.6.1 software in
+-source or binary form and its associated documentation.
+-
+-2. Subject to the terms and conditions of this License Agreement, CNRI
+-hereby grants Licensee a nonexclusive, royalty-free, world-wide
+-license to reproduce, analyze, test, perform and/or display publicly,
+-prepare derivative works, distribute, and otherwise use Python 1.6.1
+-alone or in any derivative version, provided, however, that CNRI's
+-License Agreement and CNRI's notice of copyright, i.e., "Copyright (c)
+-1995-2001 Corporation for National Research Initiatives; All Rights
+-Reserved" are retained in Python 1.6.1 alone or in any derivative
+-version prepared by Licensee.  Alternately, in lieu of CNRI's License
+-Agreement, Licensee may substitute the following text (omitting the
+-quotes): "Python 1.6.1 is made available subject to the terms and
+-conditions in CNRI's License Agreement.  This Agreement together with
+-Python 1.6.1 may be located on the internet using the following
+-unique, persistent identifier (known as a handle): 1895.22/1013.  This
+-Agreement may also be obtained from a proxy server on the internet
+-using the following URL: http://hdl.handle.net/1895.22/1013".
+-
+-3. In the event Licensee prepares a derivative work that is based on
+-or incorporates Python 1.6.1 or any part thereof, and wants to make
+-the derivative work available to others as provided herein, then
+-Licensee hereby agrees to include in any such work a brief summary of
+-the changes made to Python 1.6.1.
+-
+-4. CNRI is making Python 1.6.1 available to Licensee on an "AS IS"
+-basis.  CNRI MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR
+-IMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, CNRI MAKES NO AND
+-DISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS
+-FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON 1.6.1 WILL NOT
+-INFRINGE ANY THIRD PARTY RIGHTS.
+-
+-5. CNRI SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON
+-1.6.1 FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS
+-A RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON 1.6.1,
+-OR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.
+-
+-6. This License Agreement will automatically terminate upon a material
+-breach of its terms and conditions.
+-
+-7. This License Agreement shall be governed by the federal
+-intellectual property law of the United States, including without
+-limitation the federal copyright law, and, to the extent such
+-U.S. federal law does not apply, by the law of the Commonwealth of
+-Virginia, excluding Virginia's conflict of law provisions.
+-Notwithstanding the foregoing, with regard to derivative works based
+-on Python 1.6.1 that incorporate non-separable material that was
+-previously distributed under the GNU General Public License (GPL), the
+-law of the Commonwealth of Virginia shall govern this License
+-Agreement only as to issues arising under or with respect to
+-Paragraphs 4, 5, and 7 of this License Agreement.  Nothing in this
+-License Agreement shall be deemed to create any relationship of
+-agency, partnership, or joint venture between CNRI and Licensee.  This
+-License Agreement does not grant permission to use CNRI trademarks or
+-trade name in a trademark sense to endorse or promote products or
+-services of Licensee, or any third party.
+-
+-8. By clicking on the "ACCEPT" button where indicated, or by copying,
+-installing or otherwise using Python 1.6.1, Licensee agrees to be
+-bound by the terms and conditions of this License Agreement.
+-
+-        ACCEPT
+-
+-
+-CWI LICENSE AGREEMENT FOR PYTHON 0.9.0 THROUGH 1.2
+---------------------------------------------------
+-
+-Copyright (c) 1991 - 1995, Stichting Mathematisch Centrum Amsterdam,
+-The Netherlands.  All rights reserved.
+-
+-Permission to use, copy, modify, and distribute this software and its
+-documentation for any purpose and without fee is hereby granted,
+-provided that the above copyright notice appear in all copies and that
+-both that copyright notice and this permission notice appear in
+-supporting documentation, and that the name of Stichting Mathematisch
+-Centrum or CWI not be used in advertising or publicity pertaining to
+-distribution of the software without specific, written prior
+-permission.
+-
+-STICHTING MATHEMATISCH CENTRUM DISCLAIMS ALL WARRANTIES WITH REGARD TO
+-THIS SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+-FITNESS, IN NO EVENT SHALL STICHTING MATHEMATISCH CENTRUM BE LIABLE
+-FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+-ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
+-OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+-
+-ZERO-CLAUSE BSD LICENSE FOR CODE IN THE PYTHON DOCUMENTATION
+-----------------------------------------------------------------------
+-
+-Permission to use, copy, modify, and/or distribute this software for any
+-purpose with or without fee is hereby granted.
+-
+-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+-PERFORMANCE OF THIS SOFTWARE.
++A. HISTORY OF THE SOFTWARE
++==========================
++
++Python was created in the early 1990s by Guido van Rossum at Stichting
++Mathematisch Centrum (CWI, see https://www.cwi.nl) in the Netherlands
++as a successor of a language called ABC.  Guido remains Python's
++principal author, although it includes many contributions from others.
++
++In 1995, Guido continued his work on Python at the Corporation for
++National Research Initiatives (CNRI, see https://www.cnri.reston.va.us)
++in Reston, Virginia where he released several versions of the
++software.
++
++In May 2000, Guido and the Python core development team moved to
++BeOpen.com to form the BeOpen PythonLabs team.  In October of the same
++year, the PythonLabs team moved to Digital Creations, which became
++Zope Corporation.  In 2001, the Python Software Foundation (PSF, see
++https://www.python.org/psf/) was formed, a non-profit organization
++created specifically to own Python-related Intellectual Property.
++Zope Corporation was a sponsoring member of the PSF.
++
++All Python releases are Open Source (see https://opensource.org for
++the Open Source Definition).  Historically, most, but not all, Python
++releases have also been GPL-compatible; the table below summarizes
++the various releases.
++
++    Release         Derived     Year        Owner       GPL-
++                    from                                compatible? (1)
++
++    0.9.0 thru 1.2              1991-1995   CWI         yes
++    1.3 thru 1.5.2  1.2         1995-1999   CNRI        yes
++    1.6             1.5.2       2000        CNRI        no
++    2.0             1.6         2000        BeOpen.com  no
++    1.6.1           1.6         2001        CNRI        yes (2)
++    2.1             2.0+1.6.1   2001        PSF         no
++    2.0.1           2.0+1.6.1   2001        PSF         yes
++    2.1.1           2.1+2.0.1   2001        PSF         yes
++    2.1.2           2.1.1       2002        PSF         yes
++    2.1.3           2.1.2       2002        PSF         yes
++    2.2 and above   2.1.1       2001-now    PSF         yes
++
++Footnotes:
++
++(1) GPL-compatible doesn't mean that we're distributing Python under
++    the GPL.  All Python licenses, unlike the GPL, let you distribute
++    a modified version without making your changes open source.  The
++    GPL-compatible licenses make it possible to combine Python with
++    other software that is released under the GPL; the others don't.
++
++(2) According to Richard Stallman, 1.6.1 is not GPL-compatible,
++    because its license has a choice of law clause.  According to
++    CNRI, however, Stallman's lawyer has told CNRI's lawyer that 1.6.1
++    is "not incompatible" with the GPL.
++
++Thanks to the many outside volunteers who have worked under Guido's
++direction to make these releases possible.
++
++
++B. TERMS AND CONDITIONS FOR ACCESSING OR OTHERWISE USING PYTHON
++===============================================================
++
++Python software and documentation are licensed under the
++Python Software Foundation License Version 2.
++
++Starting with Python 3.8.6, examples, recipes, and other code in
++the documentation are dual licensed under the PSF License Version 2
++and the Zero-Clause BSD license.
++
++Some software incorporated into Python is under different licenses.
++The licenses are listed with code falling under that license.
++
++
++PYTHON SOFTWARE FOUNDATION LICENSE VERSION 2
++--------------------------------------------
++
++1. This LICENSE AGREEMENT is between the Python Software Foundation
++("PSF"), and the Individual or Organization ("Licensee") accessing and
++otherwise using this software ("Python") in source or binary form and
++its associated documentation.
++
++2. Subject to the terms and conditions of this License Agreement, PSF hereby
++grants Licensee a nonexclusive, royalty-free, world-wide license to reproduce,
++analyze, test, perform and/or display publicly, prepare derivative works,
++distribute, and otherwise use Python alone or in any derivative version,
++provided, however, that PSF's License Agreement and PSF's notice of copyright,
++i.e., "Copyright (c) 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010,
++2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023 Python Software Foundation;
++All Rights Reserved" are retained in Python alone or in any derivative version
++prepared by Licensee.
++
++3. In the event Licensee prepares a derivative work that is based on
++or incorporates Python or any part thereof, and wants to make
++the derivative work available to others as provided herein, then
++Licensee hereby agrees to include in any such work a brief summary of
++the changes made to Python.
++
++4. PSF is making Python available to Licensee on an "AS IS"
++basis.  PSF MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR
++IMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, PSF MAKES NO AND
++DISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS
++FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON WILL NOT
++INFRINGE ANY THIRD PARTY RIGHTS.
++
++5. PSF SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON
++FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS
++A RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON,
++OR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.
++
++6. This License Agreement will automatically terminate upon a material
++breach of its terms and conditions.
++
++7. Nothing in this License Agreement shall be deemed to create any
++relationship of agency, partnership, or joint venture between PSF and
++Licensee.  This License Agreement does not grant permission to use PSF
++trademarks or trade name in a trademark sense to endorse or promote
++products or services of Licensee, or any third party.
++
++8. By copying, installing or otherwise using Python, Licensee
++agrees to be bound by the terms and conditions of this License
++Agreement.
++
++
++BEOPEN.COM LICENSE AGREEMENT FOR PYTHON 2.0
++-------------------------------------------
++
++BEOPEN PYTHON OPEN SOURCE LICENSE AGREEMENT VERSION 1
++
++1. This LICENSE AGREEMENT is between BeOpen.com ("BeOpen"), having an
++office at 160 Saratoga Avenue, Santa Clara, CA 95051, and the
++Individual or Organization ("Licensee") accessing and otherwise using
++this software in source or binary form and its associated
++documentation ("the Software").
++
++2. Subject to the terms and conditions of this BeOpen Python License
++Agreement, BeOpen hereby grants Licensee a non-exclusive,
++royalty-free, world-wide license to reproduce, analyze, test, perform
++and/or display publicly, prepare derivative works, distribute, and
++otherwise use the Software alone or in any derivative version,
++provided, however, that the BeOpen Python License is retained in the
++Software, alone or in any derivative version prepared by Licensee.
++
++3. BeOpen is making the Software available to Licensee on an "AS IS"
++basis.  BEOPEN MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR
++IMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, BEOPEN MAKES NO AND
++DISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS
++FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE SOFTWARE WILL NOT
++INFRINGE ANY THIRD PARTY RIGHTS.
++
++4. BEOPEN SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF THE
++SOFTWARE FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS
++AS A RESULT OF USING, MODIFYING OR DISTRIBUTING THE SOFTWARE, OR ANY
++DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.
++
++5. This License Agreement will automatically terminate upon a material
++breach of its terms and conditions.
++
++6. This License Agreement shall be governed by and interpreted in all
++respects by the law of the State of California, excluding conflict of
++law provisions.  Nothing in this License Agreement shall be deemed to
++create any relationship of agency, partnership, or joint venture
++between BeOpen and Licensee.  This License Agreement does not grant
++permission to use BeOpen trademarks or trade names in a trademark
++sense to endorse or promote products or services of Licensee, or any
++third party.  As an exception, the "BeOpen Python" logos available at
++http://www.pythonlabs.com/logos.html may be used according to the
++permissions granted on that web page.
++
++7. By copying, installing or otherwise using the software, Licensee
++agrees to be bound by the terms and conditions of this License
++Agreement.
++
++
++CNRI LICENSE AGREEMENT FOR PYTHON 1.6.1
++---------------------------------------
++
++1. This LICENSE AGREEMENT is between the Corporation for National
++Research Initiatives, having an office at 1895 Preston White Drive,
++Reston, VA 20191 ("CNRI"), and the Individual or Organization
++("Licensee") accessing and otherwise using Python 1.6.1 software in
++source or binary form and its associated documentation.
++
++2. Subject to the terms and conditions of this License Agreement, CNRI
++hereby grants Licensee a nonexclusive, royalty-free, world-wide
++license to reproduce, analyze, test, perform and/or display publicly,
++prepare derivative works, distribute, and otherwise use Python 1.6.1
++alone or in any derivative version, provided, however, that CNRI's
++License Agreement and CNRI's notice of copyright, i.e., "Copyright (c)
++1995-2001 Corporation for National Research Initiatives; All Rights
++Reserved" are retained in Python 1.6.1 alone or in any derivative
++version prepared by Licensee.  Alternately, in lieu of CNRI's License
++Agreement, Licensee may substitute the following text (omitting the
++quotes): "Python 1.6.1 is made available subject to the terms and
++conditions in CNRI's License Agreement.  This Agreement together with
++Python 1.6.1 may be located on the internet using the following
++unique, persistent identifier (known as a handle): 1895.22/1013.  This
++Agreement may also be obtained from a proxy server on the internet
++using the following URL: http://hdl.handle.net/1895.22/1013".
++
++3. In the event Licensee prepares a derivative work that is based on
++or incorporates Python 1.6.1 or any part thereof, and wants to make
++the derivative work available to others as provided herein, then
++Licensee hereby agrees to include in any such work a brief summary of
++the changes made to Python 1.6.1.
++
++4. CNRI is making Python 1.6.1 available to Licensee on an "AS IS"
++basis.  CNRI MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR
++IMPLIED.  BY WAY OF EXAMPLE, BUT NOT LIMITATION, CNRI MAKES NO AND
++DISCLAIMS ANY REPRESENTATION OR WARRANTY OF MERCHANTABILITY OR FITNESS
++FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF PYTHON 1.6.1 WILL NOT
++INFRINGE ANY THIRD PARTY RIGHTS.
++
++5. CNRI SHALL NOT BE LIABLE TO LICENSEE OR ANY OTHER USERS OF PYTHON
++1.6.1 FOR ANY INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES OR LOSS AS
++A RESULT OF MODIFYING, DISTRIBUTING, OR OTHERWISE USING PYTHON 1.6.1,
++OR ANY DERIVATIVE THEREOF, EVEN IF ADVISED OF THE POSSIBILITY THEREOF.
++
++6. This License Agreement will automatically terminate upon a material
++breach of its terms and conditions.
++
++7. This License Agreement shall be governed by the federal
++intellectual property law of the United States, including without
++limitation the federal copyright law, and, to the extent such
++U.S. federal law does not apply, by the law of the Commonwealth of
++Virginia, excluding Virginia's conflict of law provisions.
++Notwithstanding the foregoing, with regard to derivative works based
++on Python 1.6.1 that incorporate non-separable material that was
++previously distributed under the GNU General Public License (GPL), the
++law of the Commonwealth of Virginia shall govern this License
++Agreement only as to issues arising under or with respect to
++Paragraphs 4, 5, and 7 of this License Agreement.  Nothing in this
++License Agreement shall be deemed to create any relationship of
++agency, partnership, or joint venture between CNRI and Licensee.  This
++License Agreement does not grant permission to use CNRI trademarks or
++trade name in a trademark sense to endorse or promote products or
++services of Licensee, or any third party.
++
++8. By clicking on the "ACCEPT" button where indicated, or by copying,
++installing or otherwise using Python 1.6.1, Licensee agrees to be
++bound by the terms and conditions of this License Agreement.
++
++        ACCEPT
++
++
++CWI LICENSE AGREEMENT FOR PYTHON 0.9.0 THROUGH 1.2
++--------------------------------------------------
++
++Copyright (c) 1991 - 1995, Stichting Mathematisch Centrum Amsterdam,
++The Netherlands.  All rights reserved.
++
++Permission to use, copy, modify, and distribute this software and its
++documentation for any purpose and without fee is hereby granted,
++provided that the above copyright notice appear in all copies and that
++both that copyright notice and this permission notice appear in
++supporting documentation, and that the name of Stichting Mathematisch
++Centrum or CWI not be used in advertising or publicity pertaining to
++distribution of the software without specific, written prior
++permission.
++
++STICHTING MATHEMATISCH CENTRUM DISCLAIMS ALL WARRANTIES WITH REGARD TO
++THIS SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
++FITNESS, IN NO EVENT SHALL STICHTING MATHEMATISCH CENTRUM BE LIABLE
++FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
++WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
++ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT
++OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++
++ZERO-CLAUSE BSD LICENSE FOR CODE IN THE PYTHON DOCUMENTATION
++----------------------------------------------------------------------
++
++Permission to use, copy, modify, and/or distribute this software for any
++purpose with or without fee is hereby granted.
++
++THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
++REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
++AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
++INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
++LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
++OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
++PERFORMANCE OF THIS SOFTWARE.
+--- a/소스/licenses/typing_extensions/METADATA
++++ b/소스/licenses/typing_extensions/METADATA
+@@ -1,73 +1,73 @@
+-Metadata-Version: 2.4
+-Name: typing_extensions
+-Version: 4.16.0
+-Summary: Backported and Experimental Type Hints for Python 3.9+
+-Keywords: annotations,backport,checker,checking,function,hinting,hints,type,typechecking,typehinting,typehints,typing
+-Author-email: "Guido van Rossum, Jukka Lehtosalo, Łukasz Langa, Michael Lee" <levkivskyi@gmail.com>
+-Requires-Python: >=3.9
+-Description-Content-Type: text/markdown
+-License-Expression: PSF-2.0
+-Classifier: Development Status :: 5 - Production/Stable
+-Classifier: Environment :: Console
+-Classifier: Intended Audience :: Developers
+-Classifier: Operating System :: OS Independent
+-Classifier: Programming Language :: Python :: 3
+-Classifier: Programming Language :: Python :: 3 :: Only
+-Classifier: Programming Language :: Python :: 3.9
+-Classifier: Programming Language :: Python :: 3.10
+-Classifier: Programming Language :: Python :: 3.11
+-Classifier: Programming Language :: Python :: 3.12
+-Classifier: Programming Language :: Python :: 3.13
+-Classifier: Programming Language :: Python :: 3.14
+-Classifier: Programming Language :: Python :: 3.15
+-Classifier: Topic :: Software Development
+-License-File: LICENSE
+-Project-URL: Bug Tracker, https://github.com/python/typing_extensions/issues
+-Project-URL: Changes, https://github.com/python/typing_extensions/blob/main/CHANGELOG.md
+-Project-URL: Documentation, https://typing-extensions.readthedocs.io/
+-Project-URL: Home, https://github.com/python/typing_extensions
+-Project-URL: Q & A, https://github.com/python/typing/discussions
+-Project-URL: Repository, https://github.com/python/typing_extensions
+-
+-# Typing Extensions
+-
+-[![Chat at https://gitter.im/python/typing](https://badges.gitter.im/python/typing.svg)](https://gitter.im/python/typing)
+-
+-[Documentation](https://typing-extensions.readthedocs.io/en/latest/#) –
+-[PyPI](https://pypi.org/project/typing-extensions/)
+-
+-## Overview
+-
+-The `typing_extensions` module serves two related purposes:
+-
+-- Enable use of new type system features on older Python versions. For example,
+-  `typing.TypeGuard` is new in Python 3.10, but `typing_extensions` allows
+-  users on previous Python versions to use it too.
+-- Enable experimentation with new type system PEPs before they are accepted and
+-  added to the `typing` module.
+-
+-`typing_extensions` is treated specially by static type checkers such as
+-mypy and pyright. Objects defined in `typing_extensions` are treated the same
+-way as equivalent forms in `typing`.
+-
+-`typing_extensions` uses
+-[Semantic Versioning](https://semver.org/). The
+-major version will be incremented only for backwards-incompatible changes.
+-Therefore, it's safe to depend
+-on `typing_extensions` like this: `typing_extensions ~=x.y`,
+-where `x.y` is the first version that includes all features you need.
+-[This](https://packaging.python.org/en/latest/specifications/version-specifiers/#compatible-release)
+-is equivalent to `typing_extensions >=x.y, <(x+1)`. Do not depend on `~= x.y.z`
+-unless you really know what you're doing; that defeats the purpose of
+-semantic versioning.
+-
+-## Included items
+-
+-See [the documentation](https://typing-extensions.readthedocs.io/en/latest/#) for a
+-complete listing of module contents.
+-
+-## Contributing
+-
+-See [CONTRIBUTING.md](https://github.com/python/typing_extensions/blob/main/CONTRIBUTING.md)
+-for how to contribute to `typing_extensions`.
+-
++Metadata-Version: 2.4
++Name: typing_extensions
++Version: 4.16.0
++Summary: Backported and Experimental Type Hints for Python 3.9+
++Keywords: annotations,backport,checker,checking,function,hinting,hints,type,typechecking,typehinting,typehints,typing
++Author-email: "Guido van Rossum, Jukka Lehtosalo, Łukasz Langa, Michael Lee" <levkivskyi@gmail.com>
++Requires-Python: >=3.9
++Description-Content-Type: text/markdown
++License-Expression: PSF-2.0
++Classifier: Development Status :: 5 - Production/Stable
++Classifier: Environment :: Console
++Classifier: Intended Audience :: Developers
++Classifier: Operating System :: OS Independent
++Classifier: Programming Language :: Python :: 3
++Classifier: Programming Language :: Python :: 3 :: Only
++Classifier: Programming Language :: Python :: 3.9
++Classifier: Programming Language :: Python :: 3.10
++Classifier: Programming Language :: Python :: 3.11
++Classifier: Programming Language :: Python :: 3.12
++Classifier: Programming Language :: Python :: 3.13
++Classifier: Programming Language :: Python :: 3.14
++Classifier: Programming Language :: Python :: 3.15
++Classifier: Topic :: Software Development
++License-File: LICENSE
++Project-URL: Bug Tracker, https://github.com/python/typing_extensions/issues
++Project-URL: Changes, https://github.com/python/typing_extensions/blob/main/CHANGELOG.md
++Project-URL: Documentation, https://typing-extensions.readthedocs.io/
++Project-URL: Home, https://github.com/python/typing_extensions
++Project-URL: Q & A, https://github.com/python/typing/discussions
++Project-URL: Repository, https://github.com/python/typing_extensions
++
++# Typing Extensions
++
++[![Chat at https://gitter.im/python/typing](https://badges.gitter.im/python/typing.svg)](https://gitter.im/python/typing)
++
++[Documentation](https://typing-extensions.readthedocs.io/en/latest/#) –
++[PyPI](https://pypi.org/project/typing-extensions/)
++
++## Overview
++
++The `typing_extensions` module serves two related purposes:
++
++- Enable use of new type system features on older Python versions. For example,
++  `typing.TypeGuard` is new in Python 3.10, but `typing_extensions` allows
++  users on previous Python versions to use it too.
++- Enable experimentation with new type system PEPs before they are accepted and
++  added to the `typing` module.
++
++`typing_extensions` is treated specially by static type checkers such as
++mypy and pyright. Objects defined in `typing_extensions` are treated the same
++way as equivalent forms in `typing`.
++
++`typing_extensions` uses
++[Semantic Versioning](https://semver.org/). The
++major version will be incremented only for backwards-incompatible changes.
++Therefore, it's safe to depend
++on `typing_extensions` like this: `typing_extensions ~=x.y`,
++where `x.y` is the first version that includes all features you need.
++[This](https://packaging.python.org/en/latest/specifications/version-specifiers/#compatible-release)
++is equivalent to `typing_extensions >=x.y, <(x+1)`. Do not depend on `~= x.y.z`
++unless you really know what you're doing; that defeats the purpose of
++semantic versioning.
++
++## Included items
++
++See [the documentation](https://typing-extensions.readthedocs.io/en/latest/#) for a
++complete listing of module contents.
++
++## Contributing
++
++See [CONTRIBUTING.md](https://github.com/python/typing_extensions/blob/main/CONTRIBUTING.md)
++for how to contribute to `typing_extensions`.
++
+--- a/소스/licenses/webencodings/licenses/LICENSE
++++ b/소스/licenses/webencodings/licenses/LICENSE
+@@ -1,29 +1,29 @@
+-BSD 3-Clause License
+-
+-Copyright (c) 2012, Simon Sapin
+-All rights reserved.
+-
+-Redistribution and use in source and binary forms, with or without
+-modification, are permitted provided that the following conditions are met:
+-
+-1. Redistributions of source code must retain the above copyright notice, this
+-   list of conditions and the following disclaimer.
+-
+-2. Redistributions in binary form must reproduce the above copyright notice,
+-   this list of conditions and the following disclaimer in the documentation
+-   and/or other materials provided with the distribution.
+-
+-3. Neither the name of the copyright holder nor the names of its
+-   contributors may be used to endorse or promote products derived from
+-   this software without specific prior written permission.
+-
+-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++BSD 3-Clause License
++
++Copyright (c) 2012, Simon Sapin
++All rights reserved.
++
++Redistribution and use in source and binary forms, with or without
++modification, are permitted provided that the following conditions are met:
++
++1. Redistributions of source code must retain the above copyright notice, this
++   list of conditions and the following disclaimer.
++
++2. Redistributions in binary form must reproduce the above copyright notice,
++   this list of conditions and the following disclaimer in the documentation
++   and/or other materials provided with the distribution.
++
++3. Neither the name of the copyright holder nor the names of its
++   contributors may be used to endorse or promote products derived from
++   this software without specific prior written permission.
++
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
++FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
++DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
++SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
++CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--- a/소스/licenses/webencodings/METADATA
++++ b/소스/licenses/webencodings/METADATA
+@@ -1,71 +1,71 @@
+-Metadata-Version: 2.5
+-Name: webencodings
+-Version: 0.6.1
+-Summary: Character encoding aliases for legacy web content
+-Keywords: web,encoding
+-Author-email: Simon Sapin <simon.sapin@exyr.org>
+-Maintainer-email: CourtBouillon <contact@courtbouillon.org>
+-Requires-Python: >=3.10
+-Description-Content-Type: text/x-rst
+-Classifier: Development Status :: 5 - Production/Stable
+-Classifier: Intended Audience :: Developers
+-Classifier: License :: OSI Approved :: BSD License
+-Classifier: Operating System :: OS Independent
+-Classifier: Programming Language :: Python
+-Classifier: Programming Language :: Python :: 3
+-Classifier: Programming Language :: Python :: 3 :: Only
+-Classifier: Programming Language :: Python :: 3.10
+-Classifier: Programming Language :: Python :: 3.11
+-Classifier: Programming Language :: Python :: 3.12
+-Classifier: Programming Language :: Python :: 3.13
+-Classifier: Programming Language :: Python :: 3.14
+-Classifier: Programming Language :: Python :: Implementation :: CPython
+-Classifier: Programming Language :: Python :: Implementation :: PyPy
+-Classifier: Topic :: Internet :: WWW/HTTP
+-License-File: LICENSE
+-Requires-Dist: sphinx ; extra == "doc"
+-Requires-Dist: furo ; extra == "doc"
+-Requires-Dist: pytest ; extra == "test"
+-Requires-Dist: ruff ; extra == "test"
+-Project-URL: Changelog, https://github.com/CourtBouillon/webencodings/releases
+-Project-URL: Code, https://github.com/CourtBouillon/webencodings
+-Project-URL: Documentation, https://doc.courtbouillon.org/webencodings
+-Project-URL: Donation, https://opencollective.com/courtbouillon
+-Project-URL: Homepage, https://github.com/CourtBouillon/webencodings
+-Project-URL: Issues, https://github.com/CourtBouillon/webencodings/issues
+-Provides-Extra: doc
+-Provides-Extra: test
+-Import-Name: webencodings
+-
+-webencodings is a Python implementation of the `WHATWG Encoding standard
+-<http://encoding.spec.whatwg.org/>`_.
+-
+-In order to be compatible with legacy web content when interpreting something like
+-``Content-Type: text/html; charset=latin1``, tools need to use a particular set of
+-aliases for encoding labels as well as some overriding rules. For example, ``US-ASCII``
+-and ``iso-8859-1`` on the web are actually aliases for ``windows-1252``, and an UTF-8 or
+-UTF-16 BOM takes precedence over any other encoding declaration. The Encoding standard
+-defines all such details so that implementations do not have to reverse-engineer each
+-other.
+-
+-This module has encoding labels and BOM detection, but the actual implementation for
+-encoders and decoders is Python’s.
+-
+-* Free software: BSD license
+-* For Python 3.10+, tested on CPython and PyPy
+-* Documentation: https://doc.courtbouillon.org/webencodings
+-* Changelog: https://github.com/CourtBouillon/webencodings/releases
+-* Code, issues, tests: https://github.com/CourtBouillon/webencodings
+-* Code of conduct: https://www.courtbouillon.org/code-of-conduct
+-* Professional support: https://www.courtbouillon.org
+-* Donation: https://opencollective.com/courtbouillon
+-
+-This module is a friendly fork of webencodings, written and maintained by Simon Sapin
+-and Sam Sneddon.
+-
+-Copyrights are retained by their contributors, no copyright assignment is required to
+-contribute to webencodings. Unless explicitly stated otherwise, any contribution
+-intentionally submitted for inclusion is licensed under the BSD 3-clause license,
+-without any additional terms or conditions. For full authorship information, see the
+-version control history.
+-
++Metadata-Version: 2.5
++Name: webencodings
++Version: 0.6.1
++Summary: Character encoding aliases for legacy web content
++Keywords: web,encoding
++Author-email: Simon Sapin <simon.sapin@exyr.org>
++Maintainer-email: CourtBouillon <contact@courtbouillon.org>
++Requires-Python: >=3.10
++Description-Content-Type: text/x-rst
++Classifier: Development Status :: 5 - Production/Stable
++Classifier: Intended Audience :: Developers
++Classifier: License :: OSI Approved :: BSD License
++Classifier: Operating System :: OS Independent
++Classifier: Programming Language :: Python
++Classifier: Programming Language :: Python :: 3
++Classifier: Programming Language :: Python :: 3 :: Only
++Classifier: Programming Language :: Python :: 3.10
++Classifier: Programming Language :: Python :: 3.11
++Classifier: Programming Language :: Python :: 3.12
++Classifier: Programming Language :: Python :: 3.13
++Classifier: Programming Language :: Python :: 3.14
++Classifier: Programming Language :: Python :: Implementation :: CPython
++Classifier: Programming Language :: Python :: Implementation :: PyPy
++Classifier: Topic :: Internet :: WWW/HTTP
++License-File: LICENSE
++Requires-Dist: sphinx ; extra == "doc"
++Requires-Dist: furo ; extra == "doc"
++Requires-Dist: pytest ; extra == "test"
++Requires-Dist: ruff ; extra == "test"
++Project-URL: Changelog, https://github.com/CourtBouillon/webencodings/releases
++Project-URL: Code, https://github.com/CourtBouillon/webencodings
++Project-URL: Documentation, https://doc.courtbouillon.org/webencodings
++Project-URL: Donation, https://opencollective.com/courtbouillon
++Project-URL: Homepage, https://github.com/CourtBouillon/webencodings
++Project-URL: Issues, https://github.com/CourtBouillon/webencodings/issues
++Provides-Extra: doc
++Provides-Extra: test
++Import-Name: webencodings
++
++webencodings is a Python implementation of the `WHATWG Encoding standard
++<http://encoding.spec.whatwg.org/>`_.
++
++In order to be compatible with legacy web content when interpreting something like
++``Content-Type: text/html; charset=latin1``, tools need to use a particular set of
++aliases for encoding labels as well as some overriding rules. For example, ``US-ASCII``
++and ``iso-8859-1`` on the web are actually aliases for ``windows-1252``, and an UTF-8 or
++UTF-16 BOM takes precedence over any other encoding declaration. The Encoding standard
++defines all such details so that implementations do not have to reverse-engineer each
++other.
++
++This module has encoding labels and BOM detection, but the actual implementation for
++encoders and decoders is Python’s.
++
++* Free software: BSD license
++* For Python 3.10+, tested on CPython and PyPy
++* Documentation: https://doc.courtbouillon.org/webencodings
++* Changelog: https://github.com/CourtBouillon/webencodings/releases
++* Code, issues, tests: https://github.com/CourtBouillon/webencodings
++* Code of conduct: https://www.courtbouillon.org/code-of-conduct
++* Professional support: https://www.courtbouillon.org
++* Donation: https://opencollective.com/courtbouillon
++
++This module is a friendly fork of webencodings, written and maintained by Simon Sapin
++and Sam Sneddon.
++
++Copyrights are retained by their contributors, no copyright assignment is required to
++contribute to webencodings. Unless explicitly stated otherwise, any contribution
++intentionally submitted for inclusion is licensed under the BSD 3-clause license,
++without any additional terms or conditions. For full authorship information, see the
++version control history.
++
+--- a/소스/licenses/xlsxwriter/LICENSE.txt
++++ b/소스/licenses/xlsxwriter/LICENSE.txt
+@@ -1,25 +1,25 @@
+-BSD 2-Clause License
+-
+-Copyright (c) 2013-2025, John McNamara <jmcnamara@cpan.org>
+-All rights reserved.
+-
+-Redistribution and use in source and binary forms, with or without
+-modification, are permitted provided that the following conditions are met:
+-
+-1. Redistributions of source code must retain the above copyright notice, this
+-   list of conditions and the following disclaimer.
+-
+-2. Redistributions in binary form must reproduce the above copyright notice,
+-   this list of conditions and the following disclaimer in the documentation
+-   and/or other materials provided with the distribution.
+-
+-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++BSD 2-Clause License
++
++Copyright (c) 2013-2025, John McNamara <jmcnamara@cpan.org>
++All rights reserved.
++
++Redistribution and use in source and binary forms, with or without
++modification, are permitted provided that the following conditions are met:
++
++1. Redistributions of source code must retain the above copyright notice, this
++   list of conditions and the following disclaimer.
++
++2. Redistributions in binary form must reproduce the above copyright notice,
++   this list of conditions and the following disclaimer in the documentation
++   and/or other materials provided with the distribution.
++
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
++FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
++DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
++SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
++CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--- a/소스/licenses/xlsxwriter/METADATA
++++ b/소스/licenses/xlsxwriter/METADATA
+@@ -1,95 +1,95 @@
+-Metadata-Version: 2.2
+-Name: xlsxwriter
+-Version: 3.2.9
+-Summary: A Python module for creating Excel XLSX files.
+-Home-page: https://github.com/jmcnamara/XlsxWriter
+-Author: John McNamara
+-Author-email: jmcnamara@cpan.org
+-License: BSD-2-Clause
+-Classifier: Development Status :: 5 - Production/Stable
+-Classifier: License :: OSI Approved :: BSD License
+-Classifier: Programming Language :: Python
+-Classifier: Programming Language :: Python :: 3 :: Only
+-Classifier: Programming Language :: Python :: 3
+-Classifier: Programming Language :: Python :: 3.8
+-Classifier: Programming Language :: Python :: 3.9
+-Classifier: Programming Language :: Python :: 3.10
+-Classifier: Programming Language :: Python :: 3.11
+-Classifier: Programming Language :: Python :: 3.12
+-Classifier: Programming Language :: Python :: 3.13
+-Requires-Python: >=3.8
+-License-File: LICENSE.txt
+-Dynamic: author
+-Dynamic: author-email
+-Dynamic: classifier
+-Dynamic: description
+-Dynamic: home-page
+-Dynamic: license
+-Dynamic: requires-python
+-Dynamic: summary
+-
+-XlsxWriter
+-==========
+-
+-**XlsxWriter** is a Python module for writing files in the Excel 2007+ XLSX
+-file format.
+-
+-XlsxWriter can be used to write text, numbers, formulas and hyperlinks to
+-multiple worksheets and it supports features such as formatting and many more,
+-including:
+-
+-* 100% compatible Excel XLSX files.
+-* Full formatting.
+-* Merged cells.
+-* Defined names.
+-* Charts.
+-* Autofilters.
+-* Data validation and drop down lists.
+-* Conditional formatting.
+-* Worksheet PNG/JPEG/GIF/BMP/WMF/EMF images.
+-* Rich multi-format strings.
+-* Cell comments.
+-* Integration with Pandas and Polars.
+-* Textboxes.
+-* Support for adding Macros.
+-* Memory optimization mode for writing large files.
+-
+-It supports Python 3.8+ and PyPy3 and uses standard libraries only.
+-
+-Here is a simple example:
+-
+-.. code-block:: python
+-
+-   import xlsxwriter
+-
+-   # Create an new Excel file and add a worksheet.
+-   workbook = xlsxwriter.Workbook("demo.xlsx")
+-   worksheet = workbook.add_worksheet()
+-
+-   # Widen the first column to make the text clearer.
+-   worksheet.set_column("A:A", 20)
+-
+-   # Add a bold format to use to highlight cells.
+-   bold = workbook.add_format({"bold": True})
+-
+-   # Write some simple text.
+-   worksheet.write("A1", "Hello")
+-
+-   # Text with formatting.
+-   worksheet.write("A2", "World", bold)
+-
+-   # Write some numbers, with row/column notation.
+-   worksheet.write(2, 0, 123)
+-   worksheet.write(3, 0, 123.456)
+-
+-   # Insert an image.
+-   worksheet.insert_image("B5", "logo.png")
+-
+-   workbook.close()
+-
+-.. image:: https://raw.github.com/jmcnamara/XlsxWriter/master/dev/docs/source/_images/demo.png
+-
+-See the full documentation at: https://xlsxwriter.readthedocs.io
+-
+-Release notes: https://xlsxwriter.readthedocs.io/changes.html
+-
++Metadata-Version: 2.2
++Name: xlsxwriter
++Version: 3.2.9
++Summary: A Python module for creating Excel XLSX files.
++Home-page: https://github.com/jmcnamara/XlsxWriter
++Author: John McNamara
++Author-email: jmcnamara@cpan.org
++License: BSD-2-Clause
++Classifier: Development Status :: 5 - Production/Stable
++Classifier: License :: OSI Approved :: BSD License
++Classifier: Programming Language :: Python
++Classifier: Programming Language :: Python :: 3 :: Only
++Classifier: Programming Language :: Python :: 3
++Classifier: Programming Language :: Python :: 3.8
++Classifier: Programming Language :: Python :: 3.9
++Classifier: Programming Language :: Python :: 3.10
++Classifier: Programming Language :: Python :: 3.11
++Classifier: Programming Language :: Python :: 3.12
++Classifier: Programming Language :: Python :: 3.13
++Requires-Python: >=3.8
++License-File: LICENSE.txt
++Dynamic: author
++Dynamic: author-email
++Dynamic: classifier
++Dynamic: description
++Dynamic: home-page
++Dynamic: license
++Dynamic: requires-python
++Dynamic: summary
++
++XlsxWriter
++==========
++
++**XlsxWriter** is a Python module for writing files in the Excel 2007+ XLSX
++file format.
++
++XlsxWriter can be used to write text, numbers, formulas and hyperlinks to
++multiple worksheets and it supports features such as formatting and many more,
++including:
++
++* 100% compatible Excel XLSX files.
++* Full formatting.
++* Merged cells.
++* Defined names.
++* Charts.
++* Autofilters.
++* Data validation and drop down lists.
++* Conditional formatting.
++* Worksheet PNG/JPEG/GIF/BMP/WMF/EMF images.
++* Rich multi-format strings.
++* Cell comments.
++* Integration with Pandas and Polars.
++* Textboxes.
++* Support for adding Macros.
++* Memory optimization mode for writing large files.
++
++It supports Python 3.8+ and PyPy3 and uses standard libraries only.
++
++Here is a simple example:
++
++.. code-block:: python
++
++   import xlsxwriter
++
++   # Create an new Excel file and add a worksheet.
++   workbook = xlsxwriter.Workbook("demo.xlsx")
++   worksheet = workbook.add_worksheet()
++
++   # Widen the first column to make the text clearer.
++   worksheet.set_column("A:A", 20)
++
++   # Add a bold format to use to highlight cells.
++   bold = workbook.add_format({"bold": True})
++
++   # Write some simple text.
++   worksheet.write("A1", "Hello")
++
++   # Text with formatting.
++   worksheet.write("A2", "World", bold)
++
++   # Write some numbers, with row/column notation.
++   worksheet.write(2, 0, 123)
++   worksheet.write(3, 0, 123.456)
++
++   # Insert an image.
++   worksheet.insert_image("B5", "logo.png")
++
++   workbook.close()
++
++.. image:: https://raw.github.com/jmcnamara/XlsxWriter/master/dev/docs/source/_images/demo.png
++
++See the full documentation at: https://xlsxwriter.readthedocs.io
++
++Release notes: https://xlsxwriter.readthedocs.io/changes.html
++
+--- a/소스/offscreen-monitor.json
++++ b/소스/offscreen-monitor.json
+@@ -1 +1 @@
+-{"screens":[{"name":"릴리스 검증 가상 화면","x":0,"y":0,"width":2560,"height":1600,"logicalDpi":96,"logicalBaseDpi":96,"dpr":1.0}]}
++{"screens":[{"name":"릴리스 검증 가상 화면","x":0,"y":0,"width":2560,"height":1600,"logicalDpi":96,"logicalBaseDpi":96,"dpr":1.0}]}

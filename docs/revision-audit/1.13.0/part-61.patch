@@ -1,0 +1,1477 @@
+--- a/소스/test_document_shutdown.py
++++ b/소스/test_document_shutdown.py
+@@ -1,101 +1,101 @@
+-"""격리 문서 종료의 원예외 보존과 실패 반환을 검사한다."""
+-import contextlib
+-import io
+-import json
+-import subprocess
+-import unittest
+-from unittest.mock import Mock, patch
+-
+-import document_bridge
+-
+-
+-class DocumentShutdownTests(unittest.TestCase):
+-    def error_json(self, error):
+-        output = io.StringIO()
+-        with patch.object(document_bridge.sys, 'argv', ['bridge', 'request.json']), \
+-                patch.object(document_bridge.Path, 'read_text', return_value='{}'), \
+-                patch.object(document_bridge, 'convert', side_effect=error), \
+-                contextlib.redirect_stderr(output):
+-            self.assertEqual(1, document_bridge.main())
+-        return json.loads(output.getvalue())
+-
+-    def test_01_primary_disposal_preserves_original_and_skips_uno_calls(self):
+-        for stop_fails in (False, True):
+-            with self.subTest(stop_fails=stop_fails):
+-                original = RuntimeError('최초 변환 연결 단절')
+-                document, desktop, process = Mock(), Mock(), Mock()
+-                with patch.object(document_bridge, '_stop',
+-                                  side_effect=OSError('로컬 회수 실패') if stop_fails else None) as stop:
+-                    with self.assertRaises(RuntimeError) as failure:
+-                        document_bridge._shutdown_office(document, desktop, process, original)
+-                self.assertIs(original, failure.exception)
+-                document.close.assert_not_called()
+-                document.dispose.assert_not_called()
+-                desktop.terminate.assert_not_called()
+-                stop.assert_called_once_with(process)
+-                value = self.error_json(failure.exception)
+-                self.assertIn('최초 변환 연결 단절', value['error'])
+-                if stop_fails:
+-                    self.assertIsNotNone(failure.exception.__cause__)
+-                    self.assertIn('로컬 회수 실패', str(failure.exception.__cause__))
+-                    self.assertIn('로컬 회수 실패', value['cause'])
+-
+-    def test_02_close_failure_never_calls_dispose_or_desktop_again(self):
+-        original = RuntimeError('최초 close 연결 단절')
+-        document, desktop, process = Mock(), Mock(), Mock()
+-        document.close.side_effect = original
+-        with patch.object(document_bridge, '_stop') as stop:
+-            with self.assertRaises(RuntimeError) as failure:
+-                document_bridge._shutdown_office(document, desktop, process, None)
+-        self.assertIs(original, failure.exception)
+-        document.close.assert_called_once_with(True)
+-        document.dispose.assert_not_called()
+-        desktop.terminate.assert_not_called()
+-        stop.assert_called_once_with(process)
+-        self.assertIn('최초 close 연결 단절', self.error_json(failure.exception)['error'])
+-
+-    def test_03_termination_rejection_timeout_and_recovery_failures_never_succeed(self):
+-        cases = ['terminate_false', 'terminate_throw', 'wait_nonzero', 'wait_timeout',
+-                 'terminate_false_stop_failure', 'wait_timeout_stop_failure']
+-        for case in cases:
+-            with self.subTest(case=case):
+-                document, desktop, process = Mock(), Mock(), Mock()
+-                desktop.terminate.return_value = not case.startswith('terminate_false')
+-                process.wait.return_value = 0
+-                if case == 'terminate_throw':
+-                    desktop.terminate.side_effect = RuntimeError('종료 호출 연결 단절')
+-                if case == 'wait_nonzero':
+-                    process.wait.return_value = 23
+-                if case.startswith('wait_timeout'):
+-                    process.wait.side_effect = subprocess.TimeoutExpired('자체 Office', 5)
+-                with patch.object(document_bridge, '_stop',
+-                                  side_effect=OSError('추가 회수 실패') if case.endswith('stop_failure') else None) as stop:
+-                    with self.assertRaises(Exception) as failure:
+-                        document_bridge._shutdown_office(document, desktop, process, None)
+-                document.dispose.assert_not_called()
+-                value = self.error_json(failure.exception)
+-                self.assertFalse(value['ok'])
+-                self.assertTrue(value['error'])
+-                if case == 'wait_nonzero':
+-                    self.assertIn('23', value['error'])
+-                if case.startswith('wait_timeout'):
+-                    self.assertIn('5', value['error'])
+-                    stop.assert_called_once_with(process)
+-                if case.endswith('stop_failure'):
+-                    self.assertIn('추가 회수 실패', value['cause'])
+-
+-    def test_04_normal_close_approved_termination_and_zero_exit_succeed(self):
+-        document, desktop, process = Mock(), Mock(), Mock()
+-        desktop.terminate.return_value = True
+-        process.wait.return_value = 0
+-        with patch.object(document_bridge, '_stop') as stop:
+-            self.assertIsNone(document_bridge._shutdown_office(document, desktop, process, None))
+-        document.close.assert_called_once_with(True)
+-        document.dispose.assert_not_called()
+-        desktop.terminate.assert_called_once_with()
+-        process.wait.assert_called_once_with(timeout=5)
+-        stop.assert_not_called()
+-
+-
+-if __name__ == '__main__':
+-    unittest.main()
++"""격리 문서 종료의 원예외 보존과 실패 반환을 검사한다."""
++import contextlib
++import io
++import json
++import subprocess
++import unittest
++from unittest.mock import Mock, patch
++
++import document_bridge
++
++
++class DocumentShutdownTests(unittest.TestCase):
++    def error_json(self, error):
++        output = io.StringIO()
++        with patch.object(document_bridge.sys, 'argv', ['bridge', 'request.json']), \
++                patch.object(document_bridge.Path, 'read_text', return_value='{}'), \
++                patch.object(document_bridge, 'convert', side_effect=error), \
++                contextlib.redirect_stderr(output):
++            self.assertEqual(1, document_bridge.main())
++        return json.loads(output.getvalue())
++
++    def test_01_primary_disposal_preserves_original_and_skips_uno_calls(self):
++        for stop_fails in (False, True):
++            with self.subTest(stop_fails=stop_fails):
++                original = RuntimeError('최초 변환 연결 단절')
++                document, desktop, process = Mock(), Mock(), Mock()
++                with patch.object(document_bridge, '_stop',
++                                  side_effect=OSError('로컬 회수 실패') if stop_fails else None) as stop:
++                    with self.assertRaises(RuntimeError) as failure:
++                        document_bridge._shutdown_office(document, desktop, process, original)
++                self.assertIs(original, failure.exception)
++                document.close.assert_not_called()
++                document.dispose.assert_not_called()
++                desktop.terminate.assert_not_called()
++                stop.assert_called_once_with(process)
++                value = self.error_json(failure.exception)
++                self.assertIn('최초 변환 연결 단절', value['error'])
++                if stop_fails:
++                    self.assertIsNotNone(failure.exception.__cause__)
++                    self.assertIn('로컬 회수 실패', str(failure.exception.__cause__))
++                    self.assertIn('로컬 회수 실패', value['cause'])
++
++    def test_02_close_failure_never_calls_dispose_or_desktop_again(self):
++        original = RuntimeError('최초 close 연결 단절')
++        document, desktop, process = Mock(), Mock(), Mock()
++        document.close.side_effect = original
++        with patch.object(document_bridge, '_stop') as stop:
++            with self.assertRaises(RuntimeError) as failure:
++                document_bridge._shutdown_office(document, desktop, process, None)
++        self.assertIs(original, failure.exception)
++        document.close.assert_called_once_with(True)
++        document.dispose.assert_not_called()
++        desktop.terminate.assert_not_called()
++        stop.assert_called_once_with(process)
++        self.assertIn('최초 close 연결 단절', self.error_json(failure.exception)['error'])
++
++    def test_03_termination_rejection_timeout_and_recovery_failures_never_succeed(self):
++        cases = ['terminate_false', 'terminate_throw', 'wait_nonzero', 'wait_timeout',
++                 'terminate_false_stop_failure', 'wait_timeout_stop_failure']
++        for case in cases:
++            with self.subTest(case=case):
++                document, desktop, process = Mock(), Mock(), Mock()
++                desktop.terminate.return_value = not case.startswith('terminate_false')
++                process.wait.return_value = 0
++                if case == 'terminate_throw':
++                    desktop.terminate.side_effect = RuntimeError('종료 호출 연결 단절')
++                if case == 'wait_nonzero':
++                    process.wait.return_value = 23
++                if case.startswith('wait_timeout'):
++                    process.wait.side_effect = subprocess.TimeoutExpired('자체 Office', 5)
++                with patch.object(document_bridge, '_stop',
++                                  side_effect=OSError('추가 회수 실패') if case.endswith('stop_failure') else None) as stop:
++                    with self.assertRaises(Exception) as failure:
++                        document_bridge._shutdown_office(document, desktop, process, None)
++                document.dispose.assert_not_called()
++                value = self.error_json(failure.exception)
++                self.assertFalse(value['ok'])
++                self.assertTrue(value['error'])
++                if case == 'wait_nonzero':
++                    self.assertIn('23', value['error'])
++                if case.startswith('wait_timeout'):
++                    self.assertIn('5', value['error'])
++                    stop.assert_called_once_with(process)
++                if case.endswith('stop_failure'):
++                    self.assertIn('추가 회수 실패', value['cause'])
++
++    def test_04_normal_close_approved_termination_and_zero_exit_succeed(self):
++        document, desktop, process = Mock(), Mock(), Mock()
++        desktop.terminate.return_value = True
++        process.wait.return_value = 0
++        with patch.object(document_bridge, '_stop') as stop:
++            self.assertIsNone(document_bridge._shutdown_office(document, desktop, process, None))
++        document.close.assert_called_once_with(True)
++        document.dispose.assert_not_called()
++        desktop.terminate.assert_called_once_with()
++        process.wait.assert_called_once_with(timeout=5)
++        stop.assert_not_called()
++
++
++if __name__ == '__main__':
++    unittest.main()
+--- a/소스/test_document_xlsb.py
++++ b/소스/test_document_xlsb.py
+@@ -1,148 +1,148 @@
+-"""XLSB의 실제 관계·내용 검사와 시트 전체 누락 방지를 검사한다."""
+-from pathlib import Path
+-import struct
+-import tempfile
+-import unittest
+-import zipfile
+-
+-import document_xlsb
+-
+-
+-def record(number, payload=b''):
+-    def variable(value):
+-        result = bytearray()
+-        while True:
+-            result.append((value & 127) | (128 if value > 127 else 0))
+-            value >>= 7
+-            if not value:
+-                return bytes(result)
+-    return variable(number) + variable(len(payload)) + payload
+-
+-
+-def wide(value):
+-    return struct.pack('<I', len(value)) + value.encode('utf-16le')
+-
+-
+-def bundle(name, relation):
+-    return record(156, struct.pack('<II', 0, 1) + wide(relation) + wide(name))
+-
+-
+-def package(path, sheets, relations=None, shared_strings=None):
+-    relations = relations or [(f'rId{i}', 'worksheet', f'worksheets/sheet{i}.bin', '')
+-                              for i in range(1, len(sheets) + 1)]
+-    xml = '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+-    for name, kind, target, mode in relations:
+-        xml += (f'<Relationship Id="{name}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/{kind}" '
+-                f'Target="{target}" TargetMode="{mode}"/>')
+-    if shared_strings is not None:
+-        xml += ('<Relationship Id="strings" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings" '
+-                'Target="sharedStrings.bin"/>')
+-    xml += '</Relationships>'
+-    with zipfile.ZipFile(path, 'w') as archive:
+-        archive.writestr('xl/workbook.bin', b''.join(bundle(name, f'rId{i}') for i, (name, _) in enumerate(sheets, 1)))
+-        archive.writestr('xl/_rels/workbook.bin.rels', xml)
+-        for i, (_, cells) in enumerate(sheets, 1):
+-            archive.writestr(f'xl/worksheets/sheet{i}.bin', record(145) + cells + record(146))
+-        if shared_strings is not None:
+-            archive.writestr('xl/sharedStrings.bin', b''.join(record(19, b'\0' + wide(value)) for value in shared_strings))
+-
+-
+-class XlsbIntegrityTests(unittest.TestCase):
+-    def setUp(self):
+-        self.temporary = tempfile.TemporaryDirectory(prefix='fr-xlsb-policy-')
+-        self.source = Path(self.temporary.name) / '시험.xlsb'
+-
+-    def tearDown(self):
+-        self.temporary.cleanup()
+-
+-    def test_01_relationship_order_does_not_change_sheet_mapping(self):
+-        package(self.source, [('첫째', record(5, bytes(8) + struct.pack('<d', 0))), ('빈 시트', b'')],
+-                [('rId2', 'worksheet', 'worksheets/sheet2.bin', ''),
+-                 ('rId1', 'worksheet', 'worksheets/sheet1.bin', '')])
+-        actual = document_xlsb.source_sheets(self.source)
+-        self.assertEqual([('첫째', True), ('빈 시트', False)], [(item['name'], item['nonblank']) for item in actual])
+-        self.assertEqual('xl/worksheets/sheet1.bin', actual[0]['part'])
+-
+-    def test_02_zero_false_errors_and_empty_result_formulas_are_meaningful(self):
+-        for number, payload in [(2, bytes(12)), (3, bytes(9)), (4, bytes(9)), (5, bytes(16)),
+-                                (8, bytes(8) + wide('') + bytes(10)), (9, bytes(30)),
+-                                (10, bytes(23)), (11, bytes(23))]:
+-            with self.subTest(number=number):
+-                package(self.source, [('데이터', record(number, payload))])
+-                self.assertTrue(document_xlsb.source_sheets(self.source)[0]['nonblank'])
+-
+-    def test_03_explicit_empty_strings_and_style_only_cells_are_blank(self):
+-        package(self.source, [('빈 값', record(1, bytes(8)) + record(6, bytes(8) + wide('')))])
+-        self.assertFalse(document_xlsb.source_sheets(self.source)[0]['nonblank'])
+-
+-    def test_04_shared_strings_follow_the_actual_index(self):
+-        for index, expected in [(0, False), (1, True)]:
+-            with self.subTest(index=index):
+-                package(self.source, [('문자', record(7, bytes(8) + struct.pack('<I', index)))], shared_strings=['', '원문'])
+-                self.assertEqual(expected, document_xlsb.source_sheets(self.source)[0]['nonblank'])
+-
+-    def test_05_chart_sheet_is_distinct_from_worksheet(self):
+-        package(self.source, [('차트', b'')], [('rId1', 'chartsheet', 'worksheets/sheet1.bin', '')])
+-        self.assertEqual('chartsheet', document_xlsb.source_sheets(self.source)[0]['kind'])
+-
+-    def test_06_truncated_headers_and_payloads_are_rejected(self):
+-        for binary in [b'\x80', b'\x05\x80', b'\x05\x10' + bytes(8)]:
+-            with self.subTest(binary=binary):
+-                package(self.source, [('잘림', binary)])
+-                with self.assertRaises(ValueError):
+-                    document_xlsb.source_sheets(self.source)
+-
+-    def test_07_external_relationship_is_never_followed(self):
+-        package(self.source, [('외부', b'')], [('rId1', 'worksheet', 'file:///D:/other/private.bin', 'External')])
+-        with self.assertRaisesRegex(ValueError, '관계|경로'):
+-            document_xlsb.source_sheets(self.source)
+-
+-    def test_08_ambiguous_and_escaping_relationship_paths_are_rejected(self):
+-        for target in ['../../private.bin', 'worksheets/../sheet1.bin', 'C:/private.bin',
+-                       'worksheets\\sheet1.bin', '//host/private.bin', 'worksheets/%2e%2e/private.bin']:
+-            with self.subTest(target=target):
+-                package(self.source, [('경로', b'')], [('rId1', 'worksheet', target, '')])
+-                with self.assertRaises(ValueError):
+-                    document_xlsb.source_sheets(self.source)
+-
+-    def test_09_duplicate_relationship_ids_are_rejected(self):
+-        package(self.source, [('중복', b'')], [('rId1', 'worksheet', 'worksheets/sheet1.bin', ''),
+-                                            ('rId1', 'worksheet', 'worksheets/sheet1.bin', '')])
+-        with self.assertRaises(ValueError):
+-            document_xlsb.source_sheets(self.source)
+-
+-    def test_10_content_of_each_sheet_is_checked_instead_of_total(self):
+-        calls = []
+-        class Cells:
+-            def __init__(self, count): self.count = count
+-            def getCount(self): return self.count
+-        class Sheet:
+-            def __init__(self, count): self.count = count
+-            def queryContentCells(self, flags):
+-                calls.append(flags)
+-                return Cells(self.count)
+-        class Sheets:
+-            def hasByName(self, name): return True
+-            def getByName(self, name): return Sheet(1 if name == '정상' else 0)
+-        class Document:
+-            def getSheets(self): return Sheets()
+-        with self.assertRaisesRegex(ValueError, '누락'):
+-            document_xlsb.ensure_loaded_sheets(Document(), [dict(name='정상', kind='worksheet', nonblank=True),
+-                                                           dict(name='유실', kind='worksheet', nonblank=True)])
+-        self.assertEqual([23, 23], calls)
+-
+-    def test_11_cancel_checkpoint_is_respected(self):
+-        package(self.source, [('취소', b'')])
+-        class Cancelled(Exception): pass
+-        def stop(): raise Cancelled()
+-        with self.assertRaises(Cancelled):
+-            document_xlsb.source_sheets(self.source, check_cancel=stop)
+-
+-    def test_12_invalid_shared_string_index_is_rejected(self):
+-        package(self.source, [('잘못된 참조', record(7, bytes(8) + struct.pack('<I', 99)))], shared_strings=['원문'])
+-        with self.assertRaises(ValueError):
+-            document_xlsb.source_sheets(self.source)
+-
+-
+-if __name__ == '__main__':
+-    unittest.main()
++"""XLSB의 실제 관계·내용 검사와 시트 전체 누락 방지를 검사한다."""
++from pathlib import Path
++import struct
++import tempfile
++import unittest
++import zipfile
++
++import document_xlsb
++
++
++def record(number, payload=b''):
++    def variable(value):
++        result = bytearray()
++        while True:
++            result.append((value & 127) | (128 if value > 127 else 0))
++            value >>= 7
++            if not value:
++                return bytes(result)
++    return variable(number) + variable(len(payload)) + payload
++
++
++def wide(value):
++    return struct.pack('<I', len(value)) + value.encode('utf-16le')
++
++
++def bundle(name, relation):
++    return record(156, struct.pack('<II', 0, 1) + wide(relation) + wide(name))
++
++
++def package(path, sheets, relations=None, shared_strings=None):
++    relations = relations or [(f'rId{i}', 'worksheet', f'worksheets/sheet{i}.bin', '')
++                              for i in range(1, len(sheets) + 1)]
++    xml = '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
++    for name, kind, target, mode in relations:
++        xml += (f'<Relationship Id="{name}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/{kind}" '
++                f'Target="{target}" TargetMode="{mode}"/>')
++    if shared_strings is not None:
++        xml += ('<Relationship Id="strings" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings" '
++                'Target="sharedStrings.bin"/>')
++    xml += '</Relationships>'
++    with zipfile.ZipFile(path, 'w') as archive:
++        archive.writestr('xl/workbook.bin', b''.join(bundle(name, f'rId{i}') for i, (name, _) in enumerate(sheets, 1)))
++        archive.writestr('xl/_rels/workbook.bin.rels', xml)
++        for i, (_, cells) in enumerate(sheets, 1):
++            archive.writestr(f'xl/worksheets/sheet{i}.bin', record(145) + cells + record(146))
++        if shared_strings is not None:
++            archive.writestr('xl/sharedStrings.bin', b''.join(record(19, b'\0' + wide(value)) for value in shared_strings))
++
++
++class XlsbIntegrityTests(unittest.TestCase):
++    def setUp(self):
++        self.temporary = tempfile.TemporaryDirectory(prefix='fr-xlsb-policy-')
++        self.source = Path(self.temporary.name) / '시험.xlsb'
++
++    def tearDown(self):
++        self.temporary.cleanup()
++
++    def test_01_relationship_order_does_not_change_sheet_mapping(self):
++        package(self.source, [('첫째', record(5, bytes(8) + struct.pack('<d', 0))), ('빈 시트', b'')],
++                [('rId2', 'worksheet', 'worksheets/sheet2.bin', ''),
++                 ('rId1', 'worksheet', 'worksheets/sheet1.bin', '')])
++        actual = document_xlsb.source_sheets(self.source)
++        self.assertEqual([('첫째', True), ('빈 시트', False)], [(item['name'], item['nonblank']) for item in actual])
++        self.assertEqual('xl/worksheets/sheet1.bin', actual[0]['part'])
++
++    def test_02_zero_false_errors_and_empty_result_formulas_are_meaningful(self):
++        for number, payload in [(2, bytes(12)), (3, bytes(9)), (4, bytes(9)), (5, bytes(16)),
++                                (8, bytes(8) + wide('') + bytes(10)), (9, bytes(30)),
++                                (10, bytes(23)), (11, bytes(23))]:
++            with self.subTest(number=number):
++                package(self.source, [('데이터', record(number, payload))])
++                self.assertTrue(document_xlsb.source_sheets(self.source)[0]['nonblank'])
++
++    def test_03_explicit_empty_strings_and_style_only_cells_are_blank(self):
++        package(self.source, [('빈 값', record(1, bytes(8)) + record(6, bytes(8) + wide('')))])
++        self.assertFalse(document_xlsb.source_sheets(self.source)[0]['nonblank'])
++
++    def test_04_shared_strings_follow_the_actual_index(self):
++        for index, expected in [(0, False), (1, True)]:
++            with self.subTest(index=index):
++                package(self.source, [('문자', record(7, bytes(8) + struct.pack('<I', index)))], shared_strings=['', '원문'])
++                self.assertEqual(expected, document_xlsb.source_sheets(self.source)[0]['nonblank'])
++
++    def test_05_chart_sheet_is_distinct_from_worksheet(self):
++        package(self.source, [('차트', b'')], [('rId1', 'chartsheet', 'worksheets/sheet1.bin', '')])
++        self.assertEqual('chartsheet', document_xlsb.source_sheets(self.source)[0]['kind'])
++
++    def test_06_truncated_headers_and_payloads_are_rejected(self):
++        for binary in [b'\x80', b'\x05\x80', b'\x05\x10' + bytes(8)]:
++            with self.subTest(binary=binary):
++                package(self.source, [('잘림', binary)])
++                with self.assertRaises(ValueError):
++                    document_xlsb.source_sheets(self.source)
++
++    def test_07_external_relationship_is_never_followed(self):
++        package(self.source, [('외부', b'')], [('rId1', 'worksheet', 'file:///D:/other/private.bin', 'External')])
++        with self.assertRaisesRegex(ValueError, '관계|경로'):
++            document_xlsb.source_sheets(self.source)
++
++    def test_08_ambiguous_and_escaping_relationship_paths_are_rejected(self):
++        for target in ['../../private.bin', 'worksheets/../sheet1.bin', 'C:/private.bin',
++                       'worksheets\\sheet1.bin', '//host/private.bin', 'worksheets/%2e%2e/private.bin']:
++            with self.subTest(target=target):
++                package(self.source, [('경로', b'')], [('rId1', 'worksheet', target, '')])
++                with self.assertRaises(ValueError):
++                    document_xlsb.source_sheets(self.source)
++
++    def test_09_duplicate_relationship_ids_are_rejected(self):
++        package(self.source, [('중복', b'')], [('rId1', 'worksheet', 'worksheets/sheet1.bin', ''),
++                                            ('rId1', 'worksheet', 'worksheets/sheet1.bin', '')])
++        with self.assertRaises(ValueError):
++            document_xlsb.source_sheets(self.source)
++
++    def test_10_content_of_each_sheet_is_checked_instead_of_total(self):
++        calls = []
++        class Cells:
++            def __init__(self, count): self.count = count
++            def getCount(self): return self.count
++        class Sheet:
++            def __init__(self, count): self.count = count
++            def queryContentCells(self, flags):
++                calls.append(flags)
++                return Cells(self.count)
++        class Sheets:
++            def hasByName(self, name): return True
++            def getByName(self, name): return Sheet(1 if name == '정상' else 0)
++        class Document:
++            def getSheets(self): return Sheets()
++        with self.assertRaisesRegex(ValueError, '누락'):
++            document_xlsb.ensure_loaded_sheets(Document(), [dict(name='정상', kind='worksheet', nonblank=True),
++                                                           dict(name='유실', kind='worksheet', nonblank=True)])
++        self.assertEqual([23, 23], calls)
++
++    def test_11_cancel_checkpoint_is_respected(self):
++        package(self.source, [('취소', b'')])
++        class Cancelled(Exception): pass
++        def stop(): raise Cancelled()
++        with self.assertRaises(Cancelled):
++            document_xlsb.source_sheets(self.source, check_cancel=stop)
++
++    def test_12_invalid_shared_string_index_is_rejected(self):
++        package(self.source, [('잘못된 참조', record(7, bytes(8) + struct.pack('<I', 99)))], shared_strings=['원문'])
++        with self.assertRaises(ValueError):
++            document_xlsb.source_sheets(self.source)
++
++
++if __name__ == '__main__':
++    unittest.main()
+--- a/소스/test_documents_integration.py
++++ b/소스/test_documents_integration.py
+@@ -1,156 +1,156 @@
+-"""합성 자료만 사용해 실제 LibreOffice의 문서·구엑셀 변환을 확인한다."""
+-from pathlib import Path
+-import hashlib
+-import tempfile
+-import threading
+-import unittest
+-
+-from docx import Document
+-from openpyxl import Workbook, load_workbook
+-from pptx import Presentation
+-
+-import engine
+-
+-
+-class ActualDocumentTests(unittest.TestCase):
+-    def setUp(self):
+-        self.temporary = tempfile.TemporaryDirectory(prefix="fr-docs110-")
+-        self.root = Path(self.temporary.name)
+-        self.originals = {}
+-
+-    def tearDown(self):
+-        for path, digest in self.originals.items():
+-            self.assertEqual(digest, hashlib.sha256(path.read_bytes()).hexdigest(), str(path))
+-        self.temporary.cleanup()
+-
+-    def keep(self, path):
+-        self.originals[path] = hashlib.sha256(path.read_bytes()).hexdigest()
+-        return path
+-
+-    def word(self):
+-        path = self.root / "한글 문서.docx"
+-        document = Document()
+-        document.add_heading("플립링 대표 문서", 0)
+-        document.add_paragraph("원본 보존 · 한글 Word 97 시험 · PUVKID")
+-        table = document.add_table(rows=2, cols=2)
+-        table.cell(0, 0).text = "품목"
+-        table.cell(1, 0).text = "시험표"
+-        table.cell(1, 1).text = "123.5"
+-        document.save(path)
+-        return self.keep(path)
+-
+-    def workbook(self):
+-        path = self.root / "구엑셀 다중 시트.xlsx"
+-        book = Workbook()
+-        book.active.title = "첫째 한글"
+-        book.active.append(["한글 값", "소수", "수식"])
+-        book.active.append([12, 3.5, "=A2+B2"])
+-        book.create_sheet("두번째 시트").append(["다른 시트 보존", 9876, "=2*3"])
+-        book.save(path)
+-        return self.keep(path)
+-
+-    def presentation(self):
+-        path = self.root / "파워포인트.pptx"
+-        deck = Presentation()
+-        for index in range(2):
+-            slide = deck.slides.add_slide(deck.slide_layouts[1])
+-            slide.shapes.title.text = f"발표 {index + 1} · PUVKID"
+-            slide.placeholders[1].text = "한글 발표 내용 보존"
+-        deck.save(path)
+-        return self.keep(path)
+-
+-    def test_01_word97_roundtrip_preserves_korean_and_table(self):
+-        source = self.word()
+-        legacy = Path(engine.convert(source, "doc"))
+-        self.keep(legacy)
+-        self.assertTrue(legacy.read_bytes().startswith(b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1"))
+-        returned = Path(engine.convert(legacy, "docx"))
+-        document = Document(returned)
+-        self.assertIn("한글 Word 97 시험", "\n".join(p.text for p in document.paragraphs))
+-        self.assertEqual("시험표", document.tables[0].cell(1, 0).text)
+-        self.assertEqual("123.5", document.tables[0].cell(1, 1).text)
+-
+-    def test_02_excel97_roundtrip_preserves_two_sheets_cells_and_formulas(self):
+-        source = self.workbook()
+-        legacy = Path(engine.convert(source, "xls"))
+-        self.keep(legacy)
+-        self.assertTrue(legacy.read_bytes().startswith(b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1"))
+-        returned = Path(engine.convert(legacy, "xlsx"))
+-        book = load_workbook(returned, data_only=False)
+-        self.assertEqual(["첫째 한글", "두번째 시트"], book.sheetnames)
+-        self.assertEqual("한글 값", book.worksheets[0]["A1"].value)
+-        self.assertEqual(12, book.worksheets[0]["A2"].value)
+-        self.assertEqual(3.5, book.worksheets[0]["B2"].value)
+-        self.assertEqual("=A2+B2", book.worksheets[0]["C2"].value)
+-        self.assertEqual("다른 시트 보존", book.worksheets[1]["A1"].value)
+-        self.assertEqual("=2*3", book.worksheets[1]["C1"].value)
+-        book.close()
+-
+-    def test_03_powerpoint97_roundtrip_preserves_two_slides_and_text(self):
+-        source = self.presentation()
+-        legacy = Path(engine.convert(source, "ppt"))
+-        self.keep(legacy)
+-        returned = Path(engine.convert(legacy, "pptx"))
+-        deck = Presentation(returned)
+-        self.assertEqual(2, len(deck.slides))
+-        self.assertIn("발표 1", "\n".join(s.text for s in deck.slides[0].shapes if s.has_text_frame))
+-        plain = Path(engine.convert(legacy, "txt")).read_text(encoding="utf-8")
+-        self.assertIn("발표 2", plain)
+-        self.assertIn("한글 발표 내용 보존", plain)
+-
+-    def test_04_writer_pdf_has_real_text_and_raster_output(self):
+-        source = self.word()
+-        pdf = Path(engine.convert(source, "pdf"))
+-        with engine.pdfium.PdfDocument(str(pdf)) as document:
+-            self.assertGreater(len(document), 0)
+-            page = document[0]
+-            text_page = page.get_textpage()
+-            try:
+-                self.assertIn("PUVKID", text_page.get_text_range())
+-            finally:
+-                text_page.close()
+-                page.close()
+-        png = Path(engine.convert(source, "png"))
+-        with engine.Image.open(png) as image:
+-            self.assertGreater(image.width, 200)
+-            self.assertGreater(image.height, 200)
+-
+-    def test_05_ods_preserves_all_sheets_and_csv_exports_first_sheet(self):
+-        source = self.workbook()
+-        ods = Path(engine.convert(source, "ods"))
+-        back = Path(engine.convert(ods, "xlsx"))
+-        book = load_workbook(back)
+-        self.assertEqual(2, len(book.worksheets))
+-        self.assertEqual(9876, book.worksheets[1]["B1"].value)
+-        book.close()
+-        csv = Path(engine.convert(source, "csv")).read_text(encoding="utf-8-sig")
+-        self.assertIn("한글 값", csv)
+-        self.assertNotIn("다른 시트 보존", csv)
+-
+-    def test_06_broken_or_renamed_documents_never_publish_output(self):
+-        for suffix in ("docx", "xls", "hwpx", "rtf", "pptx"):
+-            with self.subTest(suffix=suffix):
+-                path = self.root / ("손상." + suffix)
+-                path.write_bytes(b"not a real document")
+-                self.keep(path)
+-                before = set(self.root.iterdir())
+-                with self.assertRaises((ValueError, RuntimeError)):
+-                    engine.convert(path, "pdf")
+-                self.assertEqual(before, set(self.root.iterdir()))
+-
+-    def test_07_cancel_during_actual_office_keeps_original(self):
+-        source = self.word()
+-        event = threading.Event()
+-        timer = threading.Timer(0.3, event.set)
+-        timer.start()
+-        try:
+-            with self.assertRaises(engine.Cancelled):
+-                engine.convert(source, "doc", cancel=event)
+-        finally:
+-            timer.cancel()
+-            timer.join()
+-        self.assertEqual([source], list(self.root.iterdir()))
+-
+-
+-if __name__ == "__main__":
+-    unittest.main()
++"""합성 자료만 사용해 실제 LibreOffice의 문서·구엑셀 변환을 확인한다."""
++from pathlib import Path
++import hashlib
++import tempfile
++import threading
++import unittest
++
++from docx import Document
++from openpyxl import Workbook, load_workbook
++from pptx import Presentation
++
++import engine
++
++
++class ActualDocumentTests(unittest.TestCase):
++    def setUp(self):
++        self.temporary = tempfile.TemporaryDirectory(prefix="fr-docs110-")
++        self.root = Path(self.temporary.name)
++        self.originals = {}
++
++    def tearDown(self):
++        for path, digest in self.originals.items():
++            self.assertEqual(digest, hashlib.sha256(path.read_bytes()).hexdigest(), str(path))
++        self.temporary.cleanup()
++
++    def keep(self, path):
++        self.originals[path] = hashlib.sha256(path.read_bytes()).hexdigest()
++        return path
++
++    def word(self):
++        path = self.root / "한글 문서.docx"
++        document = Document()
++        document.add_heading("플립링 대표 문서", 0)
++        document.add_paragraph("원본 보존 · 한글 Word 97 시험 · PUVKID")
++        table = document.add_table(rows=2, cols=2)
++        table.cell(0, 0).text = "품목"
++        table.cell(1, 0).text = "시험표"
++        table.cell(1, 1).text = "123.5"
++        document.save(path)
++        return self.keep(path)
++
++    def workbook(self):
++        path = self.root / "구엑셀 다중 시트.xlsx"
++        book = Workbook()
++        book.active.title = "첫째 한글"
++        book.active.append(["한글 값", "소수", "수식"])
++        book.active.append([12, 3.5, "=A2+B2"])
++        book.create_sheet("두번째 시트").append(["다른 시트 보존", 9876, "=2*3"])
++        book.save(path)
++        return self.keep(path)
++
++    def presentation(self):
++        path = self.root / "파워포인트.pptx"
++        deck = Presentation()
++        for index in range(2):
++            slide = deck.slides.add_slide(deck.slide_layouts[1])
++            slide.shapes.title.text = f"발표 {index + 1} · PUVKID"
++            slide.placeholders[1].text = "한글 발표 내용 보존"
++        deck.save(path)
++        return self.keep(path)
++
++    def test_01_word97_roundtrip_preserves_korean_and_table(self):
++        source = self.word()
++        legacy = Path(engine.convert(source, "doc"))
++        self.keep(legacy)
++        self.assertTrue(legacy.read_bytes().startswith(b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1"))
++        returned = Path(engine.convert(legacy, "docx"))
++        document = Document(returned)
++        self.assertIn("한글 Word 97 시험", "\n".join(p.text for p in document.paragraphs))
++        self.assertEqual("시험표", document.tables[0].cell(1, 0).text)
++        self.assertEqual("123.5", document.tables[0].cell(1, 1).text)
++
++    def test_02_excel97_roundtrip_preserves_two_sheets_cells_and_formulas(self):
++        source = self.workbook()
++        legacy = Path(engine.convert(source, "xls"))
++        self.keep(legacy)
++        self.assertTrue(legacy.read_bytes().startswith(b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1"))
++        returned = Path(engine.convert(legacy, "xlsx"))
++        book = load_workbook(returned, data_only=False)
++        self.assertEqual(["첫째 한글", "두번째 시트"], book.sheetnames)
++        self.assertEqual("한글 값", book.worksheets[0]["A1"].value)
++        self.assertEqual(12, book.worksheets[0]["A2"].value)
++        self.assertEqual(3.5, book.worksheets[0]["B2"].value)
++        self.assertEqual("=A2+B2", book.worksheets[0]["C2"].value)
++        self.assertEqual("다른 시트 보존", book.worksheets[1]["A1"].value)
++        self.assertEqual("=2*3", book.worksheets[1]["C1"].value)
++        book.close()
++
++    def test_03_powerpoint97_roundtrip_preserves_two_slides_and_text(self):
++        source = self.presentation()
++        legacy = Path(engine.convert(source, "ppt"))
++        self.keep(legacy)
++        returned = Path(engine.convert(legacy, "pptx"))
++        deck = Presentation(returned)
++        self.assertEqual(2, len(deck.slides))
++        self.assertIn("발표 1", "\n".join(s.text for s in deck.slides[0].shapes if s.has_text_frame))
++        plain = Path(engine.convert(legacy, "txt")).read_text(encoding="utf-8")
++        self.assertIn("발표 2", plain)
++        self.assertIn("한글 발표 내용 보존", plain)
++
++    def test_04_writer_pdf_has_real_text_and_raster_output(self):
++        source = self.word()
++        pdf = Path(engine.convert(source, "pdf"))
++        with engine.pdfium.PdfDocument(str(pdf)) as document:
++            self.assertGreater(len(document), 0)
++            page = document[0]
++            text_page = page.get_textpage()
++            try:
++                self.assertIn("PUVKID", text_page.get_text_range())
++            finally:
++                text_page.close()
++                page.close()
++        png = Path(engine.convert(source, "png"))
++        with engine.Image.open(png) as image:
++            self.assertGreater(image.width, 200)
++            self.assertGreater(image.height, 200)
++
++    def test_05_ods_preserves_all_sheets_and_csv_exports_first_sheet(self):
++        source = self.workbook()
++        ods = Path(engine.convert(source, "ods"))
++        back = Path(engine.convert(ods, "xlsx"))
++        book = load_workbook(back)
++        self.assertEqual(2, len(book.worksheets))
++        self.assertEqual(9876, book.worksheets[1]["B1"].value)
++        book.close()
++        csv = Path(engine.convert(source, "csv")).read_text(encoding="utf-8-sig")
++        self.assertIn("한글 값", csv)
++        self.assertNotIn("다른 시트 보존", csv)
++
++    def test_06_broken_or_renamed_documents_never_publish_output(self):
++        for suffix in ("docx", "xls", "hwpx", "rtf", "pptx"):
++            with self.subTest(suffix=suffix):
++                path = self.root / ("손상." + suffix)
++                path.write_bytes(b"not a real document")
++                self.keep(path)
++                before = set(self.root.iterdir())
++                with self.assertRaises((ValueError, RuntimeError)):
++                    engine.convert(path, "pdf")
++                self.assertEqual(before, set(self.root.iterdir()))
++
++    def test_07_cancel_during_actual_office_keeps_original(self):
++        source = self.word()
++        event = threading.Event()
++        timer = threading.Timer(0.3, event.set)
++        timer.start()
++        try:
++            with self.assertRaises(engine.Cancelled):
++                engine.convert(source, "doc", cancel=event)
++        finally:
++            timer.cancel()
++            timer.join()
++        self.assertEqual([source], list(self.root.iterdir()))
++
++
++if __name__ == "__main__":
++    unittest.main()
+--- a/소스/test_engine.py
++++ b/소스/test_engine.py
+@@ -1,94 +1,94 @@
+-"""실제 Windows 변환과 원본 보존을 검증한다. 생성한 시험 파일만 사용한다."""
+-import csv
+-import hashlib
+-import io
+-import json
+-from pathlib import Path
+-import sys
+-import tempfile
+-import time
+-import zipfile
+-from PIL import Image
+-from docx import Document
+-from pptx import Presentation
+-from openpyxl import Workbook
+-import engine
+-
+-
+-def main():
+-    root = Path(sys.argv[1])
+-    root.mkdir(parents=True, exist_ok=False)
+-    files = []
+-    image = Image.new("RGBA", (48, 36), (180, 80, 30, 120))
+-    for ext in "jpg png webp tiff avif bmp gif heic".split():
+-        p = root / f"사진.{ext}"
+-        if ext == "heic":
+-            p.write_bytes((Path(__file__).parent / "test-fixtures/sample.heic").read_bytes())
+-        else: image.convert("RGB").save(p, format={"jpg": "JPEG"}.get(ext, ext.upper()))
+-        files.append(p)
+-    svg = root / "벡터.svg"; svg.write_text('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="36"><rect width="48" height="36" fill="red"/></svg>', encoding="utf-8"); files.append(svg)
+-    txt = root / "문서.txt"; txt.write_text("PUVKID 변환 시험\n둘째 줄 한글\n", encoding="utf-8"); files.append(txt)
+-    md = root / "마크다운.md"; md.write_text("# PUVKID\n\n**한글** 본문입니다.", encoding="utf-8"); files.append(md)
+-    html = root / "웹문서.html"; html.write_text('<!doctype html><meta charset="utf-8"><h1>PUVKID</h1><p>한글 본문</p>', encoding="utf-8"); files.append(html)
+-    docx = root / "워드.docx"; d = Document(); d.add_paragraph("PUVKID 한글 문서 시험"); d.save(docx); files.append(docx)
+-    for ext in ("doc", "odt", "rtf"):
+-        with tempfile.TemporaryDirectory() as work:
+-            p = engine.office(docx, ext, Path(work)); dest = root / f"레거시.{ext}"; dest.write_bytes(p.read_bytes()); files.append(dest)
+-    epub = root / "전자책.epub"; engine.pandoc(md, "md", "epub", epub); files.append(epub)
+-    pdf = root / "한페이지.pdf"; engine.write_text_pdf("PUVKID 한글 PDF 시험", pdf); files.append(pdf)
+-    multi = root / "여러페이지.pdf"; engine.write_text_pdf("여러 페이지 시험\n" * 100, multi)
+-    pptx = root / "발표.pptx"; prs = Presentation(); slide = prs.slides.add_slide(prs.slide_layouts[1]); slide.shapes.title.text = "PUVKID 시험"; prs.save(pptx); files.append(pptx)
+-    for ext in ("ppt", "odp"):
+-        with tempfile.TemporaryDirectory() as work:
+-            p = engine.office(pptx, ext, Path(work)); dest = root / f"발표원본.{ext}"; dest.write_bytes(p.read_bytes()); files.append(dest)
+-    xlsx = root / "표.xlsx"; wb = Workbook(); wb.active.append(["한글", "값"]); wb.active.append(["PUVKID", 12]); wb.save(xlsx); files.append(xlsx)
+-    for ext in ("xls", "ods"):
+-        with tempfile.TemporaryDirectory() as work:
+-            p = engine.office(xlsx, ext, Path(work)); dest = root / f"표원본.{ext}"; dest.write_bytes(p.read_bytes()); files.append(dest)
+-    for ext, delim in [("csv", ","), ("tsv", "\t")]:
+-        p = root / f"구분자.{ext}"
+-        with p.open("w", encoding="utf-8-sig", newline="") as f: csv.writer(f, delimiter=delim).writerows([["한글", "따옴표\"", "여러\n줄"], ["가", "1", "2"]])
+-        files.append(p)
+-    srt = root / "자막.srt"; srt.write_text("1\n00:00:00,000 --> 00:00:01,000\n<b>한글 자막</b>\n\n2\n00:00:01,000 --> 00:00:02,000\n둘째 줄\n", encoding="utf-8"); files.append(srt)
+-    vtt = root / "웹자막.vtt"; vtt.write_text("WEBVTT\n\n00:00.000 --> 00:01.000\n한글 자막\n", encoding="utf-8"); files.append(vtt)
+-    folder = root / "압축 폴더"; folder.mkdir(); (folder / "한글.txt").write_text("원본 보존", encoding="utf-8"); (folder / "빈폴더").mkdir(); files.append(folder)
+-    for ext in ("zip", "tar", "tar.gz"):
+-        output = Path(engine.convert(folder, ext)); files.append(output)
+-    ffmpeg = engine.tool("ffmpeg")
+-    wav = root / "소리.wav"; engine.run(ffmpeg, ["-f", "lavfi", "-i", "sine=frequency=440:duration=0.3", wav]); files.append(wav)
+-    for ext in "mp3 m4a flac ogg opus aiff wma".split(): files.append(Path(engine.convert(wav, ext)))
+-    video = root / "영상.mp4"; engine.run(ffmpeg, ["-f", "lavfi", "-i", "color=c=blue:s=64x48:d=0.3", "-f", "lavfi", "-i", "sine=frequency=440:duration=0.3", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest", video]); files.append(video)
+-    for ext in "mov mkv webm avi wmv".split(): files.append(Path(engine.convert(video, ext)))
+-    results = []
+-    for source in files:
+-        before = hashlib.sha256(source.read_bytes()).hexdigest() if source.is_file() else None
+-        for target in engine.targets([source]):
+-            start = time.monotonic()
+-            try:
+-                output = Path(engine.convert(source, target))
+-                assert output.exists() and output.parent == source.parent
+-                if output.is_file() and target in ("jpg", "png", "webp", "tiff", "avif", "bmp"):
+-                    with Image.open(output) as im: im.verify()
+-                if output.is_file() and target == "pdf":
+-                    doc = engine.pdfium.PdfDocument(str(output)); assert len(doc); doc.close()
+-                if before: assert before == hashlib.sha256(source.read_bytes()).hexdigest()
+-                results.append({"source": source.name, "target": target, "ok": True, "seconds": round(time.monotonic()-start, 2)})
+-            except Exception as exc:
+-                results.append({"source": source.name, "target": target, "ok": False, "error": str(exc)})
+-            print(json.dumps(results[-1], ensure_ascii=False), flush=True)
+-        (root.parent / "진행결과.tmp").write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
+-    pages = Path(engine.convert(multi, "png")); assert pages.is_dir() and len(list(pages.glob("*.png"))) > 1
+-    assert engine.targets([srt, txt]) == []
+-    first = engine.convert(srt, "vtt"); second = engine.convert(srt, "vtt"); assert first != second
+-    hostile = root / "경로검증.zip"
+-    with zipfile.ZipFile(hostile, "w") as z: z.writestr("../outside.txt", "거부")
+-    try: engine.convert(hostile, "tar")
+-    except ValueError: pass
+-    else: raise AssertionError("상위 경로를 거부하지 않았습니다")
+-    summary = {"total": len(results), "passed": sum(r["ok"] for r in results), "failed": [r for r in results if not r["ok"]], "results": results}
+-    (root.parent / "변환시험.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
+-    print(json.dumps({k:v for k,v in summary.items() if k != "results"}, ensure_ascii=False))
+-    return bool(summary["failed"])
+-
+-
+-if __name__ == "__main__": sys.exit(main())
++"""실제 Windows 변환과 원본 보존을 검증한다. 생성한 시험 파일만 사용한다."""
++import csv
++import hashlib
++import io
++import json
++from pathlib import Path
++import sys
++import tempfile
++import time
++import zipfile
++from PIL import Image
++from docx import Document
++from pptx import Presentation
++from openpyxl import Workbook
++import engine
++
++
++def main():
++    root = Path(sys.argv[1])
++    root.mkdir(parents=True, exist_ok=False)
++    files = []
++    image = Image.new("RGBA", (48, 36), (180, 80, 30, 120))
++    for ext in "jpg png webp tiff avif bmp gif heic".split():
++        p = root / f"사진.{ext}"
++        if ext == "heic":
++            p.write_bytes((Path(__file__).parent / "test-fixtures/sample.heic").read_bytes())
++        else: image.convert("RGB").save(p, format={"jpg": "JPEG"}.get(ext, ext.upper()))
++        files.append(p)
++    svg = root / "벡터.svg"; svg.write_text('<svg xmlns="http://www.w3.org/2000/svg" width="48" height="36"><rect width="48" height="36" fill="red"/></svg>', encoding="utf-8"); files.append(svg)
++    txt = root / "문서.txt"; txt.write_text("PUVKID 변환 시험\n둘째 줄 한글\n", encoding="utf-8"); files.append(txt)
++    md = root / "마크다운.md"; md.write_text("# PUVKID\n\n**한글** 본문입니다.", encoding="utf-8"); files.append(md)
++    html = root / "웹문서.html"; html.write_text('<!doctype html><meta charset="utf-8"><h1>PUVKID</h1><p>한글 본문</p>', encoding="utf-8"); files.append(html)
++    docx = root / "워드.docx"; d = Document(); d.add_paragraph("PUVKID 한글 문서 시험"); d.save(docx); files.append(docx)
++    for ext in ("doc", "odt", "rtf"):
++        with tempfile.TemporaryDirectory() as work:
++            p = engine.office(docx, ext, Path(work)); dest = root / f"레거시.{ext}"; dest.write_bytes(p.read_bytes()); files.append(dest)
++    epub = root / "전자책.epub"; engine.pandoc(md, "md", "epub", epub); files.append(epub)
++    pdf = root / "한페이지.pdf"; engine.write_text_pdf("PUVKID 한글 PDF 시험", pdf); files.append(pdf)
++    multi = root / "여러페이지.pdf"; engine.write_text_pdf("여러 페이지 시험\n" * 100, multi)
++    pptx = root / "발표.pptx"; prs = Presentation(); slide = prs.slides.add_slide(prs.slide_layouts[1]); slide.shapes.title.text = "PUVKID 시험"; prs.save(pptx); files.append(pptx)
++    for ext in ("ppt", "odp"):
++        with tempfile.TemporaryDirectory() as work:
++            p = engine.office(pptx, ext, Path(work)); dest = root / f"발표원본.{ext}"; dest.write_bytes(p.read_bytes()); files.append(dest)
++    xlsx = root / "표.xlsx"; wb = Workbook(); wb.active.append(["한글", "값"]); wb.active.append(["PUVKID", 12]); wb.save(xlsx); files.append(xlsx)
++    for ext in ("xls", "ods"):
++        with tempfile.TemporaryDirectory() as work:
++            p = engine.office(xlsx, ext, Path(work)); dest = root / f"표원본.{ext}"; dest.write_bytes(p.read_bytes()); files.append(dest)
++    for ext, delim in [("csv", ","), ("tsv", "\t")]:
++        p = root / f"구분자.{ext}"
++        with p.open("w", encoding="utf-8-sig", newline="") as f: csv.writer(f, delimiter=delim).writerows([["한글", "따옴표\"", "여러\n줄"], ["가", "1", "2"]])
++        files.append(p)
++    srt = root / "자막.srt"; srt.write_text("1\n00:00:00,000 --> 00:00:01,000\n<b>한글 자막</b>\n\n2\n00:00:01,000 --> 00:00:02,000\n둘째 줄\n", encoding="utf-8"); files.append(srt)
++    vtt = root / "웹자막.vtt"; vtt.write_text("WEBVTT\n\n00:00.000 --> 00:01.000\n한글 자막\n", encoding="utf-8"); files.append(vtt)
++    folder = root / "압축 폴더"; folder.mkdir(); (folder / "한글.txt").write_text("원본 보존", encoding="utf-8"); (folder / "빈폴더").mkdir(); files.append(folder)
++    for ext in ("zip", "tar", "tar.gz"):
++        output = Path(engine.convert(folder, ext)); files.append(output)
++    ffmpeg = engine.tool("ffmpeg")
++    wav = root / "소리.wav"; engine.run(ffmpeg, ["-f", "lavfi", "-i", "sine=frequency=440:duration=0.3", wav]); files.append(wav)
++    for ext in "mp3 m4a flac ogg opus aiff wma".split(): files.append(Path(engine.convert(wav, ext)))
++    video = root / "영상.mp4"; engine.run(ffmpeg, ["-f", "lavfi", "-i", "color=c=blue:s=64x48:d=0.3", "-f", "lavfi", "-i", "sine=frequency=440:duration=0.3", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest", video]); files.append(video)
++    for ext in "mov mkv webm avi wmv".split(): files.append(Path(engine.convert(video, ext)))
++    results = []
++    for source in files:
++        before = hashlib.sha256(source.read_bytes()).hexdigest() if source.is_file() else None
++        for target in engine.targets([source]):
++            start = time.monotonic()
++            try:
++                output = Path(engine.convert(source, target))
++                assert output.exists() and output.parent == source.parent
++                if output.is_file() and target in ("jpg", "png", "webp", "tiff", "avif", "bmp"):
++                    with Image.open(output) as im: im.verify()
++                if output.is_file() and target == "pdf":
++                    doc = engine.pdfium.PdfDocument(str(output)); assert len(doc); doc.close()
++                if before: assert before == hashlib.sha256(source.read_bytes()).hexdigest()
++                results.append({"source": source.name, "target": target, "ok": True, "seconds": round(time.monotonic()-start, 2)})
++            except Exception as exc:
++                results.append({"source": source.name, "target": target, "ok": False, "error": str(exc)})
++            print(json.dumps(results[-1], ensure_ascii=False), flush=True)
++        (root.parent / "진행결과.tmp").write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
++    pages = Path(engine.convert(multi, "png")); assert pages.is_dir() and len(list(pages.glob("*.png"))) > 1
++    assert engine.targets([srt, txt]) == []
++    first = engine.convert(srt, "vtt"); second = engine.convert(srt, "vtt"); assert first != second
++    hostile = root / "경로검증.zip"
++    with zipfile.ZipFile(hostile, "w") as z: z.writestr("../outside.txt", "거부")
++    try: engine.convert(hostile, "tar")
++    except ValueError: pass
++    else: raise AssertionError("상위 경로를 거부하지 않았습니다")
++    summary = {"total": len(results), "passed": sum(r["ok"] for r in results), "failed": [r for r in results if not r["ok"]], "results": results}
++    (root.parent / "변환시험.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
++    print(json.dumps({k:v for k,v in summary.items() if k != "results"}, ensure_ascii=False))
++    return bool(summary["failed"])
++
++
++if __name__ == "__main__": sys.exit(main())
+--- a/소스/test_hwp_worker.py
++++ b/소스/test_hwp_worker.py
+@@ -1,232 +1,232 @@
+-"""GUI 초기화 없는 worker와 결과 경계의 실제 동작을 검사한다."""
+-import hashlib
+-import importlib
+-import importlib.util
+-import json
+-from pathlib import Path
+-import subprocess
+-import sys
+-import tempfile
+-import unittest
+-
+-
+-class HwpWorkerTests(unittest.TestCase):
+-    def worker(self):
+-        self.assertIsNotNone(importlib.util.find_spec('hwp_worker'), '별도 저장 worker가 필요합니다.')
+-        return importlib.import_module('hwp_worker')
+-
+-    def test_worker_single_request_and_result(self):
+-        worker = self.worker()
+-        with tempfile.TemporaryDirectory() as folder:
+-            root = Path(folder)
+-            source = root / '원본.txt'
+-            source.write_text('worker 한글 123', encoding='utf-8')
+-            request = root / 'request.json'
+-            request.write_text(json.dumps({'version': 1, 'source': str(source), 'target': 'hwpx',
+-                'source_sha256': hashlib.sha256(source.read_bytes()).hexdigest()}), encoding='utf-8')
+-            self.assertEqual(0, worker.main([str(request)]))
+-            result = json.loads((root / 'result.json').read_text(encoding='utf-8'))
+-            self.assertIs(result['ok'], True)
+-            self.assertEqual('output.hwpx', result['output'])
+-            self.assertTrue((root / result['output']).is_file())
+-            self.assertLessEqual((root / 'result.json').stat().st_size, 65536)
+-
+-    def test_cli_before_gui_and_bad_request(self):
+-        self.worker()
+-        app = Path(__file__).with_name('app.py')
+-        result = subprocess.run([sys.executable, '-B', '-X', 'utf8', str(app), '--hwp-worker'],
+-                                capture_output=True, timeout=15)
+-        self.assertEqual(2, result.returncode)
+-        self.assertNotIn(b'QApplication', result.stderr)
+-        self.assertNotIn(b'WinDLL', result.stderr)
+-
+-    def test_schema_hash_and_preexisting_result_refused(self):
+-        worker = self.worker()
+-        with tempfile.TemporaryDirectory() as folder:
+-            root = Path(folder)
+-            source = root / '원본.txt'
+-            source.write_bytes(b'original')
+-            request = root / 'request.json'
+-            request.write_text(json.dumps({'version': 1, 'source': str(source), 'target': 'hwpx',
+-                'source_sha256': '0' * 64}), encoding='utf-8')
+-            self.assertEqual(1, worker.main([str(request)]))
+-            result = json.loads((root / 'result.json').read_text(encoding='utf-8'))
+-            self.assertIs(result['ok'], False)
+-            self.assertFalse((root / 'output.hwpx').exists())
+-            with self.assertRaises(FileExistsError):
+-                worker.main([str(request)])
+-            self.assertEqual(b'original', source.read_bytes())
+-
+-
+-class HwpOwnedWorkerTests(unittest.TestCase):
+-    """취소·시간·메시지·출력 검증 누락이 실제 소유 자식에서 드러나게 한다."""
+-
+-    def exercise(self, scenario, error=None, pattern=None):
+-        import ctypes
+-        from ctypes import wintypes
+-        import os
+-        import threading
+-        import time
+-        from types import SimpleNamespace
+-        from unittest.mock import patch
+-        import engine
+-
+-        # 외부 변환기 대신 제어된 자식만 주입한다. Popen·Job·종료·회수는 제품 그대로다.
+-        probe = r"""
+-import hashlib, json, os, subprocess, sys, time
+-from pathlib import Path
+-request = Path(sys.argv[1])
+-mode = sys.argv[2]
+-root = request.parent
+-data = json.loads(request.read_text(encoding='utf-8'))
+-output = root / 'output.hwpx'
+-output.write_bytes(b'controlled-worker-output')
+-result = {'version':1, 'ok':True, 'format':'hwpx', 'source_sha256':data['source_sha256'],
+-          'output':'output.hwpx', 'output_sha256':hashlib.sha256(output.read_bytes()).hexdigest()}
+-if mode in ('cancel', 'timeout'):
+-    child = subprocess.Popen([sys.executable, '-B', '-X', 'utf8', '-c', 'import time; time.sleep(45)'],
+-                             creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
+-    (root / 'ready.json').write_text(json.dumps({'pid':child.pid}), encoding='utf-8')
+-    time.sleep(45)
+-elif mode == 'oversize_json':
+-    (root / 'result.json').write_bytes(b' ' * 65537)
+-elif mode == 'duplicate_json':
+-    (root / 'result.json').write_text('{"ok":true,"ok":false}', encoding='utf-8')
+-else:
+-    if mode == 'outside_output': result['output'] = '../output.hwpx'
+-    if mode == 'bad_hash': result['output_sha256'] = '0' * 64
+-    (root / 'result.json').write_text(json.dumps(result), encoding='utf-8')
+-    if mode == 'overflow_log': os.write(1, b'x' * 65537)
+-    if mode == 'exact_log': os.write(1, b'x' * 65533 + '\uac00'.encode('utf-8'))
+-    if mode == 'invalid_utf8': os.write(1, b'\xff')
+-"""
+-        with tempfile.TemporaryDirectory() as folder:
+-            root = Path(folder)
+-            source = root / '원본.txt'
+-            source.write_bytes(b'original-source-unchanged')
+-            before_hash = hashlib.sha256(source.read_bytes()).hexdigest()
+-            final = root / '기존결과.hwpx'
+-            final.write_bytes(b'preexisting-published-output')
+-            work = root / 'work'
+-            work.mkdir()
+-            processes = []
+-            descendant_handles = []
+-            shifted = False
+-            cancel = threading.Event()
+-            real_popen = subprocess.Popen
+-            real_monotonic = time.monotonic
+-            old_cancel = getattr(engine._CONTEXT, 'cancel', None)
+-            engine._CONTEXT.cancel = cancel
+-            original_check = engine.check_cancel
+-            kernel = None
+-            if os.name == 'nt':
+-                kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+-                kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+-                kernel.OpenProcess.restype = wintypes.HANDLE
+-                kernel.WaitForSingleObject.argtypes = [wintypes.HANDLE, wintypes.DWORD]
+-                kernel.WaitForSingleObject.restype = wintypes.DWORD
+-                kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+-                kernel.CloseHandle.restype = wintypes.BOOL
+-
+-            def launch(argv, **kwargs):
+-                self.assertIn('--hwp-worker', argv)
+-                request = argv[-1]
+-                process = real_popen([sys.executable, '-B', '-X', 'utf8', '-c', probe,
+-                                      str(request), scenario], **kwargs)
+-                processes.append(process)
+-                return process
+-
+-            def observe_cancel():
+-                nonlocal shifted
+-                ready = list(work.glob('hwp-*/ready.json'))
+-                if ready and not shifted:
+-                    pid = json.loads(ready[0].read_text(encoding='utf-8'))['pid']
+-                    if kernel is not None:
+-                        handle = kernel.OpenProcess(0x100000, False, pid)
+-                        self.assertTrue(handle, '살아 있는 자체 후손의 종료 관측 핸들이 필요합니다.')
+-                        descendant_handles.append(handle)
+-                        self.assertEqual(258, kernel.WaitForSingleObject(handle, 0))
+-                    shifted = True
+-                    if scenario == 'cancel':
+-                        cancel.set()
+-                original_check()
+-
+-            def controlled_clock():
+-                # READY 이후 단조시계만 1801초 이동한다. 실제 30분 시험이 아니다.
+-                return real_monotonic() + (1801 if shifted and scenario == 'timeout' else 0)
+-
+-            returned = []
+-            try:
+-                with patch.object(engine.subprocess, 'Popen', launch), \
+-                     patch.object(engine, 'check_cancel', observe_cancel), \
+-                     patch.object(engine, 'time', SimpleNamespace(monotonic=controlled_clock, sleep=time.sleep)):
+-                    if error is None:
+-                        returned.append(engine.run_hwp_worker(source, 'hwpx', work))
+-                    else:
+-                        with self.assertRaisesRegex(error, pattern):
+-                            returned.append(engine.run_hwp_worker(source, 'hwpx', work))
+-                self.assertEqual(1, len(processes))
+-                process = processes[0]
+-                self.assertIsNotNone(process.poll(), '실제 직접 자식이 종료되어야 합니다.')
+-                self.assertTrue(process.stdout.closed, '실제 파이프를 회수하고 닫아야 합니다.')
+-                if kernel is not None:
+-                    tree = process._flipring_owned_tree
+-                    self.assertFalse(tree.handle, '소유 Job 핸들을 정리해야 합니다.')
+-                    self.assertFalse(tree.port, 'Job 알림 포트를 정리해야 합니다.')
+-                    self.assertEqual({}, tree.process_handles)
+-                    for handle in descendant_handles:
+-                        self.assertEqual(0, kernel.WaitForSingleObject(handle, 0), '자체 후손의 실제 종료 신호')
+-                if scenario in ('cancel', 'timeout'):
+-                    self.assertTrue(shifted, '후손 실행 이후 취소·시간초과 분기에 도달해야 합니다.')
+-                    if kernel is not None:
+-                        self.assertEqual(1, len(descendant_handles))
+-                self.assertEqual(before_hash, hashlib.sha256(source.read_bytes()).hexdigest())
+-                self.assertEqual(b'preexisting-published-output', final.read_bytes())
+-                self.assertEqual({'원본.txt', '기존결과.hwpx', 'work'}, {p.name for p in root.iterdir()})
+-                if error is not None:
+-                    self.assertEqual([], returned, '거부된 임시 출력을 호출자에게 게시하면 안 됩니다.')
+-                else:
+-                    self.assertEqual(b'controlled-worker-output', returned[0].read_bytes())
+-                    self.assertEqual(work.resolve(), returned[0].parent.parent.resolve())
+-            finally:
+-                engine._CONTEXT.cancel = old_cancel
+-                # 단언 실패 시에도 이 시험이 소유한 자식만 회수한다. 정리 오류는 숨기지 않는다.
+-                for process in processes:
+-                    if process.poll() is None:
+-                        engine._finish_owned_process(process, real_monotonic() + 15)
+-                    if process.stdout is not None and not process.stdout.closed:
+-                        process.stdout.close()
+-                for handle in descendant_handles:
+-                    self.assertTrue(kernel.CloseHandle(handle))
+-
+-    def test_cancel_terminates_owned_worker_and_descendant(self):
+-        import engine
+-        self.exercise('cancel', engine.Cancelled, '취소')
+-
+-    def test_controlled_timeout_terminates_owned_worker_and_descendant(self):
+-        self.exercise('timeout', RuntimeError, '제한 시간')
+-
+-    def test_oversized_result_json_is_not_published(self):
+-        self.exercise('oversize_json', ValueError, '메시지 크기 제한')
+-
+-    def test_duplicate_result_json_is_not_published(self):
+-        self.exercise('duplicate_json', ValueError, '중복 키')
+-
+-    def test_outside_output_path_is_not_published(self):
+-        self.exercise('outside_output', RuntimeError, '출력 경계')
+-
+-    def test_wrong_output_hash_is_not_published(self):
+-        self.exercise('bad_hash', RuntimeError, '출력 해시')
+-
+-    def test_log_over_64k_is_not_published(self):
+-        self.exercise('overflow_log', RuntimeError, '64KiB')
+-
+-    def test_invalid_utf8_log_is_not_published(self):
+-        self.exercise('invalid_utf8', UnicodeDecodeError, 'utf-8')
+-
+-    def test_exact_64k_utf8_log_is_accepted(self):
+-        self.exercise('exact_log')
+-
+-
+-if __name__ == '__main__':
+-    unittest.main()
++"""GUI 초기화 없는 worker와 결과 경계의 실제 동작을 검사한다."""
++import hashlib
++import importlib
++import importlib.util
++import json
++from pathlib import Path
++import subprocess
++import sys
++import tempfile
++import unittest
++
++
++class HwpWorkerTests(unittest.TestCase):
++    def worker(self):
++        self.assertIsNotNone(importlib.util.find_spec('hwp_worker'), '별도 저장 worker가 필요합니다.')
++        return importlib.import_module('hwp_worker')
++
++    def test_worker_single_request_and_result(self):
++        worker = self.worker()
++        with tempfile.TemporaryDirectory() as folder:
++            root = Path(folder)
++            source = root / '원본.txt'
++            source.write_text('worker 한글 123', encoding='utf-8')
++            request = root / 'request.json'
++            request.write_text(json.dumps({'version': 1, 'source': str(source), 'target': 'hwpx',
++                'source_sha256': hashlib.sha256(source.read_bytes()).hexdigest()}), encoding='utf-8')
++            self.assertEqual(0, worker.main([str(request)]))
++            result = json.loads((root / 'result.json').read_text(encoding='utf-8'))
++            self.assertIs(result['ok'], True)
++            self.assertEqual('output.hwpx', result['output'])
++            self.assertTrue((root / result['output']).is_file())
++            self.assertLessEqual((root / 'result.json').stat().st_size, 65536)
++
++    def test_cli_before_gui_and_bad_request(self):
++        self.worker()
++        app = Path(__file__).with_name('app.py')
++        result = subprocess.run([sys.executable, '-B', '-X', 'utf8', str(app), '--hwp-worker'],
++                                capture_output=True, timeout=15)
++        self.assertEqual(2, result.returncode)
++        self.assertNotIn(b'QApplication', result.stderr)
++        self.assertNotIn(b'WinDLL', result.stderr)
++
++    def test_schema_hash_and_preexisting_result_refused(self):
++        worker = self.worker()
++        with tempfile.TemporaryDirectory() as folder:
++            root = Path(folder)
++            source = root / '원본.txt'
++            source.write_bytes(b'original')
++            request = root / 'request.json'
++            request.write_text(json.dumps({'version': 1, 'source': str(source), 'target': 'hwpx',
++                'source_sha256': '0' * 64}), encoding='utf-8')
++            self.assertEqual(1, worker.main([str(request)]))
++            result = json.loads((root / 'result.json').read_text(encoding='utf-8'))
++            self.assertIs(result['ok'], False)
++            self.assertFalse((root / 'output.hwpx').exists())
++            with self.assertRaises(FileExistsError):
++                worker.main([str(request)])
++            self.assertEqual(b'original', source.read_bytes())
++
++
++class HwpOwnedWorkerTests(unittest.TestCase):
++    """취소·시간·메시지·출력 검증 누락이 실제 소유 자식에서 드러나게 한다."""
++
++    def exercise(self, scenario, error=None, pattern=None):
++        import ctypes
++        from ctypes import wintypes
++        import os
++        import threading
++        import time
++        from types import SimpleNamespace
++        from unittest.mock import patch
++        import engine
++
++        # 외부 변환기 대신 제어된 자식만 주입한다. Popen·Job·종료·회수는 제품 그대로다.
++        probe = r"""
++import hashlib, json, os, subprocess, sys, time
++from pathlib import Path
++request = Path(sys.argv[1])
++mode = sys.argv[2]
++root = request.parent
++data = json.loads(request.read_text(encoding='utf-8'))
++output = root / 'output.hwpx'
++output.write_bytes(b'controlled-worker-output')
++result = {'version':1, 'ok':True, 'format':'hwpx', 'source_sha256':data['source_sha256'],
++          'output':'output.hwpx', 'output_sha256':hashlib.sha256(output.read_bytes()).hexdigest()}
++if mode in ('cancel', 'timeout'):
++    child = subprocess.Popen([sys.executable, '-B', '-X', 'utf8', '-c', 'import time; time.sleep(45)'],
++                             creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
++    (root / 'ready.json').write_text(json.dumps({'pid':child.pid}), encoding='utf-8')
++    time.sleep(45)
++elif mode == 'oversize_json':
++    (root / 'result.json').write_bytes(b' ' * 65537)
++elif mode == 'duplicate_json':
++    (root / 'result.json').write_text('{"ok":true,"ok":false}', encoding='utf-8')
++else:
++    if mode == 'outside_output': result['output'] = '../output.hwpx'
++    if mode == 'bad_hash': result['output_sha256'] = '0' * 64
++    (root / 'result.json').write_text(json.dumps(result), encoding='utf-8')
++    if mode == 'overflow_log': os.write(1, b'x' * 65537)
++    if mode == 'exact_log': os.write(1, b'x' * 65533 + '\uac00'.encode('utf-8'))
++    if mode == 'invalid_utf8': os.write(1, b'\xff')
++"""
++        with tempfile.TemporaryDirectory() as folder:
++            root = Path(folder)
++            source = root / '원본.txt'
++            source.write_bytes(b'original-source-unchanged')
++            before_hash = hashlib.sha256(source.read_bytes()).hexdigest()
++            final = root / '기존결과.hwpx'
++            final.write_bytes(b'preexisting-published-output')
++            work = root / 'work'
++            work.mkdir()
++            processes = []
++            descendant_handles = []
++            shifted = False
++            cancel = threading.Event()
++            real_popen = subprocess.Popen
++            real_monotonic = time.monotonic
++            old_cancel = getattr(engine._CONTEXT, 'cancel', None)
++            engine._CONTEXT.cancel = cancel
++            original_check = engine.check_cancel
++            kernel = None
++            if os.name == 'nt':
++                kernel = ctypes.WinDLL('kernel32', use_last_error=True)
++                kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
++                kernel.OpenProcess.restype = wintypes.HANDLE
++                kernel.WaitForSingleObject.argtypes = [wintypes.HANDLE, wintypes.DWORD]
++                kernel.WaitForSingleObject.restype = wintypes.DWORD
++                kernel.CloseHandle.argtypes = [wintypes.HANDLE]
++                kernel.CloseHandle.restype = wintypes.BOOL
++
++            def launch(argv, **kwargs):
++                self.assertIn('--hwp-worker', argv)
++                request = argv[-1]
++                process = real_popen([sys.executable, '-B', '-X', 'utf8', '-c', probe,
++                                      str(request), scenario], **kwargs)
++                processes.append(process)
++                return process
++
++            def observe_cancel():
++                nonlocal shifted
++                ready = list(work.glob('hwp-*/ready.json'))
++                if ready and not shifted:
++                    pid = json.loads(ready[0].read_text(encoding='utf-8'))['pid']
++                    if kernel is not None:
++                        handle = kernel.OpenProcess(0x100000, False, pid)
++                        self.assertTrue(handle, '살아 있는 자체 후손의 종료 관측 핸들이 필요합니다.')
++                        descendant_handles.append(handle)
++                        self.assertEqual(258, kernel.WaitForSingleObject(handle, 0))
++                    shifted = True
++                    if scenario == 'cancel':
++                        cancel.set()
++                original_check()
++
++            def controlled_clock():
++                # READY 이후 단조시계만 1801초 이동한다. 실제 30분 시험이 아니다.
++                return real_monotonic() + (1801 if shifted and scenario == 'timeout' else 0)
++
++            returned = []
++            try:
++                with patch.object(engine.subprocess, 'Popen', launch), \
++                     patch.object(engine, 'check_cancel', observe_cancel), \
++                     patch.object(engine, 'time', SimpleNamespace(monotonic=controlled_clock, sleep=time.sleep)):
++                    if error is None:
++                        returned.append(engine.run_hwp_worker(source, 'hwpx', work))
++                    else:
++                        with self.assertRaisesRegex(error, pattern):
++                            returned.append(engine.run_hwp_worker(source, 'hwpx', work))
++                self.assertEqual(1, len(processes))
++                process = processes[0]
++                self.assertIsNotNone(process.poll(), '실제 직접 자식이 종료되어야 합니다.')
++                self.assertTrue(process.stdout.closed, '실제 파이프를 회수하고 닫아야 합니다.')
++                if kernel is not None:
++                    tree = process._flipring_owned_tree
++                    self.assertFalse(tree.handle, '소유 Job 핸들을 정리해야 합니다.')
++                    self.assertFalse(tree.port, 'Job 알림 포트를 정리해야 합니다.')
++                    self.assertEqual({}, tree.process_handles)
++                    for handle in descendant_handles:
++                        self.assertEqual(0, kernel.WaitForSingleObject(handle, 0), '자체 후손의 실제 종료 신호')
++                if scenario in ('cancel', 'timeout'):
++                    self.assertTrue(shifted, '후손 실행 이후 취소·시간초과 분기에 도달해야 합니다.')
++                    if kernel is not None:
++                        self.assertEqual(1, len(descendant_handles))
++                self.assertEqual(before_hash, hashlib.sha256(source.read_bytes()).hexdigest())
++                self.assertEqual(b'preexisting-published-output', final.read_bytes())
++                self.assertEqual({'원본.txt', '기존결과.hwpx', 'work'}, {p.name for p in root.iterdir()})
++                if error is not None:
++                    self.assertEqual([], returned, '거부된 임시 출력을 호출자에게 게시하면 안 됩니다.')
++                else:
++                    self.assertEqual(b'controlled-worker-output', returned[0].read_bytes())
++                    self.assertEqual(work.resolve(), returned[0].parent.parent.resolve())
++            finally:
++                engine._CONTEXT.cancel = old_cancel
++                # 단언 실패 시에도 이 시험이 소유한 자식만 회수한다. 정리 오류는 숨기지 않는다.
++                for process in processes:
++                    if process.poll() is None:
++                        engine._finish_owned_process(process, real_monotonic() + 15)
++                    if process.stdout is not None and not process.stdout.closed:
++                        process.stdout.close()
++                for handle in descendant_handles:
++                    self.assertTrue(kernel.CloseHandle(handle))
++
++    def test_cancel_terminates_owned_worker_and_descendant(self):
++        import engine
++        self.exercise('cancel', engine.Cancelled, '취소')
++
++    def test_controlled_timeout_terminates_owned_worker_and_descendant(self):
++        self.exercise('timeout', RuntimeError, '제한 시간')
++
++    def test_oversized_result_json_is_not_published(self):
++        self.exercise('oversize_json', ValueError, '메시지 크기 제한')
++
++    def test_duplicate_result_json_is_not_published(self):
++        self.exercise('duplicate_json', ValueError, '중복 키')
++
++    def test_outside_output_path_is_not_published(self):
++        self.exercise('outside_output', RuntimeError, '출력 경계')
++
++    def test_wrong_output_hash_is_not_published(self):
++        self.exercise('bad_hash', RuntimeError, '출력 해시')
++
++    def test_log_over_64k_is_not_published(self):
++        self.exercise('overflow_log', RuntimeError, '64KiB')
++
++    def test_invalid_utf8_log_is_not_published(self):
++        self.exercise('invalid_utf8', UnicodeDecodeError, 'utf-8')
++
++    def test_exact_64k_utf8_log_is_accepted(self):
++        self.exercise('exact_log')
++
++
++if __name__ == '__main__':
++    unittest.main()

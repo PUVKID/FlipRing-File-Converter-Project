@@ -1,0 +1,1486 @@
+--- a/소스/assets/combo-chevron.svg
++++ b/소스/assets/combo-chevron.svg
+@@ -1,3 +1,3 @@
+-<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8">
+-  <path d="M2 2 L6 6 L10 2" fill="none" stroke="#737373" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+-</svg>
++<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8">
++  <path d="M2 2 L6 6 L10 2" fill="none" stroke="#737373" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
++</svg>
+--- a/소스/assets/lucide/arrow-left-right.svg
++++ b/소스/assets/lucide/arrow-left-right.svg
+@@ -1,16 +1,16 @@
+-<svg
+-  xmlns="http://www.w3.org/2000/svg"
+-  width="24"
+-  height="24"
+-  viewBox="0 0 24 24"
+-  fill="none"
+-  stroke="currentColor"
+-  stroke-width="2"
+-  stroke-linecap="round"
+-  stroke-linejoin="round"
+->
+-  <path d="M8 3 4 7l4 4" />
+-  <path d="M4 7h16" />
+-  <path d="m16 21 4-4-4-4" />
+-  <path d="M20 17H4" />
+-</svg>
++<svg
++  xmlns="http://www.w3.org/2000/svg"
++  width="24"
++  height="24"
++  viewBox="0 0 24 24"
++  fill="none"
++  stroke="currentColor"
++  stroke-width="2"
++  stroke-linecap="round"
++  stroke-linejoin="round"
++>
++  <path d="M8 3 4 7l4 4" />
++  <path d="M4 7h16" />
++  <path d="m16 21 4-4-4-4" />
++  <path d="M20 17H4" />
++</svg>
+--- a/소스/assets/lucide/arrow-up-right.svg
++++ b/소스/assets/lucide/arrow-up-right.svg
+@@ -1,14 +1,14 @@
+-<svg
+-  xmlns="http://www.w3.org/2000/svg"
+-  width="24"
+-  height="24"
+-  viewBox="0 0 24 24"
+-  fill="none"
+-  stroke="currentColor"
+-  stroke-width="2"
+-  stroke-linecap="round"
+-  stroke-linejoin="round"
+->
+-  <path d="M7 7h10v10" />
+-  <path d="M7 17 17 7" />
+-</svg>
++<svg
++  xmlns="http://www.w3.org/2000/svg"
++  width="24"
++  height="24"
++  viewBox="0 0 24 24"
++  fill="none"
++  stroke="currentColor"
++  stroke-width="2"
++  stroke-linecap="round"
++  stroke-linejoin="round"
++>
++  <path d="M7 7h10v10" />
++  <path d="M7 17 17 7" />
++</svg>
+--- a/소스/assets/lucide/check.svg
++++ b/소스/assets/lucide/check.svg
+@@ -1,13 +1,13 @@
+-<svg
+-  xmlns="http://www.w3.org/2000/svg"
+-  width="24"
+-  height="24"
+-  viewBox="0 0 24 24"
+-  fill="none"
+-  stroke="currentColor"
+-  stroke-width="2"
+-  stroke-linecap="round"
+-  stroke-linejoin="round"
+->
+-  <path d="M20 6 9 17l-5-5" />
+-</svg>
++<svg
++  xmlns="http://www.w3.org/2000/svg"
++  width="24"
++  height="24"
++  viewBox="0 0 24 24"
++  fill="none"
++  stroke="currentColor"
++  stroke-width="2"
++  stroke-linecap="round"
++  stroke-linejoin="round"
++>
++  <path d="M20 6 9 17l-5-5" />
++</svg>
+--- a/소스/assets/lucide/file-up.svg
++++ b/소스/assets/lucide/file-up.svg
+@@ -1,16 +1,16 @@
+-<svg
+-  xmlns="http://www.w3.org/2000/svg"
+-  width="24"
+-  height="24"
+-  viewBox="0 0 24 24"
+-  fill="none"
+-  stroke="currentColor"
+-  stroke-width="2"
+-  stroke-linecap="round"
+-  stroke-linejoin="round"
+->
+-  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+-  <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+-  <path d="M12 12v6" />
+-  <path d="m15 15-3-3-3 3" />
+-</svg>
++<svg
++  xmlns="http://www.w3.org/2000/svg"
++  width="24"
++  height="24"
++  viewBox="0 0 24 24"
++  fill="none"
++  stroke="currentColor"
++  stroke-width="2"
++  stroke-linecap="round"
++  stroke-linejoin="round"
++>
++  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
++  <path d="M14 2v5a1 1 0 0 0 1 1h5" />
++  <path d="M12 12v6" />
++  <path d="m15 15-3-3-3 3" />
++</svg>
+--- a/소스/assets/lucide/file.svg
++++ b/소스/assets/lucide/file.svg
+@@ -1,14 +1,14 @@
+-<svg
+-  xmlns="http://www.w3.org/2000/svg"
+-  width="24"
+-  height="24"
+-  viewBox="0 0 24 24"
+-  fill="none"
+-  stroke="currentColor"
+-  stroke-width="2"
+-  stroke-linecap="round"
+-  stroke-linejoin="round"
+->
+-  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+-  <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+-</svg>
++<svg
++  xmlns="http://www.w3.org/2000/svg"
++  width="24"
++  height="24"
++  viewBox="0 0 24 24"
++  fill="none"
++  stroke="currentColor"
++  stroke-width="2"
++  stroke-linecap="round"
++  stroke-linejoin="round"
++>
++  <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
++  <path d="M14 2v5a1 1 0 0 0 1 1h5" />
++</svg>
+--- a/소스/assets/lucide/folder-open.svg
++++ b/소스/assets/lucide/folder-open.svg
+@@ -1,13 +1,13 @@
+-<svg
+-  xmlns="http://www.w3.org/2000/svg"
+-  width="24"
+-  height="24"
+-  viewBox="0 0 24 24"
+-  fill="none"
+-  stroke="currentColor"
+-  stroke-width="2"
+-  stroke-linecap="round"
+-  stroke-linejoin="round"
+->
+-  <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" />
+-</svg>
++<svg
++  xmlns="http://www.w3.org/2000/svg"
++  width="24"
++  height="24"
++  viewBox="0 0 24 24"
++  fill="none"
++  stroke="currentColor"
++  stroke-width="2"
++  stroke-linecap="round"
++  stroke-linejoin="round"
++>
++  <path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2" />
++</svg>
+--- a/소스/assets/lucide/info.svg
++++ b/소스/assets/lucide/info.svg
+@@ -1,15 +1,15 @@
+-<svg
+-  xmlns="http://www.w3.org/2000/svg"
+-  width="24"
+-  height="24"
+-  viewBox="0 0 24 24"
+-  fill="none"
+-  stroke="currentColor"
+-  stroke-width="2"
+-  stroke-linecap="round"
+-  stroke-linejoin="round"
+->
+-  <circle cx="12" cy="12" r="10" />
+-  <path d="M12 16v-4" />
+-  <path d="M12 8h.01" />
+-</svg>
++<svg
++  xmlns="http://www.w3.org/2000/svg"
++  width="24"
++  height="24"
++  viewBox="0 0 24 24"
++  fill="none"
++  stroke="currentColor"
++  stroke-width="2"
++  stroke-linecap="round"
++  stroke-linejoin="round"
++>
++  <circle cx="12" cy="12" r="10" />
++  <path d="M12 16v-4" />
++  <path d="M12 8h.01" />
++</svg>
+--- a/소스/assets/lucide/plus.svg
++++ b/소스/assets/lucide/plus.svg
+@@ -1,14 +1,14 @@
+-<svg
+-  xmlns="http://www.w3.org/2000/svg"
+-  width="24"
+-  height="24"
+-  viewBox="0 0 24 24"
+-  fill="none"
+-  stroke="currentColor"
+-  stroke-width="2"
+-  stroke-linecap="round"
+-  stroke-linejoin="round"
+->
+-  <path d="M5 12h14" />
+-  <path d="M12 5v14" />
+-</svg>
++<svg
++  xmlns="http://www.w3.org/2000/svg"
++  width="24"
++  height="24"
++  viewBox="0 0 24 24"
++  fill="none"
++  stroke="currentColor"
++  stroke-width="2"
++  stroke-linecap="round"
++  stroke-linejoin="round"
++>
++  <path d="M5 12h14" />
++  <path d="M12 5v14" />
++</svg>
+--- a/소스/assets/lucide/rotate-ccw-clock.svg
++++ b/소스/assets/lucide/rotate-ccw-clock.svg
+@@ -1,15 +1,15 @@
+-<svg
+-  xmlns="http://www.w3.org/2000/svg"
+-  width="24"
+-  height="24"
+-  viewBox="0 0 24 24"
+-  fill="none"
+-  stroke="currentColor"
+-  stroke-width="2"
+-  stroke-linecap="round"
+-  stroke-linejoin="round"
+->
+-  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+-  <path d="M3 3v5h5" />
+-  <path d="M12 7v5l4 2" />
+-</svg>
++<svg
++  xmlns="http://www.w3.org/2000/svg"
++  width="24"
++  height="24"
++  viewBox="0 0 24 24"
++  fill="none"
++  stroke="currentColor"
++  stroke-width="2"
++  stroke-linecap="round"
++  stroke-linejoin="round"
++>
++  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
++  <path d="M3 3v5h5" />
++  <path d="M12 7v5l4 2" />
++</svg>
+--- a/소스/assets/lucide/scan-text.svg
++++ b/소스/assets/lucide/scan-text.svg
+@@ -1,19 +1,19 @@
+-<svg
+-  xmlns="http://www.w3.org/2000/svg"
+-  width="24"
+-  height="24"
+-  viewBox="0 0 24 24"
+-  fill="none"
+-  stroke="currentColor"
+-  stroke-width="2"
+-  stroke-linecap="round"
+-  stroke-linejoin="round"
+->
+-  <path d="M3 7V5a2 2 0 0 1 2-2h2" />
+-  <path d="M17 3h2a2 2 0 0 1 2 2v2" />
+-  <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
+-  <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
+-  <path d="M7 8h8" />
+-  <path d="M7 12h10" />
+-  <path d="M7 16h6" />
+-</svg>
++<svg
++  xmlns="http://www.w3.org/2000/svg"
++  width="24"
++  height="24"
++  viewBox="0 0 24 24"
++  fill="none"
++  stroke="currentColor"
++  stroke-width="2"
++  stroke-linecap="round"
++  stroke-linejoin="round"
++>
++  <path d="M3 7V5a2 2 0 0 1 2-2h2" />
++  <path d="M17 3h2a2 2 0 0 1 2 2v2" />
++  <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
++  <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
++  <path d="M7 8h8" />
++  <path d="M7 12h10" />
++  <path d="M7 16h6" />
++</svg>
+--- a/소스/assets/lucide/sliders-horizontal.svg
++++ b/소스/assets/lucide/sliders-horizontal.svg
+@@ -1,21 +1,21 @@
+-<svg
+-  xmlns="http://www.w3.org/2000/svg"
+-  width="24"
+-  height="24"
+-  viewBox="0 0 24 24"
+-  fill="none"
+-  stroke="currentColor"
+-  stroke-width="2"
+-  stroke-linecap="round"
+-  stroke-linejoin="round"
+->
+-  <path d="M10 5H3" />
+-  <path d="M12 19H3" />
+-  <path d="M14 3v4" />
+-  <path d="M16 17v4" />
+-  <path d="M21 12h-9" />
+-  <path d="M21 19h-5" />
+-  <path d="M21 5h-7" />
+-  <path d="M8 10v4" />
+-  <path d="M8 12H3" />
+-</svg>
++<svg
++  xmlns="http://www.w3.org/2000/svg"
++  width="24"
++  height="24"
++  viewBox="0 0 24 24"
++  fill="none"
++  stroke="currentColor"
++  stroke-width="2"
++  stroke-linecap="round"
++  stroke-linejoin="round"
++>
++  <path d="M10 5H3" />
++  <path d="M12 19H3" />
++  <path d="M14 3v4" />
++  <path d="M16 17v4" />
++  <path d="M21 12h-9" />
++  <path d="M21 19h-5" />
++  <path d="M21 5h-7" />
++  <path d="M8 10v4" />
++  <path d="M8 12H3" />
++</svg>
+--- a/소스/assets/lucide/x.svg
++++ b/소스/assets/lucide/x.svg
+@@ -1,14 +1,14 @@
+-<svg
+-  xmlns="http://www.w3.org/2000/svg"
+-  width="24"
+-  height="24"
+-  viewBox="0 0 24 24"
+-  fill="none"
+-  stroke="currentColor"
+-  stroke-width="2"
+-  stroke-linecap="round"
+-  stroke-linejoin="round"
+->
+-  <path d="M18 6 6 18" />
+-  <path d="m6 6 12 12" />
+-</svg>
++<svg
++  xmlns="http://www.w3.org/2000/svg"
++  width="24"
++  height="24"
++  viewBox="0 0 24 24"
++  fill="none"
++  stroke="currentColor"
++  stroke-width="2"
++  stroke-linecap="round"
++  stroke-linejoin="round"
++>
++  <path d="M18 6 6 18" />
++  <path d="m6 6 12 12" />
++</svg>
+--- a/소스/assets/NanumGothic-OFL.txt
++++ b/소스/assets/NanumGothic-OFL.txt
+@@ -1,126 +1,126 @@
+-Nanum Gothic Bold — Copyright (c) 2010, NAVER Corporation. SIL Open Font License 1.1
+-http://hangeul.naver.com/
+-
+-Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+-Upstream-Name: NanumFontSetup_TTF_ALL
+-Upstream-Contact: http://hangeul.naver.com/
+-Source: http://hangeul.naver.com/
+-
+-Files: *
+-Copyright: 2010, NAVER Corporation (http://www.nhncorp.com)
+-License: OFL-1.1
+- Copyright (c) 2010, NAVER Corporation (http://www.nhncorp.com),
+- .
+- with Reserved Font Name Nanum, Naver Nanum, NanumGothic, Naver
+- NanumGothic, NanumMyeongjo, Naver NanumMyeongjo, NanumBrush, Naver
+- NanumBrush, NanumPen, Naver NanumPen, Naver NanumGothicEco,
+- NanumGothicEco, Naver NanumMyeongjoEco, NanumMyeongjoEco, Naver
+- NanumGothicLight, NanumGothicLight, NanumBarunGothic, Naver
+- NanumBarunGothic,
+- .
+- This Font Software is licensed under the SIL Open Font License, Version 1.1.
+- .
+- This license is copied below, and is also available with a FAQ at:
+- http://scripts.sil.org/OFL 
+- .
+- SIL OPEN FONT LICENSE
+- .
+- Version 1.1 - 26 February 2007
+- .
+- PREAMBLE
+- .
+- The goals of the Open Font License (OFL) are to stimulate worldwide
+- development of collaborative font projects, to support the font creation
+- efforts of academic and linguistic communities, and to provide a free and
+- open framework in which fonts may be shared and improved in partnership
+- with others.
+- .
+- The OFL allows the licensed fonts to be used, studied, modified and
+- redistributed freely as long as they are not sold by themselves. The
+- fonts, including any derivative works, can be bundled, embedded, 
+- redistributed and/or sold with any software provided that any reserved
+- names are not used by derivative works. The fonts and derivatives,
+- however, cannot be released under any other type of license. The
+- requirement for fonts to remain under this license does not apply
+- to any document created using the fonts or their derivatives.
+- .
+- DEFINITIONS
+- .
+- "Font Software" refers to the set of files released by the Copyright
+- Holder(s) under this license and clearly marked as such. This may
+- include source files, build scripts and documentation.
+- .
+- "Reserved Font Name" refers to any names specified as such after the
+- copyright statement(s).
+- .
+- "Original Version" refers to the collection of Font Software components as
+- distributed by the Copyright Holder(s).
+- .
+- "Modified Version" refers to any derivative made by adding to, deleting,
+- or substituting -- in part or in whole -- any of the components of the
+- Original Version, by changing formats or by porting the Font Software to a
+- new environment.
+- .
+- "Author" refers to any designer, engineer, programmer, technical
+- writer or other person who contributed to the Font Software.
+- .
+- PERMISSION & CONDITIONS
+- .
+- Permission is hereby granted, free of charge, to any person obtaining
+- a copy of the Font Software, to use, study, copy, merge, embed, modify,
+- redistribute, and sell modified and unmodified copies of the Font
+- Software, subject to the following conditions:
+- .
+- 1) Neither the Font Software nor any of its individual components,
+- in Original or Modified Versions, may be sold by itself.
+- .
+- 2) Original or Modified Versions of the Font Software may be bundled,
+- redistributed and/or sold with any software, provided that each copy
+- contains the above copyright notice and this license. These can be
+- included either as stand-alone text files, human-readable headers or
+- in the appropriate machine-readable metadata fields within text or
+- binary files as long as those fields can be easily viewed by the user.
+- .
+- 3) No Modified Version of the Font Software may use the Reserved Font
+- Name(s) unless explicit written permission is granted by the corresponding
+- Copyright Holder. This restriction only applies to the primary font name as
+- presented to the users.
+- .
+- 4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+- Software shall not be used to promote, endorse or advertise any
+- Modified Version, except to acknowledge the contribution(s) of the
+- Copyright Holder(s) and the Author(s) or with their explicit written
+- permission.
+- .
+- 5) The Font Software, modified or unmodified, in part or in whole,
+- must be distributed entirely under this license, and must not be
+- distributed under any other license. The requirement for fonts to
+- remain under this license does not apply to any document created
+- using the Font Software.
+- .
+- TERMINATION
+- .
+- This license becomes null and void if any of the above conditions are
+- not met.
+- .
+- DISCLAIMER
+- .
+- THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+- OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+- COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+- INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+- DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+- FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+- OTHER DEALINGS IN THE FONT SOFTWARE.
+-
+-Files: debian/*
+-Copyright: 2010-2018, Changwoo Ryu <cwryu@debian.org>
+-License: GPL-3+
+- See /usr/share/common-licenses/GPL-3 for the full license.
+-
+-Files: debian/*.metainfo.xml
+-Copyright: 2018, Changwoo Ryu
+-License: CC0-1.0
+- See /usr/share/common-licenses/CC0-1.0 for the full license.
++Nanum Gothic Bold — Copyright (c) 2010, NAVER Corporation. SIL Open Font License 1.1
++http://hangeul.naver.com/
++
++Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
++Upstream-Name: NanumFontSetup_TTF_ALL
++Upstream-Contact: http://hangeul.naver.com/
++Source: http://hangeul.naver.com/
++
++Files: *
++Copyright: 2010, NAVER Corporation (http://www.nhncorp.com)
++License: OFL-1.1
++ Copyright (c) 2010, NAVER Corporation (http://www.nhncorp.com),
++ .
++ with Reserved Font Name Nanum, Naver Nanum, NanumGothic, Naver
++ NanumGothic, NanumMyeongjo, Naver NanumMyeongjo, NanumBrush, Naver
++ NanumBrush, NanumPen, Naver NanumPen, Naver NanumGothicEco,
++ NanumGothicEco, Naver NanumMyeongjoEco, NanumMyeongjoEco, Naver
++ NanumGothicLight, NanumGothicLight, NanumBarunGothic, Naver
++ NanumBarunGothic,
++ .
++ This Font Software is licensed under the SIL Open Font License, Version 1.1.
++ .
++ This license is copied below, and is also available with a FAQ at:
++ http://scripts.sil.org/OFL 
++ .
++ SIL OPEN FONT LICENSE
++ .
++ Version 1.1 - 26 February 2007
++ .
++ PREAMBLE
++ .
++ The goals of the Open Font License (OFL) are to stimulate worldwide
++ development of collaborative font projects, to support the font creation
++ efforts of academic and linguistic communities, and to provide a free and
++ open framework in which fonts may be shared and improved in partnership
++ with others.
++ .
++ The OFL allows the licensed fonts to be used, studied, modified and
++ redistributed freely as long as they are not sold by themselves. The
++ fonts, including any derivative works, can be bundled, embedded, 
++ redistributed and/or sold with any software provided that any reserved
++ names are not used by derivative works. The fonts and derivatives,
++ however, cannot be released under any other type of license. The
++ requirement for fonts to remain under this license does not apply
++ to any document created using the fonts or their derivatives.
++ .
++ DEFINITIONS
++ .
++ "Font Software" refers to the set of files released by the Copyright
++ Holder(s) under this license and clearly marked as such. This may
++ include source files, build scripts and documentation.
++ .
++ "Reserved Font Name" refers to any names specified as such after the
++ copyright statement(s).
++ .
++ "Original Version" refers to the collection of Font Software components as
++ distributed by the Copyright Holder(s).
++ .
++ "Modified Version" refers to any derivative made by adding to, deleting,
++ or substituting -- in part or in whole -- any of the components of the
++ Original Version, by changing formats or by porting the Font Software to a
++ new environment.
++ .
++ "Author" refers to any designer, engineer, programmer, technical
++ writer or other person who contributed to the Font Software.
++ .
++ PERMISSION & CONDITIONS
++ .
++ Permission is hereby granted, free of charge, to any person obtaining
++ a copy of the Font Software, to use, study, copy, merge, embed, modify,
++ redistribute, and sell modified and unmodified copies of the Font
++ Software, subject to the following conditions:
++ .
++ 1) Neither the Font Software nor any of its individual components,
++ in Original or Modified Versions, may be sold by itself.
++ .
++ 2) Original or Modified Versions of the Font Software may be bundled,
++ redistributed and/or sold with any software, provided that each copy
++ contains the above copyright notice and this license. These can be
++ included either as stand-alone text files, human-readable headers or
++ in the appropriate machine-readable metadata fields within text or
++ binary files as long as those fields can be easily viewed by the user.
++ .
++ 3) No Modified Version of the Font Software may use the Reserved Font
++ Name(s) unless explicit written permission is granted by the corresponding
++ Copyright Holder. This restriction only applies to the primary font name as
++ presented to the users.
++ .
++ 4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
++ Software shall not be used to promote, endorse or advertise any
++ Modified Version, except to acknowledge the contribution(s) of the
++ Copyright Holder(s) and the Author(s) or with their explicit written
++ permission.
++ .
++ 5) The Font Software, modified or unmodified, in part or in whole,
++ must be distributed entirely under this license, and must not be
++ distributed under any other license. The requirement for fonts to
++ remain under this license does not apply to any document created
++ using the Font Software.
++ .
++ TERMINATION
++ .
++ This license becomes null and void if any of the above conditions are
++ not met.
++ .
++ DISCLAIMER
++ .
++ THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
++ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
++ OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
++ COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
++ INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
++ DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
++ OTHER DEALINGS IN THE FONT SOFTWARE.
++
++Files: debian/*
++Copyright: 2010-2018, Changwoo Ryu <cwryu@debian.org>
++License: GPL-3+
++ See /usr/share/common-licenses/GPL-3 for the full license.
++
++Files: debian/*.metainfo.xml
++Copyright: 2018, Changwoo Ryu
++License: CC0-1.0
++ See /usr/share/common-licenses/CC0-1.0 for the full license.
+--- a/소스/build.py
++++ b/소스/build.py
+@@ -15,8 +15,8 @@
+ ROOT = Path(__file__).resolve().parent
+ 
+ SPEC = "from pathlib import Path\nimport os\nsource = Path(os.environ['FLIPRING_SOURCE'])\n# Windows 배포에 필요한 Qt 기본 모듈만 포함한다.\nfrom PyInstaller.utils.hooks import collect_data_files\na = Analysis([str(source / 'app.py')], pathex=[str(source)], binaries=[], datas=[(str(source / 'assets'), 'assets'), (str(source / 'vendor'), 'vendor'), (str(source / 'document_bridge.py'), '.'), (str(source / 'document_formats.py'), '.'), (str(source / 'document_xlsb.py'), '.')] + collect_data_files('pypdfium2_raw') + collect_data_files('hwpx'), hiddenimports=['PIL.AvifImagePlugin', 'PIL.WebPImagePlugin'], excludes=['tkinter', 'PySide6.QtWebEngineCore', 'PySide6.QtQml', 'PySide6.QtQuick', 'olefile'])\nblocked = ('Qt6Pdf', 'Qt6Qml', 'Qt6Quick', 'Qt6VirtualKeyboard')\ndef required(entry):\n    path = entry[0].replace('\\\\', '/')\n    if any(part in path for part in blocked): return False\n    if '/plugins/platforminputcontexts/' in path or '/plugins/qmltooling/' in path: return False\n    if path.endswith('/qpdf.dll'): return False\n    return True\na.binaries = [entry for entry in a.binaries if required(entry)]\npyz = PYZ(a.pure)\nexe = EXE(pyz, a.scripts, [], exclude_binaries=True, name='FlipRing', debug=False, bootloader_ignore_signals=False, strip=False, upx=False, console=False, icon=str(source / 'assets/app.ico'), version=str(source / 'version-info.txt'))\ncoll = COLLECT(exe, a.binaries, a.datas, strip=False, upx=False, name='FlipRing')\n"
+-ISS = '; PUVKID 무료 배포판 설치 구성\n[Setup]\nAppId=PUVKID.FlipRing19\nAppName=FlipRing\nAppVersion=1.12.1\nAppPublisher=PUVKID\nDefaultDirName={localappdata}\\Programs\\FlipRing19\nDefaultGroupName=FlipRing\nUsePreviousAppDir=no\nPrivilegesRequired=lowest\nArchitecturesAllowed=x64compatible\nArchitecturesInstallIn64BitMode=x64compatible\nMinVersion=10.0\nOutputDir={#GetEnv(\'FLIPRING_INSTALLER\')}\nOutputBaseFilename=FlipRing-Setup\nSetupIconFile={#GetEnv(\'FLIPRING_SOURCE\')}\\assets\\app.ico\nUninstallDisplayIcon={app}\\FlipRing.exe\nCompression=lzma2\nSolidCompression=yes\nWizardStyle=modern\nCloseApplications=yes\nRestartApplications=no\nLicenseFile={#GetEnv(\'FLIPRING_SOURCE\')}\\LICENSE.txt\nInfoAfterFile={#GetEnv(\'FLIPRING_PROGRAM\')}\\사용안내.txt\n[Languages]\nName: "english"; MessagesFile: "compiler:Default.isl"\nName: "korean"; MessagesFile: "compiler:Languages\\Korean.isl"\n[Files]\nSource: "{#GetEnv(\'FLIPRING_PROGRAM\')}\\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs\n[Registry]\nRoot: HKCU; Subkey: "Software\\Microsoft\\Windows\\CurrentVersion\\Run"; ValueName: "FlipRing19"; Flags: uninsdeletevalue\n[Run]\nFilename: "{app}\\FlipRing.exe"; Description: "FlipRing"; Flags: nowait postinstall skipifsilent\n'
+-VERSION = "VSVersionInfo(\n  ffi=FixedFileInfo(filevers=(1,12,1,0), prodvers=(1,12,1,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),\n  kids=[StringFileInfo([StringTable('040904B0', [\n    StringStruct('CompanyName','PUVKID'), StringStruct('FileDescription','FlipRing'),\n    StringStruct('FileVersion','1.12.1'), StringStruct('ProductVersion','1.12.1'),\n    StringStruct('ProductName','FlipRing'), StringStruct('OriginalFilename','FlipRing.exe')\n  ])]), VarFileInfo([VarStruct('Translation',[1033,1200])])]\n)\n"
++ISS = '; PUVKID 무료 배포판 설치 구성\n[Setup]\nAppId=PUVKID.FlipRing19\nAppName=FlipRing\nAppVersion=1.13.0\nAppPublisher=PUVKID\nDefaultDirName={localappdata}\\Programs\\FlipRing19\nDefaultGroupName=FlipRing\nUsePreviousAppDir=no\nPrivilegesRequired=lowest\nArchitecturesAllowed=x64compatible\nArchitecturesInstallIn64BitMode=x64compatible\nMinVersion=10.0\nOutputDir={#GetEnv(\'FLIPRING_INSTALLER\')}\nOutputBaseFilename=FlipRing-Setup\nSetupIconFile={#GetEnv(\'FLIPRING_SOURCE\')}\\assets\\app.ico\nUninstallDisplayIcon={app}\\FlipRing.exe\nCompression=lzma2\nSolidCompression=yes\nWizardStyle=modern\nCloseApplications=yes\nRestartApplications=no\nLicenseFile={#GetEnv(\'FLIPRING_SOURCE\')}\\LICENSE.txt\nInfoAfterFile={#GetEnv(\'FLIPRING_PROGRAM\')}\\사용안내.txt\n[Languages]\nName: "english"; MessagesFile: "compiler:Default.isl"\nName: "korean"; MessagesFile: "compiler:Languages\\Korean.isl"\n[Files]\nSource: "{#GetEnv(\'FLIPRING_PROGRAM\')}\\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs\n[Registry]\nRoot: HKCU; Subkey: "Software\\Microsoft\\Windows\\CurrentVersion\\Run"; ValueName: "FlipRing19"; Flags: uninsdeletevalue\n[Run]\nFilename: "{app}\\FlipRing.exe"; Description: "FlipRing"; Flags: nowait postinstall skipifsilent\n'
++VERSION = "VSVersionInfo(\n  ffi=FixedFileInfo(filevers=(1,13,0,0), prodvers=(1,13,0,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),\n  kids=[StringFileInfo([StringTable('040904B0', [\n    StringStruct('CompanyName','PUVKID'), StringStruct('FileDescription','FlipRing'),\n    StringStruct('FileVersion','1.13.0'), StringStruct('ProductVersion','1.13.0'),\n    StringStruct('ProductName','FlipRing'), StringStruct('OriginalFilename','FlipRing.exe')\n  ])]), VarFileInfo([VarStruct('Translation',[1033,1200])])]\n)\n"
+ 
+ COMPILER_PROBE = "[Setup]\nAppName=FlipRingCompilerProbe\nAppVersion=1\nDefaultDirName={tmp}\\FlipRingCompilerProbe\nUninstallable=no\nOutput=no\nOutputDir=\nOutputManifestFile=\n"
+ 
+--- a/소스/delivery_tools.py
++++ b/소스/delivery_tools.py
+@@ -0,0 +1,397 @@
++"""원본 보존형 호환 안내·선택 메타데이터 정리·문서 비교. 결과는 로컬 전용이다."""
++from __future__ import annotations
++
++from collections import Counter
++from hashlib import sha256
++from pathlib import Path, PurePosixPath
++import stat
++import struct
++import tempfile
++import unicodedata
++import zipfile
++import zlib
++
++from PIL import Image, ExifTags
++from lxml import etree
++from pypdf import PdfWriter
++from pypdf.generic import NameObject
++
++import engine
++import inspection_tools
++from document_formats import validate_input, support_matrix, _safe_xml_import
++from document_hwp import MAX_FILE, MAX_TOTAL, MAX_XML, require_regular, bounded_read
++from pdf_tools import check_cancel, reader_for, publish, preflight_output, source_context
++
++OOXML = set('docx docm dotx dotm xlsx xlsm xltx xltm xlsb pptx pptm potx potm ppsx ppsm'.split())
++IMAGE_EDIT = {'jpg', 'jpeg', 'png'}
++LIMITATION = {
++    'ko': '본문·첨부·댓글·변경 이력에 있는 개인정보는 별도 검토해야 합니다. 탐지되지 않음은 보존·완전 제거 보장이 아닙니다.',
++    'en': 'Review personal data in content, attachments, comments and revisions separately. No finding is not a guarantee of preservation or complete removal.',
++}
++
++
++class DeliveryError(ValueError):
++    """기계 코드와 한영 로컬 안내를 함께 보존한다."""
++    def __init__(self, code, ko, en):
++        super().__init__(ko)
++        self.code, self.ko, self.en = code, ko, en
++
++
++def _package(source, cancel):
++    """기존 문서 한도와 XML 선언 방어를 재사용하되 외부 관계는 실행하지 않고 탐지한다."""
++    validate_input(source, source.suffix[1:].lower())
++    result, total, seen = {}, 0, set()
++    with zipfile.ZipFile(source) as archive:
++        entries = archive.infolist()
++        if len(entries) > 4096:
++            raise ValueError('ZIP 항목 수 제한 초과')
++        for item in entries:
++            check_cancel(cancel)
++            name = item.orig_filename
++            normalized = unicodedata.normalize('NFC', name).casefold()
++            if (normalized in seen or '\x00' in name or '\\' in name or ':' in name or
++                    name.startswith('/') or '..' in PurePosixPath(name).parts or
++                    stat.S_ISLNK(item.external_attr >> 16) or item.flag_bits & 1 or
++                    item.compress_type not in {zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED}):
++                raise ValueError('안전하지 않은 ZIP 항목')
++            seen.add(normalized)
++            total += item.file_size
++            if (item.file_size > MAX_FILE or total > MAX_TOTAL or
++                    item.file_size > max(1, item.compress_size) * 1000):
++                raise ValueError('ZIP 압축 해제 제한 초과')
++            with archive.open(item) as stream:
++                data = stream.read(min(MAX_FILE, item.file_size) + 1)
++            if len(data) != item.file_size:
++                raise ValueError('ZIP 실제 크기 불일치')
++            if name.lower().endswith(('.xml', '.rels')):
++                if len(data) > MAX_XML:
++                    raise ValueError('XML 크기 제한 초과')
++                _safe_xml_import(data, 'docx')
++            result[name] = data
++    return result
++
++
++def _xml(data):
++    _safe_xml_import(data, 'docx')
++    return etree.fromstring(data, etree.XMLParser(resolve_entities=False, no_network=True))
++
++
++def compatibility_report(path, target, cancel=None):
++    check_cancel(cancel)
++    source = require_regular(path)
++    extension = source.suffix[1:].lower()
++    target = str(target).lower().lstrip('.')
++    row = next((r for r in support_matrix() if extension in r['inputs']), None)
++    report = {'path': str(source), 'source': extension, 'format': target, 'local_only': True,
++              'supported': target in engine.targets([source]), 'checked': False,
++              'macros': None, 'formulas': None, 'fonts': [], 'external_links': None,
++              'notes': {'ko': [row['notes']] if row else [], 'en': []},
++              'limitations': dict(LIMITATION)}
++    if extension in OOXML:
++        parts = _package(source, cancel)
++        macros, formulas, external, fonts = False, 0, 0, set()
++        for name, data in parts.items():
++            check_cancel(cancel)
++            macros |= name.lower().endswith('vbaproject.bin')
++            if name.lower().endswith(('.xml', '.rels')):
++                root = _xml(data)
++                for node in root.iter():
++                    if not isinstance(node.tag, str):
++                        continue
++                    local = node.tag.rsplit('}', 1)[-1]
++                    if local in {'f', 'formula', 'oMath', 'fldSimple', 'instrText'}:
++                        formulas += 1
++                    if local == 'Relationship' and node.get('TargetMode', '').lower() == 'external':
++                        external += 1
++                    if local in {'rFonts', 'font', 'latin', 'ea', 'cs', 'name'}:
++                        for key, value in node.attrib.items():
++                            if key.rsplit('}', 1)[-1] in {'ascii', 'hAnsi', 'eastAsia', 'cs', 'typeface', 'name', 'val'}:
++                                fonts.add(value)
++        report.update(checked=True, macros=macros, formulas=formulas,
++                      external_links=external, fonts=sorted(fonts))
++    else:
++        report['notes']['ko'].append('이 형식의 내부 매크로·수식·글꼴·외부 링크는 검사하지 못했습니다.')
++        report['notes']['en'].append('Internal macros, formulas, fonts and external links were not inspected for this format.')
++    report['notes']['ko'].append('출력에 따라 매크로·수식·글꼴·배치가 달라질 수 있습니다. 원본과 실제 결과를 비교하세요.')
++    report['notes']['en'].append('Macros, formulas, fonts and layout may change on export. Compare the actual result with the original.')
++    if row:
++        report['notes']['en'].append('Only the advertised output formats are supported. Dedicated Office features and embedded objects may change; CSV/TSV contains the first sheet and displayed values. HWP input/output requires the configured local document tools.')
++    check_cancel(cancel)
++    return report
++
++
++def _exif_items(exif):
++    entries = []
++    for key in sorted(exif):
++        if key in {34665, 34853, 40965}:
++            # GPS는 실제 하위 키·값을 보여주고 그룹 자체도 명시 선택한다.
++            value = dict(exif.get_ifd(key))
++        else:
++            value = exif[key]
++        entries.append({'key': f'exif:{key}', 'label': ExifTags.TAGS.get(key, str(key)), 'value': str(value)})
++    return entries
++
++
++def _jpeg_segments(raw):
++    if not raw.startswith(b'\xff\xd8'):
++        raise ValueError('JPEG 서명 오류')
++    yield None, raw[:2]
++    offset = 2
++    while offset < len(raw):
++        start = offset
++        if raw[offset] != 255:
++            raise ValueError('JPEG 마커 오류')
++        while offset < len(raw) and raw[offset] == 255:
++            offset += 1
++        if offset >= len(raw):
++            raise ValueError('JPEG 마커 누락')
++        marker = raw[offset]
++        offset += 1
++        if marker in {0xDA, 0xD9}:
++            yield marker, raw[start:]
++            return
++        if marker == 1 or 0xD0 <= marker <= 0xD7:
++            yield marker, raw[start:offset]
++            continue
++        length = int.from_bytes(raw[offset:offset + 2], 'big')
++        if length < 2 or offset + length > len(raw):
++            raise ValueError('JPEG 세그먼트 길이 오류')
++        end = offset + length
++        yield marker, raw[start:end]
++        offset = end
++    raise ValueError('JPEG 영상 데이터 누락')
++
++
++def _jpeg_payload(segment):
++    """채움 FF와 마커, 길이 필드를 건너뛰어 실제 세그먼트 내용을 반환한다."""
++    offset = 0
++    while offset < len(segment) and segment[offset] == 255:
++        offset += 1
++    return segment[offset + 3:]
++
++
++def _png_chunks(raw):
++    if not raw.startswith(b'\x89PNG\r\n\x1a\n'):
++        raise ValueError('PNG 서명 오류')
++    offset = 8
++    while offset < len(raw):
++        size = int.from_bytes(raw[offset:offset + 4], 'big')
++        end = offset + size + 12
++        if end > len(raw):
++            raise ValueError('PNG 청크 길이 오류')
++        kind, data = raw[offset + 4:offset + 8], raw[offset + 8:end - 4]
++        if zlib.crc32(kind + data) != int.from_bytes(raw[end - 4:end], 'big'):
++            raise ValueError('PNG 청크 CRC 오류')
++        yield kind, data, raw[offset:end]
++        offset = end
++        if kind == b'IEND':
++            if offset != len(raw):
++                raise ValueError('PNG 종료 뒤 추가 데이터')
++            return
++    raise ValueError('PNG 종료 누락')
++
++
++def metadata_report(path, cancel=None):
++    check_cancel(cancel)
++    source = require_regular(path)
++    extension = source.suffix[1:].lower()
++    entries = []
++    supported = extension in OOXML | IMAGE_EDIT | {'pdf'}
++    with source_context(source):
++        if extension in OOXML:
++            parts = _package(source, cancel)
++            for name in ('docProps/core.xml', 'docProps/app.xml', 'docProps/custom.xml'):
++                if name not in parts:
++                    continue
++                for index, node in enumerate(_xml(parts[name])):
++                    if not isinstance(node.tag, str):
++                        continue
++                    entries.append({'key': f'ooxml:{name}:{index}',
++                                    'label': node.get('name') or node.tag.rsplit('}', 1)[-1],
++                                    'value': ''.join(node.itertext()),
++                                    'fingerprint': sha256(etree.tostring(node, method='c14n', with_tail=False)).hexdigest()})
++        elif extension == 'pdf':
++            reader = reader_for(source)
++            try:
++                for key, value in (reader.metadata or {}).items():
++                    entries.append({'key': 'pdf:' + str(key), 'label': str(key), 'value': str(value)})
++                if '/Metadata' in reader.trailer['/Root']:
++                    data = reader.trailer['/Root']['/Metadata'].get_data()
++                    if len(data) > MAX_XML:
++                        raise ValueError('PDF XMP 크기 제한 초과')
++                    entries.append({'key': 'pdf:xmp', 'label': 'XMP (전체 / entire packet)',
++                                    'value': data.decode('utf-8', errors='replace')})
++            finally:
++                reader.close()
++        elif extension in IMAGE_EDIT:
++            raw = bounded_read(source)
++            with Image.open(source) as image:
++                entries.extend(_exif_items(image.getexif()))
++            if extension in {'jpg', 'jpeg'}:
++                for index, (marker, segment) in enumerate(_jpeg_segments(raw)):
++                    if marker not in {0xFE, 0xE1, 0xED}:
++                        continue
++                    payload = _jpeg_payload(segment)
++                    if marker == 0xFE or (marker == 0xE1 and not payload.startswith(b'Exif\x00\x00')) or marker == 0xED:
++                        entries.append({'key': f'jpeg:{index}', 'label': 'JPEG comment / XMP / IPTC',
++                                        'value': repr(payload[:4096]),
++                                        'fingerprint': sha256(bytes([marker]) + payload).hexdigest()})
++            else:
++                for index, (kind, data, _) in enumerate(_png_chunks(raw)):
++                    if kind in {b'tEXt', b'iTXt', b'zTXt'}:
++                        entries.append({'key': f'png:{index}', 'label': kind.decode() + ': ' + data.split(b'\x00')[0].decode('latin1'),
++                                        'value': repr(data[:4096]),
++                                        'fingerprint': sha256(kind + data).hexdigest()})
++    check_cancel(cancel)
++    return {'path': str(source), 'source': extension, 'format': extension, 'local_only': True,
++            'supported': supported, 'entries': entries, 'limitations': dict(LIMITATION),
++            'notice': {'ko': ('JPEG/PNG 영상 데이터를 재압축하지 않습니다.' if extension in IMAGE_EDIT else
++                              'PDF는 전체 문서 객체를 복제합니다. 전자서명 유효성·프로그램별 동작의 동일성은 보장하지 않습니다.' if extension == 'pdf' else
++                              '선택한 속성만 제거하며 나머지 ZIP 부분은 내용 바이트를 보존합니다.' if extension in OOXML else
++                              '이 형식의 선택 메타데이터 정리는 지원하지 않습니다. 원본을 변경하지 않았습니다.'),
++                       'en': ('JPEG/PNG image data is not recompressed.' if extension in IMAGE_EDIT else
++                              'PDF document objects are cloned; digital signature validity and identical application behavior are not guaranteed.' if extension == 'pdf' else
++                              'Only selected properties are removed; other ZIP parts retain their content bytes.' if extension in OOXML else
++                              'Selective metadata removal is unsupported for this format. The original was not modified.')}}
++
++
++def _verify_metadata_removed(before, after, keys):
++    """위치 키는 삭제 뒤 재색인되므로 원문 지문과 개수로 미선택 항목을 대조한다."""
++    stable_keys = {key for key in keys if key.startswith(('exif:', 'pdf:'))}
++    if stable_keys & {entry['key'] for entry in after['entries']}:
++        raise ValueError('선택한 메타데이터가 남아 있습니다.')
++
++    def indexed_entries(entries, excluded):
++        return Counter((entry['key'].rsplit(':', 1)[0], entry['fingerprint'])
++                       for entry in entries if entry['key'].startswith(('ooxml:', 'jpeg:', 'png:'))
++                       and entry['key'] not in excluded)
++
++    if indexed_entries(before['entries'], keys) != indexed_entries(after['entries'], set()):
++        raise ValueError('선택한 메타데이터 제거 또는 미선택 항목 보존을 확인하지 못했습니다.')
++
++
++def strip_metadata(path, keys, output_dir, cancel=None):
++    check_cancel(cancel)
++    source = require_regular(path)
++    output = inspection_tools._output(output_dir)
++    report = metadata_report(source, cancel)
++    if not report['supported']:
++        raise DeliveryError('unsupported_metadata', report['notice']['ko'], report['notice']['en'])
++    keys = set(keys)
++    if not keys or not keys <= {entry['key'] for entry in report['entries']}:
++        raise DeliveryError('metadata_keys', '현재 탐지한 항목을 하나 이상 선택하세요.', 'Select one or more currently detected metadata entries.')
++    preflight_output(output, source.stat().st_size * 3 + 4 * 1024 * 1024, cancel)
++    extension = report['source']
++    with source_context(source), tempfile.TemporaryDirectory(prefix='.flipring-metadata-', dir=output) as folder:
++        destination = Path(folder) / ('clean' + source.suffix)
++        if extension in OOXML:
++            parts = _package(source, cancel)
++            for name in ('docProps/core.xml', 'docProps/app.xml', 'docProps/custom.xml'):
++                selected = [key for key in keys if key.startswith(f'ooxml:{name}:')]
++                if selected:
++                    root = _xml(parts[name])
++                    for index, node in reversed(list(enumerate(root))):
++                        if f'ooxml:{name}:{index}' in keys:
++                            root.remove(node)
++                    parts[name] = etree.tostring(root, xml_declaration=True, encoding='UTF-8')
++            with zipfile.ZipFile(source) as original, zipfile.ZipFile(destination, 'x') as cleaned:
++                cleaned.comment = original.comment
++                for item in original.infolist():
++                    check_cancel(cancel)
++                    cleaned.writestr(item, parts[item.filename])
++        elif extension == 'pdf':
++            reader = reader_for(source)
++            writer = PdfWriter()
++            try:
++                writer.clone_document_from_reader(reader)
++                if writer._info is not None:
++                    info = writer._info.get_object()
++                    for key in keys:
++                        if key.startswith('pdf:/'):
++                            info.pop(NameObject(key[4:]), None)
++                if 'pdf:xmp' in keys:
++                    writer._root_object.pop(NameObject('/Metadata'), None)
++                check_cancel(cancel)
++                with destination.open('xb') as stream:
++                    writer.write(stream)
++            finally:
++                writer.close()
++                reader.close()
++        else:
++            raw = bounded_read(source)
++            with Image.open(source) as image:
++                exif = image.getexif()
++                for key in keys:
++                    if key.startswith('exif:'):
++                        del exif[int(key[5:])]
++                exif_data = exif.tobytes() if len(exif) else b''
++            if extension in {'jpg', 'jpeg'}:
++                pieces = []
++                for index, (marker, segment) in enumerate(_jpeg_segments(raw)):
++                    check_cancel(cancel)
++                    if f'jpeg:{index}' in keys:
++                        continue
++                    payload = _jpeg_payload(segment) if marker == 0xE1 else b''
++                    if marker == 0xE1 and payload.startswith(b'Exif\x00\x00') and any(k.startswith('exif:') for k in keys):
++                        if exif_data:
++                            if len(exif_data) > 65533:
++                                raise ValueError('JPEG EXIF 크기 제한 초과')
++                            prefix = segment[:len(segment) - len(payload) - 2]
++                            segment = prefix + struct.pack('>H', len(exif_data) + 2) + exif_data
++                        else:
++                            continue
++                    pieces.append(segment)
++                with destination.open('xb') as stream:
++                    stream.write(b''.join(pieces))
++            else:
++                pieces = [raw[:8]]
++                for index, (kind, data, chunk) in enumerate(_png_chunks(raw)):
++                    check_cancel(cancel)
++                    if f'png:{index}' in keys:
++                        continue
++                    if kind == b'eXIf' and any(k.startswith('exif:') for k in keys):
++                        if not exif_data:
++                            continue
++                        data = exif_data[6:]
++                        chunk = struct.pack('>I', len(data)) + kind + data + struct.pack('>I', zlib.crc32(kind + data))
++                    pieces.append(chunk)
++                with destination.open('xb') as stream:
++                    stream.write(b''.join(pieces))
++        check_cancel(cancel)
++        # 실제 사본을 다시 읽어 선택 제거를 확인한 후에만 배타적으로 발행한다.
++        after = metadata_report(destination, cancel)
++        _verify_metadata_removed(report, after, keys)
++        return publish(destination, output / source.stem, 'metadata', cancel)
++
++
++def compare_documents(left, right, cancel=None, page=0):
++    """문서는 임시 사본을 변환하므로 입력 폴더에도 변환 결과를 남기지 않는다."""
++    check_cancel(cancel)
++    sources = [require_regular(path) for path in (left, right)]
++    with tempfile.TemporaryDirectory(prefix='.flipring-compare-') as folder:
++        prepared = []
++        for index, source in enumerate(sources):
++            check_cancel(cancel)
++            if source.suffix.lower() == '.pdf' or engine.classify(source)[0] == '이미지':
++                prepared.append(source)
++            else:
++                work = Path(folder) / str(index)
++                work.mkdir()
++                copied = work / source.name
++                with source.open('rb') as original, copied.open('xb') as stream:
++                    while block := original.read(1024 * 1024):
++                        check_cancel(cancel)
++                        stream.write(block)
++                prepared.append(Path(engine.convert(copied, 'pdf', cancel=cancel)))
++        result = inspection_tools.compare_files(*prepared, cancel=cancel)
++        images = []
++        for index, path in enumerate(prepared):
++            check_cancel(cancel)
++            count = result['left' if index == 0 else 'right']['page_count']
++            images.append(inspection_tools.render_page(path, page, 120) if page < count else None)
++        for key, source in zip(('left', 'right'), sources):
++            result[key]['path'] = str(source)
++        result.update(images=images, page=page, local_only=True,
++                      limitations={'ko': '실제 렌더와 추출 텍스트 비교입니다. 픽셀·의미의 완전 동일성을 자동 판정하지 않습니다.',
++                                   'en': 'Actual rendered pages and extracted text are compared. Complete pixel or semantic equivalence is not automatically determined.'})
++        return result
+--- a/소스/delivery_ui.py
++++ b/소스/delivery_ui.py
+@@ -0,0 +1,402 @@
++"""로컬 전용 호환·선택 메타데이터·문서 전후 비교 대화상자."""
++from pathlib import Path
++import json
++import threading
++
++from PySide6.QtCore import Qt, QThread, Signal, QSize
++from PySide6.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
++                               QComboBox, QLineEdit, QListWidget, QListWidgetItem,
++                               QPlainTextEdit, QFileDialog, QSpinBox, QSplitter, QScrollArea,
++                               QGridLayout, QTabWidget, QWidget)
++import delivery_tools as tools
++import engine
++from inspection_ui import PageCanvas
++from pdf_tools import Cancelled
++from ui_motion import make_file_dialog, install_surface_motions, set_reduced_motion
++from theme_manager import manager
++from fixed_viewport import fit_window
++
++
++class _Job(QThread):
++    completed = Signal(object)
++    failed = Signal(object)
++
++    def __init__(self, operation, parent):
++        super().__init__(parent)
++        self.operation, self.cancel = operation, threading.Event()
++
++    def run(self):
++        try:
++            self.completed.emit(self.operation(self.cancel))
++        except Exception as error:
++            self.failed.emit(error)
++
++
++class DeliveryDialog(QDialog):
++    result_ready = Signal(str, str, str)
++
++    def __init__(self, parent=None, language='ko', paths=None):
++        super().__init__(parent)
++        self.language, self.job, self._closing = language, None, False
++        self._gate_owner, self._action, self._source_at_start = None, '', ''
++        self.resize(900, 760)
++        layout = QVBoxLayout(self)
++        layout.setContentsMargins(24, 24, 24, 20)
++        layout.setSpacing(16)
++        self.notice = QLabel()
++        self.notice.setWordWrap(True)
++        row = QHBoxLayout()
++        self.source_combo, self.second_combo, self.target_combo = QComboBox(), QComboBox(), QComboBox()
++        self.add_button = QPushButton()
++        self.source_label = QLabel()
++        layout.addWidget(self.source_label)
++        row.addWidget(self.source_combo, 1)
++        row.addWidget(self.add_button)
++        layout.addLayout(row)
++        self.tabs = QTabWidget()
++        self.tabs.setDocumentMode(True)
++        self.tabs.setStyleSheet("QTabWidget::pane {border:0;} QTabBar::tab {padding:10px 18px;border:0;border-bottom:2px solid transparent;} QTabBar::tab:selected {border-bottom-color:#242424;}")
++        layout.addWidget(self.tabs, 2)
++        self.compatibility_page, self.privacy_page, self.compare_page = QWidget(), QWidget(), QWidget()
++        for page in (self.compatibility_page, self.privacy_page, self.compare_page):
++            self.tabs.addTab(page, '')
++        compatibility = QVBoxLayout(self.compatibility_page)
++        compatibility.setContentsMargins(0, 16, 0, 0)
++        compatibility.setSpacing(12)
++        self.compatibility_button, self.metadata_button = QPushButton(), QPushButton()
++        self.strip_button, self.compare_button, self.cancel_button = QPushButton(), QPushButton(), QPushButton()
++        self.target_label = QLabel()
++        compatibility.addWidget(self.target_label)
++        compatibility.addWidget(self.target_combo)
++        compatibility.addWidget(self.compatibility_button)
++        compatibility.addStretch()
++        privacy = QVBoxLayout(self.privacy_page)
++        privacy.setContentsMargins(0, 16, 0, 0)
++        privacy.setSpacing(12)
++        privacy.addWidget(self.metadata_button)
++        self.metadata_list = QListWidget()
++        privacy.addWidget(self.metadata_list, 1)
++        options = QHBoxLayout()
++        self.output_edit, self.folder_button = QLineEdit(), QPushButton()
++        options.addWidget(self.output_edit, 1)
++        options.addWidget(self.folder_button)
++        privacy.addLayout(options)
++        privacy.addWidget(self.strip_button)
++        compare = QVBoxLayout(self.compare_page)
++        compare.setContentsMargins(0, 16, 0, 0)
++        compare.setSpacing(12)
++        compare_options = QHBoxLayout()
++        self.page_spin = QSpinBox()
++        self.page_spin.setRange(1, 1)
++        # NoButtons는 상속된 Qt 스타일에서 편집 영역을 1px로 만들 수 있어 영역만 명시한다.
++        self.page_spin.setStyleSheet('QSpinBox::up-button,QSpinBox::down-button {width:0px;height:0px;}')
++        self.page_spin.setFixedWidth(90)
++        self.previous_page_button, self.next_page_button = QPushButton('−'), QPushButton('+')
++        for button in (self.previous_page_button, self.next_page_button):
++            button.setFixedWidth(38)
++        self.previous_page_button.clicked.connect(self.page_spin.stepDown)
++        self.next_page_button.clicked.connect(self.page_spin.stepUp)
++        self.page_spin.valueChanged.connect(self._sync_page_buttons)
++        self.second_label = QLabel()
++        compare.addWidget(self.second_label)
++        compare_options.addWidget(self.second_combo, 1)
++        compare_options.addWidget(self.previous_page_button)
++        compare_options.addWidget(self.page_spin)
++        compare_options.addWidget(self.next_page_button)
++        compare.addLayout(compare_options)
++        compare.addWidget(self.compare_button)
++        split = QSplitter()
++        self.left_canvas, self.right_canvas = PageCanvas(), PageCanvas()
++        self.left_label, self.right_label = QLabel(), QLabel()
++        for canvas, label in zip((self.left_canvas, self.right_canvas), (self.left_label, self.right_label)):
++            panel = QWidget()
++            column = QVBoxLayout(panel)
++            column.setContentsMargins(0, 0, 0, 0)
++            column.addWidget(label)
++            scroll = QScrollArea()
++            scroll.setWidget(canvas)
++            column.addWidget(scroll, 1)
++            split.addWidget(panel)
++        compare.addWidget(split, 1)
++        layout.addWidget(self.notice)
++        self.details, self.status = QPlainTextEdit(), QLabel()
++        self.details.setReadOnly(True)
++        self.status.setWordWrap(True)
++        layout.addWidget(self.details, 1)
++        footer = QHBoxLayout()
++        footer.addWidget(self.status, 1)
++        footer.addWidget(self.cancel_button)
++        layout.addLayout(footer)
++        self._tab_results = {}
++        self._active_tab = 0
++        self._root_layout = layout
++        self.tabs.currentChanged.connect(self._tab_changed)
++        self._paths = []
++        self.add_paths(paths or [])
++        self.add_button.clicked.connect(self._choose_files)
++        self.folder_button.clicked.connect(self._choose_folder)
++        self.source_combo.currentIndexChanged.connect(self._source_changed)
++        self.second_combo.currentIndexChanged.connect(self._invalidate_compare)
++        self.compatibility_button.clicked.connect(self._compatibility)
++        self.metadata_button.clicked.connect(self._metadata)
++        self.strip_button.clicked.connect(self._strip)
++        self.compare_button.clicked.connect(self._compare)
++        self.cancel_button.clicked.connect(self._cancel)
++        self._source_changed()
++        self.set_language(language)
++        self._set_busy(False)
++        self._tab_changed(0)
++        install_surface_motions(self)
++        manager()._style(self)
++        fit_window(self, QSize(900, 760))
++
++    def _tr(self, ko, en):
++        return ko if self.language == 'ko' else en
++
++    def set_language(self, language):
++        self.language = language
++        self.setWindowTitle(self._tr('파일 완성도 도구', 'File delivery tools'))
++        for index, (ko, en) in enumerate((('호환 안내', 'Compatibility'), ('개인정보', 'Privacy'), ('전후 비교', 'Compare'))):
++            self.tabs.setTabText(index, self._tr(ko, en))
++        for label, ko, en in ((self.source_label, '원본 파일', 'Source file'),
++                              (self.target_label, '출력 형식', 'Output format'),
++                              (self.second_label, '비교할 파일', 'Comparison file'),
++                              (self.left_label, '원본', 'Original'),
++                              (self.right_label, '비교 파일', 'Comparison')):
++            label.setText(self._tr(ko, en))
++        self.source_combo.setPlaceholderText(self._tr('파일을 선택하세요', 'Choose a file'))
++        self.second_combo.setPlaceholderText(self._tr('비교할 파일을 선택하세요', 'Choose a comparison file'))
++        self.target_combo.setPlaceholderText(self._tr('출력 형식을 선택하세요', 'Choose an output format'))
++        self.target_combo.setAccessibleName(self._tr('출력 형식', 'Output format'))
++        self.details.setPlaceholderText(self._tr('검사 결과가 여기에 표시됩니다.', 'Inspection results appear here.'))
++        self.left_canvas.placeholder = self._tr('파일을 선택한 뒤 비교를 실행하세요.', 'Choose files, then run comparison.')
++        self.right_canvas.placeholder = self._tr('비교 결과가 여기에 표시됩니다.', 'Comparison appears here.')
++        self.left_canvas.update()
++        self.right_canvas.update()
++        self.previous_page_button.setToolTip(self._tr('이전 페이지', 'Previous page'))
++        self.next_page_button.setToolTip(self._tr('다음 페이지', 'Next page'))
++        self.previous_page_button.setAccessibleName(self.previous_page_button.toolTip())
++        self.next_page_button.setAccessibleName(self.next_page_button.toolTip())
++        self.source_combo.setAccessibleName(self._tr('원본 파일', 'Source file'))
++        self.second_combo.setAccessibleName(self._tr('비교할 파일', 'Comparison file'))
++        self._update_notice()
++        for widget, ko, en in ((self.add_button, '파일 선택', 'Choose files'),
++                               (self.folder_button, '저장 폴더', 'Output folder'),
++                               (self.compatibility_button, '호환 확인', 'Compatibility'),
++                               (self.metadata_button, '메타데이터 탐지', 'Inspect metadata'),
++                               (self.strip_button, '선택 제거 사본 저장', 'Save selected removal'),
++                               (self.compare_button, '문서 전후 비교', 'Compare documents'),
++                               (self.cancel_button, '취소', 'Cancel')):
++            widget.setText(self._tr(ko, en))
++        self.output_edit.setPlaceholderText(self._tr('새 사본 저장 폴더', 'Folder for new copies'))
++        self.page_spin.setPrefix(self._tr('페이지 ', 'Page '))
++        # 언어를 바꿀 때 사용자가 선택한 제거 항목과 검사 결과는 보존한다.
++        if not self.status.text():
++            self.status.setText(self._tr('파일과 작업을 선택하세요.', 'Choose files and an action.'))
++
++    def _update_notice(self):
++        notices = (
++            ('출력 형식을 고르고 호환 확인을 누르세요. 서식 보존을 보장하는 검사는 아닙니다.',
++             'Choose an output format, then check compatibility. This does not guarantee formatting preservation.'),
++            ('탐지 후 제거할 항목을 선택하세요. 원본을 보존하며 새 사본에만 적용합니다. 본문·첨부·댓글은 별도로 검토하세요.',
++             'Inspect, then select metadata to remove in a new copy. Originals are preserved. Review content, attachments and comments separately.'),
++            ('비교할 파일을 고르고 문서 전후 비교를 누르세요. 페이지별 화면과 텍스트 차이를 함께 확인합니다.',
++             'Choose a comparison file, then compare documents. Review page images alongside extracted text differences.'),
++        )
++        self.notice.setText(self._tr(*notices[self.tabs.currentIndex()]))
++
++    def _tab_changed(self, index):
++        # 탭마다 검사 결과를 보존하여 다른 작업의 결과와 혼동하지 않게 한다.
++        self._tab_results[self._active_tab] = self.details.toPlainText()
++        self._active_tab = index
++        self.details.setPlainText(self._tab_results.get(index, ''))
++        self._update_notice()
++        # 짧은 호환 입력은 내용 높이만 차지하고, 비교 화면에는 미리보기 공간을 배정한다.
++        self.tabs.setMaximumHeight((190, 370, 16777215)[index])
++        self._root_layout.setStretchFactor(self.tabs, (0, 2, 3)[index])
++
++    def _sync_page_buttons(self, *unused):
++        idle = not self.is_busy()
++        self.previous_page_button.setEnabled(idle and self.page_spin.value() > self.page_spin.minimum())
++        self.next_page_button.setEnabled(idle and self.page_spin.value() < self.page_spin.maximum())
++
++    def set_reduced_motion(self, enabled):
++        set_reduced_motion(self, enabled)
++
++    def add_paths(self, paths):
++        for path in paths:
++            value = str(path)
++            if value not in self._paths and Path(value).is_file():
++                self._paths.append(value)
++                self.source_combo.addItem(Path(value).name, value)
++                self.second_combo.addItem(Path(value).name, value)
++        if self.second_combo.count() > 1:
++            self.second_combo.setCurrentIndex(1)
++
++    def _source_changed(self, *unused):
++        self.metadata_list.clear()
++        self._tab_results.clear()
++        self.details.clear()
++        self.target_combo.clear()
++        source = self.source_combo.currentData()
++        if source:
++            self.target_combo.addItems(engine.targets([Path(source)]))
++        self._invalidate_compare()
++
++    def _invalidate_compare(self, *unused):
++        self.left_canvas.set_image(None)
++        self.right_canvas.set_image(None)
++        self._tab_results.pop(2, None)
++        if self.tabs.currentIndex() == 2:
++            self.details.clear()
++        self.page_spin.setMaximum(1)
++        self._sync_page_buttons()
++
++    def _choose_files(self):
++        dialog = make_file_dialog(self, 'pick_files_title')
++        dialog.setFileMode(QFileDialog.ExistingFiles)
++        if dialog.exec():
++            self.add_paths(dialog.selectedFiles())
++
++    def _choose_folder(self):
++        dialog = make_file_dialog(self, 'pick_folder_title', folder=True)
++        if dialog.exec():
++            self.output_edit.setText(dialog.selectedFiles()[0])
++
++    def _compatibility(self):
++        source, target = self.source_combo.currentData(), self.target_combo.currentText()
++        self._start(lambda cancel: tools.compatibility_report(source, target, cancel), 'compatibility')
++
++    def _metadata(self):
++        source = self.source_combo.currentData()
++        self._start(lambda cancel: tools.metadata_report(source, cancel), 'metadata')
++
++    def _strip(self):
++        source, output = self.source_combo.currentData(), self.output_edit.text()
++        keys = [self.metadata_list.item(i).data(Qt.UserRole) for i in range(self.metadata_list.count())
++                if self.metadata_list.item(i).checkState() == Qt.Checked]
++        self._start(lambda cancel: tools.strip_metadata(source, keys, output, cancel), 'strip')
++
++    def _compare(self):
++        left, right, page = self.source_combo.currentData(), self.second_combo.currentData(), self.page_spin.value() - 1
++        self._start(lambda cancel: tools.compare_documents(left, right, cancel, page), 'compare')
++
++    def _start(self, operation, action):
++        if self.is_busy():
++            return False
++        owner = self.parentWidget()
++        if owner is not None and callable(getattr(owner, 'work_busy', None)) and owner.work_busy():
++            self.status.setText(self._tr('다른 작업이 끝난 뒤 실행하세요.', 'Wait for the other operation to finish.'))
++            return False
++        self._action, self._source_at_start = action, self.source_combo.currentData() or ''
++        if owner is not None and type(getattr(owner, 'pending', None)) is int:
++            owner.pending += 1
++            self._gate_owner = owner
++        self.job = _Job(operation, self)
++        self.job.completed.connect(self._completed)
++        self.job.failed.connect(self._failed)
++        self.job.finished.connect(self._finished)
++        self._set_busy(True)
++        self.status.setText(self._tr('처리 중 · 취소할 수 있습니다.', 'Working · Cancellation is available.'))
++        self.job.start()
++        return True
++
++    def _set_busy(self, busy):
++        self.tabs.tabBar().setEnabled(not busy)
++        for widget in (self.source_combo, self.second_combo, self.target_combo, self.add_button,
++                       self.output_edit, self.folder_button, self.metadata_list, self.page_spin,
++                       self.compatibility_button, self.metadata_button, self.strip_button, self.compare_button):
++            widget.setEnabled(not busy)
++        self.cancel_button.setEnabled(busy)
++        self._sync_page_buttons()
++
++    def _completed(self, result):
++        if self._action == 'strip':
++            self.status.setText(self._tr('원본 보존 · 새 사본: ', 'Original preserved · New copy: ') + str(result))
++            self.result_ready.emit(self._source_at_start, str(result), '')
++            return
++        if self._action == 'metadata':
++            self.metadata_list.clear()
++            for entry in result['entries']:
++                item = QListWidgetItem(entry['label'] + ': ' + entry['value'])
++                item.setData(Qt.UserRole, entry['key'])
++                item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
++                item.setCheckState(Qt.Unchecked)
++                self.metadata_list.addItem(item)
++            self.details.setPlainText(result['notice'][self.language] + '\n' + result['limitations'][self.language])
++        elif self._action == 'compare':
++            for canvas, image in zip((self.left_canvas, self.right_canvas), result['images']):
++                canvas.set_image(image)
++            self.page_spin.setMaximum(max(result['left']['page_count'], result['right']['page_count']))
++            self._sync_page_buttons()
++            self.details.setPlainText((result['text_diff'] or self._tr('추출 텍스트가 같습니다.', 'Extracted text is identical.')) + '\n' + result['limitations'][self.language])
++        else:
++            labels = [('source', '입력 형식', 'Input format'), ('format', '출력 형식', 'Output format'),
++                      ('supported', '변환 지원', 'Conversion supported'), ('checked', '내부 제한 검사', 'Limited internal inspection'),
++                      ('macros', '매크로 흔적', 'Macro evidence'), ('formulas', '수식·필드 흔적 수', 'Formula / field evidence count'),
++                      ('fonts', '글꼴 흔적', 'Font evidence'), ('external_links', '외부 관계 수', 'External relationship count')]
++            lines = [self._tr(ko, en) + ': ' + json.dumps(result[key], ensure_ascii=False) for key, ko, en in labels]
++            lines.extend(result['notes'][self.language])
++            lines.append(result['limitations'][self.language])
++            self.details.setPlainText('\n'.join(lines))
++        self.status.setText(self._tr('완료 · 결과는 로컬 전용입니다.', 'Complete · Results are local only.'))
++
++    def _failed(self, error):
++        if isinstance(error, (Cancelled, engine.Cancelled)):
++            message = self._tr('취소됨 · 원본을 보존했습니다.', 'Cancelled · Originals preserved.')
++        elif isinstance(error, tools.DeliveryError):
++            message = self._tr(error.ko, error.en)
++        else:
++            message = self._tr('처리에 실패했습니다. 파일과 도구 상태를 확인하세요.', 'Processing failed. Check the file and tool availability.')
++            message += '\n' + str(error) if self.language == 'ko' else '\n' + type(error).__name__
++        self.status.setText(message)
++        if self._action == 'strip' and not isinstance(error, (Cancelled, engine.Cancelled)):
++            self.result_ready.emit(self._source_at_start, '', message)
++
++    def _finished(self):
++        job, self.job = self.job, None
++        if self._gate_owner is not None:
++            self._gate_owner.pending -= 1
++            self._gate_owner = None
++        self._set_busy(False)
++        if job:
++            job.deleteLater()
++        if self._closing:
++            self.close()
++
++    def _cancel(self):
++        if self.job:
++            self.job.cancel.set()
++            self.cancel_button.setEnabled(False)
++
++    def is_busy(self):
++        return self.job is not None
++
++    def shutdown(self):
++        self._cancel()
++        return not self.is_busy()
++
++    def reject(self):
++        if self.is_busy():
++            self._closing = True
++            self._cancel()
++        else:
++            super().reject()
++
++    def closeEvent(self, event):
++        if self.is_busy():
++            self._closing = True
++            self._cancel()
++            event.ignore()
++        else:
++            super().closeEvent(event)
++
++    def showEvent(self, event):
++        self._closing = False
++        super().showEvent(event)
++
++
++def open_dialog(parent=None, language='ko', paths=None):
++    dialog = DeliveryDialog(parent, language, paths)
++    dialog.show()
++    return dialog

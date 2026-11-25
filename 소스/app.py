@@ -50,7 +50,7 @@ from ui_motion import (make_file_dialog, install_surface_motions, pulse_widget, 
                        install_motion_system, SURFACE_STYLE, MotionMessageBox, decorate_message)
 
 VERSION = 3
-RELEASE_VERSION = "1.12.1"
+RELEASE_VERSION = "1.13.0"
 APPNAME = "플립링"
 AUTOSTART_NAME = "FlipRing19"
 DATA = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "PUVKID" / "FlipRing19"
@@ -1047,6 +1047,10 @@ class MainWindow(QMainWindow):
         from quick_actions_ui import QuickActionsPanel
         self.quick_actions_panel = QuickActionsPanel(self, self.language)
         self.tabs.addTab(self.quick_actions_panel, self.text('quick_actions'))
+        self.delivery_dialogs = []
+        self.delivery_button = self.button('', self.open_delivery_tools)
+        self.delivery_button.setText('Compatibility · privacy · comparison' if self.language == 'en' else '호환 안내 · 개인정보 · 문서 비교')
+        self.quick_actions_panel.body_layout.addWidget(self.delivery_button)
         quick_nav = NavButton('convert')
         quick_nav.set_svg(engine.asset('lucide/arrow-left-right.svg'))
         quick_nav.clicked.connect(lambda: self.tabs.setCurrentIndex(7))
@@ -1180,6 +1184,8 @@ class MainWindow(QMainWindow):
         set_reduced_motion(self, enabled)
         self.pdf_panel.set_reduced_motion(enabled)
         self.workspace_panel.set_reduced_motion(enabled)
+        for dialog in getattr(self, 'delivery_dialogs', []):
+            dialog.set_reduced_motion(enabled)
 
     def run_selected(self):
         fmt = self.output_combo.currentData()
@@ -1323,6 +1329,10 @@ class MainWindow(QMainWindow):
     def retranslate(self):
         # 표시 문자열만 갱신한다. 항목 재생성·키 데이터 변경·자동 시작 토글은 하지 않는다.
         apply_language(self.language)
+        if hasattr(self, 'delivery_button'):
+            self.delivery_button.setText('Compatibility · privacy · comparison' if self.language == 'en' else '호환 안내 · 개인정보 · 문서 비교')
+        for dialog in getattr(self, 'delivery_dialogs', []):
+            dialog.set_language(self.language)
         with QSignalBlocker(self.language_combo):
             self.language_combo.setCurrentIndex(self.language_combo.findData(self.language))
         with QSignalBlocker(self.trigger):
@@ -1464,7 +1474,26 @@ class MainWindow(QMainWindow):
 
     def work_busy(self):
         return bool(self.pending or self.pdf_panel.is_busy() or self.workspace_panel.is_busy()
-                    or self.quick_actions_panel.is_busy())
+                    or self.quick_actions_panel.is_busy()
+                    or any(dialog.is_busy() for dialog in getattr(self, 'delivery_dialogs', [])))
+
+    def open_delivery_tools(self):
+        from delivery_ui import open_dialog
+        if self.work_busy():
+            self.notify(self.text('busy_title'), self.text('busy_message'))
+            return
+        rows = getattr(self.quick_actions_panel, '_inputs', [])
+        paths = [row['source'] for row in rows] or list(self.paths)
+        # 창을 하나만 유지해 변환과 별도 도구의 동시 실행을 막는다.
+        if self.delivery_dialogs:
+            self.delivery_dialogs[0].show()
+            self.delivery_dialogs[0].raise_()
+            self.delivery_dialogs[0].activateWindow()
+            return
+        dialog = open_dialog(self, self.language, paths)
+        self.delivery_dialogs.append(dialog)
+        dialog.result_ready.connect(self.pdf_finished)
+        dialog.set_reduced_motion(self.reduced_motion_toggle.isChecked())
 
     def apply_style(self):
         style = """
@@ -1629,6 +1658,8 @@ class MainWindow(QMainWindow):
         self.timer.stop()
         self.workspace_panel.shutdown()
         self.quick_actions_panel.shutdown()
+        for dialog in getattr(self, 'delivery_dialogs', []):
+            dialog.shutdown()
         self.wheel.hide()
         self.pool.shutdown(wait=False)
         self.tray.hide()

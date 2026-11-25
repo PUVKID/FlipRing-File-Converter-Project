@@ -1,0 +1,3137 @@
++            raise ValueError('묶음 결과 이름을 만들지 못했습니다.')
++    return rows
++
++
++def _tracked_publish(item, folder, name, source, input_hash, emit, cancel, expected_count=1):
++    """발행 예정 해시를 먼저 기록하고 배타 생성하여 중단 경계를 복구한다."""
++    expected_hash = digest(item, cancel)
++    suffix = ".tar.gz" if name.lower().endswith(".tar.gz") else Path(name).suffix
++    stem = name[:-len(suffix)] if suffix else name
++    for number in range(1, 100000):
++        pdf_tools.check_cancel(cancel)
++        path = folder / (name if number == 1 else f"{stem} {number}{suffix}")
++        if path.exists():
++            continue
++        owned = {"path": str(path), "source": str(source), "sha256": expected_hash,
++                 "size": Path(item).stat().st_size, "constraints_met": True}
++        # 이 신호의 수신자는 파일 생성 전에 영속 저장을 마친다.
++        emit({"state": "publishing", "source": str(source), "input_sha256": input_hash,
++              "owned": owned, "expected": expected_count})
++        try:
++            stream = path.open("xb")
++        except FileExistsError:
++            emit({"state": "publication_conflict", "source": str(source), "owned": owned, "expected": expected_count})
++            continue
++        try:
++            with stream, Path(item).open("rb") as origin:
++                while block := origin.read(1024 * 1024):
++                    pdf_tools.check_cancel(cancel)
++                    stream.write(block)
++                stream.flush()
++                os.fsync(stream.fileno())
++            if digest(path) != expected_hash:
++                raise ValueError("결과 발행 중 변경을 발견했습니다.")
++            return str(path)
++        except BaseException:
++            path.unlink(missing_ok=True)
++            raise
++    raise ValueError("새 결과 파일 이름을 만들지 못했습니다.")
++
++
++def preflight(records, action, output, cancel=None):
++    action = validate_action(action)
++    directory = safe_path(output, exists=False)
++    directory.mkdir(parents=True, exist_ok=True)
++    safe_path(directory)
++    reports = []
++    for index, record in enumerate(records, 1):
++        pdf_tools.check_cancel(cancel)
++        report = {"source": record["source"], "ok": False, "error": "", "estimated": 0}
++        try:
++            source = safe_path(record["source"])
++            if not source.is_file():
++                raise ValueError("일반 파일이 아닙니다.")
++            _, extension = engine.classify(source)
++            if extension != action["format"] and action["format"] not in engine.targets([source]):
++                raise ValueError("지원하지 않는 출력 형식입니다.")
++            missing = engine.requirement(source, action["format"])
++            if missing:
++                raise ValueError(str(missing) + " 도구가 필요합니다.")
++            if (action["width"] or action["height"]) and extension not in workspace._IMAGE_FORMATS:
++                raise ValueError("크기 조절 입력은 이미지만 지원합니다.")
++            if action["max_bytes"] and action["format"] not in workspace._IMAGE_FORMATS | {"pdf"}:
++                raise ValueError("목표 용량은 이미지·PDF 출력에서 지원합니다.")
++            output_name(record, action, index)
++            relative = Path(record["relative"])
++            if relative.anchor or relative.drive or ".." in relative.parts or not relative.name:
++                raise ValueError("입력 상대 경로를 확인해 주세요.")
++            for part in relative.parts:
++                workspace._name(part)
++            report["estimated"] = source.stat().st_size * (8 if action["zip"] else 4)
++            with source.open("rb") as stream:
++                stream.read(1)
++            report["ok"] = True
++        except (OSError, ValueError) as error:
++            report["error"] = str(error)
++        reports.append(report)
++    estimated = sum(row["estimated"] for row in reports) + 64 * 1024 * 1024
++    free = shutil.disk_usage(directory).free
++    with tempfile.TemporaryFile(dir=directory) as stream:
++        stream.write(b"check")
++    return {"files": reports, "estimated": estimated, "free": free,
++            "ok": bool(records) and all(r["ok"] for r in reports) and free >= estimated,
++            "error": "" if free >= estimated else "보수적인 예상 필요 공간보다 여유 공간이 부족합니다."}
++
++
++def digest(path, cancel=None):
++    result = hashlib.sha256()
++    with safe_path(path).open("rb") as stream:
++        while chunk := stream.read(1024 * 1024):
++            pdf_tools.check_cancel(cancel)
++            result.update(chunk)
++    return result.hexdigest()
++
++
++def run_action(records, action, output, cancel=None, on_event=None, completed=None):
++    """중간 산출물은 임시 폴더에 두고 최종 결과만 새 이름으로 발행한다."""
++    cancel = cancel if cancel is not None else threading.Event()
++    action = validate_action(action)
++    result = {"status": "running", "outputs": [], "files": [], "error": "", "warnings": [],
++              "action": action, "inputs": copy.deepcopy(records), "output_dir": str(output)}
++    emit = on_event or (lambda value: None)
++    completed = completed or {}
++    try:
++        report = preflight(records, action, output, cancel)
++        result["preflight"] = report
++        if not report["ok"]:
++            raise ValueError(report["error"] or "\n".join(r["source"] + ": " + r["error"] for r in report["files"] if not r["ok"]))
++        directory = safe_path(output)
++        for index, record in enumerate(records, 1):
++            pdf_tools.check_cancel(cancel)
++            emit({"index": index, "total": len(records), "source": record["source"], "state": "running"})
++            source = safe_path(record["source"])
++            input_hash = digest(source, cancel)
++            previous = completed.get(str(source))
++            if previous:
++                if previous.get("input_sha256") != input_hash:
++                    raise ValueError("입력이 변경되어 이어하기를 보류했습니다.")
++                if previous.get("state") == "completed" and previous.get("outputs") and all(
++                        digest(row["path"], cancel) == row["sha256"] for row in previous["outputs"]):
++                    result["outputs"].extend(copy.deepcopy(previous["outputs"]))
++                    result["files"].append({"source": str(source), "state": "completed"})
++                    emit({"index": index, "total": len(records), "source": str(source), "state": "completed",
++                          "input_sha256": input_hash, "outputs": previous["outputs"]})
++                    continue
++                if previous.get("outputs") or previous.get("intent"):
++                    raise ValueError("완료 결과 확인이 필요하여 중복 변환을 보류했습니다.")
++            file_outputs = []
++            target_dir = directory / Path(record["relative"]).parent
++            safe_path(target_dir, exists=False)
++            target_dir.mkdir(parents=True, exist_ok=True)
++            steps = []
++            if action["width"] or action["height"]:
++                steps.append({"op": "resize", **{key: action[key] for key in ("width", "height") if action[key]}})
++            steps.append({"op": "convert", "format": action["format"], "quality": action["quality"]})
++            recipe = {"version": 1, "name": action["name"], "steps": steps}
++            target = {"max_bytes": action["max_bytes"], "quality": action["quality"]} if action["max_bytes"] else {}
++            with tempfile.TemporaryDirectory(prefix=".flipring-quick-", dir=directory) as work:
++                produced = workspace.execute_workspace([str(source)], recipe, target, work, cancel)
++                if produced["status"] == "cancelled":
++                    raise pdf_tools.Cancelled()
++                if produced["status"] != "completed":
++                    raise ValueError(produced["error"] or "변환을 완료하지 못했습니다.")
++                if digest(source, cancel) != input_hash:
++                    raise ValueError("변환 중 입력이 변경되어 발행하지 않았습니다.")
++                for number, item in enumerate(produced["outputs"], 1):
++                    safe_path(target_dir)
++                    name = output_name(record, action, index)
++                    if len(produced["outputs"]) > 1:
++                        name = Path(name).stem + f"-{number}" + Path(name).suffix
++                    destination = _tracked_publish(item, target_dir, name, source, input_hash, emit, cancel, len(produced["outputs"]))
++                    # 발행 직후부터 소유 결과로 기록하여 취소 중에도 결과가 유실되지 않는다.
++                    owned = {"path": destination, "source": str(source), "sha256": "", "size": Path(destination).stat().st_size}
++                    result["outputs"].append(owned)
++                    file_outputs.append(owned)
++                    owned["sha256"] = digest(destination)
++                    owned["constraints_met"] = not action["max_bytes"] or owned["size"] <= action["max_bytes"]
++                    if not owned["constraints_met"]:
++                        result["warnings"].append(f"목표 용량 미달성: {Path(destination).name}")
++            result["files"].append({"source": str(source), "state": "completed"})
++            emit({"index": index, "total": len(records), "source": str(source), "state": "completed",
++                  "input_sha256": input_hash, "outputs": copy.deepcopy(file_outputs)})
++        if action["zip"]:
++            result["bundle_pending"] = True
++            bundle_point = completed.get('')
++            if bundle_point and bundle_point.get('outputs'):
++                if bundle_point['state'] != 'completed' or any(digest(r['path']) != r['sha256'] for r in bundle_point['outputs']):
++                    raise ValueError("묶음 결과 확인이 필요하여 중복 생성을 보류했습니다.")
++                result['outputs'].extend(copy.deepcopy(bundle_point['outputs']))
++            else:
++                bundle = create_bundle(result["outputs"], directory, cancel, on_event=emit)
++                result["outputs"].append(bundle)
++                emit({'state': 'completed', 'source': '', 'input_sha256': '0' * 64, 'outputs': [bundle]})
++            result["bundle_pending"] = False
++        result["status"] = "completed"
++    except (pdf_tools.Cancelled, engine.Cancelled):
++        result["status"] = "cancelled"
++    except Exception as error:
++        result["status"], result["error"] = "failed", str(error)
++    return result
++
++
++def create_bundle(rows, output, cancel=None, on_event=None):
++    """이미 완료된 결과를 다시 변환하지 않고 ZIP 단계만 재시도할 수 있다."""
++    directory = safe_path(output)
++    with tempfile.TemporaryDirectory(prefix=".flipring-zip-", dir=directory) as work:
++        archive = Path(work) / "submission.zip"
++        with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as stream:
++            for row in rows:
++                pdf_tools.check_cancel(cancel)
++                path = safe_path(row["path"])
++                if digest(path, cancel) != row["sha256"]:
++                    raise ValueError("변경된 결과로 ZIP을 만들지 않았습니다: " + str(path))
++                with path.open("rb") as source, stream.open(str(path.relative_to(directory)).replace("\\", "/"), "w") as target:
++                    while chunk := source.read(1024 * 1024):
++                        pdf_tools.check_cancel(cancel)
++                        target.write(chunk)
++        path = (_tracked_publish(archive, directory, "제출용.zip", "", "0" * 64, on_event, cancel)
++                if on_event else workspace._publish(archive, directory, "제출용.zip", cancel))
++        return {"path": path, "source": "", "sha256": digest(path), "size": Path(path).stat().st_size, "constraints_met": True}
++
++
++class OutputLedger:
++    """현재 세션 소유 결과만 해시 검증 후 보관 폴더로 이동한다. 영구 삭제하지 않는다."""
++    def __init__(self, on_change=None):
++        self.on_change = on_change or (lambda: None)
++        self.rows = {}
++        self.moves = []
++
++    def register(self, rows):
++        for row in rows:
++            if row.get("sha256"):
++                self.rows[row["path"]] = copy.deepcopy(row)
++
++    def cleanup(self, paths):
++        moved, errors = [], []
++        for raw in dict.fromkeys(paths):
++            try:
++                row = self.rows.get(str(raw))
++                if not row:
++                    raise ValueError("현재 세션에서 생성한 결과만 정리할 수 있습니다.")
++                path = safe_path(raw)
++                if digest(path) != row["sha256"]:
++                    raise ValueError("변경된 결과를 보존했습니다: " + str(path))
++                folder = path.parent / ".flipring-undo"
++                safe_path(folder, exists=False)
++                folder.mkdir(exist_ok=True)
++                target = folder / (uuid.uuid4().hex + path.suffix)
++                move = {"original": str(path), "stored": str(target), "sha256": row["sha256"]}
++                self.moves.append(move)
++                try:
++                    self.on_change()
++                    path.rename(target)
++                except BaseException:
++                    self.moves.remove(move)
++                    raise
++                self.on_change()
++                moved.append(move)
++                if digest(target) != row["sha256"]:
++                    raise ValueError("정리 중 변경을 발견했습니다. 보관 파일을 유지합니다: " + str(target))
++            except (OSError, ValueError) as error:
++                errors.append(str(error))
++        return {"moved": moved, "errors": errors}
++
++    def undo(self):
++        restored, errors = [], []
++        for row in list(reversed(self.moves)):
++            try:
++                stored = safe_path(row["stored"])
++                original = safe_path(row["original"], exists=False)
++                if original.exists():
++                    raise ValueError("같은 이름의 파일이 있어 덮어쓰지 않았습니다: " + str(original))
++                if digest(stored) != row["sha256"]:
++                    raise ValueError("보관 결과가 변경되어 복원하지 않았습니다.")
++                path = workspace._publish(stored, original.parent, original.name)
++                # 원본 경로 충돌 시 새 결과도 보존하며 실제 복원 위치를 알린다.
++                if digest(path) != row["sha256"] or digest(stored) != row["sha256"]:
++                    raise ValueError("복원 중 변경을 발견했습니다. 두 파일을 모두 보존했습니다.")
++                stored.unlink()
++                self.moves.remove(row)
++                restored.append(path)
++                owned = self.rows.pop(row["original"], None)
++                if owned:
++                    owned["path"] = path
++                    self.rows[path] = owned
++                self.on_change()
++            except (OSError, ValueError) as error:
++                errors.append(str(error))
++        return {"restored": restored, "errors": errors}
+--- 공개기준/소스/quick_actions_ui.py
++++ 최종공개/소스/quick_actions_ui.py
+@@ -1,710 +1,830 @@
+-"""빠른 작업 화면. 긴 파일 작업은 작업자에서 수행하고 Qt 신호로만 화면을 갱신한다."""
+-from __future__ import annotations
+-
+-import copy
+-import json
+-import os
+-from pathlib import Path
+-import threading
+-from concurrent.futures import ThreadPoolExecutor
+-
+-from PySide6.QtCore import Qt, QObject, Signal, QTimer, QUrl
+-from PySide6.QtGui import QDesktopServices, QImage, QPixmap, QShortcut, QKeySequence
+-from PySide6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
+-    QLabel, QPushButton, QListWidget, QListWidgetItem, QComboBox, QLineEdit, QSpinBox,
+-    QCheckBox, QGroupBox, QPlainTextEdit, QFileDialog, QInputDialog, QMessageBox,
+-    QAbstractItemView, QScrollArea, QProgressBar, QSplitter, QMenu)
+-
+-import quick_actions as core
+-from ui_motion import make_file_dialog, set_reduced_motion
+-
+-_ACTIVE = set()
+-_TEXT = {
+-    'manage': ('작업 관리', 'Manage actions'),
+-    'wheel': ('선택 작업을 원형 메뉴에 표시', 'Show selected action in radial menu'),
+-    'title': ('빠른 작업', 'Quick actions'),
+-    'hint': ('파일·폴더를 추가하고 작업을 대기열에 넣으세요. 원본은 보존합니다.', 'Add files or folders, then queue a task. Originals are preserved.'),
+-    'files': ('파일 추가', 'Add files'), 'folder': ('폴더 추가', 'Add folder'),
+-    'remove': ('입력 제거', 'Remove input'), 'output': ('결과 폴더', 'Output folder'),
+-    'browse': ('찾아보기', 'Browse'), 'options': ('작업 설정', 'Task settings'),
+-    'format': ('출력 형식', 'Output format'), 'quality': ('품질 (20–95)', 'Quality (20–95)'),
+-    'width': ('너비 px · 0=자동', 'Width px · 0=auto'), 'height': ('높이 px · 0=자동', 'Height px · 0=auto'),
+-    'target': ('목표 KiB · 0=없음', 'Target KiB · 0=none'),
+-    'zip': ('변환 후 ZIP으로 묶기', 'Bundle converted files as ZIP'),
+-    'template': ('이름 규칙', 'Name template'), 'filter': ('확장자 필터', 'Extension filter'),
+-    'save': ('작업 저장', 'Save action'), 'rename': ('이름 변경', 'Rename'),
+-    'delete': ('작업 삭제', 'Delete action'), 'import': ('가져오기', 'Import'),
+-    'export': ('내보내기', 'Export'), 'names': ('이름 미리보기', 'Preview names'),
+-    'check': ('실행 전 점검', 'Check readiness'), 'queue': ('대기열 추가', 'Add to queue'),
+-    'up': ('위로', 'Move up'), 'down': ('아래로', 'Move down'),
+-    'drop': ('대기 작업 삭제', 'Remove waiting task'), 'pause': ('일시 정지', 'Pause'),
+-    'resume': ('계속', 'Resume'), 'cancel': ('현재 작업 취소', 'Cancel current'),
+-    'retry': ('실패 작업 재시도', 'Retry failed tasks'), 'replay': ('선택 설정 재실행', 'Replay selected task'),
+-    'open': ('결과 폴더 열기', 'Open result folder'), 'reveal': ('파일 선택', 'Reveal file'),
+-    'copy': ('경로 복사', 'Copy path'), 'cleanup': ('선택 결과 정리', 'Archive selected results'),
+-    'undo': ('정리 되돌리기', 'Undo archive'), 'error': ('오류 복사', 'Copy errors'),
+-    'summary': ('요약 저장', 'Save summary'), 'before': ('원본', 'Original'), 'after': ('결과', 'Result'),
+-    'waiting': ('대기', 'Waiting'), 'running': ('처리 중', 'Running'),
+-    'completed': ('완료', 'Completed'), 'failed': ('실패', 'Failed'), 'cancelled': ('취소', 'Cancelled'),
+-    'paused': ('일시 정지 · 현재 파일 작업은 계속됩니다.', 'Paused · the current task continues.'),
+-    'ready': ('준비됨', 'Ready'), 'busy': ('다른 변환 작업이 끝난 뒤 계속합니다.', 'Waiting for another conversion to finish.'),
+-    'pick': ('먼저 입력과 결과 폴더를 지정해 주세요.', 'Select inputs and an output folder first.'),
+-    'name': ('작업 이름', 'Action name'), 'selected': ('사용자 작업을 선택해 주세요.', 'Select a saved user action.'),
+-    'preflight': ('예상 필요 공간(보수적 추정)', 'Estimated space (conservative)'),
+-    'free': ('사용 가능', 'Free'), 'met': ('목표 달성', 'Target met'), 'unmet': ('목표 미달성', 'Target not met'),
+-    'preview': ('이미지·PDF는 미리보기, 문서는 파일 정보와 기존 문서 작업으로 연결됩니다.', 'Images and PDFs show previews; documents show metadata and link to document tools.'),
+-    'document': ('문서 작업 열기', 'Open document tools'),
+-    'empty': ('선택된 파일이 없습니다.', 'No file selected.'),
+-    'details': ('자세한 상태', 'Details'),
+-    'shortcuts': ('Ctrl+O 파일 · Ctrl+Enter 대기열 · Delete 입력 제거 · Esc 현재 취소', 'Ctrl+O add · Ctrl+Enter queue · Delete remove input · Esc cancel'),
+-}
+-
+-
+-class _Bridge(QObject):
+-    done = Signal(int, object, str)
+-    event = Signal(str, object)
+-
+-
+-def _preview(raw, language='ko'):
+-    """실제 파일만 읽고 작은 RGBA 바이트를 반환한다. 문서 실행은 하지 않는다."""
+-    from PIL import Image, ImageDraw, ImageOps
+-    path = core.safe_path(raw)
+-    size = path.stat().st_size
+-    result = {'path': str(path), 'info': f'{path.name}\n{size:,} bytes', 'size': size, 'pixels': None}
+-    image = None
+-    try:
+-        if path.suffix.lower() == '.pdf':
+-            import pypdfium2 as pdfium
+-            from pdf_lock import PDFIUM_LOCK
+-            if not PDFIUM_LOCK.acquire(blocking=False):
+-                result['info'] += ('\nPDF busy' if language == 'en' else '\nPDF 처리 중')
+-                return result
+-            try:
+-                with pdfium.PdfDocument(str(path)) as document:
+-                    result['info'] += f' · {len(document)} ' + ('pages' if language == 'en' else '페이지')
+-                    if len(document):
+-                        page = document[0]
+-                        try:
+-                            width, height = page.get_size()
+-                            bitmap = page.render(scale=min(1, 450 / max(width, height)))
+-                            try:
+-                                image = bitmap.to_pil().convert('RGBA').copy()
+-                            finally:
+-                                bitmap.close()
+-                        finally:
+-                            page.close()
+-            finally:
+-                PDFIUM_LOCK.release()
+-        else:
+-            import engine
+-            kind, extension = engine.classify(path)
+-            if kind in ('문서', '프레젠테이션', '스프레드시트'):
+-                result['info'] += '\n' + extension.upper()
+-                result['document'] = True
+-                return result
+-            with Image.open(path) as opened:
+-                result['info'] += f' · {opened.width} × {opened.height} px'
+-                image = ImageOps.exif_transpose(opened)
+-                image.thumbnail((450, 240))
+-                image = image.convert('RGBA').copy()
+-        if image:
+-            image.thumbnail((450, 240))
+-            background = Image.new('RGBA', image.size, (235, 235, 235, 255))
+-            draw = ImageDraw.Draw(background)
+-            for y in range(0, image.height, 12):
+-                for x in range(0, image.width, 12):
+-                    if (x // 12 + y // 12) % 2:
+-                        draw.rectangle((x, y, x + 11, y + 11), fill=(200, 200, 200, 255))
+-            background.alpha_composite(image)
+-            result['pixels'] = (background.tobytes(), background.width, background.height)
+-    except Exception as error:
+-        result['info'] += '\n' + str(error)
+-    return result
+-
+-
+-class QuickActionsPanel(QWidget):
+-    def __init__(self, owner, language='ko'):
+-        super().__init__(owner if isinstance(owner, QWidget) else None)
+-        self.owner, self.language = owner, language
+-        self._closed = False
+-        self._reduced_motion = False
+-        self._pickers = []
+-        self._pool = ThreadPoolExecutor(max_workers=2, thread_name_prefix='FlipRing-quick')
+-        self._tasks, self._sequence = {}, 0
+-        self._bridge = _Bridge(self)
+-        self._bridge.done.connect(self._done)
+-        self._bridge.event.connect(self._event)
+-        self._cancel = threading.Event()
+-        self._scan_cancel = threading.Event()
+-        self._jobs, self._active_job = [], None
+-        self._paused = False
+-        self._inputs, self._outputs, self._last_errors = [], [], []
+-        self._preview_serial = 0
+-        self._ledger = core.OutputLedger()
+-        self._labels, self._buttons = [], []
+-        self._queue_controls, self._result_controls, self._preview_controls = [], [], []
+-        settings = getattr(owner, 'settings', None)
+-        configured = settings.fileName() if settings is not None else ''
+-        base = Path(configured).parent if configured and not str(configured).startswith('\\') else Path(os.environ.get('LOCALAPPDATA', str(Path.home()))) / 'FlipRing'
+-        if not configured or Path(configured).suffix.lower() != '.ini':
+-            base = Path(os.environ.get('LOCALAPPDATA', str(Path.home()))) / 'FlipRing'
+-        self.store = core.ActionStore(base / 'quick-actions.json')
+-        self._saved = []
+-        layout = QVBoxLayout(self)
+-        scroll = QScrollArea(); scroll.setWidgetResizable(True)
+-        body = QWidget(); self.body_layout = QVBoxLayout(body)
+-        scroll.setWidget(body); layout.addWidget(scroll)
+-        self.title = self._label('title'); self.title.setStyleSheet('font-size:22px;font-weight:700;')
+-        self.body_layout.addWidget(self.title); self.body_layout.addWidget(self._label('hint'))
+-        row = QHBoxLayout()
+-        for key, slot in [('files', self.choose_files), ('folder', self.choose_folder), ('remove', self.remove_inputs)]:
+-            button = self._button(key, slot); row.addWidget(button)
+-            if key == 'remove': self.remove_input_button = button
+-        self.body_layout.addLayout(row)
+-        self.inputs = QListWidget(); self.inputs.setSelectionMode(QAbstractItemView.ExtendedSelection)
+-        self.inputs.setMaximumHeight(105); self.inputs.currentRowChanged.connect(self.preview_input)
+-        self.body_layout.addWidget(self.inputs)
+-        row = QHBoxLayout(); row.addWidget(self._label('output'))
+-        self.output = QLineEdit(); row.addWidget(self.output, 1); row.addWidget(self._button('browse', self.choose_output))
+-        self.body_layout.addLayout(row)
+-        row = QHBoxLayout(); self.presets = QComboBox(); self.presets.currentIndexChanged.connect(self.load_action)
+-        row.addWidget(self.presets, 1)
+-        manage = self._button('manage', lambda: None); menu = QMenu(manage)
+-        for key, slot in [('save', self.save_action), ('rename', self.rename_action), ('delete', self.delete_action), ('import', self.import_action), ('export', self.export_action)]:
+-            action = menu.addAction(self.t(key)); action.triggered.connect(slot); self._buttons.append((action, key))
+-        manage.setMenu(menu); row.addWidget(manage)
+-        self.body_layout.addLayout(row)
+-        self.wheel_enabled = QCheckBox()
+-        self._buttons.append((self.wheel_enabled, 'wheel'))
+-        self.wheel_enabled.setChecked(str(settings.value('quick/wheel', 'true') if settings is not None else 'true').lower() in ('true', '1'))
+-        self.wheel_enabled.toggled.connect(self._save_wheel)
+-        self.body_layout.addWidget(self.wheel_enabled)
+-        basic = QHBoxLayout(); basic.addWidget(self._label('format'))
+-        self.options = QGroupBox(); self._labels.append((self.options, 'options'))
+-        form = QFormLayout(self.options)
+-        self.format = QComboBox()
+-        self.format.addItems(sorted({fmt for _, values in core.engine.TABLE.values() for fmt in values.split()}))
+-        basic.addWidget(self.format, 1); self.body_layout.addLayout(basic)
+-        options_toggle = self._button('options', lambda checked: self.options.setVisible(checked))
+-        options_toggle.setCheckable(True); self.body_layout.addWidget(options_toggle)
+-        self.quality = QSpinBox(); self.quality.setRange(20, 95); self.quality.setValue(85)
+-        self.width = QSpinBox(); self.width.setRange(0, 12000)
+-        self.height = QSpinBox(); self.height.setRange(0, 12000)
+-        self.target = QSpinBox(); self.target.setRange(0, 1024 * 1024 * 1024)
+-        self.zip = QCheckBox(); self._buttons.append((self.zip, 'zip'))
+-        self.template = QLineEdit('{name}'); self.template.setPlaceholderText('{name}_{index:03d}_{date}')
+-        self.extensions = QLineEdit(); self.extensions.setPlaceholderText('jpg, png, pdf')
+-        for key, widget in [('quality', self.quality), ('width', self.width), ('height', self.height), ('target', self.target), ('template', self.template), ('filter', self.extensions)]:
+-            form.addRow(self._label(key), widget)
+-        form.addRow(self.zip)
+-        self.body_layout.addWidget(self.options); self.options.hide()
+-        row = QHBoxLayout()
+-        for key, slot in [('names', self.preview_names), ('check', self.check_readiness)]:
+-            row.addWidget(self._button(key, slot))
+-        form.addRow(row)
+-        self.body_layout.addWidget(self._button('queue', self.enqueue))
+-        self.queue = QListWidget(); self.queue.setMaximumHeight(130)
+-        self.body_layout.addWidget(self.queue)
+-        row = QHBoxLayout()
+-        for key, slot in [('up', lambda: self.move_job(-1)), ('down', lambda: self.move_job(1)), ('drop', self.remove_job), ('pause', self.pause), ('resume', self.resume)]:
+-            button = self._button(key, slot); row.addWidget(button); self._queue_controls.append(button)
+-        self.body_layout.addLayout(row)
+-        row = QHBoxLayout()
+-        for key, slot in [('cancel', self.cancel), ('retry', self.retry_failed), ('replay', self.replay)]:
+-            button = self._button(key, slot); row.addWidget(button); self._queue_controls.append(button)
+-        self.body_layout.addLayout(row)
+-        self.progress = QProgressBar(); self.body_layout.addWidget(self.progress)
+-        self.status = QLabel(); self.status.setWordWrap(True); self.body_layout.addWidget(self.status)
+-        self.results = QListWidget(); self.results.setSelectionMode(QAbstractItemView.ExtendedSelection)
+-        self.results.setMaximumHeight(110); self.results.currentRowChanged.connect(self.preview_result)
+-        self.body_layout.addWidget(self.results)
+-        row = QHBoxLayout()
+-        for key, slot in [('open', self.open_folder), ('reveal', self.reveal_result), ('copy', self.copy_path), ('cleanup', self.cleanup), ('undo', self.undo)]:
+-            button = self._button(key, slot); row.addWidget(button); self._result_controls.append(button)
+-        self.body_layout.addLayout(row)
+-        row = QHBoxLayout()
+-        for key, slot in [('error', self.copy_errors), ('summary', self.export_summary)]:
+-            button = self._button(key, slot); row.addWidget(button); self._queue_controls.append(button)
+-        self.body_layout.addLayout(row)
+-        previews = QHBoxLayout(); self.pictures, self.metadata = [], []
+-        for key in ('before', 'after'):
+-            column = QVBoxLayout(); label = self._label(key); column.addWidget(label); self._preview_controls.append(label)
+-            picture = QLabel(); picture.setAlignment(Qt.AlignCenter); picture.setMinimumHeight(110)
+-            info = QLabel(); info.setWordWrap(True); info.setTextInteractionFlags(Qt.TextSelectableByMouse)
+-            column.addWidget(picture); column.addWidget(info); previews.addLayout(column, 1)
+-            self.pictures.append(picture); self.metadata.append(info); self._preview_controls.extend([picture, info])
+-        self.body_layout.addLayout(previews)
+-        self.savings = QLabel(); self.body_layout.addWidget(self.savings)
+-        guidance = self._label('preview'); document = self._button('document', self.document_tools)
+-        self.body_layout.addWidget(guidance); self.body_layout.addWidget(document)
+-        self._preview_controls.extend([self.savings, guidance, document])
+-        self.details = QPlainTextEdit(); self.details.setReadOnly(True); self.details.setMaximumHeight(100)
+-        self.body_layout.addWidget(self.details)
+-        self.details.textChanged.connect(lambda: self.details.setVisible(bool(self.details.toPlainText())))
+-        self.details.hide()
+-        self.body_layout.addWidget(self._label('shortcuts'))
+-        for sequence, slot in [('Ctrl+O', self.choose_files), ('Ctrl+Return', self.enqueue), ('Escape', self.cancel)]:
+-            shortcut = QShortcut(QKeySequence(sequence), self); shortcut.setContext(Qt.WidgetWithChildrenShortcut); shortcut.activated.connect(slot)
+-        delete = QShortcut(QKeySequence('Delete'), self.inputs); delete.setContext(Qt.WidgetShortcut); delete.activated.connect(self.remove_inputs)
+-        self._timer = QTimer(self); self._timer.setInterval(300); self._timer.timeout.connect(self._next)
+-        self.set_language(language)
+-        self.reload_actions()
+-        self._sync_visibility()
+-        self.body_layout.addStretch(1)
+-
+-    def _sync_visibility(self):
+-        self.inputs.setVisible(bool(self._inputs)); self.remove_input_button.setVisible(bool(self._inputs))
+-        self.queue.setVisible(bool(self._jobs)); self.progress.setVisible(bool(self._jobs))
+-        self.results.setVisible(bool(self._outputs))
+-        for widget in self._queue_controls: widget.setVisible(bool(self._jobs))
+-        for widget in self._result_controls: widget.setVisible(bool(self._outputs))
+-        for widget in self._preview_controls: widget.setVisible(bool(self._inputs or self._outputs))
+-
+-    def t(self, key):
+-        pair = _TEXT.get(key, (key, key))
+-        return pair[self.language == 'en']
+-
+-    def _label(self, key):
+-        widget = QLabel(); self._labels.append((widget, key)); return widget
+-
+-    def _button(self, key, slot):
+-        widget = QPushButton(); self._buttons.append((widget, key)); widget.clicked.connect(slot); return widget
+-
+-    def set_language(self, language):
+-        self.language = 'en' if language == 'en' else 'ko'
+-        for widget, key in self._labels:
+-            if isinstance(widget, QGroupBox): widget.setTitle(self.t(key))
+-            else: widget.setText(self.t(key))
+-        for widget, key in self._buttons: widget.setText(self.t(key))
+-        self.presets.blockSignals(True)
+-        for index, name in enumerate(('Photo JPG', 'Submission JPG + ZIP', 'Document PDF')):
+-            if index < self.presets.count(): self.presets.setItemText(index, name if self.language == 'en' else core.BUILTINS[index]['name'])
+-        self.presets.blockSignals(False)
+-        self.refresh_queue()
+-        self.status.setText(self.t('ready'))
+-        for dialog in self._pickers:
+-            dialog.set_language(self.language)
+-
+-    def set_reduced_motion(self, enabled):
+-        self._reduced_motion = bool(enabled)
+-        for dialog in self._pickers: set_reduced_motion(dialog, enabled)
+-
+-    def _submit(self, operation, callback, on_error=None):
+-        if self._closed:
+-            return
+-        self._sequence += 1; number = self._sequence
+-        self._tasks[number] = (callback, on_error); _ACTIVE.add(self)
+-        future = self._pool.submit(operation)
+-        def finished(item):
+-            try:
+-                result, error = item.result(), ''
+-            except BaseException as exception:
+-                result, error = None, str(exception)
+-            self._bridge.done.emit(number, result, error)
+-        future.add_done_callback(finished)
+-
+-    def _done(self, number, result, error):
+-        callbacks = self._tasks.pop(number, None)
+-        if not self._closed and callbacks:
+-            callback, on_error = callbacks
+-            if error:
+-                self.report(error)
+-                if on_error: on_error(error)
+-            else: callback(result)
+-        if self._closed and not self._tasks:
+-            self._active_job = None
+-            self._pool.shutdown(wait=False, cancel_futures=True); _ACTIVE.discard(self)
+-        elif not self._tasks:
+-            _ACTIVE.discard(self)
+-
+-    def report(self, message):
+-        self.status.setText(str(message)); self.details.setPlainText(str(message))
+-        self._last_errors.append(str(message))
+-
+-    def choose_paths(self, key, *, folder=False, save=False, single=False, initial='', name_filter=''):
+-        dialog = make_file_dialog(self, self.t(key), folder=folder, name_filter=name_filter)
+-        dialog.set_language(self.language)
+-        if save:
+-            dialog.setAcceptMode(QFileDialog.AcceptSave); dialog.setFileMode(QFileDialog.AnyFile); dialog.setDefaultSuffix('json')
+-        elif single: dialog.setFileMode(QFileDialog.ExistingFile)
+-        if initial:
+-            if folder: dialog.setDirectory(initial)
+-            else: dialog.selectFile(initial)
+-        self._pickers.append(dialog); set_reduced_motion(dialog, self._reduced_motion)
+-        try: return dialog.selectedFiles() if dialog.exec() == QFileDialog.Accepted else []
+-        finally:
+-            self._pickers.remove(dialog); dialog.deleteLater()
+-
+-    def _save_wheel(self, checked):
+-        settings = getattr(self.owner, 'settings', None)
+-        if settings is not None:
+-            settings.setValue('quick/wheel', checked); settings.sync()
+-
+-    def wheel_action(self):
+-        if self._closed or not self.wheel_enabled.isChecked(): return None
+-        try: return self.action()
+-        except (ValueError, TypeError): return None
+-
+-    def wheel_label(self):
+-        action = self.wheel_action()
+-        return action['name'] if action else ''
+-
+-    def enqueue_paths(self, paths):
+-        """휠의 입력·설정을 즉시 스냅샷으로 잡아 화면 입력 목록과 독립 처리한다."""
+-        action = self.wheel_action()
+-        if not action or not paths: return
+-        captured = [str(path) for path in paths]
+-        output = self.output.text().strip() or str(Path(captured[0]).parent / 'FlipRing 결과')
+-        def ready(result):
+-            if result['skipped']: self.details.setPlainText('\n'.join(result['skipped']))
+-            if result['inputs']: self._append_job(result['inputs'], action, output)
+-            else: self.report(self.t('empty'))
+-        self._submit(lambda: core.collect_inputs(captured, action['extensions'], self._scan_cancel), ready)
+-
+-    def choose_files(self):
+-        paths = self.choose_paths('files')
+-        if paths: self.add_paths(paths)
+-
+-    def choose_folder(self):
+-        paths = self.choose_paths('folder', folder=True)
+-        if paths: self.add_paths(paths)
+-
+-    def add_paths(self, paths):
+-        extensions = self.extensions.text()
+-        self._submit(lambda: core.collect_inputs(paths, extensions, self._scan_cancel), self._collected)
+-
+-    def _collected(self, result):
+-        known = {os.path.normcase(row['source']) for row in self._inputs}
+-        for row in result['inputs']:
+-            if os.path.normcase(row['source']) not in known:
+-                self._inputs.append(row); known.add(os.path.normcase(row['source']))
+-                item = QListWidgetItem(row['relative']); item.setToolTip(row['source']); self.inputs.addItem(item)
+-        if result['skipped']: self.details.setPlainText('\n'.join(result['skipped']))
+-        self.status.setText(f"{len(self._inputs):,} " + ('files' if self.language == 'en' else '파일'))
+-        self._sync_visibility()
+-
+-    def remove_inputs(self):
+-        for index in sorted((self.inputs.row(i) for i in self.inputs.selectedItems()), reverse=True):
+-            self._inputs.pop(index); self.inputs.takeItem(index)
+-        self._sync_visibility()
+-
+-    def choose_output(self):
+-        paths = self.choose_paths('output', folder=True, initial=self.output.text())
+-        if paths: self.output.setText(paths[0])
+-
+-    def action(self):
+-        index = self.presets.currentIndex()
+-        name = (self.presets.currentData() or {}).get('name', '빠른 작업')
+-        return core.validate_action({'version': 1, 'name': name, 'format': self.format.currentText(),
+-            'quality': self.quality.value(), 'width': self.width.value(), 'height': self.height.value(),
+-            'max_bytes': self.target.value() * 1024, 'zip': self.zip.isChecked(),
+-            'template': self.template.text(), 'extensions': self.extensions.text()})
+-
+-    def reload_actions(self, select=None):
+-        try: self._saved = self.store.load()
+-        except Exception as error: self.report(error); self._saved = []
+-        self.presets.blockSignals(True); self.presets.clear()
+-        for row in [*core.BUILTINS, *self._saved]: self.presets.addItem(row['name'], copy.deepcopy(row))
+-        self.presets.blockSignals(False)
+-        settings = getattr(self.owner, 'settings', None)
+-        preferred = select or (settings.value('quick/selected', '') if settings is not None else '')
+-        self.presets.setCurrentIndex(max(0, self.presets.findText(preferred)))
+-        self.load_action(self.presets.currentIndex())
+-        self.set_language(self.language)
+-
+-    def load_action(self, index):
+-        action = self.presets.itemData(index)
+-        if not action: return
+-        self.format.setCurrentText(action['format']); self.quality.setValue(action['quality'])
+-        self.width.setValue(action['width']); self.height.setValue(action['height'])
+-        self.target.setValue(action['max_bytes'] // 1024); self.zip.setChecked(action['zip'])
+-        self.template.setText(action['template']); self.extensions.setText(action['extensions'])
+-        settings = getattr(self.owner, 'settings', None)
+-        if settings is not None: settings.setValue('quick/selected', action['name'])
+-
+-    def save_action(self):
+-        name, ok = QInputDialog.getText(self, self.t('save'), self.t('name'))
+-        if not ok: return
+-        try:
+-            action = self.action(); action['name'] = name
+-            self.store.save(action); self.reload_actions(name)
+-        except Exception as error: self.report(error)
+-
+-    def _selected_saved(self):
+-        row = self.presets.currentData()
+-        if not row or self.presets.currentIndex() < len(core.BUILTINS): raise ValueError(self.t('selected'))
+-        return row
+-
+-    def rename_action(self):
+-        try:
+-            row = copy.deepcopy(self._selected_saved())
+-            name, ok = QInputDialog.getText(self, self.t('rename'), self.t('name'), text=row['name'])
+-            if ok:
+-                previous = row['name']; row['name'] = name
+-                self.store.save(row, previous); self.reload_actions(name)
+-        except Exception as error: self.report(error)
+-
+-    def delete_action(self):
+-        try:
+-            row = self._selected_saved(); self.store.delete(row['name']); self.reload_actions()
+-        except Exception as error: self.report(error)
+-
+-    def import_action(self):
+-        paths = self.choose_paths('import', single=True, name_filter='JSON (*.json)')
+-        if not paths: return
+-        path = paths[0]
+-        def operation():
+-            source = core.safe_path(path)
+-            if source.stat().st_size > 2 * 1024 * 1024: raise ValueError('JSON > 2MiB')
+-            row = core.validate_action(json.loads(source.read_text(encoding='utf-8-sig')))
+-            self.store.save(row); return row
+-        self._submit(operation, lambda row: self.reload_actions(row['name']))
+-
+-    def export_action(self):
+-        try: row = self.action()
+-        except Exception as error: self.report(error); return
+-        paths = self.choose_paths('export', save=True, initial='빠른작업.json', name_filter='JSON (*.json)')
+-        path = paths[0] if paths else ''
+-        if path: self._submit(lambda: self._write_json(path, row), lambda _: self.status.setText(self.t('completed')))
+-
+-    @staticmethod
+-    def _write_json(path, value):
+-        # 사용자가 저장창에서 지정한 문서만 저장한다. 변환 결과 발행과 별개이다.
+-        Path(path).write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding='utf-8')
+-
+-    def _request(self):
+-        if not self._inputs or not self.output.text().strip(): raise ValueError(self.t('pick'))
+-        action = self.action()
+-        allowed = {s.strip().lower().lstrip('.') for s in action['extensions'].replace(';', ',').split(',') if s.strip()}
+-        inputs = [copy.deepcopy(r) for r in self._inputs if not allowed or Path(r['source']).suffix.lower().lstrip('.') in allowed]
+-        if not inputs: raise ValueError(self.t('empty'))
+-        return inputs, action, self.output.text().strip()
+-
+-    def preview_names(self):
+-        try:
+-            records, action, output = self._request()
+-            self.details.setPlainText('\n'.join(str(Path(output) / Path(r['relative']).parent / core.output_name(r, action, i)) for i, r in enumerate(records, 1)) + '\n' + ('Collisions receive a number.' if self.language == 'en' else '이름 충돌 시 번호가 붙습니다.'))
+-        except Exception as error: self.report(error)
+-
+-    def check_readiness(self):
+-        try: records, action, output = self._request()
+-        except Exception as error: self.report(error); return
+-        def show(report):
+-            lines = [f"{self.t('preflight')}: {report['estimated']:,} bytes · {self.t('free')}: {report['free']:,} bytes"]
+-            lines.extend(row['source'] + ': ' + (self.t('ready') if row['ok'] else row['error']) for row in report['files'])
+-            if report['error']: lines.append(report['error'])
+-            self.details.setPlainText('\n'.join(lines)); self.status.setText(self.t('ready') if report['ok'] else self.t('failed'))
+-        self._submit(lambda: core.preflight(records, action, output, self._scan_cancel), show)
+-
+-    def enqueue(self):
+-        try: records, action, output = self._request()
+-        except Exception as error: self.report(error); return
+-        self._append_job(records, action, output)
+-
+-    def _append_job(self, records, action, output):
+-        job = {'id': core.uuid.uuid4().hex[:8], 'inputs': copy.deepcopy(records), 'action': copy.deepcopy(action), 'output': output, 'state': 'waiting', 'result': None, 'file_states': {r['source']: 'waiting' for r in records}}
+-        self._jobs.append(job); self.refresh_queue(); self._timer.start(); self._next()
+-
+-    def refresh_queue(self):
+-        selected = self.queue.currentRow() if hasattr(self, 'queue') else -1
+-        if not hasattr(self, 'queue'): return
+-        self.queue.clear()
+-        if hasattr(self, 'progress'): self._sync_visibility()
+-        for job in self._jobs:
+-            item = QListWidgetItem(f"{job['id']} · {job['action']['name']} · {len(job['inputs'])} files · {self.t(job['state'])}")
+-            if job.get('result'): item.setToolTip(job['result'].get('error', ''))
+-            self.queue.addItem(item)
+-        if 0 <= selected < self.queue.count(): self.queue.setCurrentRow(selected)
+-
+-    def _other_busy(self):
+-        if bool(getattr(self.owner, 'pending', False)): return True
+-        installer = getattr(self.owner, 'installer', None)
+-        if installer is not None and installer.is_busy(): return True
+-        for name in ('pdf_panel', 'workspace_panel'):
+-            panel = getattr(self.owner, name, None)
+-            if panel is not None and panel is not self and getattr(panel, 'is_busy', lambda: False)(): return True
+-        return False
+-
+-    def _next(self):
+-        if self._closed or self._paused or self._active_job is not None or self._tasks: return
+-        job = next((row for row in self._jobs if row['state'] == 'waiting'), None)
+-        if not job: self._timer.stop(); return
+-        if self._other_busy(): self.status.setText(self.t('busy')); return
+-        self._active_job = job; job['state'] = 'running'; self._cancel = threading.Event()
+-        self._update_progress()
+-        self.refresh_queue()
+-        token = self._cancel
+-        def operation():
+-            if job.get('bundle_rows'):
+-                previous = copy.deepcopy(job['previous'])
+-                try:
+-                    bundle = core.create_bundle(job['bundle_rows'], job['output'], token)
+-                    return {**previous, 'status': 'completed', 'outputs': [bundle], 'error': '', 'bundle_pending': False}
+-                except (core.pdf_tools.Cancelled, core.engine.Cancelled):
+-                    return {**previous, 'status': 'cancelled', 'outputs': [], 'error': ''}
+-                except Exception as error:
+-                    return {**previous, 'status': 'failed', 'outputs': [], 'error': str(error)}
+-            return core.run_action(job['inputs'], job['action'], job['output'], token,
+-                lambda event: self._bridge.event.emit(job['id'], event))
+-        self._submit(operation, lambda result: self._job_done(job, result), lambda error: self._job_done(job, {'status': 'failed', 'outputs': [], 'files': [], 'error': error, 'warnings': []}))
+-
+-    def _event(self, identifier, event):
+-        if self._closed: return
+-        self.status.setText(self.t(event['state']) + ' · ' + Path(event['source']).name)
+-        if self._active_job and self._active_job['id'] == identifier:
+-            self._active_job['file_states'][event['source']] = event['state']
+-            for index, row in enumerate(self._inputs):
+-                if row['source'] == event['source']:
+-                    self.inputs.item(index).setText(row['relative'] + ' · ' + self.t(event['state']))
+-            self._update_progress()
+-
+-    def _job_done(self, job, result):
+-        job['result'] = result; job['state'] = result['status']; self._active_job = None
+-        finished = {r['source'] for r in result.get('files', []) if r['state'] == 'completed'}
+-        for source in job['file_states']:
+-            job['file_states'][source] = 'completed' if source in finished else result['status']
+-        self._update_progress()
+-        for index, row in enumerate(self._inputs):
+-            if row['source'] in job['file_states']:
+-                self.inputs.item(index).setText(row['relative'] + ' · ' + self.t(job['file_states'][row['source']]))
+-        self._ledger.register(result['outputs'])
+-        for row in result['outputs']:
+-            self._outputs.append(row)
+-            status = self.t('met') if row['constraints_met'] else self.t('unmet')
+-            self.results.addItem(f"{Path(row['path']).name} · {row['size']:,} bytes · {status}")
+-            self.results.item(self.results.count() - 1).setToolTip(row['path'])
+-        self.refresh_queue(); self.status.setText(self.t(result['status']))
+-        detail = '\n'.join([result['error'], *result['warnings']]).strip()
+-        if detail: self.report(detail)
+-        self._next()
+-
+-    def _update_progress(self):
+-        states = [state for job in self._jobs for state in job['file_states'].values()]
+-        self.progress.setRange(0, max(1, len(states)))
+-        self.progress.setValue(sum(s in ('completed', 'failed', 'cancelled') for s in states))
+-
+-    def move_job(self, offset):
+-        index = self.queue.currentRow(); destination = index + offset
+-        if index < 0 or not 0 <= destination < len(self._jobs): return
+-        if self._jobs[index]['state'] != 'waiting' or self._jobs[destination]['state'] != 'waiting': return
+-        self._jobs[index], self._jobs[destination] = self._jobs[destination], self._jobs[index]
+-        self.refresh_queue(); self.queue.setCurrentRow(destination)
+-
+-    def remove_job(self):
+-        index = self.queue.currentRow()
+-        if index >= 0 and self._jobs[index]['state'] == 'waiting': self._jobs.pop(index); self.refresh_queue()
+-
+-    def pause(self): self._paused = True; self.status.setText(self.t('paused'))
+-    def resume(self): self._paused = False; self._timer.start(); self._next()
+-    def cancel(self): self._cancel.set()
+-
+-    def retry_failed(self):
+-        for job in list(self._jobs):
+-            if job['state'] == 'failed' and not job.get('retried'):
+-                job['retried'] = True
+-                completed = {r['source'] for r in job['result']['files'] if r['state'] == 'completed'}
+-                records = [r for r in job['inputs'] if r['source'] not in completed]
+-                if records:
+-                    self._append_job(records, job['action'], job['output'])
+-                elif job['result'].get('bundle_pending'):
+-                    self._paused, paused = True, self._paused
+-                    self._append_job([], job['action'], job['output'])
+-                    retry = self._jobs[-1]; retry['bundle_rows'] = job.get('bundle_rows') or copy.deepcopy(job['result']['outputs'])
+-                    retry['previous'] = job['result']; self._paused = paused; self._next()
+-
+-    def replay(self):
+-        index = self.queue.currentRow()
+-        if index >= 0:
+-            job = self._jobs[index]; self._append_job(job['inputs'], job['action'], job['output'])
+-
+-    def preview_input(self, index):
+-        if 0 <= index < len(self._inputs): self._show_preview(self._inputs[index]['source'], '')
+-
+-    def preview_result(self, index):
+-        if 0 <= index < len(self._outputs):
+-            row = self._outputs[index]; self._show_preview(row['source'], row['path'])
+-
+-    def _show_preview(self, source, output):
+-        self._preview_serial += 1; serial = self._preview_serial
+-        for picture in self.pictures: picture.clear()
+-        for info in self.metadata: info.setText(self.t('empty'))
+-        self.savings.clear()
+-        language = self.language
+-        def operation(): return [_preview(p, language) if p else None for p in (source, output)]
+-        def show(rows):
+-            if serial != self._preview_serial: return
+-            for i, row in enumerate(rows):
+-                if not row: continue
+-                self.metadata[i].setText(row['info'])
+-                if row['pixels']:
+-                    raw, width, height = row['pixels']; image = QImage(raw, width, height, width * 4, QImage.Format_RGBA8888).copy()
+-                    self.pictures[i].setPixmap(QPixmap.fromImage(image).scaled(400, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+-            if all(rows) and rows[0]['size']:
+-                saving = 100 * (1 - rows[1]['size'] / rows[0]['size'])
+-                self.savings.setText((f'용량 변화: {saving:.1f}% 절감 (반올림)' if self.language != 'en' else f'Size change: {saving:.1f}% saved (rounded)'))
+-        self._submit(operation, show)
+-
+-    def _selected_outputs(self):
+-        return [self._outputs[self.results.row(item)] for item in self.results.selectedItems()]
+-
+-    def open_folder(self):
+-        row = self._selected_outputs()
+-        path = Path(row[0]['path']).parent if row else Path(self.output.text())
+-        if str(path) and path.is_dir(): QDesktopServices.openUrl(QUrl.fromLocalFile(str(path)))
+-
+-    def reveal_result(self):
+-        rows = self._selected_outputs()
+-        if not rows: return
+-        path = rows[0]['path']
+-        if not Path(path).exists(): self.report(self.t('empty')); return
+-        reveal = getattr(self.owner, 'reveal_preview', None)
+-        if callable(reveal): reveal(path)
+-        else:
+-            # 호스트의 검증된 선택 API가 없는 단독 화면에서는 폴더만 연다.
+-            QDesktopServices.openUrl(QUrl.fromLocalFile(str(Path(path).parent)))
+-
+-    def copy_path(self): QApplication.clipboard().setText('\n'.join(r['path'] for r in self._selected_outputs()))
+-    def copy_errors(self): QApplication.clipboard().setText('\n'.join(self._last_errors))
+-
+-    def cleanup(self):
+-        if self._active_job or self._tasks: self.report(self.t('busy')); return
+-        paths = [r['path'] for r in self._selected_outputs()]
+-        self._submit(lambda: self._ledger.cleanup(paths), lambda result: self.details.setPlainText(json.dumps(result, ensure_ascii=False, indent=2)))
+-
+-    def undo(self):
+-        if self._active_job or self._tasks: self.report(self.t('busy')); return
+-        self._submit(self._ledger.undo, lambda result: self.details.setPlainText(json.dumps(result, ensure_ascii=False, indent=2)))
+-
+-    def export_summary(self):
+-        rows = copy.deepcopy(self._jobs)
+-        paths = self.choose_paths('summary', save=True, initial='작업요약.json', name_filter='JSON (*.json)')
+-        path = paths[0] if paths else ''
+-        if path: self._submit(lambda: self._write_json(path, rows), lambda _: self.status.setText(self.t('completed')))
+-
+-    def document_tools(self):
+-        panel = getattr(self.owner, 'workspace_panel', None)
+-        selected = self._selected_outputs()
+-        paths = [r['path'] for r in selected] if selected else [r['source'] for r in self._inputs]
+-        if panel is not None and paths:
+-            panel.add_files(paths)
+-        # 호스트가 제공하는 기존 페이지 탐색 API만 사용한다.
+-        if hasattr(self.owner, 'open_page'):
+-            self.owner.open_page(6)
+-        elif panel is not None:
+-            panel.setFocus()
+-        self.status.setText(self.t('preview'))
+-
+-    def is_busy(self): return bool(self._tasks or self._active_job)
+-
+-    def shutdown(self):
+-        self._closed = True; self._timer.stop(); self._cancel.set(); self._scan_cancel.set()
+-        for dialog in list(self._pickers): dialog.reject()
+-        for job in self._jobs:
+-            if job['state'] == 'waiting': job['state'] = 'cancelled'
+-        if self._tasks: return False
+-        self._active_job = None
+-        self._pool.shutdown(wait=False, cancel_futures=True); _ACTIVE.discard(self); return True
+-
+-    def closeEvent(self, event):
+-        if not self.shutdown(): event.ignore()
+-        else: super().closeEvent(event)
++"""빠른 작업 화면. 긴 파일 작업은 작업자에서 수행하고 Qt 신호로만 화면을 갱신한다."""
++from __future__ import annotations
++
++import copy
++import json
++import os
++from pathlib import Path
++import threading
++from concurrent.futures import ThreadPoolExecutor
++
++from PySide6.QtCore import Qt, QObject, Signal, QTimer, QUrl
++from PySide6.QtGui import QDesktopServices, QImage, QPixmap, QShortcut, QKeySequence
++from PySide6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, QFormLayout,
++    QLabel, QPushButton, QListWidget, QListWidgetItem, QComboBox, QLineEdit, QSpinBox,
++    QCheckBox, QGroupBox, QPlainTextEdit, QFileDialog, QInputDialog, QMessageBox,
++    QAbstractItemView, QScrollArea, QProgressBar, QSplitter, QMenu)
++
++import quick_actions as core
++import queue_journal as journal
++from ui_motion import make_file_dialog, set_reduced_motion
++
++_ACTIVE = set()
++_TEXT = {
++    'advanced': ('고급 작업', 'Advanced actions'),
++    'diagnostic': ('공유 진단 미리보기', 'Preview shared diagnostics'),
++    'batch_cleanup': ('선택 작업 묶음 정리', 'Archive selected task outputs'),
++    'review': ('재확인 필요', 'Review required'),
++    'manage': ('작업 관리', 'Manage actions'),
++    'wheel': ('선택 작업을 원형 메뉴에 표시', 'Show selected action in radial menu'),
++    'title': ('빠른 작업', 'Quick actions'),
++    'hint': ('파일·폴더를 추가하고 작업을 대기열에 넣으세요. 원본은 보존합니다.', 'Add files or folders, then queue a task. Originals are preserved.'),
++    'files': ('파일 추가', 'Add files'), 'folder': ('폴더 추가', 'Add folder'),
++    'remove': ('입력 제거', 'Remove input'), 'output': ('결과 폴더', 'Output folder'),
++    'browse': ('찾아보기', 'Browse'), 'options': ('작업 설정', 'Task settings'),
++    'format': ('출력 형식', 'Output format'), 'quality': ('품질 (20–95)', 'Quality (20–95)'),
++    'width': ('너비 px · 0=자동', 'Width px · 0=auto'), 'height': ('높이 px · 0=자동', 'Height px · 0=auto'),
++    'target': ('목표 KiB · 0=없음', 'Target KiB · 0=none'),
++    'zip': ('변환 후 ZIP으로 묶기', 'Bundle converted files as ZIP'),
++    'template': ('이름 규칙', 'Name template'), 'filter': ('확장자 필터', 'Extension filter'),
++    'save': ('작업 저장', 'Save action'), 'rename': ('이름 변경', 'Rename'),
++    'delete': ('작업 삭제', 'Delete action'), 'import': ('가져오기', 'Import'),
++    'export': ('내보내기', 'Export'), 'names': ('이름 미리보기', 'Preview names'),
++    'check': ('실행 전 점검', 'Check readiness'), 'queue': ('대기열 추가', 'Add to queue'),
++    'up': ('위로', 'Move up'), 'down': ('아래로', 'Move down'),
++    'drop': ('대기 작업 삭제', 'Remove waiting task'), 'pause': ('일시 정지', 'Pause'),
++    'resume': ('계속', 'Resume'), 'cancel': ('현재 작업 취소', 'Cancel current'),
++    'retry': ('실패 작업 재시도', 'Retry failed tasks'), 'replay': ('선택 설정 재실행', 'Replay selected task'),
++    'open': ('결과 폴더 열기', 'Open result folder'), 'reveal': ('파일 선택', 'Reveal file'),
++    'copy': ('경로 복사', 'Copy path'), 'cleanup': ('선택 결과 정리', 'Archive selected results'),
++    'undo': ('정리 되돌리기', 'Undo archive'), 'error': ('오류 복사', 'Copy errors'),
++    'summary': ('요약 저장', 'Save summary'), 'before': ('원본', 'Original'), 'after': ('결과', 'Result'),
++    'waiting': ('대기', 'Waiting'), 'running': ('처리 중', 'Running'),
++    'completed': ('완료', 'Completed'), 'failed': ('실패', 'Failed'), 'cancelled': ('취소', 'Cancelled'),
++    'paused': ('일시 정지 · 현재 파일 작업은 계속됩니다.', 'Paused · the current task continues.'),
++    'ready': ('준비됨', 'Ready'), 'busy': ('다른 변환 작업이 끝난 뒤 계속합니다.', 'Waiting for another conversion to finish.'),
++    'pick': ('먼저 입력과 결과 폴더를 지정해 주세요.', 'Select inputs and an output folder first.'),
++    'name': ('작업 이름', 'Action name'), 'selected': ('사용자 작업을 선택해 주세요.', 'Select a saved user action.'),
++    'preflight': ('예상 필요 공간(보수적 추정)', 'Estimated space (conservative)'),
++    'free': ('사용 가능', 'Free'), 'met': ('목표 달성', 'Target met'), 'unmet': ('목표 미달성', 'Target not met'),
++    'preview': ('이미지·PDF는 미리보기, 문서는 파일 정보와 기존 문서 작업으로 연결됩니다.', 'Images and PDFs show previews; documents show metadata and link to document tools.'),
++    'document': ('문서 작업 열기', 'Open document tools'),
++    'empty': ('선택된 파일이 없습니다.', 'No file selected.'),
++    'details': ('자세한 상태', 'Details'),
++    'shortcuts': ('Ctrl+O 파일 · Ctrl+Enter 대기열 · Delete 입력 제거 · Esc 현재 취소', 'Ctrl+O add · Ctrl+Enter queue · Delete remove input · Esc cancel'),
++}
++
++
++class _Bridge(QObject):
++    done = Signal(int, object, str)
++    event = Signal(str, object)
++
++
++def _preview(raw, language='ko'):
++    """실제 파일만 읽고 작은 RGBA 바이트를 반환한다. 문서 실행은 하지 않는다."""
++    from PIL import Image, ImageDraw, ImageOps
++    path = core.safe_path(raw)
++    size = path.stat().st_size
++    result = {'path': str(path), 'info': f'{path.name}\n{size:,} bytes', 'size': size, 'pixels': None}
++    image = None
++    try:
++        if path.suffix.lower() == '.pdf':
++            import pypdfium2 as pdfium
++            from pdf_lock import PDFIUM_LOCK
++            if not PDFIUM_LOCK.acquire(blocking=False):
++                result['info'] += ('\nPDF busy' if language == 'en' else '\nPDF 처리 중')
++                return result
++            try:
++                with pdfium.PdfDocument(str(path)) as document:
++                    result['info'] += f' · {len(document)} ' + ('pages' if language == 'en' else '페이지')
++                    if len(document):
++                        page = document[0]
++                        try:
++                            width, height = page.get_size()
++                            bitmap = page.render(scale=min(1, 450 / max(width, height)))
++                            try:
++                                image = bitmap.to_pil().convert('RGBA').copy()
++                            finally:
++                                bitmap.close()
++                        finally:
++                            page.close()
++            finally:
++                PDFIUM_LOCK.release()
++        else:
++            import engine
++            kind, extension = engine.classify(path)
++            if kind in ('문서', '프레젠테이션', '스프레드시트'):
++                result['info'] += '\n' + extension.upper()
++                result['document'] = True
++                return result
++            with Image.open(path) as opened:
++                result['info'] += f' · {opened.width} × {opened.height} px'
++                image = ImageOps.exif_transpose(opened)
++                image.thumbnail((450, 240))
++                image = image.convert('RGBA').copy()
++        if image:
++            image.thumbnail((450, 240))
++            background = Image.new('RGBA', image.size, (235, 235, 235, 255))
++            draw = ImageDraw.Draw(background)
++            for y in range(0, image.height, 12):
++                for x in range(0, image.width, 12):
++                    if (x // 12 + y // 12) % 2:
++                        draw.rectangle((x, y, x + 11, y + 11), fill=(200, 200, 200, 255))
++            background.alpha_composite(image)
++            result['pixels'] = (background.tobytes(), background.width, background.height)
++    except Exception as error:
++        result['info'] += '\n' + str(error)
++    return result
++
++
++class QuickActionsPanel(QWidget):
++    def __init__(self, owner, language='ko'):
++        super().__init__(owner if isinstance(owner, QWidget) else None)
++        self.owner, self.language = owner, language
++        self._closed = False
++        self._reduced_motion = False
++        self._pickers = []
++        self._pool = ThreadPoolExecutor(max_workers=2, thread_name_prefix='FlipRing-quick')
++        self._tasks, self._sequence = {}, 0
++        self._bridge = _Bridge(self)
++        self._bridge.done.connect(self._done)
++        self._bridge.event.connect(self._event)
++        self._cancel = threading.Event()
++        self._scan_cancel = threading.Event()
++        self._name_cancel = threading.Event()
++        self._jobs, self._active_job = [], None
++        self._paused = False
++        self._inputs, self._outputs, self._last_errors = [], [], []
++        self._preview_serial = 0
++        self._ledger = core.OutputLedger()
++        self._labels, self._buttons = [], []
++        self._queue_controls, self._result_controls, self._preview_controls = [], [], []
++        settings = getattr(owner, 'settings', None)
++        configured = settings.fileName() if settings is not None else ''
++        base = Path(configured).parent if configured and not str(configured).startswith('\\') else Path(os.environ.get('LOCALAPPDATA', str(Path.home()))) / 'FlipRing'
++        if not configured or Path(configured).suffix.lower() != '.ini':
++            base = Path(os.environ.get('LOCALAPPDATA', str(Path.home()))) / 'FlipRing'
++        self.store = core.ActionStore(base / 'quick-actions.json')
++        self._journal = journal.QueueJournal(base / 'quick-queue.json')
++        self._restore_pending = True
++        self._journal_error = False
++        self._ledger.on_change = lambda: self._journal.save(self._jobs, self._ledger)
++        self._saved = []
++        layout = QVBoxLayout(self)
++        scroll = QScrollArea(); scroll.setWidgetResizable(True)
++        body = QWidget(); self.body_layout = QVBoxLayout(body)
++        scroll.setWidget(body); layout.addWidget(scroll)
++        self.title = self._label('title'); self.title.setStyleSheet('font-size:22px;font-weight:700;')
++        self.body_layout.addWidget(self.title); self.body_layout.addWidget(self._label('hint'))
++        row = QHBoxLayout()
++        for key, slot in [('files', self.choose_files), ('folder', self.choose_folder), ('remove', self.remove_inputs)]:
++            button = self._button(key, slot); row.addWidget(button)
++            if key == 'remove': self.remove_input_button = button
++        self.body_layout.addLayout(row)
++        self.inputs = QListWidget(); self.inputs.setSelectionMode(QAbstractItemView.ExtendedSelection)
++        self.inputs.setMaximumHeight(105); self.inputs.currentRowChanged.connect(self.preview_input)
++        self.body_layout.addWidget(self.inputs)
++        row = QHBoxLayout(); row.addWidget(self._label('output'))
++        self.output = QLineEdit(); row.addWidget(self.output, 1); row.addWidget(self._button('browse', self.choose_output))
++        self.body_layout.addLayout(row)
++        row = QHBoxLayout(); self.presets = QComboBox(); self.presets.currentIndexChanged.connect(self.load_action)
++        row.addWidget(self.presets, 1)
++        manage = self._button('manage', lambda: None); menu = QMenu(manage)
++        for key, slot in [('save', self.save_action), ('rename', self.rename_action), ('delete', self.delete_action), ('import', self.import_action), ('export', self.export_action)]:
++            action = menu.addAction(self.t(key)); action.triggered.connect(slot); self._buttons.append((action, key))
++        manage.setMenu(menu); row.addWidget(manage)
++        self.body_layout.addLayout(row)
++        self.wheel_enabled = QCheckBox()
++        self._buttons.append((self.wheel_enabled, 'wheel'))
++        self.wheel_enabled.setChecked(str(settings.value('quick/wheel', 'true') if settings is not None else 'true').lower() in ('true', '1'))
++        self.wheel_enabled.toggled.connect(self._save_wheel)
++        self.body_layout.addWidget(self.wheel_enabled)
++        basic = QHBoxLayout(); basic.addWidget(self._label('format'))
++        self.options = QGroupBox(); self._labels.append((self.options, 'options'))
++        form = QFormLayout(self.options)
++        self.format = QComboBox()
++        self.format.addItems(sorted({fmt for _, values in core.engine.TABLE.values() for fmt in values.split()}))
++        basic.addWidget(self.format, 1); self.body_layout.addLayout(basic)
++        options_toggle = self._button('options', lambda checked: self.options.setVisible(checked))
++        options_toggle.setCheckable(True); self.body_layout.addWidget(options_toggle)
++        self.quality = QSpinBox(); self.quality.setRange(20, 95); self.quality.setValue(85)
++        self.width = QSpinBox(); self.width.setRange(0, 12000)
++        self.height = QSpinBox(); self.height.setRange(0, 12000)
++        self.target = QSpinBox(); self.target.setRange(0, 1024 * 1024 * 1024)
++        self.zip = QCheckBox(); self._buttons.append((self.zip, 'zip'))
++        self.template = QLineEdit('{name}'); self.template.setPlaceholderText('{name}_{index:03d}_{date}')
++        self.extensions = QLineEdit(); self.extensions.setPlaceholderText('jpg, png, pdf')
++        for key, widget in [('quality', self.quality), ('width', self.width), ('height', self.height), ('target', self.target), ('template', self.template), ('filter', self.extensions)]:
++            form.addRow(self._label(key), widget)
++        form.addRow(self.zip)
++        self.body_layout.addWidget(self.options); self.options.hide()
++        row = QHBoxLayout()
++        for key, slot in [('names', self.preview_names), ('check', self.check_readiness)]:
++            row.addWidget(self._button(key, slot))
++        form.addRow(row)
++        self.body_layout.addWidget(self._button('queue', self.enqueue))
++        self.queue = QListWidget(); self.queue.setMaximumHeight(130); self.queue.setSelectionMode(QAbstractItemView.ExtendedSelection)
++        self.body_layout.addWidget(self.queue)
++        row = QHBoxLayout()
++        for key, slot in [('up', lambda: self.move_job(-1)), ('down', lambda: self.move_job(1)), ('drop', self.remove_job), ('pause', self.pause), ('resume', self.resume)]:
++            button = self._button(key, slot); row.addWidget(button); self._queue_controls.append(button)
++        self.body_layout.addLayout(row)
++        row = QHBoxLayout()
++        for key, slot in [('cancel', self.cancel), ('retry', self.retry_failed), ('replay', self.replay)]:
++            button = self._button(key, slot); row.addWidget(button); self._queue_controls.append(button)
++        self.body_layout.addLayout(row)
++        self.progress = QProgressBar(); self.body_layout.addWidget(self.progress)
++        self.status = QLabel(); self.status.setWordWrap(True); self.body_layout.addWidget(self.status)
++        self.results = QListWidget(); self.results.setSelectionMode(QAbstractItemView.ExtendedSelection)
++        self.results.setMaximumHeight(110); self.results.currentRowChanged.connect(self.preview_result)
++        self.body_layout.addWidget(self.results)
++        row = QHBoxLayout()
++        for key, slot in [('open', self.open_folder), ('reveal', self.reveal_result), ('copy', self.copy_path), ('cleanup', self.cleanup), ('undo', self.undo)]:
++            button = self._button(key, slot); row.addWidget(button); self._result_controls.append(button)
++        self.body_layout.addLayout(row)
++        row = QHBoxLayout()
++        for key, slot in [('error', self.copy_errors), ('summary', self.export_summary)]:
++            button = self._button(key, slot); row.addWidget(button); self._queue_controls.append(button)
++        self.body_layout.addLayout(row)
++        advanced = self._button('advanced', lambda: None); advanced_menu = QMenu(advanced)
++        for key, slot in [('batch_cleanup', self.cleanup_jobs), ('undo', self.undo), ('diagnostic', self.shared_diagnostic)]:
++            action = advanced_menu.addAction(self.t(key)); action.triggered.connect(slot); self._buttons.append((action, key))
++        advanced.setMenu(advanced_menu); self.body_layout.addWidget(advanced)
++        previews = QHBoxLayout(); self.pictures, self.metadata = [], []
++        for key in ('before', 'after'):
++            column = QVBoxLayout(); label = self._label(key); column.addWidget(label); self._preview_controls.append(label)
++            picture = QLabel(); picture.setAlignment(Qt.AlignCenter); picture.setMinimumHeight(110)
++            info = QLabel(); info.setWordWrap(True); info.setTextInteractionFlags(Qt.TextSelectableByMouse)
++            column.addWidget(picture); column.addWidget(info); previews.addLayout(column, 1)
++            self.pictures.append(picture); self.metadata.append(info); self._preview_controls.extend([picture, info])
++        self.body_layout.addLayout(previews)
++        self.savings = QLabel(); self.body_layout.addWidget(self.savings)
++        guidance = self._label('preview'); document = self._button('document', self.document_tools)
++        self.body_layout.addWidget(guidance); self.body_layout.addWidget(document)
++        self._preview_controls.extend([self.savings, guidance, document])
++        self.details = QPlainTextEdit(); self.details.setReadOnly(True); self.details.setMaximumHeight(100)
++        self.body_layout.addWidget(self.details)
++        self.details.textChanged.connect(lambda: self.details.setVisible(bool(self.details.toPlainText())))
++        self.details.hide()
++        self.body_layout.addWidget(self._label('shortcuts'))
++        for sequence, slot in [('Ctrl+O', self.choose_files), ('Ctrl+Return', self.enqueue), ('Escape', self.cancel)]:
++            shortcut = QShortcut(QKeySequence(sequence), self); shortcut.setContext(Qt.WidgetWithChildrenShortcut); shortcut.activated.connect(slot)
++        delete = QShortcut(QKeySequence('Delete'), self.inputs); delete.setContext(Qt.WidgetShortcut); delete.activated.connect(self.remove_inputs)
++        self._timer = QTimer(self); self._timer.setInterval(300); self._timer.timeout.connect(self._next)
++        self.set_language(language)
++        self.reload_actions()
++        self._sync_visibility()
++        self.body_layout.addStretch(1)
++        self._submit(self._load_queue, self._restore_queue, self._restore_error)
++
++    def _sync_visibility(self):
++        self.inputs.setVisible(bool(self._inputs)); self.remove_input_button.setVisible(bool(self._inputs))
++        self.queue.setVisible(bool(self._jobs)); self.progress.setVisible(bool(self._jobs))
++        self.results.setVisible(bool(self._outputs))
++        for widget in self._queue_controls: widget.setVisible(bool(self._jobs))
++        for widget in self._result_controls: widget.setVisible(bool(self._outputs))
++        for widget in self._preview_controls: widget.setVisible(bool(self._inputs or self._outputs))
++
++    def t(self, key):
++        pair = _TEXT.get(key, (key, key))
++        return pair[self.language == 'en']
++
++    def _label(self, key):
++        widget = QLabel(); self._labels.append((widget, key)); return widget
++
++    def _button(self, key, slot):
++        widget = QPushButton(); self._buttons.append((widget, key)); widget.clicked.connect(slot); return widget
++
++    def set_language(self, language):
++        self.language = 'en' if language == 'en' else 'ko'
++        for widget, key in self._labels:
++            if isinstance(widget, QGroupBox): widget.setTitle(self.t(key))
++            else: widget.setText(self.t(key))
++        for widget, key in self._buttons: widget.setText(self.t(key))
++        self.presets.blockSignals(True)
++        for index, name in enumerate(('Photo JPG', 'Submission JPG + ZIP', 'Document PDF', 'Email JPG · 1600px / 1MiB', 'Print PDF · original size', 'Web WebP · 1920px / 512KiB')):
++            if index < self.presets.count(): self.presets.setItemText(index, name if self.language == 'en' else core.BUILTINS[index]['name'])
++        self.presets.blockSignals(False)
++        self.refresh_queue()
++        self.status.setText(self.t('ready'))
++        for dialog in self._pickers:
++            dialog.set_language(self.language)
++
++    def set_reduced_motion(self, enabled):
++        self._reduced_motion = bool(enabled)
++        for dialog in self._pickers: set_reduced_motion(dialog, enabled)
++
++    def _submit(self, operation, callback, on_error=None):
++        if self._closed:
++            return
++        self._sequence += 1; number = self._sequence
++        self._tasks[number] = (callback, on_error); _ACTIVE.add(self)
++        future = self._pool.submit(operation)
++        def finished(item):
++            try:
++                result, error = item.result(), ''
++            except BaseException as exception:
++                result, error = None, str(exception) or exception.__class__.__name__
++            self._bridge.done.emit(number, result, error)
++        future.add_done_callback(finished)
++
++    def _done(self, number, result, error):
++        callbacks = self._tasks.pop(number, None)
++        if not self._closed and callbacks:
++            callback, on_error = callbacks
++            if error:
++                self.report(error)
++                if on_error: on_error(error)
++            else: callback(result)
++        if self._closed and not self._tasks:
++            self._active_job = None
++            self._pool.shutdown(wait=False, cancel_futures=True); _ACTIVE.discard(self)
++        elif not self._tasks:
++            _ACTIVE.discard(self)
++
++    def report(self, message):
++        self.status.setText(str(message)); self.details.setPlainText(str(message))
++        self._last_errors.append(str(message))
++
++    def choose_paths(self, key, *, folder=False, save=False, single=False, initial='', name_filter=''):
++        dialog = make_file_dialog(self, self.t(key), folder=folder, name_filter=name_filter)
++        dialog.set_language(self.language)
++        if save:
++            dialog.setAcceptMode(QFileDialog.AcceptSave); dialog.setFileMode(QFileDialog.AnyFile); dialog.setDefaultSuffix('json')
++        elif single: dialog.setFileMode(QFileDialog.ExistingFile)
++        if initial:
++            if folder: dialog.setDirectory(initial)
++            else: dialog.selectFile(initial)
++        self._pickers.append(dialog); set_reduced_motion(dialog, self._reduced_motion)
++        try: return dialog.selectedFiles() if dialog.exec() == QFileDialog.Accepted else []
++        finally:
++            self._pickers.remove(dialog); dialog.deleteLater()
++
++    def _save_wheel(self, checked):
++        settings = getattr(self.owner, 'settings', None)
++        if settings is not None:
++            settings.setValue('quick/wheel', checked); settings.sync()
++
++    def wheel_action(self):
++        if self._closed or not self.wheel_enabled.isChecked(): return None
++        try: return self.action()
++        except (ValueError, TypeError): return None
++
++    def wheel_label(self):
++        action = self.wheel_action()
++        return action['name'] if action else ''
++
++    def enqueue_paths(self, paths):
++        """휠의 입력·설정을 즉시 스냅샷으로 잡아 화면 입력 목록과 독립 처리한다."""
++        action = self.wheel_action()
++        if not action or not paths: return
++        captured = [str(path) for path in paths]
++        output = self.output.text().strip() or str(Path(captured[0]).parent / 'FlipRing 결과')
++        def ready(result):
++            if result['skipped']: self.details.setPlainText('\n'.join(result['skipped']))
++            if result['inputs']: self._append_job(result['inputs'], action, output)
++            else: self.report(self.t('empty'))
++        self._submit(lambda: core.collect_inputs(captured, action['extensions'], self._scan_cancel), ready)
++
++    def choose_files(self):
++        paths = self.choose_paths('files')
++        if paths: self.add_paths(paths)
++
++    def choose_folder(self):
++        paths = self.choose_paths('folder', folder=True)
++        if paths: self.add_paths(paths)
++
++    def add_paths(self, paths):
++        extensions = self.extensions.text()
++        self._submit(lambda: core.collect_inputs(paths, extensions, self._scan_cancel), self._collected)
++
++    def _collected(self, result):
++        known = {os.path.normcase(row['source']) for row in self._inputs}
++        for row in result['inputs']:
++            if os.path.normcase(row['source']) not in known:
++                self._inputs.append(row); known.add(os.path.normcase(row['source']))
++                item = QListWidgetItem(row['relative']); item.setToolTip(row['source']); self.inputs.addItem(item)
++        if result['skipped']: self.details.setPlainText('\n'.join(result['skipped']))
++        self.status.setText(f"{len(self._inputs):,} " + ('files' if self.language == 'en' else '파일'))
++        self._sync_visibility()
++
++    def remove_inputs(self):
++        for index in sorted((self.inputs.row(i) for i in self.inputs.selectedItems()), reverse=True):
++            self._inputs.pop(index); self.inputs.takeItem(index)
++        self._sync_visibility()
++
++    def choose_output(self):
++        paths = self.choose_paths('output', folder=True, initial=self.output.text())
++        if paths: self.output.setText(paths[0])
++
++    def action(self):
++        index = self.presets.currentIndex()
++        name = (self.presets.currentData() or {}).get('name', '빠른 작업')
++        return core.validate_action({'version': 1, 'name': name, 'format': self.format.currentText(),
++            'quality': self.quality.value(), 'width': self.width.value(), 'height': self.height.value(),
++            'max_bytes': self.target.value() * 1024, 'zip': self.zip.isChecked(),
++            'template': self.template.text(), 'extensions': self.extensions.text()})
++
++    def reload_actions(self, select=None):
++        try: self._saved = self.store.load()
++        except Exception as error: self.report(error); self._saved = []
++        self.presets.blockSignals(True); self.presets.clear()
++        for row in [*core.BUILTINS, *self._saved]: self.presets.addItem(row['name'], copy.deepcopy(row))
++        self.presets.blockSignals(False)
++        settings = getattr(self.owner, 'settings', None)
++        preferred = select or (settings.value('quick/selected', '') if settings is not None else '')
++        self.presets.setCurrentIndex(max(0, self.presets.findText(preferred)))
++        self.load_action(self.presets.currentIndex())
++        self.set_language(self.language)
++
++    def load_action(self, index):
++        action = self.presets.itemData(index)
++        if not action: return
++        self.format.setCurrentText(action['format']); self.quality.setValue(action['quality'])
++        self.width.setValue(action['width']); self.height.setValue(action['height'])
++        self.target.setValue(action['max_bytes'] // 1024); self.zip.setChecked(action['zip'])
++        self.template.setText(action['template']); self.extensions.setText(action['extensions'])
++        settings = getattr(self.owner, 'settings', None)
++        if settings is not None: settings.setValue('quick/selected', action['name'])
++
++    def save_action(self):
++        name, ok = QInputDialog.getText(self, self.t('save'), self.t('name'))
++        if not ok: return
++        try:
++            action = self.action(); action['name'] = name
++            self.store.save(action); self.reload_actions(name)
++        except Exception as error: self.report(error)
++
++    def _selected_saved(self):
++        row = self.presets.currentData()
++        if not row or self.presets.currentIndex() < len(core.BUILTINS): raise ValueError(self.t('selected'))
++        return row
++
++    def rename_action(self):
++        try:
++            row = copy.deepcopy(self._selected_saved())
++            name, ok = QInputDialog.getText(self, self.t('rename'), self.t('name'), text=row['name'])
++            if ok:
++                previous = row['name']; row['name'] = name
++                self.store.save(row, previous); self.reload_actions(name)
++        except Exception as error: self.report(error)
++
++    def delete_action(self):
++        try:
++            row = self._selected_saved(); self.store.delete(row['name']); self.reload_actions()
++        except Exception as error: self.report(error)
++
++    def import_action(self):
++        paths = self.choose_paths('import', single=True, name_filter='JSON (*.json)')
++        if not paths: return
++        path = paths[0]
++        def operation():
++            source = core.safe_path(path)
++            if source.stat().st_size > 2 * 1024 * 1024: raise ValueError('JSON > 2MiB')
++            row = core.validate_action(json.loads(source.read_text(encoding='utf-8-sig')))
++            self.store.save(row); return row
++        self._submit(operation, lambda row: self.reload_actions(row['name']))
++
++    def export_action(self):
++        try: row = self.action()
++        except Exception as error: self.report(error); return
++        paths = self.choose_paths('export', save=True, initial='빠른작업.json', name_filter='JSON (*.json)')
++        path = paths[0] if paths else ''
++        if path: self._submit(lambda: self._write_json(path, row), lambda _: self.status.setText(self.t('completed')))
++
++    @staticmethod
++    def _write_json(path, value):
++        # 사용자가 저장창에서 지정한 문서만 저장한다. 변환 결과 발행과 별개이다.
++        Path(path).write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding='utf-8')
++
++    def _request(self):
++        if not self._inputs or not self.output.text().strip(): raise ValueError(self.t('pick'))
++        action = self.action()
++        allowed = {s.strip().lower().lstrip('.') for s in action['extensions'].replace(';', ',').split(',') if s.strip()}
++        inputs = [copy.deepcopy(r) for r in self._inputs if not allowed or Path(r['source']).suffix.lower().lstrip('.') in allowed]
++        if not inputs: raise ValueError(self.t('empty'))
++        return inputs, action, self.output.text().strip()
++
++    def preview_names(self):
++        try:
++            records, action, output = self._request()
++            self._name_cancel.set(); self._name_cancel = threading.Event(); token = self._name_cancel
++            self.status.setText('실제 페이지 수를 확인 중입니다. 문서는 임시 변환하며 Esc로 중단할 수 있습니다.' if self.language != 'en' else 'Checking page counts. Documents use temporary conversion; Esc stops this preview.')
++            self._submit(lambda: core.preview_output_names(records, action, output, token), lambda rows: self.details.setPlainText('\n'.join(r['path'] for r in rows) + '\n' + ('External changes can change these names.' if self.language == 'en' else '예정 이름입니다. 실행 중 외부 변경 시 새 번호가 붙을 수 있습니다.')))
++        except Exception as error: self.report(error)
++
++    def check_readiness(self):
++        try: records, action, output = self._request()
++        except Exception as error: self.report(error); return
++        def show(report):
++            lines = [f"{self.t('preflight')}: {report['estimated']:,} bytes · {self.t('free')}: {report['free']:,} bytes"]
++            lines.extend(row['source'] + ': ' + (self.t('ready') if row['ok'] else row['error']) for row in report['files'])
++            if report['error']: lines.append(report['error'])
++            self.details.setPlainText('\n'.join(lines)); self.status.setText(self.t('ready') if report['ok'] else self.t('failed'))
++        self._submit(lambda: core.preflight(records, action, output, self._scan_cancel), show)
++
++    def enqueue(self):
++        try: records, action, output = self._request()
++        except Exception as error: self.report(error); return
++        self._append_job(records, action, output)
++
++    def _append_job(self, records, action, output, checkpoints=None):
++        output = str(core.safe_path(output, exists=False))
++        job = {'id': core.uuid.uuid4().hex[:8], 'inputs': copy.deepcopy(records), 'action': copy.deepcopy(action), 'output': output, 'state': 'waiting', 'result': None, 'file_states': {r['source']: 'waiting' for r in records}, 'checkpoints': {}}
++        if self._journal_error: self.report('대기열 기록을 먼저 확인해 주세요.'); return
++        self._jobs.append(job); self.refresh_queue()
++        def prepare():
++            if checkpoints is not None:
++                job['checkpoints'] = copy.deepcopy(checkpoints)
++                for row in records:
++                    if row['source'] not in job['checkpoints']:
++                        job['checkpoints'][row['source']] = {'input_sha256': core.digest(row['source'], self._scan_cancel), 'state': 'waiting', 'outputs': [], 'expected': 1}
++                return journal.recover_jobs([job])[0]['checkpoints']
++            return {r['source']: {'input_sha256': core.digest(r['source'], self._scan_cancel),
++                    'state': 'waiting', 'outputs': [], 'expected': 1} for r in records}
++        def ready(points):
++            if job not in self._jobs: return
++            job['checkpoints'] = points
++            if self._save_queue(): self._timer.start(); self._next()
++        self._submit(prepare, ready, lambda error: self._job_done(job, {'status': 'failed', 'outputs': [], 'files': [], 'error': error, 'warnings': []}))
++
++    def refresh_queue(self):
++        selected = self.queue.currentRow() if hasattr(self, 'queue') else -1
++        if not hasattr(self, 'queue'): return
++        self.queue.clear()
++        if hasattr(self, 'progress'): self._sync_visibility()
++        for job in self._jobs:
++            item = QListWidgetItem(f"{job['id']} · {job['action']['name']} · {len(job['inputs'])} files · {self.t(job['state'])}")
++            if job.get('result'): item.setToolTip(job['result'].get('error', ''))
++            self.queue.addItem(item)
++        if 0 <= selected < self.queue.count(): self.queue.setCurrentRow(selected)
++
++    def _other_busy(self):
++        if bool(getattr(self.owner, 'pending', False)): return True
++        if any(getattr(dialog, 'is_busy', lambda: False)() for dialog in getattr(self.owner, 'delivery_dialogs', ())): return True
++        installer = getattr(self.owner, 'installer', None)
++        if installer is not None and installer.is_busy(): return True
++        for name in ('pdf_panel', 'workspace_panel'):
++            panel = getattr(self.owner, name, None)
++            if panel is not None and panel is not self and getattr(panel, 'is_busy', lambda: False)(): return True
++        return False
++
++    def _next(self):
++        if self._closed or self._paused or self._active_job is not None or self._tasks: return
++        job = next((row for row in self._jobs if row['state'] == 'waiting' and len(row['checkpoints']) >= len(row['inputs'])), None)
++        if not job: self._timer.stop(); return
++        if self._other_busy(): self.status.setText(self.t('busy')); return
++        self._active_job = job; job['state'] = 'running'; self._cancel = threading.Event()
++        if not self._save_queue(): self._active_job = None; return
++        self._update_progress()
++        self.refresh_queue()
++        token = self._cancel
++        def operation():
++            def event_checkpoint(event):
++                with self._journal.lock:
++                    journal.checkpoint_event(job, event)
++                    if event['state'] == 'completed': self._ledger.register(event.get('outputs', []))
++                    self._journal.save(self._jobs, self._ledger)
++                if event['state'] in ('running', 'completed') and event['source']:
++                    self._bridge.event.emit(job['id'], event)
++            if job.get('bundle_rows'):
++                previous = copy.deepcopy(job['previous'])
++                try:
++                    point = job['checkpoints'].get('')
++                    if point and point.get('outputs'):
++                        if point['state'] != 'completed' or any(core.digest(r['path']) != r['sha256'] for r in point['outputs']):
++                            raise ValueError('묶음 결과를 다시 확인해 주세요.')
++                        bundle = point['outputs'][0]
++                    else:
++                        bundle = core.create_bundle(job['bundle_rows'], job['output'], token, on_event=event_checkpoint)
++                        event_checkpoint({'state': 'completed', 'source': '', 'input_sha256': '0' * 64, 'outputs': [bundle]})
++                    return {**previous, 'status': 'completed', 'outputs': [bundle], 'error': '', 'bundle_pending': False}
++                except (core.pdf_tools.Cancelled, core.engine.Cancelled):
++                    return {**previous, 'status': 'cancelled', 'outputs': [], 'error': ''}
++                except Exception as error:
++                    return {**previous, 'status': 'failed', 'outputs': [], 'error': str(error)}
++            return core.run_action(job['inputs'], job['action'], job['output'], token,
++                event_checkpoint, completed=job['checkpoints'])
++        self._submit(operation, lambda result: self._job_done(job, result), lambda error: self._job_done(job, {'status': 'failed', 'outputs': [], 'files': [], 'error': error, 'warnings': []}))
++
++    def _event(self, identifier, event):
++        if self._closed: return
++        self.status.setText(self.t(event['state']) + ' · ' + Path(event['source']).name)
++        if self._active_job and self._active_job['id'] == identifier:
++            self._active_job['file_states'][event['source']] = event['state']
++            for index, row in enumerate(self._inputs):
++                if row['source'] == event['source']:
++                    self.inputs.item(index).setText(row['relative'] + ' · ' + self.t(event['state']))
++            self._update_progress()
++
++    def _job_done(self, job, result):
++        job['result'] = result; job['state'] = result['status']; self._active_job = None
++        finished = {r['source'] for r in result.get('files', []) if r['state'] == 'completed'}
++        for source in job['file_states']:
++            job['file_states'][source] = 'completed' if source in finished else result['status']
++        self._update_progress()
++        for index, row in enumerate(self._inputs):
++            if row['source'] in job['file_states']:
++                self.inputs.item(index).setText(row['relative'] + ' · ' + self.t(job['file_states'][row['source']]))
++        self._ledger.register(result['outputs'])
++        for row in result['outputs']:
++            self._outputs.append(row)
++            status = self.t('met') if row['constraints_met'] else self.t('unmet')
++            self.results.addItem(f"{Path(row['path']).name} · {row['size']:,} bytes · {status}")
++            self.results.item(self.results.count() - 1).setToolTip(row['path'])
++        self._save_queue()
++        self.refresh_queue(); self.status.setText(self.t(result['status']))
++        detail = '\n'.join([result['error'], *result['warnings']]).strip()
++        if detail: self.report(detail)
++        self._next()
++
++    def _update_progress(self):
++        states = [state for job in self._jobs for state in job['file_states'].values()]
++        self.progress.setRange(0, max(1, len(states)))
++        self.progress.setValue(sum(s in ('completed', 'failed', 'cancelled') for s in states))
++
++    def move_job(self, offset):
++        index = self.queue.currentRow(); destination = index + offset
++        if index < 0 or not 0 <= destination < len(self._jobs): return
++        if self._jobs[index]['state'] != 'waiting' or self._jobs[destination]['state'] != 'waiting': return
++        self._jobs[index], self._jobs[destination] = self._jobs[destination], self._jobs[index]
++        self._save_queue(); self.refresh_queue(); self.queue.setCurrentRow(destination)
++
++    def remove_job(self):
++        index = self.queue.currentRow()
++        if index >= 0 and self._jobs[index]['state'] == 'waiting': self._jobs.pop(index); self._save_queue(); self.refresh_queue()
++
++    def pause(self): self._paused = True; self.status.setText(self.t('paused'))
++    def resume(self):
++        if self._journal_error: self.report('대기열 기록을 먼저 확인해 주세요.'); return
++        self._paused = False
++        # 준비 중 작업과 실행 중 작업의 참조는 교체하지 않는다.
++        candidates = copy.deepcopy([j for j in self._jobs if j['state'] != 'running'
++                                     and len(j['checkpoints']) >= len(j['inputs'])])
++        def checked(rows):
++            for recovered in rows:
++                job = next((j for j in self._jobs if j['id'] == recovered['id']), None)
++                if job is None or job['state'] == 'running': continue
++                job['checkpoints'] = recovered['checkpoints']; job['file_states'] = recovered['file_states']
++                job['state'] = recovered['state']
++                if job['state'] in ('failed', 'cancelled') and not job.get('retried'):
++                    job['state'] = 'review' if any(p['state'] == 'review' for p in job['checkpoints'].values()) else 'waiting'
++            self._save_queue(); self.refresh_queue(); self._timer.start(); self._next()
++            if any(j['state'] == 'review' for j in self._jobs):
++                self.report('입력·결과 변경 또는 중단된 발행을 확인해 주세요. 새 사본은 선택 설정 재실행으로 만들 수 있습니다.' if self.language != 'en' else 'Review changed inputs, outputs or interrupted publications. Replay selected task creates a new copy.')
++        self._submit(lambda: journal.recover_jobs(candidates), checked)
++    def cancel(self): self._cancel.set(); self._name_cancel.set()
++
++    def retry_failed(self):
++        for job in list(self._jobs):
++            if job['state'] == 'failed' and not job.get('retried'):
++                job['retried'] = True
++                completed = {r['source'] for r in job['result']['files'] if r['state'] == 'completed'}
++                records = [r for r in job['inputs'] if r['source'] not in completed]
++                if records:
++                    points = {r['source']: copy.deepcopy(job['checkpoints'][r['source']]) for r in records if r['source'] in job['checkpoints']}
++                    self._append_job(records, job['action'], job['output'], checkpoints=points)
++                elif job['result'].get('bundle_pending'):
++                    self._paused, paused = True, self._paused
++                    self._append_job([], job['action'], job['output'])
++                    retry = self._jobs[-1]; retry['bundle_rows'] = job.get('bundle_rows') or copy.deepcopy(job['result']['outputs'])
++                    retry['previous'] = job['result']; self._paused = paused; self._next()
++
++    def replay(self):
++        index = self.queue.currentRow()
++        if index >= 0:
++            job = self._jobs[index]; self._append_job(job['inputs'], job['action'], job['output'])
++
++    def preview_input(self, index):
++        if 0 <= index < len(self._inputs): self._show_preview(self._inputs[index]['source'], '')
++
++    def preview_result(self, index):
++        if 0 <= index < len(self._outputs):
++            row = self._outputs[index]; self._show_preview(row['source'], row['path'])
++
++    def _show_preview(self, source, output):
++        self._preview_serial += 1; serial = self._preview_serial
++        for picture in self.pictures: picture.clear()
++        for info in self.metadata: info.setText(self.t('empty'))
++        self.savings.clear()
++        language = self.language
++        def operation(): return [_preview(p, language) if p else None for p in (source, output)]
++        def show(rows):
++            if serial != self._preview_serial: return
++            for i, row in enumerate(rows):
++                if not row: continue
++                self.metadata[i].setText(row['info'])
++                if row['pixels']:
++                    raw, width, height = row['pixels']; image = QImage(raw, width, height, width * 4, QImage.Format_RGBA8888).copy()
++                    self.pictures[i].setPixmap(QPixmap.fromImage(image).scaled(400, 150, Qt.KeepAspectRatio, Qt.SmoothTransformation))
++            if all(rows) and rows[0]['size']:
++                saving = 100 * (1 - rows[1]['size'] / rows[0]['size'])
++                self.savings.setText((f'용량 변화: {saving:.1f}% 절감 (반올림)' if self.language != 'en' else f'Size change: {saving:.1f}% saved (rounded)'))
++        self._submit(operation, show)
++
++    def _selected_outputs(self):
++        return [self._outputs[self.results.row(item)] for item in self.results.selectedItems()]
++
++    def open_folder(self):
++        row = self._selected_outputs()
++        path = Path(row[0]['path']).parent if row else Path(self.output.text())
++        if str(path) and path.is_dir(): QDesktopServices.openUrl(QUrl.fromLocalFile(str(path)))
++
++    def reveal_result(self):
++        rows = self._selected_outputs()
++        if not rows: return
++        path = rows[0]['path']
++        if not Path(path).exists(): self.report(self.t('empty')); return
++        reveal = getattr(self.owner, 'reveal_preview', None)
++        if callable(reveal): reveal(path)
++        else:
++            # 호스트의 검증된 선택 API가 없는 단독 화면에서는 폴더만 연다.
++            QDesktopServices.openUrl(QUrl.fromLocalFile(str(Path(path).parent)))
++
++    def copy_path(self): QApplication.clipboard().setText('\n'.join(r['path'] for r in self._selected_outputs()))
++    def copy_errors(self): QApplication.clipboard().setText('\n'.join(self._last_errors))
++
++    def cleanup(self):
++        if self._active_job or self._tasks: self.report(self.t('busy')); return
++        paths = [r['path'] for r in self._selected_outputs()]
++        self._submit(lambda: self._ledger.cleanup(paths), self._ledger_done)
++
++    def undo(self):
++        if self._active_job or self._tasks: self.report(self.t('busy')); return
++        self._submit(self._ledger.undo, self._ledger_done)
++
++    def _restore_error(self, error):
++        self._journal_error = True; self._paused = True; self.report(error)
++
++    def _load_queue(self):
++        value = self._journal.load()
++        value['jobs'] = journal.recover_jobs(value['jobs'])
++        return value
++
++    def _restore_queue(self, value):
++        self._restore_pending = False
++        # 시작 시 기존 기록을 표시하기만 하며 실행에는 사용자의 계속 조작이 필요하다.
++        self._jobs = value['jobs'] + self._jobs
++        self._ledger.rows = value['ledger']['rows']; self._ledger.moves = value['ledger']['moves']
++        if value['jobs']: self._paused = True
++        for job in value['jobs']:
++            for point in job['checkpoints'].values():
++                if point['state'] == 'completed': self._ledger.register(point['outputs'])
++        self._outputs = list(self._ledger.rows.values())
++        self.results.clear()
++        for row in self._outputs:
++            item = QListWidgetItem(Path(row['path']).name); item.setToolTip(row['path']); self.results.addItem(item)
++        self.refresh_queue()
++        if value['jobs']: self.status.setText(self.t('paused'))
++
++    def _save_queue(self):
++        if self._restore_pending: return False
++        try:
++            self._journal.save(self._jobs, self._ledger)
++            return True
++        except Exception as error:
++            self._journal_error = True; self._paused = True; self.report(error)
++            return False
++
++    def _ledger_done(self, result):
++        self._save_queue()
++        self.details.setPlainText(json.dumps(result, ensure_ascii=False, indent=2))
++
++    def cleanup_jobs(self):
++        if self.is_busy(): self.report(self.t('busy')); return
++        selected = [self._jobs[self.queue.row(item)] for item in self.queue.selectedItems()]
++        paths = [r['path'] for job in selected for point in job['checkpoints'].values() for r in point['outputs']]
++        self._submit(lambda: self._ledger.cleanup(paths), self._ledger_done)
++
++    def shared_diagnostic(self):
++        value = journal.diagnostic(self._jobs)
++        text = json.dumps(value, ensure_ascii=False, indent=2)
++        # 공유용 새 객체만 미리보기에 표시하며 원문 오류나 경로를 포함하지 않는다.
++        dialog = QMessageBox(self); dialog.setWindowTitle(self.t('diagnostic'))
++        dialog.setText(text); dialog.setStandardButtons(QMessageBox.Save | QMessageBox.Cancel)
++        if dialog.exec() != QMessageBox.Save: return
++        paths = self.choose_paths('summary', save=True, initial='공유진단.json', name_filter='JSON (*.json)')
++        if paths: self._submit(lambda: self._write_json(paths[0], value), lambda _: self.status.setText(self.t('completed')))
++
++    def export_summary(self):
++        rows = copy.deepcopy(self._jobs)
++        paths = self.choose_paths('summary', save=True, initial='작업요약.json', name_filter='JSON (*.json)')
++        path = paths[0] if paths else ''
++        if path: self._submit(lambda: self._write_json(path, rows), lambda _: self.status.setText(self.t('completed')))
++
++    def document_tools(self):
++        panel = getattr(self.owner, 'workspace_panel', None)
++        selected = self._selected_outputs()
++        paths = [r['path'] for r in selected] if selected else [r['source'] for r in self._inputs]
++        if panel is not None and paths:
++            panel.add_files(paths)
++        # 호스트가 제공하는 기존 페이지 탐색 API만 사용한다.
++        if hasattr(self.owner, 'open_page'):
++            self.owner.open_page(6)
++        elif panel is not None:
++            panel.setFocus()
++        self.status.setText(self.t('preview'))
++
++    def is_busy(self): return bool(self._tasks or self._active_job)
++
++    def shutdown(self):
++        self._closed = True; self._timer.stop(); self._cancel.set(); self._scan_cancel.set(); self._name_cancel.set()
++        for dialog in list(self._pickers): dialog.reject()
++        if self._tasks: return False
++        self._active_job = None
++        self._save_queue()
++        self._pool.shutdown(wait=False, cancel_futures=True); _ACTIVE.discard(self); return True
++
++    def closeEvent(self, event):
++        if not self.shutdown(): event.ignore()
++        else: super().closeEvent(event)
+--- 공개기준/소스/test-fixtures/자체HEIC_출처와재생성.md
++++ 최종공개/소스/test-fixtures/자체HEIC_출처와재생성.md
+@@ -2,35 +2,23 @@
+ 
+ PUVKID의 파일 변환 검사를 위해 색상과 도형을 직접 계산한 시험 자료입니다. 외부 사진이나 기존 시험 사진의 픽셀을 사용하지 않았습니다. `자체HEIC_생성.py`가 수평·수직 그라데이션, 체크 패턴, 사각형·타원, 검정·흰색·기본색 띠를 만듭니다.
+ 
+-- 크기 48×36, RGB 8 비트, 단일 이미지, 알파 없음, ICC 없음, 4:2:0 색차 표본화입니다.
+-- HEIC NCLX는 color_primaries =1, transfer_characteristics =13, matrix_coefficients =6, full_range_flag =1입니다.
+-- 저장 품질 90은 손 실 인코딩 조건입니다. PNG 원본과 HEIC가 픽셀까지 같다고 주장하지 않습니다.
+-- 실제 생성 환경은 Python3.12.14, Pillow13.0.0, pillow-heif1.8.1, libheif1.23.6, x2654.3 +1-e9b8812입니다. 원본 PNG·HEIC해시는 생성 조건과 출처.json에 있습니다.
++- 크기 48×36, RGB 8비트, 단일 이미지, 알파 없음, ICC 없음, 4:2:0 색차 표본화입니다.
++- HEIC NCLX는 color_primaries=1, transfer_characteristics=13, matrix_coefficients=6, full_range_flag=1입니다.
++- 저장 품질90은 손실 인코딩 조건입니다. PNG 원본과 HEIC가 픽셀까지 같다고 주장하지 않습니다.
++- 실제 생성 환경은 Python3.12.14, Pillow13.0.0, pillow-heif1.8.1, libheif1.23.6, x2654.3+1-e9b8812입니다. 원본 PNG·HEIC 해시는 생성조건과출처.json에 있습니다.
+ 
+-생성 도구만 사용할 별도 빈 폴더에 `자체HEIC_생성.py`, `생성환경_준비.py`, `공식휠_출처와해시.json`을 복사하고 Windows x64 CPython3.12에서 다음 순서로 실행합니다. 이미 있는 시험 자료와 환경을 덮어 쓰지 않도록 검사합니다.
++생성 도구만 사용할 별도 빈 폴더에 `자체HEIC_생성.py`, `생성환경_준비.py`, `공식휠_출처와해시.json`을 복사하고 Windows x64 CPython3.12에서 다음 순서로 실행합니다. 이미 있는 시험 자료와 환경을 덮어쓰지 않도록 검사합니다.
+ 
+ ```powershell
+ python -B -X utf8 생성환경_준비.py
+ python -I -B -X utf8 자체HEIC_생성.py
+ ```
+ 
+-의존성은 해당 폴더의 생성 전용 환경에만 설치됩니다.
+-
+-앱에는 읽기 전용 pi-heif-decoder를 계속 사용하며 이 생성용 인코더를 추가하지 않습니다.
+-
+-공식 휠 주소·크기·SHA256을 고정하고 내려 받은 바이트를 확인합니다.
+-
+-설치된 생성 환경과 휠은 개발용이므로 앱 실행 파일에 포함할 필요가 없습니다.
+-
+-의존성 자체의 라이선스는 각 공식 배포 물에 따릅니다.
++의존성은 해당 폴더의 생성전용환경에만 설치됩니다. 앱에는 읽기 전용 pi-heif-decoder를 계속 사용하며 이 생성용 인코더를 추가하지 않습니다. 공식 휠 주소·크기·SHA256을 고정하고 내려받은 바이트를 확인합니다. 설치된 생성 환경과 휠은 개발용이므로 앱 실행 파일에 포함할 필요가 없습니다. 의존성 자체의 라이선스는 각 공식 배포물에 따릅니다.
+ 
+ 생성 코드는 동일한 패턴을 계산합니다. 다른 라이브러리·운영체제 조합에서 HEIC 파일 바이트가 동일하다는 보장은 하지 않습니다. 이번 저장 파일의 실제 해시와 인코더 버전을 구분해 확인해 주세요. 이 단일 RGB 자료는 알파·HDR·다중 프레임 이미지 전체의 검증을 대신하지 않습니다.
+ 
+-실제 앱 환경의 pi-heif-decoder1.7.0.post4에서 읽기와 PNG/JPG/TIFF/AVIF 변환을 확인했습니다.
+-
+-PNG/TIFF 출력은 디코딩한 HEIC의 픽셀과 같았고, 각 변환 전후 입력 파일 해시를 보존했습니다.
+-
+-이는 이 후보에 대한 변환 확인이며 기존 전체 검사·설치 본·모든 HEIC 호환 검증은 아닙니다.
++실제 앱 환경의 pi-heif-decoder1.7.0.post4에서 읽기와 PNG/JPG/TIFF/AVIF 변환을 확인했습니다. PNG/TIFF 출력은 디코딩한 HEIC의 픽셀과 같았고, 각 변환 전후 입력 파일 해시를 보존했습니다. 이는 이 후보에 대한 변환 확인이며 기존 전체 검사·설치본·모든 HEIC 호환 검증은 아닙니다.
+ 
+ 공식 출처: [pillow-heif PyPI](https://pypi.org/project/pillow-heif/1.8.1/), [Pillow PyPI](https://pypi.org/project/Pillow/13.0.0/), [공식 이미지 저장 문서](https://pillow-heif.readthedocs.io/en/latest/saving-images.html).
+ 
+--- 공개기준/소스/test_delivery113.py
++++ 최종공개/소스/test_delivery113.py
+@@ -0,0 +1,341 @@
++"""실제 파일의 선택 제거·원본·본문·충돌·취소 및 대화상자 계약 검사."""
++import os
++from pathlib import Path
++import tempfile
++import threading
++import unittest
++from unittest.mock import patch
++import zipfile
++import struct
++
++os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
++from PIL import Image, PngImagePlugin
++from docx import Document
++from pypdf import PdfWriter, PdfReader
++from pypdf.generic import (NameObject, DecodedStreamObject, DictionaryObject,
++                           ArrayObject, TextStringObject, NumberObject)
++from reportlab.pdfgen import canvas
++from PySide6.QtWidgets import QApplication, QWidget
++from PySide6.QtTest import QTest
++from PySide6.QtCore import Qt
++
++import delivery_tools as tools
++from pdf_tools import Cancelled, PdfToolError
++
++
++class DeliveryTests(unittest.TestCase):
++    def setUp(self):
++        self.temporary = tempfile.TemporaryDirectory()
++        self.root = Path(self.temporary.name)
++
++    def tearDown(self):
++        self.temporary.cleanup()
++
++    def docx(self):
++        source = self.root / '원본.docx'
++        document = Document()
++        document.add_paragraph('본문 보존 Actual body')
++        document.core_properties.author = 'private author'
++        document.core_properties.title = 'keep title'
++        document.save(source)
++        return source
++
++    def test_docx_selected_preserves_parts_and_collision(self):
++        source = self.docx()
++        before = source.read_bytes()
++        report = tools.metadata_report(source)
++        key = next(e['key'] for e in report['entries'] if e['label'] == 'creator')
++        first = Path(tools.strip_metadata(source, [key], self.root))
++        second = Path(tools.strip_metadata(source, [key], self.root))
++        self.assertNotEqual(first, second)
++        self.assertEqual(before, source.read_bytes())
++        self.assertEqual(Document(first).core_properties.title, 'keep title')
++        self.assertEqual(Document(first).core_properties.author, '')
++        self.assertEqual(Document(first).paragraphs[0].text, '본문 보존 Actual body')
++        with zipfile.ZipFile(source) as left, zipfile.ZipFile(first) as right:
++            for name in left.namelist():
++                if name != 'docProps/core.xml':
++                    self.assertEqual(left.read(name), right.read(name), name)
++
++    def test_pdf_selected_preserves_content_attachment_annotation_xmp(self):
++        source = self.root / '원본.pdf'
++        c = canvas.Canvas(str(source))
++        c.drawString(50, 700, 'Actual body')
++        c.save()
++        reader = PdfReader(source)
++        writer = PdfWriter()
++        writer.clone_document_from_reader(reader)
++        writer.add_metadata({'/Author': 'private', '/Title': 'keep'})
++        writer.add_attachment('keep.txt', b'attachment bytes')
++        annotation = DictionaryObject({NameObject('/Type'): NameObject('/Annot'),
++                                       NameObject('/Subtype'): NameObject('/Text'),
++                                       NameObject('/Rect'): ArrayObject([NumberObject(x) for x in [0, 0, 20, 20]]),
++                                       NameObject('/Contents'): TextStringObject('keep comment')})
++        writer.pages[0][NameObject('/Annots')] = ArrayObject([writer._add_object(annotation)])
++        xmp = DecodedStreamObject()
++        xmp.set_data(b'<x:xmpmeta xmlns:x="adobe:ns:meta/">private xmp</x:xmpmeta>')
++        writer._root_object[NameObject('/Metadata')] = writer._add_object(xmp)
++        other = self.root / 'prepared.pdf'
++        writer.write(other)
++        writer.close()
++        reader.close()
++        source.write_bytes(other.read_bytes())
++        before = source.read_bytes()
++        result = Path(tools.strip_metadata(source, ['pdf:/Author', 'pdf:xmp'], self.root))
++        with PdfReader(result) as cleaned:
++            self.assertNotIn('/Author', cleaned.metadata)
++            self.assertEqual(cleaned.metadata.title, 'keep')
++            self.assertNotIn('/Metadata', cleaned.trailer['/Root'])
++            self.assertEqual(cleaned.attachments['keep.txt'][0], b'attachment bytes')
++            self.assertEqual(cleaned.pages[0]['/Annots'][0].get_object()['/Contents'], 'keep comment')
++            self.assertIn('Actual body', cleaned.pages[0].extract_text())
++        self.assertEqual(before, source.read_bytes())
++
++    def test_jpeg_exif_selected_preserves_encoded_pixels(self):
++        source = self.root / '원본.jpg'
++        exif = Image.Exif()
++        exif[315], exif[270] = 'private artist', 'keep description'
++        exif[34853] = {1: 'N', 2: (1.0, 2.0, 3.0)}
++        Image.new('RGB', (32, 32), 'red').save(source, exif=exif)
++        before = source.read_bytes()
++        keys = {e['key'] for e in tools.metadata_report(source)['entries']}
++        self.assertIn('exif:34853', keys)
++        result = Path(tools.strip_metadata(source, ['exif:315', 'exif:34853'], self.root))
++        with Image.open(result) as image:
++            self.assertNotIn(315, image.getexif())
++            self.assertNotIn(34853, image.getexif())
++            self.assertEqual(image.getexif()[270], 'keep description')
++        def pixels(raw):
++            return next(segment for marker, segment in tools._jpeg_segments(raw) if marker == 0xDA)
++        self.assertEqual(pixels(before), pixels(result.read_bytes()))
++        self.assertEqual(before, source.read_bytes())
++
++    def test_png_text_and_exif_preserve_idat(self):
++        source = self.root / '원본.png'
++        exif = Image.Exif()
++        exif[315], exif[270] = 'artist', 'keep'
++        info = PngImagePlugin.PngInfo()
++        info.add_text('Author', 'private')
++        info.add_text('Title', 'keep title')
++        Image.new('RGB', (20, 20), 'blue').save(source, exif=exif, pnginfo=info)
++        report = tools.metadata_report(source)
++        text_key = next(e['key'] for e in report['entries'] if e['label'] == 'tEXt: Author')
++        result = Path(tools.strip_metadata(source, [text_key, 'exif:315'], self.root))
++        with Image.open(result) as image:
++            self.assertNotIn('Author', image.info)
++            self.assertEqual(image.info['Title'], 'keep title')
++            self.assertEqual(image.getexif()[270], 'keep')
++            self.assertNotIn(315, image.getexif())
++        def idat(path):
++            return [raw for kind, _, raw in tools._png_chunks(path.read_bytes()) if kind == b'IDAT']
++        self.assertEqual(idat(source), idat(result))
++
++    def test_jpeg_padded_exif_preserves_unselected_segments_and_scan(self):
++        source = self.root / '채움바이트.jpg'
++        exif = Image.Exif()
++        exif[315], exif[270] = 'private artist', 'keep description'
++        Image.new('RGB', (24, 24), 'red').save(source, exif=exif)
++        raw = source.read_bytes()
++        marker = raw.index(b'\xff\xe1')
++        # EXIF 앞의 실제 FF 채움 바이트 때문에 payload 시작은 고정 4가 아니다.
++        source.write_bytes(raw[:marker] + b'\xff' + raw[marker:])
++        before = source.read_bytes()
++        report = tools.metadata_report(source)
++        self.assertEqual({entry['key'] for entry in report['entries']}, {'exif:270', 'exif:315'})
++        result = Path(tools.strip_metadata(source, ['exif:315'], self.root))
++        with Image.open(result) as image:
++            self.assertNotIn(315, image.getexif())
++            self.assertEqual(image.getexif()[270], 'keep description')
++        self.assertEqual(before[before.index(b'\xff\xda'):],
++                         result.read_bytes()[result.read_bytes().index(b'\xff\xda'):])
++        self.assertEqual(before, source.read_bytes())
++
++    def test_jpeg_selected_comment_preserves_following_reindexed_comment(self):
++        source = self.root / '주석.jpg'
++        Image.new('RGB', (24, 24), 'blue').save(source)
++        original = source.read_bytes()
++        def comment(value):
++            return b'\xff\xff\xfe' + struct.pack('>H', len(value) + 2) + value
++        private, keep = comment(b'private comment'), comment(b'keep comment')
++        source.write_bytes(original[:2] + private + keep + original[2:])
++        before = source.read_bytes()
++        key = next(entry['key'] for entry in tools.metadata_report(source)['entries']
++                   if 'private comment' in entry['value'])
++        result = Path(tools.strip_metadata(source, [key], self.root))
++        self.assertEqual(result.read_bytes(), original[:2] + keep + original[2:])
++        self.assertEqual(before, source.read_bytes())
++
++    def test_selected_metadata_residue_is_rejected_for_all_supported_branches(self):
++        document = self.docx()
++        pdf = self.root / '사후검증.pdf'
++        writer = PdfWriter()
++        writer.add_blank_page(80, 80)
++        writer.add_metadata({'/Author': 'private'})
++        writer.write(pdf)
++        writer.close()
++        jpeg, png = self.root / '사후검증.jpg', self.root / '사후검증.png'
++        exif = Image.Exif()
++        exif[315] = 'private artist'
++        for path in (jpeg, png):
++            Image.new('RGB', (20, 20), 'blue').save(path, exif=exif)
++        cases = [(document, next(entry['key'] for entry in tools.metadata_report(document)['entries']
++                                 if entry['label'] == 'creator')),
++                 (pdf, 'pdf:/Author'), (jpeg, 'exif:315'), (png, 'exif:315')]
++        for source, key in cases:
++            with self.subTest(extension=source.suffix):
++                before, listing = source.read_bytes(), set(self.root.iterdir())
++                actual_report = tools.metadata_report
++                def report_with_residue(path, cancel=None):
++                    # 발행 직전 사본에 선택 속성이 실제로 남은 결함을 주입한다.
++                    if Path(path) != source:
++                        Path(path).write_bytes(before)
++                    return actual_report(path, cancel)
++                with patch.object(tools, 'metadata_report', side_effect=report_with_residue):
++                    with self.assertRaisesRegex(PdfToolError, '메타데이터'):
++                        tools.strip_metadata(source, [key], self.root)
++                self.assertEqual(source.read_bytes(), before)
++                self.assertEqual(set(self.root.iterdir()), listing)
++
++    def test_indexed_metadata_verification_checks_beyond_display_limit(self):
++        common = 'same value ' * 500
++        for extension in ('jpg', 'png'):
++            with self.subTest(extension=extension):
++                source = self.root / ('긴메타데이터.' + extension)
++                if extension == 'jpg':
++                    Image.new('RGB', (20, 20), 'blue').save(source)
++                    original = source.read_bytes()
++                    def comment(text):
++                        data = text.encode('ascii')
++                        return b'\xff\xfe' + struct.pack('>H', len(data) + 2) + data
++                    private, keep = comment(common + 'private'), comment(common + 'keep')
++                    source.write_bytes(original[:2] + private + keep + original[2:])
++                    wrong_copy = original[:2] + private + original[2:]
++                else:
++                    info = PngImagePlugin.PngInfo()
++                    info.add_text('Author', common + 'private')
++                    info.add_text('Author', common + 'keep')
++                    Image.new('RGB', (20, 20), 'blue').save(source, pnginfo=info)
++                    # 같은 표시값의 두 청크 중 선택하지 않은 뒤쪽 청크만 지운 잘못된 사본이다.
++                    chunks = list(tools._png_chunks(source.read_bytes()))
++                    last_text = max(index for index, (kind, _, _) in enumerate(chunks) if kind == b'tEXt')
++                    wrong_copy = source.read_bytes()[:8] + b''.join(
++                        chunk for index, (_, _, chunk) in enumerate(chunks) if index != last_text)
++                entries = tools.metadata_report(source)['entries']
++                self.assertEqual(len(entries), 2)
++                self.assertEqual(entries[0]['value'], entries[1]['value'])
++                before, listing = source.read_bytes(), set(self.root.iterdir())
++                actual_report = tools.metadata_report
++                def report_with_wrong_copy(path, cancel=None):
++                    if Path(path) != source:
++                        Path(path).write_bytes(wrong_copy)
++                    return actual_report(path, cancel)
++                with patch.object(tools, 'metadata_report', side_effect=report_with_wrong_copy):
++                    with self.assertRaisesRegex(PdfToolError, '메타데이터'):
++                        tools.strip_metadata(source, [entries[0]['key']], self.root)
++                self.assertEqual(source.read_bytes(), before)
++                self.assertEqual(set(self.root.iterdir()), listing)
++
++    def test_cancel_unsupported_invalid_selection_no_new_file(self):
++        source = self.docx()
++        before = sorted(self.root.iterdir())
++        cancel = threading.Event()
++        cancel.set()
++        with self.assertRaises(Cancelled):
++            tools.strip_metadata(source, ['invalid'], self.root, cancel)
++        with self.assertRaises(tools.DeliveryError):
++            tools.strip_metadata(source, ['invalid'], self.root)
++        unsupported = self.root / '원본.txt'
++        unsupported.write_text('private', encoding='utf-8')
++        self.assertFalse(tools.metadata_report(unsupported)['supported'])
++        with self.assertRaises(tools.DeliveryError):
++            tools.strip_metadata(unsupported, ['whatever'], self.root)
++        self.assertEqual(sorted(self.root.iterdir()), sorted(before + [unsupported]))
++
++    def test_compatibility_real_xml_and_dtd_rejection(self):
++        source = self.docx()
++        with zipfile.ZipFile(source, 'a') as archive:
++            archive.writestr('word/vbaProject.bin', b'macro evidence')
++            archive.writestr('word/extra.xml', b'<root xmlns:w="urn:w"><w:rFonts w:ascii="MyFont"/><f>1+1</f><Relationship TargetMode="External" Target="https://example.com"/></root>')
++        result = tools.compatibility_report(source, 'pdf')
++        self.assertTrue(result['macros'])
++        self.assertEqual(result['formulas'], 1)
++        self.assertIn('MyFont', result['fonts'])
++        self.assertGreaterEqual(result['external_links'], 1)
++        self.assertTrue(result['local_only'])
++        with zipfile.ZipFile(source, 'a') as archive:
++            archive.writestr('bad.xml', b'<!DOCTYPE root [<!ENTITY x "evil">]><root>&x;</root>')
++        with self.assertRaises(ValueError):
++            tools.compatibility_report(source, 'pdf')
++
++    def test_compare_actual_text_documents_renders_and_cleans(self):
++        left, right = self.root / 'left.txt', self.root / 'right.txt'
++        left.write_text('Actual alpha', encoding='utf-8')
++        right.write_text('Actual beta', encoding='utf-8')
++        before = {path: path.read_bytes() for path in (left, right)}
++        result = tools.compare_documents(left, right)
++        self.assertFalse(result['text_equal'])
++        self.assertIn('Actual alpha', result['text_diff'])
++        self.assertEqual(len(result['images']), 2)
++        self.assertGreater(result['images'][0].width, 0)
++        self.assertEqual(set(self.root.iterdir()), {left, right})
++        for path, data in before.items():
++            self.assertEqual(path.read_bytes(), data)
++
++    def test_compare_multiframe_images_retains_each_page_and_original(self):
++        for extension in ('tiff', 'gif'):
++            with self.subTest(extension=extension):
++                source = self.root / ('여러프레임.' + extension)
++                Image.new('RGB', (24, 18), 'white').save(
++                    source, save_all=True, append_images=[Image.new('RGB', (24, 18), 'black')])
++                before, listing = source.read_bytes(), set(self.root.iterdir())
++                result = tools.compare_documents(source, source, page=1)
++                self.assertEqual(result['left']['page_count'], 2)
++                self.assertEqual(result['right']['page_count'], 2)
++                self.assertEqual(result['images'][0].size, (24, 18))
++                self.assertEqual(result['images'][0].getpixel((0, 0)), (0, 0, 0))
++                self.assertEqual(result['images'][1].tobytes(), result['images'][0].tobytes())
++                self.assertEqual(source.read_bytes(), before)
++                self.assertEqual(set(self.root.iterdir()), listing)
++
++
++class DeliveryUiTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.app = QApplication.instance() or QApplication([])
++
++    def test_dialog_language_theme_thread_cancel_reuse(self):
++        from delivery_ui import DeliveryDialog
++        from theme_manager import manager
++        owner = QWidget()
++        owner.pending = 0
++        owner.work_busy = lambda: False
++        dialog = DeliveryDialog(owner)
++        dialog.set_language('en')
++        self.assertEqual(dialog.compare_button.text(), 'Compare documents')
++        manager().apply('dark')
++        self.assertTrue(self.app.property('flipringDarkTheme'))
++        def operation(cancel):
++            cancel.wait(2)
++            from pdf_tools import check_cancel
++            check_cancel(cancel)
++        dialog._start(operation, 'metadata')
++        self.assertTrue(dialog.is_busy())
++        self.assertEqual(owner.pending, 1)
++        dialog.reject()
++        for _ in range(100):
++            self.app.processEvents()
++            if not dialog.is_busy():
++                break
++            QTest.qWait(10)
++        self.assertFalse(dialog.is_busy())
++        self.assertEqual(owner.pending, 0)
++        dialog.show()
++        self.assertTrue(dialog.isVisible())
++        self.assertFalse(dialog._closing)
++        dialog.close()
++        manager().apply('light')
++        owner.close()
++
++
++if __name__ == '__main__':
++    unittest.main(verbosity=2)
+--- 공개기준/소스/test_design113.py
++++ 최종공개/소스/test_design113.py
+@@ -0,0 +1,135 @@
++"""소음 없는 표면 피드백과 세 가지 작업 화면의 연결을 확인한다."""
++import os
++os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
++import unittest
++from unittest.mock import patch
++from PySide6.QtCore import Qt
++from PySide6.QtTest import QTest
++from PySide6.QtWidgets import QApplication, QLineEdit, QListWidget, QListWidgetItem, QProgressBar, QMainWindow, QMenu
++from ui_motion import ensure_surface_motion, set_reduced_motion
++from delivery_ui import DeliveryDialog
++from theme_manager import manager
++
++
++class Design113Tests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.app = QApplication.instance() or QApplication([])
++
++    def tearDown(self):
++        set_reduced_motion(None, False)
++        manager(self.app).apply('light')
++        self.app.processEvents()
++
++    def test_typing_does_not_restart_surface_feedback(self):
++        edit = QLineEdit()
++        motion = ensure_surface_motion(edit)
++        edit.show()
++        edit.setFocus()
++        self.app.processEvents()
++        QTest.qWait(300)
++        with patch.object(motion, 'pulse') as pulse:
++            QTest.keyClicks(edit, 'quiet typing')
++            self.assertEqual(edit.text(), 'quiet typing')
++            pulse.assert_not_called()
++        edit.close()
++        edit.deleteLater()
++
++    def test_selection_and_reduced_motion_finish_cleanly(self):
++        view = QListWidget()
++        view.addItems(['first', 'second'])
++        motion = ensure_surface_motion(view)
++        view.show()
++        self.app.processEvents()
++        view.setCurrentRow(1)
++        self.assertIsNotNone(motion.overlay.rectangle)
++        self.assertEqual(view.currentRow(), 1)
++        set_reduced_motion(view, True)
++        motion.selection_pulse()
++        self.assertEqual(motion.amount, 0.0)
++        self.assertFalse(motion.overlay.isVisible())
++        view.close()
++        view.deleteLater()
++
++    def test_progress_feedback_is_finite_and_throttled(self):
++        progress = QProgressBar()
++        progress.setRange(0, 1000)
++        motion = ensure_surface_motion(progress)
++        progress.show()
++        self.app.processEvents()
++        with patch.object(motion, 'pulse') as pulse:
++            for value in range(1001):
++                progress.setValue(value)
++            self.assertEqual(progress.value(), 1000)
++            self.assertLessEqual(pulse.call_count, 3)
++            self.assertGreaterEqual(pulse.call_count, 2)
++        progress.close()
++        progress.deleteLater()
++
++    def test_tabs_show_relevant_controls_and_keep_each_result(self):
++        import app as product
++        owner = QMainWindow()
++        owner.tray_menu = QMenu(owner)
++        product.MainWindow.apply_style(owner)
++        dialog = DeliveryDialog(owner)
++        dialog.show()
++        self.app.processEvents()
++        try:
++            self.assertEqual(dialog.tabs.count(), 3)
++            self.assertTrue(dialog.compatibility_button.isVisible())
++            self.assertFalse(dialog.metadata_list.isVisible())
++            self.assertFalse(dialog.left_canvas.isVisible())
++            dialog.details.setPlainText('호환 결과')
++            dialog.tabs.setCurrentIndex(1)
++            self.assertTrue(dialog.metadata_list.isVisible())
++            self.assertFalse(dialog.target_combo.isVisible())
++            item = QListWidgetItem('작성자')
++            item.setCheckState(Qt.Checked)
++            dialog.metadata_list.addItem(item)
++            dialog.details.setPlainText('개인정보 결과')
++            dialog.output_edit.setText('선택 폴더')
++            for theme in ('light', 'dark'):
++                manager(self.app).apply(theme)
++                for language in ('ko', 'en'):
++                    dialog.set_language(language)
++                    self.assertEqual(dialog.metadata_list.item(0).checkState(), Qt.Checked)
++                    self.assertEqual(dialog.details.toPlainText(), '개인정보 결과')
++                    self.assertEqual(dialog.output_edit.text(), '선택 폴더')
++                    self.assertFalse(dialog.grab().isNull())
++            dialog.tabs.setCurrentIndex(2)
++            self.assertTrue(dialog.compare_button.isVisible())
++            self.assertTrue(dialog.left_canvas.isVisible())
++            self.app.processEvents()
++            self.assertGreaterEqual(dialog.page_spin.lineEdit().width(),
++                                    dialog.page_spin.fontMetrics().horizontalAdvance(dialog.page_spin.text()))
++            dialog.page_spin.setMaximum(3)
++            dialog._sync_page_buttons()
++            dialog.next_page_button.click()
++            self.assertEqual(dialog.page_spin.value(), 2)
++            dialog.previous_page_button.click()
++            self.assertEqual(dialog.page_spin.value(), 1)
++            self.assertFalse(dialog.strip_button.isVisible())
++            dialog.details.setPlainText('비교 결과')
++            dialog.tabs.setCurrentIndex(0)
++            self.assertEqual(dialog.details.toPlainText(), '호환 결과')
++            dialog.tabs.setCurrentIndex(1)
++            self.assertEqual(dialog.details.toPlainText(), '개인정보 결과')
++            dialog.tabs.setCurrentIndex(2)
++            self.assertEqual(dialog.details.toPlainText(), '비교 결과')
++            dialog._set_busy(True)
++            self.assertFalse(dialog.tabs.tabBar().isEnabled())
++            self.assertFalse(dialog.compare_button.isEnabled())
++            self.assertTrue(dialog.cancel_button.isEnabled())
++            dialog._set_busy(False)
++            set_reduced_motion(dialog, True)
++            dialog.compare_button.setFocus(Qt.TabFocusReason)
++            self.app.processEvents()
++            self.assertTrue(dialog.compare_button.hasFocus())
++        finally:
++            dialog.close()
++            dialog.deleteLater()
++            owner.deleteLater()
++
++
++if __name__ == '__main__':
++    unittest.main()
+--- 공개기준/소스/test_queue113.py
++++ 최종공개/소스/test_queue113.py
+@@ -0,0 +1,224 @@
++"""대기열 영속성·중단 경계·비공개 진단의 실제 파일 검사."""
++import copy
++import json
++from pathlib import Path
++import tempfile
++import threading
++import unittest
++from unittest.mock import patch
++from PIL import Image
++import quick_actions as core
++import queue_journal as journal
++
++
++class QueueTests(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
++        self.root = Path(self.temp.name); self.output = self.root / '결과'; self.output.mkdir()
++        self.source = self.root / '비공개이름.png'; Image.new('RGB', (20, 20), 'red').save(self.source)
++        self.records = core.collect_inputs([self.source])['inputs']; self.action = copy.deepcopy(core.BUILTINS[0])
++        self.ledger = core.OutputLedger(); self.store = journal.QueueJournal(self.root / '기록.json')
++        self.job = {'id': '1234abcd', 'inputs': self.records, 'action': self.action, 'output': str(self.output),
++                    'state': 'running', 'result': None, 'file_states': {str(self.source): 'waiting'},
++                    'checkpoints': {str(self.source): {'input_sha256': core.digest(self.source), 'state': 'waiting', 'outputs': [], 'expected': 1}}}
++    def event(self, event):
++        journal.checkpoint_event(self.job, event)
++        if event['state'] == 'completed': self.ledger.register(event.get('outputs', []))
++        self.store.save([self.job], self.ledger)
++    def run_job(self, cancel=None):
++        return core.run_action(self.records, self.action, self.output, cancel, self.event, self.job['checkpoints'])
++    def test_builtins_explicit_values(self):
++        self.assertEqual(len(core.BUILTINS), 6)
++        for row in core.BUILTINS: core.validate_action(row)
++        self.assertEqual(core.BUILTINS[3]['max_bytes'], 1024 ** 2)
++        self.assertEqual(core.BUILTINS[4]['width'], 0)
++        self.assertEqual(core.BUILTINS[5]['format'], 'webp')
++    def test_preview_matches_disk_and_batch_collisions(self):
++        (self.output / '비공개이름.jpg').write_bytes(b'keep')
++        rows = self.records * 2
++        preview = core.preview_output_names(rows, self.action, self.output)
++        result = core.run_action(rows, self.action, self.output)
++        self.assertEqual([r['path'] for r in preview], [r['path'] for r in result['outputs']])
++        self.assertEqual(Path(preview[0]['path']).name, '비공개이름 2.jpg')
++        self.assertEqual((self.output / '비공개이름.jpg').read_bytes(), b'keep')
++    def test_pdf_two_pages_preview_matches_all_collisions(self):
++        import pypdfium2 as pdfium
++        source = self.root / '두페이지.pdf'
++        with pdfium.PdfDocument.new() as document:
++            document.new_page(100, 100); document.new_page(100, 100); document.save(str(source))
++        records = core.collect_inputs([source])['inputs'] * 2
++        action = {**self.action, 'format': 'png'}
++        (self.output / '두페이지-1.png').write_bytes(b'keep')
++        before = core.digest(source)
++        preview = core.preview_output_names(records, action, self.output)
++        result = core.run_action(records, action, self.output)
++        self.assertEqual(result['status'], 'completed', result)
++        self.assertEqual([r['path'] for r in preview], [r['path'] for r in result['outputs']])
++        self.assertEqual(len(preview), 4); self.assertEqual(core.digest(source), before)
++    def test_preview_cancel_and_missing_tool_preserve_original(self):
++        token = threading.Event(); token.set(); before = core.digest(self.source)
++        with self.assertRaises((core.pdf_tools.Cancelled, core.engine.Cancelled)):
++            core.preview_output_names(self.records, self.action, self.output, token)
++        fake = self.root / '문서.docx'; fake.write_bytes(b'not opened by mocked engine')
++        action = {**self.action, 'format': 'png'}
++        with patch('quick_actions.workspace._single', side_effect=ValueError('공식 도구가 필요합니다.')):
++            with self.assertRaisesRegex(ValueError, '공식 도구'):
++                core.preview_output_names(core.collect_inputs([fake])['inputs'], action, self.output)
++        self.assertEqual(core.digest(self.source), before); self.assertFalse(list(self.output.iterdir()))
++    def test_office_preview_uses_real_temporary_engine_output(self):
++        from docx import Document
++        source = self.root / '문서.docx'; document = Document(); document.add_paragraph('Preview page one'); document.add_page_break(); document.add_paragraph('Preview page two'); document.save(str(source))
++        action = {**self.action, 'format': 'png'}; records = core.collect_inputs([source])['inputs']
++        before = core.digest(source)
++        preview = core.preview_output_names(records, action, self.output)
++        self.assertEqual(len(preview), 2); self.assertEqual(core.digest(source), before)
++        self.assertFalse(list(self.output.iterdir()))
++        result = core.run_action(records, action, self.output)
++        self.assertEqual(result['status'], 'completed', result)
++        self.assertEqual([r['path'] for r in preview], [r['path'] for r in result['outputs']])
++    def test_restore_skips_valid_completed_output(self):
++        result = self.run_job(); self.assertEqual(result['status'], 'completed', result)
++        restored = journal.recover_jobs(self.store.load()['jobs'])[0]
++        with patch('quick_actions.workspace.execute_workspace', side_effect=AssertionError('재변환 금지')):
++            again = core.run_action(self.records, self.action, self.output, completed=restored['checkpoints'])
++        self.assertEqual(again['status'], 'completed', again)
++        self.assertEqual(result['outputs'], again['outputs'])
++    def test_input_change_blocks_resume(self):
++        self.run_job(); self.source.write_bytes(b'changed')
++        recovered = journal.recover_jobs(self.store.load()['jobs'])[0]
++        self.assertEqual(recovered['state'], 'review')
++        result = core.run_action(self.records, self.action, self.output, completed=recovered['checkpoints'])
++        self.assertEqual(result['status'], 'failed')
++        self.assertEqual(len(list(self.output.glob('*.jpg'))), 1)
++    def test_output_change_blocks_resume_and_cleanup(self):
++        result = self.run_job(); target = Path(result['outputs'][0]['path']); target.write_bytes(b'changed')
++        recovered = journal.recover_jobs(self.store.load()['jobs'])[0]
++        self.assertEqual(recovered['state'], 'review')
++        again = core.run_action(self.records, self.action, self.output, completed=recovered['checkpoints'])
++        self.assertEqual(again['status'], 'failed'); self.assertTrue(self.ledger.cleanup([str(target)])['errors'])
++        self.assertEqual(target.read_bytes(), b'changed')
++    def test_crash_after_publish_before_completed_event(self):
++        def crash(event):
++            if event['state'] == 'completed': raise SystemExit('비정상 종료 모의')
++            self.event(event)
++        with self.assertRaises(SystemExit): core.run_action(self.records, self.action, self.output, on_event=crash, completed=self.job['checkpoints'])
++        restored = journal.recover_jobs(self.store.load()['jobs'])[0]
++        self.assertEqual(restored['checkpoints'][str(self.source)]['state'], 'completed')
++        again = core.run_action(self.records, self.action, self.output, completed=restored['checkpoints'])
++        self.assertEqual(again['status'], 'completed'); self.assertEqual(len(list(self.output.glob('*.jpg'))), 1)
++    def test_cancel_and_partial_failure_keep_checkpoint(self):
++        other = self.root / '둘.png'; Image.new('RGB', (20, 20), 'blue').save(other)
++        self.records += core.collect_inputs([other])['inputs']; self.job['inputs'] = self.records
++        self.job['file_states'][str(other)] = 'waiting'
++        token = threading.Event()
++        def cancel(event):
++            self.event(event)
++            if event['state'] == 'completed': token.set()
++        result = core.run_action(self.records, self.action, self.output, token, cancel)
++        self.assertEqual(result['status'], 'cancelled'); self.assertEqual(len(result['outputs']), 1)
++        count = [0]; original = core.workspace.execute_workspace
++        def fail_second(*args, **kwargs):
++            count[0] += 1
++            if count[0] == 2: raise OSError('의도한 두 번째 실패')
++            return original(*args, **kwargs)
++        with patch('quick_actions.workspace.execute_workspace', side_effect=fail_second):
++            partial = core.run_action(self.records, self.action, self.output)
++        self.assertEqual(partial['status'], 'failed'); self.assertEqual(len(partial['files']), 1)
++    def test_damaged_and_oversized_state_preserved(self):
++        self.store.path.write_bytes(b'{broken'); before = self.store.path.read_bytes()
++        with self.assertRaises(ValueError): self.store.load()
++        with self.assertRaises(ValueError): self.store.save([self.job], self.ledger)
++        self.assertEqual(self.store.path.read_bytes(), before)
++        self.store.path.write_bytes(b' ' * (journal.MAX_BYTES + 1))
++        with self.assertRaises(ValueError): journal.QueueJournal(self.store.path).load()
++    def test_invalid_state_rejected(self):
++        self.job['inputs'][0]['relative'] = '../탈출.png'
++        with self.assertRaises(ValueError): self.store.save([self.job], self.ledger)
++    def test_cleanup_undo_survives_restart_and_collision(self):
++        result = self.run_job(); path = result['outputs'][0]['path']
++        self.ledger.on_change = lambda: self.store.save([self.job], self.ledger)
++        self.assertEqual(len(self.ledger.cleanup([path])['moved']), 1)
++        value = self.store.load(); restored = core.OutputLedger(); restored.rows = value['ledger']['rows']; restored.moves = value['ledger']['moves']
++        Path(path).write_bytes(b'other'); self.assertTrue(restored.undo()['errors']); Path(path).unlink()
++        self.assertEqual(restored.undo()['restored'], [path]); self.assertEqual(core.digest(path), result['outputs'][0]['sha256'])
++    def test_shared_diagnostic_contains_only_allowlist(self):
++        self.job['state'] = 'failed'; self.job['result'] = {'error': 'SECRET /private/name.txt 문서 본문'}
++        value = journal.diagnostic([self.job]); encoded = json.dumps(value)
++        self.assertEqual(set(value), {'version', 'jobs', 'states', 'extensions', 'error_codes'})
++        for private in (str(self.root), self.source.name, self.action['name'], 'SECRET', '문서 본문'):
++            self.assertNotIn(private, encoded)
++        self.assertEqual(value['extensions'], {'png': 1})
++    def test_zip_crash_does_not_recreate_bundle(self):
++        self.action['zip'] = True
++        def crash(event):
++            if event['state'] == 'completed' and event['source'] == '': raise SystemExit('묶음 완료 직전 중단')
++            self.event(event)
++        with self.assertRaises(SystemExit):
++            core.run_action(self.records, self.action, self.output, on_event=crash, completed=self.job['checkpoints'])
++        restored = journal.recover_jobs(self.store.load()['jobs'])[0]
++        self.assertEqual(restored['checkpoints']['']['state'], 'completed')
++        with patch('quick_actions.create_bundle', side_effect=AssertionError('묶음 중복 생성 금지')):
++            result = core.run_action(self.records, self.action, self.output, completed=restored['checkpoints'])
++        self.assertEqual(result['status'], 'completed', result); self.assertEqual(len(list(self.output.glob('*.zip'))), 1)
++    def test_invalid_result_type_preserves_existing_state(self):
++        self.store.save([self.job], self.ledger); before = self.store.path.read_bytes()
++        self.job['result'] = ['invalid']
++        with self.assertRaises(ValueError): self.store.save([self.job], self.ledger)
++        self.assertEqual(self.store.path.read_bytes(), before)
++    def test_waiting_input_change_review(self):
++        self.job['state'] = 'waiting'; self.store.save([self.job], self.ledger)
++        self.assertEqual(journal.recover_jobs(self.store.load()['jobs'])[0]['state'], 'waiting')
++        self.source.write_bytes(b'changed')
++        self.assertEqual(journal.recover_jobs(self.store.load()['jobs'])[0]['state'], 'review')
++
++
++class QueueUiTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        from PySide6.QtWidgets import QApplication
++        cls.app = QApplication.instance() or QApplication([])
++    def pump(self, condition):
++        import time
++        limit = time.monotonic() + 15
++        while not condition() and time.monotonic() < limit:
++            self.app.processEvents(); time.sleep(.01)
++        self.app.processEvents(); self.assertTrue(condition())
++    def test_restart_requires_explicit_resume_and_cleanup_by_job(self):
++        from PySide6.QtCore import QSettings
++        from PySide6.QtWidgets import QWidget
++        from quick_actions_ui import QuickActionsPanel
++        with tempfile.TemporaryDirectory() as temporary:
++            root = Path(temporary); source = root / '입력.png'; Image.new('RGB', (20, 20), 'red').save(source)
++            owner = QWidget(); owner.pending = False; owner.settings = QSettings(str(root / '설정.ini'), QSettings.IniFormat)
++            panel = QuickActionsPanel(owner); self.addCleanup(panel.shutdown)
++            self.pump(lambda: not panel._tasks)
++            panel.output.setText(str(root / '결과')); panel.add_paths([str(source)])
++            self.pump(lambda: not panel._tasks); panel.pause(); panel.enqueue()
++            self.pump(lambda: not panel._tasks); self.assertEqual(panel._jobs[0]['state'], 'waiting')
++            self.assertTrue(panel.shutdown())
++            second = QuickActionsPanel(owner); self.addCleanup(second.shutdown)
++            self.pump(lambda: not second._tasks)
++            self.assertTrue(second._paused); self.assertEqual(second._jobs[0]['state'], 'waiting')
++            self.assertFalse(list((root / '결과').glob('*.jpg')))
++            second.resume(); self.pump(lambda: second._jobs[0]['state'] == 'completed' and not second.is_busy())
++            result = second._jobs[0]['result']['outputs'][0]; second.queue.setCurrentRow(0); second.cleanup_jobs()
++            self.pump(lambda: not second.is_busy()); self.assertFalse(Path(result['path']).exists())
++            self.assertTrue(second.shutdown())
++            third = QuickActionsPanel(owner); self.addCleanup(third.shutdown)
++            self.pump(lambda: not third._tasks); third.undo(); self.pump(lambda: not third.is_busy())
++            self.assertEqual(core.digest(result['path']), result['sha256'])
++    def test_delivery_busy_blocks_and_diagnostic_requires_preview(self):
++        from PySide6.QtCore import QSettings
++        from PySide6.QtWidgets import QWidget, QMessageBox
++        from quick_actions_ui import QuickActionsPanel
++        with tempfile.TemporaryDirectory() as temporary:
++            owner = QWidget(); owner.pending = False
++            owner.settings = QSettings(str(Path(temporary) / '설정.ini'), QSettings.IniFormat)
++            owner.delivery_dialogs = [type('Busy', (), {'is_busy': lambda self: True})()]
++            panel = QuickActionsPanel(owner); self.addCleanup(panel.shutdown); self.pump(lambda: not panel._tasks)
++            self.assertTrue(panel._other_busy())
++            with patch.object(QMessageBox, 'exec', return_value=QMessageBox.Cancel), patch.object(panel, 'choose_paths') as picker:
++                panel.shared_diagnostic(); picker.assert_not_called()
++
++
++if __name__ == '__main__': unittest.main()
+--- 공개기준/소스/test_release113.py
++++ 최종공개/소스/test_release113.py
+@@ -0,0 +1,136 @@
++"""새 OCR 읽기 순서와 통합 화면의 변경 영향만 확인한다."""
++import os
++os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
++import unittest
++import tempfile
++from pathlib import Path
++from unittest.mock import patch
++from PIL import Image
++from PySide6.QtCore import Qt
++from PySide6.QtCore import QElapsedTimer
++from PySide6.QtTest import QTest
++from PySide6.QtWidgets import QApplication
++from PySide6.QtWidgets import QListWidgetItem
++from inspection_ui import InspectionDialog
++from theme_manager import manager
++
++
++class Release113Tests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        cls.app = QApplication.instance() or QApplication([])
++
++    def setUp(self):
++        self.dialog = InspectionDialog(paths=[])
++        self.dialog.preview_timer.stop()
++        self.dialog.left_canvas.set_image(Image.new('RGB', (200, 100), 'white'))
++        self.words = [
++            {'text': '첫째', 'confidence': 91.0, 'page': 0, 'rect': [.1, .1, .2, .1]},
++            {'text': '둘째', 'confidence': 65.0, 'page': 0, 'rect': [.5, .6, .2, .1]},
++            {'text': '다음', 'confidence': 94.0, 'page': 1, 'rect': [.2, .2, .2, .1]},
++        ]
++        self.dialog.recognized = {'words': self.words, 'text': '첫째 둘째\f다음'}
++        self.dialog.page_spin.setMaximum(2)
++
++    def tearDown(self):
++        self.dialog.preview_timer.stop()
++        self.assertTrue(self.dialog.shutdown())
++        self.dialog.deleteLater()
++        manager(self.app).apply('light')
++        self.app.processEvents()
++
++    def test_reading_order_uses_actual_page_words_and_selection(self):
++        d = self.dialog
++        d.reading_order.setChecked(True)
++        self.assertEqual(d.candidate_list.count(), 2)
++        self.assertEqual(d.candidate_list.item(1).data(Qt.UserRole)['text'], '둘째')
++        d.candidate_list.setCurrentRow(1)
++        self.assertEqual(d.left_canvas.highlight, self.words[1]['rect'])
++        d.page_spin.setValue(2)
++        self.assertEqual(d.candidate_list.count(), 1)
++        self.assertEqual(d.candidate_list.item(0).data(Qt.UserRole)['order'], 1)
++        self.assertEqual(d.left_canvas.words[0]['text'], '다음')
++
++    def test_order_overlay_and_languages_in_both_themes(self):
++        d = self.dialog
++        for theme in ('light', 'dark'):
++            manager(self.app).apply(theme)
++            for language in ('ko', 'en'):
++                d.set_language(language)
++                d.reading_order.setChecked(True)
++                self.assertFalse(d.left_canvas.grab().isNull())
++                self.assertIn('#2', d.candidate_list.item(1).text())
++                self.assertIn('자동 누락' if language == 'ko' else 'not detected automatically', d.ocr_review_hint.text())
++        d.mode = 'compare'
++        d._set_mode_visibility()
++        self.assertTrue(d.reading_order.isHidden())
++        self.assertTrue(d.ocr_review_hint.isHidden())
++
++    def test_main_window_tool_entry_language_reuse_and_busy_gate(self):
++        import app as product
++        base = Path(__file__).parent.parent / 'work' / '시험환경'
++        base.mkdir(parents=True, exist_ok=True)
++        with tempfile.TemporaryDirectory(dir=base) as temporary, patch.object(product, 'DATA', Path(temporary)):
++            window = product.MainWindow()
++            window.timer.stop()
++            try:
++                # 생성 직후 비동기 저널 읽기가 끝난 실제 준비 상태에서 조작한다.
++                clock = QElapsedTimer()
++                clock.start()
++                while window.work_busy() and clock.elapsed() < 10000:
++                    self.app.processEvents()
++                    QTest.qWait(20)
++                self.assertFalse(window.work_busy(), '초기 작업 준비가 끝나지 않았습니다.')
++                window.open_delivery_tools()
++                self.assertEqual(len(window.delivery_dialogs), 1)
++                dialog = window.delivery_dialogs[0]
++                window.set_language('en')
++                self.assertEqual(dialog.language, 'en')
++                self.assertIn('Compatibility', window.delivery_button.text())
++                dialog.reject()
++                window.open_delivery_tools()
++                self.assertIs(window.delivery_dialogs[0], dialog)
++                self.assertFalse(dialog.isHidden())
++                window.pending = 1
++                with patch.object(window, 'notify') as notify:
++                    window.open_delivery_tools()
++                    notify.assert_called_once()
++                window.pending = 0
++            finally:
++                for dialog in window.delivery_dialogs:
++                    self.assertTrue(dialog.shutdown())
++                    dialog.hide()
++                window.workspace_panel.shutdown()
++                window.quick_actions_panel.shutdown()
++                window.pool.shutdown(wait=True)
++                window.tray.hide()
++                window.hide()
++                window.deleteLater()
++                self.app.processEvents()
++
++    def test_delivery_small_screen_and_language_preserves_selection(self):
++        from delivery_ui import DeliveryDialog
++        d = DeliveryDialog()
++        try:
++            item = QListWidgetItem('작성자: 시험')
++            item.setCheckState(Qt.Checked)
++            d.metadata_list.addItem(item)
++            d.details.setPlainText('검사 결과')
++            for theme in ('light', 'dark'):
++                manager(self.app).apply(theme)
++                for language in ('ko', 'en'):
++                    d.set_language(language)
++                    d.show()
++                    self.app.processEvents()
++                    d._flipring_screen_fit.fit()
++                    self.assertLessEqual(d.width(), d.screen().availableGeometry().width())
++                    self.assertEqual(d.metadata_list.item(0).checkState(), Qt.Checked)
++                    self.assertEqual(d.details.toPlainText(), '검사 결과')
++        finally:
++            self.assertTrue(d.shutdown())
++            d.hide()
++            d.deleteLater()
++
++
++if __name__ == '__main__':
++    unittest.main()
+--- 공개기준/소스/ui_motion.py
++++ 최종공개/소스/ui_motion.py
+@@ -1,850 +1,868 @@
+-"""앱 내부 표면의 유한 피드백과 공통 파일 선택창. 실제 입력·파일 처리는 Qt에 맡긴다."""
+-from __future__ import annotations
+-
+-from theme_manager import theme_color, ring_color
+-
+-from pathlib import Path
+-import weakref
+-
+-from PySide6.QtCore import Qt, QObject, QEvent, QVariantAnimation, QEasingCurve, QRectF, QPointF, QTimer, QUrl, QSignalBlocker, QSize
+-from PySide6.QtGui import QColor, QPainter, QPen, QPainterPath, QIcon, QPixmap
+-from PySide6.QtWidgets import (
+-    QApplication, QWidget, QFrame, QLabel, QVBoxLayout, QHBoxLayout, QFileDialog,
+-    QDialogButtonBox, QAbstractItemView, QComboBox, QLineEdit, QAbstractSpinBox,
+-    QAbstractButton, QProgressBar, QMenu, QToolButton, QFileIconProvider, QMessageBox, QTreeView, QHeaderView,
+-)
+-from shiboken6 import isValid
+-import engine
+-from i18n import tr
+-
+-
+-def reduced_motion():
+-    application = QApplication.instance()
+-    return bool(application and application.property('flipringReducedMotion'))
+-
+-
+-def start_motion(animation):
+-    """감소 모드에서도 완료 신호와 최종 상태를 적용한다."""
+-    animation.start()
+-    if reduced_motion():
+-        animation.setCurrentTime(animation.duration())
+-
+-
+-def set_reduced_motion(root, enabled):
+-    application = QApplication.instance()
+-    if application is None: return
+-    application.setProperty('flipringReducedMotion', bool(enabled))
+-    if enabled:
+-        # 이미 열린 휠·팝업을 포함하며 타이머와 실제 작업 진행은 변경하지 않는다.
+-        for window in application.topLevelWidgets():
+-            for animation in window.findChildren(QVariantAnimation):
+-                if isValid(animation) and animation.state() == QVariantAnimation.Running:
+-                    animation.setCurrentTime(animation.duration())
+-
+-
+-SURFACE_STYLE = """
+-QFileDialog#flipringPicker {background:#fafafa;}
+-QFileDialog#flipringPicker QWidget {font-family:'SUIT';font-size:13px;color:#262626;}
+-QFileDialog#flipringPicker QLabel#pickerTitle {font-size:24px;font-weight:600;}
+-QFileDialog#flipringPicker QLabel#pickerCaption {color:#737373;font-size:12px;}
+-QFileDialog#flipringPicker QLabel#pickerSummary {color:#646464;font-size:12px;}
+-QFileDialog#flipringPicker QFrame#pickerHeader {background:transparent;border:0;}
+-QFileDialog#flipringPicker QAbstractItemView {background:#ffffff;border:1px solid #e7e7e7;border-radius:12px;padding:8px;outline:0;}
+-QFileDialog#flipringPicker QAbstractItemView::item {min-height:32px;padding:5px 7px;border:0;}
+-QFileDialog#flipringPicker QAbstractItemView::item:selected {background:#eaeaea;color:#242424;border-radius:6px;}
+-QFileDialog#flipringPicker QAbstractItemView::item:hover {background:#f3f3f3;}
+-QFileDialog#flipringPicker QListView#sidebar {background:#f1f1f1;border:0;border-radius:12px;padding:10px;}
+-QFileDialog#flipringPicker QHeaderView::section {background:#fafafa;border:0;border-bottom:1px solid #ededed;padding:9px;color:#6a6a6a;}
+-QFileDialog#flipringPicker QHeaderView {padding:0;border:0;border-radius:0;}
+-QFileDialog#flipringPicker QSplitter::handle {background:transparent;width:14px;}
+-QFileDialog#flipringPicker QLineEdit,QFileDialog#flipringPicker QComboBox {background:#ffffff;border:1px solid #e4e4e4;border-radius:9px;padding:9px 11px;min-height:18px;}
+-QFileDialog#flipringPicker QComboBox {padding-right:30px;}
+-QFileDialog#flipringPicker QComboBox::drop-down {border:0;width:26px;}
+-QFileDialog#flipringPicker QToolButton {background:#f1f1f1;border:0;border-radius:8px;padding:7px;min-width:20px;min-height:20px;}
+-QFileDialog#flipringPicker QToolButton:checked {background:#dedede;}
+-QFileDialog#flipringPicker QPushButton {background:#ffffff;border:1px solid #dedede;border-radius:9px;padding:10px 22px;min-height:18px;font-weight:500;}
+-QFileDialog#flipringPicker QPushButton[primary="true"] {background:#222222;border-color:#222222;color:#ffffff;}
+-QFileDialog#flipringPicker QScrollBar:vertical {background:#fafafa;width:7px;}
+-QFileDialog#flipringPicker QScrollBar::handle:vertical {background:#c4c4c4;min-height:28px;border-radius:3px;}
+-QFileDialog#flipringPicker QScrollBar::add-line:vertical,QFileDialog#flipringPicker QScrollBar::sub-line:vertical {height:0;}
+-QFileDialog#flipringPicker QScrollBar::add-page:vertical,QFileDialog#flipringPicker QScrollBar::sub-page:vertical {background:none;}
+-QMenu {background:#ffffff;color:#262626;border:1px solid #dfdfdf;border-radius:10px;padding:7px;}
+-QMenu::item {padding:10px 23px;border-radius:7px;}
+-QMenu::item:selected {background:#ededed;color:#262626;}
+-QMenu::item:disabled {color:#898989;}
+-QMenu::separator {height:1px;background:#ededed;margin:5px 10px;}
+-QMessageBox {background:#fafafa;}
+-QMessageBox QLabel {font-family:'SUIT';font-size:14px;color:#303030;padding:14px;}
+-QMessageBox QLabel#messageTitle {font-size:20px;font-weight:600;padding:0;color:#242424;}
+-QMessageBox QPushButton {font-family:'SUIT';font-size:13px;background:#242424;color:#ffffff;border:0;border-radius:9px;padding:10px 26px;min-height:19px;}
+-"""
+-
+-
+-class FeedbackOverlay(QWidget):
+-    """항목 위치를 바꾸지 않고 테두리·광선만 그리는 입력 투명 레이어."""
+-
+-    def __init__(self, host):
+-        super().__init__(host)
+-        self.setAttribute(Qt.WA_TransparentForMouseEvents, True)
+-        self.setAttribute(Qt.WA_NoSystemBackground, True)
+-        self.setAttribute(Qt.WA_TranslucentBackground, True)
+-        self.setFocusPolicy(Qt.NoFocus)
+-        self.amount = 0.0
+-        self.rectangle = None
+-        self.origin = None
+-        self.travel = 1.0
+-        self.setGeometry(host.rect())
+-        self.hide()
+-
+-    def paintEvent(self, event):
+-        painter = QPainter(self)
+-        painter.setRenderHint(QPainter.Antialiasing)
+-        rectangle = self.current_rectangle()
+-        painter.setPen(QPen(theme_color(54, 54, 54, round(105 * self.amount)), 1.1))
+-        painter.setBrush(theme_color(90, 90, 90, round(8 * self.amount)))
+-        painter.drawRoundedRect(rectangle, 8, 8)
+-        painter.setPen(QPen(theme_color(42, 42, 42, round(145 * self.amount)), 2, Qt.SolidLine, Qt.RoundCap))
+-        width = max(0, rectangle.width() - 18) * (0.18 + 0.65 * self.amount)
+-        painter.drawLine(QPointF(rectangle.left() + 9, rectangle.bottom() - 1),
+-                         QPointF(rectangle.left() + 9 + width, rectangle.bottom() - 1))
+-        painter.end()
+-
+-    def current_rectangle(self):
+-        """현재 그리는 위치를 재사용해 빠른 행 이동도 그 지점에서 이어간다."""
+-        rectangle = self.rectangle if self.rectangle is not None else QRectF(self.rect()).adjusted(3, 3, -3, -3)
+-        if self.origin is not None:
+-            start = self.origin
+-            rectangle = QRectF(start.x() + (rectangle.x() - start.x()) * self.travel,
+-                               start.y() + (rectangle.y() - start.y()) * self.travel,
+-                               start.width() + (rectangle.width() - start.width()) * self.travel,
+-                               start.height() + (rectangle.height() - start.height()) * self.travel)
+-        return rectangle
+-
+-
+-class SurfaceMotion(QObject):
+-    """표면이 수명을 소유하며, 새 입력은 현재 프레임부터 유한 피드백으로 이어진다."""
+-
+-    def __init__(self, widget):
+-        super().__init__(widget)
+-        self.overlay = FeedbackOverlay(self.host)
+-        self.amount = 0.0
+-        self.animation = QVariantAnimation(self)
+-        self.animation.setDuration(280)
+-        self.animation.setEasingCurve(QEasingCurve.InOutSine)
+-        self.animation.valueChanged.connect(self._frame)
+-        self.animation.finished.connect(self.stop)
+-        widget.installEventFilter(self)
+-        if self.host is not widget:
+-            self.host.installEventFilter(self)
+-        if isinstance(widget, QAbstractItemView):
+-            self._selection_model = None
+-            self._model = None
+-            self._connect_view()
+-            widget.verticalScrollBar().valueChanged.connect(self.selection_pulse)
+-        if isinstance(widget, QComboBox):
+-            widget.currentIndexChanged.connect(self.pulse)
+-            ensure_surface_motion(widget.view().window())
+-            install_surface_motions(widget.view())
+-        elif isinstance(widget, QLineEdit):
+-            widget.textEdited.connect(self.pulse)
+-        elif isinstance(widget, QAbstractSpinBox) and hasattr(widget, "valueChanged"):
+-            widget.valueChanged.connect(self.pulse)
+-        elif isinstance(widget, QAbstractButton):
+-            widget.clicked.connect(self.pulse)
+-        elif isinstance(widget, QProgressBar):
+-            widget.valueChanged.connect(self.pulse)
+-        elif isinstance(widget, QMenu):
+-            widget.hovered.connect(self.menu_pulse)
+-
+-    @property
+-    def host(self):
+-        # 위젯이 모션을 소유하므로 역방향 강한 참조로 수거 순환을 만들지 않는다.
+-        widget = self.parent()
+-        return widget.viewport() if isinstance(widget, QAbstractItemView) else widget
+-
+-    def _frame(self, value):
+-        self.amount = float(value)
+-        self.overlay.amount = self.amount
+-        self.overlay.travel = min(1.0, self.animation.currentTime() / 170)
+-        self.overlay.update()
+-
+-    def _connect_view(self):
+-        widget = self.parent()
+-        selection, model = widget.selectionModel(), widget.model()
+-        if selection is not None and selection is not self._selection_model:
+-            selection.selectionChanged.connect(self.selection_pulse)
+-            selection.currentChanged.connect(self.selection_pulse)
+-            self._selection_model = selection
+-        if model is not None and model is not self._model:
+-            model.rowsInserted.connect(self.selection_pulse)
+-            model.rowsRemoved.connect(self.selection_pulse)
+-            model.rowsMoved.connect(self.selection_pulse)
+-            self._model = model
+-
+-    def pulse(self, *unused, rectangle=None):
+-        widget = self.parent()
+-        if not widget.isVisible():
+-            return
+-        current = self.amount
+-        origin = self.overlay.current_rectangle() if self.overlay.rectangle is not None else None
+-        self.animation.stop()
+-        self.overlay.origin = origin if rectangle is not None else None
+-        self.overlay.rectangle = rectangle
+-        self.overlay.setGeometry(self.host.rect())
+-        self.overlay.show()
+-        self.overlay.raise_()
+-        # 시작값을 현재 값으로 두므로 반복 입력에서도 밝기가 처음으로 튀지 않는다.
+-        with QSignalBlocker(self.animation):
+-            self.animation.setStartValue(current)
+-            self.animation.setKeyValueAt(0.30, 0.9)
+-            self.animation.setEndValue(0.0)
+-            self.animation.setCurrentTime(0)
+-        self._frame(current)
+-        start_motion(self.animation)
+-
+-    def selection_pulse(self, *unused):
+-        widget = self.parent()
+-        index = widget.currentIndex()
+-        rectangle = QRectF(widget.visualRect(index)).adjusted(2, 2, -2, -2) if index.isValid() else None
+-        self.pulse(rectangle=rectangle)
+-
+-    def menu_pulse(self, action):
+-        self.pulse(rectangle=QRectF(self.parent().actionGeometry(action)).adjusted(1, 1, -1, -1))
+-
+-    def stop(self):
+-        self.animation.stop()
+-        self.amount = self.overlay.amount = 0.0
+-        self.overlay.hide()
+-
+-    def eventFilter(self, watched, event):
+-        kind = event.type()
+-        if kind in (QEvent.Resize, QEvent.Show):
+-            self.overlay.setGeometry(self.host.rect())
+-            if kind == QEvent.Show:
+-                if isinstance(self.parent(), QAbstractItemView):
+-                    self._connect_view()
+-                self.pulse()
+-        elif kind in (QEvent.Enter, QEvent.FocusIn, QEvent.MouseButtonPress, QEvent.KeyPress):
+-            if self.parent().isEnabled():
+-                self.pulse()
+-        elif kind in (QEvent.Hide, QEvent.Close):
+-            self.stop()
+-            self.overlay.rectangle = self.overlay.origin = None
+-            hide_tooltip(self.parent())
+-        elif kind == QEvent.Leave:
+-            hide_tooltip(self.parent())
+-        elif kind == QEvent.EnabledChange and not self.parent().isEnabled():
+-            self.stop()
+-        elif kind == QEvent.ToolTip:
+-            text = self.parent().toolTip()
+-            if isinstance(self.parent(), QAbstractItemView):
+-                index = self.parent().indexAt(event.pos())
+-                text = index.data(Qt.ToolTipRole) if index.isValid() else text
+-            if text:
+-                show_tooltip(self.parent(), str(text), event.globalPos())
+-                event.accept()
+-                return True
+-        return False
+-
+-
+-def ensure_surface_motion(widget):
+-    motion = getattr(widget, "_flipring_surface_motion", None)
+-    if motion is None:
+-        motion = SurfaceMotion(widget)
+-        widget._flipring_surface_motion = motion
+-    return motion
+-
+-
+-def install_surface_motions(root):
+-    """소유권이 있는 컨트롤과 늦게 생기는 팝업에도 한 번만 연결한다."""
+-    kinds = (QAbstractItemView, QComboBox, QLineEdit, QAbstractSpinBox, QAbstractButton, QMenu, QProgressBar)
+-    for widget in [root] + root.findChildren(QWidget):
+-        if isinstance(widget, kinds):
+-            # 스크롤바의 상시 이동에는 중복 광선을 만들지 않는다. 스크롤되는 내용은 그대로 갱신된다.
+-            ensure_surface_motion(widget)
+-    return ensure_surface_motion(root)
+-
+-
+-def pulse_widget(widget):
+-    ensure_surface_motion(widget).pulse()
+-
+-
+-class MotionSystem(QObject):
+-    """Qt가 나중에 만드는 메뉴·팝업·편집 도움말까지 같은 앱 표면으로 연결한다."""
+-
+-    def __init__(self, application, button_installer):
+-        super().__init__(application)
+-        self.button_installer = button_installer
+-        application.installEventFilter(self)
+-
+-    def eventFilter(self, watched, event):
+-        if not isinstance(watched, QWidget) or isinstance(watched, FeedbackOverlay):
+-            return False
+-        kind = event.type()
+-        if kind == QEvent.Show:
+-            if isinstance(watched, (QMenu, QMessageBox)):
+-                if not watched.property("flipringMotionStyle"):
+-                    watched.setStyleSheet(watched.styleSheet() + SURFACE_STYLE)
+-                    watched.setProperty("flipringMotionStyle", True)
+-                if isinstance(watched, QMessageBox):
+-                    decorate_message(watched)
+-                install_surface_motions(watched)
+-                if self.button_installer is not None:
+-                    self.button_installer(watched)
+-            elif isinstance(watched, (QAbstractItemView, QComboBox, QLineEdit, QAbstractSpinBox, QAbstractButton)):
+-                ensure_surface_motion(watched)
+-                if self.button_installer is not None:
+-                    self.button_installer(watched)
+-        elif kind == QEvent.ToolTip:
+-            text = watched.toolTip()
+-            owner = watched
+-            if isinstance(watched.parentWidget(), QAbstractItemView):
+-                owner = watched.parentWidget()
+-            if isinstance(owner, QAbstractItemView):
+-                index = owner.indexAt(event.pos())
+-                text = index.data(Qt.ToolTipRole) if index.isValid() else text
+-            if text:
+-                show_tooltip(owner, str(text), event.globalPos())
+-                event.accept()
+-                return True
+-        elif kind in (QEvent.Leave, QEvent.Hide, QEvent.MouseButtonPress, QEvent.KeyPress):
+-            hide_tooltip(watched)
+-        return False
+-
+-
+-def install_motion_system(application, button_installer=None):
+-    system = getattr(application, "_flipring_motion_system", None)
+-    if system is None:
+-        application._flipring_motion_system = system = MotionSystem(application, button_installer)
+-    return system
+-
+-
+-class StateMark(QWidget):
+-    """실제 작업 상태의 유한 링·체크·취소 표시. 진행률을 추정하지 않는다."""
+-
+-    def __init__(self, parent=None):
+-        super().__init__(parent)
+-        self.setFixedSize(28, 28)
+-        self.setAttribute(Qt.WA_TransparentForMouseEvents, True)
+-        self.state = "ready"
+-        self.phase = 1.0
+-        self.animation = QVariantAnimation(self)
+-        self.animation.setDuration(400)
+-        self.animation.setEasingCurve(QEasingCurve.OutCubic)
+-        self.animation.setStartValue(0.0)
+-        self.animation.setEndValue(1.0)
+-        self.animation.valueChanged.connect(self._frame)
+-
+-        # 첫 틱 지연을 보완하도록400ms 종료 이벤트를 등록한다. 이벤트 루프 지연 시 전달도 늦어질 수 있다.
+-        self.deadline = QTimer(self)
+-        self.deadline.setSingleShot(True)
+-        self.deadline.setTimerType(Qt.PreciseTimer)
+-        self.deadline.timeout.connect(self._finish)
+-        self.animation.finished.connect(self.deadline.stop)
+-
+-    def _finish(self):
+-        self.deadline.stop()
+-        self.animation.setCurrentTime(self.animation.duration())
+-        self._frame(1.0)
+-
+-    def _frame(self, value):
+-        self.phase = float(value)
+-        self.update()
+-
+-    def respond(self, state):
+-        self.state = state
+-        self.setAccessibleName(state)
+-        self.animation.stop()
+-        self.deadline.stop()
+-        if self.isVisible():
+-            self.animation.setCurrentTime(0)
+-            self._frame(float(self.animation.currentValue()))
+-            self.deadline.start(self.animation.duration())
+-            start_motion(self.animation)
+-        else:
+-            self._frame(1.0)
+-
+-    def hideEvent(self, event):
+-        self.animation.stop()
+-        self.deadline.stop()
+-        self._frame(1.0)
+-        super().hideEvent(event)
+-
+-    def showEvent(self, event):
+-        super().showEvent(event)
+-        self.respond(self.state)
+-
+-    def paintEvent(self, event):
+-        painter = QPainter(self)
+-        painter.setRenderHint(QPainter.Antialiasing)
+-        painter.setPen(QPen(theme_color("#e4e4e4"), 1.3))
+-        painter.setBrush(Qt.NoBrush)
+-        painter.drawEllipse(QRectF(3, 3, 22, 22))
+-        painter.setPen(QPen(theme_color("#505050"), 1.5, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+-        if self.state in {"working", "cancelling"}:
+-            painter.drawArc(QRectF(3, 3, 22, 22), round((1 - self.phase) * 230 * 16), 250 * 16)
+-            if self.state == "cancelling":
+-                painter.drawLine(11, 14, 17, 14)
+-        elif self.state == "complete":
+-            path = QPainterPath(QPointF(8, 14))
+-            path.lineTo(12, 18)
+-            path.lineTo(20, 10)
+-            painter.setOpacity(0.45 + 0.55 * self.phase)
+-            painter.drawPath(path)
+-        elif self.state == "error":
+-            painter.drawLine(10, 10, 18, 18)
+-            painter.drawLine(18, 10, 10, 18)
+-        elif self.state == "cancelled":
+-            painter.drawLine(10, 14, 18, 14)
+-        else:
+-            painter.drawEllipse(QPointF(14, 14), 2.2, 2.2)
+-        painter.end()
+-
+-
+-class MotionToolTip(QFrame):
+-    """앱 소유 도움말. 파일명·경로·오류 문자열을 HTML로 실행하지 않는다."""
+-
+-    def __init__(self):
+-        super().__init__(None, Qt.ToolTip | Qt.FramelessWindowHint)
+-        self.setAttribute(Qt.WA_TransparentForMouseEvents, True)
+-        self.setObjectName("flipringTooltip")
+-        self.setStyleSheet("QFrame#flipringTooltip {background:#242424;border:1px solid #494949;border-radius:10px;}"
+-                           "QLabel {color:#fafafa;font-family:'SUIT';font-size:12px;background:transparent;}")
+-        layout = QVBoxLayout(self)
+-        layout.setContentsMargins(14, 11, 14, 11)
+-        self.label = QLabel()
+-        self.label.setTextFormat(Qt.PlainText)
+-        self.label.setWordWrap(True)
+-        self.label.setMaximumWidth(510)
+-        layout.addWidget(self.label)
+-        self.owner = None
+-        self.timeout = QTimer(self)
+-        self.timeout.setSingleShot(True)
+-        self.timeout.setInterval(6000)
+-        self.timeout.timeout.connect(self.hide)
+-        ensure_surface_motion(self)
+-
+-    def show_text(self, owner, text, point):
+-        self.owner = weakref.ref(owner)
+-        self.label.setText(text)
+-        available = owner.screen().availableGeometry()

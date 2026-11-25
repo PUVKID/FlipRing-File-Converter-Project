@@ -1,0 +1,1476 @@
+--- a/소스/test_document_formats.py
++++ b/소스/test_document_formats.py
+@@ -1,204 +1,204 @@
+-"""대표 문서의 실제 변환 방향과 위험 입력 거부를 검사한다."""
+-from pathlib import Path
+-import tempfile
+-import threading
+-import unittest
+-from unittest.mock import patch
+-import warnings
+-import xml.etree.ElementTree as ET
+-
+-import engine
+-import document_formats
+-import document_bridge
+-
+-
+-class DocumentFormatTests(unittest.TestCase):
+-    def test_01_representative_inputs_are_classified(self):
+-        expected = {
+-            "문서": "hwp hwpx doc docx docm dot dotx dotm odt ott fodt rtf txt md html xhtml epub pages wpd abw sxw stw",
+-            "프레젠테이션": "ppt pptx pptm pot potx potm pps ppsx ppsm odp otp fodp key",
+-            "스프레드시트": "xls xlsx xlsb xlsm xlt xltx xltm ods ots fods csv tsv dif slk numbers",
+-        }
+-        for kind, extensions in expected.items():
+-            for extension in extensions.split():
+-                with self.subTest(extension=extension):
+-                    self.assertIn(extension, engine.TABLE[kind][0].split())
+-                    self.assertEqual((kind, extension), engine.classify("시험." + extension))
+-
+-    def test_02_hwp_is_import_only_and_preserves_document_targets(self):
+-        for extension in ("hwp", "hwpx"):
+-            options = engine.targets(["시험." + extension])
+-            self.assertIn("docx", options)
+-            self.assertIn("pdf", options)
+-            self.assertIn("odt", options)
+-            # 양방향 저장 요청에 따라 반대 native 목표만 명시적으로 허용한다.
+-            self.assertNotIn(extension, options)
+-            self.assertIn("hwpx" if extension == "hwp" else "hwp", options)
+-
+-    def test_03_legacy_excel_can_be_created_without_binary_xlsb_claim(self):
+-        options = engine.targets(["시험.xlsx"])
+-        self.assertIn("xls", options)
+-        self.assertIn("ods", options)
+-        self.assertNotIn("xlsb", options)
+-        self.assertNotIn("xlsm", options)
+-
+-    def test_04_presentation_can_be_saved_as_editable_office(self):
+-        options = engine.targets(["시험.ppt"])
+-        for target in ("pptx", "odp", "pdf", "jpg", "png", "txt"):
+-            self.assertIn(target, options)
+-
+-    def test_05_mixed_selection_intersects_real_outputs(self):
+-        self.assertEqual({"pdf", "jpg", "png", "txt"},
+-                         set(engine.targets(["시험.hwpx", "발표.pptx"])))
+-
+-    def test_06_missing_hwp_dependencies_are_specific(self):
+-        self.assertTrue(hasattr(engine, "hwp_status"))
+-        status = engine.hwp_status()
+-        self.assertIsInstance(status["ready"], bool)
+-        for key in ("code", "message", "oxt", "java"):
+-            self.assertIn(key, status)
+-
+-    def test_07_cancel_prevents_document_processing(self):
+-        with tempfile.TemporaryDirectory() as folder:
+-            source = Path(folder) / "취소.hwpx"
+-            source.write_bytes(b"not-a-document")
+-            event = threading.Event()
+-            event.set()
+-            with self.assertRaises(engine.Cancelled):
+-                engine.convert(source, "pdf", cancel=event)
+-            self.assertEqual(b"not-a-document", source.read_bytes())
+-            self.assertEqual([source], list(Path(folder).iterdir()))
+-
+-    def test_08_load_options_always_block_macros_and_updates(self):
+-        handler = object()
+-        for extension in ("xlsm", "docm", "pptm", "hwp", "hwpx"):
+-            properties = document_bridge.load_options(handler, extension)
+-            self.assertIs(properties["ReadOnly"], True)
+-            self.assertIs(properties["Hidden"], True)
+-            self.assertIs(properties.get("OnMainThread"), True)
+-            self.assertEqual(0, properties["MacroExecutionMode"])
+-            self.assertEqual(0, properties["UpdateDocMode"])
+-            self.assertIs(handler, properties["InteractionHandler"])
+-
+-    def test_09_secured_profile_is_private_and_disables_active_content(self):
+-        with tempfile.TemporaryDirectory() as folder:
+-            profile = Path(folder) / "격리"
+-            document_formats.write_secure_profile(profile)
+-            raw = (profile / "user/registrymodifications.xcu").read_text(encoding="utf-8")
+-            self.assertIn('oor:name="DisableMacrosExecution"', raw)
+-            self.assertIn('oor:name="DisableActiveContent"', raw)
+-            self.assertIn('oor:name="MacroSecurityLevel"', raw)
+-            self.assertIn('<value>3</value>', raw)
+-
+-    def test_10_interactions_select_only_the_abort_continuation(self):
+-        self.assertTrue(hasattr(document_bridge, "abort_interaction"))
+-        selected = []
+-        expected_type = object()
+-        class Continuation:
+-            def __init__(self, name, is_abort):
+-                self.name, self.is_abort = name, is_abort
+-            def queryInterface(self, interface):
+-                self.asserted_type = interface
+-                return self if self.is_abort and interface is expected_type else None
+-            def select(self):
+-                selected.append(self.name)
+-        class Request:
+-            def getContinuations(self):
+-                return [Continuation("approve", False), Continuation("abort", True)]
+-        document_bridge.abort_interaction(Request(), expected_type)
+-        self.assertEqual(["abort"], selected)
+-
+-    def test_11_input_validation_closes_file_handles(self):
+-        with tempfile.TemporaryDirectory() as folder:
+-            path = Path(folder) / "시험.rtf"
+-            path.write_bytes(b"{\\rtf1 test}")
+-            with warnings.catch_warnings(record=True) as caught:
+-                warnings.simplefilter("always", ResourceWarning)
+-                document_formats.validate_input(path, "rtf")
+-            self.assertFalse([item for item in caught if issubclass(item.category, ResourceWarning)])
+-
+-    def test_12_new_legacy_outputs_preflight_missing_office(self):
+-        with patch.object(engine, "tool", return_value=None):
+-            for extension in ("txt", "md", "html", "epub"):
+-                for target in ("doc", "odt", "rtf"):
+-                    with self.subTest(extension=extension, target=target):
+-                        self.assertIsNotNone(engine.requirement("시험." + extension, target))
+-
+-    def test_13_export_options_keep_normalization_and_final_policies(self):
+-        self.assertTrue(hasattr(document_bridge, "export_options"))
+-        handler = object()
+-        normalization = None
+-        cases = [
+-            ("writer8", None, None),
+-            ("MS Word 97", "doc", None),
+-            ("Text - txt - csv (StarCalc)", "csv", "44,34,76,1,,0,false,true,true,false,false,0"),
+-            ("Text - txt - csv (StarCalc)", "tsv", "9,34,76,1,,0,false,true,true,false,false,0"),
+-            ("Text (encoded)", "txt", "UTF8,LF"),
+-        ]
+-        for filter_name, target, extra in cases:
+-            with self.subTest(target=target):
+-                options = document_bridge.export_options(handler, filter_name, target)
+-                expected = {"FilterName": filter_name, "Overwrite": False,
+-                            "InteractionHandler": handler, "OnMainThread": True}
+-                if extra is not None:
+-                    expected["FilterOptions"] = extra
+-                self.assertEqual(expected, options)
+-                self.assertIs(handler, options["InteractionHandler"])
+-                if target is None:
+-                    normalization = options
+-        # 다른 출력 형식의 추가 옵션이 정규화 요청으로 새지 않아야 한다.
+-        self.assertNotIn("FilterOptions", normalization)
+-
+-    def test_14_secure_profile_prevents_initial_sidebar_creation(self):
+-        oor = "{http://openoffice.org/2001/registry}"
+-        with tempfile.TemporaryDirectory() as folder:
+-            profile = Path(folder) / "격리"
+-            document_formats.write_secure_profile(profile)
+-            path = profile / "user/registrymodifications.xcu"
+-            root = ET.fromstring(path.read_bytes())
+-            self.assertEqual(oor + "items", root.tag)
+-            secure = {}
+-            for item in root:
+-                for prop in item.findall("prop"):
+-                    key = (item.get(oor + "path"), prop.get(oor + "name"))
+-                    self.assertNotIn(key, secure)
+-                    secure[key] = prop.find("value").text
+-            # 일회용 프로필의 새 필수 설정도 정확한 기대값으로 검사한다.
+-            self.assertEqual({
+-                ("/org.openoffice.Office.Common/Security/Scripting", "MacroSecurityLevel"): "3",
+-                ("/org.openoffice.Office.Common/Security/Scripting", "DisableMacrosExecution"): "true",
+-                ("/org.openoffice.Office.Common/Security/Scripting", "DisableActiveContent"): "true",
+-                ("/org.openoffice.Office.Common/Security/Scripting", "BlockUntrustedRefererLinks"): "true",
+-                ("/org.openoffice.Office.Common/Load", "UpdateDocMode"): "0",
+-                ("/org.openoffice.Office.Common/Misc", "UseOpenCL"): "false",
+-            }, secure)
+-            sidebar = [item for item in root if item.get(oor + "path") == "/org.openoffice.Office.Views/Windows"]
+-            self.assertEqual(1, len(sidebar))
+-            self.assertEqual(7, len(root))
+-            nodes = list(sidebar[0])
+-            self.assertEqual(5, len(nodes))
+-            self.assertEqual({name + "/10336" for name in ("scalc", "sdraw", "simpress", "smath", "swriter")},
+-                             {node.get(oor + "name") for node in nodes})
+-            with path.open("rb") as stream:
+-                namespaces = dict(value for event, value in ET.iterparse(stream, events=("start-ns",)))
+-            self.assertEqual("http://www.w3.org/2001/XMLSchema", namespaces.get("xs"))
+-            for node in nodes:
+-                with self.subTest(module=node.get(oor + "name")):
+-                    self.assertEqual("fuse", node.get(oor + "op"))
+-                    self.assertEqual(2, len(node))
+-                    visible = node.find("prop")
+-                    self.assertEqual("Visible", visible.get(oor + "name"))
+-                    self.assertEqual("false", visible.find("value").text)
+-                    userdata = node.find("node")
+-                    self.assertEqual("UserData", userdata.get(oor + "name"))
+-                    self.assertEqual(1, len(userdata))
+-                    data = userdata.find("prop")
+-                    self.assertEqual("Data", data.get(oor + "name"))
+-                    self.assertEqual("xs:string", data.get(oor + "type"))
+-                    self.assertEqual("fuse", data.get(oor + "op"))
+-                    self.assertIsNotNone(data.find("value"))
+-                    self.assertIn(data.find("value").text, (None, ""))
+-
+-
+-if __name__ == "__main__":
+-    unittest.main()
++"""대표 문서의 실제 변환 방향과 위험 입력 거부를 검사한다."""
++from pathlib import Path
++import tempfile
++import threading
++import unittest
++from unittest.mock import patch
++import warnings
++import xml.etree.ElementTree as ET
++
++import engine
++import document_formats
++import document_bridge
++
++
++class DocumentFormatTests(unittest.TestCase):
++    def test_01_representative_inputs_are_classified(self):
++        expected = {
++            "문서": "hwp hwpx doc docx docm dot dotx dotm odt ott fodt rtf txt md html xhtml epub pages wpd abw sxw stw",
++            "프레젠테이션": "ppt pptx pptm pot potx potm pps ppsx ppsm odp otp fodp key",
++            "스프레드시트": "xls xlsx xlsb xlsm xlt xltx xltm ods ots fods csv tsv dif slk numbers",
++        }
++        for kind, extensions in expected.items():
++            for extension in extensions.split():
++                with self.subTest(extension=extension):
++                    self.assertIn(extension, engine.TABLE[kind][0].split())
++                    self.assertEqual((kind, extension), engine.classify("시험." + extension))
++
++    def test_02_hwp_is_import_only_and_preserves_document_targets(self):
++        for extension in ("hwp", "hwpx"):
++            options = engine.targets(["시험." + extension])
++            self.assertIn("docx", options)
++            self.assertIn("pdf", options)
++            self.assertIn("odt", options)
++            # 양방향 저장 요청에 따라 반대 native 목표만 명시적으로 허용한다.
++            self.assertNotIn(extension, options)
++            self.assertIn("hwpx" if extension == "hwp" else "hwp", options)
++
++    def test_03_legacy_excel_can_be_created_without_binary_xlsb_claim(self):
++        options = engine.targets(["시험.xlsx"])
++        self.assertIn("xls", options)
++        self.assertIn("ods", options)
++        self.assertNotIn("xlsb", options)
++        self.assertNotIn("xlsm", options)
++
++    def test_04_presentation_can_be_saved_as_editable_office(self):
++        options = engine.targets(["시험.ppt"])
++        for target in ("pptx", "odp", "pdf", "jpg", "png", "txt"):
++            self.assertIn(target, options)
++
++    def test_05_mixed_selection_intersects_real_outputs(self):
++        self.assertEqual({"pdf", "jpg", "png", "txt"},
++                         set(engine.targets(["시험.hwpx", "발표.pptx"])))
++
++    def test_06_missing_hwp_dependencies_are_specific(self):
++        self.assertTrue(hasattr(engine, "hwp_status"))
++        status = engine.hwp_status()
++        self.assertIsInstance(status["ready"], bool)
++        for key in ("code", "message", "oxt", "java"):
++            self.assertIn(key, status)
++
++    def test_07_cancel_prevents_document_processing(self):
++        with tempfile.TemporaryDirectory() as folder:
++            source = Path(folder) / "취소.hwpx"
++            source.write_bytes(b"not-a-document")
++            event = threading.Event()
++            event.set()
++            with self.assertRaises(engine.Cancelled):
++                engine.convert(source, "pdf", cancel=event)
++            self.assertEqual(b"not-a-document", source.read_bytes())
++            self.assertEqual([source], list(Path(folder).iterdir()))
++
++    def test_08_load_options_always_block_macros_and_updates(self):
++        handler = object()
++        for extension in ("xlsm", "docm", "pptm", "hwp", "hwpx"):
++            properties = document_bridge.load_options(handler, extension)
++            self.assertIs(properties["ReadOnly"], True)
++            self.assertIs(properties["Hidden"], True)
++            self.assertIs(properties.get("OnMainThread"), True)
++            self.assertEqual(0, properties["MacroExecutionMode"])
++            self.assertEqual(0, properties["UpdateDocMode"])
++            self.assertIs(handler, properties["InteractionHandler"])
++
++    def test_09_secured_profile_is_private_and_disables_active_content(self):
++        with tempfile.TemporaryDirectory() as folder:
++            profile = Path(folder) / "격리"
++            document_formats.write_secure_profile(profile)
++            raw = (profile / "user/registrymodifications.xcu").read_text(encoding="utf-8")
++            self.assertIn('oor:name="DisableMacrosExecution"', raw)
++            self.assertIn('oor:name="DisableActiveContent"', raw)
++            self.assertIn('oor:name="MacroSecurityLevel"', raw)
++            self.assertIn('<value>3</value>', raw)
++
++    def test_10_interactions_select_only_the_abort_continuation(self):
++        self.assertTrue(hasattr(document_bridge, "abort_interaction"))
++        selected = []
++        expected_type = object()
++        class Continuation:
++            def __init__(self, name, is_abort):
++                self.name, self.is_abort = name, is_abort
++            def queryInterface(self, interface):
++                self.asserted_type = interface
++                return self if self.is_abort and interface is expected_type else None
++            def select(self):
++                selected.append(self.name)
++        class Request:
++            def getContinuations(self):
++                return [Continuation("approve", False), Continuation("abort", True)]
++        document_bridge.abort_interaction(Request(), expected_type)
++        self.assertEqual(["abort"], selected)
++
++    def test_11_input_validation_closes_file_handles(self):
++        with tempfile.TemporaryDirectory() as folder:
++            path = Path(folder) / "시험.rtf"
++            path.write_bytes(b"{\\rtf1 test}")
++            with warnings.catch_warnings(record=True) as caught:
++                warnings.simplefilter("always", ResourceWarning)
++                document_formats.validate_input(path, "rtf")
++            self.assertFalse([item for item in caught if issubclass(item.category, ResourceWarning)])
++
++    def test_12_new_legacy_outputs_preflight_missing_office(self):
++        with patch.object(engine, "tool", return_value=None):
++            for extension in ("txt", "md", "html", "epub"):
++                for target in ("doc", "odt", "rtf"):
++                    with self.subTest(extension=extension, target=target):
++                        self.assertIsNotNone(engine.requirement("시험." + extension, target))
++
++    def test_13_export_options_keep_normalization_and_final_policies(self):
++        self.assertTrue(hasattr(document_bridge, "export_options"))
++        handler = object()
++        normalization = None
++        cases = [
++            ("writer8", None, None),
++            ("MS Word 97", "doc", None),
++            ("Text - txt - csv (StarCalc)", "csv", "44,34,76,1,,0,false,true,true,false,false,0"),
++            ("Text - txt - csv (StarCalc)", "tsv", "9,34,76,1,,0,false,true,true,false,false,0"),
++            ("Text (encoded)", "txt", "UTF8,LF"),
++        ]
++        for filter_name, target, extra in cases:
++            with self.subTest(target=target):
++                options = document_bridge.export_options(handler, filter_name, target)
++                expected = {"FilterName": filter_name, "Overwrite": False,
++                            "InteractionHandler": handler, "OnMainThread": True}
++                if extra is not None:
++                    expected["FilterOptions"] = extra
++                self.assertEqual(expected, options)
++                self.assertIs(handler, options["InteractionHandler"])
++                if target is None:
++                    normalization = options
++        # 다른 출력 형식의 추가 옵션이 정규화 요청으로 새지 않아야 한다.
++        self.assertNotIn("FilterOptions", normalization)
++
++    def test_14_secure_profile_prevents_initial_sidebar_creation(self):
++        oor = "{http://openoffice.org/2001/registry}"
++        with tempfile.TemporaryDirectory() as folder:
++            profile = Path(folder) / "격리"
++            document_formats.write_secure_profile(profile)
++            path = profile / "user/registrymodifications.xcu"
++            root = ET.fromstring(path.read_bytes())
++            self.assertEqual(oor + "items", root.tag)
++            secure = {}
++            for item in root:
++                for prop in item.findall("prop"):
++                    key = (item.get(oor + "path"), prop.get(oor + "name"))
++                    self.assertNotIn(key, secure)
++                    secure[key] = prop.find("value").text
++            # 일회용 프로필의 새 필수 설정도 정확한 기대값으로 검사한다.
++            self.assertEqual({
++                ("/org.openoffice.Office.Common/Security/Scripting", "MacroSecurityLevel"): "3",
++                ("/org.openoffice.Office.Common/Security/Scripting", "DisableMacrosExecution"): "true",
++                ("/org.openoffice.Office.Common/Security/Scripting", "DisableActiveContent"): "true",
++                ("/org.openoffice.Office.Common/Security/Scripting", "BlockUntrustedRefererLinks"): "true",
++                ("/org.openoffice.Office.Common/Load", "UpdateDocMode"): "0",
++                ("/org.openoffice.Office.Common/Misc", "UseOpenCL"): "false",
++            }, secure)
++            sidebar = [item for item in root if item.get(oor + "path") == "/org.openoffice.Office.Views/Windows"]
++            self.assertEqual(1, len(sidebar))
++            self.assertEqual(7, len(root))
++            nodes = list(sidebar[0])
++            self.assertEqual(5, len(nodes))
++            self.assertEqual({name + "/10336" for name in ("scalc", "sdraw", "simpress", "smath", "swriter")},
++                             {node.get(oor + "name") for node in nodes})
++            with path.open("rb") as stream:
++                namespaces = dict(value for event, value in ET.iterparse(stream, events=("start-ns",)))
++            self.assertEqual("http://www.w3.org/2001/XMLSchema", namespaces.get("xs"))
++            for node in nodes:
++                with self.subTest(module=node.get(oor + "name")):
++                    self.assertEqual("fuse", node.get(oor + "op"))
++                    self.assertEqual(2, len(node))
++                    visible = node.find("prop")
++                    self.assertEqual("Visible", visible.get(oor + "name"))
++                    self.assertEqual("false", visible.find("value").text)
++                    userdata = node.find("node")
++                    self.assertEqual("UserData", userdata.get(oor + "name"))
++                    self.assertEqual(1, len(userdata))
++                    data = userdata.find("prop")
++                    self.assertEqual("Data", data.get(oor + "name"))
++                    self.assertEqual("xs:string", data.get(oor + "type"))
++                    self.assertEqual("fuse", data.get(oor + "op"))
++                    self.assertIsNotNone(data.find("value"))
++                    self.assertIn(data.find("value").text, (None, ""))
++
++
++if __name__ == "__main__":
++    unittest.main()
+--- a/소스/test_document_hwp.py
++++ b/소스/test_document_hwp.py
+@@ -1,311 +1,311 @@
+-"""새 한글 출력의 내용 보존과 파서 이전 거부 경계를 검사한다."""
+-from pathlib import Path
+-import hashlib
+-import importlib
+-import importlib.util
+-import io
+-import tempfile
+-import struct
+-import unittest
+-from unittest.mock import patch
+-import zipfile
+-import xml.etree.ElementTree as ET
+-
+-from docx import Document
+-from PIL import Image
+-
+-
+-class NativeHwpTests(unittest.TestCase):
+-    def setUp(self):
+-        self.temporary = tempfile.TemporaryDirectory()
+-        self.addCleanup(self.temporary.cleanup)
+-        self.root = Path(self.temporary.name)
+-
+-    def core(self):
+-        self.assertIsNotNone(importlib.util.find_spec('document_hwp'), '새 native 저장 코어가 필요합니다.')
+-        return importlib.import_module('document_hwp')
+-
+-    def package(self, entries, compression=zipfile.ZIP_DEFLATED):
+-        source = self.root / '입력.hwpx'
+-        with zipfile.ZipFile(source, 'w', compression=compression) as z:
+-            for name, data in entries:
+-                z.writestr(name, data)
+-        return source
+-
+-    def test_guard_precedes_legacy_for_unsafe_zip(self):
+-        core = self.core()
+-        cases = [([('../escape.xml', b'<x/>')], zipfile.ZIP_DEFLATED),
+-                 ([('x.xml', b'<x/>'), ('X.xml', b'<x/>')], zipfile.ZIP_DEFLATED),
+-                 ([('x.xml', b'<x/>')], zipfile.ZIP_BZIP2),
+-                 ([('x.xml', b' ' * 5000 + b'<!DOCTYPE x [<!ENTITY a SYSTEM "file:///x">]><x/>')], zipfile.ZIP_DEFLATED)]
+-        for entries, compression in cases:
+-            with self.subTest(entries=entries[0][0], compression=compression):
+-                source = self.package(entries, compression)
+-                with patch('document_formats.validate_input', side_effect=AssertionError('가드 전에 호출됨')) as legacy:
+-                    with self.assertRaises(ValueError):
+-                        core.convert_document(source, 'hwp', self.root / '결과.hwp')
+-                    self.assertEqual(0, legacy.call_count)
+-                self.assertFalse((self.root / '결과.hwp').exists())
+-
+-    def test_external_relation_and_unsupported_docx_refused(self):
+-        core = self.core()
+-        source = self.root / '외부.docx'
+-        doc = Document()
+-        p = doc.add_paragraph('문자')
+-        from docx.oxml import OxmlElement
+-        p._p.append(OxmlElement('w:fldSimple'))
+-        doc.save(source)
+-        with self.assertRaises(ValueError):
+-            core.convert_document(source, 'hwpx', self.root / '거부.hwpx')
+-        self.assertFalse((self.root / '거부.hwpx').exists())
+-
+-    def test_txt_native_formats_and_round_trip(self):
+-        core = self.core()
+-        source = self.root / '문단.txt'
+-        original = '한글 English 2026\n둘째 문단 123\n'.encode('utf-8')
+-        source.write_bytes(original)
+-        hwpx = self.root / '결과.hwpx'
+-        report = core.convert_document(source, 'hwpx', hwpx)
+-        self.assertTrue(report['ok'])
+-        self.assertEqual('unverified', report['visual_complete_status'])
+-        self.assertFalse(report['render_checked'])
+-        hwp = self.root / '결과.hwp'
+-        report2 = core.convert_document(hwpx, 'hwp', hwp)
+-        self.assertTrue(report2['ok'])
+-        self.assertEqual(b'\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1', hwp.read_bytes()[:8])
+-        reverse = self.root / '다시.hwpx'
+-        core.convert_document(hwp, 'hwpx', reverse)
+-        with zipfile.ZipFile(reverse) as z:
+-            section = ET.fromstring(z.read('Contents/section0.xml'))
+-        self.assertIn('한글 English 2026', ''.join(section.itertext()))
+-        self.assertEqual(original, source.read_bytes())
+-
+-    def test_docx_order_bold_table_and_picture_bytes(self):
+-        core = self.core()
+-        source = self.root / '순서.docx'
+-        png = io.BytesIO()
+-        Image.new('RGB', (64, 48), (10, 20, 30)).save(png, 'PNG')
+-        image = png.getvalue()
+-        doc = Document()
+-        p = doc.add_paragraph('시작 ')
+-        p.add_run('굵게').bold = True
+-        table = doc.add_table(rows=3, cols=3)
+-        for r in range(3):
+-            for c in range(3):
+-                table.cell(r, c).text = f'셀{r}{c}'
+-        p = doc.add_paragraph('그림 앞')
+-        p.add_run().add_picture(io.BytesIO(image))
+-        p.add_run('그림 뒤').italic = True
+-        doc.add_paragraph('마지막')
+-        doc.save(source)
+-        before = hashlib.sha256(source.read_bytes()).hexdigest()
+-        output = self.root / '순서.hwpx'
+-        core.convert_document(source, 'hwpx', output)
+-        with zipfile.ZipFile(output) as z:
+-            xml = ET.fromstring(z.read('Contents/section0.xml'))
+-            embedded = [z.read(n) for n in z.namelist() if n.startswith('BinData/')]
+-            head = ET.fromstring(z.read('Contents/header.xml'))
+-        ns = {'hp': 'http://www.hancom.co.kr/hwpml/2011/paragraph'}
+-        texts = [n.text for n in xml.findall('.//hp:t', ns) if n.text]
+-        self.assertLess(texts.index('굵게'), texts.index('셀00'))
+-        self.assertLess(texts.index('셀22'), texts.index('그림 앞'))
+-        self.assertLess(texts.index('그림 뒤'), texts.index('마지막'))
+-        self.assertIn(image, embedded)
+-        self.assertTrue(any(n.tag.endswith('}bold') for n in head.iter()))
+-        self.assertTrue(any(n.tag.endswith('}italic') for n in head.iter()))
+-        paragraph = next(p for p in xml.findall('.//hp:p', ns) if '그림 앞' in ''.join(p.itertext()))
+-        nodes = [n.tag.rsplit('}', 1)[-1] for n in paragraph.iter()]
+-        self.assertIn('pic', nodes)
+-        self.assertEqual(before, hashlib.sha256(source.read_bytes()).hexdigest())
+-
+-    def test_collision_protection_and_bad_utf8_leave_originals(self):
+-        core = self.core()
+-        source = self.root / '입력.txt'
+-        source.write_bytes(b'\xff')
+-        output = self.root / '기존.hwpx'
+-        output.write_bytes(b'KEEP')
+-        with self.assertRaises((ValueError, FileExistsError)):
+-            core.convert_document(source, 'hwpx', output)
+-        self.assertEqual(b'KEEP', output.read_bytes())
+-        output.unlink()
+-        with self.assertRaises(ValueError):
+-            core.convert_document(source, 'hwpx', output)
+-        self.assertFalse(output.exists())
+-        self.assertEqual(b'\xff', source.read_bytes())
+-
+-    def test_report_failure_and_content_loss_are_refused(self):
+-        core = self.core()
+-        with self.assertRaises(ValueError):
+-            core.require_no_loss({'unconverted': {'equations': 1}, 'dropped': {}})
+-        with self.assertRaises(ValueError):
+-            core.require_quality({'ok': False})
+-
+-    def test_target_scope_keeps_legacy_reading(self):
+-        self.core()
+-        import engine
+-        for ext in ('docx', 'txt', 'hwp', 'hwpx'):
+-            targets = engine.targets(['입력.' + ext])
+-            self.assertIn('hwpx' if ext == 'hwp' else 'hwp', targets)
+-        for ext in ('doc', 'odt', 'md', 'pdf', 'xlsx'):
+-            self.assertNotIn('hwp', engine.targets(['입력.' + ext]))
+-            self.assertNotIn('hwpx', engine.targets(['입력.' + ext]))
+-        with patch.object(engine, 'tool', return_value=None):
+-            self.assertIsNone(engine.requirement('입력.docx', 'hwpx'))
+-            self.assertIsNotNone(engine.requirement('입력.hwp', 'pdf'))
+-
+-    def test_relative_external_hwpx_manifest_refused(self):
+-        # 로컬 상대 외부 그림을 포함한 패키지의 운반도 금지한다.
+-        core = self.core()
+-        source = self.package([('Contents/content.hpf', b'<package><item id="img" href="../outside.png" isEmbeded="0"/></package>')])
+-        with self.assertRaises(ValueError):
+-            core.guard_package(source)
+-
+-    def _hwp_streams(self):
+-        from hwpx import HwpxDocument
+-        from hwpx.hwp5.cfb import CompoundFile, read_all_streams
+-        doc = HwpxDocument.new(inherit_style=False)
+-        doc.add_paragraph('거부 경계 자체 표본')
+-        return dict(read_all_streams(CompoundFile(doc.to_bytes(format='hwp'))))
+-
+-    def test_hwp_script_flag_refused(self):
+-        from hwpx.hwp5.cfb import build_compound_file
+-        streams = self._hwp_streams()
+-        head = bytearray(streams['FileHeader'])
+-        struct.pack_into('<I', head, 36, struct.unpack_from('<I', head, 36)[0] | 8)
+-        streams['FileHeader'] = bytes(head)
+-        with self.assertRaises(ValueError):
+-            self.core().guard_hwp(build_compound_file(streams.items()))
+-
+-    def test_hwp_custom_script_and_linkdoc_refused(self):
+-        from hwpx.hwp5.cfb import build_compound_file
+-        from hwpx.hwp5.summary import write_scripts
+-        for name, payload in [('Scripts/DefaultJScript', write_scripts('alert(1)', '')),
+-                              ('DocOptions/_LinkDoc', 'relative.hwp'.encode('utf-16-le').ljust(524, b'\0'))]:
+-            with self.subTest(name=name):
+-                streams = self._hwp_streams()
+-                streams[name] = payload
+-                with self.assertRaises(ValueError):
+-                    self.core().guard_hwp(build_compound_file(streams.items()))
+-
+-    def test_hwp_binary_link_refused(self):
+-        from hwpx.hwp5 import records, docinfo
+-        from hwpx.hwp5.cfb import build_compound_file
+-        streams = self._hwp_streams()
+-        data = records.inflate(streams['DocInfo'], 'DocInfo')
+-        payload = docinfo.BinDataItem(docinfo.BIN_LINK, abs_path='outside.png').encode()
+-        data += struct.pack('<I', records.BIN_DATA | (len(payload) << 20)) + payload
+-        streams['DocInfo'] = records.deflate(data)
+-        with self.assertRaises(ValueError):
+-            self.core().guard_hwp(build_compound_file(streams.items()))
+-
+-
+-    def test_security63_hwpx_manifest_links_and_missing_parts(self):
+-        # 내부 표시만으로 외부·누락 부품을 허용하면 이 검사가 실패한다.
+-        for href, embedded in [('outside.png', '0'), ('/outside.png', '1'),
+-                               ('C:/outside.png', '1'), ('https://example.invalid/a', '1'),
+-                               ('../outside.png', '1'), ('missing.png', '1')]:
+-            with self.subTest(href=href, embedded=embedded):
+-                xml = f'<package><item href="{href}" isEmbeded="{embedded}"/></package>'.encode()
+-                source = self.package([('Contents/content.hpf', xml)])
+-                with self.assertRaises(ValueError):
+-                    self.core().guard_package(source)
+-
+-    def test_security63_hwpx_scripts_and_linkinfo(self):
+-        # 매니페스트에 없는 실제 스크립트도 지우거나 운반하지 않고 거부한다.
+-        cases = [[('Scripts/sourceScripts', 'alert(1)'.encode('utf-16-le'))],
+-                 [('Scripts/unknown', b'unknown')],
+-                 [('Contents/header.xml', b'<head><docOption><linkinfo path="relative.hwp"/></docOption></head>')],
+-                 [('Contents/content.hpf', b'<package><item id="sourcesc" href="Custom/code"/></package>'),
+-                  ('Custom/code', 'alert(1)'.encode('utf-16-le'))]]
+-        for entries in cases:
+-            with self.subTest(part=entries[0][0]):
+-                with self.assertRaises(ValueError):
+-                    self.core().guard_package(self.package(entries))
+-
+-    def test_security63_unknown_hwp_script_parts_and_trailing_bytes(self):
+-        from hwpx.hwp5.cfb import build_compound_file
+-        from hwpx.hwp5.summary import write_scripts
+-        for name, payload in [('Scripts/Other', b'unknown'),
+-                              ('Scripts/DefaultJScript', write_scripts('', '') + b'unknown'),
+-                              ('Scripts/JScriptVersion', b'unknown')]:
+-            with self.subTest(name=name):
+-                streams = self._hwp_streams()
+-                streams[name] = payload
+-                with self.assertRaises(ValueError):
+-                    self.core().guard_hwp(build_compound_file(streams.items()))
+-
+-    def test_security63_rejected_conversion_never_reaches_legacy_or_output(self):
+-        source = self.package([('Scripts/sourceScripts', 'alert(1)'.encode('utf-16-le'))])
+-        before = source.read_bytes()
+-        output = self.root / '거부.hwp'
+-        with patch('document_formats.validate_input', side_effect=AssertionError('조기 가드 누락')) as legacy:
+-            with self.assertRaises(ValueError):
+-                self.core().convert_document(source, 'hwp', output)
+-            self.assertEqual(0, legacy.call_count)
+-        self.assertEqual(before, source.read_bytes())
+-        self.assertFalse(output.exists())
+-
+-    def test_security63_known_default_stubs_remain_supported(self):
+-        from hwpx.hwp5.cfb import build_compound_file
+-        from hwpx.hwp5.summary import DEFAULT_HEADER_SCRIPT, DEFAULT_SOURCE_SCRIPT, write_scripts
+-        for header in ('', DEFAULT_HEADER_SCRIPT):
+-            for source in ('', DEFAULT_SOURCE_SCRIPT):
+-                with self.subTest(header=bool(header), source=bool(source)):
+-                    streams = self._hwp_streams()
+-                    streams['Scripts/DefaultJScript'] = write_scripts(header, source)
+-                    self.core().guard_hwp(build_compound_file(streams.items()))
+-                    for prefix in (b'', b'\xff\xfe'):
+-                        entries = [('Scripts/headerScripts', prefix + header.encode('utf-16-le')),
+-                                   ('Scripts/sourceScripts', prefix + source.encode('utf-16-le'))]
+-                        self.core().guard_package(self.package(entries))
+-
+-    def test_security63_layout_unverified_is_not_success(self):
+-        report = {'ok': True, 'render_checked': False, 'visual_complete': False,
+-                  'open_safety': {'ok': True}, 'semantic': {'ok': True}, 'form': {'ok': True},
+-                  'layout': {'ok': True, 'status': 'unverified'}}
+-        with self.assertRaises(ValueError):
+-            self.core().require_quality(report)
+-
+-    def test_security65_unknown_hwp_streams_refused_before_publish(self):
+-        # 알려지지 않은 사용자 내용이 빈 손실 보고서로 사라지는 회귀를 막는다.
+-        from hwpx.hwp5.cfb import build_compound_file
+-        for index, name in enumerate(('Custom/UserContent', 'DocOptions/UserData', 'BodyText/Extra')):
+-            with self.subTest(stream=name):
+-                streams = self._hwp_streams()
+-                streams[name] = '보존하거나 명시 거부해야 할 데이터'.encode('utf-8')
+-                source = self.root / f'미지{index}.hwp'
+-                source.write_bytes(build_compound_file(streams.items()))
+-                before = source.read_bytes()
+-                output = self.root / f'미지{index}.hwpx'
+-                with self.assertRaises(ValueError):
+-                    self.core().convert_document(source, 'hwpx', output)
+-                self.assertEqual(before, source.read_bytes())
+-                self.assertFalse(output.exists())
+-
+-    def test_security65_unlisted_binary_stream_refused(self):
+-        from hwpx.hwp5.cfb import build_compound_file
+-        from hwpx.hwp5.records import deflate
+-        image = io.BytesIO()
+-        Image.new('RGB', (2, 2), (1, 2, 3)).save(image, 'PNG')
+-        streams = self._hwp_streams()
+-        streams['BinData/BIN0001.png'] = deflate(image.getvalue())
+-        with self.assertRaises(ValueError):
+-            self.core().guard_hwp(build_compound_file(streams.items()))
+-
+-    def test_security65_preview_omission_is_reported_for_actual_input(self):
+-        from hwpx.hwp5.cfb import build_compound_file
+-        image = io.BytesIO()
+-        Image.new('RGB', (2, 2), (1, 2, 3)).save(image, 'PNG')
+-        streams = self._hwp_streams()
+-        streams['PrvImage'] = image.getvalue()
+-        source = self.root / '미리보기.hwp'
+-        source.write_bytes(build_compound_file(streams.items()))
+-        before = source.read_bytes()
+-        report = self.core().convert_document(source, 'hwpx', self.root / '미리보기.hwpx')
+-        metadata = report.get('hwp_input_metadata', {})
+-        self.assertEqual(['PrvImage'], metadata.get('omitted_derived_streams'))
+-        self.assertIn('\x05HwpSummaryInformation', metadata.get('standard_metadata_streams', []))
+-        self.assertEqual(before, source.read_bytes())
+-
+-if __name__ == '__main__':
+-    unittest.main()
++"""새 한글 출력의 내용 보존과 파서 이전 거부 경계를 검사한다."""
++from pathlib import Path
++import hashlib
++import importlib
++import importlib.util
++import io
++import tempfile
++import struct
++import unittest
++from unittest.mock import patch
++import zipfile
++import xml.etree.ElementTree as ET
++
++from docx import Document
++from PIL import Image
++
++
++class NativeHwpTests(unittest.TestCase):
++    def setUp(self):
++        self.temporary = tempfile.TemporaryDirectory()
++        self.addCleanup(self.temporary.cleanup)
++        self.root = Path(self.temporary.name)
++
++    def core(self):
++        self.assertIsNotNone(importlib.util.find_spec('document_hwp'), '새 native 저장 코어가 필요합니다.')
++        return importlib.import_module('document_hwp')
++
++    def package(self, entries, compression=zipfile.ZIP_DEFLATED):
++        source = self.root / '입력.hwpx'
++        with zipfile.ZipFile(source, 'w', compression=compression) as z:
++            for name, data in entries:
++                z.writestr(name, data)
++        return source
++
++    def test_guard_precedes_legacy_for_unsafe_zip(self):
++        core = self.core()
++        cases = [([('../escape.xml', b'<x/>')], zipfile.ZIP_DEFLATED),
++                 ([('x.xml', b'<x/>'), ('X.xml', b'<x/>')], zipfile.ZIP_DEFLATED),
++                 ([('x.xml', b'<x/>')], zipfile.ZIP_BZIP2),
++                 ([('x.xml', b' ' * 5000 + b'<!DOCTYPE x [<!ENTITY a SYSTEM "file:///x">]><x/>')], zipfile.ZIP_DEFLATED)]
++        for entries, compression in cases:
++            with self.subTest(entries=entries[0][0], compression=compression):
++                source = self.package(entries, compression)
++                with patch('document_formats.validate_input', side_effect=AssertionError('가드 전에 호출됨')) as legacy:
++                    with self.assertRaises(ValueError):
++                        core.convert_document(source, 'hwp', self.root / '결과.hwp')
++                    self.assertEqual(0, legacy.call_count)
++                self.assertFalse((self.root / '결과.hwp').exists())
++
++    def test_external_relation_and_unsupported_docx_refused(self):
++        core = self.core()
++        source = self.root / '외부.docx'
++        doc = Document()
++        p = doc.add_paragraph('문자')
++        from docx.oxml import OxmlElement
++        p._p.append(OxmlElement('w:fldSimple'))
++        doc.save(source)
++        with self.assertRaises(ValueError):
++            core.convert_document(source, 'hwpx', self.root / '거부.hwpx')
++        self.assertFalse((self.root / '거부.hwpx').exists())
++
++    def test_txt_native_formats_and_round_trip(self):
++        core = self.core()
++        source = self.root / '문단.txt'
++        original = '한글 English 2026\n둘째 문단 123\n'.encode('utf-8')
++        source.write_bytes(original)
++        hwpx = self.root / '결과.hwpx'
++        report = core.convert_document(source, 'hwpx', hwpx)
++        self.assertTrue(report['ok'])
++        self.assertEqual('unverified', report['visual_complete_status'])
++        self.assertFalse(report['render_checked'])
++        hwp = self.root / '결과.hwp'
++        report2 = core.convert_document(hwpx, 'hwp', hwp)
++        self.assertTrue(report2['ok'])
++        self.assertEqual(b'\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1', hwp.read_bytes()[:8])
++        reverse = self.root / '다시.hwpx'
++        core.convert_document(hwp, 'hwpx', reverse)
++        with zipfile.ZipFile(reverse) as z:
++            section = ET.fromstring(z.read('Contents/section0.xml'))
++        self.assertIn('한글 English 2026', ''.join(section.itertext()))
++        self.assertEqual(original, source.read_bytes())
++
++    def test_docx_order_bold_table_and_picture_bytes(self):
++        core = self.core()
++        source = self.root / '순서.docx'
++        png = io.BytesIO()
++        Image.new('RGB', (64, 48), (10, 20, 30)).save(png, 'PNG')
++        image = png.getvalue()
++        doc = Document()
++        p = doc.add_paragraph('시작 ')
++        p.add_run('굵게').bold = True
++        table = doc.add_table(rows=3, cols=3)
++        for r in range(3):
++            for c in range(3):
++                table.cell(r, c).text = f'셀{r}{c}'
++        p = doc.add_paragraph('그림 앞')
++        p.add_run().add_picture(io.BytesIO(image))
++        p.add_run('그림 뒤').italic = True
++        doc.add_paragraph('마지막')
++        doc.save(source)
++        before = hashlib.sha256(source.read_bytes()).hexdigest()
++        output = self.root / '순서.hwpx'
++        core.convert_document(source, 'hwpx', output)
++        with zipfile.ZipFile(output) as z:
++            xml = ET.fromstring(z.read('Contents/section0.xml'))
++            embedded = [z.read(n) for n in z.namelist() if n.startswith('BinData/')]
++            head = ET.fromstring(z.read('Contents/header.xml'))
++        ns = {'hp': 'http://www.hancom.co.kr/hwpml/2011/paragraph'}
++        texts = [n.text for n in xml.findall('.//hp:t', ns) if n.text]
++        self.assertLess(texts.index('굵게'), texts.index('셀00'))
++        self.assertLess(texts.index('셀22'), texts.index('그림 앞'))
++        self.assertLess(texts.index('그림 뒤'), texts.index('마지막'))
++        self.assertIn(image, embedded)
++        self.assertTrue(any(n.tag.endswith('}bold') for n in head.iter()))
++        self.assertTrue(any(n.tag.endswith('}italic') for n in head.iter()))
++        paragraph = next(p for p in xml.findall('.//hp:p', ns) if '그림 앞' in ''.join(p.itertext()))
++        nodes = [n.tag.rsplit('}', 1)[-1] for n in paragraph.iter()]
++        self.assertIn('pic', nodes)
++        self.assertEqual(before, hashlib.sha256(source.read_bytes()).hexdigest())
++
++    def test_collision_protection_and_bad_utf8_leave_originals(self):
++        core = self.core()
++        source = self.root / '입력.txt'
++        source.write_bytes(b'\xff')
++        output = self.root / '기존.hwpx'
++        output.write_bytes(b'KEEP')
++        with self.assertRaises((ValueError, FileExistsError)):
++            core.convert_document(source, 'hwpx', output)
++        self.assertEqual(b'KEEP', output.read_bytes())
++        output.unlink()
++        with self.assertRaises(ValueError):
++            core.convert_document(source, 'hwpx', output)
++        self.assertFalse(output.exists())
++        self.assertEqual(b'\xff', source.read_bytes())
++
++    def test_report_failure_and_content_loss_are_refused(self):
++        core = self.core()
++        with self.assertRaises(ValueError):
++            core.require_no_loss({'unconverted': {'equations': 1}, 'dropped': {}})
++        with self.assertRaises(ValueError):
++            core.require_quality({'ok': False})
++
++    def test_target_scope_keeps_legacy_reading(self):
++        self.core()
++        import engine
++        for ext in ('docx', 'txt', 'hwp', 'hwpx'):
++            targets = engine.targets(['입력.' + ext])
++            self.assertIn('hwpx' if ext == 'hwp' else 'hwp', targets)
++        for ext in ('doc', 'odt', 'md', 'pdf', 'xlsx'):
++            self.assertNotIn('hwp', engine.targets(['입력.' + ext]))
++            self.assertNotIn('hwpx', engine.targets(['입력.' + ext]))
++        with patch.object(engine, 'tool', return_value=None):
++            self.assertIsNone(engine.requirement('입력.docx', 'hwpx'))
++            self.assertIsNotNone(engine.requirement('입력.hwp', 'pdf'))
++
++    def test_relative_external_hwpx_manifest_refused(self):
++        # 로컬 상대 외부 그림을 포함한 패키지의 운반도 금지한다.
++        core = self.core()
++        source = self.package([('Contents/content.hpf', b'<package><item id="img" href="../outside.png" isEmbeded="0"/></package>')])
++        with self.assertRaises(ValueError):
++            core.guard_package(source)
++
++    def _hwp_streams(self):
++        from hwpx import HwpxDocument
++        from hwpx.hwp5.cfb import CompoundFile, read_all_streams
++        doc = HwpxDocument.new(inherit_style=False)
++        doc.add_paragraph('거부 경계 자체 표본')
++        return dict(read_all_streams(CompoundFile(doc.to_bytes(format='hwp'))))
++
++    def test_hwp_script_flag_refused(self):
++        from hwpx.hwp5.cfb import build_compound_file
++        streams = self._hwp_streams()
++        head = bytearray(streams['FileHeader'])
++        struct.pack_into('<I', head, 36, struct.unpack_from('<I', head, 36)[0] | 8)
++        streams['FileHeader'] = bytes(head)
++        with self.assertRaises(ValueError):
++            self.core().guard_hwp(build_compound_file(streams.items()))
++
++    def test_hwp_custom_script_and_linkdoc_refused(self):
++        from hwpx.hwp5.cfb import build_compound_file
++        from hwpx.hwp5.summary import write_scripts
++        for name, payload in [('Scripts/DefaultJScript', write_scripts('alert(1)', '')),
++                              ('DocOptions/_LinkDoc', 'relative.hwp'.encode('utf-16-le').ljust(524, b'\0'))]:
++            with self.subTest(name=name):
++                streams = self._hwp_streams()
++                streams[name] = payload
++                with self.assertRaises(ValueError):
++                    self.core().guard_hwp(build_compound_file(streams.items()))
++
++    def test_hwp_binary_link_refused(self):
++        from hwpx.hwp5 import records, docinfo
++        from hwpx.hwp5.cfb import build_compound_file
++        streams = self._hwp_streams()
++        data = records.inflate(streams['DocInfo'], 'DocInfo')
++        payload = docinfo.BinDataItem(docinfo.BIN_LINK, abs_path='outside.png').encode()
++        data += struct.pack('<I', records.BIN_DATA | (len(payload) << 20)) + payload
++        streams['DocInfo'] = records.deflate(data)
++        with self.assertRaises(ValueError):
++            self.core().guard_hwp(build_compound_file(streams.items()))
++
++
++    def test_security63_hwpx_manifest_links_and_missing_parts(self):
++        # 내부 표시만으로 외부·누락 부품을 허용하면 이 검사가 실패한다.
++        for href, embedded in [('outside.png', '0'), ('/outside.png', '1'),
++                               ('C:/outside.png', '1'), ('https://example.invalid/a', '1'),
++                               ('../outside.png', '1'), ('missing.png', '1')]:
++            with self.subTest(href=href, embedded=embedded):
++                xml = f'<package><item href="{href}" isEmbeded="{embedded}"/></package>'.encode()
++                source = self.package([('Contents/content.hpf', xml)])
++                with self.assertRaises(ValueError):
++                    self.core().guard_package(source)
++
++    def test_security63_hwpx_scripts_and_linkinfo(self):
++        # 매니페스트에 없는 실제 스크립트도 지우거나 운반하지 않고 거부한다.
++        cases = [[('Scripts/sourceScripts', 'alert(1)'.encode('utf-16-le'))],
++                 [('Scripts/unknown', b'unknown')],
++                 [('Contents/header.xml', b'<head><docOption><linkinfo path="relative.hwp"/></docOption></head>')],
++                 [('Contents/content.hpf', b'<package><item id="sourcesc" href="Custom/code"/></package>'),
++                  ('Custom/code', 'alert(1)'.encode('utf-16-le'))]]
++        for entries in cases:
++            with self.subTest(part=entries[0][0]):
++                with self.assertRaises(ValueError):
++                    self.core().guard_package(self.package(entries))
++
++    def test_security63_unknown_hwp_script_parts_and_trailing_bytes(self):
++        from hwpx.hwp5.cfb import build_compound_file
++        from hwpx.hwp5.summary import write_scripts
++        for name, payload in [('Scripts/Other', b'unknown'),
++                              ('Scripts/DefaultJScript', write_scripts('', '') + b'unknown'),
++                              ('Scripts/JScriptVersion', b'unknown')]:
++            with self.subTest(name=name):
++                streams = self._hwp_streams()
++                streams[name] = payload
++                with self.assertRaises(ValueError):
++                    self.core().guard_hwp(build_compound_file(streams.items()))
++
++    def test_security63_rejected_conversion_never_reaches_legacy_or_output(self):
++        source = self.package([('Scripts/sourceScripts', 'alert(1)'.encode('utf-16-le'))])
++        before = source.read_bytes()
++        output = self.root / '거부.hwp'
++        with patch('document_formats.validate_input', side_effect=AssertionError('조기 가드 누락')) as legacy:
++            with self.assertRaises(ValueError):
++                self.core().convert_document(source, 'hwp', output)
++            self.assertEqual(0, legacy.call_count)
++        self.assertEqual(before, source.read_bytes())
++        self.assertFalse(output.exists())
++
++    def test_security63_known_default_stubs_remain_supported(self):
++        from hwpx.hwp5.cfb import build_compound_file
++        from hwpx.hwp5.summary import DEFAULT_HEADER_SCRIPT, DEFAULT_SOURCE_SCRIPT, write_scripts
++        for header in ('', DEFAULT_HEADER_SCRIPT):
++            for source in ('', DEFAULT_SOURCE_SCRIPT):
++                with self.subTest(header=bool(header), source=bool(source)):
++                    streams = self._hwp_streams()
++                    streams['Scripts/DefaultJScript'] = write_scripts(header, source)
++                    self.core().guard_hwp(build_compound_file(streams.items()))
++                    for prefix in (b'', b'\xff\xfe'):
++                        entries = [('Scripts/headerScripts', prefix + header.encode('utf-16-le')),
++                                   ('Scripts/sourceScripts', prefix + source.encode('utf-16-le'))]
++                        self.core().guard_package(self.package(entries))
++
++    def test_security63_layout_unverified_is_not_success(self):
++        report = {'ok': True, 'render_checked': False, 'visual_complete': False,
++                  'open_safety': {'ok': True}, 'semantic': {'ok': True}, 'form': {'ok': True},
++                  'layout': {'ok': True, 'status': 'unverified'}}
++        with self.assertRaises(ValueError):
++            self.core().require_quality(report)
++
++    def test_security65_unknown_hwp_streams_refused_before_publish(self):
++        # 알려지지 않은 사용자 내용이 빈 손실 보고서로 사라지는 회귀를 막는다.
++        from hwpx.hwp5.cfb import build_compound_file
++        for index, name in enumerate(('Custom/UserContent', 'DocOptions/UserData', 'BodyText/Extra')):
++            with self.subTest(stream=name):
++                streams = self._hwp_streams()
++                streams[name] = '보존하거나 명시 거부해야 할 데이터'.encode('utf-8')
++                source = self.root / f'미지{index}.hwp'
++                source.write_bytes(build_compound_file(streams.items()))
++                before = source.read_bytes()
++                output = self.root / f'미지{index}.hwpx'
++                with self.assertRaises(ValueError):
++                    self.core().convert_document(source, 'hwpx', output)
++                self.assertEqual(before, source.read_bytes())
++                self.assertFalse(output.exists())
++
++    def test_security65_unlisted_binary_stream_refused(self):
++        from hwpx.hwp5.cfb import build_compound_file
++        from hwpx.hwp5.records import deflate
++        image = io.BytesIO()
++        Image.new('RGB', (2, 2), (1, 2, 3)).save(image, 'PNG')
++        streams = self._hwp_streams()
++        streams['BinData/BIN0001.png'] = deflate(image.getvalue())
++        with self.assertRaises(ValueError):
++            self.core().guard_hwp(build_compound_file(streams.items()))
++
++    def test_security65_preview_omission_is_reported_for_actual_input(self):
++        from hwpx.hwp5.cfb import build_compound_file
++        image = io.BytesIO()
++        Image.new('RGB', (2, 2), (1, 2, 3)).save(image, 'PNG')
++        streams = self._hwp_streams()
++        streams['PrvImage'] = image.getvalue()
++        source = self.root / '미리보기.hwp'
++        source.write_bytes(build_compound_file(streams.items()))
++        before = source.read_bytes()
++        report = self.core().convert_document(source, 'hwpx', self.root / '미리보기.hwpx')
++        metadata = report.get('hwp_input_metadata', {})
++        self.assertEqual(['PrvImage'], metadata.get('omitted_derived_streams'))
++        self.assertIn('\x05HwpSummaryInformation', metadata.get('standard_metadata_streams', []))
++        self.assertEqual(before, source.read_bytes())
++
++if __name__ == '__main__':
++    unittest.main()
+--- a/소스/test_document_import1121.py
++++ b/소스/test_document_import1121.py
+@@ -1,100 +1,100 @@
+-"""문서 입력 수리의 정상·안전 경계를 자체 생성 XML로 확인한다."""
+-from pathlib import Path
+-import tempfile
+-import unittest
+-
+-import document_bridge
+-import document_formats
+-
+-
+-ABW_DTD = '<!DOCTYPE abiword PUBLIC "-//ABISOURCE//DTD AWML 1.0 Strict//EN" "http://www.abisource.com/awml.dtd">'
+-ABW_BODY = '<abiword xmlns="http://www.abisource.com/awml.dtd"><section><p>한글 hello world</p></section></abiword>'
+-
+-
+-class DocumentImport1121Tests(unittest.TestCase):
+-    def test_06_dif_korean_encodings_are_normalized_without_changing_original(self):
+-        content = 'TABLE\n0,1\n"한글 변환 시험"\n'
+-        for encoding in ('utf-8-sig', 'utf-16', 'cp949'):
+-            with self.subTest(encoding=encoding), tempfile.TemporaryDirectory() as temporary:
+-                root = Path(temporary)
+-                source, profile = root / '원본.dif', root / 'profile'
+-                profile.mkdir()
+-                original = content.encode(encoding)
+-                source.write_bytes(original)
+-                output = document_formats.prepare_import_source(source, 'dif', profile)
+-                self.assertEqual(content.encode('utf-8'), output.read_bytes())
+-                self.assertEqual(original, source.read_bytes())
+-
+-    def test_01_dif_character_set_is_explicit_without_approving_interactions(self):
+-        handler = object()
+-        options = document_bridge.load_options(handler, "dif")
+-        self.assertEqual("DIF", options["FilterName"])
+-        self.assertEqual("76", options["FilterOptions"])
+-        self.assertEqual(0, options["MacroExecutionMode"])
+-        self.assertEqual(0, options["UpdateDocMode"])
+-        self.assertIs(handler, options["InteractionHandler"])
+-
+-    def test_02_canonical_abiword_dtd_is_removed_only_in_private_copy(self):
+-        for encoding in ("utf-8", "utf-16", "utf-16-be"):
+-            with self.subTest(encoding=encoding), tempfile.TemporaryDirectory() as temporary:
+-                root = Path(temporary)
+-                source, profile = root / "원본.abw", root / "private"
+-                profile.mkdir()
+-                declaration = "utf-16" if encoding == "utf-16-be" else encoding
+-                raw = ('<?xml version="1.0" encoding="' + declaration + '"?>\n' + ABW_DTD + '\n' + ABW_BODY).encode(encoding)
+-                if encoding == "utf-16-be":
+-                    raw = b'\xfe\xff' + raw
+-                source.write_bytes(raw)
+-                document_formats.validate_input(source, "abw")
+-                copy = document_formats.prepare_import_source(source, "abw", profile)
+-                expected = raw.replace(ABW_DTD.encode(encoding).removeprefix(b'\xff\xfe'), b"")
+-                self.assertEqual(profile, copy.parent)
+-                self.assertEqual(raw, source.read_bytes())
+-                self.assertEqual(expected, copy.read_bytes())
+-
+-    def test_03_abiword_without_dtd_reuses_source(self):
+-        with tempfile.TemporaryDirectory() as temporary:
+-            root = Path(temporary)
+-            source = root / "원본.abw"
+-            source.write_text(ABW_BODY, encoding="utf-8")
+-            self.assertEqual(source, document_formats.prepare_import_source(source, "abw", root))
+-            self.assertEqual([source], list(root.iterdir()))
+-
+-    def test_04_dtd_entity_and_internal_subsets_are_rejected_across_encodings(self):
+-        unsafe = [
+-            '<!DOCTYPE abiword SYSTEM "file:///C:/secret.dtd">',
+-            ABW_DTD[:-1] + ' [<!ENTITY sample SYSTEM "file:///C:/secret.txt">]>',
+-            ABW_DTD[:-1] + ' []>',
+-            ABW_DTD.replace("www.abisource.com", "other.example"),
+-            '<!DOCTYPE abiword [<!ENTITY sample "payload">]>',
+-        ]
+-        with tempfile.TemporaryDirectory() as temporary:
+-            source = Path(temporary) / "unsafe.abw"
+-            for encoding in ("utf-8", "utf-16", "utf-16-be"):
+-                for doctype in unsafe:
+-                    with self.subTest(encoding=encoding, doctype=doctype):
+-                        declaration = "utf-16" if encoding == "utf-16-be" else encoding
+-                        raw = ('<?xml version="1.0" encoding="' + declaration + '"?>' + doctype + ABW_BODY).encode(encoding)
+-                        if encoding == "utf-16-be":
+-                            raw = b'\xfe\xff' + raw
+-                        source.write_bytes(raw)
+-                        with self.assertRaises(ValueError):
+-                            document_formats.validate_input(source, "abw")
+-                        self.assertEqual(raw, source.read_bytes())
+-
+-    def test_05_other_xml_documents_keep_doctype_rejection_and_parse_errors(self):
+-        with tempfile.TemporaryDirectory() as temporary:
+-            source = Path(temporary) / "unsafe.fodt"
+-            for extension in ("fodt", "fods", "fodp"):
+-                for encoding in ("utf-8", "utf-16"):
+-                    with self.subTest(extension=extension, encoding=encoding):
+-                        source.write_bytes((ABW_DTD + ABW_BODY).encode(encoding))
+-                        with self.assertRaises(ValueError):
+-                            document_formats.validate_input(source, extension)
+-            source.write_bytes(b"<abiword><section>")
+-            with self.assertRaises(ValueError):
+-                document_formats.validate_input(source, "abw")
+-
+-
+-if __name__ == "__main__":
+-    unittest.main()
++"""문서 입력 수리의 정상·안전 경계를 자체 생성 XML로 확인한다."""
++from pathlib import Path
++import tempfile
++import unittest
++
++import document_bridge
++import document_formats
++
++
++ABW_DTD = '<!DOCTYPE abiword PUBLIC "-//ABISOURCE//DTD AWML 1.0 Strict//EN" "http://www.abisource.com/awml.dtd">'
++ABW_BODY = '<abiword xmlns="http://www.abisource.com/awml.dtd"><section><p>한글 hello world</p></section></abiword>'
++
++
++class DocumentImport1121Tests(unittest.TestCase):
++    def test_06_dif_korean_encodings_are_normalized_without_changing_original(self):
++        content = 'TABLE\n0,1\n"한글 변환 시험"\n'
++        for encoding in ('utf-8-sig', 'utf-16', 'cp949'):
++            with self.subTest(encoding=encoding), tempfile.TemporaryDirectory() as temporary:
++                root = Path(temporary)
++                source, profile = root / '원본.dif', root / 'profile'
++                profile.mkdir()
++                original = content.encode(encoding)
++                source.write_bytes(original)
++                output = document_formats.prepare_import_source(source, 'dif', profile)
++                self.assertEqual(content.encode('utf-8'), output.read_bytes())
++                self.assertEqual(original, source.read_bytes())
++
++    def test_01_dif_character_set_is_explicit_without_approving_interactions(self):
++        handler = object()
++        options = document_bridge.load_options(handler, "dif")
++        self.assertEqual("DIF", options["FilterName"])
++        self.assertEqual("76", options["FilterOptions"])
++        self.assertEqual(0, options["MacroExecutionMode"])
++        self.assertEqual(0, options["UpdateDocMode"])
++        self.assertIs(handler, options["InteractionHandler"])
++
++    def test_02_canonical_abiword_dtd_is_removed_only_in_private_copy(self):
++        for encoding in ("utf-8", "utf-16", "utf-16-be"):
++            with self.subTest(encoding=encoding), tempfile.TemporaryDirectory() as temporary:
++                root = Path(temporary)
++                source, profile = root / "원본.abw", root / "private"
++                profile.mkdir()
++                declaration = "utf-16" if encoding == "utf-16-be" else encoding
++                raw = ('<?xml version="1.0" encoding="' + declaration + '"?>\n' + ABW_DTD + '\n' + ABW_BODY).encode(encoding)
++                if encoding == "utf-16-be":
++                    raw = b'\xfe\xff' + raw
++                source.write_bytes(raw)
++                document_formats.validate_input(source, "abw")
++                copy = document_formats.prepare_import_source(source, "abw", profile)
++                expected = raw.replace(ABW_DTD.encode(encoding).removeprefix(b'\xff\xfe'), b"")
++                self.assertEqual(profile, copy.parent)
++                self.assertEqual(raw, source.read_bytes())
++                self.assertEqual(expected, copy.read_bytes())
++
++    def test_03_abiword_without_dtd_reuses_source(self):
++        with tempfile.TemporaryDirectory() as temporary:
++            root = Path(temporary)
++            source = root / "원본.abw"
++            source.write_text(ABW_BODY, encoding="utf-8")
++            self.assertEqual(source, document_formats.prepare_import_source(source, "abw", root))
++            self.assertEqual([source], list(root.iterdir()))
++
++    def test_04_dtd_entity_and_internal_subsets_are_rejected_across_encodings(self):
++        unsafe = [
++            '<!DOCTYPE abiword SYSTEM "file:///C:/secret.dtd">',
++            ABW_DTD[:-1] + ' [<!ENTITY sample SYSTEM "file:///C:/secret.txt">]>',
++            ABW_DTD[:-1] + ' []>',
++            ABW_DTD.replace("www.abisource.com", "other.example"),
++            '<!DOCTYPE abiword [<!ENTITY sample "payload">]>',
++        ]
++        with tempfile.TemporaryDirectory() as temporary:
++            source = Path(temporary) / "unsafe.abw"
++            for encoding in ("utf-8", "utf-16", "utf-16-be"):
++                for doctype in unsafe:
++                    with self.subTest(encoding=encoding, doctype=doctype):
++                        declaration = "utf-16" if encoding == "utf-16-be" else encoding
++                        raw = ('<?xml version="1.0" encoding="' + declaration + '"?>' + doctype + ABW_BODY).encode(encoding)
++                        if encoding == "utf-16-be":
++                            raw = b'\xfe\xff' + raw
++                        source.write_bytes(raw)
++                        with self.assertRaises(ValueError):
++                            document_formats.validate_input(source, "abw")
++                        self.assertEqual(raw, source.read_bytes())
++
++    def test_05_other_xml_documents_keep_doctype_rejection_and_parse_errors(self):
++        with tempfile.TemporaryDirectory() as temporary:
++            source = Path(temporary) / "unsafe.fodt"
++            for extension in ("fodt", "fods", "fodp"):
++                for encoding in ("utf-8", "utf-16"):
++                    with self.subTest(extension=extension, encoding=encoding):
++                        source.write_bytes((ABW_DTD + ABW_BODY).encode(encoding))
++                        with self.assertRaises(ValueError):
++                            document_formats.validate_input(source, extension)
++            source.write_bytes(b"<abiword><section>")
++            with self.assertRaises(ValueError):
++                document_formats.validate_input(source, "abw")
++
++
++if __name__ == "__main__":
++    unittest.main()
+--- a/소스/test_document_security.py
++++ b/소스/test_document_security.py
+@@ -1,117 +1,117 @@
+-"""자체 합성 문서로 매크로 차단과 외부 연결 미갱신을 실제 검사한다."""
+-from pathlib import Path
+-from html import escape
+-import json
+-import tempfile
+-import unittest
+-import zipfile
+-
+-import document_formats
+-import document_process
+-import engine
+-
+-
+-def content_xml(body, scripts=''):
+-    return ('<?xml version="1.0" encoding="UTF-8"?>'
+-            '<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" '
+-            'xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" '
+-            'xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" '
+-            'xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dom="http://www.w3.org/2001/xml-events" '
+-            'xmlns:ooo="http://openoffice.org/2004/office" office:version="1.2">'
+-            '<office:scripts>' + scripts + '</office:scripts><office:automatic-styles/>'
+-            '<office:body><office:text>' + body + '</office:text></office:body></office:document-content>')
+-
+-
+-def macro_document(path, sentinel):
+-    event = ('<office:event-listeners><script:event-listener script:language="ooo:script" '
+-             'script:event-name="dom:load" xlink:type="simple" '
+-             'xlink:href="vnd.sun.star.script:Standard.Module1.Main?language=Basic&amp;location=document"/>'
+-             '</office:event-listeners>')
+-    code = ('Sub Main\nOpen "' + str(sentinel) + '" For Output As #1\n'
+-            'Print #1, "자체 매크로 양성 대조"\nClose #1\nEnd Sub')
+-    library_ns = 'xmlns:library="http://openoffice.org/2000/library"'
+-    files = {
+-        'content.xml': content_xml('<text:p>매크로 차단 시험 본문 PUVKID</text:p>', event),
+-        'Basic/script-lc.xml': '<library:libraries ' + library_ns + '><library:library library:name="Standard" library:link="false"/></library:libraries>',
+-        'Basic/Standard/script-lb.xml': '<library:library ' + library_ns + ' library:name="Standard" library:readonly="false" library:passwordprotected="false"><library:element library:name="Module1"/></library:library>',
+-        'Basic/Standard/Module1.xml': '<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Module1" script:language="StarBasic"><![CDATA[' + code + ']]></script:module>',
+-    }
+-    manifest = ('<?xml version="1.0" encoding="UTF-8"?>'
+-                '<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.2">'
+-                '<manifest:file-entry manifest:full-path="/" manifest:media-type="application/vnd.oasis.opendocument.text"/>')
+-    manifest += ''.join('<manifest:file-entry manifest:full-path="' + name + '" manifest:media-type="text/xml"/>' for name in files)
+-    manifest += '</manifest:manifest>'
+-    with zipfile.ZipFile(path, 'w') as archive:
+-        archive.writestr('mimetype', 'application/vnd.oasis.opendocument.text', compress_type=zipfile.ZIP_STORED)
+-        for name, value in files.items():
+-            archive.writestr(name, value.encode('utf-8'))
+-        archive.writestr('META-INF/manifest.xml', manifest.encode('utf-8'))
+-
+-
+-class ActualDocumentSecurityTests(unittest.TestCase):
+-    def setUp(self):
+-        self.temporary = tempfile.TemporaryDirectory(prefix='fr-security110-')
+-        self.root = Path(self.temporary.name)
+-
+-    def tearDown(self):
+-        self.temporary.cleanup()
+-
+-    def test_01_macro_positive_control_runs_only_in_private_profile_and_product_blocks_it(self):
+-        sentinel = self.root / 'macro-sentinel.txt'
+-        source = self.root / '자동 매크로.odt'
+-        macro_document(source, sentinel)
+-        profile = self.root / 'positive-profile'
+-        document_formats.write_secure_profile(profile)
+-        settings = profile / 'user/registrymodifications.xcu'
+-        raw = settings.read_text(encoding='utf-8')
+-        raw = raw.replace('oor:name="DisableMacrosExecution" oor:op="fuse"><value>true</value>',
+-                          'oor:name="DisableMacrosExecution" oor:op="fuse"><value>false</value>')
+-        raw = raw.replace('<value>3</value>', '<value>0</value>')
+-        raw = raw.replace('oor:name="DisableActiveContent" oor:op="fuse"><value>true</value>',
+-                          'oor:name="DisableActiveContent" oor:op="fuse"><value>false</value>')
+-        raw = raw.replace('oor:name="BlockUntrustedRefererLinks" oor:op="fuse"><value>true</value>',
+-                          'oor:name="BlockUntrustedRefererLinks" oor:op="fuse"><value>false</value>')
+-        settings.write_bytes(raw.encode('utf-8'))
+-        helper = self.root / 'positive_control.py'
+-        helper.write_bytes(('import sys\nfrom pathlib import Path\n'
+-                            'sys.path.insert(0, ' + repr(str(Path(engine.__file__).parent)) + ')\n'
+-                            'import document_bridge\noriginal = document_bridge.load_options\n'
+-                            'def controlled(handler, extension):\n'
+-                            '    options = original(handler, extension)\n'
+-                            '    options["MacroExecutionMode"] = 4\n'
+-                            '    options["Hidden"] = False\n'
+-                            '    options["ReadOnly"] = False\n'
+-                            '    return options\n'
+-                            'document_bridge.load_options = controlled\n'
+-                            'raise SystemExit(document_bridge.main())\n').encode('utf-8'))
+-        office = engine.tool('soffice')
+-        self.assertIsNotNone(office)
+-        request = {'source': str(source), 'output': str(self.root / 'positive.txt'), 'profile': str(profile),
+-                   'office': office, 'family': '문서', 'extension': 'odt', 'target': 'txt'}
+-        manifest = profile / 'request.json'
+-        manifest.write_bytes(json.dumps(request, ensure_ascii=False).encode('utf-8'))
+-        document_process.run_bridge([document_formats.office_python(office), '-X', 'utf8', helper, manifest],
+-                                    profile, None, lambda: None, timeout=60)
+-        self.assertTrue(sentinel.is_file(), '실제로 실행되는 자동 매크로 양성 대조가 필요합니다.')
+-        sentinel.unlink()
+-        output = Path(engine.convert(source, 'txt'))
+-        self.assertIn('매크로 차단 시험 본문', output.read_text(encoding='utf-8-sig'))
+-        self.assertFalse(sentinel.exists(), '제품 변환에서 문서 매크로가 실행됐습니다.')
+-
+-    def test_02_external_local_section_keeps_cached_text_without_reading_new_content(self):
+-        external = self.root / 'external.txt'
+-        external.write_text('외부에서 새로 읽으면 안 되는 비밀표식 EXTERNAL_NEW_CONTENT', encoding='utf-8')
+-        source = self.root / '연결 구역.fodt'
+-        body = ('<text:p>플립링 연결 구역 시험</text:p><text:section text:name="Linked">'
+-                '<text:section-source xlink:href="' + escape(external.as_uri(), quote=True) + '" '
+-                'xlink:type="simple" text:filter-name="Text"/>'
+-                '<text:p>고정 캐시 내용 CACHED_ORIGINAL_CONTENT</text:p></text:section>')
+-        source.write_bytes(content_xml(body).encode('utf-8'))
+-        output = Path(engine.convert(source, 'txt'))
+-        result = output.read_text(encoding='utf-8-sig')
+-        self.assertIn('CACHED_ORIGINAL_CONTENT', result)
+-        self.assertNotIn('EXTERNAL_NEW_CONTENT', result)
+-
+-
+-if __name__ == '__main__':
+-    unittest.main()
++"""자체 합성 문서로 매크로 차단과 외부 연결 미갱신을 실제 검사한다."""
++from pathlib import Path
++from html import escape
++import json
++import tempfile
++import unittest
++import zipfile
++
++import document_formats
++import document_process
++import engine
++
++
++def content_xml(body, scripts=''):
++    return ('<?xml version="1.0" encoding="UTF-8"?>'
++            '<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" '
++            'xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" '
++            'xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0" '
++            'xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dom="http://www.w3.org/2001/xml-events" '
++            'xmlns:ooo="http://openoffice.org/2004/office" office:version="1.2">'
++            '<office:scripts>' + scripts + '</office:scripts><office:automatic-styles/>'
++            '<office:body><office:text>' + body + '</office:text></office:body></office:document-content>')
++
++
++def macro_document(path, sentinel):
++    event = ('<office:event-listeners><script:event-listener script:language="ooo:script" '
++             'script:event-name="dom:load" xlink:type="simple" '
++             'xlink:href="vnd.sun.star.script:Standard.Module1.Main?language=Basic&amp;location=document"/>'
++             '</office:event-listeners>')
++    code = ('Sub Main\nOpen "' + str(sentinel) + '" For Output As #1\n'
++            'Print #1, "자체 매크로 양성 대조"\nClose #1\nEnd Sub')
++    library_ns = 'xmlns:library="http://openoffice.org/2000/library"'
++    files = {
++        'content.xml': content_xml('<text:p>매크로 차단 시험 본문 PUVKID</text:p>', event),
++        'Basic/script-lc.xml': '<library:libraries ' + library_ns + '><library:library library:name="Standard" library:link="false"/></library:libraries>',
++        'Basic/Standard/script-lb.xml': '<library:library ' + library_ns + ' library:name="Standard" library:readonly="false" library:passwordprotected="false"><library:element library:name="Module1"/></library:library>',
++        'Basic/Standard/Module1.xml': '<script:module xmlns:script="http://openoffice.org/2000/script" script:name="Module1" script:language="StarBasic"><![CDATA[' + code + ']]></script:module>',
++    }
++    manifest = ('<?xml version="1.0" encoding="UTF-8"?>'
++                '<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.2">'
++                '<manifest:file-entry manifest:full-path="/" manifest:media-type="application/vnd.oasis.opendocument.text"/>')
++    manifest += ''.join('<manifest:file-entry manifest:full-path="' + name + '" manifest:media-type="text/xml"/>' for name in files)
++    manifest += '</manifest:manifest>'
++    with zipfile.ZipFile(path, 'w') as archive:
++        archive.writestr('mimetype', 'application/vnd.oasis.opendocument.text', compress_type=zipfile.ZIP_STORED)
++        for name, value in files.items():
++            archive.writestr(name, value.encode('utf-8'))
++        archive.writestr('META-INF/manifest.xml', manifest.encode('utf-8'))
++
++
++class ActualDocumentSecurityTests(unittest.TestCase):
++    def setUp(self):
++        self.temporary = tempfile.TemporaryDirectory(prefix='fr-security110-')
++        self.root = Path(self.temporary.name)
++
++    def tearDown(self):
++        self.temporary.cleanup()
++
++    def test_01_macro_positive_control_runs_only_in_private_profile_and_product_blocks_it(self):
++        sentinel = self.root / 'macro-sentinel.txt'
++        source = self.root / '자동 매크로.odt'
++        macro_document(source, sentinel)
++        profile = self.root / 'positive-profile'
++        document_formats.write_secure_profile(profile)
++        settings = profile / 'user/registrymodifications.xcu'
++        raw = settings.read_text(encoding='utf-8')
++        raw = raw.replace('oor:name="DisableMacrosExecution" oor:op="fuse"><value>true</value>',
++                          'oor:name="DisableMacrosExecution" oor:op="fuse"><value>false</value>')
++        raw = raw.replace('<value>3</value>', '<value>0</value>')
++        raw = raw.replace('oor:name="DisableActiveContent" oor:op="fuse"><value>true</value>',
++                          'oor:name="DisableActiveContent" oor:op="fuse"><value>false</value>')
++        raw = raw.replace('oor:name="BlockUntrustedRefererLinks" oor:op="fuse"><value>true</value>',
++                          'oor:name="BlockUntrustedRefererLinks" oor:op="fuse"><value>false</value>')
++        settings.write_bytes(raw.encode('utf-8'))
++        helper = self.root / 'positive_control.py'
++        helper.write_bytes(('import sys\nfrom pathlib import Path\n'
++                            'sys.path.insert(0, ' + repr(str(Path(engine.__file__).parent)) + ')\n'
++                            'import document_bridge\noriginal = document_bridge.load_options\n'
++                            'def controlled(handler, extension):\n'
++                            '    options = original(handler, extension)\n'
++                            '    options["MacroExecutionMode"] = 4\n'
++                            '    options["Hidden"] = False\n'
++                            '    options["ReadOnly"] = False\n'
++                            '    return options\n'
++                            'document_bridge.load_options = controlled\n'
++                            'raise SystemExit(document_bridge.main())\n').encode('utf-8'))
++        office = engine.tool('soffice')
++        self.assertIsNotNone(office)
++        request = {'source': str(source), 'output': str(self.root / 'positive.txt'), 'profile': str(profile),
++                   'office': office, 'family': '문서', 'extension': 'odt', 'target': 'txt'}
++        manifest = profile / 'request.json'
++        manifest.write_bytes(json.dumps(request, ensure_ascii=False).encode('utf-8'))
++        document_process.run_bridge([document_formats.office_python(office), '-X', 'utf8', helper, manifest],
++                                    profile, None, lambda: None, timeout=60)
++        self.assertTrue(sentinel.is_file(), '실제로 실행되는 자동 매크로 양성 대조가 필요합니다.')
++        sentinel.unlink()
++        output = Path(engine.convert(source, 'txt'))
++        self.assertIn('매크로 차단 시험 본문', output.read_text(encoding='utf-8-sig'))
++        self.assertFalse(sentinel.exists(), '제품 변환에서 문서 매크로가 실행됐습니다.')
++
++    def test_02_external_local_section_keeps_cached_text_without_reading_new_content(self):
++        external = self.root / 'external.txt'
++        external.write_text('외부에서 새로 읽으면 안 되는 비밀표식 EXTERNAL_NEW_CONTENT', encoding='utf-8')
++        source = self.root / '연결 구역.fodt'
++        body = ('<text:p>플립링 연결 구역 시험</text:p><text:section text:name="Linked">'
++                '<text:section-source xlink:href="' + escape(external.as_uri(), quote=True) + '" '
++                'xlink:type="simple" text:filter-name="Text"/>'
++                '<text:p>고정 캐시 내용 CACHED_ORIGINAL_CONTENT</text:p></text:section>')
++        source.write_bytes(content_xml(body).encode('utf-8'))
++        output = Path(engine.convert(source, 'txt'))
++        result = output.read_text(encoding='utf-8-sig')
++        self.assertIn('CACHED_ORIGINAL_CONTENT', result)
++        self.assertNotIn('EXTERNAL_NEW_CONTENT', result)
++
++
++if __name__ == '__main__':
++    unittest.main()

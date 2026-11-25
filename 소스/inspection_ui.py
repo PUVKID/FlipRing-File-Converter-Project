@@ -11,7 +11,7 @@ from PySide6.QtGui import QColor, QImage, QPainter, QPen
 from PySide6.QtWidgets import (QDialog, QWidget, QLabel, QPushButton, QVBoxLayout,
                                QHBoxLayout, QComboBox, QLineEdit, QPlainTextEdit,
                                QScrollArea, QListWidget, QListWidgetItem, QSpinBox,
-                               QProgressBar, QFileDialog, QSplitter)
+                               QProgressBar, QFileDialog, QSplitter, QCheckBox)
 
 import inspection_tools as tools
 from pdf_tools import Cancelled, PdfToolError, check_cancel
@@ -45,6 +45,7 @@ class PageCanvas(QWidget):
         self.zoom = 100
         self.regions = []
         self.words = []
+        self.show_order = False
         self.highlight = None
         self.drawing = False
         self.anchor = None
@@ -93,7 +94,15 @@ class PageCanvas(QWidget):
             return
         painter.setRenderHint(QPainter.SmoothPixmapTransform)
         painter.drawImage(self.image_rect(), self.image)
-        for word in self.words:
+        for number, word in enumerate(self.words, 1):
+            if self.show_order:
+                box = self._box(word['rect'])
+                painter.setPen(QPen(QColor('#24589a'), 1))
+                painter.drawRect(box)
+                badge = QRectF(box.left(), max(0, box.top() - 17), 30, 17)
+                painter.fillRect(badge, QColor('#183c68'))
+                painter.setPen(QColor('white'))
+                painter.drawText(badge, Qt.AlignCenter, str(number))
             if word['confidence'] is not None and word['confidence'] < 70:
                 painter.setPen(QPen(QColor('#555555'), 1, Qt.DashLine))
                 painter.drawRect(self._box(word['rect']))
@@ -261,6 +270,13 @@ class InspectionDialog(QDialog):
         self.metadata.setWordWrap(True)
         self.metadata.setTextInteractionFlags(Qt.TextSelectableByMouse)
         content.addWidget(self.metadata)
+        self.reading_order = QCheckBox()
+        self.reading_order.toggled.connect(self._reading_order_changed)
+        self.page_spin.valueChanged.connect(self._reading_order_changed)
+        content.addWidget(self.reading_order)
+        self.ocr_review_hint = QLabel()
+        self.ocr_review_hint.setWordWrap(True)
+        content.addWidget(self.ocr_review_hint)
         self.candidate_list = QListWidget()
         self.candidate_list.setMinimumHeight(110)
         self.candidate_list.setMaximumHeight(165)
@@ -337,6 +353,10 @@ class InspectionDialog(QDialog):
 
     def set_language(self, language):
         self.language = 'en' if language == 'en' else 'ko'
+        self.reading_order.setText(self._tr('인식 위치와 읽기 순서 보기', 'Show recognition positions and reading order'))
+        self.ocr_review_hint.setText(self._tr(
+            '번호는 현재 페이지의 실제 인식 순서입니다. 목록을 누르면 위치로 이동합니다. 번호가 없는 글자·표를 원본과 대조해 누락을 확인하고 오른쪽 텍스트를 교정하세요. 자동 누락 검출을 보장하지 않습니다.',
+            'Numbers show the actual recognition order on the current page. Select a row to locate it. Compare unnumbered text and tables with the original and correct the text on the right. Missing text is not detected automatically.'))
         titles = [('OCR 교정', 'OCR correction'), ('파일 비교', 'File comparison'),
                   ('결과 검사', 'Result inspection'), ('영역 가림', 'Redact regions')]
         for index, (ko, en) in enumerate(titles):
@@ -373,6 +393,8 @@ class InspectionDialog(QDialog):
         set_reduced_motion(self, enabled)
 
     def _set_mode_visibility(self):
+        self.reading_order.setVisible(self.mode == 'ocr')
+        self.ocr_review_hint.setVisible(self.mode == 'ocr')
         self.second_combo.setVisible(self.mode == 'compare')
         self.canvas_scrolls[1].setVisible(self.mode == 'compare')
         self.editor.setVisible(self.mode in {'ocr', 'compare'})
@@ -522,7 +544,7 @@ class InspectionDialog(QDialog):
         for widget in (self.mode_combo, self.source_combo, self.second_combo, self.add_button,
                        self.page_spin, self.ocr_language, self.run_button, self.export_button,
                        self.output_edit, self.folder_button, self.clear_button, self.region_widget,
-                       self.candidate_list):
+                       self.candidate_list, self.reading_order):
             widget.setEnabled(not busy)
         self.cancel_button.setEnabled(busy)
         self.progress.setRange(0, 0 if busy else 1)
@@ -540,6 +562,8 @@ class InspectionDialog(QDialog):
             self.page_spin.blockSignals(False)
             self._show_info(result['infos'])
             self._update_overlays()
+            if self.mode == 'ocr' and self.reading_order.isChecked():
+                self._refresh_candidates()
             if self.mode == 'compare':
                 self.status.setText(self._tr('미리보기 준비 · 두 파일 비교를 실행하세요.',
                                              'Preview ready · Run comparison for these two files.'))
@@ -685,11 +709,21 @@ class InspectionDialog(QDialog):
         page = self.page_spin.value() - 1
         self.left_canvas.regions = [r['rect'] for r in self.rectangles if r['page'] == page]
         self.left_canvas.words = [w for w in (self.recognized or {}).get('words', []) if w['page'] == page]
+        self.left_canvas.show_order = self.mode == 'ocr' and self.reading_order.isChecked()
         self.left_canvas.update()
+
+    def _reading_order_changed(self, enabled):
+        self._update_overlays()
+        self._refresh_candidates()
 
     def _refresh_candidates(self):
         self.candidate_list.clear()
         values = self.rectangles if self.mode == 'redact' else self.findings
+        if self.mode == 'ocr' and self.reading_order.isChecked():
+            page = self.page_spin.value() - 1
+            values = [dict(word, kind='reading_order', score=word['confidence'], order=number)
+                      for number, word in enumerate(
+                          [w for w in (self.recognized or {}).get('words', []) if w['page'] == page], 1)]
         names = {'blank': ('빈 페이지 후보', 'Blank page candidate'), 'duplicate': ('중복 페이지 후보', 'Duplicate page candidate'),
                  'blur': ('흐림 후보', 'Blur candidate'), 'edge': ('가장자리 잘림 후보', 'Edge content candidate'),
                  'email': ('이메일 후보', 'Email candidate'), 'phone': ('전화번호 후보', 'Phone candidate'),
@@ -697,6 +731,8 @@ class InspectionDialog(QDialog):
         for value in values:
             label = self._tr('직접 지정한 가림 영역', 'User selected redaction region') if self.mode == 'redact' else self._tr(*names.get(value['kind'], ('검토 후보', 'Review candidate')))
             text = f"{value['page'] + 1} · {label}"
+            if value.get('order'):
+                text = f"{value['page'] + 1} · #{value['order']}"
             if value.get('text'):
                 text += f" · {value['text']} · {value['score']:.1f}%"
             elif 'score' in value:
@@ -718,6 +754,9 @@ class InspectionDialog(QDialog):
         if self.page_spin.value() != value['page'] + 1:
             self.page_spin.setValue(value['page'] + 1)
         self.left_canvas.highlight = value.get('rect')
+        if value.get('rect'):
+            center = self.left_canvas._box(value['rect']).center()
+            self.canvas_scrolls[0].ensureVisible(int(center.x()), int(center.y()), 30, 30)
         if self.mode == 'redact' and 'rect' in value:
             for field, number in zip(self.region_fields, value['rect']):
                 field.setText(f'{number:.8g}')

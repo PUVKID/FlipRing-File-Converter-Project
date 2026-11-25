@@ -1,0 +1,1063 @@
+--- a/소스/licenses/altgraph/METADATA
++++ b/소스/licenses/altgraph/METADATA
+@@ -1,307 +1,307 @@
+-Metadata-Version: 2.1
+-Name: altgraph
+-Version: 0.17.5
+-Summary: Python graph (network) package
+-Home-page: https://altgraph.readthedocs.io
+-Download-URL: http://pypi.python.org/pypi/altgraph
+-Author: Ronald Oussoren
+-Author-email: ronaldoussoren@mac.com
+-Maintainer: Ronald Oussoren
+-Maintainer-email: ronaldoussoren@mac.com
+-License: MIT
+-Keywords: graph
+-Platform: any
+-Classifier: Intended Audience :: Developers
+-Classifier: License :: OSI Approved :: MIT License
+-Classifier: Programming Language :: Python
+-Classifier: Programming Language :: Python :: 2
+-Classifier: Programming Language :: Python :: 2.7
+-Classifier: Programming Language :: Python :: 3
+-Classifier: Programming Language :: Python :: 3.4
+-Classifier: Programming Language :: Python :: 3.5
+-Classifier: Programming Language :: Python :: 3.6
+-Classifier: Programming Language :: Python :: 3.7
+-Classifier: Programming Language :: Python :: 3.8
+-Classifier: Programming Language :: Python :: 3.9
+-Classifier: Programming Language :: Python :: 3.10
+-Classifier: Programming Language :: Python :: 3.11
+-Classifier: Programming Language :: Python :: 3.12
+-Classifier: Programming Language :: Python :: 3.13
+-Classifier: Programming Language :: Python :: 3.14
+-Classifier: Topic :: Software Development :: Libraries :: Python Modules
+-Classifier: Topic :: Scientific/Engineering :: Mathematics
+-Classifier: Topic :: Scientific/Engineering :: Visualization
+-Description-Content-Type: text/x-rst; charset=UTF-8
+-License-File: LICENSE
+-Project-URL: Documentation, https://altgraph.readthedocs.io/en/latest/
+-Project-URL: Issue tracker, https://github.com/ronaldoussoren/altgraph/issues
+-Project-URL: Repository, https://github.com/ronaldoussoren/altgraph
+-
+-altgraph is a fork of graphlib: a graph (network) package for constructing
+-graphs, BFS and DFS traversals, topological sort, shortest paths, etc. with
+-graphviz output.
+-
+-altgraph includes some additional usage of Python 2.6+ features and
+-enhancements related to modulegraph and macholib.
+-
+-Project links
+--------------
+-
+-* `Documentation <https://altgraph.readthedocs.io/en/latest/>`_
+-
+-* `Issue Tracker <https://github.com/ronaldoussoren/altgraph/issues>`_
+-
+-* `Repository <https://github.com/ronaldoussoren/altgraph/>`_
+-
+-
+-Release history
+-===============
+-
+-0.17.5
+-------
+-
+-* Update classifiers for Python 3.13 and 3.14
+-
+-* Drop dependency on "pkg_resources"
+-
+-0.17.4
+-------
+-
+-* Update classifiers for Python 3.12
+-
+-0.17.3
+-------
+-
+-* Update classifiers for Python 3.11
+-
+-0.17.2
+-------
+-
+-* Change in setup.py to fix the sidebar links on PyPI
+-
+-0.17.1
+-------
+-
+-* Explicitly mark Python 3.10 as supported in wheel metadata.
+-
+-0.17
+-----
+-
+-* Explicitly mark Python 3.8 as supported in wheel metadata.
+-
+-* Migrate from Bitbucket to GitHub
+-
+-* Run black on the entire repository
+-
+-0.16.1
+-------
+-
+-* Explicitly mark Python 3.7 as supported in wheel metadata.
+-
+-0.16
+-----
+-
+-* Add LICENSE file
+-
+-0.15
+-----
+-
+-* ``ObjectGraph.get_edges``, ``ObjectGraph.getEdgeData`` and ``ObjectGraph.updateEdgeData``
+-  accept *None* as the node to get and treat this as an alias for *self* (as other
+-  methods already did).
+-
+-0.14
+-----
+-
+-- Issue #7: Remove use of ``iteritems`` in altgraph.GraphAlgo code
+-
+-0.13
+-----
+-
+-- Issue #4: Graph._bfs_subgraph and back_bfs_subgraph return subgraphs with reversed edges
+-
+-  Fix by "pombredanne" on bitbucket.
+-
+-
+-0.12
+-----
+-
+-- Added ``ObjectGraph.edgeData`` to retrieve the edge data
+-  from a specific edge.
+-
+-- Added ``AltGraph.update_edge_data`` and ``ObjectGraph.updateEdgeData``
+-  to update the data associated with a graph edge.
+-
+-0.11
+-----
+-
+-- Stabilize the order of elements in dot file exports,
+-  patch from bitbucket user 'pombredanne'.
+-
+-- Tweak setup.py file to remove dependency on distribute (but
+-  keep the dependency on setuptools)
+-
+-
+-0.10.2
+-------
+-
+-- There where no classifiers in the package metadata due to a bug
+-  in setup.py
+-
+-0.10.1
+-------
+-
+-This is a bugfix release
+-
+-Bug fixes:
+-
+-- Issue #3: The source archive contains a README.txt
+-  while the setup file refers to ReadMe.txt.
+-
+-  This is caused by a misfeature in distutils, as a
+-  workaround I've renamed ReadMe.txt to README.txt
+-  in the source tree and setup file.
+-
+-
+-0.10
+------
+-
+-This is a minor feature release
+-
+-Features:
+-
+-- Do not use "2to3" to support Python 3.
+-
+-  As a side effect of this altgraph now supports
+-  Python 2.6 and later, and no longer supports
+-  earlier releases of Python.
+-
+-- The order of attributes in the Dot output
+-  is now always alphabetical.
+-
+-  With this change the output will be consistent
+-  between runs and Python versions.
+-
+-0.9
+----
+-
+-This is a minor bugfix release
+-
+-Features:
+-
+-- Added ``altgraph.ObjectGraph.ObjectGraph.nodes``, a method
+-  yielding all nodes in an object graph.
+-
+-Bugfixes:
+-
+-- The 0.8 release didn't work with py2app when using
+-  python 3.x.
+-
+-
+-0.8
+------
+-
+-This is a minor feature release. The major new feature
+-is a extensive set of unittests, which explains almost
+-all other changes in this release.
+-
+-Bugfixes:
+-
+-- Installing failed with Python 2.5 due to using a distutils
+-  class that isn't available in that version of Python
+-  (issue #1 on the issue tracker)
+-
+-- ``altgraph.GraphStat.degree_dist`` now actually works
+-
+-- ``altgraph.Graph.add_edge(a, b, create_nodes=False)`` will
+-  no longer create the edge when one of the nodes doesn't
+-  exist.
+-
+-- ``altgraph.Graph.forw_topo_sort`` failed for some sparse graphs.
+-
+-- ``altgraph.Graph.back_topo_sort`` was completely broken in
+-  previous releases.
+-
+-- ``altgraph.Graph.forw_bfs_subgraph`` now actually works.
+-
+-- ``altgraph.Graph.back_bfs_subgraph`` now actually works.
+-
+-- ``altgraph.Graph.iterdfs`` now returns the correct result
+-  when the ``forward`` argument is ``False``.
+-
+-- ``altgraph.Graph.iterdata`` now returns the correct result
+-  when the ``forward`` argument is ``False``.
+-
+-
+-Features:
+-
+-- The ``altgraph.Graph`` constructor now accepts an argument
+-  that contains 2- and 3-tuples instead of requireing that
+-  all items have the same size. The (optional) argument can now
+-  also be any iterator.
+-
+-- ``altgraph.Graph.Graph.add_node`` has no effect when you
+-  add a hidden node.
+-
+-- The private method ``altgraph.Graph._bfs`` is no longer
+-  present.
+-
+-- The private method ``altgraph.Graph._dfs`` is no longer
+-  present.
+-
+-- ``altgraph.ObjectGraph`` now has a ``__contains__`` methods,
+-  which means you can use the ``in`` operator to check if a
+-  node is part of a graph.
+-
+-- ``altgraph.GraphUtil.generate_random_graph`` will raise
+-  ``GraphError`` instead of looping forever when it is
+-  impossible to create the requested graph.
+-
+-- ``altgraph.Dot.edge_style`` raises ``GraphError`` when
+-  one of the nodes is not present in the graph. The method
+-  silently added the tail in the past, but without ensuring
+-  a consistent graph state.
+-
+-- ``altgraph.Dot.save_img`` now works when the mode is
+-  ``"neato"``.
+-
+-0.7.2
+------
+-
+-This is a minor bugfix release
+-
+-Bugfixes:
+-
+-- distutils didn't include the documentation subtree
+-
+-0.7.1
+------
+-
+-This is a minor feature release
+-
+-Features:
+-
+-- Documentation is now generated using `sphinx <http://pypi.python.org/pypi/sphinx>`_
+-  and can be viewed at <http://packages.python.org/altgraph>.
+-
+-- The repository has moved to bitbucket
+-
+-- ``altgraph.GraphStat.avg_hops`` is no longer present, the function had no
+-  implementation and no specified behaviour.
+-
+-- the module ``altgraph.compat`` is gone, which means altgraph will no
+-  longer work with Python 2.3.
+-
+-
+-0.7.0
+------
+-
+-This is a minor feature release.
+-
+-Features:
+-
+-- Support for Python 3
+-
+-- It is now possible to run tests using 'python setup.py test'
+-
+-  (The actual testsuite is still very minimal though)
++Metadata-Version: 2.1
++Name: altgraph
++Version: 0.17.5
++Summary: Python graph (network) package
++Home-page: https://altgraph.readthedocs.io
++Download-URL: http://pypi.python.org/pypi/altgraph
++Author: Ronald Oussoren
++Author-email: ronaldoussoren@mac.com
++Maintainer: Ronald Oussoren
++Maintainer-email: ronaldoussoren@mac.com
++License: MIT
++Keywords: graph
++Platform: any
++Classifier: Intended Audience :: Developers
++Classifier: License :: OSI Approved :: MIT License
++Classifier: Programming Language :: Python
++Classifier: Programming Language :: Python :: 2
++Classifier: Programming Language :: Python :: 2.7
++Classifier: Programming Language :: Python :: 3
++Classifier: Programming Language :: Python :: 3.4
++Classifier: Programming Language :: Python :: 3.5
++Classifier: Programming Language :: Python :: 3.6
++Classifier: Programming Language :: Python :: 3.7
++Classifier: Programming Language :: Python :: 3.8
++Classifier: Programming Language :: Python :: 3.9
++Classifier: Programming Language :: Python :: 3.10
++Classifier: Programming Language :: Python :: 3.11
++Classifier: Programming Language :: Python :: 3.12
++Classifier: Programming Language :: Python :: 3.13
++Classifier: Programming Language :: Python :: 3.14
++Classifier: Topic :: Software Development :: Libraries :: Python Modules
++Classifier: Topic :: Scientific/Engineering :: Mathematics
++Classifier: Topic :: Scientific/Engineering :: Visualization
++Description-Content-Type: text/x-rst; charset=UTF-8
++License-File: LICENSE
++Project-URL: Documentation, https://altgraph.readthedocs.io/en/latest/
++Project-URL: Issue tracker, https://github.com/ronaldoussoren/altgraph/issues
++Project-URL: Repository, https://github.com/ronaldoussoren/altgraph
++
++altgraph is a fork of graphlib: a graph (network) package for constructing
++graphs, BFS and DFS traversals, topological sort, shortest paths, etc. with
++graphviz output.
++
++altgraph includes some additional usage of Python 2.6+ features and
++enhancements related to modulegraph and macholib.
++
++Project links
++-------------
++
++* `Documentation <https://altgraph.readthedocs.io/en/latest/>`_
++
++* `Issue Tracker <https://github.com/ronaldoussoren/altgraph/issues>`_
++
++* `Repository <https://github.com/ronaldoussoren/altgraph/>`_
++
++
++Release history
++===============
++
++0.17.5
++------
++
++* Update classifiers for Python 3.13 and 3.14
++
++* Drop dependency on "pkg_resources"
++
++0.17.4
++------
++
++* Update classifiers for Python 3.12
++
++0.17.3
++------
++
++* Update classifiers for Python 3.11
++
++0.17.2
++------
++
++* Change in setup.py to fix the sidebar links on PyPI
++
++0.17.1
++------
++
++* Explicitly mark Python 3.10 as supported in wheel metadata.
++
++0.17
++----
++
++* Explicitly mark Python 3.8 as supported in wheel metadata.
++
++* Migrate from Bitbucket to GitHub
++
++* Run black on the entire repository
++
++0.16.1
++------
++
++* Explicitly mark Python 3.7 as supported in wheel metadata.
++
++0.16
++----
++
++* Add LICENSE file
++
++0.15
++----
++
++* ``ObjectGraph.get_edges``, ``ObjectGraph.getEdgeData`` and ``ObjectGraph.updateEdgeData``
++  accept *None* as the node to get and treat this as an alias for *self* (as other
++  methods already did).
++
++0.14
++----
++
++- Issue #7: Remove use of ``iteritems`` in altgraph.GraphAlgo code
++
++0.13
++----
++
++- Issue #4: Graph._bfs_subgraph and back_bfs_subgraph return subgraphs with reversed edges
++
++  Fix by "pombredanne" on bitbucket.
++
++
++0.12
++----
++
++- Added ``ObjectGraph.edgeData`` to retrieve the edge data
++  from a specific edge.
++
++- Added ``AltGraph.update_edge_data`` and ``ObjectGraph.updateEdgeData``
++  to update the data associated with a graph edge.
++
++0.11
++----
++
++- Stabilize the order of elements in dot file exports,
++  patch from bitbucket user 'pombredanne'.
++
++- Tweak setup.py file to remove dependency on distribute (but
++  keep the dependency on setuptools)
++
++
++0.10.2
++------
++
++- There where no classifiers in the package metadata due to a bug
++  in setup.py
++
++0.10.1
++------
++
++This is a bugfix release
++
++Bug fixes:
++
++- Issue #3: The source archive contains a README.txt
++  while the setup file refers to ReadMe.txt.
++
++  This is caused by a misfeature in distutils, as a
++  workaround I've renamed ReadMe.txt to README.txt
++  in the source tree and setup file.
++
++
++0.10
++-----
++
++This is a minor feature release
++
++Features:
++
++- Do not use "2to3" to support Python 3.
++
++  As a side effect of this altgraph now supports
++  Python 2.6 and later, and no longer supports
++  earlier releases of Python.
++
++- The order of attributes in the Dot output
++  is now always alphabetical.
++
++  With this change the output will be consistent
++  between runs and Python versions.
++
++0.9
++---
++
++This is a minor bugfix release
++
++Features:
++
++- Added ``altgraph.ObjectGraph.ObjectGraph.nodes``, a method
++  yielding all nodes in an object graph.
++
++Bugfixes:
++
++- The 0.8 release didn't work with py2app when using
++  python 3.x.
++
++
++0.8
++-----
++
++This is a minor feature release. The major new feature
++is a extensive set of unittests, which explains almost
++all other changes in this release.
++
++Bugfixes:
++
++- Installing failed with Python 2.5 due to using a distutils
++  class that isn't available in that version of Python
++  (issue #1 on the issue tracker)
++
++- ``altgraph.GraphStat.degree_dist`` now actually works
++
++- ``altgraph.Graph.add_edge(a, b, create_nodes=False)`` will
++  no longer create the edge when one of the nodes doesn't
++  exist.
++
++- ``altgraph.Graph.forw_topo_sort`` failed for some sparse graphs.
++
++- ``altgraph.Graph.back_topo_sort`` was completely broken in
++  previous releases.
++
++- ``altgraph.Graph.forw_bfs_subgraph`` now actually works.
++
++- ``altgraph.Graph.back_bfs_subgraph`` now actually works.
++
++- ``altgraph.Graph.iterdfs`` now returns the correct result
++  when the ``forward`` argument is ``False``.
++
++- ``altgraph.Graph.iterdata`` now returns the correct result
++  when the ``forward`` argument is ``False``.
++
++
++Features:
++
++- The ``altgraph.Graph`` constructor now accepts an argument
++  that contains 2- and 3-tuples instead of requireing that
++  all items have the same size. The (optional) argument can now
++  also be any iterator.
++
++- ``altgraph.Graph.Graph.add_node`` has no effect when you
++  add a hidden node.
++
++- The private method ``altgraph.Graph._bfs`` is no longer
++  present.
++
++- The private method ``altgraph.Graph._dfs`` is no longer
++  present.
++
++- ``altgraph.ObjectGraph`` now has a ``__contains__`` methods,
++  which means you can use the ``in`` operator to check if a
++  node is part of a graph.
++
++- ``altgraph.GraphUtil.generate_random_graph`` will raise
++  ``GraphError`` instead of looping forever when it is
++  impossible to create the requested graph.
++
++- ``altgraph.Dot.edge_style`` raises ``GraphError`` when
++  one of the nodes is not present in the graph. The method
++  silently added the tail in the past, but without ensuring
++  a consistent graph state.
++
++- ``altgraph.Dot.save_img`` now works when the mode is
++  ``"neato"``.
++
++0.7.2
++-----
++
++This is a minor bugfix release
++
++Bugfixes:
++
++- distutils didn't include the documentation subtree
++
++0.7.1
++-----
++
++This is a minor feature release
++
++Features:
++
++- Documentation is now generated using `sphinx <http://pypi.python.org/pypi/sphinx>`_
++  and can be viewed at <http://packages.python.org/altgraph>.
++
++- The repository has moved to bitbucket
++
++- ``altgraph.GraphStat.avg_hops`` is no longer present, the function had no
++  implementation and no specified behaviour.
++
++- the module ``altgraph.compat`` is gone, which means altgraph will no
++  longer work with Python 2.3.
++
++
++0.7.0
++-----
++
++This is a minor feature release.
++
++Features:
++
++- Support for Python 3
++
++- It is now possible to run tests using 'python setup.py test'
++
++  (The actual testsuite is still very minimal though)
+--- a/소스/licenses/cssselect2/licenses/LICENSE
++++ b/소스/licenses/cssselect2/licenses/LICENSE
+@@ -1,29 +1,29 @@
+-BSD 3-Clause License
+-
+-Copyright (c) 2012-2018, Simon Sapin and contributors (see AUTHORS).
+-All rights reserved.
+-
+-Redistribution and use in source and binary forms, with or without
+-modification, are permitted provided that the following conditions are met:
+-
+-* Redistributions of source code must retain the above copyright notice, this
+-  list of conditions and the following disclaimer.
+-
+-* Redistributions in binary form must reproduce the above copyright notice,
+-  this list of conditions and the following disclaimer in the documentation
+-  and/or other materials provided with the distribution.
+-
+-* Neither the name of the copyright holder nor the names of its
+-  contributors may be used to endorse or promote products derived from
+-  this software without specific prior written permission.
+-
+-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++BSD 3-Clause License
++
++Copyright (c) 2012-2018, Simon Sapin and contributors (see AUTHORS).
++All rights reserved.
++
++Redistribution and use in source and binary forms, with or without
++modification, are permitted provided that the following conditions are met:
++
++* Redistributions of source code must retain the above copyright notice, this
++  list of conditions and the following disclaimer.
++
++* Redistributions in binary form must reproduce the above copyright notice,
++  this list of conditions and the following disclaimer in the documentation
++  and/or other materials provided with the distribution.
++
++* Neither the name of the copyright holder nor the names of its
++  contributors may be used to endorse or promote products derived from
++  this software without specific prior written permission.
++
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
++FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
++DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
++SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
++CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+--- a/소스/licenses/cssselect2/METADATA
++++ b/소스/licenses/cssselect2/METADATA
+@@ -1,64 +1,64 @@
+-Metadata-Version: 2.5
+-Name: cssselect2
+-Version: 0.10.1
+-Summary: CSS selectors for Python ElementTree
+-Keywords: css,elementtree
+-Author-email: Simon Sapin <simon.sapin@exyr.org>
+-Maintainer-email: CourtBouillon <contact@courtbouillon.org>
+-Requires-Python: >=3.10
+-Description-Content-Type: text/x-rst
+-Classifier: Development Status :: 5 - Production/Stable
+-Classifier: Intended Audience :: Developers
+-Classifier: License :: OSI Approved :: BSD License
+-Classifier: Operating System :: OS Independent
+-Classifier: Programming Language :: Python
+-Classifier: Programming Language :: Python :: 3
+-Classifier: Programming Language :: Python :: 3 :: Only
+-Classifier: Programming Language :: Python :: 3.10
+-Classifier: Programming Language :: Python :: 3.11
+-Classifier: Programming Language :: Python :: 3.12
+-Classifier: Programming Language :: Python :: 3.13
+-Classifier: Programming Language :: Python :: 3.14
+-Classifier: Programming Language :: Python :: Implementation :: CPython
+-Classifier: Programming Language :: Python :: Implementation :: PyPy
+-Classifier: Topic :: Internet :: WWW/HTTP
+-License-File: LICENSE
+-Requires-Dist: tinycss2
+-Requires-Dist: webencodings
+-Requires-Dist: sphinx ; extra == "doc"
+-Requires-Dist: furo ; extra == "doc"
+-Requires-Dist: pytest ; extra == "test"
+-Requires-Dist: ruff ; extra == "test"
+-Project-URL: Changelog, https://github.com/Kozea/cssselect2/releases
+-Project-URL: Code, https://github.com/Kozea/cssselect2/
+-Project-URL: Documentation, https://doc.courtbouillon.org/cssselect2/
+-Project-URL: Donation, https://opencollective.com/courtbouillon
+-Project-URL: Homepage, https://doc.courtbouillon.org/cssselect2/
+-Project-URL: Issues, https://github.com/Kozea/cssselect2/issues
+-Provides-Extra: doc
+-Provides-Extra: test
+-Import-Name: cssselect2
+-
+-cssselect2 is a straightforward implementation of CSS4 Selectors for markup
+-documents (HTML, XML, etc.) that can be read by ElementTree-like parsers
+-(including cElementTree, lxml, html5lib, etc.)
+-
+-* Free software: BSD license
+-* For Python 3.10+, tested on CPython and PyPy
+-* Documentation: https://doc.courtbouillon.org/cssselect2
+-* Changelog: https://github.com/Kozea/cssselect2/releases
+-* Code, issues, tests: https://github.com/Kozea/cssselect2
+-* Code of conduct: https://www.courtbouillon.org/code-of-conduct.html
+-* Professional support: https://www.courtbouillon.org
+-* Donation: https://opencollective.com/courtbouillon
+-
+-cssselect2 has been created and developed by Kozea (https://kozea.fr/).
+-Professional support, maintenance and community management is provided by
+-CourtBouillon (https://www.courtbouillon.org/).
+-
+-Copyrights are retained by their contributors, no copyright assignment is
+-required to contribute to cssselect2. Unless explicitly stated otherwise, any
+-contribution intentionally submitted for inclusion is licensed under the BSD
+-3-clause license, without any additional terms or conditions. For full
+-authorship information, see the version control history.
+-
++Metadata-Version: 2.5
++Name: cssselect2
++Version: 0.10.1
++Summary: CSS selectors for Python ElementTree
++Keywords: css,elementtree
++Author-email: Simon Sapin <simon.sapin@exyr.org>
++Maintainer-email: CourtBouillon <contact@courtbouillon.org>
++Requires-Python: >=3.10
++Description-Content-Type: text/x-rst
++Classifier: Development Status :: 5 - Production/Stable
++Classifier: Intended Audience :: Developers
++Classifier: License :: OSI Approved :: BSD License
++Classifier: Operating System :: OS Independent
++Classifier: Programming Language :: Python
++Classifier: Programming Language :: Python :: 3
++Classifier: Programming Language :: Python :: 3 :: Only
++Classifier: Programming Language :: Python :: 3.10
++Classifier: Programming Language :: Python :: 3.11
++Classifier: Programming Language :: Python :: 3.12
++Classifier: Programming Language :: Python :: 3.13
++Classifier: Programming Language :: Python :: 3.14
++Classifier: Programming Language :: Python :: Implementation :: CPython
++Classifier: Programming Language :: Python :: Implementation :: PyPy
++Classifier: Topic :: Internet :: WWW/HTTP
++License-File: LICENSE
++Requires-Dist: tinycss2
++Requires-Dist: webencodings
++Requires-Dist: sphinx ; extra == "doc"
++Requires-Dist: furo ; extra == "doc"
++Requires-Dist: pytest ; extra == "test"
++Requires-Dist: ruff ; extra == "test"
++Project-URL: Changelog, https://github.com/Kozea/cssselect2/releases
++Project-URL: Code, https://github.com/Kozea/cssselect2/
++Project-URL: Documentation, https://doc.courtbouillon.org/cssselect2/
++Project-URL: Donation, https://opencollective.com/courtbouillon
++Project-URL: Homepage, https://doc.courtbouillon.org/cssselect2/
++Project-URL: Issues, https://github.com/Kozea/cssselect2/issues
++Provides-Extra: doc
++Provides-Extra: test
++Import-Name: cssselect2
++
++cssselect2 is a straightforward implementation of CSS4 Selectors for markup
++documents (HTML, XML, etc.) that can be read by ElementTree-like parsers
++(including cElementTree, lxml, html5lib, etc.)
++
++* Free software: BSD license
++* For Python 3.10+, tested on CPython and PyPy
++* Documentation: https://doc.courtbouillon.org/cssselect2
++* Changelog: https://github.com/Kozea/cssselect2/releases
++* Code, issues, tests: https://github.com/Kozea/cssselect2
++* Code of conduct: https://www.courtbouillon.org/code-of-conduct.html
++* Professional support: https://www.courtbouillon.org
++* Donation: https://opencollective.com/courtbouillon
++
++cssselect2 has been created and developed by Kozea (https://kozea.fr/).
++Professional support, maintenance and community management is provided by
++CourtBouillon (https://www.courtbouillon.org/).
++
++Copyrights are retained by their contributors, no copyright assignment is
++required to contribute to cssselect2. Unless explicitly stated otherwise, any
++contribution intentionally submitted for inclusion is licensed under the BSD
++3-clause license, without any additional terms or conditions. For full
++authorship information, see the version control history.
++
+--- a/소스/licenses/et_xmlfile/METADATA
++++ b/소스/licenses/et_xmlfile/METADATA
+@@ -1,51 +1,51 @@
+-Metadata-Version: 2.1
+-Name: et_xmlfile
+-Version: 2.0.0
+-Summary: An implementation of lxml.xmlfile for the standard library
+-Home-page: https://foss.heptapod.net/openpyxl/et_xmlfile
+-Author: See AUTHORS.txt
+-Author-email: charlie.clark@clark-consulting.eu
+-License: MIT
+-Project-URL: Documentation, https://openpyxl.pages.heptapod.net/et_xmlfile/
+-Project-URL: Source, https://foss.heptapod.net/openpyxl/et_xmlfile
+-Project-URL: Tracker, https://foss.heptapod.net/openpyxl/et_xmfile/-/issues
+-Classifier: Development Status :: 5 - Production/Stable
+-Classifier: Operating System :: MacOS :: MacOS X
+-Classifier: Operating System :: Microsoft :: Windows
+-Classifier: Operating System :: POSIX
+-Classifier: License :: OSI Approved :: MIT License
+-Classifier: Programming Language :: Python
+-Classifier: Programming Language :: Python :: 3.8
+-Classifier: Programming Language :: Python :: 3.9
+-Classifier: Programming Language :: Python :: 3.10
+-Classifier: Programming Language :: Python :: 3.11
+-Classifier: Programming Language :: Python :: 3.12
+-Classifier: Programming Language :: Python :: 3.13
+-Requires-Python: >=3.8
+-License-File: LICENCE.python
+-License-File: LICENCE.rst
+-License-File: AUTHORS.txt
+-
+-.. image:: https://foss.heptapod.net/openpyxl/et_xmlfile/badges/branch/default/coverage.svg
+-    :target: https://coveralls.io/bitbucket/openpyxl/et_xmlfile?branch=default
+-    :alt: coverage status
+-
+-et_xmfile
+-=========
+-
+-XML can use lots of memory, and et_xmlfile is a low memory library for creating large XML files
+-And, although the standard library already includes an incremental parser, `iterparse` it has no equivalent when writing XML. Once an element has been added to the tree, it is written to
+-the file or stream and the memory is then cleared.
+-
+-This module is based upon the `xmlfile module from lxml <http://lxml.de/api.html#incremental-xml-generation>`_ with the aim of allowing code to be developed that will work with both libraries.
+-It was developed initially for the openpyxl project, but is now a standalone module.
+-
+-The code was written by Elias Rabel as part of the `Python Düsseldorf <http://pyddf.de>`_ openpyxl sprint in September 2014.
+-
+-Proper support for incremental writing was provided by Daniel Hillier in 2024
+-
+-Note on performance
+--------------------
+-
+-The code was not developed with performance in mind, but turned out to be faster than the existing SAX-based implementation but is generally slower than lxml's xmlfile.
+-There is one area where an optimisation for lxml may negatively affect the performance of et_xmfile and that is when using the `.element()` method on the xmlfile context manager. It is, therefore, recommended simply to create Elements write these directly, as in the sample code.
++Metadata-Version: 2.1
++Name: et_xmlfile
++Version: 2.0.0
++Summary: An implementation of lxml.xmlfile for the standard library
++Home-page: https://foss.heptapod.net/openpyxl/et_xmlfile
++Author: See AUTHORS.txt
++Author-email: charlie.clark@clark-consulting.eu
++License: MIT
++Project-URL: Documentation, https://openpyxl.pages.heptapod.net/et_xmlfile/
++Project-URL: Source, https://foss.heptapod.net/openpyxl/et_xmlfile
++Project-URL: Tracker, https://foss.heptapod.net/openpyxl/et_xmfile/-/issues
++Classifier: Development Status :: 5 - Production/Stable
++Classifier: Operating System :: MacOS :: MacOS X
++Classifier: Operating System :: Microsoft :: Windows
++Classifier: Operating System :: POSIX
++Classifier: License :: OSI Approved :: MIT License
++Classifier: Programming Language :: Python
++Classifier: Programming Language :: Python :: 3.8
++Classifier: Programming Language :: Python :: 3.9
++Classifier: Programming Language :: Python :: 3.10
++Classifier: Programming Language :: Python :: 3.11
++Classifier: Programming Language :: Python :: 3.12
++Classifier: Programming Language :: Python :: 3.13
++Requires-Python: >=3.8
++License-File: LICENCE.python
++License-File: LICENCE.rst
++License-File: AUTHORS.txt
++
++.. image:: https://foss.heptapod.net/openpyxl/et_xmlfile/badges/branch/default/coverage.svg
++    :target: https://coveralls.io/bitbucket/openpyxl/et_xmlfile?branch=default
++    :alt: coverage status
++
++et_xmfile
++=========
++
++XML can use lots of memory, and et_xmlfile is a low memory library for creating large XML files
++And, although the standard library already includes an incremental parser, `iterparse` it has no equivalent when writing XML. Once an element has been added to the tree, it is written to
++the file or stream and the memory is then cleared.
++
++This module is based upon the `xmlfile module from lxml <http://lxml.de/api.html#incremental-xml-generation>`_ with the aim of allowing code to be developed that will work with both libraries.
++It was developed initially for the openpyxl project, but is now a standalone module.
++
++The code was written by Elias Rabel as part of the `Python Düsseldorf <http://pyddf.de>`_ openpyxl sprint in September 2014.
++
++Proper support for incremental writing was provided by Daniel Hillier in 2024
++
++Note on performance
++-------------------
++
++The code was not developed with performance in mind, but turned out to be faster than the existing SAX-based implementation but is generally slower than lxml's xmlfile.
++There is one area where an optimisation for lxml may negatively affect the performance of et_xmfile and that is when using the `.element()` method on the xmlfile context manager. It is, therefore, recommended simply to create Elements write these directly, as in the sample code.
+--- a/소스/licenses/GCC-RUNTIME-EXCEPTION.txt
++++ b/소스/licenses/GCC-RUNTIME-EXCEPTION.txt
+@@ -1,73 +1,73 @@
+-GCC RUNTIME LIBRARY EXCEPTION
+-
+-Version 3.1, 31 March 2009
+-
+-Copyright (C) 2009 Free Software Foundation, Inc. <http://fsf.org/>
+-
+-Everyone is permitted to copy and distribute verbatim copies of this
+-license document, but changing it is not allowed.
+-
+-This GCC Runtime Library Exception ("Exception") is an additional
+-permission under section 7 of the GNU General Public License, version
+-3 ("GPLv3"). It applies to a given file (the "Runtime Library") that
+-bears a notice placed by the copyright holder of the file stating that
+-the file is governed by GPLv3 along with this Exception.
+-
+-When you use GCC to compile a program, GCC may combine portions of
+-certain GCC header files and runtime libraries with the compiled
+-program. The purpose of this Exception is to allow compilation of
+-non-GPL (including proprietary) programs to use, in this way, the
+-header files and runtime libraries covered by this Exception.
+-
+-0. Definitions.
+-
+-A file is an "Independent Module" if it either requires the Runtime
+-Library for execution after a Compilation Process, or makes use of an
+-interface provided by the Runtime Library, but is not otherwise based
+-on the Runtime Library.
+-
+-"GCC" means a version of the GNU Compiler Collection, with or without
+-modifications, governed by version 3 (or a specified later version) of
+-the GNU General Public License (GPL) with the option of using any
+-subsequent versions published by the FSF.
+-
+-"GPL-compatible Software" is software whose conditions of propagation,
+-modification and use would permit combination with GCC in accord with
+-the license of GCC.
+-
+-"Target Code" refers to output from any compiler for a real or virtual
+-target processor architecture, in executable form or suitable for
+-input to an assembler, loader, linker and/or execution
+-phase. Notwithstanding that, Target Code does not include data in any
+-format that is used as a compiler intermediate representation, or used
+-for producing a compiler intermediate representation.
+-
+-The "Compilation Process" transforms code entirely represented in
+-non-intermediate languages designed for human-written code, and/or in
+-Java Virtual Machine byte code, into Target Code. Thus, for example,
+-use of source code generators and preprocessors need not be considered
+-part of the Compilation Process, since the Compilation Process can be
+-understood as starting with the output of the generators or
+-preprocessors.
+-
+-A Compilation Process is "Eligible" if it is done using GCC, alone or
+-with other GPL-compatible software, or if it is done without using any
+-work based on GCC. For example, using non-GPL-compatible Software to
+-optimize any GCC intermediate representations would not qualify as an
+-Eligible Compilation Process.
+-
+-1. Grant of Additional Permission.
+-
+-You have permission to propagate a work of Target Code formed by
+-combining the Runtime Library with Independent Modules, even if such
+-propagation would otherwise violate the terms of GPLv3, provided that
+-all Target Code was generated by Eligible Compilation Processes. You
+-may then convey such a combination under terms of your choice,
+-consistent with the licensing of the Independent Modules.
+-
+-2. No Weakening of GCC Copyleft.
+-
+-The availability of this Exception does not imply any general
+-presumption that third-party software is unaffected by the copyleft
+-requirements of the license of GCC.
+-
++GCC RUNTIME LIBRARY EXCEPTION
++
++Version 3.1, 31 March 2009
++
++Copyright (C) 2009 Free Software Foundation, Inc. <http://fsf.org/>
++
++Everyone is permitted to copy and distribute verbatim copies of this
++license document, but changing it is not allowed.
++
++This GCC Runtime Library Exception ("Exception") is an additional
++permission under section 7 of the GNU General Public License, version
++3 ("GPLv3"). It applies to a given file (the "Runtime Library") that
++bears a notice placed by the copyright holder of the file stating that
++the file is governed by GPLv3 along with this Exception.
++
++When you use GCC to compile a program, GCC may combine portions of
++certain GCC header files and runtime libraries with the compiled
++program. The purpose of this Exception is to allow compilation of
++non-GPL (including proprietary) programs to use, in this way, the
++header files and runtime libraries covered by this Exception.
++
++0. Definitions.
++
++A file is an "Independent Module" if it either requires the Runtime
++Library for execution after a Compilation Process, or makes use of an
++interface provided by the Runtime Library, but is not otherwise based
++on the Runtime Library.
++
++"GCC" means a version of the GNU Compiler Collection, with or without
++modifications, governed by version 3 (or a specified later version) of
++the GNU General Public License (GPL) with the option of using any
++subsequent versions published by the FSF.
++
++"GPL-compatible Software" is software whose conditions of propagation,
++modification and use would permit combination with GCC in accord with
++the license of GCC.
++
++"Target Code" refers to output from any compiler for a real or virtual
++target processor architecture, in executable form or suitable for
++input to an assembler, loader, linker and/or execution
++phase. Notwithstanding that, Target Code does not include data in any
++format that is used as a compiler intermediate representation, or used
++for producing a compiler intermediate representation.
++
++The "Compilation Process" transforms code entirely represented in
++non-intermediate languages designed for human-written code, and/or in
++Java Virtual Machine byte code, into Target Code. Thus, for example,
++use of source code generators and preprocessors need not be considered
++part of the Compilation Process, since the Compilation Process can be
++understood as starting with the output of the generators or
++preprocessors.
++
++A Compilation Process is "Eligible" if it is done using GCC, alone or
++with other GPL-compatible software, or if it is done without using any
++work based on GCC. For example, using non-GPL-compatible Software to
++optimize any GCC intermediate representations would not qualify as an
++Eligible Compilation Process.
++
++1. Grant of Additional Permission.
++
++You have permission to propagate a work of Target Code formed by
++combining the Runtime Library with Independent Modules, even if such
++propagation would otherwise violate the terms of GPLv3, provided that
++all Target Code was generated by Eligible Compilation Processes. You
++may then convey such a combination under terms of your choice,
++consistent with the licensing of the Independent Modules.
++
++2. No Weakening of GCC Copyleft.
++
++The availability of this Exception does not imply any general
++presumption that third-party software is unaffected by the copyleft
++requirements of the license of GCC.
++

@@ -1,0 +1,447 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+# Build gcc-mingw-w64 using gcc-14-source.
+# Copyright © 2010-2024 Stephen Kitt <skitt@debian.org>
+# Copyright © 2022-2024 Konstantin Demin <rockdrilla@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+ifeq (,$(filter terse,$(DEB_BUILD_OPTIONS)))
+export DH_VERBOSE := 1
+endif
+
+# Disable package mangling in Launchpad; it currently fails to parse
+# Built-Using, which results in build failures
+export NO_PKG_MANGLE=1
+
+target_version := 14
+target32 := i686-w64-mingw32
+target64 := x86_64-w64-mingw32
+targetucrt := x86_64-w64-mingw32ucrt
+targets := $(target32) $(target64)
+threads := posix win32
+gnat_arches := alpha amd64 arm64 armel armhf hppa i386 mips64el mipsel ppc64 ppc64el riscv64 s390x sh4 sparc64 x32
+
+include /usr/share/dpkg/pkg-info.mk
+include /usr/share/dpkg/architecture.mk
+
+top_dir := $(shell pwd)
+gcc_dir := /usr/src/gcc-$(target_version)
+upstream_dir := $(top_dir)/src
+build_dir := $(top_dir)/build
+stampdir := $(top_dir)/stamps
+source_version := $(shell dpkg-query -W -f='$${Version}' gcc-$(target_version)-source)
+deb_version := $(source_version)+$(DEB_VERSION)
+deb_upstream_version := $(word 1,$(subst -, ,$(source_version)))
+base_version := $(target_version)
+export deb_upstream_version
+
+# Languages to build (full build only)
+languages := c,c++,fortran,objc,obj-c++
+ifneq (,$(filter $(DEB_HOST_ARCH),$(gnat_arches)))
+languages := $(languages),ada
+endif
+
+%:
+	dh $@
+
+comma := ,
+debian/control: $(wildcard debian/control.*) debian/rules
+	echo \# This file is generated using debian/rules control, do not edit > $@
+	cat debian/control.source >> $@
+	echo >> $@
+	cat debian/control.bootstrap >> $@
+	for language in $(subst $(comma), ,$(languages)); do \
+		echo >> $@; \
+		sed -f debian/control.$$language.sed debian/control.template >> $@; \
+	done
+	for target in $(subst -w64-mingw32,,$(subst _,-,$(targets))); do \
+		echo >> $@; \
+		sed "s/@@TARGET@@/$$target/g" debian/control.runtime >> $@; \
+	done
+	echo >> $@
+	cat debian/control.ucrt64-runtime >> $@
+	echo >> $@
+	cat debian/control.base >> $@
+	sed -i '/^Recommends: $$/d' $@
+	sed -i '/^Breaks: $$/d' $@
+	sed -i '/^Conflicts: $$/d' $@
+	sed -i '/^Replaces: $$/d' $@
+	sed -i 's/@@VERSION@@/$(target_version)/g' $@
+ifeq (,$(gnat_arches))
+	sed -i '/@@GNAT_ARCHES@@/d' $@
+else
+	sed -i 's/@@GNAT_ARCHES@@/$(gnat_arches)/' $@
+endif
+	sed -i 's/, $$/,/' $@
+
+# Hardening on the host, none on the target
+# Format fails the build currently; using PIE produces a compiler
+# which can't build with pre-compiled headers
+dpkg_buildflags_host = DEB_BUILD_MAINT_OPTIONS="hardening=+all,-format,-pie" dpkg-buildflags
+dpkg_buildflags_target = DEB_BUILD_MAINT_OPTIONS="hardening=-all qa=-bug-implicit-func" dpkg-buildflags
+
+ifeq (,$(filter stage1,$(DEB_BUILD_PROFILES)))
+CC = gcc-$(target_version)
+CXX = g++-$(target_version)
+endif
+export CC CXX
+
+BUILDFLAGS = CFLAGS CPPFLAGS CXXFLAGS FCFLAGS FFLAGS LDFLAGS
+export $(BUILDFLAGS) $(patsubst %,%_FOR_TARGET,$(BUILDFLAGS))
+$(foreach flag,$(BUILDFLAGS),$(eval $(flag) := $(shell $(dpkg_buildflags_host) --get $(flag))))
+$(foreach flag,$(BUILDFLAGS),$(eval $(flag)_FOR_TARGET := $(shell $(dpkg_buildflags_target) --get $(flag))))
+CFLAGS += -Wall
+CFLAGS_FOR_TARGET += -Wall
+CXXFLAGS += -Wall
+CXXFLAGS_FOR_TARGET += -Wall
+LDFLAGS_FOR_TARGET += -Wl,--as-needed
+
+# libgfortran doesn't handle FCFLAGS_FOR_TARGET, override FCFLAGS
+FCFLAGS := $(shell $(dpkg_buildflags_target) --get FCFLAGS)
+
+# Number of jobs to run for build
+ifeq (no,$(USE_NJOBS))
+  NJOBS :=
+  USE_CPUS := 1
+else
+  # Increase to 192 if building Java
+  MEM_PER_CPU = 128
+  NUM_CPUS := $(shell if echo $(USE_NJOBS) | grep -q -E '^[0-9]+$$'; \
+                        then echo $(USE_NJOBS); \
+                        else getconf _NPROCESSORS_ONLN 2>/dev/null || echo 1; fi)
+  USE_CPUS := $(shell awk -vn=$(NUM_CPUS) -vm=$(MEM_PER_CPU) '/^MemTotal/ { mt = $$2 } \
+    END { n2 = int(mt/1024/m); print (n==1 || n2<=1) ? 1 : (n2<=n ? n2 : n) }' /proc/meminfo)
+  ifneq (,$(strip $(USE_CPUS)))
+    NJOBS := -j $(USE_CPUS)
+  endif
+endif
+
+# Support parallel=<n> in DEB_BUILD_OPTIONS (see #209008)
+ifneq (,$(filter parallel=%,$(subst $(comma), ,$(DEB_BUILD_OPTIONS))))
+  NJOBS := -j $(subst parallel=,,$(filter parallel=%,$(subst $(comma), ,$(DEB_BUILD_OPTIONS))))
+endif
+
+# Patch targets
+patchdir = $(gcc_dir)/debian/patches
+series_file = series
+unpack_stamp = $(stampdir)/unpack
+patch_stamp = $(stampdir)/patch
+GFDL_INVARIANT_FREE=yes
+srcdir=$(upstream_dir)
+include $(gcc_dir)/debian/rules.patch
+
+unpack: $(unpack_stamp)
+$(unpack_stamp):
+	tar xf $(gcc_dir)/gcc-*.tar.*
+	rm -rf $(upstream_dir)
+	mv gcc-* $(upstream_dir)
+# Apply our first series of patches (those which need to be applied
+# before gcc-?-source’s)
+	QUILT_SERIES=debian/patches/series1 QUILT_PATCHES=debian/patches quilt push -a
+# Drop the quilt cache so we can process other series
+	rm -rf .pc
+	mkdir -p $(stampdir)
+# gcov-dump.texi is missing in some source tarballs
+	if [ ! -f $(upstream_dir)/gcc/doc/gcov-dump.texi ]; then cp $(gcc_dir)/debian/dummy.texi $(upstream_dir)/gcc/doc/gcov-dump.texi; fi
+	touch $@
+
+execute_before_dh_clean: debian/control
+	rm -rf $(stampdir) $(build_dir) $(upstream_dir) .pc autotools_files series *-stamp
+	rm -f $(patsubst %.in,%,$(wildcard debian/*.in))
+
+# Configuration constructed as in the gcc package
+PF=usr
+libdir=lib
+libexecdir=$(PF)/$(libdir)
+
+# Standard Debian configuration flags
+CONFFLAGS = \
+	--prefix=/$(PF) \
+	--enable-shared \
+	--enable-static \
+	--disable-multilib \
+	--with-system-zlib \
+	--libexecdir=/$(libexecdir) \
+	--without-included-gettext \
+	--libdir=/$(PF)/$(libdir) \
+	--enable-libstdcxx-time=yes \
+	--with-tune=generic
+# Tell GCC we have headers (this enables gcov)
+CONFFLAGS += \
+	--with-headers
+# MinGW-w64 flags
+# version-specific-runtime-libs puts target-specific libraries in
+# /usr/lib/gcc rather than /usr/$(target)
+CONFFLAGS += \
+	--enable-version-specific-runtime-libs \
+	--enable-fully-dynamic-string \
+	--enable-libgomp
+# Target-dependent
+CONFFLAGS += \
+	--program-prefix=$$target- \
+	--target=$$target \
+	--with-as=/usr/bin/$$target-as \
+	--with-ld=/usr/bin/$$target-ld
+# Enable libatomic
+CONFFLAGS += \
+	--enable-libatomic
+# Enable experimental::filesystem and std::filesystem
+CONFFLAGS += \
+	--enable-libstdcxx-filesystem-ts=yes
+# Enable dependency tracking (disabled by dh; see
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=55930 for details)
+CONFFLAGS += \
+	--enable-dependency-tracking
+# Use the most compatible path for sed (e.g. non-usrmerge).
+CONFFLAGS += \
+	SED=/bin/sed
+
+# BOOTFLAGS are used for the bootstrap build, FULLFLAGS for the full build
+BOOTFLAGS += \
+	--enable-languages=c,c++
+FULLFLAGS += \
+	--enable-languages=$(languages)
+# Thread-model-dependent
+THREADFLAGS += \
+	--enable-threads=$$threads \
+	--program-suffix=-$$threads
+UCRTFLAGS += \
+	--enable-threads=posix
+# LTO
+BOOTFLAGS += \
+	--disable-lto
+FULLFLAGS += \
+	--enable-lto
+
+# FLAGS32 are 32-bit-specific, FLAGS64 64-bit-specific
+# For 32-bit targets, force Dwarf2 exception handling
+FLAGS32 += \
+	--disable-sjlj-exceptions --with-dwarf2
+
+spelling = echo "--- Fix spelling of \"$(1)\" -> \"$(2)\"" >&2 ; find $(upstream_dir)/ -type f -exec grep -FZl -e "$(1)" {} + | xargs -0t sed -i "s/$(1)/$(2)/g" || echo "--- The above fix is no longer necessary"
+
+# Patches applied or unapplied after the upstream sources have been
+# unpacked and patched using the gcc-?-source package's patches
+mingw-w64-patch: mingw-w64-patch-stamp
+mingw-w64-patch-stamp: $(patch_stamp)
+# Apply our second series of patches
+	rm -rf .pc
+	QUILT_SERIES=debian/patches/series2 QUILT_PATCHES=debian/patches quilt push -a
+# Spelling fixes
+	$(call spelling,Allow to,Allow one to)
+	$(call spelling,Var befor:,Var before:)
+	$(call spelling,eroneous,erroneous)
+	$(call spelling,identifer,identifier)
+	$(call spelling,informations,information)
+	$(call spelling,interchage,interchange)
+	$(call spelling,intial,initial)
+	$(call spelling,intrument,instrument)
+	$(call spelling,mininum,minimum)
+	$(call spelling,mutiple,multiple)
+	$(call spelling,occurence,occurrence)
+	$(call spelling,refrence,reference)
+	$(call spelling,should't,shouldn't)
+	$(call spelling,splitted,split)
+	$(call spelling,Staticly,Statically)
+	$(call spelling,temorary,temporary)
+	$(call spelling,suported,supported)
+	$(call spelling,wihout,without)
+# Force /bin/sh in mkheaders
+	sed -i sX@SHELL@X/bin/shX $(upstream_dir)/fixincludes/mkheaders.in
+# Fix the date and time of patched files
+	find . -type f -a -newermt '@$(SOURCE_DATE_EPOCH)' \
+		-exec touch --no-dereference --date='@$(SOURCE_DATE_EPOCH)' {} +
+	touch $@
+
+export PATH := $(top_dir)/bin:$(PATH)
+
+$(top_dir)/bin/gnat:
+	mkdir -p bin
+	for b in /usr/bin/gnat*-$(target_version); do \
+		t="$${b##*/}"; \
+		t="$${t%%-$(target_version)}"; \
+		ln -sf $$b bin/$$t; \
+	done
+
+# 32- and 64-bit targets are split: 32-bit uses Dwarf2, 64-bit the default SEH
+override_dh_auto_configure: debian/control mingw-w64-patch-stamp $(top_dir)/bin/gnat
+	set -e; \
+	cp $(upstream_dir)/gcc/BASE-VER.orig $(upstream_dir)/gcc/BASE-VER || \
+	cp $(upstream_dir)/gcc/BASE-VER $(upstream_dir)/gcc/BASE-VER.orig; \
+	touch -r $(top_dir)/debian/changelog $(upstream_dir)/gcc/BASE-VER; \
+	mkdir -p $(build_dir)/$(target32)-bootstrap $(build_dir)/$(target64)-bootstrap $(build_dir)/$(targetucrt)-bootstrap; \
+	target=$(target32); \
+	cd $(build_dir)/$(target32)-bootstrap && $(upstream_dir)/configure \
+		$(CONFFLAGS) $(BOOTFLAGS) $(FLAGS32); \
+	for target in $(target64) $(targetucrt); do \
+	cd $(build_dir)/$${target}-bootstrap && $(upstream_dir)/configure \
+		$(CONFFLAGS) $(BOOTFLAGS) $(FLAGS64); \
+	done
+ifeq (,$(filter stage1,$(DEB_BUILD_PROFILES)))
+	set -e; \
+	for threads in $(threads); do \
+		echo $(base_version)-$$threads > $(upstream_dir)/gcc/BASE-VER; \
+		touch -r $(top_dir)/debian/changelog $(upstream_dir)/gcc/BASE-VER; \
+		mkdir -p $(build_dir)/$(target32)-$$threads $(build_dir)/$(target64)-$$threads; \
+		target=$(target32); \
+		cd $(build_dir)/$(target32)-$$threads && $(upstream_dir)/configure \
+			$(CONFFLAGS) $(FULLFLAGS) $(THREADFLAGS) $(FLAGS32); \
+		target=$(target64); \
+		cd $(build_dir)/$(target64)-$$threads && $(upstream_dir)/configure \
+			$(CONFFLAGS) $(FULLFLAGS) $(THREADFLAGS) $(FLAGS64); \
+	done
+# For UCRT we only build with POSIX threads (see Fedora and MSYS2)
+	echo $(base_version) > $(upstream_dir)/gcc/BASE-VER; \
+	touch -r $(top_dir)/debian/changelog $(upstream_dir)/gcc/BASE-VER; \
+	target=$(targetucrt); \
+	mkdir -p $(build_dir)/$${target} && \
+	cd $(build_dir)/$${target} && $(upstream_dir)/configure \
+		$(CONFFLAGS) $(FULLFLAGS) $(UCRTFLAGS) $(FLAGS64)
+endif
+
+override_dh_auto_build-arch: $(top_dir)/bin/gnat
+	set -e; \
+	cp $(upstream_dir)/gcc/BASE-VER.orig $(upstream_dir)/gcc/BASE-VER; \
+	touch -r $(top_dir)/debian/changelog $(upstream_dir)/gcc/BASE-VER; \
+	for target in $(targets) $(targetucrt); do \
+		cd $(build_dir)/$$target-bootstrap && \
+		$(MAKE) $(NJOBS) all-gcc; \
+	done
+ifeq (,$(filter stage1,$(DEB_BUILD_PROFILES)))
+	set -e; \
+	for target in $(targets); do \
+		for threads in $(threads); do \
+			echo $(base_version)-$$threads > $(upstream_dir)/gcc/BASE-VER && \
+			touch -r $(top_dir)/debian/changelog $(upstream_dir)/gcc/BASE-VER && \
+			cd $(build_dir)/$$target-$$threads && \
+			$(MAKE) $(NJOBS); \
+		done; \
+	done; \
+	target=$(targetucrt); \
+	echo $(base_version) > $(upstream_dir)/gcc/BASE-VER && \
+	touch -r $(top_dir)/debian/changelog $(upstream_dir)/gcc/BASE-VER && \
+	cd $(build_dir)/$$target && \
+	$(MAKE) $(NJOBS)
+endif
+
+override_dh_auto_build-indep:
+
+override_dh_auto_install-arch:
+# Base installation, move misplaced DLLs and libraries
+	set -e; \
+	destdir=$(top_dir)/debian/gcc-mingw-w64-bootstrap && \
+	cp $(upstream_dir)/gcc/BASE-VER.orig $(upstream_dir)/gcc/BASE-VER; \
+	touch -r $(top_dir)/debian/changelog $(upstream_dir)/gcc/BASE-VER; \
+	for target in $(targets) $(targetucrt); do \
+		cd $(build_dir)/$$target-bootstrap && \
+		$(MAKE) DESTDIR=$$destdir install-gcc; \
+		if [ -f $$destdir/usr/lib/gcc/$$target/lib/*.a ]; then \
+			mv $$destdir/usr/lib/gcc/$$target/lib/*.a $$destdir/usr/lib/gcc/$$target/$(base_version)/; \
+		fi; \
+		if [ -f $$destdir/usr/lib/gcc/$$target/*.dll ]; then \
+			mv $$destdir/usr/lib/gcc/$$target/*.dll $$destdir/usr/lib/gcc/$$target/$(base_version)/; \
+		fi; \
+		cd $(build_dir) && rm -rf $$target-bootstrap; \
+	done; \
+	rm -rf $$destdir/usr/include $$destdir/usr/share
+ifeq (,$(filter stage1,$(DEB_BUILD_PROFILES)))
+	set -e; \
+	for target in $(targets); do \
+		for threads in $(threads); do \
+			echo $(base_version)-$$threads > $(upstream_dir)/gcc/BASE-VER && \
+			touch -r $(top_dir)/debian/changelog $(upstream_dir)/gcc/BASE-VER && \
+			cd $(build_dir)/$$target-$${threads} && \
+			$(MAKE) DESTDIR=$(top_dir)/debian/tmp install install-lto-plugin; \
+			if [ -f $(top_dir)/debian/tmp/usr/lib/gcc/$$target/lib/*.a ]; then \
+				mv $(top_dir)/debian/tmp/usr/lib/gcc/$$target/lib/*.a $(top_dir)/debian/tmp/usr/lib/gcc/$$target/$(base_version)-$$threads/; \
+			fi; \
+			if [ -f $(top_dir)/debian/tmp/usr/lib/gcc/$$target/*.dll ]; then \
+				mv $(top_dir)/debian/tmp/usr/lib/gcc/$$target/*.dll $(top_dir)/debian/tmp/usr/lib/gcc/$$target/$(base_version)-$$threads/; \
+			fi; \
+			cd $(build_dir) && rm -rf $$target-$${threads}; \
+		done; \
+	done; \
+	target=$(targetucrt); \
+	echo $(base_version) > $(upstream_dir)/gcc/BASE-VER && \
+	touch -r $(top_dir)/debian/changelog $(upstream_dir)/gcc/BASE-VER && \
+	cd $(build_dir)/$$target && \
+	$(MAKE) DESTDIR=$(top_dir)/debian/tmp install install-lto-plugin; \
+	if [ -f $(top_dir)/debian/tmp/usr/lib/gcc/$$target/lib/*.a ]; then \
+		mv $(top_dir)/debian/tmp/usr/lib/gcc/$$target/lib/*.a $(top_dir)/debian/tmp/usr/lib/gcc/$$target/$(base_version)/; \
+	fi; \
+	if [ -f $(top_dir)/debian/tmp/usr/lib/gcc/$$target/*.dll ]; then \
+		mv $(top_dir)/debian/tmp/usr/lib/gcc/$$target/*.dll $(top_dir)/debian/tmp/usr/lib/gcc/$$target/$(base_version)/; \
+	fi; \
+	cd $(build_dir) && rm -rf $$target
+
+# Remove files which conflict with other packages
+# gcc-$(target_version)-locales
+	rm -rf $(top_dir)/debian/tmp/usr/share/locale
+# binutils-dev
+	rm -f $(top_dir)/debian/tmp/usr/lib/libiberty.a
+# libstdc++6-$(target_version)-dbg (potentially)
+	rm -rf $(top_dir)/debian/tmp/usr/share/gcc/python
+# -doc packages
+	rm -rf $(top_dir)/debian/tmp/usr/share/info
+	rm -rf $(top_dir)/debian/tmp/usr/share/man/man7
+# libcc1-0
+	rm -f $(top_dir)/debian/tmp/usr/lib/libcc1*
+
+# No need to ship empty manpages
+	rm -rf $(top_dir)/debian/tmp/usr/share/man/man1
+
+# Drop .la files
+	find $(top_dir)/debian/tmp/ -name \*.la -delete
+
+	for i in 1 2; do \
+		find $(top_dir)/debian/tmp/ -type d -empty -delete; \
+	done
+
+endif
+
+override_dh_installchangelogs:
+	dh_installchangelogs $(upstream_dir)/ChangeLog
+
+override_dh_gencontrol:
+	dh_gencontrol -- -v$(deb_version) -Vlocal:Version=$(deb_upstream_version) -Vgcc:Version=$(source_version)
+
+execute_before_dh_install-arch:
+	for file in debian/*.in; do sed 's/@@VERSION@@/$(target_version)/g;s/@@BASEVERSION@@/$(base_version)/g' < $$file > $${file%%.in}; chmod --reference=$$file $${file%%.in}; done
+ifeq (,$(filter ada,$(subst $(comma), ,$(languages))))
+	sed -i /adalib/d debian/*-runtime.install
+endif
+
+override_dh_installdocs-arch:
+	dh_installdocs -pgcc-mingw-w64-bootstrap
+	dh_installdocs -a --link-doc=gcc-mingw-w64-base
+
+override_dh_strip-arch:
+# Strip the binaries
+	dh_strip -a -Xw64-mingw32/lib $(patsubst %,-Xw64-mingw32/$(base_version)-%/lib,$(threads)) \
+		$(if $(findstring ada,$(languages)),$(patsubst %,-Xw64-mingw32/$(base_version)-%/adalib,$(threads)))
+# Strip the libraries
+ifeq (,$(filter nostrip,$(DEB_BUILD_OPTIONS)))
+	find $(top_dir)/debian -type f -name liblto_plugin.so \
+		-exec strip --remove-section=.comment --remove-section=.note --strip-unneeded {} +
+	for target in $(targets) $(targetucrt); do \
+		find $(top_dir)/debian -path \*/$$target/\* \( \( -path \*/plugin -prune \) -o \( -type f -name lib\*.a -exec $$target-strip --strip-unneeded {} + \) \); \
+	done
+endif
+
+execute_after_dh_fixperms-arch:
+# Fix permissions further - *.ali files must be read-only
+	find $(top_dir)/debian -name \*.ali -exec chmod 444 {} +
+
+.PHONY: mingw-w64-patch

@@ -25,6 +25,13 @@ BUILTINS = [
     {"version": 1, "name": "문서 PDF", "format": "pdf", "quality": 85, "width": 0, "height": 0,
      "max_bytes": 0, "zip": False, "template": "{name}", "extensions": ""},
 ]
+for _name, _format, _quality, _width, _limit in (
+    ("메일용 JPG · 1600px / 1MiB", "jpg", 80, 1600, 1024 * 1024),
+    ("인쇄용 PDF · 원본 크기", "pdf", 95, 0, 0),
+    ("웹용 WebP · 1920px / 512KiB", "webp", 80, 1920, 512 * 1024),
+):
+    BUILTINS.append({**BUILTINS[0], "name": _name, "format": _format,
+                     "quality": _quality, "width": _width, "max_bytes": _limit})
 MAX_FILES = 10000
 
 
@@ -174,6 +181,115 @@ def output_name(record, action, index):
     return name + "." + action["format"]
 
 
+def _preview_count(record, action, cancel):
+    """실제 엔진이 분리하는 결과 수만 확인하고 사용자 폴더에는 발행하지 않는다."""
+    source = safe_path(record['source'])
+    _, extension = engine.classify(source)
+    if (action['width'] or action['height']) and extension not in workspace._IMAGE_FORMATS:
+        raise ValueError('크기 조절 입력은 이미지만 지원합니다.')
+    target = action['format']
+    if target == extension or target not in ('jpg', 'png') or extension in workspace._IMAGE_FORMATS:
+        return 1
+    before = digest(source, cancel)
+    if extension == 'pdf':
+        import pypdfium2 as pdfium
+        from pdf_lock import PDFIUM_LOCK
+        while not PDFIUM_LOCK.acquire(timeout=.1):
+            pdf_tools.check_cancel(cancel)
+        try:
+            with pdfium.PdfDocument(str(source)) as document:
+                count = len(document)
+        finally:
+            PDFIUM_LOCK.release()
+    else:
+        # 문서 페이지 재배치는 실제 변환 없이 추정하지 않는다.
+        with tempfile.TemporaryDirectory(prefix='.flipring-name-preview-') as work:
+            count = len(workspace._single(source, {'op': 'convert', 'format': target,
+                            'quality': action['quality']}, Path(work), cancel))
+    if digest(source, cancel) != before:
+        raise ValueError('미리보기 중 입력이 변경되었습니다.')
+    if count < 1:
+        raise ValueError('예정 결과가 없는 입력입니다.')
+    return count
+
+
+def preview_output_names(records, action, output, cancel=None):
+    """디스크와 입력 묶음의 모든 실제 예정 이름에 발행 번호 규칙을 적용한다."""
+    action = validate_action(action)
+    directory = safe_path(output, exists=False)
+    reserved, rows = set(), []
+    for index, record in enumerate(records, 1):
+        pdf_tools.check_cancel(cancel)
+        relative = Path(record['relative'])
+        if relative.anchor or relative.drive or '..' in relative.parts:
+            raise ValueError('입력 상대 경로를 확인해 주세요.')
+        for part in relative.parts:
+            workspace._name(part)
+        folder = safe_path(directory / relative.parent, exists=False)
+        count = _preview_count(record, action, cancel)
+        base_name = output_name(record, action, index)
+        for part in range(1, count + 1):
+            name = (Path(base_name).stem + f'-{part}' + Path(base_name).suffix) if count > 1 else base_name
+            suffix = '.tar.gz' if name.lower().endswith('.tar.gz') else Path(name).suffix
+            stem = name[:-len(suffix)] if suffix else name
+            for number in range(1, 100000):
+                pdf_tools.check_cancel(cancel)
+                candidate = folder / (name if number == 1 else f'{stem} {number}{suffix}')
+                key = os.path.normcase(str(candidate))
+                if key not in reserved and not candidate.exists():
+                    reserved.add(key)
+                    rows.append({'source': record['source'], 'path': str(candidate)})
+                    break
+            else:
+                raise ValueError('새 결과 파일 이름을 만들지 못했습니다.')
+    if action['zip']:
+        name = '제출용.zip'
+        for number in range(1, 100000):
+            candidate = directory / (name if number == 1 else f'제출용 {number}.zip')
+            if os.path.normcase(str(candidate)) not in reserved and not candidate.exists():
+                rows.append({'source': '', 'path': str(candidate)})
+                break
+        else:
+            raise ValueError('묶음 결과 이름을 만들지 못했습니다.')
+    return rows
+
+
+def _tracked_publish(item, folder, name, source, input_hash, emit, cancel, expected_count=1):
+    """발행 예정 해시를 먼저 기록하고 배타 생성하여 중단 경계를 복구한다."""
+    expected_hash = digest(item, cancel)
+    suffix = ".tar.gz" if name.lower().endswith(".tar.gz") else Path(name).suffix
+    stem = name[:-len(suffix)] if suffix else name
+    for number in range(1, 100000):
+        pdf_tools.check_cancel(cancel)
+        path = folder / (name if number == 1 else f"{stem} {number}{suffix}")
+        if path.exists():
+            continue
+        owned = {"path": str(path), "source": str(source), "sha256": expected_hash,
+                 "size": Path(item).stat().st_size, "constraints_met": True}
+        # 이 신호의 수신자는 파일 생성 전에 영속 저장을 마친다.
+        emit({"state": "publishing", "source": str(source), "input_sha256": input_hash,
+              "owned": owned, "expected": expected_count})
+        try:
+            stream = path.open("xb")
+        except FileExistsError:
+            emit({"state": "publication_conflict", "source": str(source), "owned": owned, "expected": expected_count})
+            continue
+        try:
+            with stream, Path(item).open("rb") as origin:
+                while block := origin.read(1024 * 1024):
+                    pdf_tools.check_cancel(cancel)
+                    stream.write(block)
+                stream.flush()
+                os.fsync(stream.fileno())
+            if digest(path) != expected_hash:
+                raise ValueError("결과 발행 중 변경을 발견했습니다.")
+            return str(path)
+        except BaseException:
+            path.unlink(missing_ok=True)
+            raise
+    raise ValueError("새 결과 파일 이름을 만들지 못했습니다.")
+
+
 def preflight(records, action, output, cancel=None):
     action = validate_action(action)
     directory = safe_path(output, exists=False)
@@ -228,13 +344,14 @@ def digest(path, cancel=None):
     return result.hexdigest()
 
 
-def run_action(records, action, output, cancel=None, on_event=None):
+def run_action(records, action, output, cancel=None, on_event=None, completed=None):
     """중간 산출물은 임시 폴더에 두고 최종 결과만 새 이름으로 발행한다."""
     cancel = cancel if cancel is not None else threading.Event()
     action = validate_action(action)
     result = {"status": "running", "outputs": [], "files": [], "error": "", "warnings": [],
               "action": action, "inputs": copy.deepcopy(records), "output_dir": str(output)}
     emit = on_event or (lambda value: None)
+    completed = completed or {}
     try:
         report = preflight(records, action, output, cancel)
         result["preflight"] = report
@@ -245,6 +362,21 @@ def run_action(records, action, output, cancel=None, on_event=None):
             pdf_tools.check_cancel(cancel)
             emit({"index": index, "total": len(records), "source": record["source"], "state": "running"})
             source = safe_path(record["source"])
+            input_hash = digest(source, cancel)
+            previous = completed.get(str(source))
+            if previous:
+                if previous.get("input_sha256") != input_hash:
+                    raise ValueError("입력이 변경되어 이어하기를 보류했습니다.")
+                if previous.get("state") == "completed" and previous.get("outputs") and all(
+                        digest(row["path"], cancel) == row["sha256"] for row in previous["outputs"]):
+                    result["outputs"].extend(copy.deepcopy(previous["outputs"]))
+                    result["files"].append({"source": str(source), "state": "completed"})
+                    emit({"index": index, "total": len(records), "source": str(source), "state": "completed",
+                          "input_sha256": input_hash, "outputs": previous["outputs"]})
+                    continue
+                if previous.get("outputs") or previous.get("intent"):
+                    raise ValueError("완료 결과 확인이 필요하여 중복 변환을 보류했습니다.")
+            file_outputs = []
             target_dir = directory / Path(record["relative"]).parent
             safe_path(target_dir, exists=False)
             target_dir.mkdir(parents=True, exist_ok=True)
@@ -260,24 +392,36 @@ def run_action(records, action, output, cancel=None, on_event=None):
                     raise pdf_tools.Cancelled()
                 if produced["status"] != "completed":
                     raise ValueError(produced["error"] or "변환을 완료하지 못했습니다.")
+                if digest(source, cancel) != input_hash:
+                    raise ValueError("변환 중 입력이 변경되어 발행하지 않았습니다.")
                 for number, item in enumerate(produced["outputs"], 1):
                     safe_path(target_dir)
                     name = output_name(record, action, index)
                     if len(produced["outputs"]) > 1:
                         name = Path(name).stem + f"-{number}" + Path(name).suffix
-                    destination = workspace._publish(item, target_dir, name, cancel)
+                    destination = _tracked_publish(item, target_dir, name, source, input_hash, emit, cancel, len(produced["outputs"]))
                     # 발행 직후부터 소유 결과로 기록하여 취소 중에도 결과가 유실되지 않는다.
                     owned = {"path": destination, "source": str(source), "sha256": "", "size": Path(destination).stat().st_size}
                     result["outputs"].append(owned)
+                    file_outputs.append(owned)
                     owned["sha256"] = digest(destination)
                     owned["constraints_met"] = not action["max_bytes"] or owned["size"] <= action["max_bytes"]
                     if not owned["constraints_met"]:
                         result["warnings"].append(f"목표 용량 미달성: {Path(destination).name}")
             result["files"].append({"source": str(source), "state": "completed"})
-            emit({"index": index, "total": len(records), "source": str(source), "state": "completed"})
+            emit({"index": index, "total": len(records), "source": str(source), "state": "completed",
+                  "input_sha256": input_hash, "outputs": copy.deepcopy(file_outputs)})
         if action["zip"]:
             result["bundle_pending"] = True
-            result["outputs"].append(create_bundle(result["outputs"], directory, cancel))
+            bundle_point = completed.get('')
+            if bundle_point and bundle_point.get('outputs'):
+                if bundle_point['state'] != 'completed' or any(digest(r['path']) != r['sha256'] for r in bundle_point['outputs']):
+                    raise ValueError("묶음 결과 확인이 필요하여 중복 생성을 보류했습니다.")
+                result['outputs'].extend(copy.deepcopy(bundle_point['outputs']))
+            else:
+                bundle = create_bundle(result["outputs"], directory, cancel, on_event=emit)
+                result["outputs"].append(bundle)
+                emit({'state': 'completed', 'source': '', 'input_sha256': '0' * 64, 'outputs': [bundle]})
             result["bundle_pending"] = False
         result["status"] = "completed"
     except (pdf_tools.Cancelled, engine.Cancelled):
@@ -287,7 +431,7 @@ def run_action(records, action, output, cancel=None, on_event=None):
     return result
 
 
-def create_bundle(rows, output, cancel=None):
+def create_bundle(rows, output, cancel=None, on_event=None):
     """이미 완료된 결과를 다시 변환하지 않고 ZIP 단계만 재시도할 수 있다."""
     directory = safe_path(output)
     with tempfile.TemporaryDirectory(prefix=".flipring-zip-", dir=directory) as work:
@@ -302,13 +446,15 @@ def create_bundle(rows, output, cancel=None):
                     while chunk := source.read(1024 * 1024):
                         pdf_tools.check_cancel(cancel)
                         target.write(chunk)
-        path = workspace._publish(archive, directory, "제출용.zip", cancel)
+        path = (_tracked_publish(archive, directory, "제출용.zip", "", "0" * 64, on_event, cancel)
+                if on_event else workspace._publish(archive, directory, "제출용.zip", cancel))
         return {"path": path, "source": "", "sha256": digest(path), "size": Path(path).stat().st_size, "constraints_met": True}
 
 
 class OutputLedger:
     """현재 세션 소유 결과만 해시 검증 후 보관 폴더로 이동한다. 영구 삭제하지 않는다."""
-    def __init__(self):
+    def __init__(self, on_change=None):
+        self.on_change = on_change or (lambda: None)
         self.rows = {}
         self.moves = []
 
@@ -331,9 +477,15 @@ class OutputLedger:
                 safe_path(folder, exists=False)
                 folder.mkdir(exist_ok=True)
                 target = folder / (uuid.uuid4().hex + path.suffix)
-                path.rename(target)
                 move = {"original": str(path), "stored": str(target), "sha256": row["sha256"]}
                 self.moves.append(move)
+                try:
+                    self.on_change()
+                    path.rename(target)
+                except BaseException:
+                    self.moves.remove(move)
+                    raise
+                self.on_change()
                 moved.append(move)
                 if digest(target) != row["sha256"]:
                     raise ValueError("정리 중 변경을 발견했습니다. 보관 파일을 유지합니다: " + str(target))
@@ -362,6 +514,7 @@ class OutputLedger:
                 if owned:
                     owned["path"] = path
                     self.rows[path] = owned
+                self.on_change()
             except (OSError, ValueError) as error:
                 errors.append(str(error))
         return {"restored": restored, "errors": errors}

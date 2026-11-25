@@ -16,10 +16,15 @@ from PySide6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout, 
     QAbstractItemView, QScrollArea, QProgressBar, QSplitter, QMenu)
 
 import quick_actions as core
+import queue_journal as journal
 from ui_motion import make_file_dialog, set_reduced_motion
 
 _ACTIVE = set()
 _TEXT = {
+    'advanced': ('고급 작업', 'Advanced actions'),
+    'diagnostic': ('공유 진단 미리보기', 'Preview shared diagnostics'),
+    'batch_cleanup': ('선택 작업 묶음 정리', 'Archive selected task outputs'),
+    'review': ('재확인 필요', 'Review required'),
     'manage': ('작업 관리', 'Manage actions'),
     'wheel': ('선택 작업을 원형 메뉴에 표시', 'Show selected action in radial menu'),
     'title': ('빠른 작업', 'Quick actions'),
@@ -136,6 +141,7 @@ class QuickActionsPanel(QWidget):
         self._bridge.event.connect(self._event)
         self._cancel = threading.Event()
         self._scan_cancel = threading.Event()
+        self._name_cancel = threading.Event()
         self._jobs, self._active_job = [], None
         self._paused = False
         self._inputs, self._outputs, self._last_errors = [], [], []
@@ -149,6 +155,10 @@ class QuickActionsPanel(QWidget):
         if not configured or Path(configured).suffix.lower() != '.ini':
             base = Path(os.environ.get('LOCALAPPDATA', str(Path.home()))) / 'FlipRing'
         self.store = core.ActionStore(base / 'quick-actions.json')
+        self._journal = journal.QueueJournal(base / 'quick-queue.json')
+        self._restore_pending = True
+        self._journal_error = False
+        self._ledger.on_change = lambda: self._journal.save(self._jobs, self._ledger)
         self._saved = []
         layout = QVBoxLayout(self)
         scroll = QScrollArea(); scroll.setWidgetResizable(True)
@@ -203,7 +213,7 @@ class QuickActionsPanel(QWidget):
             row.addWidget(self._button(key, slot))
         form.addRow(row)
         self.body_layout.addWidget(self._button('queue', self.enqueue))
-        self.queue = QListWidget(); self.queue.setMaximumHeight(130)
+        self.queue = QListWidget(); self.queue.setMaximumHeight(130); self.queue.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.body_layout.addWidget(self.queue)
         row = QHBoxLayout()
         for key, slot in [('up', lambda: self.move_job(-1)), ('down', lambda: self.move_job(1)), ('drop', self.remove_job), ('pause', self.pause), ('resume', self.resume)]:
@@ -226,6 +236,10 @@ class QuickActionsPanel(QWidget):
         for key, slot in [('error', self.copy_errors), ('summary', self.export_summary)]:
             button = self._button(key, slot); row.addWidget(button); self._queue_controls.append(button)
         self.body_layout.addLayout(row)
+        advanced = self._button('advanced', lambda: None); advanced_menu = QMenu(advanced)
+        for key, slot in [('batch_cleanup', self.cleanup_jobs), ('undo', self.undo), ('diagnostic', self.shared_diagnostic)]:
+            action = advanced_menu.addAction(self.t(key)); action.triggered.connect(slot); self._buttons.append((action, key))
+        advanced.setMenu(advanced_menu); self.body_layout.addWidget(advanced)
         previews = QHBoxLayout(); self.pictures, self.metadata = [], []
         for key in ('before', 'after'):
             column = QVBoxLayout(); label = self._label(key); column.addWidget(label); self._preview_controls.append(label)
@@ -251,6 +265,7 @@ class QuickActionsPanel(QWidget):
         self.reload_actions()
         self._sync_visibility()
         self.body_layout.addStretch(1)
+        self._submit(self._load_queue, self._restore_queue, self._restore_error)
 
     def _sync_visibility(self):
         self.inputs.setVisible(bool(self._inputs)); self.remove_input_button.setVisible(bool(self._inputs))
@@ -277,7 +292,7 @@ class QuickActionsPanel(QWidget):
             else: widget.setText(self.t(key))
         for widget, key in self._buttons: widget.setText(self.t(key))
         self.presets.blockSignals(True)
-        for index, name in enumerate(('Photo JPG', 'Submission JPG + ZIP', 'Document PDF')):
+        for index, name in enumerate(('Photo JPG', 'Submission JPG + ZIP', 'Document PDF', 'Email JPG · 1600px / 1MiB', 'Print PDF · original size', 'Web WebP · 1920px / 512KiB')):
             if index < self.presets.count(): self.presets.setItemText(index, name if self.language == 'en' else core.BUILTINS[index]['name'])
         self.presets.blockSignals(False)
         self.refresh_queue()
@@ -299,7 +314,7 @@ class QuickActionsPanel(QWidget):
             try:
                 result, error = item.result(), ''
             except BaseException as exception:
-                result, error = None, str(exception)
+                result, error = None, str(exception) or exception.__class__.__name__
             self._bridge.done.emit(number, result, error)
         future.add_done_callback(finished)
 
@@ -483,7 +498,9 @@ class QuickActionsPanel(QWidget):
     def preview_names(self):
         try:
             records, action, output = self._request()
-            self.details.setPlainText('\n'.join(str(Path(output) / Path(r['relative']).parent / core.output_name(r, action, i)) for i, r in enumerate(records, 1)) + '\n' + ('Collisions receive a number.' if self.language == 'en' else '이름 충돌 시 번호가 붙습니다.'))
+            self._name_cancel.set(); self._name_cancel = threading.Event(); token = self._name_cancel
+            self.status.setText('실제 페이지 수를 확인 중입니다. 문서는 임시 변환하며 Esc로 중단할 수 있습니다.' if self.language != 'en' else 'Checking page counts. Documents use temporary conversion; Esc stops this preview.')
+            self._submit(lambda: core.preview_output_names(records, action, output, token), lambda rows: self.details.setPlainText('\n'.join(r['path'] for r in rows) + '\n' + ('External changes can change these names.' if self.language == 'en' else '예정 이름입니다. 실행 중 외부 변경 시 새 번호가 붙을 수 있습니다.')))
         except Exception as error: self.report(error)
 
     def check_readiness(self):
@@ -501,9 +518,25 @@ class QuickActionsPanel(QWidget):
         except Exception as error: self.report(error); return
         self._append_job(records, action, output)
 
-    def _append_job(self, records, action, output):
-        job = {'id': core.uuid.uuid4().hex[:8], 'inputs': copy.deepcopy(records), 'action': copy.deepcopy(action), 'output': output, 'state': 'waiting', 'result': None, 'file_states': {r['source']: 'waiting' for r in records}}
-        self._jobs.append(job); self.refresh_queue(); self._timer.start(); self._next()
+    def _append_job(self, records, action, output, checkpoints=None):
+        output = str(core.safe_path(output, exists=False))
+        job = {'id': core.uuid.uuid4().hex[:8], 'inputs': copy.deepcopy(records), 'action': copy.deepcopy(action), 'output': output, 'state': 'waiting', 'result': None, 'file_states': {r['source']: 'waiting' for r in records}, 'checkpoints': {}}
+        if self._journal_error: self.report('대기열 기록을 먼저 확인해 주세요.'); return
+        self._jobs.append(job); self.refresh_queue()
+        def prepare():
+            if checkpoints is not None:
+                job['checkpoints'] = copy.deepcopy(checkpoints)
+                for row in records:
+                    if row['source'] not in job['checkpoints']:
+                        job['checkpoints'][row['source']] = {'input_sha256': core.digest(row['source'], self._scan_cancel), 'state': 'waiting', 'outputs': [], 'expected': 1}
+                return journal.recover_jobs([job])[0]['checkpoints']
+            return {r['source']: {'input_sha256': core.digest(r['source'], self._scan_cancel),
+                    'state': 'waiting', 'outputs': [], 'expected': 1} for r in records}
+        def ready(points):
+            if job not in self._jobs: return
+            job['checkpoints'] = points
+            if self._save_queue(): self._timer.start(); self._next()
+        self._submit(prepare, ready, lambda error: self._job_done(job, {'status': 'failed', 'outputs': [], 'files': [], 'error': error, 'warnings': []}))
 
     def refresh_queue(self):
         selected = self.queue.currentRow() if hasattr(self, 'queue') else -1
@@ -518,6 +551,7 @@ class QuickActionsPanel(QWidget):
 
     def _other_busy(self):
         if bool(getattr(self.owner, 'pending', False)): return True
+        if any(getattr(dialog, 'is_busy', lambda: False)() for dialog in getattr(self.owner, 'delivery_dialogs', ())): return True
         installer = getattr(self.owner, 'installer', None)
         if installer is not None and installer.is_busy(): return True
         for name in ('pdf_panel', 'workspace_panel'):
@@ -527,25 +561,40 @@ class QuickActionsPanel(QWidget):
 
     def _next(self):
         if self._closed or self._paused or self._active_job is not None or self._tasks: return
-        job = next((row for row in self._jobs if row['state'] == 'waiting'), None)
+        job = next((row for row in self._jobs if row['state'] == 'waiting' and len(row['checkpoints']) >= len(row['inputs'])), None)
         if not job: self._timer.stop(); return
         if self._other_busy(): self.status.setText(self.t('busy')); return
         self._active_job = job; job['state'] = 'running'; self._cancel = threading.Event()
+        if not self._save_queue(): self._active_job = None; return
         self._update_progress()
         self.refresh_queue()
         token = self._cancel
         def operation():
+            def event_checkpoint(event):
+                with self._journal.lock:
+                    journal.checkpoint_event(job, event)
+                    if event['state'] == 'completed': self._ledger.register(event.get('outputs', []))
+                    self._journal.save(self._jobs, self._ledger)
+                if event['state'] in ('running', 'completed') and event['source']:
+                    self._bridge.event.emit(job['id'], event)
             if job.get('bundle_rows'):
                 previous = copy.deepcopy(job['previous'])
                 try:
-                    bundle = core.create_bundle(job['bundle_rows'], job['output'], token)
+                    point = job['checkpoints'].get('')
+                    if point and point.get('outputs'):
+                        if point['state'] != 'completed' or any(core.digest(r['path']) != r['sha256'] for r in point['outputs']):
+                            raise ValueError('묶음 결과를 다시 확인해 주세요.')
+                        bundle = point['outputs'][0]
+                    else:
+                        bundle = core.create_bundle(job['bundle_rows'], job['output'], token, on_event=event_checkpoint)
+                        event_checkpoint({'state': 'completed', 'source': '', 'input_sha256': '0' * 64, 'outputs': [bundle]})
                     return {**previous, 'status': 'completed', 'outputs': [bundle], 'error': '', 'bundle_pending': False}
                 except (core.pdf_tools.Cancelled, core.engine.Cancelled):
                     return {**previous, 'status': 'cancelled', 'outputs': [], 'error': ''}
                 except Exception as error:
                     return {**previous, 'status': 'failed', 'outputs': [], 'error': str(error)}
             return core.run_action(job['inputs'], job['action'], job['output'], token,
-                lambda event: self._bridge.event.emit(job['id'], event))
+                event_checkpoint, completed=job['checkpoints'])
         self._submit(operation, lambda result: self._job_done(job, result), lambda error: self._job_done(job, {'status': 'failed', 'outputs': [], 'files': [], 'error': error, 'warnings': []}))
 
     def _event(self, identifier, event):
@@ -573,6 +622,7 @@ class QuickActionsPanel(QWidget):
             status = self.t('met') if row['constraints_met'] else self.t('unmet')
             self.results.addItem(f"{Path(row['path']).name} · {row['size']:,} bytes · {status}")
             self.results.item(self.results.count() - 1).setToolTip(row['path'])
+        self._save_queue()
         self.refresh_queue(); self.status.setText(self.t(result['status']))
         detail = '\n'.join([result['error'], *result['warnings']]).strip()
         if detail: self.report(detail)
@@ -588,15 +638,32 @@ class QuickActionsPanel(QWidget):
         if index < 0 or not 0 <= destination < len(self._jobs): return
         if self._jobs[index]['state'] != 'waiting' or self._jobs[destination]['state'] != 'waiting': return
         self._jobs[index], self._jobs[destination] = self._jobs[destination], self._jobs[index]
-        self.refresh_queue(); self.queue.setCurrentRow(destination)
+        self._save_queue(); self.refresh_queue(); self.queue.setCurrentRow(destination)
 
     def remove_job(self):
         index = self.queue.currentRow()
-        if index >= 0 and self._jobs[index]['state'] == 'waiting': self._jobs.pop(index); self.refresh_queue()
+        if index >= 0 and self._jobs[index]['state'] == 'waiting': self._jobs.pop(index); self._save_queue(); self.refresh_queue()
 
     def pause(self): self._paused = True; self.status.setText(self.t('paused'))
-    def resume(self): self._paused = False; self._timer.start(); self._next()
-    def cancel(self): self._cancel.set()
+    def resume(self):
+        if self._journal_error: self.report('대기열 기록을 먼저 확인해 주세요.'); return
+        self._paused = False
+        # 준비 중 작업과 실행 중 작업의 참조는 교체하지 않는다.
+        candidates = copy.deepcopy([j for j in self._jobs if j['state'] != 'running'
+                                     and len(j['checkpoints']) >= len(j['inputs'])])
+        def checked(rows):
+            for recovered in rows:
+                job = next((j for j in self._jobs if j['id'] == recovered['id']), None)
+                if job is None or job['state'] == 'running': continue
+                job['checkpoints'] = recovered['checkpoints']; job['file_states'] = recovered['file_states']
+                job['state'] = recovered['state']
+                if job['state'] in ('failed', 'cancelled') and not job.get('retried'):
+                    job['state'] = 'review' if any(p['state'] == 'review' for p in job['checkpoints'].values()) else 'waiting'
+            self._save_queue(); self.refresh_queue(); self._timer.start(); self._next()
+            if any(j['state'] == 'review' for j in self._jobs):
+                self.report('입력·결과 변경 또는 중단된 발행을 확인해 주세요. 새 사본은 선택 설정 재실행으로 만들 수 있습니다.' if self.language != 'en' else 'Review changed inputs, outputs or interrupted publications. Replay selected task creates a new copy.')
+        self._submit(lambda: journal.recover_jobs(candidates), checked)
+    def cancel(self): self._cancel.set(); self._name_cancel.set()
 
     def retry_failed(self):
         for job in list(self._jobs):
@@ -605,7 +672,8 @@ class QuickActionsPanel(QWidget):
                 completed = {r['source'] for r in job['result']['files'] if r['state'] == 'completed'}
                 records = [r for r in job['inputs'] if r['source'] not in completed]
                 if records:
-                    self._append_job(records, job['action'], job['output'])
+                    points = {r['source']: copy.deepcopy(job['checkpoints'][r['source']]) for r in records if r['source'] in job['checkpoints']}
+                    self._append_job(records, job['action'], job['output'], checkpoints=points)
                 elif job['result'].get('bundle_pending'):
                     self._paused, paused = True, self._paused
                     self._append_job([], job['action'], job['output'])
@@ -669,11 +737,64 @@ class QuickActionsPanel(QWidget):
     def cleanup(self):
         if self._active_job or self._tasks: self.report(self.t('busy')); return
         paths = [r['path'] for r in self._selected_outputs()]
-        self._submit(lambda: self._ledger.cleanup(paths), lambda result: self.details.setPlainText(json.dumps(result, ensure_ascii=False, indent=2)))
+        self._submit(lambda: self._ledger.cleanup(paths), self._ledger_done)
 
     def undo(self):
         if self._active_job or self._tasks: self.report(self.t('busy')); return
-        self._submit(self._ledger.undo, lambda result: self.details.setPlainText(json.dumps(result, ensure_ascii=False, indent=2)))
+        self._submit(self._ledger.undo, self._ledger_done)
+
+    def _restore_error(self, error):
+        self._journal_error = True; self._paused = True; self.report(error)
+
+    def _load_queue(self):
+        value = self._journal.load()
+        value['jobs'] = journal.recover_jobs(value['jobs'])
+        return value
+
+    def _restore_queue(self, value):
+        self._restore_pending = False
+        # 시작 시 기존 기록을 표시하기만 하며 실행에는 사용자의 계속 조작이 필요하다.
+        self._jobs = value['jobs'] + self._jobs
+        self._ledger.rows = value['ledger']['rows']; self._ledger.moves = value['ledger']['moves']
+        if value['jobs']: self._paused = True
+        for job in value['jobs']:
+            for point in job['checkpoints'].values():
+                if point['state'] == 'completed': self._ledger.register(point['outputs'])
+        self._outputs = list(self._ledger.rows.values())
+        self.results.clear()
+        for row in self._outputs:
+            item = QListWidgetItem(Path(row['path']).name); item.setToolTip(row['path']); self.results.addItem(item)
+        self.refresh_queue()
+        if value['jobs']: self.status.setText(self.t('paused'))
+
+    def _save_queue(self):
+        if self._restore_pending: return False
+        try:
+            self._journal.save(self._jobs, self._ledger)
+            return True
+        except Exception as error:
+            self._journal_error = True; self._paused = True; self.report(error)
+            return False
+
+    def _ledger_done(self, result):
+        self._save_queue()
+        self.details.setPlainText(json.dumps(result, ensure_ascii=False, indent=2))
+
+    def cleanup_jobs(self):
+        if self.is_busy(): self.report(self.t('busy')); return
+        selected = [self._jobs[self.queue.row(item)] for item in self.queue.selectedItems()]
+        paths = [r['path'] for job in selected for point in job['checkpoints'].values() for r in point['outputs']]
+        self._submit(lambda: self._ledger.cleanup(paths), self._ledger_done)
+
+    def shared_diagnostic(self):
+        value = journal.diagnostic(self._jobs)
+        text = json.dumps(value, ensure_ascii=False, indent=2)
+        # 공유용 새 객체만 미리보기에 표시하며 원문 오류나 경로를 포함하지 않는다.
+        dialog = QMessageBox(self); dialog.setWindowTitle(self.t('diagnostic'))
+        dialog.setText(text); dialog.setStandardButtons(QMessageBox.Save | QMessageBox.Cancel)
+        if dialog.exec() != QMessageBox.Save: return
+        paths = self.choose_paths('summary', save=True, initial='공유진단.json', name_filter='JSON (*.json)')
+        if paths: self._submit(lambda: self._write_json(paths[0], value), lambda _: self.status.setText(self.t('completed')))
 
     def export_summary(self):
         rows = copy.deepcopy(self._jobs)
@@ -697,12 +818,11 @@ class QuickActionsPanel(QWidget):
     def is_busy(self): return bool(self._tasks or self._active_job)
 
     def shutdown(self):
-        self._closed = True; self._timer.stop(); self._cancel.set(); self._scan_cancel.set()
+        self._closed = True; self._timer.stop(); self._cancel.set(); self._scan_cancel.set(); self._name_cancel.set()
         for dialog in list(self._pickers): dialog.reject()
-        for job in self._jobs:
-            if job['state'] == 'waiting': job['state'] = 'cancelled'
         if self._tasks: return False
         self._active_job = None
+        self._save_queue()
         self._pool.shutdown(wait=False, cancel_futures=True); _ACTIVE.discard(self); return True
 
     def closeEvent(self, event):

@@ -1,0 +1,1276 @@
+--- a/소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.ijg
++++ b/소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.ijg
+@@ -1,260 +1,260 @@
+-libjpeg-turbo note:  This file has been modified by The libjpeg-turbo Project
+-to include only information relevant to libjpeg-turbo, to wordsmith certain
+-sections, and to remove impolitic language that existed in the libjpeg v8
+-README.  It is included only for reference.  Please see README.md for
+-information specific to libjpeg-turbo.
+-
+-
+-The Independent JPEG Group's JPEG software
+-==========================================
+-
+-This distribution contains a release of the Independent JPEG Group's free JPEG
+-software.  You are welcome to redistribute this software and to use it for any
+-purpose, subject to the conditions under LEGAL ISSUES, below.
+-
+-This software is the work of Tom Lane, Guido Vollbeding, Philip Gladstone,
+-Bill Allombert, Jim Boucher, Lee Crocker, Bob Friesenhahn, Ben Jackson,
+-Julian Minguillon, Luis Ortiz, George Phillips, Davide Rossi, Ge' Weijers,
+-and other members of the Independent JPEG Group.
+-
+-IJG is not affiliated with the ISO/IEC JTC1/SC29/WG1 standards committee
+-(also known as JPEG, together with ITU-T SG16).
+-
+-
+-DOCUMENTATION ROADMAP
+-=====================
+-
+-This file contains the following sections:
+-
+-OVERVIEW            General description of JPEG and the IJG software.
+-LEGAL ISSUES        Copyright, lack of warranty, terms of distribution.
+-REFERENCES          Where to learn more about JPEG.
+-ARCHIVE LOCATIONS   Where to find newer versions of this software.
+-FILE FORMAT WARS    Software *not* to get.
+-TO DO               Plans for future IJG releases.
+-
+-Other documentation files in the distribution are:
+-
+-User documentation:
+-  doc/usage.txt         Usage instructions for cjpeg, djpeg, jpegtran,
+-                        rdjpgcom, and wrjpgcom.
+-  doc/*.1               Unix-style man pages for programs (same info as
+-                        usage.txt).
+-  doc/wizard.txt        Advanced usage instructions for JPEG wizards only.
+-  doc/change.log        Version-to-version change highlights.
+-Programmer and internal documentation:
+-  doc/libjpeg.txt       How to use the JPEG library in your own programs.
+-  src/example.c         Sample code for calling the JPEG library.
+-  doc/structure.txt     Overview of the JPEG library's internal structure.
+-  doc/coderules.txt     Coding style rules --- please read if you contribute
+-                        code.
+-
+-Please read at least usage.txt.  Some information can also be found in the JPEG
+-FAQ (Frequently Asked Questions) article.  See ARCHIVE LOCATIONS below to find
+-out where to obtain the FAQ article.
+-
+-If you want to understand how the JPEG code works, we suggest reading one or
+-more of the REFERENCES, then looking at the documentation files (in roughly
+-the order listed) before diving into the code.
+-
+-
+-OVERVIEW
+-========
+-
+-This package contains C software to implement JPEG image encoding, decoding,
+-and transcoding.  JPEG (pronounced "jay-peg") is a standardized compression
+-method for full-color and grayscale images.  JPEG's strong suit is compressing
+-photographic images or other types of images that have smooth color and
+-brightness transitions between neighboring pixels.  Images with sharp lines or
+-other abrupt features may not compress well with JPEG, and a higher JPEG
+-quality may have to be used to avoid visible compression artifacts with such
+-images.
+-
+-JPEG is normally lossy, meaning that the output pixels are not necessarily
+-identical to the input pixels.  However, on photographic content and other
+-"smooth" images, very good compression ratios can be obtained with no visible
+-compression artifacts, and extremely high compression ratios are possible if
+-you are willing to sacrifice image quality (by reducing the "quality" setting
+-in the compressor.)
+-
+-This software implements JPEG baseline, extended-sequential, progressive, and
+-lossless compression processes.  Provision is made for supporting all variants
+-of these processes, although some uncommon parameter settings aren't
+-implemented yet.  We have made no provision for supporting the hierarchical
+-processes defined in the standard.
+-
+-We provide a set of library routines for reading and writing JPEG image files,
+-plus two sample applications "cjpeg" and "djpeg", which use the library to
+-perform conversion between JPEG and some other popular image file formats.
+-The library is intended to be reused in other applications.
+-
+-In order to support file conversion and viewing software, we have included
+-considerable functionality beyond the bare JPEG coding/decoding capability;
+-for example, the color quantization modules are not strictly part of JPEG
+-decoding, but they are essential for output to colormapped file formats.  These
+-extra functions can be compiled out of the library if not required for a
+-particular application.
+-
+-We have also included "jpegtran", a utility for lossless transcoding between
+-different JPEG processes, and "rdjpgcom" and "wrjpgcom", two simple
+-applications for inserting and extracting textual comments in JFIF files.
+-
+-The emphasis in designing this software has been on achieving portability and
+-flexibility, while also making it fast enough to be useful.  In particular,
+-the software is not intended to be read as a tutorial on JPEG.  (See the
+-REFERENCES section for introductory material.)  Rather, it is intended to
+-be reliable, portable, industrial-strength code.  We do not claim to have
+-achieved that goal in every aspect of the software, but we strive for it.
+-
+-We welcome the use of this software as a component of commercial products.
+-No royalty is required, but we do ask for an acknowledgement in product
+-documentation, as described under LEGAL ISSUES.
+-
+-
+-LEGAL ISSUES
+-============
+-
+-In plain English:
+-
+-1. We don't promise that this software works.  (But if you find any bugs,
+-   please let us know!)
+-2. You can use this software for whatever you want.  You don't have to pay us.
+-3. You may not pretend that you wrote this software.  If you use it in a
+-   program, you must acknowledge somewhere in your documentation that
+-   you've used the IJG code.
+-
+-In legalese:
+-
+-The authors make NO WARRANTY or representation, either express or implied,
+-with respect to this software, its quality, accuracy, merchantability, or
+-fitness for a particular purpose.  This software is provided "AS IS", and you,
+-its user, assume the entire risk as to its quality and accuracy.
+-
+-This software is copyright (C) 1991-2020, Thomas G. Lane, Guido Vollbeding.
+-All Rights Reserved except as specified below.
+-
+-Permission is hereby granted to use, copy, modify, and distribute this
+-software (or portions thereof) for any purpose, without fee, subject to these
+-conditions:
+-(1) If any part of the source code for this software is distributed, then this
+-README file must be included, with this copyright and no-warranty notice
+-unaltered; and any additions, deletions, or changes to the original files
+-must be clearly indicated in accompanying documentation.
+-(2) If only executable code is distributed, then the accompanying
+-documentation must state that "this software is based in part on the work of
+-the Independent JPEG Group".
+-(3) Permission for use of this software is granted only if the user accepts
+-full responsibility for any undesirable consequences; the authors accept
+-NO LIABILITY for damages of any kind.
+-
+-These conditions apply to any software derived from or based on the IJG code,
+-not just to the unmodified library.  If you use our work, you ought to
+-acknowledge us.
+-
+-Permission is NOT granted for the use of any IJG author's name or company name
+-in advertising or publicity relating to this software or products derived from
+-it.  This software may be referred to only as "the Independent JPEG Group's
+-software".
+-
+-We specifically permit and encourage the use of this software as the basis of
+-commercial products, provided that all warranty or liability claims are
+-assumed by the product vendor.
+-
+-
+-REFERENCES
+-==========
+-
+-We recommend reading one or more of these references before trying to
+-understand the innards of the JPEG software.
+-
+-The best short technical introduction to the JPEG compression algorithm is
+-        Wallace, Gregory K.  "The JPEG Still Picture Compression Standard",
+-        Communications of the ACM, April 1991 (vol. 34 no. 4), pp. 30-44.
+-(Adjacent articles in that issue discuss MPEG motion picture compression,
+-applications of JPEG, and related topics.)  If you don't have the CACM issue
+-handy, a PDF file containing a revised version of Wallace's article is
+-available at http://www.ijg.org/files/Wallace.JPEG.pdf.  The file (actually
+-a preprint for an article that appeared in IEEE Trans. Consumer Electronics)
+-omits the sample images that appeared in CACM, but it includes corrections
+-and some added material.  Note: the Wallace article is copyright ACM and IEEE,
+-and it may not be used for commercial purposes.
+-
+-A somewhat less technical, more leisurely introduction to JPEG can be found in
+-"The Data Compression Book" by Mark Nelson and Jean-loup Gailly, published by
+-M&T Books (New York), 2nd ed. 1996, ISBN 1-55851-434-1.  This book provides
+-good explanations and example C code for a multitude of compression methods
+-including JPEG.  It is an excellent source if you are comfortable reading C
+-code but don't know much about data compression in general.  The book's JPEG
+-sample code is far from industrial-strength, but when you are ready to look
+-at a full implementation, you've got one here...
+-
+-The best currently available description of JPEG is the textbook "JPEG Still
+-Image Data Compression Standard" by William B. Pennebaker and Joan L.
+-Mitchell, published by Van Nostrand Reinhold, 1993, ISBN 0-442-01272-1.
+-Price US$59.95, 638 pp.  The book includes the complete text of the ISO JPEG
+-standards (DIS 10918-1 and draft DIS 10918-2).
+-
+-The original JPEG standard is divided into two parts, Part 1 being the actual
+-specification, while Part 2 covers compliance testing methods.  Part 1 is
+-titled "Digital Compression and Coding of Continuous-tone Still Images,
+-Part 1: Requirements and guidelines" and has document numbers ISO/IEC IS
+-10918-1, ITU-T T.81.  Part 2 is titled "Digital Compression and Coding of
+-Continuous-tone Still Images, Part 2: Compliance testing" and has document
+-numbers ISO/IEC IS 10918-2, ITU-T T.83.
+-
+-The JPEG standard does not specify all details of an interchangeable file
+-format.  For the omitted details, we follow the "JFIF" conventions, revision
+-1.02.  JFIF version 1 has been adopted as ISO/IEC 10918-5 (05/2013) and
+-Recommendation ITU-T T.871 (05/2011): Information technology - Digital
+-compression and coding of continuous-tone still images: JPEG File Interchange
+-Format (JFIF).  It is available as a free download in PDF file format from
+-https://www.iso.org/standard/54989.html and http://www.itu.int/rec/T-REC-T.871.
+-A PDF file of the older JFIF 1.02 specification is available at
+-http://www.w3.org/Graphics/JPEG/jfif3.pdf.
+-
+-The TIFF 6.0 file format specification can be obtained from
+-http://mirrors.ctan.org/graphics/tiff/TIFF6.ps.gz.  The JPEG incorporation
+-scheme found in the TIFF 6.0 spec of 3-June-92 has a number of serious
+-problems.  IJG does not recommend use of the TIFF 6.0 design (TIFF Compression
+-tag 6).  Instead, we recommend the JPEG design proposed by TIFF Technical Note
+-#2 (Compression tag 7).  Copies of this Note can be obtained from
+-http://www.ijg.org/files/.  It is expected that the next revision
+-of the TIFF spec will replace the 6.0 JPEG design with the Note's design.
+-Although IJG's own code does not support TIFF/JPEG, the free libtiff library
+-uses our library to implement TIFF/JPEG per the Note.
+-
+-
+-ARCHIVE LOCATIONS
+-=================
+-
+-The "official" archive site for this software is www.ijg.org.
+-The most recent released version can always be found there in
+-directory "files".
+-
+-The JPEG FAQ (Frequently Asked Questions) article is a source of some
+-general information about JPEG.  It is available at
+-http://www.faqs.org/faqs/jpeg-faq.
+-
+-
+-FILE FORMAT COMPATIBILITY
+-=========================
+-
+-This software implements ITU T.81 | ISO/IEC 10918 with some extensions from
+-ITU T.871 | ISO/IEC 10918-5 (JPEG File Interchange Format-- see REFERENCES).
+-Informally, the term "JPEG image" or "JPEG file" most often refers to JFIF or
+-a subset thereof, but there are other formats containing the name "JPEG" that
+-are incompatible with the original JPEG standard or with JFIF (for instance,
+-JPEG 2000 and JPEG XR).  This software therefore does not support these
+-formats.  Indeed, one of the original reasons for developing this free software
+-was to help force convergence on a common, interoperable format standard for
+-JPEG files.
+-
+-JFIF is a minimal or "low end" representation.  TIFF/JPEG (TIFF revision 6.0 as
+-modified by TIFF Technical Note #2) can be used for "high end" applications
+-that need to record a lot of additional data about an image.
+-
+-
+-TO DO
+-=====
+-
+-Please send bug reports, offers of help, etc. to jpeg-info@jpegclub.org.
++libjpeg-turbo note:  This file has been modified by The libjpeg-turbo Project
++to include only information relevant to libjpeg-turbo, to wordsmith certain
++sections, and to remove impolitic language that existed in the libjpeg v8
++README.  It is included only for reference.  Please see README.md for
++information specific to libjpeg-turbo.
++
++
++The Independent JPEG Group's JPEG software
++==========================================
++
++This distribution contains a release of the Independent JPEG Group's free JPEG
++software.  You are welcome to redistribute this software and to use it for any
++purpose, subject to the conditions under LEGAL ISSUES, below.
++
++This software is the work of Tom Lane, Guido Vollbeding, Philip Gladstone,
++Bill Allombert, Jim Boucher, Lee Crocker, Bob Friesenhahn, Ben Jackson,
++Julian Minguillon, Luis Ortiz, George Phillips, Davide Rossi, Ge' Weijers,
++and other members of the Independent JPEG Group.
++
++IJG is not affiliated with the ISO/IEC JTC1/SC29/WG1 standards committee
++(also known as JPEG, together with ITU-T SG16).
++
++
++DOCUMENTATION ROADMAP
++=====================
++
++This file contains the following sections:
++
++OVERVIEW            General description of JPEG and the IJG software.
++LEGAL ISSUES        Copyright, lack of warranty, terms of distribution.
++REFERENCES          Where to learn more about JPEG.
++ARCHIVE LOCATIONS   Where to find newer versions of this software.
++FILE FORMAT WARS    Software *not* to get.
++TO DO               Plans for future IJG releases.
++
++Other documentation files in the distribution are:
++
++User documentation:
++  doc/usage.txt         Usage instructions for cjpeg, djpeg, jpegtran,
++                        rdjpgcom, and wrjpgcom.
++  doc/*.1               Unix-style man pages for programs (same info as
++                        usage.txt).
++  doc/wizard.txt        Advanced usage instructions for JPEG wizards only.
++  doc/change.log        Version-to-version change highlights.
++Programmer and internal documentation:
++  doc/libjpeg.txt       How to use the JPEG library in your own programs.
++  src/example.c         Sample code for calling the JPEG library.
++  doc/structure.txt     Overview of the JPEG library's internal structure.
++  doc/coderules.txt     Coding style rules --- please read if you contribute
++                        code.
++
++Please read at least usage.txt.  Some information can also be found in the JPEG
++FAQ (Frequently Asked Questions) article.  See ARCHIVE LOCATIONS below to find
++out where to obtain the FAQ article.
++
++If you want to understand how the JPEG code works, we suggest reading one or
++more of the REFERENCES, then looking at the documentation files (in roughly
++the order listed) before diving into the code.
++
++
++OVERVIEW
++========
++
++This package contains C software to implement JPEG image encoding, decoding,
++and transcoding.  JPEG (pronounced "jay-peg") is a standardized compression
++method for full-color and grayscale images.  JPEG's strong suit is compressing
++photographic images or other types of images that have smooth color and
++brightness transitions between neighboring pixels.  Images with sharp lines or
++other abrupt features may not compress well with JPEG, and a higher JPEG
++quality may have to be used to avoid visible compression artifacts with such
++images.
++
++JPEG is normally lossy, meaning that the output pixels are not necessarily
++identical to the input pixels.  However, on photographic content and other
++"smooth" images, very good compression ratios can be obtained with no visible
++compression artifacts, and extremely high compression ratios are possible if
++you are willing to sacrifice image quality (by reducing the "quality" setting
++in the compressor.)
++
++This software implements JPEG baseline, extended-sequential, progressive, and
++lossless compression processes.  Provision is made for supporting all variants
++of these processes, although some uncommon parameter settings aren't
++implemented yet.  We have made no provision for supporting the hierarchical
++processes defined in the standard.
++
++We provide a set of library routines for reading and writing JPEG image files,
++plus two sample applications "cjpeg" and "djpeg", which use the library to
++perform conversion between JPEG and some other popular image file formats.
++The library is intended to be reused in other applications.
++
++In order to support file conversion and viewing software, we have included
++considerable functionality beyond the bare JPEG coding/decoding capability;
++for example, the color quantization modules are not strictly part of JPEG
++decoding, but they are essential for output to colormapped file formats.  These
++extra functions can be compiled out of the library if not required for a
++particular application.
++
++We have also included "jpegtran", a utility for lossless transcoding between
++different JPEG processes, and "rdjpgcom" and "wrjpgcom", two simple
++applications for inserting and extracting textual comments in JFIF files.
++
++The emphasis in designing this software has been on achieving portability and
++flexibility, while also making it fast enough to be useful.  In particular,
++the software is not intended to be read as a tutorial on JPEG.  (See the
++REFERENCES section for introductory material.)  Rather, it is intended to
++be reliable, portable, industrial-strength code.  We do not claim to have
++achieved that goal in every aspect of the software, but we strive for it.
++
++We welcome the use of this software as a component of commercial products.
++No royalty is required, but we do ask for an acknowledgement in product
++documentation, as described under LEGAL ISSUES.
++
++
++LEGAL ISSUES
++============
++
++In plain English:
++
++1. We don't promise that this software works.  (But if you find any bugs,
++   please let us know!)
++2. You can use this software for whatever you want.  You don't have to pay us.
++3. You may not pretend that you wrote this software.  If you use it in a
++   program, you must acknowledge somewhere in your documentation that
++   you've used the IJG code.
++
++In legalese:
++
++The authors make NO WARRANTY or representation, either express or implied,
++with respect to this software, its quality, accuracy, merchantability, or
++fitness for a particular purpose.  This software is provided "AS IS", and you,
++its user, assume the entire risk as to its quality and accuracy.
++
++This software is copyright (C) 1991-2020, Thomas G. Lane, Guido Vollbeding.
++All Rights Reserved except as specified below.
++
++Permission is hereby granted to use, copy, modify, and distribute this
++software (or portions thereof) for any purpose, without fee, subject to these
++conditions:
++(1) If any part of the source code for this software is distributed, then this
++README file must be included, with this copyright and no-warranty notice
++unaltered; and any additions, deletions, or changes to the original files
++must be clearly indicated in accompanying documentation.
++(2) If only executable code is distributed, then the accompanying
++documentation must state that "this software is based in part on the work of
++the Independent JPEG Group".
++(3) Permission for use of this software is granted only if the user accepts
++full responsibility for any undesirable consequences; the authors accept
++NO LIABILITY for damages of any kind.
++
++These conditions apply to any software derived from or based on the IJG code,
++not just to the unmodified library.  If you use our work, you ought to
++acknowledge us.
++
++Permission is NOT granted for the use of any IJG author's name or company name
++in advertising or publicity relating to this software or products derived from
++it.  This software may be referred to only as "the Independent JPEG Group's
++software".
++
++We specifically permit and encourage the use of this software as the basis of
++commercial products, provided that all warranty or liability claims are
++assumed by the product vendor.
++
++
++REFERENCES
++==========
++
++We recommend reading one or more of these references before trying to
++understand the innards of the JPEG software.
++
++The best short technical introduction to the JPEG compression algorithm is
++        Wallace, Gregory K.  "The JPEG Still Picture Compression Standard",
++        Communications of the ACM, April 1991 (vol. 34 no. 4), pp. 30-44.
++(Adjacent articles in that issue discuss MPEG motion picture compression,
++applications of JPEG, and related topics.)  If you don't have the CACM issue
++handy, a PDF file containing a revised version of Wallace's article is
++available at http://www.ijg.org/files/Wallace.JPEG.pdf.  The file (actually
++a preprint for an article that appeared in IEEE Trans. Consumer Electronics)
++omits the sample images that appeared in CACM, but it includes corrections
++and some added material.  Note: the Wallace article is copyright ACM and IEEE,
++and it may not be used for commercial purposes.
++
++A somewhat less technical, more leisurely introduction to JPEG can be found in
++"The Data Compression Book" by Mark Nelson and Jean-loup Gailly, published by
++M&T Books (New York), 2nd ed. 1996, ISBN 1-55851-434-1.  This book provides
++good explanations and example C code for a multitude of compression methods
++including JPEG.  It is an excellent source if you are comfortable reading C
++code but don't know much about data compression in general.  The book's JPEG
++sample code is far from industrial-strength, but when you are ready to look
++at a full implementation, you've got one here...
++
++The best currently available description of JPEG is the textbook "JPEG Still
++Image Data Compression Standard" by William B. Pennebaker and Joan L.
++Mitchell, published by Van Nostrand Reinhold, 1993, ISBN 0-442-01272-1.
++Price US$59.95, 638 pp.  The book includes the complete text of the ISO JPEG
++standards (DIS 10918-1 and draft DIS 10918-2).
++
++The original JPEG standard is divided into two parts, Part 1 being the actual
++specification, while Part 2 covers compliance testing methods.  Part 1 is
++titled "Digital Compression and Coding of Continuous-tone Still Images,
++Part 1: Requirements and guidelines" and has document numbers ISO/IEC IS
++10918-1, ITU-T T.81.  Part 2 is titled "Digital Compression and Coding of
++Continuous-tone Still Images, Part 2: Compliance testing" and has document
++numbers ISO/IEC IS 10918-2, ITU-T T.83.
++
++The JPEG standard does not specify all details of an interchangeable file
++format.  For the omitted details, we follow the "JFIF" conventions, revision
++1.02.  JFIF version 1 has been adopted as ISO/IEC 10918-5 (05/2013) and
++Recommendation ITU-T T.871 (05/2011): Information technology - Digital
++compression and coding of continuous-tone still images: JPEG File Interchange
++Format (JFIF).  It is available as a free download in PDF file format from
++https://www.iso.org/standard/54989.html and http://www.itu.int/rec/T-REC-T.871.
++A PDF file of the older JFIF 1.02 specification is available at
++http://www.w3.org/Graphics/JPEG/jfif3.pdf.
++
++The TIFF 6.0 file format specification can be obtained from
++http://mirrors.ctan.org/graphics/tiff/TIFF6.ps.gz.  The JPEG incorporation
++scheme found in the TIFF 6.0 spec of 3-June-92 has a number of serious
++problems.  IJG does not recommend use of the TIFF 6.0 design (TIFF Compression
++tag 6).  Instead, we recommend the JPEG design proposed by TIFF Technical Note
++#2 (Compression tag 7).  Copies of this Note can be obtained from
++http://www.ijg.org/files/.  It is expected that the next revision
++of the TIFF spec will replace the 6.0 JPEG design with the Note's design.
++Although IJG's own code does not support TIFF/JPEG, the free libtiff library
++uses our library to implement TIFF/JPEG per the Note.
++
++
++ARCHIVE LOCATIONS
++=================
++
++The "official" archive site for this software is www.ijg.org.
++The most recent released version can always be found there in
++directory "files".
++
++The JPEG FAQ (Frequently Asked Questions) article is a source of some
++general information about JPEG.  It is available at
++http://www.faqs.org/faqs/jpeg-faq.
++
++
++FILE FORMAT COMPATIBILITY
++=========================
++
++This software implements ITU T.81 | ISO/IEC 10918 with some extensions from
++ITU T.871 | ISO/IEC 10918-5 (JPEG File Interchange Format-- see REFERENCES).
++Informally, the term "JPEG image" or "JPEG file" most often refers to JFIF or
++a subset thereof, but there are other formats containing the name "JPEG" that
++are incompatible with the original JPEG standard or with JFIF (for instance,
++JPEG 2000 and JPEG XR).  This software therefore does not support these
++formats.  Indeed, one of the original reasons for developing this free software
++was to help force convergence on a common, interoperable format standard for
++JPEG files.
++
++JFIF is a minimal or "low end" representation.  TIFF/JPEG (TIFF revision 6.0 as
++modified by TIFF Technical Note #2) can be used for "high end" applications
++that need to record a lot of additional data about an image.
++
++
++TO DO
++=====
++
++Please send bug reports, offers of help, etc. to jpeg-info@jpegclub.org.
+--- a/소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md
++++ b/소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/README.md
+@@ -1,375 +1,375 @@
+-Background
+-==========
+-
+-libjpeg-turbo is a JPEG image codec that uses SIMD instructions to accelerate
+-baseline JPEG compression and decompression on x86, x86-64, Arm, PowerPC, and
+-MIPS systems, as well as progressive JPEG compression on x86, x86-64, and Arm
+-systems.  On such systems, libjpeg-turbo is generally 2-6x as fast as libjpeg,
+-all else being equal.  On other types of systems, libjpeg-turbo can still
+-outperform libjpeg by a significant amount, by virtue of its highly-optimized
+-Huffman coding routines.  In many cases, the performance of libjpeg-turbo
+-rivals that of proprietary high-speed JPEG codecs.
+-
+-libjpeg-turbo implements both the traditional libjpeg API as well as the less
+-powerful but more straightforward TurboJPEG API.  libjpeg-turbo also features
+-colorspace extensions that allow it to compress from/decompress to 32-bit and
+-big-endian pixel buffers (RGBX, XBGR, etc.), as well as a full-featured Java
+-interface.
+-
+-libjpeg-turbo was originally based on libjpeg/SIMD, an MMX-accelerated
+-derivative of libjpeg v6b developed by Miyasaka Masaru.  The TigerVNC and
+-VirtualGL projects made numerous enhancements to the codec in 2009, and in
+-early 2010, libjpeg-turbo spun off into an independent project, with the goal
+-of making high-speed JPEG compression/decompression technology available to a
+-broader range of users and developers.  libjpeg-turbo is an ISO/IEC and ITU-T
+-reference implementation of the JPEG standard.
+-
+-More information about libjpeg-turbo can be found at
+-<https://libjpeg-turbo.org>.
+-
+-
+-Funding
+-=======
+-
+-libjpeg-turbo is an independent open source project, but we rely on patronage
+-and funded development in order to maintain that independence.  The easiest way
+-to ensure that libjpeg-turbo remains community-focused and free of any one
+-organization's agenda is to
+-[sponsor our project through GitHub](https://github.com/sponsors/libjpeg-turbo).
+-All sponsorship money goes directly toward funding the labor necessary to
+-maintain libjpeg-turbo, support the user community, and implement bug fixes and
+-strategically important features.
+-
+-[![Sponsor libjpeg-turbo](https://img.shields.io/github/sponsors/libjpeg-turbo?label=Sponsor&logo=GitHub)](https://github.com/sponsors/libjpeg-turbo)
+-
+-
+-License
+-=======
+-
+-libjpeg-turbo is covered by three compatible BSD-style open source licenses.
+-Refer to [LICENSE.md](LICENSE.md) for a roll-up of license terms.
+-
+-
+-Building libjpeg-turbo
+-======================
+-
+-Refer to [BUILDING.md](BUILDING.md) for complete instructions.
+-
+-
+-Using libjpeg-turbo
+-===================
+-
+-libjpeg-turbo includes two APIs that can be used to compress and decompress
+-JPEG images:
+-
+-- **TurboJPEG API**<br>
+-  This API provides an easy-to-use interface for compressing and decompressing
+-  JPEG images in memory.  It also provides some functionality that would not be
+-  straightforward to achieve using the underlying libjpeg API, such as
+-  generating planar YUV images and performing multiple simultaneous lossless
+-  transforms on an image.  The Java interface for libjpeg-turbo is written on
+-  top of the TurboJPEG API.  The TurboJPEG API is recommended for first-time
+-  users of libjpeg-turbo.  Refer to [tjcomp.c](src/tjcomp.c),
+-  [tjdecomp.c](src/tjdecomp.c), [tjtran.c](src/tjtran.c),
+-  [TJComp.java](java/TJComp.java), [TJDecomp.java](java/TJDecomp.java), and
+-  [TJTran.java](java/TJTran.java) for examples of its usage and to
+-  <https://libjpeg-turbo.org/Documentation/Documentation> for API
+-  documentation.
+-
+-- **libjpeg API**<br>
+-  This is the de facto industry-standard API for compressing and decompressing
+-  JPEG images.  It is more difficult to use than the TurboJPEG API but also
+-  more powerful.  The libjpeg API implementation in libjpeg-turbo is both
+-  API/ABI-compatible and mathematically compatible with libjpeg v6b.  It can
+-  also optionally be configured to be API/ABI-compatible with libjpeg v7 and v8
+-  (see below.)  Refer to [cjpeg.c](src/cjpeg.c) and [djpeg.c](src/djpeg.c) for
+-  examples of its usage and to [libjpeg.txt](doc/libjpeg.txt) for API
+-  documentation.
+-
+-There is no significant performance advantage to either API when both are used
+-to perform similar operations.
+-
+-Colorspace Extensions
+----------------------
+-
+-libjpeg-turbo includes extensions that allow JPEG images to be compressed
+-directly from (and decompressed directly to) buffers that use BGR, BGRX,
+-RGBX, XBGR, and XRGB pixel ordering.  This is implemented with ten new
+-colorspace constants:
+-
+-    JCS_EXT_RGB   /* red/green/blue */
+-    JCS_EXT_RGBX  /* red/green/blue/x */
+-    JCS_EXT_BGR   /* blue/green/red */
+-    JCS_EXT_BGRX  /* blue/green/red/x */
+-    JCS_EXT_XBGR  /* x/blue/green/red */
+-    JCS_EXT_XRGB  /* x/red/green/blue */
+-    JCS_EXT_RGBA  /* red/green/blue/alpha */
+-    JCS_EXT_BGRA  /* blue/green/red/alpha */
+-    JCS_EXT_ABGR  /* alpha/blue/green/red */
+-    JCS_EXT_ARGB  /* alpha/red/green/blue */
+-
+-Setting `cinfo.in_color_space` (compression) or `cinfo.out_color_space`
+-(decompression) to one of these values will cause libjpeg-turbo to read the
+-red, green, and blue values from (or write them to) the appropriate position in
+-the pixel when compressing from/decompressing to an RGB buffer.
+-
+-Your application can check for the existence of these extensions at compile
+-time with:
+-
+-    #ifdef JCS_EXTENSIONS
+-
+-At run time, attempting to use these extensions with a libjpeg implementation
+-that does not support them will result in a "Bogus input colorspace" error.
+-Applications can trap this error in order to test whether run-time support is
+-available for the colorspace extensions.
+-
+-When using the RGBX, BGRX, XBGR, and XRGB colorspaces during decompression, the
+-X byte is undefined, and in order to ensure the best performance, libjpeg-turbo
+-can set that byte to whatever value it wishes.  If an application expects the X
+-byte to be used as an alpha channel, then it should specify `JCS_EXT_RGBA`,
+-`JCS_EXT_BGRA`, `JCS_EXT_ABGR`, or `JCS_EXT_ARGB`.  When these colorspace
+-constants are used, the X byte is guaranteed to be 0xFF, which is interpreted
+-as opaque.
+-
+-Your application can check for the existence of the alpha channel colorspace
+-extensions at compile time with:
+-
+-    #ifdef JCS_ALPHA_EXTENSIONS
+-
+-[jcstest.c](src/jcstest.c), located in the libjpeg-turbo source tree,
+-demonstrates how to check for the existence of the colorspace extensions at
+-compile time and run time.
+-
+-libjpeg v7 and v8 API/ABI Emulation
+------------------------------------
+-
+-With libjpeg v7 and v8, new features were added that necessitated extending the
+-compression and decompression structures.  Unfortunately, due to the exposed
+-nature of those structures, extending them also necessitated breaking backward
+-ABI compatibility with previous libjpeg releases.  Thus, programs that were
+-built to use libjpeg v7 or v8 did not work with libjpeg-turbo, since it is
+-based on the libjpeg v6b code base.  Although libjpeg v7 and v8 are not
+-as widely used as v6b, enough programs (including a few Linux distros) made
+-the switch that there was a demand to emulate the libjpeg v7 and v8 ABIs
+-in libjpeg-turbo.  It should be noted, however, that this feature was added
+-primarily so that applications that had already been compiled to use libjpeg
+-v7+ could take advantage of accelerated baseline JPEG encoding/decoding
+-without recompiling.  libjpeg-turbo does not claim to support all of the
+-libjpeg v7+ features, nor to produce identical output to libjpeg v7+ in all
+-cases (see below.)
+-
+-By passing an argument of `-DWITH_JPEG7=1` or `-DWITH_JPEG8=1` to `cmake`, you
+-can build a version of libjpeg-turbo that emulates the libjpeg v7 or v8 ABI, so
+-that programs that are built against libjpeg v7 or v8 can be run with
+-libjpeg-turbo.  The following section describes which libjpeg v7+ features are
+-supported and which aren't.
+-
+-### Support for libjpeg v7 and v8 Features
+-
+-#### Fully supported
+-
+-- **libjpeg API: IDCT scaling extensions in decompressor**<br>
+-  libjpeg-turbo supports IDCT scaling with scaling factors of 1/8, 1/4, 3/8,
+-  1/2, 5/8, 3/4, 7/8, 9/8, 5/4, 11/8, 3/2, 13/8, 7/4, 15/8, and 2/1 (only 1/4
+-  and 1/2 are SIMD-accelerated.)
+-
+-- **libjpeg API: Arithmetic coding**
+-
+-- **libjpeg API: In-memory source and destination managers**<br>
+-  See notes below.
+-
+-- **cjpeg: Separate quality settings for luminance and chrominance**<br>
+-  Note that the libpjeg v7+ API was extended to accommodate this feature only
+-  for convenience purposes.  It has always been possible to implement this
+-  feature with libjpeg v6b (see rdswitch.c for an example.)
+-
+-- **cjpeg: 32-bit BMP support**
+-
+-- **cjpeg: `-rgb` option**
+-
+-- **jpegtran: Lossless cropping**
+-
+-- **jpegtran: `-perfect` option**
+-
+-- **jpegtran: Forcing width/height when performing lossless crop**
+-
+-- **rdjpgcom: `-raw` option**
+-
+-- **rdjpgcom: Locale awareness**
+-
+-
+-#### Not supported
+-
+-NOTE:  As of this writing, extensive research has been conducted into the
+-usefulness of DCT scaling as a means of data reduction and SmartScale as a
+-means of quality improvement.  Readers are invited to peruse the research at
+-<https://libjpeg-turbo.org/About/SmartScale> and draw their own conclusions,
+-but it is the general belief of our project that these features have not
+-demonstrated sufficient usefulness to justify inclusion in libjpeg-turbo.
+-
+-- **libjpeg API: DCT scaling in compressor**<br>
+-  `cinfo.scale_num` and `cinfo.scale_denom` are silently ignored.
+-  There is no technical reason why DCT scaling could not be supported when
+-  emulating the libjpeg v7+ API/ABI, but without the SmartScale extension (see
+-  below), only scaling factors of 1/2, 8/15, 4/7, 8/13, 2/3, 8/11, 4/5, and
+-  8/9 would be available, which is of limited usefulness.
+-
+-- **libjpeg API: SmartScale**<br>
+-  `cinfo.block_size` is silently ignored.
+-  SmartScale is an extension to the JPEG format that allows for DCT block
+-  sizes other than 8x8.  Providing support for this new format would be
+-  feasible (particularly without full acceleration.)  However, until/unless
+-  the format becomes either an official industry standard or, at minimum, an
+-  accepted solution in the community, we are hesitant to implement it, as
+-  there is no sense of whether or how it might change in the future.  It is
+-  our belief that SmartScale has not demonstrated sufficient usefulness as a
+-  lossless format nor as a means of quality enhancement, and thus our primary
+-  interest in providing this feature would be as a means of supporting
+-  additional DCT scaling factors.
+-
+-- **libjpeg API: Fancy downsampling in compressor**<br>
+-  `cinfo.do_fancy_downsampling` is silently ignored.
+-  This requires the DCT scaling feature, which is not supported.
+-
+-- **jpegtran: Scaling**<br>
+-  This requires both the DCT scaling and SmartScale features, which are not
+-  supported.
+-
+-- **Lossless RGB JPEG files**<br>
+-  This requires the SmartScale feature, which is not supported.
+-
+-### What About libjpeg v9?
+-
+-libjpeg v9 introduced yet another field to the JPEG compression structure
+-(`color_transform`), thus making the ABI backward incompatible with that of
+-libjpeg v8.  This new field was introduced solely for the purpose of supporting
+-lossless SmartScale encoding.  Furthermore, there was actually no reason to
+-extend the API in this manner, as the color transform could have just as easily
+-been activated by way of a new JPEG colorspace constant, thus preserving
+-backward ABI compatibility.
+-
+-Our research (see link above) has shown that lossless SmartScale does not
+-generally accomplish anything that can't already be accomplished better with
+-existing, standard lossless formats.  Therefore, at this time it is our belief
+-that there is not sufficient technical justification for software projects to
+-upgrade from libjpeg v8 to libjpeg v9, and thus there is not sufficient
+-technical justification for us to emulate the libjpeg v9 ABI.
+-
+-In-Memory Source/Destination Managers
+--------------------------------------
+-
+-By default, libjpeg-turbo 1.3 and later includes the `jpeg_mem_src()` and
+-`jpeg_mem_dest()` functions, even when not emulating the libjpeg v8 API/ABI.
+-Previously, it was necessary to build libjpeg-turbo from source with libjpeg v8
+-API/ABI emulation in order to use the in-memory source/destination managers,
+-but several projects requested that those functions be included when emulating
+-the libjpeg v6b API/ABI as well.  This allows the use of those functions by
+-programs that need them, without breaking ABI compatibility for programs that
+-don't, and it allows those functions to be provided in the "official"
+-libjpeg-turbo binaries.
+-
+-Note that, on most Un*x systems, the dynamic linker will not look for a
+-function in a library until that function is actually used.  Thus, if a program
+-is built against libjpeg-turbo 1.3+ and uses `jpeg_mem_src()` or
+-`jpeg_mem_dest()`, that program will not fail if run against an older version
+-of libjpeg-turbo or against libjpeg v7- until the program actually tries to
+-call `jpeg_mem_src()` or `jpeg_mem_dest()`.  Such is not the case on Windows.
+-If a program is built against the libjpeg-turbo 1.3+ DLL and uses
+-`jpeg_mem_src()` or `jpeg_mem_dest()`, then it must use the libjpeg-turbo 1.3+
+-DLL at run time.
+-
+-Both cjpeg and djpeg have been extended to allow testing the in-memory
+-source/destination manager functions.  See their respective man pages for more
+-details.
+-
+-
+-Mathematical Compatibility
+-==========================
+-
+-For the most part, libjpeg-turbo should produce identical output to libjpeg
+-v6b.  There are two exceptions:
+-
+-1. When decompressing a JPEG image that uses 4:4:0 chrominance subsampling, the
+-outputs of libjpeg v6b and libjpeg-turbo can differ because libjpeg-turbo
+-implements a "fancy" (smooth) 4:4:0 upsampling algorithm and libjpeg did not.
+-
+-2. When using the floating point DCT/IDCT, the outputs of libjpeg v6b and
+-libjpeg-turbo can differ for the following reasons:
+-
+-    - The SSE/SSE2 floating point DCT implementation in libjpeg-turbo is ever
+-      so slightly more accurate than the implementation in libjpeg v6b, but not
+-      by any amount perceptible to human vision (generally in the range of 0.01
+-      to 0.08 dB gain in PNSR.)
+-
+-    - When not using the SIMD extensions, libjpeg-turbo uses the more accurate
+-      (and slightly faster) floating point IDCT algorithm introduced in libjpeg
+-      v8a as opposed to the algorithm used in libjpeg v6b.  It should be noted,
+-      however, that this algorithm basically brings the accuracy of the
+-      floating point IDCT in line with the accuracy of the accurate integer
+-      IDCT.  The floating point DCT/IDCT algorithms are mainly a legacy
+-      feature, and they do not produce significantly more accuracy than the
+-      accurate integer algorithms.  (To put numbers on this, the typical
+-      difference in PNSR between the two algorithms is less than 0.10 dB,
+-      whereas changing the quality level by 1 in the upper range of the quality
+-      scale is typically more like a 1.0 dB difference.)
+-
+-    - If the floating point algorithms in libjpeg-turbo are not implemented
+-      using SIMD instructions on a particular platform, then the accuracy of
+-      the floating point DCT/IDCT can depend on the compiler settings.
+-
+-While libjpeg-turbo does emulate the libjpeg v8 API/ABI, under the hood it is
+-still using the same algorithms as libjpeg v6b, so there are several specific
+-cases in which libjpeg-turbo cannot be expected to produce the same output as
+-libjpeg v8:
+-
+-- When decompressing using scaling factors of 1/2 and 1/4, because libjpeg v8
+-  implements those scaling algorithms differently than libjpeg v6b does, and
+-  libjpeg-turbo's SIMD extensions are based on the libjpeg v6b behavior.
+-
+-- When using chrominance subsampling, because libjpeg v8 implements this
+-  with its DCT/IDCT scaling algorithms rather than with a separate
+-  downsampling/upsampling algorithm.  In our testing, the subsampled/upsampled
+-  output of libjpeg v8 is less accurate than that of libjpeg v6b for this
+-  reason.
+-
+-- When decompressing using a scaling factor > 1 and merged (AKA "non-fancy" or
+-  "non-smooth") chrominance upsampling, because libjpeg v8 does not support
+-  merged upsampling with scaling factors > 1.
+-
+-
+-Performance Pitfalls
+-====================
+-
+-Restart Markers
+----------------
+-
+-The optimized Huffman decoder in libjpeg-turbo does not handle restart markers
+-in a way that makes the rest of the libjpeg infrastructure happy, so it is
+-necessary to use the slow Huffman decoder when decompressing a JPEG image that
+-has restart markers.  This can cause the decompression performance to drop by
+-as much as 20%, but the performance will still be much greater than that of
+-libjpeg.  Many consumer packages, such as Photoshop, use restart markers when
+-generating JPEG images, so images generated by those programs will experience
+-this issue.
+-
+-Fast Integer Forward DCT at High Quality Levels
+------------------------------------------------
+-
+-The algorithm used by the SIMD-accelerated quantization function cannot produce
+-correct results whenever the fast integer forward DCT is used along with a JPEG
+-quality of 98-100.  Thus, libjpeg-turbo must use the non-SIMD quantization
+-function in those cases.  This causes performance to drop by as much as 40%.
+-It is therefore strongly advised that you use the accurate integer forward DCT
+-whenever encoding images with a JPEG quality of 98 or higher.
+-
+-
+-Memory Debugger Pitfalls
+-========================
+-
+-Valgrind and Memory Sanitizer (MSan) can generate false positives
+-(specifically, incorrect reports of uninitialized memory accesses) when used
+-with libjpeg-turbo's SIMD extensions.  It is generally recommended that the
+-SIMD extensions be disabled, either by passing an argument of `-DWITH_SIMD=0`
+-to `cmake` when configuring the build or by setting the environment variable
+-`JSIMD_FORCENONE` to `1` at run time, when testing libjpeg-turbo with Valgrind,
+-MSan, or other memory debuggers.
++Background
++==========
++
++libjpeg-turbo is a JPEG image codec that uses SIMD instructions to accelerate
++baseline JPEG compression and decompression on x86, x86-64, Arm, PowerPC, and
++MIPS systems, as well as progressive JPEG compression on x86, x86-64, and Arm
++systems.  On such systems, libjpeg-turbo is generally 2-6x as fast as libjpeg,
++all else being equal.  On other types of systems, libjpeg-turbo can still
++outperform libjpeg by a significant amount, by virtue of its highly-optimized
++Huffman coding routines.  In many cases, the performance of libjpeg-turbo
++rivals that of proprietary high-speed JPEG codecs.
++
++libjpeg-turbo implements both the traditional libjpeg API as well as the less
++powerful but more straightforward TurboJPEG API.  libjpeg-turbo also features
++colorspace extensions that allow it to compress from/decompress to 32-bit and
++big-endian pixel buffers (RGBX, XBGR, etc.), as well as a full-featured Java
++interface.
++
++libjpeg-turbo was originally based on libjpeg/SIMD, an MMX-accelerated
++derivative of libjpeg v6b developed by Miyasaka Masaru.  The TigerVNC and
++VirtualGL projects made numerous enhancements to the codec in 2009, and in
++early 2010, libjpeg-turbo spun off into an independent project, with the goal
++of making high-speed JPEG compression/decompression technology available to a
++broader range of users and developers.  libjpeg-turbo is an ISO/IEC and ITU-T
++reference implementation of the JPEG standard.
++
++More information about libjpeg-turbo can be found at
++<https://libjpeg-turbo.org>.
++
++
++Funding
++=======
++
++libjpeg-turbo is an independent open source project, but we rely on patronage
++and funded development in order to maintain that independence.  The easiest way
++to ensure that libjpeg-turbo remains community-focused and free of any one
++organization's agenda is to
++[sponsor our project through GitHub](https://github.com/sponsors/libjpeg-turbo).
++All sponsorship money goes directly toward funding the labor necessary to
++maintain libjpeg-turbo, support the user community, and implement bug fixes and
++strategically important features.
++
++[![Sponsor libjpeg-turbo](https://img.shields.io/github/sponsors/libjpeg-turbo?label=Sponsor&logo=GitHub)](https://github.com/sponsors/libjpeg-turbo)
++
++
++License
++=======
++
++libjpeg-turbo is covered by three compatible BSD-style open source licenses.
++Refer to [LICENSE.md](LICENSE.md) for a roll-up of license terms.
++
++
++Building libjpeg-turbo
++======================
++
++Refer to [BUILDING.md](BUILDING.md) for complete instructions.
++
++
++Using libjpeg-turbo
++===================
++
++libjpeg-turbo includes two APIs that can be used to compress and decompress
++JPEG images:
++
++- **TurboJPEG API**<br>
++  This API provides an easy-to-use interface for compressing and decompressing
++  JPEG images in memory.  It also provides some functionality that would not be
++  straightforward to achieve using the underlying libjpeg API, such as
++  generating planar YUV images and performing multiple simultaneous lossless
++  transforms on an image.  The Java interface for libjpeg-turbo is written on
++  top of the TurboJPEG API.  The TurboJPEG API is recommended for first-time
++  users of libjpeg-turbo.  Refer to [tjcomp.c](src/tjcomp.c),
++  [tjdecomp.c](src/tjdecomp.c), [tjtran.c](src/tjtran.c),
++  [TJComp.java](java/TJComp.java), [TJDecomp.java](java/TJDecomp.java), and
++  [TJTran.java](java/TJTran.java) for examples of its usage and to
++  <https://libjpeg-turbo.org/Documentation/Documentation> for API
++  documentation.
++
++- **libjpeg API**<br>
++  This is the de facto industry-standard API for compressing and decompressing
++  JPEG images.  It is more difficult to use than the TurboJPEG API but also
++  more powerful.  The libjpeg API implementation in libjpeg-turbo is both
++  API/ABI-compatible and mathematically compatible with libjpeg v6b.  It can
++  also optionally be configured to be API/ABI-compatible with libjpeg v7 and v8
++  (see below.)  Refer to [cjpeg.c](src/cjpeg.c) and [djpeg.c](src/djpeg.c) for
++  examples of its usage and to [libjpeg.txt](doc/libjpeg.txt) for API
++  documentation.
++
++There is no significant performance advantage to either API when both are used
++to perform similar operations.
++
++Colorspace Extensions
++---------------------
++
++libjpeg-turbo includes extensions that allow JPEG images to be compressed
++directly from (and decompressed directly to) buffers that use BGR, BGRX,
++RGBX, XBGR, and XRGB pixel ordering.  This is implemented with ten new
++colorspace constants:
++
++    JCS_EXT_RGB   /* red/green/blue */
++    JCS_EXT_RGBX  /* red/green/blue/x */
++    JCS_EXT_BGR   /* blue/green/red */
++    JCS_EXT_BGRX  /* blue/green/red/x */
++    JCS_EXT_XBGR  /* x/blue/green/red */
++    JCS_EXT_XRGB  /* x/red/green/blue */
++    JCS_EXT_RGBA  /* red/green/blue/alpha */
++    JCS_EXT_BGRA  /* blue/green/red/alpha */
++    JCS_EXT_ABGR  /* alpha/blue/green/red */
++    JCS_EXT_ARGB  /* alpha/red/green/blue */
++
++Setting `cinfo.in_color_space` (compression) or `cinfo.out_color_space`
++(decompression) to one of these values will cause libjpeg-turbo to read the
++red, green, and blue values from (or write them to) the appropriate position in
++the pixel when compressing from/decompressing to an RGB buffer.
++
++Your application can check for the existence of these extensions at compile
++time with:
++
++    #ifdef JCS_EXTENSIONS
++
++At run time, attempting to use these extensions with a libjpeg implementation
++that does not support them will result in a "Bogus input colorspace" error.
++Applications can trap this error in order to test whether run-time support is
++available for the colorspace extensions.
++
++When using the RGBX, BGRX, XBGR, and XRGB colorspaces during decompression, the
++X byte is undefined, and in order to ensure the best performance, libjpeg-turbo
++can set that byte to whatever value it wishes.  If an application expects the X
++byte to be used as an alpha channel, then it should specify `JCS_EXT_RGBA`,
++`JCS_EXT_BGRA`, `JCS_EXT_ABGR`, or `JCS_EXT_ARGB`.  When these colorspace
++constants are used, the X byte is guaranteed to be 0xFF, which is interpreted
++as opaque.
++
++Your application can check for the existence of the alpha channel colorspace
++extensions at compile time with:
++
++    #ifdef JCS_ALPHA_EXTENSIONS
++
++[jcstest.c](src/jcstest.c), located in the libjpeg-turbo source tree,
++demonstrates how to check for the existence of the colorspace extensions at
++compile time and run time.
++
++libjpeg v7 and v8 API/ABI Emulation
++-----------------------------------
++
++With libjpeg v7 and v8, new features were added that necessitated extending the
++compression and decompression structures.  Unfortunately, due to the exposed
++nature of those structures, extending them also necessitated breaking backward
++ABI compatibility with previous libjpeg releases.  Thus, programs that were
++built to use libjpeg v7 or v8 did not work with libjpeg-turbo, since it is
++based on the libjpeg v6b code base.  Although libjpeg v7 and v8 are not
++as widely used as v6b, enough programs (including a few Linux distros) made
++the switch that there was a demand to emulate the libjpeg v7 and v8 ABIs
++in libjpeg-turbo.  It should be noted, however, that this feature was added
++primarily so that applications that had already been compiled to use libjpeg
++v7+ could take advantage of accelerated baseline JPEG encoding/decoding
++without recompiling.  libjpeg-turbo does not claim to support all of the
++libjpeg v7+ features, nor to produce identical output to libjpeg v7+ in all
++cases (see below.)
++
++By passing an argument of `-DWITH_JPEG7=1` or `-DWITH_JPEG8=1` to `cmake`, you
++can build a version of libjpeg-turbo that emulates the libjpeg v7 or v8 ABI, so
++that programs that are built against libjpeg v7 or v8 can be run with
++libjpeg-turbo.  The following section describes which libjpeg v7+ features are
++supported and which aren't.
++
++### Support for libjpeg v7 and v8 Features
++
++#### Fully supported
++
++- **libjpeg API: IDCT scaling extensions in decompressor**<br>
++  libjpeg-turbo supports IDCT scaling with scaling factors of 1/8, 1/4, 3/8,
++  1/2, 5/8, 3/4, 7/8, 9/8, 5/4, 11/8, 3/2, 13/8, 7/4, 15/8, and 2/1 (only 1/4
++  and 1/2 are SIMD-accelerated.)
++
++- **libjpeg API: Arithmetic coding**
++
++- **libjpeg API: In-memory source and destination managers**<br>
++  See notes below.
++
++- **cjpeg: Separate quality settings for luminance and chrominance**<br>
++  Note that the libpjeg v7+ API was extended to accommodate this feature only
++  for convenience purposes.  It has always been possible to implement this
++  feature with libjpeg v6b (see rdswitch.c for an example.)
++
++- **cjpeg: 32-bit BMP support**
++
++- **cjpeg: `-rgb` option**
++
++- **jpegtran: Lossless cropping**
++
++- **jpegtran: `-perfect` option**
++
++- **jpegtran: Forcing width/height when performing lossless crop**
++
++- **rdjpgcom: `-raw` option**
++
++- **rdjpgcom: Locale awareness**
++
++
++#### Not supported
++
++NOTE:  As of this writing, extensive research has been conducted into the
++usefulness of DCT scaling as a means of data reduction and SmartScale as a
++means of quality improvement.  Readers are invited to peruse the research at
++<https://libjpeg-turbo.org/About/SmartScale> and draw their own conclusions,
++but it is the general belief of our project that these features have not
++demonstrated sufficient usefulness to justify inclusion in libjpeg-turbo.
++
++- **libjpeg API: DCT scaling in compressor**<br>
++  `cinfo.scale_num` and `cinfo.scale_denom` are silently ignored.
++  There is no technical reason why DCT scaling could not be supported when
++  emulating the libjpeg v7+ API/ABI, but without the SmartScale extension (see
++  below), only scaling factors of 1/2, 8/15, 4/7, 8/13, 2/3, 8/11, 4/5, and
++  8/9 would be available, which is of limited usefulness.
++
++- **libjpeg API: SmartScale**<br>
++  `cinfo.block_size` is silently ignored.
++  SmartScale is an extension to the JPEG format that allows for DCT block
++  sizes other than 8x8.  Providing support for this new format would be
++  feasible (particularly without full acceleration.)  However, until/unless
++  the format becomes either an official industry standard or, at minimum, an
++  accepted solution in the community, we are hesitant to implement it, as
++  there is no sense of whether or how it might change in the future.  It is
++  our belief that SmartScale has not demonstrated sufficient usefulness as a
++  lossless format nor as a means of quality enhancement, and thus our primary
++  interest in providing this feature would be as a means of supporting
++  additional DCT scaling factors.
++
++- **libjpeg API: Fancy downsampling in compressor**<br>
++  `cinfo.do_fancy_downsampling` is silently ignored.
++  This requires the DCT scaling feature, which is not supported.
++
++- **jpegtran: Scaling**<br>
++  This requires both the DCT scaling and SmartScale features, which are not
++  supported.
++
++- **Lossless RGB JPEG files**<br>
++  This requires the SmartScale feature, which is not supported.
++
++### What About libjpeg v9?
++
++libjpeg v9 introduced yet another field to the JPEG compression structure
++(`color_transform`), thus making the ABI backward incompatible with that of
++libjpeg v8.  This new field was introduced solely for the purpose of supporting
++lossless SmartScale encoding.  Furthermore, there was actually no reason to
++extend the API in this manner, as the color transform could have just as easily
++been activated by way of a new JPEG colorspace constant, thus preserving
++backward ABI compatibility.
++
++Our research (see link above) has shown that lossless SmartScale does not
++generally accomplish anything that can't already be accomplished better with
++existing, standard lossless formats.  Therefore, at this time it is our belief
++that there is not sufficient technical justification for software projects to
++upgrade from libjpeg v8 to libjpeg v9, and thus there is not sufficient
++technical justification for us to emulate the libjpeg v9 ABI.
++
++In-Memory Source/Destination Managers
++-------------------------------------
++
++By default, libjpeg-turbo 1.3 and later includes the `jpeg_mem_src()` and
++`jpeg_mem_dest()` functions, even when not emulating the libjpeg v8 API/ABI.
++Previously, it was necessary to build libjpeg-turbo from source with libjpeg v8
++API/ABI emulation in order to use the in-memory source/destination managers,
++but several projects requested that those functions be included when emulating
++the libjpeg v6b API/ABI as well.  This allows the use of those functions by
++programs that need them, without breaking ABI compatibility for programs that
++don't, and it allows those functions to be provided in the "official"
++libjpeg-turbo binaries.
++
++Note that, on most Un*x systems, the dynamic linker will not look for a
++function in a library until that function is actually used.  Thus, if a program
++is built against libjpeg-turbo 1.3+ and uses `jpeg_mem_src()` or
++`jpeg_mem_dest()`, that program will not fail if run against an older version
++of libjpeg-turbo or against libjpeg v7- until the program actually tries to
++call `jpeg_mem_src()` or `jpeg_mem_dest()`.  Such is not the case on Windows.
++If a program is built against the libjpeg-turbo 1.3+ DLL and uses
++`jpeg_mem_src()` or `jpeg_mem_dest()`, then it must use the libjpeg-turbo 1.3+
++DLL at run time.
++
++Both cjpeg and djpeg have been extended to allow testing the in-memory
++source/destination manager functions.  See their respective man pages for more
++details.
++
++
++Mathematical Compatibility
++==========================
++
++For the most part, libjpeg-turbo should produce identical output to libjpeg
++v6b.  There are two exceptions:
++
++1. When decompressing a JPEG image that uses 4:4:0 chrominance subsampling, the
++outputs of libjpeg v6b and libjpeg-turbo can differ because libjpeg-turbo
++implements a "fancy" (smooth) 4:4:0 upsampling algorithm and libjpeg did not.
++
++2. When using the floating point DCT/IDCT, the outputs of libjpeg v6b and
++libjpeg-turbo can differ for the following reasons:
++
++    - The SSE/SSE2 floating point DCT implementation in libjpeg-turbo is ever
++      so slightly more accurate than the implementation in libjpeg v6b, but not
++      by any amount perceptible to human vision (generally in the range of 0.01
++      to 0.08 dB gain in PNSR.)
++
++    - When not using the SIMD extensions, libjpeg-turbo uses the more accurate
++      (and slightly faster) floating point IDCT algorithm introduced in libjpeg
++      v8a as opposed to the algorithm used in libjpeg v6b.  It should be noted,
++      however, that this algorithm basically brings the accuracy of the
++      floating point IDCT in line with the accuracy of the accurate integer
++      IDCT.  The floating point DCT/IDCT algorithms are mainly a legacy
++      feature, and they do not produce significantly more accuracy than the
++      accurate integer algorithms.  (To put numbers on this, the typical
++      difference in PNSR between the two algorithms is less than 0.10 dB,
++      whereas changing the quality level by 1 in the upper range of the quality
++      scale is typically more like a 1.0 dB difference.)
++
++    - If the floating point algorithms in libjpeg-turbo are not implemented
++      using SIMD instructions on a particular platform, then the accuracy of
++      the floating point DCT/IDCT can depend on the compiler settings.
++
++While libjpeg-turbo does emulate the libjpeg v8 API/ABI, under the hood it is
++still using the same algorithms as libjpeg v6b, so there are several specific
++cases in which libjpeg-turbo cannot be expected to produce the same output as
++libjpeg v8:
++
++- When decompressing using scaling factors of 1/2 and 1/4, because libjpeg v8
++  implements those scaling algorithms differently than libjpeg v6b does, and
++  libjpeg-turbo's SIMD extensions are based on the libjpeg v6b behavior.
++
++- When using chrominance subsampling, because libjpeg v8 implements this
++  with its DCT/IDCT scaling algorithms rather than with a separate
++  downsampling/upsampling algorithm.  In our testing, the subsampled/upsampled
++  output of libjpeg v8 is less accurate than that of libjpeg v6b for this
++  reason.
++
++- When decompressing using a scaling factor > 1 and merged (AKA "non-fancy" or
++  "non-smooth") chrominance upsampling, because libjpeg v8 does not support
++  merged upsampling with scaling factors > 1.
++
++
++Performance Pitfalls
++====================
++
++Restart Markers
++---------------
++
++The optimized Huffman decoder in libjpeg-turbo does not handle restart markers
++in a way that makes the rest of the libjpeg infrastructure happy, so it is
++necessary to use the slow Huffman decoder when decompressing a JPEG image that
++has restart markers.  This can cause the decompression performance to drop by
++as much as 20%, but the performance will still be much greater than that of
++libjpeg.  Many consumer packages, such as Photoshop, use restart markers when
++generating JPEG images, so images generated by those programs will experience
++this issue.
++
++Fast Integer Forward DCT at High Quality Levels
++-----------------------------------------------
++
++The algorithm used by the SIMD-accelerated quantization function cannot produce
++correct results whenever the fast integer forward DCT is used along with a JPEG
++quality of 98-100.  Thus, libjpeg-turbo must use the non-SIMD quantization
++function in those cases.  This causes performance to drop by as much as 40%.
++It is therefore strongly advised that you use the accurate integer forward DCT
++whenever encoding images with a JPEG quality of 98 or higher.
++
++
++Memory Debugger Pitfalls
++========================
++
++Valgrind and Memory Sanitizer (MSan) can generate false positives
++(specifically, incorrect reports of uninitialized memory accesses) when used
++with libjpeg-turbo's SIMD extensions.  It is generally recommended that the
++SIMD extensions be disabled, either by passing an argument of `-DWITH_SIMD=0`
++to `cmake` when configuring the build or by setting the environment variable
++`JSIMD_FORCENONE` to `1` at run time, when testing libjpeg-turbo with Valgrind,
++MSan, or other memory debuggers.

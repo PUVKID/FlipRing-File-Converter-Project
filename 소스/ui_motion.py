@@ -6,7 +6,7 @@ from theme_manager import theme_color, ring_color
 from pathlib import Path
 import weakref
 
-from PySide6.QtCore import Qt, QObject, QEvent, QVariantAnimation, QEasingCurve, QRectF, QPointF, QTimer, QUrl, QSignalBlocker, QSize
+from PySide6.QtCore import Qt, QObject, QEvent, QVariantAnimation, QEasingCurve, QRectF, QPointF, QTimer, QUrl, QSignalBlocker, QSize, QElapsedTimer
 from PySide6.QtGui import QColor, QPainter, QPen, QPainterPath, QIcon, QPixmap
 from PySide6.QtWidgets import (
     QApplication, QWidget, QFrame, QLabel, QVBoxLayout, QHBoxLayout, QFileDialog,
@@ -145,14 +145,14 @@ class SurfaceMotion(QObject):
             widget.currentIndexChanged.connect(self.pulse)
             ensure_surface_motion(widget.view().window())
             install_surface_motions(widget.view())
-        elif isinstance(widget, QLineEdit):
-            widget.textEdited.connect(self.pulse)
         elif isinstance(widget, QAbstractSpinBox) and hasattr(widget, "valueChanged"):
             widget.valueChanged.connect(self.pulse)
         elif isinstance(widget, QAbstractButton):
             widget.clicked.connect(self.pulse)
         elif isinstance(widget, QProgressBar):
-            widget.valueChanged.connect(self.pulse)
+            self._progress_clock = QElapsedTimer()
+            self._progress_bucket = None
+            widget.valueChanged.connect(self._progress_changed)
         elif isinstance(widget, QMenu):
             widget.hovered.connect(self.menu_pulse)
 
@@ -202,6 +202,20 @@ class SurfaceMotion(QObject):
         self._frame(current)
         start_motion(self.animation)
 
+    def _progress_changed(self, value):
+        """실제 진행은 즉시 갱신하고, 피드백은 시작·완료와 간격 있는 단계에만 준다."""
+        widget = self.parent()
+        minimum, maximum = widget.minimum(), widget.maximum()
+        span = maximum - minimum
+        bucket = int(10 * (value - minimum) / span) if span > 0 else 0
+        boundary = value in (minimum, maximum)
+        changed = bucket != self._progress_bucket
+        elapsed = not self._progress_clock.isValid() or self._progress_clock.elapsed() >= 650
+        if changed and (boundary or elapsed):
+            self._progress_bucket = bucket
+            self._progress_clock.start()
+            self.pulse()
+
     def selection_pulse(self, *unused):
         widget = self.parent()
         index = widget.currentIndex()
@@ -225,7 +239,11 @@ class SurfaceMotion(QObject):
                     self._connect_view()
                 self.pulse()
         elif kind in (QEvent.Enter, QEvent.FocusIn, QEvent.MouseButtonPress, QEvent.KeyPress):
-            if self.parent().isEnabled():
+            widget = self.parent()
+            # 타이핑은 입력 자체로 응답한다. 글자마다 테두리를 재점등하지 않는다.
+            editing_key = kind == QEvent.KeyPress and isinstance(widget, (QLineEdit, QAbstractSpinBox))
+            duplicate_click = kind == QEvent.MouseButtonPress and isinstance(widget, QAbstractButton)
+            if widget.isEnabled() and not editing_key and not duplicate_click:
                 self.pulse()
         elif kind in (QEvent.Hide, QEvent.Close):
             self.stop()

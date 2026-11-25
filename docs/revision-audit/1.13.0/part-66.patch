@@ -1,0 +1,1495 @@
+--- a/소스/theme_manager.py
++++ b/소스/theme_manager.py
+@@ -1,119 +1,119 @@
+-"""앱 팔레트·표면·직접 그리기에 사용하는 공통 테마."""
+-from __future__ import annotations
+-
+-import re
+-from PySide6.QtCore import QObject, QEvent, Qt, Signal
+-from PySide6.QtGui import QColor, QPalette
+-from PySide6.QtWidgets import QApplication, QWidget
+-
+-
+-def is_dark():
+-    app = QApplication.instance()
+-    return bool(app and app.property('flipringDarkTheme'))
+-
+-
+-def theme_color(*args):
+-    """기존 밝은 화면의 회색을 어두운 화면의 대응 명도로 바꾼다."""
+-    color = QColor(*args)
+-    if is_dark() and color.isValid() and color.red() == color.green() == color.blue():
+-        value = round(32 + (255 - color.red()) * 0.85)
+-        color.setRgb(value, value, value, color.alpha())
+-    return color
+-
+-
+-def ring_color(*args):
+-    """기존 어두운 휠·탐색은 밝은 선택에서만 반전한다."""
+-    color = QColor(*args)
+-    if not is_dark() and color.isValid() and color.red() == color.green() == color.blue():
+-        value = 255 - color.red()
+-        color.setRgb(value, value, value, color.alpha())
+-    return color
+-
+-
+-def themed_style(source):
+-    if not is_dark():
+-        return source
+-    def replace(match):
+-        return theme_color(match.group()).name()
+-    result = re.sub(r'#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3}\b', replace, source)
+-    return re.sub(r'(?<=:)\s*(white|black)\b', lambda m: theme_color(m[1]).name(), result)
+-
+-
+-class ThemeManager(QObject):
+-    changed = Signal(str)
+-
+-    def __init__(self, app):
+-        super().__init__(app)
+-        self.app = app
+-        self.mode = 'system'
+-        self._changing = False
+-        self._base_palette = QPalette(app.palette())
+-        app.installEventFilter(self)
+-        app.styleHints().colorSchemeChanged.connect(self._system_changed)
+-
+-    def _system_changed(self, scheme):
+-        if self.mode == 'system':
+-            self.apply('system')
+-
+-    def apply(self, mode):
+-        self.mode = mode if mode in ('light', 'dark', 'system') else 'system'
+-        dark = self.mode == 'dark' or (self.mode == 'system' and
+-                 self.app.styleHints().colorScheme() == Qt.ColorScheme.Dark)
+-        self.app.setProperty('flipringDarkTheme', dark)
+-        self._changing = True
+-        try:
+-            palette = QPalette(self._base_palette)
+-            colors = {
+-                QPalette.Window: '#fafafa', QPalette.WindowText: '#171717',
+-                QPalette.Base: '#ffffff', QPalette.AlternateBase: '#f0f0f0',
+-                QPalette.Text: '#171717', QPalette.Button: '#ffffff',
+-                QPalette.ButtonText: '#171717', QPalette.Highlight: '#242424',
+-                QPalette.HighlightedText: '#ffffff', QPalette.ToolTipBase: '#242424',
+-                QPalette.ToolTipText: '#ffffff', QPalette.PlaceholderText: '#777777',
+-                QPalette.Link: '#404040', QPalette.LinkVisited: '#606060',
+-                QPalette.Light: '#ffffff', QPalette.Midlight: '#eeeeee',
+-                QPalette.Mid: '#bbbbbb', QPalette.Dark: '#888888',
+-                QPalette.Shadow: '#333333', QPalette.Accent: '#242424',
+-            }
+-            for role, value in colors.items():
+-                palette.setColor(role, theme_color(value))
+-            for role in (QPalette.WindowText, QPalette.Text, QPalette.ButtonText):
+-                palette.setColor(QPalette.Disabled, role, theme_color('#999999'))
+-            self.app.setPalette(palette)
+-            for widget in self.app.allWidgets():
+-                self._style(widget)
+-                widget.update()
+-        finally:
+-            self._changing = False
+-        self.changed.emit(self.mode)
+-
+-    def _style(self, widget):
+-        current = widget.styleSheet()
+-        rendered = getattr(widget, '_flipring_theme_rendered', None)
+-        if current != rendered:
+-            original = getattr(widget, '_flipring_theme_source', '')
+-            widget._flipring_theme_source = (original + current[len(rendered):]
+-                                             if rendered and current.startswith(rendered) else current)
+-        source = getattr(widget, '_flipring_theme_source', current)
+-        target = themed_style(source)
+-        widget._flipring_theme_rendered = target
+-        if target != current:
+-            widget.setStyleSheet(target)
+-
+-    def eventFilter(self, obj, event):
+-        # 생성이 늦은 선택창·메뉴와 열린 표면의 새 스타일도 같은 선택을 따른다.
+-        if not self._changing and isinstance(obj, QWidget) and event.type() in (
+-                QEvent.Polish, QEvent.Show, QEvent.StyleChange):
+-            self._changing = True
+-            try:
+-                self._style(obj)
+-            finally:
+-                self._changing = False
+-        return False
+-
+-
+-def manager(app=None):
+-    app = app or QApplication.instance()
+-    if not hasattr(app, '_flipring_theme_manager'):
+-        app._flipring_theme_manager = ThemeManager(app)
+-    return app._flipring_theme_manager
++"""앱 팔레트·표면·직접 그리기에 사용하는 공통 테마."""
++from __future__ import annotations
++
++import re
++from PySide6.QtCore import QObject, QEvent, Qt, Signal
++from PySide6.QtGui import QColor, QPalette
++from PySide6.QtWidgets import QApplication, QWidget
++
++
++def is_dark():
++    app = QApplication.instance()
++    return bool(app and app.property('flipringDarkTheme'))
++
++
++def theme_color(*args):
++    """기존 밝은 화면의 회색을 어두운 화면의 대응 명도로 바꾼다."""
++    color = QColor(*args)
++    if is_dark() and color.isValid() and color.red() == color.green() == color.blue():
++        value = round(32 + (255 - color.red()) * 0.85)
++        color.setRgb(value, value, value, color.alpha())
++    return color
++
++
++def ring_color(*args):
++    """기존 어두운 휠·탐색은 밝은 선택에서만 반전한다."""
++    color = QColor(*args)
++    if not is_dark() and color.isValid() and color.red() == color.green() == color.blue():
++        value = 255 - color.red()
++        color.setRgb(value, value, value, color.alpha())
++    return color
++
++
++def themed_style(source):
++    if not is_dark():
++        return source
++    def replace(match):
++        return theme_color(match.group()).name()
++    result = re.sub(r'#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3}\b', replace, source)
++    return re.sub(r'(?<=:)\s*(white|black)\b', lambda m: theme_color(m[1]).name(), result)
++
++
++class ThemeManager(QObject):
++    changed = Signal(str)
++
++    def __init__(self, app):
++        super().__init__(app)
++        self.app = app
++        self.mode = 'system'
++        self._changing = False
++        self._base_palette = QPalette(app.palette())
++        app.installEventFilter(self)
++        app.styleHints().colorSchemeChanged.connect(self._system_changed)
++
++    def _system_changed(self, scheme):
++        if self.mode == 'system':
++            self.apply('system')
++
++    def apply(self, mode):
++        self.mode = mode if mode in ('light', 'dark', 'system') else 'system'
++        dark = self.mode == 'dark' or (self.mode == 'system' and
++                 self.app.styleHints().colorScheme() == Qt.ColorScheme.Dark)
++        self.app.setProperty('flipringDarkTheme', dark)
++        self._changing = True
++        try:
++            palette = QPalette(self._base_palette)
++            colors = {
++                QPalette.Window: '#fafafa', QPalette.WindowText: '#171717',
++                QPalette.Base: '#ffffff', QPalette.AlternateBase: '#f0f0f0',
++                QPalette.Text: '#171717', QPalette.Button: '#ffffff',
++                QPalette.ButtonText: '#171717', QPalette.Highlight: '#242424',
++                QPalette.HighlightedText: '#ffffff', QPalette.ToolTipBase: '#242424',
++                QPalette.ToolTipText: '#ffffff', QPalette.PlaceholderText: '#777777',
++                QPalette.Link: '#404040', QPalette.LinkVisited: '#606060',
++                QPalette.Light: '#ffffff', QPalette.Midlight: '#eeeeee',
++                QPalette.Mid: '#bbbbbb', QPalette.Dark: '#888888',
++                QPalette.Shadow: '#333333', QPalette.Accent: '#242424',
++            }
++            for role, value in colors.items():
++                palette.setColor(role, theme_color(value))
++            for role in (QPalette.WindowText, QPalette.Text, QPalette.ButtonText):
++                palette.setColor(QPalette.Disabled, role, theme_color('#999999'))
++            self.app.setPalette(palette)
++            for widget in self.app.allWidgets():
++                self._style(widget)
++                widget.update()
++        finally:
++            self._changing = False
++        self.changed.emit(self.mode)
++
++    def _style(self, widget):
++        current = widget.styleSheet()
++        rendered = getattr(widget, '_flipring_theme_rendered', None)
++        if current != rendered:
++            original = getattr(widget, '_flipring_theme_source', '')
++            widget._flipring_theme_source = (original + current[len(rendered):]
++                                             if rendered and current.startswith(rendered) else current)
++        source = getattr(widget, '_flipring_theme_source', current)
++        target = themed_style(source)
++        widget._flipring_theme_rendered = target
++        if target != current:
++            widget.setStyleSheet(target)
++
++    def eventFilter(self, obj, event):
++        # 생성이 늦은 선택창·메뉴와 열린 표면의 새 스타일도 같은 선택을 따른다.
++        if not self._changing and isinstance(obj, QWidget) and event.type() in (
++                QEvent.Polish, QEvent.Show, QEvent.StyleChange):
++            self._changing = True
++            try:
++                self._style(obj)
++            finally:
++                self._changing = False
++        return False
++
++
++def manager(app=None):
++    app = app or QApplication.instance()
++    if not hasattr(app, '_flipring_theme_manager'):
++        app._flipring_theme_manager = ThemeManager(app)
++    return app._flipring_theme_manager
+--- a/소스/tool_installer.py
++++ b/소스/tool_installer.py
+@@ -1,112 +1,112 @@
+-"""허용된 외부 도구만 셸 없이 비동기로 설치한다."""
+-from __future__ import annotations
+-
+-import os
+-from pathlib import Path
+-import shutil
+-import winreg
+-from PySide6.QtCore import QObject, QProcess, QTimer, Signal
+-import engine
+-
+-
+-def install_arguments(name):
+-    if name not in engine.TOOLS:
+-        raise ValueError('허용되지 않은 설치 도구입니다.')
+-    return ['install', '--id', engine.TOOLS[name][1], '--exact', '--source', 'winget',
+-            '--accept-package-agreements', '--accept-source-agreements', '--disable-interactivity']
+-
+-
+-def refresh_process_path():
+-    """설치 프로그램이 갱신한 사용자·시스템 PATH를 현재 프로세스에도 반영한다."""
+-    paths = [os.environ.get('PATH', '')]
+-    for hive, key in ((winreg.HKEY_LOCAL_MACHINE,
+-                      r'SYSTEM\CurrentControlSet\Control\Session Manager\Environment'),
+-                     (winreg.HKEY_CURRENT_USER, 'Environment')):
+-        try:
+-            with winreg.OpenKey(hive, key) as handle:
+-                value, _ = winreg.QueryValueEx(handle, 'Path')
+-                paths.append(os.path.expandvars(str(value)))
+-        except OSError:
+-            continue
+-    os.environ['PATH'] = os.pathsep.join(dict.fromkeys(
+-        item for value in paths for item in value.split(os.pathsep) if item))
+-
+-
+-class ToolInstaller(QObject):
+-    state_changed = Signal(str, str, str)
+-    finished = Signal(str, str, int, str)
+-
+-    def __init__(self, parent=None):
+-        super().__init__(parent)
+-        self.process = None
+-        self.name = ''
+-        self.state = 'ready'
+-        self.detail = ''
+-        self.cancel_requested = False
+-        self._timeout = QTimer(self)
+-        self._timeout.setSingleShot(True)
+-        self._timeout.timeout.connect(self.cancel)
+-
+-    def is_busy(self):
+-        return self.process is not None
+-
+-    def start(self, name):
+-        args = install_arguments(name)
+-        if self.is_busy():
+-            return False
+-        refresh_process_path()
+-        self.name, self.cancel_requested, self.detail = name, False, ''
+-        executable = shutil.which('winget.exe')
+-        if not executable:
+-            self.state = 'missing'
+-            self.state_changed.emit(name, 'missing', '')
+-            self.finished.emit(name, 'missing', -1, '')
+-            return False
+-        self.process = QProcess(self)
+-        self.process.setProcessChannelMode(QProcess.MergedChannels)
+-        self.process.readyReadStandardOutput.connect(self._read)
+-        self.process.errorOccurred.connect(self._error)
+-        self.process.finished.connect(self._finished)
+-        self.state = 'installing'
+-        self.state_changed.emit(name, self.state, '')
+-        self._timeout.start(30 * 60 * 1000)
+-        self.process.start(executable, args)
+-        return True
+-
+-    def _read(self):
+-        if self.process is None:
+-            return
+-        chunk = bytes(self.process.readAllStandardOutput()).decode('utf-8', errors='replace')
+-        # 외부 출력은 마지막 8Ki 문자만 보관하고 실제 백분율을 만들어 내지 않는다.
+-        self.detail = (self.detail + chunk)[-8192:]
+-        self.state_changed.emit(self.name, self.state, self.detail)
+-
+-    def _error(self, error):
+-        if self.process is not None and error == QProcess.FailedToStart:
+-            self.detail = self.process.errorString()
+-            self._complete('failed', -1)
+-
+-    def _finished(self, code, status):
+-        self._read()
+-        self._complete('cancelled' if self.cancel_requested else
+-                       'complete' if status == QProcess.NormalExit and code == 0 else 'failed', code)
+-
+-    def _complete(self, state, code):
+-        if self.process is not None:
+-            self.process.deleteLater()
+-        self.process = None
+-        self._timeout.stop()
+-        refresh_process_path()
+-        self.state = state
+-        self.state_changed.emit(self.name, state, self.detail)
+-        self.finished.emit(self.name, state, code, self.detail)
+-
+-    def cancel(self):
+-        if self.process is None:
+-            return
+-        self.cancel_requested = True
+-        self.state = 'cancelling'
+-        self.state_changed.emit(self.name, self.state, self.detail)
+-        # winget 외에 위임된 Windows Installer/UAC 작업은 강제 종료하지 않는다.
+-        # 설치 관리 프로세스를 멈춘 뒤 재탐지하여 실제 설치 여부를 표시한다.
+-        self.process.kill()
++"""허용된 외부 도구만 셸 없이 비동기로 설치한다."""
++from __future__ import annotations
++
++import os
++from pathlib import Path
++import shutil
++import winreg
++from PySide6.QtCore import QObject, QProcess, QTimer, Signal
++import engine
++
++
++def install_arguments(name):
++    if name not in engine.TOOLS:
++        raise ValueError('허용되지 않은 설치 도구입니다.')
++    return ['install', '--id', engine.TOOLS[name][1], '--exact', '--source', 'winget',
++            '--accept-package-agreements', '--accept-source-agreements', '--disable-interactivity']
++
++
++def refresh_process_path():
++    """설치 프로그램이 갱신한 사용자·시스템 PATH를 현재 프로세스에도 반영한다."""
++    paths = [os.environ.get('PATH', '')]
++    for hive, key in ((winreg.HKEY_LOCAL_MACHINE,
++                      r'SYSTEM\CurrentControlSet\Control\Session Manager\Environment'),
++                     (winreg.HKEY_CURRENT_USER, 'Environment')):
++        try:
++            with winreg.OpenKey(hive, key) as handle:
++                value, _ = winreg.QueryValueEx(handle, 'Path')
++                paths.append(os.path.expandvars(str(value)))
++        except OSError:
++            continue
++    os.environ['PATH'] = os.pathsep.join(dict.fromkeys(
++        item for value in paths for item in value.split(os.pathsep) if item))
++
++
++class ToolInstaller(QObject):
++    state_changed = Signal(str, str, str)
++    finished = Signal(str, str, int, str)
++
++    def __init__(self, parent=None):
++        super().__init__(parent)
++        self.process = None
++        self.name = ''
++        self.state = 'ready'
++        self.detail = ''
++        self.cancel_requested = False
++        self._timeout = QTimer(self)
++        self._timeout.setSingleShot(True)
++        self._timeout.timeout.connect(self.cancel)
++
++    def is_busy(self):
++        return self.process is not None
++
++    def start(self, name):
++        args = install_arguments(name)
++        if self.is_busy():
++            return False
++        refresh_process_path()
++        self.name, self.cancel_requested, self.detail = name, False, ''
++        executable = shutil.which('winget.exe')
++        if not executable:
++            self.state = 'missing'
++            self.state_changed.emit(name, 'missing', '')
++            self.finished.emit(name, 'missing', -1, '')
++            return False
++        self.process = QProcess(self)
++        self.process.setProcessChannelMode(QProcess.MergedChannels)
++        self.process.readyReadStandardOutput.connect(self._read)
++        self.process.errorOccurred.connect(self._error)
++        self.process.finished.connect(self._finished)
++        self.state = 'installing'
++        self.state_changed.emit(name, self.state, '')
++        self._timeout.start(30 * 60 * 1000)
++        self.process.start(executable, args)
++        return True
++
++    def _read(self):
++        if self.process is None:
++            return
++        chunk = bytes(self.process.readAllStandardOutput()).decode('utf-8', errors='replace')
++        # 외부 출력은 마지막 8Ki 문자만 보관하고 실제 백분율을 만들어 내지 않는다.
++        self.detail = (self.detail + chunk)[-8192:]
++        self.state_changed.emit(self.name, self.state, self.detail)
++
++    def _error(self, error):
++        if self.process is not None and error == QProcess.FailedToStart:
++            self.detail = self.process.errorString()
++            self._complete('failed', -1)
++
++    def _finished(self, code, status):
++        self._read()
++        self._complete('cancelled' if self.cancel_requested else
++                       'complete' if status == QProcess.NormalExit and code == 0 else 'failed', code)
++
++    def _complete(self, state, code):
++        if self.process is not None:
++            self.process.deleteLater()
++        self.process = None
++        self._timeout.stop()
++        refresh_process_path()
++        self.state = state
++        self.state_changed.emit(self.name, state, self.detail)
++        self.finished.emit(self.name, state, code, self.detail)
++
++    def cancel(self):
++        if self.process is None:
++            return
++        self.cancel_requested = True
++        self.state = 'cancelling'
++        self.state_changed.emit(self.name, self.state, self.detail)
++        # winget 외에 위임된 Windows Installer/UAC 작업은 강제 종료하지 않는다.
++        # 설치 관리 프로세스를 멈춘 뒤 재탐지하여 실제 설치 여부를 표시한다.
++        self.process.kill()
+--- a/소스/ui_motion.py
++++ b/소스/ui_motion.py
+@@ -6,7 +6,7 @@
+ from pathlib import Path
+ import weakref
+ 
+-from PySide6.QtCore import Qt, QObject, QEvent, QVariantAnimation, QEasingCurve, QRectF, QPointF, QTimer, QUrl, QSignalBlocker, QSize
++from PySide6.QtCore import Qt, QObject, QEvent, QVariantAnimation, QEasingCurve, QRectF, QPointF, QTimer, QUrl, QSignalBlocker, QSize, QElapsedTimer
+ from PySide6.QtGui import QColor, QPainter, QPen, QPainterPath, QIcon, QPixmap
+ from PySide6.QtWidgets import (
+     QApplication, QWidget, QFrame, QLabel, QVBoxLayout, QHBoxLayout, QFileDialog,
+@@ -145,14 +145,14 @@
+             widget.currentIndexChanged.connect(self.pulse)
+             ensure_surface_motion(widget.view().window())
+             install_surface_motions(widget.view())
+-        elif isinstance(widget, QLineEdit):
+-            widget.textEdited.connect(self.pulse)
+         elif isinstance(widget, QAbstractSpinBox) and hasattr(widget, "valueChanged"):
+             widget.valueChanged.connect(self.pulse)
+         elif isinstance(widget, QAbstractButton):
+             widget.clicked.connect(self.pulse)
+         elif isinstance(widget, QProgressBar):
+-            widget.valueChanged.connect(self.pulse)
++            self._progress_clock = QElapsedTimer()
++            self._progress_bucket = None
++            widget.valueChanged.connect(self._progress_changed)
+         elif isinstance(widget, QMenu):
+             widget.hovered.connect(self.menu_pulse)
+ 
+@@ -202,6 +202,20 @@
+         self._frame(current)
+         start_motion(self.animation)
+ 
++    def _progress_changed(self, value):
++        """실제 진행은 즉시 갱신하고, 피드백은 시작·완료와 간격 있는 단계에만 준다."""
++        widget = self.parent()
++        minimum, maximum = widget.minimum(), widget.maximum()
++        span = maximum - minimum
++        bucket = int(10 * (value - minimum) / span) if span > 0 else 0
++        boundary = value in (minimum, maximum)
++        changed = bucket != self._progress_bucket
++        elapsed = not self._progress_clock.isValid() or self._progress_clock.elapsed() >= 650
++        if changed and (boundary or elapsed):
++            self._progress_bucket = bucket
++            self._progress_clock.start()
++            self.pulse()
++
+     def selection_pulse(self, *unused):
+         widget = self.parent()
+         index = widget.currentIndex()
+@@ -225,7 +239,11 @@
+                     self._connect_view()
+                 self.pulse()
+         elif kind in (QEvent.Enter, QEvent.FocusIn, QEvent.MouseButtonPress, QEvent.KeyPress):
+-            if self.parent().isEnabled():
++            widget = self.parent()
++            # 타이핑은 입력 자체로 응답한다. 글자마다 테두리를 재점등하지 않는다.
++            editing_key = kind == QEvent.KeyPress and isinstance(widget, (QLineEdit, QAbstractSpinBox))
++            duplicate_click = kind == QEvent.MouseButtonPress and isinstance(widget, QAbstractButton)
++            if widget.isEnabled() and not editing_key and not duplicate_click:
+                 self.pulse()
+         elif kind in (QEvent.Hide, QEvent.Close):
+             self.stop()
+--- a/소스/vendor/java/conf/security/policy/README.txt
++++ b/소스/vendor/java/conf/security/policy/README.txt
+@@ -1,54 +1,54 @@
+-
+-            Java(TM) Cryptography Extension Policy Files
+-    for the Java(TM) Platform, Standard Edition Runtime Environment
+-
+-                               README
+-------------------------------------------------------------------------
+-
+-Import and export control rules on cryptographic software vary from
+-country to country.  The Java Cryptography Extension (JCE) architecture
+-allows flexible cryptographic key strength to be configured via the
+-jurisdiction policy files which are referenced by the "crypto.policy"
+-security property in the <java-home>/conf/security/java.security file.
+-
+-By default, Java provides two different sets of cryptographic policy
+-files:
+-
+-    unlimited:  These policy files contain no restrictions on cryptographic
+-                strengths or algorithms
+-
+-    limited:    These policy files contain more restricted cryptographic
+-                strengths
+-
+-These files reside in <java-home>/conf/security/policy in the "unlimited"
+-or "limited" subdirectories respectively.
+-
+-Each subdirectory contains a complete policy configuration,
+-and subdirectories can be added/edited/removed to reflect your
+-import or export control product requirements.
+-
+-Within a subdirectory, the effective policy is the combined minimum
+-permissions of the grant statements in the file(s) matching the filename
+-pattern "default_*.policy".  At least one grant is required.  For example:
+-
+-    limited   =  Export (all) + Import (limited)  =  Limited
+-    unlimited =  Export (all) + Import (all)      =  Unlimited
+-
+-The effective exemption policy is the combined minimum permissions
+-of the grant statements in the file(s) matching the filename pattern
+-"exempt_*.policy".  Exemption grants are optional.  For example:
+-
+-    limited   =  grants exemption permissions, by which the
+-                 effective policy can be circumvented.
+-                 e.g.  KeyRecovery/KeyEscrow/KeyWeakening.
+-
+-Please see the Java Cryptography Architecture (JCA) documentation for
+-additional information on these files and formats.
+-
+-YOU ARE ADVISED TO CONSULT YOUR EXPORT/IMPORT CONTROL COUNSEL OR ATTORNEY
+-TO DETERMINE THE EXACT REQUIREMENTS.
+-
+-Please note that the JCE for Java SE, including the JCE framework,
+-cryptographic policy files, and standard JCE providers provided with
+-the Java SE, have been reviewed and approved for export as mass market
+-encryption item by the US Bureau of Industry and Security.
++
++            Java(TM) Cryptography Extension Policy Files
++    for the Java(TM) Platform, Standard Edition Runtime Environment
++
++                               README
++------------------------------------------------------------------------
++
++Import and export control rules on cryptographic software vary from
++country to country.  The Java Cryptography Extension (JCE) architecture
++allows flexible cryptographic key strength to be configured via the
++jurisdiction policy files which are referenced by the "crypto.policy"
++security property in the <java-home>/conf/security/java.security file.
++
++By default, Java provides two different sets of cryptographic policy
++files:
++
++    unlimited:  These policy files contain no restrictions on cryptographic
++                strengths or algorithms
++
++    limited:    These policy files contain more restricted cryptographic
++                strengths
++
++These files reside in <java-home>/conf/security/policy in the "unlimited"
++or "limited" subdirectories respectively.
++
++Each subdirectory contains a complete policy configuration,
++and subdirectories can be added/edited/removed to reflect your
++import or export control product requirements.
++
++Within a subdirectory, the effective policy is the combined minimum
++permissions of the grant statements in the file(s) matching the filename
++pattern "default_*.policy".  At least one grant is required.  For example:
++
++    limited   =  Export (all) + Import (limited)  =  Limited
++    unlimited =  Export (all) + Import (all)      =  Unlimited
++
++The effective exemption policy is the combined minimum permissions
++of the grant statements in the file(s) matching the filename pattern
++"exempt_*.policy".  Exemption grants are optional.  For example:
++
++    limited   =  grants exemption permissions, by which the
++                 effective policy can be circumvented.
++                 e.g.  KeyRecovery/KeyEscrow/KeyWeakening.
++
++Please see the Java Cryptography Architecture (JCA) documentation for
++additional information on these files and formats.
++
++YOU ARE ADVISED TO CONSULT YOUR EXPORT/IMPORT CONTROL COUNSEL OR ATTORNEY
++TO DETERMINE THE EXACT REQUIREMENTS.
++
++Please note that the JCE for Java SE, including the JCE framework,
++cryptographic policy files, and standard JCE providers provided with
++the Java SE, have been reviewed and approved for export as mass market
++encryption item by the US Bureau of Industry and Security.
+--- a/소스/vendor/java/legal/java.base/ADDITIONAL_LICENSE_INFO
++++ b/소스/vendor/java/legal/java.base/ADDITIONAL_LICENSE_INFO
+@@ -1,37 +1,37 @@
+-                      ADDITIONAL INFORMATION ABOUT LICENSING
+-
+-Certain files distributed by Oracle America, Inc. and/or its affiliates are 
+-subject to the following clarification and special exception to the GPLv2, 
+-based on the GNU Project exception for its Classpath libraries, known as the 
+-GNU Classpath Exception.
+-
+-Note that Oracle includes multiple, independent programs in this software 
+-package.  Some of those programs are provided under licenses deemed 
+-incompatible with the GPLv2 by the Free Software Foundation and others. 
+-For example, the package includes programs licensed under the Apache 
+-License, Version 2.0 and may include FreeType. Such programs are licensed 
+-to you under their original licenses. 
+-
+-Oracle facilitates your further distribution of this package by adding the 
+-Classpath Exception to the necessary parts of its GPLv2 code, which permits 
+-you to use that code in combination with other independent modules not 
+-licensed under the GPLv2. However, note that this would not permit you to 
+-commingle code under an incompatible license with Oracle's GPLv2 licensed 
+-code by, for example, cutting and pasting such code into a file also 
+-containing Oracle's GPLv2 licensed code and then distributing the result. 
+-
+-Additionally, if you were to remove the Classpath Exception from any of the 
+-files to which it applies and distribute the result, you would likely be 
+-required to license some or all of the other code in that distribution under 
+-the GPLv2 as well, and since the GPLv2 is incompatible with the license terms 
+-of some items included in the distribution by Oracle, removing the Classpath 
+-Exception could therefore effectively compromise your ability to further 
+-distribute the package. 
+-
+-Failing to distribute notices associated with some files may also create 
+-unexpected legal consequences.
+- 
+-Proceed with caution and we recommend that you obtain the advice of a lawyer 
+-skilled in open source matters before removing the Classpath Exception or 
+-making modifications to this package which may subsequently be redistributed 
+-and/or involve the use of third party software.
++                      ADDITIONAL INFORMATION ABOUT LICENSING
++
++Certain files distributed by Oracle America, Inc. and/or its affiliates are 
++subject to the following clarification and special exception to the GPLv2, 
++based on the GNU Project exception for its Classpath libraries, known as the 
++GNU Classpath Exception.
++
++Note that Oracle includes multiple, independent programs in this software 
++package.  Some of those programs are provided under licenses deemed 
++incompatible with the GPLv2 by the Free Software Foundation and others. 
++For example, the package includes programs licensed under the Apache 
++License, Version 2.0 and may include FreeType. Such programs are licensed 
++to you under their original licenses. 
++
++Oracle facilitates your further distribution of this package by adding the 
++Classpath Exception to the necessary parts of its GPLv2 code, which permits 
++you to use that code in combination with other independent modules not 
++licensed under the GPLv2. However, note that this would not permit you to 
++commingle code under an incompatible license with Oracle's GPLv2 licensed 
++code by, for example, cutting and pasting such code into a file also 
++containing Oracle's GPLv2 licensed code and then distributing the result. 
++
++Additionally, if you were to remove the Classpath Exception from any of the 
++files to which it applies and distribute the result, you would likely be 
++required to license some or all of the other code in that distribution under 
++the GPLv2 as well, and since the GPLv2 is incompatible with the license terms 
++of some items included in the distribution by Oracle, removing the Classpath 
++Exception could therefore effectively compromise your ability to further 
++distribute the package. 
++
++Failing to distribute notices associated with some files may also create 
++unexpected legal consequences.
++ 
++Proceed with caution and we recommend that you obtain the advice of a lawyer 
++skilled in open source matters before removing the Classpath Exception or 
++making modifications to this package which may subsequently be redistributed 
++and/or involve the use of third party software.
+--- a/소스/vendor/java/legal/java.base/aes.md
++++ b/소스/vendor/java/legal/java.base/aes.md
+@@ -1,36 +1,36 @@
+-## Cryptix AES v3.2.0
+-
+-### Cryptix General License
+-<pre>
+-
+-Cryptix General License
+-
+-Copyright (c) 1995-2005 The Cryptix Foundation Limited.
+-All rights reserved.
+-
+-Redistribution and use in source and binary forms, with or without
+-modification, are permitted provided that the following conditions are
+-met:
+-
+-  1. Redistributions of source code must retain the copyright notice,
+-     this list of conditions and the following disclaimer.
+-
+-  2. Redistributions in binary form must reproduce the above copyright
+-     notice, this list of conditions and the following disclaimer in
+-     the documentation and/or other materials provided with the
+-     distribution.
+-
+-THIS SOFTWARE IS PROVIDED BY THE CRYPTIX FOUNDATION LIMITED AND
+-CONTRIBUTORS ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+-IN NO EVENT SHALL THE CRYPTIX FOUNDATION LIMITED OR CONTRIBUTORS BE
+-LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+-BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+-OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+-IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-
+-</pre>
++## Cryptix AES v3.2.0
++
++### Cryptix General License
++<pre>
++
++Cryptix General License
++
++Copyright (c) 1995-2005 The Cryptix Foundation Limited.
++All rights reserved.
++
++Redistribution and use in source and binary forms, with or without
++modification, are permitted provided that the following conditions are
++met:
++
++  1. Redistributions of source code must retain the copyright notice,
++     this list of conditions and the following disclaimer.
++
++  2. Redistributions in binary form must reproduce the above copyright
++     notice, this list of conditions and the following disclaimer in
++     the documentation and/or other materials provided with the
++     distribution.
++
++THIS SOFTWARE IS PROVIDED BY THE CRYPTIX FOUNDATION LIMITED AND
++CONTRIBUTORS ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
++INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
++IN NO EVENT SHALL THE CRYPTIX FOUNDATION LIMITED OR CONTRIBUTORS BE
++LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
++BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
++WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
++OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
++IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++
++</pre>
+--- a/소스/vendor/java/legal/java.base/asm.md
++++ b/소스/vendor/java/legal/java.base/asm.md
+@@ -1,36 +1,36 @@
+-## ASM Bytecode Manipulation Framework v8.0.1
+-
+-### ASM License
+-<pre>
+-
+-Copyright (c) 2000-2011 France Télécom
+-All rights reserved.
+-
+-Redistribution and use in source and binary forms, with or without
+-modification, are permitted provided that the following conditions
+-are met:
+-
+-1. Redistributions of source code must retain the above copyright
+-   notice, this list of conditions and the following disclaimer.
+-
+-2. Redistributions in binary form must reproduce the above copyright
+-   notice, this list of conditions and the following disclaimer in the
+-   documentation and/or other materials provided with the distribution.
+-
+-3. Neither the name of the copyright holders nor the names of its
+-   contributors may be used to endorse or promote products derived from
+-   this software without specific prior written permission.
+-
+-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+-ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+-LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+-THE POSSIBILITY OF SUCH DAMAGE.
+-
+-</pre>
++## ASM Bytecode Manipulation Framework v8.0.1
++
++### ASM License
++<pre>
++
++Copyright (c) 2000-2011 France Télécom
++All rights reserved.
++
++Redistribution and use in source and binary forms, with or without
++modification, are permitted provided that the following conditions
++are met:
++
++1. Redistributions of source code must retain the above copyright
++   notice, this list of conditions and the following disclaimer.
++
++2. Redistributions in binary form must reproduce the above copyright
++   notice, this list of conditions and the following disclaimer in the
++   documentation and/or other materials provided with the distribution.
++
++3. Neither the name of the copyright holders nor the names of its
++   contributors may be used to endorse or promote products derived from
++   this software without specific prior written permission.
++
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
++LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
++THE POSSIBILITY OF SUCH DAMAGE.
++
++</pre>
+--- a/소스/vendor/java/legal/java.base/ASSEMBLY_EXCEPTION
++++ b/소스/vendor/java/legal/java.base/ASSEMBLY_EXCEPTION
+@@ -1,27 +1,27 @@
+-
+-OPENJDK ASSEMBLY EXCEPTION
+-
+-The OpenJDK source code made available by Oracle America, Inc. (Oracle) at
+-openjdk.java.net ("OpenJDK Code") is distributed under the terms of the GNU
+-General Public License <http://www.gnu.org/copyleft/gpl.html> version 2
+-only ("GPL2"), with the following clarification and special exception.
+-
+-    Linking this OpenJDK Code statically or dynamically with other code
+-    is making a combined work based on this library.  Thus, the terms
+-    and conditions of GPL2 cover the whole combination.
+-
+-    As a special exception, Oracle gives you permission to link this
+-    OpenJDK Code with certain code licensed by Oracle as indicated at
+-    http://openjdk.java.net/legal/exception-modules-2007-05-08.html
+-    ("Designated Exception Modules") to produce an executable,
+-    regardless of the license terms of the Designated Exception Modules,
+-    and to copy and distribute the resulting executable under GPL2,
+-    provided that the Designated Exception Modules continue to be
+-    governed by the licenses under which they were offered by Oracle.
+-
+-As such, it allows licensees and sublicensees of Oracle's GPL2 OpenJDK Code
+-to build an executable that includes those portions of necessary code that
+-Oracle could not provide under GPL2 (or that Oracle has provided under GPL2
+-with the Classpath exception).  If you modify or add to the OpenJDK code,
+-that new GPL2 code may still be combined with Designated Exception Modules
+-if the new code is made subject to this exception by its copyright holder.
++
++OPENJDK ASSEMBLY EXCEPTION
++
++The OpenJDK source code made available by Oracle America, Inc. (Oracle) at
++openjdk.java.net ("OpenJDK Code") is distributed under the terms of the GNU
++General Public License <http://www.gnu.org/copyleft/gpl.html> version 2
++only ("GPL2"), with the following clarification and special exception.
++
++    Linking this OpenJDK Code statically or dynamically with other code
++    is making a combined work based on this library.  Thus, the terms
++    and conditions of GPL2 cover the whole combination.
++
++    As a special exception, Oracle gives you permission to link this
++    OpenJDK Code with certain code licensed by Oracle as indicated at
++    http://openjdk.java.net/legal/exception-modules-2007-05-08.html
++    ("Designated Exception Modules") to produce an executable,
++    regardless of the license terms of the Designated Exception Modules,
++    and to copy and distribute the resulting executable under GPL2,
++    provided that the Designated Exception Modules continue to be
++    governed by the licenses under which they were offered by Oracle.
++
++As such, it allows licensees and sublicensees of Oracle's GPL2 OpenJDK Code
++to build an executable that includes those portions of necessary code that
++Oracle could not provide under GPL2 (or that Oracle has provided under GPL2
++with the Classpath exception).  If you modify or add to the OpenJDK code,
++that new GPL2 code may still be combined with Designated Exception Modules
++if the new code is made subject to this exception by its copyright holder.
+--- a/소스/vendor/java/legal/java.base/c-libutl.md
++++ b/소스/vendor/java/legal/java.base/c-libutl.md
+@@ -1,35 +1,35 @@
+-## c-libutl 20160225
+-
+-### c-libutl License
+-```
+-
+-This software is distributed under the terms of the BSD license.
+-
+-==  BSD LICENSE  ===============================================================
+-
+- (C) 2009 by Remo Dentato (rdentato@gmail.com)
+-
+-
+-Redistribution and use in source and binary forms, with or without modification,
+-are permitted provided that the following conditions are met:
+-
+-    * Redistributions of source code must retain the above copyright notice,
+-      this list of conditions and the following disclaimer.
+-    * Redistributions in binary form must reproduce the above copyright notice,
+-      this list of conditions and the following disclaimer in the documentation
+-      and/or other materials provided with the distribution.
+-
+-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-
+-http://opensource.org/licenses/bsd-license.php
+-
+-```
++## c-libutl 20160225
++
++### c-libutl License
++```
++
++This software is distributed under the terms of the BSD license.
++
++==  BSD LICENSE  ===============================================================
++
++ (C) 2009 by Remo Dentato (rdentato@gmail.com)
++
++
++Redistribution and use in source and binary forms, with or without modification,
++are permitted provided that the following conditions are met:
++
++    * Redistributions of source code must retain the above copyright notice,
++      this list of conditions and the following disclaimer.
++    * Redistributions in binary form must reproduce the above copyright notice,
++      this list of conditions and the following disclaimer in the documentation
++      and/or other materials provided with the distribution.
++
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
++ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
++ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
++(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
++SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++
++http://opensource.org/licenses/bsd-license.php
++
++```
+--- a/소스/vendor/java/legal/java.base/cldr.md
++++ b/소스/vendor/java/legal/java.base/cldr.md
+@@ -1,105 +1,105 @@
+-## Unicode Common Local Data Repository (CLDR) v39
+-
+-### CLDR License
+-
+-```
+-
+-UNICODE, INC. LICENSE AGREEMENT - DATA FILES AND SOFTWARE
+-
+-See Terms of Use for definitions of Unicode Inc.'s
+-Data Files and Software.
+-
+-NOTICE TO USER: Carefully read the following legal agreement.
+-BY DOWNLOADING, INSTALLING, COPYING OR OTHERWISE USING UNICODE INC.'S
+-DATA FILES ("DATA FILES"), AND/OR SOFTWARE ("SOFTWARE"),
+-YOU UNEQUIVOCALLY ACCEPT, AND AGREE TO BE BOUND BY, ALL OF THE
+-TERMS AND CONDITIONS OF THIS AGREEMENT.
+-IF YOU DO NOT AGREE, DO NOT DOWNLOAD, INSTALL, COPY, DISTRIBUTE OR USE
+-THE DATA FILES OR SOFTWARE.
+-
+-COPYRIGHT AND PERMISSION NOTICE
+-
+-Copyright © 1991-2021 Unicode, Inc. All rights reserved.
+-Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
+-
+-Permission is hereby granted, free of charge, to any person obtaining
+-a copy of the Unicode data files and any associated documentation
+-(the "Data Files") or Unicode software and any associated documentation
+-(the "Software") to deal in the Data Files or Software
+-without restriction, including without limitation the rights to use,
+-copy, modify, merge, publish, distribute, and/or sell copies of
+-the Data Files or Software, and to permit persons to whom the Data Files
+-or Software are furnished to do so, provided that either
+-(a) this copyright and permission notice appear with all copies
+-of the Data Files or Software, or
+-(b) this copyright and permission notice appear in associated
+-Documentation.
+-
+-THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
+-ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+-WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+-NONINFRINGEMENT OF THIRD PARTY RIGHTS.
+-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS
+-NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL
+-DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
+-DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+-TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+-PERFORMANCE OF THE DATA FILES OR SOFTWARE.
+-
+-Except as contained in this notice, the name of a copyright holder
+-shall not be used in advertising or otherwise to promote the sale,
+-use or other dealings in these Data Files or Software without prior
+-written authorization of the copyright holder.
+-
+-
+------------------------------------------------------------- Terms of Use ---------------------------------------------------------------
+-
+-Unicode® Copyright and Terms of Use
+-For the general privacy policy governing access to this site, see the  Unicode Privacy Policy.
+-
+-Unicode Copyright
+-Copyright © 1991-2021 Unicode, Inc. All rights reserved.
+-Definitions
+-Unicode Data Files ("DATA FILES") include all data files under the directories:
+-https://www.unicode.org/Public/
+-https://www.unicode.org/reports/
+-https://www.unicode.org/ivd/data/
+-
+-Unicode Data Files do not include PDF online code charts under the directory:
+-https://www.unicode.org/Public/
+-
+-Unicode Software ("SOFTWARE") includes any source code published in the Unicode Standard
+-or any source code or compiled code under the directories:
+-https://www.unicode.org/Public/PROGRAMS/
+-https://www.unicode.org/Public/cldr/
+-http://site.icu-project.org/download/
+-Terms of Use
+-Certain documents and files on this website contain a legend indicating that "Modification is permitted." Any person is hereby authorized, without fee, to modify such documents and files to create derivative works conforming to the Unicode® Standard, subject to Terms and Conditions herein.
+-Any person is hereby authorized, without fee, to view, use, reproduce, and distribute all documents and files, subject to the Terms and Conditions herein.
+-Further specifications of rights and restrictions pertaining to the use of the Unicode DATA FILES and SOFTWARE can be found in the Unicode Data Files and Software License.
+-Each version of the Unicode Standard has further specifications of rights and restrictions of use. For the book editions (Unicode 5.0 and earlier), these are found on the back of the title page.
+-The Unicode PDF online code charts carry specific restrictions. Those restrictions are incorporated as the first page of each PDF code chart.
+-All other files, including online documentation of the core specification for Unicode 6.0 and later, are covered under these general Terms of Use.
+-No license is granted to "mirror" the Unicode website where a fee is charged for access to the "mirror" site.
+-Modification is not permitted with respect to this document. All copies of this document must be verbatim.
+-Restricted Rights Legend
+-Any technical data or software which is licensed to the United States of America, its agencies and/or instrumentalities under this Agreement is commercial technical data or commercial computer software developed exclusively at private expense as defined in FAR 2.101, or DFARS 252.227-7014 (June 1995), as applicable. For technical data, use, duplication, or disclosure by the Government is subject to restrictions as set forth in DFARS 202.227-7015 Technical Data, Commercial and Items (Nov 1995) and this Agreement. For Software, in accordance with FAR 12-212 or DFARS 227-7202, as applicable, use, duplication or disclosure by the Government is subject to the restrictions set forth in this Agreement.
+-Warranties and Disclaimers
+-This publication and/or website may include technical or typographical errors or other inaccuracies. Changes are periodically added to the information herein; these changes will be incorporated in new editions of the publication and/or website. Unicode, Inc. may make improvements and/or changes in the product(s) and/or program(s) described in this publication and/or website at any time.
+-If this file has been purchased on magnetic or optical media from Unicode, Inc. the sole and exclusive remedy for any claim will be exchange of the defective media within ninety (90) days of original purchase.
+-EXCEPT AS PROVIDED IN SECTION E.2, THIS PUBLICATION AND/OR SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND EITHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. UNICODE, INC. AND ITS LICENSORS ASSUME NO RESPONSIBILITY FOR ERRORS OR OMISSIONS IN THIS PUBLICATION AND/OR SOFTWARE OR OTHER DOCUMENTS WHICH ARE REFERENCED BY OR LINKED TO THIS PUBLICATION OR THE UNICODE WEBSITE.
+-Waiver of Damages
+-In no event shall Unicode, Inc. or its licensors be liable for any special, incidental, indirect or consequential damages of any kind, or any damages whatsoever, whether or not Unicode, Inc. was advised of the possibility of the damage, including, without limitation, those resulting from the following: loss of use, data or profits, in connection with the use, modification or distribution of this information or its derivatives.
+-Trademarks & Logos
+-The Unicode Word Mark and the Unicode Logo are trademarks of Unicode, Inc. “The Unicode Consortium” and “Unicode, Inc.” are trade names of Unicode, Inc. Use of the information and materials found on this website indicates your acknowledgement of Unicode, Inc.’s exclusive worldwide rights in the Unicode Word Mark, the Unicode Logo, and the Unicode trade names.
+-The Unicode Consortium Name and Trademark Usage Policy (“Trademark Policy”) are incorporated herein by reference and you agree to abide by the provisions of the Trademark Policy, which may be changed from time to time in the sole discretion of Unicode, Inc.
+-All third party trademarks referenced herein are the property of their respective owners.
+-Miscellaneous
+-Jurisdiction and Venue. This website is operated from a location in the State of California, United States of America. Unicode, Inc. makes no representation that the materials are appropriate for use in other locations. If you access this website from other locations, you are responsible for compliance with local laws. This Agreement, all use of this website and any claims and damages resulting from use of this website are governed solely by the laws of the State of California without regard to any principles which would apply the laws of a different jurisdiction. The user agrees that any disputes regarding this website shall be resolved solely in the courts located in Santa Clara County, California. The user agrees said courts have personal jurisdiction and agree to waive any right to transfer the dispute to any other forum.
+-Modification by Unicode, Inc. Unicode, Inc. shall have the right to modify this Agreement at any time by posting it to this website. The user may not assign any part of this Agreement without Unicode, Inc.’s prior written consent.
+-Taxes. The user agrees to pay any taxes arising from access to this website or use of the information herein, except for those based on Unicode’s net income.
+-Severability.  If any provision of this Agreement is declared invalid or unenforceable, the remaining provisions of this Agreement shall remain in effect.
+-Entire Agreement. This Agreement constitutes the entire agreement between the parties.
+-
+-
+-```
++## Unicode Common Local Data Repository (CLDR) v39
++
++### CLDR License
++
++```
++
++UNICODE, INC. LICENSE AGREEMENT - DATA FILES AND SOFTWARE
++
++See Terms of Use for definitions of Unicode Inc.'s
++Data Files and Software.
++
++NOTICE TO USER: Carefully read the following legal agreement.
++BY DOWNLOADING, INSTALLING, COPYING OR OTHERWISE USING UNICODE INC.'S
++DATA FILES ("DATA FILES"), AND/OR SOFTWARE ("SOFTWARE"),
++YOU UNEQUIVOCALLY ACCEPT, AND AGREE TO BE BOUND BY, ALL OF THE
++TERMS AND CONDITIONS OF THIS AGREEMENT.
++IF YOU DO NOT AGREE, DO NOT DOWNLOAD, INSTALL, COPY, DISTRIBUTE OR USE
++THE DATA FILES OR SOFTWARE.
++
++COPYRIGHT AND PERMISSION NOTICE
++
++Copyright © 1991-2021 Unicode, Inc. All rights reserved.
++Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
++
++Permission is hereby granted, free of charge, to any person obtaining
++a copy of the Unicode data files and any associated documentation
++(the "Data Files") or Unicode software and any associated documentation
++(the "Software") to deal in the Data Files or Software
++without restriction, including without limitation the rights to use,
++copy, modify, merge, publish, distribute, and/or sell copies of
++the Data Files or Software, and to permit persons to whom the Data Files
++or Software are furnished to do so, provided that either
++(a) this copyright and permission notice appear with all copies
++of the Data Files or Software, or
++(b) this copyright and permission notice appear in associated
++Documentation.
++
++THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
++ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
++WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++NONINFRINGEMENT OF THIRD PARTY RIGHTS.
++IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS
++NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL
++DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
++DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
++TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
++PERFORMANCE OF THE DATA FILES OR SOFTWARE.
++
++Except as contained in this notice, the name of a copyright holder
++shall not be used in advertising or otherwise to promote the sale,
++use or other dealings in these Data Files or Software without prior
++written authorization of the copyright holder.
++
++
++------------------------------------------------------------ Terms of Use ---------------------------------------------------------------
++
++Unicode® Copyright and Terms of Use
++For the general privacy policy governing access to this site, see the  Unicode Privacy Policy.
++
++Unicode Copyright
++Copyright © 1991-2021 Unicode, Inc. All rights reserved.
++Definitions
++Unicode Data Files ("DATA FILES") include all data files under the directories:
++https://www.unicode.org/Public/
++https://www.unicode.org/reports/
++https://www.unicode.org/ivd/data/
++
++Unicode Data Files do not include PDF online code charts under the directory:
++https://www.unicode.org/Public/
++
++Unicode Software ("SOFTWARE") includes any source code published in the Unicode Standard
++or any source code or compiled code under the directories:
++https://www.unicode.org/Public/PROGRAMS/
++https://www.unicode.org/Public/cldr/
++http://site.icu-project.org/download/
++Terms of Use
++Certain documents and files on this website contain a legend indicating that "Modification is permitted." Any person is hereby authorized, without fee, to modify such documents and files to create derivative works conforming to the Unicode® Standard, subject to Terms and Conditions herein.
++Any person is hereby authorized, without fee, to view, use, reproduce, and distribute all documents and files, subject to the Terms and Conditions herein.
++Further specifications of rights and restrictions pertaining to the use of the Unicode DATA FILES and SOFTWARE can be found in the Unicode Data Files and Software License.
++Each version of the Unicode Standard has further specifications of rights and restrictions of use. For the book editions (Unicode 5.0 and earlier), these are found on the back of the title page.
++The Unicode PDF online code charts carry specific restrictions. Those restrictions are incorporated as the first page of each PDF code chart.
++All other files, including online documentation of the core specification for Unicode 6.0 and later, are covered under these general Terms of Use.
++No license is granted to "mirror" the Unicode website where a fee is charged for access to the "mirror" site.
++Modification is not permitted with respect to this document. All copies of this document must be verbatim.
++Restricted Rights Legend
++Any technical data or software which is licensed to the United States of America, its agencies and/or instrumentalities under this Agreement is commercial technical data or commercial computer software developed exclusively at private expense as defined in FAR 2.101, or DFARS 252.227-7014 (June 1995), as applicable. For technical data, use, duplication, or disclosure by the Government is subject to restrictions as set forth in DFARS 202.227-7015 Technical Data, Commercial and Items (Nov 1995) and this Agreement. For Software, in accordance with FAR 12-212 or DFARS 227-7202, as applicable, use, duplication or disclosure by the Government is subject to the restrictions set forth in this Agreement.
++Warranties and Disclaimers
++This publication and/or website may include technical or typographical errors or other inaccuracies. Changes are periodically added to the information herein; these changes will be incorporated in new editions of the publication and/or website. Unicode, Inc. may make improvements and/or changes in the product(s) and/or program(s) described in this publication and/or website at any time.
++If this file has been purchased on magnetic or optical media from Unicode, Inc. the sole and exclusive remedy for any claim will be exchange of the defective media within ninety (90) days of original purchase.
++EXCEPT AS PROVIDED IN SECTION E.2, THIS PUBLICATION AND/OR SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND EITHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. UNICODE, INC. AND ITS LICENSORS ASSUME NO RESPONSIBILITY FOR ERRORS OR OMISSIONS IN THIS PUBLICATION AND/OR SOFTWARE OR OTHER DOCUMENTS WHICH ARE REFERENCED BY OR LINKED TO THIS PUBLICATION OR THE UNICODE WEBSITE.
++Waiver of Damages
++In no event shall Unicode, Inc. or its licensors be liable for any special, incidental, indirect or consequential damages of any kind, or any damages whatsoever, whether or not Unicode, Inc. was advised of the possibility of the damage, including, without limitation, those resulting from the following: loss of use, data or profits, in connection with the use, modification or distribution of this information or its derivatives.
++Trademarks & Logos
++The Unicode Word Mark and the Unicode Logo are trademarks of Unicode, Inc. “The Unicode Consortium” and “Unicode, Inc.” are trade names of Unicode, Inc. Use of the information and materials found on this website indicates your acknowledgement of Unicode, Inc.’s exclusive worldwide rights in the Unicode Word Mark, the Unicode Logo, and the Unicode trade names.
++The Unicode Consortium Name and Trademark Usage Policy (“Trademark Policy”) are incorporated herein by reference and you agree to abide by the provisions of the Trademark Policy, which may be changed from time to time in the sole discretion of Unicode, Inc.
++All third party trademarks referenced herein are the property of their respective owners.
++Miscellaneous
++Jurisdiction and Venue. This website is operated from a location in the State of California, United States of America. Unicode, Inc. makes no representation that the materials are appropriate for use in other locations. If you access this website from other locations, you are responsible for compliance with local laws. This Agreement, all use of this website and any claims and damages resulting from use of this website are governed solely by the laws of the State of California without regard to any principles which would apply the laws of a different jurisdiction. The user agrees that any disputes regarding this website shall be resolved solely in the courts located in Santa Clara County, California. The user agrees said courts have personal jurisdiction and agree to waive any right to transfer the dispute to any other forum.
++Modification by Unicode, Inc. Unicode, Inc. shall have the right to modify this Agreement at any time by posting it to this website. The user may not assign any part of this Agreement without Unicode, Inc.’s prior written consent.
++Taxes. The user agrees to pay any taxes arising from access to this website or use of the information herein, except for those based on Unicode’s net income.
++Severability.  If any provision of this Agreement is declared invalid or unenforceable, the remaining provisions of this Agreement shall remain in effect.
++Entire Agreement. This Agreement constitutes the entire agreement between the parties.
++
++
++```
+--- a/소스/vendor/java/legal/java.base/icu.md
++++ b/소스/vendor/java/legal/java.base/icu.md
+@@ -1,140 +1,140 @@
+-## International Components for Unicode (ICU4J) v67.1
+-
+-### ICU4J License
+-```
+-
+-COPYRIGHT AND PERMISSION NOTICE (ICU 58 and later)
+-
+-Copyright © 1991-2020 Unicode, Inc. All rights reserved.
+-Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
+-
+-Permission is hereby granted, free of charge, to any person obtaining
+-a copy of the Unicode data files and any associated documentation
+-(the "Data Files") or Unicode software and any associated documentation
+-(the "Software") to deal in the Data Files or Software
+-without restriction, including without limitation the rights to use,
+-copy, modify, merge, publish, distribute, and/or sell copies of
+-the Data Files or Software, and to permit persons to whom the Data Files
+-or Software are furnished to do so, provided that either
+-(a) this copyright and permission notice appear with all copies
+-of the Data Files or Software, or
+-(b) this copyright and permission notice appear in associated
+-Documentation.
+-
+-THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
+-ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+-WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+-NONINFRINGEMENT OF THIRD PARTY RIGHTS.
+-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS
+-NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL
+-DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
+-DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+-TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+-PERFORMANCE OF THE DATA FILES OR SOFTWARE.
+-
+-Except as contained in this notice, the name of a copyright holder
+-shall not be used in advertising or otherwise to promote the sale,
+-use or other dealings in these Data Files or Software without prior
+-written authorization of the copyright holder.
+-
+----------------------
+-
+-Third-Party Software Licenses
+-
+-This section contains third-party software notices and/or additional
+-terms for licensed third-party software components included within ICU
+-libraries.
+-
+-1. ICU License - ICU 1.8.1 to ICU 57.1
+-
+-COPYRIGHT AND PERMISSION NOTICE
+-
+-Copyright (c) 1995-2016 International Business Machines Corporation and others
+-All rights reserved.
+-
+-Permission is hereby granted, free of charge, to any person obtaining
+-a copy of this software and associated documentation files (the
+-"Software"), to deal in the Software without restriction, including
+-without limitation the rights to use, copy, modify, merge, publish,
+-distribute, and/or sell copies of the Software, and to permit persons
+-to whom the Software is furnished to do so, provided that the above
+-copyright notice(s) and this permission notice appear in all copies of
+-the Software and that both the above copyright notice(s) and this
+-permission notice appear in supporting documentation.
+-
+-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+-OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+-HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY
+-SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER
+-RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+-CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+-
+-Except as contained in this notice, the name of a copyright holder
+-shall not be used in advertising or otherwise to promote the sale, use
+-or other dealings in this Software without prior written authorization
+-of the copyright holder.
+-
+-All trademarks and registered trademarks mentioned herein are the
+-property of their respective owners.
+-
+-
+-——————————————————————————————————————————————————————————————————————
+-
+-
+-From: https://www.unicode.org/copyright.html:
+-
+-    Unicode® Copyright and Terms of Use
+-
+-    For the general privacy policy governing access to this site, see the  Unicode Privacy Policy.
+-
+-        Unicode Copyright
+-            Copyright © 1991-2020 Unicode, Inc. All rights reserved.
+-        Definitions
+-
+-        Unicode Data Files ("DATA FILES") include all data files under the directories:
+-        https://www.unicode.org/Public/
+-        https://www.unicode.org/reports/
+-        https://www.unicode.org/ivd/data/
+-
+-        Unicode Data Files do not include PDF online code charts under the directory:
+-        https://www.unicode.org/Public/
+-
+-        Unicode Software ("SOFTWARE") includes any source code published in the Unicode Standard
+-        or any source code or compiled code under the directories:
+-        https://www.unicode.org/Public/PROGRAMS/
+-        https://www.unicode.org/Public/cldr/
+-        http://site.icu-project.org/download/
+-
+-        Terms of Use
+-            Certain documents and files on this website contain a legend indicating that "Modification is permitted." Any person is hereby authorized, without fee, to modify such documents and files to create derivative works conforming to the Unicode® Standard, subject to Terms and Conditions herein.
+-            Any person is hereby authorized, without fee, to view, use, reproduce, and distribute all documents and files, subject to the Terms and Conditions herein.
+-            Further specifications of rights and restrictions pertaining to the use of the Unicode DATA FILES and SOFTWARE can be found in the Unicode Data Files and Software License.
+-            Each version of the Unicode Standard has further specifications of rights and restrictions of use. For the book editions (Unicode 5.0 and earlier), these are found on the back of the title page.
+-            The Unicode PDF online code charts carry specific restrictions. Those restrictions are incorporated as the first page of each PDF code chart.
+-            All other files, including online documentation of the core specification for Unicode 6.0 and later, are covered under these general Terms of Use.
+-            No license is granted to "mirror" the Unicode website where a fee is charged for access to the "mirror" site.
+-            Modification is not permitted with respect to this document. All copies of this document must be verbatim.
+-        Restricted Rights Legend
+-            Any technical data or software which is licensed to the United States of America, its agencies and/or instrumentalities under this Agreement is commercial technical data or commercial computer software developed exclusively at private expense as defined in FAR 2.101, or DFARS 252.227-7014 (June 1995), as applicable. For technical data, use, duplication, or disclosure by the Government is subject to restrictions as set forth in DFARS 202.227-7015 Technical Data, Commercial and Items (Nov 1995) and this Agreement. For Software, in accordance with FAR 12-212 or DFARS 227-7202, as applicable, use, duplication or disclosure by the Government is subject to the restrictions set forth in this Agreement.
+-        Warranties and Disclaimers
+-            This publication and/or website may include technical or typographical errors or other inaccuracies. Changes are periodically added to the information herein; these changes will be incorporated in new editions of the publication and/or website. Unicode, Inc. may make improvements and/or changes in the product(s) and/or program(s) described in this publication and/or website at any time.
+-            If this file has been purchased on magnetic or optical media from Unicode, Inc. the sole and exclusive remedy for any claim will be exchange of the defective media within ninety (90) days of original purchase.
+-            EXCEPT AS PROVIDED IN SECTION E.2, THIS PUBLICATION AND/OR SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND EITHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. UNICODE, INC. AND ITS LICENSORS ASSUME NO RESPONSIBILITY FOR ERRORS OR OMISSIONS IN THIS PUBLICATION AND/OR SOFTWARE OR OTHER DOCUMENTS WHICH ARE REFERENCED BY OR LINKED TO THIS PUBLICATION OR THE UNICODE WEBSITE.
+-        Waiver of Damages
+-            In no event shall Unicode, Inc. or its licensors be liable for any special, incidental, indirect or consequential damages of any kind, or any damages whatsoever, whether or not Unicode, Inc. was advised of the possibility of the damage, including, without limitation, those resulting from the following: loss of use, data or profits, in connection with the use, modification or distribution of this information or its derivatives.
+-        Trademarks & Logos
+-            The Unicode Word Mark and the Unicode Logo are trademarks of Unicode, Inc. “The Unicode Consortium” and “Unicode, Inc.” are trade names of Unicode, Inc. Use of the information and materials found on this website indicates your acknowledgement of Unicode, Inc.’s exclusive worldwide rights in the Unicode Word Mark, the Unicode Logo, and the Unicode trade names.
+-            The Unicode Consortium Name and Trademark Usage Policy (“Trademark Policy”) are incorporated herein by reference and you agree to abide by the provisions of the Trademark Policy, which may be changed from time to time in the sole discretion of Unicode, Inc.
+-            All third party trademarks referenced herein are the property of their respective owners.
+-        Miscellaneous
+-            Jurisdiction and Venue. This website is operated from a location in the State of California, United States of America. Unicode, Inc. makes no representation that the materials are appropriate for use in other locations. If you access this website from other locations, you are responsible for compliance with local laws. This Agreement, all use of this website and any claims and damages resulting from use of this website are governed solely by the laws of the State of California without regard to any principles which would apply the laws of a different jurisdiction. The user agrees that any disputes regarding this website shall be resolved solely in the courts located in Santa Clara County, California. The user agrees said courts have personal jurisdiction and agree to waive any right to transfer the dispute to any other forum.
+-            Modification by Unicode, Inc. Unicode, Inc. shall have the right to modify this Agreement at any time by posting it to this website. The user may not assign any part of this Agreement without Unicode, Inc.’s prior written consent.
+-            Taxes. The user agrees to pay any taxes arising from access to this website or use of the information herein, except for those based on Unicode’s net income.
+-            Severability.  If any provision of this Agreement is declared invalid or unenforceable, the remaining provisions of this Agreement shall remain in effect.
+-            Entire Agreement. This Agreement constitutes the entire agreement between the parties. 
+-
+-```
+-
++## International Components for Unicode (ICU4J) v67.1
++
++### ICU4J License
++```
++
++COPYRIGHT AND PERMISSION NOTICE (ICU 58 and later)
++
++Copyright © 1991-2020 Unicode, Inc. All rights reserved.
++Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
++
++Permission is hereby granted, free of charge, to any person obtaining
++a copy of the Unicode data files and any associated documentation
++(the "Data Files") or Unicode software and any associated documentation
++(the "Software") to deal in the Data Files or Software
++without restriction, including without limitation the rights to use,
++copy, modify, merge, publish, distribute, and/or sell copies of
++the Data Files or Software, and to permit persons to whom the Data Files
++or Software are furnished to do so, provided that either
++(a) this copyright and permission notice appear with all copies
++of the Data Files or Software, or
++(b) this copyright and permission notice appear in associated
++Documentation.
++
++THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
++ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
++WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++NONINFRINGEMENT OF THIRD PARTY RIGHTS.
++IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS
++NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL
++DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
++DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
++TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
++PERFORMANCE OF THE DATA FILES OR SOFTWARE.
++
++Except as contained in this notice, the name of a copyright holder
++shall not be used in advertising or otherwise to promote the sale,
++use or other dealings in these Data Files or Software without prior
++written authorization of the copyright holder.
++
++---------------------
++
++Third-Party Software Licenses
++
++This section contains third-party software notices and/or additional
++terms for licensed third-party software components included within ICU
++libraries.
++
++1. ICU License - ICU 1.8.1 to ICU 57.1
++
++COPYRIGHT AND PERMISSION NOTICE
++
++Copyright (c) 1995-2016 International Business Machines Corporation and others
++All rights reserved.
++
++Permission is hereby granted, free of charge, to any person obtaining
++a copy of this software and associated documentation files (the
++"Software"), to deal in the Software without restriction, including
++without limitation the rights to use, copy, modify, merge, publish,
++distribute, and/or sell copies of the Software, and to permit persons
++to whom the Software is furnished to do so, provided that the above
++copyright notice(s) and this permission notice appear in all copies of
++the Software and that both the above copyright notice(s) and this
++permission notice appear in supporting documentation.
++
++THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
++OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
++HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY
++SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER
++RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
++CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
++CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++
++Except as contained in this notice, the name of a copyright holder
++shall not be used in advertising or otherwise to promote the sale, use
++or other dealings in this Software without prior written authorization
++of the copyright holder.
++
++All trademarks and registered trademarks mentioned herein are the
++property of their respective owners.
++
++
++——————————————————————————————————————————————————————————————————————
++
++
++From: https://www.unicode.org/copyright.html:
++
++    Unicode® Copyright and Terms of Use
++
++    For the general privacy policy governing access to this site, see the  Unicode Privacy Policy.
++
++        Unicode Copyright
++            Copyright © 1991-2020 Unicode, Inc. All rights reserved.
++        Definitions
++
++        Unicode Data Files ("DATA FILES") include all data files under the directories:
++        https://www.unicode.org/Public/
++        https://www.unicode.org/reports/
++        https://www.unicode.org/ivd/data/
++
++        Unicode Data Files do not include PDF online code charts under the directory:
++        https://www.unicode.org/Public/
++
++        Unicode Software ("SOFTWARE") includes any source code published in the Unicode Standard
++        or any source code or compiled code under the directories:
++        https://www.unicode.org/Public/PROGRAMS/
++        https://www.unicode.org/Public/cldr/
++        http://site.icu-project.org/download/
++
++        Terms of Use
++            Certain documents and files on this website contain a legend indicating that "Modification is permitted." Any person is hereby authorized, without fee, to modify such documents and files to create derivative works conforming to the Unicode® Standard, subject to Terms and Conditions herein.
++            Any person is hereby authorized, without fee, to view, use, reproduce, and distribute all documents and files, subject to the Terms and Conditions herein.
++            Further specifications of rights and restrictions pertaining to the use of the Unicode DATA FILES and SOFTWARE can be found in the Unicode Data Files and Software License.
++            Each version of the Unicode Standard has further specifications of rights and restrictions of use. For the book editions (Unicode 5.0 and earlier), these are found on the back of the title page.
++            The Unicode PDF online code charts carry specific restrictions. Those restrictions are incorporated as the first page of each PDF code chart.
++            All other files, including online documentation of the core specification for Unicode 6.0 and later, are covered under these general Terms of Use.
++            No license is granted to "mirror" the Unicode website where a fee is charged for access to the "mirror" site.
++            Modification is not permitted with respect to this document. All copies of this document must be verbatim.
++        Restricted Rights Legend
++            Any technical data or software which is licensed to the United States of America, its agencies and/or instrumentalities under this Agreement is commercial technical data or commercial computer software developed exclusively at private expense as defined in FAR 2.101, or DFARS 252.227-7014 (June 1995), as applicable. For technical data, use, duplication, or disclosure by the Government is subject to restrictions as set forth in DFARS 202.227-7015 Technical Data, Commercial and Items (Nov 1995) and this Agreement. For Software, in accordance with FAR 12-212 or DFARS 227-7202, as applicable, use, duplication or disclosure by the Government is subject to the restrictions set forth in this Agreement.
++        Warranties and Disclaimers
++            This publication and/or website may include technical or typographical errors or other inaccuracies. Changes are periodically added to the information herein; these changes will be incorporated in new editions of the publication and/or website. Unicode, Inc. may make improvements and/or changes in the product(s) and/or program(s) described in this publication and/or website at any time.
++            If this file has been purchased on magnetic or optical media from Unicode, Inc. the sole and exclusive remedy for any claim will be exchange of the defective media within ninety (90) days of original purchase.
++            EXCEPT AS PROVIDED IN SECTION E.2, THIS PUBLICATION AND/OR SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND EITHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. UNICODE, INC. AND ITS LICENSORS ASSUME NO RESPONSIBILITY FOR ERRORS OR OMISSIONS IN THIS PUBLICATION AND/OR SOFTWARE OR OTHER DOCUMENTS WHICH ARE REFERENCED BY OR LINKED TO THIS PUBLICATION OR THE UNICODE WEBSITE.
++        Waiver of Damages
++            In no event shall Unicode, Inc. or its licensors be liable for any special, incidental, indirect or consequential damages of any kind, or any damages whatsoever, whether or not Unicode, Inc. was advised of the possibility of the damage, including, without limitation, those resulting from the following: loss of use, data or profits, in connection with the use, modification or distribution of this information or its derivatives.
++        Trademarks & Logos
++            The Unicode Word Mark and the Unicode Logo are trademarks of Unicode, Inc. “The Unicode Consortium” and “Unicode, Inc.” are trade names of Unicode, Inc. Use of the information and materials found on this website indicates your acknowledgement of Unicode, Inc.’s exclusive worldwide rights in the Unicode Word Mark, the Unicode Logo, and the Unicode trade names.
++            The Unicode Consortium Name and Trademark Usage Policy (“Trademark Policy”) are incorporated herein by reference and you agree to abide by the provisions of the Trademark Policy, which may be changed from time to time in the sole discretion of Unicode, Inc.
++            All third party trademarks referenced herein are the property of their respective owners.
++        Miscellaneous
++            Jurisdiction and Venue. This website is operated from a location in the State of California, United States of America. Unicode, Inc. makes no representation that the materials are appropriate for use in other locations. If you access this website from other locations, you are responsible for compliance with local laws. This Agreement, all use of this website and any claims and damages resulting from use of this website are governed solely by the laws of the State of California without regard to any principles which would apply the laws of a different jurisdiction. The user agrees that any disputes regarding this website shall be resolved solely in the courts located in Santa Clara County, California. The user agrees said courts have personal jurisdiction and agree to waive any right to transfer the dispute to any other forum.
++            Modification by Unicode, Inc. Unicode, Inc. shall have the right to modify this Agreement at any time by posting it to this website. The user may not assign any part of this Agreement without Unicode, Inc.’s prior written consent.
++            Taxes. The user agrees to pay any taxes arising from access to this website or use of the information herein, except for those based on Unicode’s net income.
++            Severability.  If any provision of this Agreement is declared invalid or unenforceable, the remaining provisions of this Agreement shall remain in effect.
++            Entire Agreement. This Agreement constitutes the entire agreement between the parties. 
++
++```
++

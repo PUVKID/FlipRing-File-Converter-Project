@@ -1,0 +1,1584 @@
+--- a/소스/licenses/svglib/METADATA
++++ b/소스/licenses/svglib/METADATA
+@@ -1,364 +1,364 @@
+-Metadata-Version: 2.5
+-Name: svglib
+-Version: 2.3.0
+-Summary: A pure-Python library for reading and converting SVG
+-Project-URL: Homepage, https://github.com/deeplook/svglib
+-Author: Dinu Gherman
+-License-Expression: LGPL-3.0-or-later
+-License-File: LICENSE.txt
+-Keywords: PDF,SVG,conversion,graphics,reportlab
+-Classifier: Development Status :: 5 - Production/Stable
+-Classifier: Environment :: Console
+-Classifier: Intended Audience :: Developers
+-Classifier: Intended Audience :: End Users/Desktop
+-Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+-Classifier: Natural Language :: English
+-Classifier: Operating System :: MacOS :: MacOS X
+-Classifier: Operating System :: Microsoft :: Windows
+-Classifier: Operating System :: POSIX
+-Classifier: Programming Language :: Python
+-Classifier: Programming Language :: Python :: 3 :: Only
+-Classifier: Programming Language :: Python :: 3.9
+-Classifier: Programming Language :: Python :: 3.10
+-Classifier: Programming Language :: Python :: 3.11
+-Classifier: Programming Language :: Python :: 3.12
+-Classifier: Programming Language :: Python :: 3.13
+-Classifier: Programming Language :: Python :: 3.14
+-Classifier: Topic :: Documentation
+-Classifier: Topic :: Multimedia :: Graphics :: Graphics Conversion
+-Classifier: Topic :: Printing
+-Classifier: Topic :: Software Development :: Libraries :: Python Modules
+-Classifier: Topic :: Text Processing :: Markup :: XML
+-Classifier: Topic :: Utilities
+-Requires-Python: >=3.9
+-Requires-Dist: cssselect2>=0.2.0
+-Requires-Dist: lxml>=6.0.0
+-Requires-Dist: pillow>=9.0.0
+-Requires-Dist: reportlab>=4.4.3
+-Requires-Dist: tinycss2>=0.6.0
+-Provides-Extra: bitmaps
+-Requires-Dist: rlpycairo>=0.4.0; extra == 'bitmaps'
+-Description-Content-Type: text/markdown
+-
+-# Svglib
+-
+-*A pure-Python library for reading and converting SVG*
+-
+-[![CI Ubuntu](https://github.com/deeplook/svglib/actions/workflows/ci-ubuntu.yml/badge.svg)](https://github.com/deeplook/svglib/actions/workflows/ci-ubuntu.yml)
+-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/deeplook/svglib/master.svg)](https://results.pre-commit.ci/latest/github/deeplook/svglib/master)
+-[![PyUp](https://pyup.io/repos/github/deeplook/svglib/shield.svg)](https://pyup.io/repos/github/deeplook/svglib/)
+-[![Python Implementation](https://img.shields.io/pypi/implementation/svglib.svg)](https://pypi.org/project/svglib)
+-[![Python Versions](https://img.shields.io/pypi/pyversions/svglib.svg)](https://pypi.org/project/svglib)
+-[![Downloads](https://img.shields.io/pypi/dm/svglib.svg)](https://pepy.tech/project/svglib)
+-[![PyPI Version](https://img.shields.io/pypi/v/svglib.svg)](https://pypi.org/project/svglib)
+-[![Conda Version](https://img.shields.io/conda/vn/conda-forge/svglib.svg)](https://github.com/conda-forge/svglib-feedstock)
+-[![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/svglib.svg)](https://github.com/conda-forge/svglib-feedstock)
+-[![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/svglib.svg)](https://pypi.org/project/svglib)
+-[![License](https://img.shields.io/pypi/l/svglib.svg)](https://pypi.org/project/svglib)
+-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/deeplook/streamlit-svglib/master/streamlit_app.py)
+-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=flat&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/deeplook)
+-
+-
+-## About
+-
+-`Svglib` is a Python library for reading [SVG](http://www.w3.org/Graphics/SVG/) files and converting
+-them (to a reasonable degree) to other formats using the
+-[ReportLab](https://www.reportlab.com/opensource/) Open Source toolkit.
+-
+-Used as a package you can read existing SVG files and convert them into
+-ReportLab `Drawing` objects that can be used in a variety of contexts,
+-e.g. as ReportLab Platypus `Flowable` objects or in
+-[RML](https://www.reportlab.com/software/rml-reference/).
+-As a command-line tool it converts SVG files into PDF ones (but adding
+-other output formats like bitmap or EPS is really easy and will be better
+-supported, soon).
+-
+-Tests include a huge [W3C SVG test suite](http://www.w3.org/Graphics/SVG/WG/wiki/Test_Suite_Overview)
+-plus ca. 200 [flags from Wikipedia](https://en.wikipedia.org/wiki/Gallery_of_sovereign_state_flags)
+-and some selected [symbols from Wikipedia](https://en.wikipedia.org/wiki/List_of_symbols)
+-(with increasingly less pointing to missing features).
+-
+-
+-## Features
+-
+-- convert [SVG](http://www.w3.org/Graphics/SVG/) files into [ReportLab](https://www.reportlab.com/opensource/) Graphics `Drawing` objects
+-- handle plain or compressed SVG files (.svg and .svgz)
+-- allow patterns for output files on command-line
+-- install a Python package named `svglib`
+-- install a Python command-line script named `svg2pdf`
+-- support SVG linear and radial gradients
+-- support SVG `<switch>` elements with conditional rendering
+-- provide a [PyTest](http://pytest.org) test suite with over 90% code coverage
+-- test entire [W3C SVG test suite](http://www.w3.org/Graphics/SVG/WG/wiki/Test_Suite_Overview) after pulling from the internet
+-- test all SVG [flags from Wikipedia](https://en.wikipedia.org/wiki/Gallery_of_sovereign_state_flags) after pulling from the internet
+-- test selected SVG [symbols from Wikipedia](https://en.wikipedia.org/wiki/List_of_symbols) after pulling from the net
+-- support Python 3.9+ and PyPy3
+-
+-
+-## Known limitations
+-
+-- `@import` rules in stylesheets are ignored. CSS is supported, but the range
+-  of supported attributes is still limited
+-- clip paths support `path`, `rect`, `circle`, `ellipse` and `polygon` shapes,
+-  but only one `clip-rule` per `clipPath`.
+-- SVG `mask` elements are not supported
+-- SVG `ForeignObject` elements are not supported.
+-
+-
+-## Examples
+-
+-You can use `svglib` as a Python package e.g. like in the following
+-interactive Python session:
+-
+-```python
+->>> from svglib.svglib import svg2rlg
+->>> from reportlab.graphics import renderPDF
+->>>
+->>> drawing = svg2rlg("file.svg")
+->>> renderPDF.drawToFile(drawing, "file.pdf")
+-```
+-
+-Note that the second parameter of `drawToFile` can be any
+-[Python file object](https://docs.python.org/3/glossary.html#term-file-object),
+-like a `BytesIO` buffer if you don't want the result to be written on disk.
+-
+-In addition a script named `svg2pdf` can be used more easily from
+-the system command-line. Here is the output from `svg2pdf -h`:
+-
+-```
+-usage: svg2pdf [-h] [-v] [-o PATH_PAT] [PATH [PATH ...]]
+-
+-svg2pdf v. x.x.x
+-A converter from SVG to PDF (via ReportLab Graphics)
+-
+-positional arguments:
+-  PATH                  Input SVG file path with extension .svg or .svgz.
+-
+-optional arguments:
+-  -h, --help            show this help message and exit
+-  -v, --version         Print version number and exit.
+-  -o PATH_PAT, --output PATH_PAT
+-                        Set output path (incl. the placeholders: dirname,
+-                        basename,base, ext, now) in both, %(name)s and {name}
+-                        notations.
+-
+-examples:
+-  # convert path/file.svg to path/file.pdf
+-  svg2pdf path/file.svg
+-
+-  # convert file1.svg to file1.pdf and file2.svgz to file2.pdf
+-  svg2pdf file1.svg file2.svgz
+-
+-  # convert file.svg to out.pdf
+-  svg2pdf -o out.pdf file.svg
+-
+-  # convert all SVG files in path/ to PDF files with names like:
+-  # path/file1.svg -> file1.pdf
+-  svg2pdf -o "%(base)s.pdf" path/file*.svg
+-
+-  # like before but with timestamp in the PDF files:
+-  # path/file1.svg -> path/out-12-58-36-file1.pdf
+-  svg2pdf -o {dirname}/out-{now.hour}-{now.minute}-{now.second}-%(base)s.pdf path/file*.svg
+-
+-issues/pull requests:
+-    https://github.com/deeplook/svglib
+-```
+-
+-
+-## Units and output sizes
+-
+-SVG is anchored to a **96 dpi** coordinate system: one user unit (bare
+-number or `px`) equals one CSS pixel, which is 1/96 of an inch.
+-ReportLab works in **points** (1 pt = 1/72 inch). The conversion
+-factor is `1 px = 0.75 pt`.
+-
+-The `Drawing` object returned by `svg2rlg` always has its
+-`width` and `height` expressed in ReportLab points. The table
+-below shows what you get for common unit choices on the root `<svg>`
+-element:
+-
+-| SVG `width`        | `Drawing.width` (pt) | Physical width |
+-|--------------------|----------------------|----------------|
+-| `width="96"`       | 72 pt                | 1 inch         |
+-| `width="96px"`     | 72 pt (same as bare) | 1 inch         |
+-| `width="72pt"`     | 72 pt                | 1 inch         |
+-| `width="25.4mm"`   | 72 pt                | 1 inch         |
+-| `width="1in"`      | 72 pt                | 1 inch         |
+-
+-The physical size is the same in every row — the unit only affects
+-which number appears in the file.
+-
+-**Font sizes** follow the same rule. `font-size="16"` (bare or
+-`px`) produces a 12 pt font in the PDF (16 × 0.75). Use
+-`font-size="12pt"` when you need to specify a precise typographic
+-size directly.
+-
+-**Choosing units**
+-
+-- *Web-first SVGs*: use bare numbers throughout and a `viewBox`.
+-  The browser renders at 96 dpi; svglib scales to 72 dpi points.
+-  Physical dimensions are preserved in the PDF.
+-- *Print at an exact physical size*: declare `width`/`height` in
+-  `mm`, `cm`, or `in` on the `<svg>` element and use a
+-  matching `viewBox`. Both screen and print will show the declared
+-  physical size.
+-- *Control exact PDF point dimensions*: use `pt` units on
+-  `width`/`height`; the numeric value is preserved in the Drawing.
+-
+-**Adjusting the output size at render time**
+-
+-If you need to rescale the returned Drawing (e.g. to fit a fixed page
+-size or restore the pre-2.0 behaviour), scale the Drawing object
+-directly:
+-
+-```python
+-drawing = svg2rlg("file.svg")
+-factor = 4 / 3   # restore 1.x size (1 user unit → 1 pt, non-spec)
+-drawing.width  *= factor
+-drawing.height *= factor
+-drawing.scale(factor, factor)
+-```
+-
+-
+-## Dependencies
+-
+-`Svglib` depends mainly on the `reportlab` package, which provides
+-the abstractions for building complex `Drawings` which it can render
+-into different fileformats, including PDF, EPS, SVG and various bitmap
+-ones. Other dependencies are `lxml` which is used in the context of SVG
+-CSS stylesheets.
+-
+-PDF output does not require Cairo. SVG images embedded in input files are
+-included in generated PDFs through ReportLab's PDF renderer.
+-
+-### Bitmap output
+-
+-Rendering ReportLab drawings to bitmap formats such as PNG uses
+-`reportlab.graphics.renderPM` and requires a renderPM backend.
+-
+-The default ReportLab 4.x backend is `rlPyCairo`:
+-
+-```
+-$ pip install "svglib[bitmaps]"
+-```
+-
+-Depending on the platform, `pycairo` may also require the system Cairo
+-library to be installed. For installation instructions, see the official
+-website: https://www.cairographics.org/download/
+-
+-Alternatively, users can install ReportLab's legacy `_renderPM` backend:
+-
+-```
+-$ pip install svglib rl-renderPM
+-```
+-
+-To choose a backend explicitly, set ReportLab's renderPM backend before calling
+-`renderPM`:
+-
+-```python
+-from reportlab import rl_config
+-from reportlab.graphics import renderPM
+-
+-rl_config.renderPMBackend = "rlPyCairo"  # default in ReportLab 4.x
+-# or:
+-rl_config.renderPMBackend = "_renderPM"
+-
+-renderPM.drawToFile(drawing, "file.png", fmt="PNG")
+-```
+-
+-
+-## Installation
+-
+-There are three ways to install `svglib`.
+-
+-### 1. Using `pip`
+-
+-With the `pip` command on your system and a working internet
+-connection you can install the newest version of `svglib` with only
+-one command in a terminal:
+-
+-```
+-$ pip install svglib
+-```
+-
+-You can also use `pip` to install the very latest version of the
+-repository from GitHub, but then you won't be able to conveniently
+-run the test suite:
+-
+-```
+-$ pip install git+https://github.com/deeplook/svglib
+-```
+-
+-
+-### 2. Using `conda`
+-
+-If you use [Anaconda](https://www.anaconda.com/download/) or
+-[Miniconda](https://conda.io/miniconda.html) you are surely using its respective
+-package manager, [Conda](https://conda.io), as well. In that case you should be
+-able to install `svglib` using these simple commands:
+-
+-```
+-$ conda config --add channels conda-forge
+-$ conda install svglib
+-```
+-
+-`Svglib` was kindly packaged for `conda` by
+-[nicoddemus](https://github.com/nicoddemus). See here more about
+-[svglib with conda](https://github.com/conda-forge/svglib-feedstock).
+-
+-
+-### 3. Manual installation
+-
+-Alternatively, you can install a tarball like `svglib-<version>.tar.gz`
+-after downloading it from the [svglib page on PyPI](https://pypi.org/project/svglib/)
+-or the [svglib releases page on GitHub](https://github.com/deeplook/svglib/releases)
+-and installing it via `pip`:
+-
+-```
+-$ pip install svglib-<version>.tar.gz
+-```
+-
+-This will install a Python package named `svglib` in the
+-`site-packages` subfolder of your Python installation and a script
+-tool named `svg2pdf` in your `bin` directory, e.g. in
+-`/usr/local/bin`.
+-
+-
+-## Development and Testing
+-
+-To develop `svglib`, install [uv](https://docs.astral.sh/uv/) and run `uv sync` to
+-install the requirements and development dependencies. To run the test suite with
+-`pytest`, run: `uv run pytest`.
+-
+-
+-## Distribution Testing
+-
+-The `svglib` tarball distribution contains a [PyTest](http://pytest.org) test suite
+-in the `tests` directory. There, in `tests/README.rst`, you can
+-also read more about testing. You can run the testsuite e.g. like
+-shown in the following lines on the command-line:
+-
+-```
+-$ make test
+-========================= test session starts =========================
+-platform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0
+-rootdir: /Users/dinu/dev/svglib
+-configfile: pyproject.toml
+-plugins: cov-7.0.0
+-collected 115 items
+-
+-tests/test_basic.py ............................................ [ 43%]
+-..................                                               [ 53%]
+-tests/test_fonts.py ............s.....................s.....     [ 88%]
+-tests/test_samples.py .s.s.s.s.....                              [100%]
+-
+-============== 109 passed, 6 skipped, 1 warning in 33.32s =============
+-```
+-
+-
+-## Bug reports
+-
+-Please report bugs on the [svglib issue tracker](https://github.com/deeplook/svglib/issues)
+-on GitHub (pull requests are also appreciated)!
+-If necessary, please include information about the operating system, as
+-well as the versions of `svglib`, ReportLab and Python being used!
++Metadata-Version: 2.5
++Name: svglib
++Version: 2.3.0
++Summary: A pure-Python library for reading and converting SVG
++Project-URL: Homepage, https://github.com/deeplook/svglib
++Author: Dinu Gherman
++License-Expression: LGPL-3.0-or-later
++License-File: LICENSE.txt
++Keywords: PDF,SVG,conversion,graphics,reportlab
++Classifier: Development Status :: 5 - Production/Stable
++Classifier: Environment :: Console
++Classifier: Intended Audience :: Developers
++Classifier: Intended Audience :: End Users/Desktop
++Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
++Classifier: Natural Language :: English
++Classifier: Operating System :: MacOS :: MacOS X
++Classifier: Operating System :: Microsoft :: Windows
++Classifier: Operating System :: POSIX
++Classifier: Programming Language :: Python
++Classifier: Programming Language :: Python :: 3 :: Only
++Classifier: Programming Language :: Python :: 3.9
++Classifier: Programming Language :: Python :: 3.10
++Classifier: Programming Language :: Python :: 3.11
++Classifier: Programming Language :: Python :: 3.12
++Classifier: Programming Language :: Python :: 3.13
++Classifier: Programming Language :: Python :: 3.14
++Classifier: Topic :: Documentation
++Classifier: Topic :: Multimedia :: Graphics :: Graphics Conversion
++Classifier: Topic :: Printing
++Classifier: Topic :: Software Development :: Libraries :: Python Modules
++Classifier: Topic :: Text Processing :: Markup :: XML
++Classifier: Topic :: Utilities
++Requires-Python: >=3.9
++Requires-Dist: cssselect2>=0.2.0
++Requires-Dist: lxml>=6.0.0
++Requires-Dist: pillow>=9.0.0
++Requires-Dist: reportlab>=4.4.3
++Requires-Dist: tinycss2>=0.6.0
++Provides-Extra: bitmaps
++Requires-Dist: rlpycairo>=0.4.0; extra == 'bitmaps'
++Description-Content-Type: text/markdown
++
++# Svglib
++
++*A pure-Python library for reading and converting SVG*
++
++[![CI Ubuntu](https://github.com/deeplook/svglib/actions/workflows/ci-ubuntu.yml/badge.svg)](https://github.com/deeplook/svglib/actions/workflows/ci-ubuntu.yml)
++[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/deeplook/svglib/master.svg)](https://results.pre-commit.ci/latest/github/deeplook/svglib/master)
++[![PyUp](https://pyup.io/repos/github/deeplook/svglib/shield.svg)](https://pyup.io/repos/github/deeplook/svglib/)
++[![Python Implementation](https://img.shields.io/pypi/implementation/svglib.svg)](https://pypi.org/project/svglib)
++[![Python Versions](https://img.shields.io/pypi/pyversions/svglib.svg)](https://pypi.org/project/svglib)
++[![Downloads](https://img.shields.io/pypi/dm/svglib.svg)](https://pepy.tech/project/svglib)
++[![PyPI Version](https://img.shields.io/pypi/v/svglib.svg)](https://pypi.org/project/svglib)
++[![Conda Version](https://img.shields.io/conda/vn/conda-forge/svglib.svg)](https://github.com/conda-forge/svglib-feedstock)
++[![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/svglib.svg)](https://github.com/conda-forge/svglib-feedstock)
++[![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/svglib.svg)](https://pypi.org/project/svglib)
++[![License](https://img.shields.io/pypi/l/svglib.svg)](https://pypi.org/project/svglib)
++[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/deeplook/streamlit-svglib/master/streamlit_app.py)
++[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=flat&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/deeplook)
++
++
++## About
++
++`Svglib` is a Python library for reading [SVG](http://www.w3.org/Graphics/SVG/) files and converting
++them (to a reasonable degree) to other formats using the
++[ReportLab](https://www.reportlab.com/opensource/) Open Source toolkit.
++
++Used as a package you can read existing SVG files and convert them into
++ReportLab `Drawing` objects that can be used in a variety of contexts,
++e.g. as ReportLab Platypus `Flowable` objects or in
++[RML](https://www.reportlab.com/software/rml-reference/).
++As a command-line tool it converts SVG files into PDF ones (but adding
++other output formats like bitmap or EPS is really easy and will be better
++supported, soon).
++
++Tests include a huge [W3C SVG test suite](http://www.w3.org/Graphics/SVG/WG/wiki/Test_Suite_Overview)
++plus ca. 200 [flags from Wikipedia](https://en.wikipedia.org/wiki/Gallery_of_sovereign_state_flags)
++and some selected [symbols from Wikipedia](https://en.wikipedia.org/wiki/List_of_symbols)
++(with increasingly less pointing to missing features).
++
++
++## Features
++
++- convert [SVG](http://www.w3.org/Graphics/SVG/) files into [ReportLab](https://www.reportlab.com/opensource/) Graphics `Drawing` objects
++- handle plain or compressed SVG files (.svg and .svgz)
++- allow patterns for output files on command-line
++- install a Python package named `svglib`
++- install a Python command-line script named `svg2pdf`
++- support SVG linear and radial gradients
++- support SVG `<switch>` elements with conditional rendering
++- provide a [PyTest](http://pytest.org) test suite with over 90% code coverage
++- test entire [W3C SVG test suite](http://www.w3.org/Graphics/SVG/WG/wiki/Test_Suite_Overview) after pulling from the internet
++- test all SVG [flags from Wikipedia](https://en.wikipedia.org/wiki/Gallery_of_sovereign_state_flags) after pulling from the internet
++- test selected SVG [symbols from Wikipedia](https://en.wikipedia.org/wiki/List_of_symbols) after pulling from the net
++- support Python 3.9+ and PyPy3
++
++
++## Known limitations
++
++- `@import` rules in stylesheets are ignored. CSS is supported, but the range
++  of supported attributes is still limited
++- clip paths support `path`, `rect`, `circle`, `ellipse` and `polygon` shapes,
++  but only one `clip-rule` per `clipPath`.
++- SVG `mask` elements are not supported
++- SVG `ForeignObject` elements are not supported.
++
++
++## Examples
++
++You can use `svglib` as a Python package e.g. like in the following
++interactive Python session:
++
++```python
++>>> from svglib.svglib import svg2rlg
++>>> from reportlab.graphics import renderPDF
++>>>
++>>> drawing = svg2rlg("file.svg")
++>>> renderPDF.drawToFile(drawing, "file.pdf")
++```
++
++Note that the second parameter of `drawToFile` can be any
++[Python file object](https://docs.python.org/3/glossary.html#term-file-object),
++like a `BytesIO` buffer if you don't want the result to be written on disk.
++
++In addition a script named `svg2pdf` can be used more easily from
++the system command-line. Here is the output from `svg2pdf -h`:
++
++```
++usage: svg2pdf [-h] [-v] [-o PATH_PAT] [PATH [PATH ...]]
++
++svg2pdf v. x.x.x
++A converter from SVG to PDF (via ReportLab Graphics)
++
++positional arguments:
++  PATH                  Input SVG file path with extension .svg or .svgz.
++
++optional arguments:
++  -h, --help            show this help message and exit
++  -v, --version         Print version number and exit.
++  -o PATH_PAT, --output PATH_PAT
++                        Set output path (incl. the placeholders: dirname,
++                        basename,base, ext, now) in both, %(name)s and {name}
++                        notations.
++
++examples:
++  # convert path/file.svg to path/file.pdf
++  svg2pdf path/file.svg
++
++  # convert file1.svg to file1.pdf and file2.svgz to file2.pdf
++  svg2pdf file1.svg file2.svgz
++
++  # convert file.svg to out.pdf
++  svg2pdf -o out.pdf file.svg
++
++  # convert all SVG files in path/ to PDF files with names like:
++  # path/file1.svg -> file1.pdf
++  svg2pdf -o "%(base)s.pdf" path/file*.svg
++
++  # like before but with timestamp in the PDF files:
++  # path/file1.svg -> path/out-12-58-36-file1.pdf
++  svg2pdf -o {dirname}/out-{now.hour}-{now.minute}-{now.second}-%(base)s.pdf path/file*.svg
++
++issues/pull requests:
++    https://github.com/deeplook/svglib
++```
++
++
++## Units and output sizes
++
++SVG is anchored to a **96 dpi** coordinate system: one user unit (bare
++number or `px`) equals one CSS pixel, which is 1/96 of an inch.
++ReportLab works in **points** (1 pt = 1/72 inch). The conversion
++factor is `1 px = 0.75 pt`.
++
++The `Drawing` object returned by `svg2rlg` always has its
++`width` and `height` expressed in ReportLab points. The table
++below shows what you get for common unit choices on the root `<svg>`
++element:
++
++| SVG `width`        | `Drawing.width` (pt) | Physical width |
++|--------------------|----------------------|----------------|
++| `width="96"`       | 72 pt                | 1 inch         |
++| `width="96px"`     | 72 pt (same as bare) | 1 inch         |
++| `width="72pt"`     | 72 pt                | 1 inch         |
++| `width="25.4mm"`   | 72 pt                | 1 inch         |
++| `width="1in"`      | 72 pt                | 1 inch         |
++
++The physical size is the same in every row — the unit only affects
++which number appears in the file.
++
++**Font sizes** follow the same rule. `font-size="16"` (bare or
++`px`) produces a 12 pt font in the PDF (16 × 0.75). Use
++`font-size="12pt"` when you need to specify a precise typographic
++size directly.
++
++**Choosing units**
++
++- *Web-first SVGs*: use bare numbers throughout and a `viewBox`.
++  The browser renders at 96 dpi; svglib scales to 72 dpi points.
++  Physical dimensions are preserved in the PDF.
++- *Print at an exact physical size*: declare `width`/`height` in
++  `mm`, `cm`, or `in` on the `<svg>` element and use a
++  matching `viewBox`. Both screen and print will show the declared
++  physical size.
++- *Control exact PDF point dimensions*: use `pt` units on
++  `width`/`height`; the numeric value is preserved in the Drawing.
++
++**Adjusting the output size at render time**
++
++If you need to rescale the returned Drawing (e.g. to fit a fixed page
++size or restore the pre-2.0 behaviour), scale the Drawing object
++directly:
++
++```python
++drawing = svg2rlg("file.svg")
++factor = 4 / 3   # restore 1.x size (1 user unit → 1 pt, non-spec)
++drawing.width  *= factor
++drawing.height *= factor
++drawing.scale(factor, factor)
++```
++
++
++## Dependencies
++
++`Svglib` depends mainly on the `reportlab` package, which provides
++the abstractions for building complex `Drawings` which it can render
++into different fileformats, including PDF, EPS, SVG and various bitmap
++ones. Other dependencies are `lxml` which is used in the context of SVG
++CSS stylesheets.
++
++PDF output does not require Cairo. SVG images embedded in input files are
++included in generated PDFs through ReportLab's PDF renderer.
++
++### Bitmap output
++
++Rendering ReportLab drawings to bitmap formats such as PNG uses
++`reportlab.graphics.renderPM` and requires a renderPM backend.
++
++The default ReportLab 4.x backend is `rlPyCairo`:
++
++```
++$ pip install "svglib[bitmaps]"
++```
++
++Depending on the platform, `pycairo` may also require the system Cairo
++library to be installed. For installation instructions, see the official
++website: https://www.cairographics.org/download/
++
++Alternatively, users can install ReportLab's legacy `_renderPM` backend:
++
++```
++$ pip install svglib rl-renderPM
++```
++
++To choose a backend explicitly, set ReportLab's renderPM backend before calling
++`renderPM`:
++
++```python
++from reportlab import rl_config
++from reportlab.graphics import renderPM
++
++rl_config.renderPMBackend = "rlPyCairo"  # default in ReportLab 4.x
++# or:
++rl_config.renderPMBackend = "_renderPM"
++
++renderPM.drawToFile(drawing, "file.png", fmt="PNG")
++```
++
++
++## Installation
++
++There are three ways to install `svglib`.
++
++### 1. Using `pip`
++
++With the `pip` command on your system and a working internet
++connection you can install the newest version of `svglib` with only
++one command in a terminal:
++
++```
++$ pip install svglib
++```
++
++You can also use `pip` to install the very latest version of the
++repository from GitHub, but then you won't be able to conveniently
++run the test suite:
++
++```
++$ pip install git+https://github.com/deeplook/svglib
++```
++
++
++### 2. Using `conda`
++
++If you use [Anaconda](https://www.anaconda.com/download/) or
++[Miniconda](https://conda.io/miniconda.html) you are surely using its respective
++package manager, [Conda](https://conda.io), as well. In that case you should be
++able to install `svglib` using these simple commands:
++
++```
++$ conda config --add channels conda-forge
++$ conda install svglib
++```
++
++`Svglib` was kindly packaged for `conda` by
++[nicoddemus](https://github.com/nicoddemus). See here more about
++[svglib with conda](https://github.com/conda-forge/svglib-feedstock).
++
++
++### 3. Manual installation
++
++Alternatively, you can install a tarball like `svglib-<version>.tar.gz`
++after downloading it from the [svglib page on PyPI](https://pypi.org/project/svglib/)
++or the [svglib releases page on GitHub](https://github.com/deeplook/svglib/releases)
++and installing it via `pip`:
++
++```
++$ pip install svglib-<version>.tar.gz
++```
++
++This will install a Python package named `svglib` in the
++`site-packages` subfolder of your Python installation and a script
++tool named `svg2pdf` in your `bin` directory, e.g. in
++`/usr/local/bin`.
++
++
++## Development and Testing
++
++To develop `svglib`, install [uv](https://docs.astral.sh/uv/) and run `uv sync` to
++install the requirements and development dependencies. To run the test suite with
++`pytest`, run: `uv run pytest`.
++
++
++## Distribution Testing
++
++The `svglib` tarball distribution contains a [PyTest](http://pytest.org) test suite
++in the `tests` directory. There, in `tests/README.rst`, you can
++also read more about testing. You can run the testsuite e.g. like
++shown in the following lines on the command-line:
++
++```
++$ make test
++========================= test session starts =========================
++platform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0
++rootdir: /Users/dinu/dev/svglib
++configfile: pyproject.toml
++plugins: cov-7.0.0
++collected 115 items
++
++tests/test_basic.py ............................................ [ 43%]
++..................                                               [ 53%]
++tests/test_fonts.py ............s.....................s.....     [ 88%]
++tests/test_samples.py .s.s.s.s.....                              [100%]
++
++============== 109 passed, 6 skipped, 1 warning in 33.32s =============
++```
++
++
++## Bug reports
++
++Please report bugs on the [svglib issue tracker](https://github.com/deeplook/svglib/issues)
++on GitHub (pull requests are also appreciated)!
++If necessary, please include information about the operating system, as
++well as the versions of `svglib`, ReportLab and Python being used!
+--- a/소스/licenses/Temurin17/legal/java.base/ADDITIONAL_LICENSE_INFO
++++ b/소스/licenses/Temurin17/legal/java.base/ADDITIONAL_LICENSE_INFO
+@@ -1,37 +1,37 @@
+-                      ADDITIONAL INFORMATION ABOUT LICENSING
+-
+-Certain files distributed by Oracle America, Inc. and/or its affiliates are 
+-subject to the following clarification and special exception to the GPLv2, 
+-based on the GNU Project exception for its Classpath libraries, known as the 
+-GNU Classpath Exception.
+-
+-Note that Oracle includes multiple, independent programs in this software 
+-package.  Some of those programs are provided under licenses deemed 
+-incompatible with the GPLv2 by the Free Software Foundation and others. 
+-For example, the package includes programs licensed under the Apache 
+-License, Version 2.0 and may include FreeType. Such programs are licensed 
+-to you under their original licenses. 
+-
+-Oracle facilitates your further distribution of this package by adding the 
+-Classpath Exception to the necessary parts of its GPLv2 code, which permits 
+-you to use that code in combination with other independent modules not 
+-licensed under the GPLv2. However, note that this would not permit you to 
+-commingle code under an incompatible license with Oracle's GPLv2 licensed 
+-code by, for example, cutting and pasting such code into a file also 
+-containing Oracle's GPLv2 licensed code and then distributing the result. 
+-
+-Additionally, if you were to remove the Classpath Exception from any of the 
+-files to which it applies and distribute the result, you would likely be 
+-required to license some or all of the other code in that distribution under 
+-the GPLv2 as well, and since the GPLv2 is incompatible with the license terms 
+-of some items included in the distribution by Oracle, removing the Classpath 
+-Exception could therefore effectively compromise your ability to further 
+-distribute the package. 
+-
+-Failing to distribute notices associated with some files may also create 
+-unexpected legal consequences.
+- 
+-Proceed with caution and we recommend that you obtain the advice of a lawyer 
+-skilled in open source matters before removing the Classpath Exception or 
+-making modifications to this package which may subsequently be redistributed 
+-and/or involve the use of third party software.
++                      ADDITIONAL INFORMATION ABOUT LICENSING
++
++Certain files distributed by Oracle America, Inc. and/or its affiliates are 
++subject to the following clarification and special exception to the GPLv2, 
++based on the GNU Project exception for its Classpath libraries, known as the 
++GNU Classpath Exception.
++
++Note that Oracle includes multiple, independent programs in this software 
++package.  Some of those programs are provided under licenses deemed 
++incompatible with the GPLv2 by the Free Software Foundation and others. 
++For example, the package includes programs licensed under the Apache 
++License, Version 2.0 and may include FreeType. Such programs are licensed 
++to you under their original licenses. 
++
++Oracle facilitates your further distribution of this package by adding the 
++Classpath Exception to the necessary parts of its GPLv2 code, which permits 
++you to use that code in combination with other independent modules not 
++licensed under the GPLv2. However, note that this would not permit you to 
++commingle code under an incompatible license with Oracle's GPLv2 licensed 
++code by, for example, cutting and pasting such code into a file also 
++containing Oracle's GPLv2 licensed code and then distributing the result. 
++
++Additionally, if you were to remove the Classpath Exception from any of the 
++files to which it applies and distribute the result, you would likely be 
++required to license some or all of the other code in that distribution under 
++the GPLv2 as well, and since the GPLv2 is incompatible with the license terms 
++of some items included in the distribution by Oracle, removing the Classpath 
++Exception could therefore effectively compromise your ability to further 
++distribute the package. 
++
++Failing to distribute notices associated with some files may also create 
++unexpected legal consequences.
++ 
++Proceed with caution and we recommend that you obtain the advice of a lawyer 
++skilled in open source matters before removing the Classpath Exception or 
++making modifications to this package which may subsequently be redistributed 
++and/or involve the use of third party software.
+--- a/소스/licenses/Temurin17/legal/java.base/aes.md
++++ b/소스/licenses/Temurin17/legal/java.base/aes.md
+@@ -1,36 +1,36 @@
+-## Cryptix AES v3.2.0
+-
+-### Cryptix General License
+-<pre>
+-
+-Cryptix General License
+-
+-Copyright (c) 1995-2005 The Cryptix Foundation Limited.
+-All rights reserved.
+-
+-Redistribution and use in source and binary forms, with or without
+-modification, are permitted provided that the following conditions are
+-met:
+-
+-  1. Redistributions of source code must retain the copyright notice,
+-     this list of conditions and the following disclaimer.
+-
+-  2. Redistributions in binary form must reproduce the above copyright
+-     notice, this list of conditions and the following disclaimer in
+-     the documentation and/or other materials provided with the
+-     distribution.
+-
+-THIS SOFTWARE IS PROVIDED BY THE CRYPTIX FOUNDATION LIMITED AND
+-CONTRIBUTORS ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+-IN NO EVENT SHALL THE CRYPTIX FOUNDATION LIMITED OR CONTRIBUTORS BE
+-LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+-BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+-OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+-IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-
+-</pre>
++## Cryptix AES v3.2.0
++
++### Cryptix General License
++<pre>
++
++Cryptix General License
++
++Copyright (c) 1995-2005 The Cryptix Foundation Limited.
++All rights reserved.
++
++Redistribution and use in source and binary forms, with or without
++modification, are permitted provided that the following conditions are
++met:
++
++  1. Redistributions of source code must retain the copyright notice,
++     this list of conditions and the following disclaimer.
++
++  2. Redistributions in binary form must reproduce the above copyright
++     notice, this list of conditions and the following disclaimer in
++     the documentation and/or other materials provided with the
++     distribution.
++
++THIS SOFTWARE IS PROVIDED BY THE CRYPTIX FOUNDATION LIMITED AND
++CONTRIBUTORS ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
++INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
++IN NO EVENT SHALL THE CRYPTIX FOUNDATION LIMITED OR CONTRIBUTORS BE
++LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
++BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
++WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
++OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
++IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++
++</pre>
+--- a/소스/licenses/Temurin17/legal/java.base/asm.md
++++ b/소스/licenses/Temurin17/legal/java.base/asm.md
+@@ -1,36 +1,36 @@
+-## ASM Bytecode Manipulation Framework v8.0.1
+-
+-### ASM License
+-<pre>
+-
+-Copyright (c) 2000-2011 France Télécom
+-All rights reserved.
+-
+-Redistribution and use in source and binary forms, with or without
+-modification, are permitted provided that the following conditions
+-are met:
+-
+-1. Redistributions of source code must retain the above copyright
+-   notice, this list of conditions and the following disclaimer.
+-
+-2. Redistributions in binary form must reproduce the above copyright
+-   notice, this list of conditions and the following disclaimer in the
+-   documentation and/or other materials provided with the distribution.
+-
+-3. Neither the name of the copyright holders nor the names of its
+-   contributors may be used to endorse or promote products derived from
+-   this software without specific prior written permission.
+-
+-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+-ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+-LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+-THE POSSIBILITY OF SUCH DAMAGE.
+-
+-</pre>
++## ASM Bytecode Manipulation Framework v8.0.1
++
++### ASM License
++<pre>
++
++Copyright (c) 2000-2011 France Télécom
++All rights reserved.
++
++Redistribution and use in source and binary forms, with or without
++modification, are permitted provided that the following conditions
++are met:
++
++1. Redistributions of source code must retain the above copyright
++   notice, this list of conditions and the following disclaimer.
++
++2. Redistributions in binary form must reproduce the above copyright
++   notice, this list of conditions and the following disclaimer in the
++   documentation and/or other materials provided with the distribution.
++
++3. Neither the name of the copyright holders nor the names of its
++   contributors may be used to endorse or promote products derived from
++   this software without specific prior written permission.
++
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
++AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
++IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
++ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
++LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
++CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
++SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
++INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
++CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
++ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
++THE POSSIBILITY OF SUCH DAMAGE.
++
++</pre>
+--- a/소스/licenses/Temurin17/legal/java.base/ASSEMBLY_EXCEPTION
++++ b/소스/licenses/Temurin17/legal/java.base/ASSEMBLY_EXCEPTION
+@@ -1,27 +1,27 @@
+-
+-OPENJDK ASSEMBLY EXCEPTION
+-
+-The OpenJDK source code made available by Oracle America, Inc. (Oracle) at
+-openjdk.java.net ("OpenJDK Code") is distributed under the terms of the GNU
+-General Public License <http://www.gnu.org/copyleft/gpl.html> version 2
+-only ("GPL2"), with the following clarification and special exception.
+-
+-    Linking this OpenJDK Code statically or dynamically with other code
+-    is making a combined work based on this library.  Thus, the terms
+-    and conditions of GPL2 cover the whole combination.
+-
+-    As a special exception, Oracle gives you permission to link this
+-    OpenJDK Code with certain code licensed by Oracle as indicated at
+-    http://openjdk.java.net/legal/exception-modules-2007-05-08.html
+-    ("Designated Exception Modules") to produce an executable,
+-    regardless of the license terms of the Designated Exception Modules,
+-    and to copy and distribute the resulting executable under GPL2,
+-    provided that the Designated Exception Modules continue to be
+-    governed by the licenses under which they were offered by Oracle.
+-
+-As such, it allows licensees and sublicensees of Oracle's GPL2 OpenJDK Code
+-to build an executable that includes those portions of necessary code that
+-Oracle could not provide under GPL2 (or that Oracle has provided under GPL2
+-with the Classpath exception).  If you modify or add to the OpenJDK code,
+-that new GPL2 code may still be combined with Designated Exception Modules
+-if the new code is made subject to this exception by its copyright holder.
++
++OPENJDK ASSEMBLY EXCEPTION
++
++The OpenJDK source code made available by Oracle America, Inc. (Oracle) at
++openjdk.java.net ("OpenJDK Code") is distributed under the terms of the GNU
++General Public License <http://www.gnu.org/copyleft/gpl.html> version 2
++only ("GPL2"), with the following clarification and special exception.
++
++    Linking this OpenJDK Code statically or dynamically with other code
++    is making a combined work based on this library.  Thus, the terms
++    and conditions of GPL2 cover the whole combination.
++
++    As a special exception, Oracle gives you permission to link this
++    OpenJDK Code with certain code licensed by Oracle as indicated at
++    http://openjdk.java.net/legal/exception-modules-2007-05-08.html
++    ("Designated Exception Modules") to produce an executable,
++    regardless of the license terms of the Designated Exception Modules,
++    and to copy and distribute the resulting executable under GPL2,
++    provided that the Designated Exception Modules continue to be
++    governed by the licenses under which they were offered by Oracle.
++
++As such, it allows licensees and sublicensees of Oracle's GPL2 OpenJDK Code
++to build an executable that includes those portions of necessary code that
++Oracle could not provide under GPL2 (or that Oracle has provided under GPL2
++with the Classpath exception).  If you modify or add to the OpenJDK code,
++that new GPL2 code may still be combined with Designated Exception Modules
++if the new code is made subject to this exception by its copyright holder.
+--- a/소스/licenses/Temurin17/legal/java.base/c-libutl.md
++++ b/소스/licenses/Temurin17/legal/java.base/c-libutl.md
+@@ -1,35 +1,35 @@
+-## c-libutl 20160225
+-
+-### c-libutl License
+-```
+-
+-This software is distributed under the terms of the BSD license.
+-
+-==  BSD LICENSE  ===============================================================
+-
+- (C) 2009 by Remo Dentato (rdentato@gmail.com)
+-
+-
+-Redistribution and use in source and binary forms, with or without modification,
+-are permitted provided that the following conditions are met:
+-
+-    * Redistributions of source code must retain the above copyright notice,
+-      this list of conditions and the following disclaimer.
+-    * Redistributions in binary form must reproduce the above copyright notice,
+-      this list of conditions and the following disclaimer in the documentation
+-      and/or other materials provided with the distribution.
+-
+-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-
+-http://opensource.org/licenses/bsd-license.php
+-
+-```
++## c-libutl 20160225
++
++### c-libutl License
++```
++
++This software is distributed under the terms of the BSD license.
++
++==  BSD LICENSE  ===============================================================
++
++ (C) 2009 by Remo Dentato (rdentato@gmail.com)
++
++
++Redistribution and use in source and binary forms, with or without modification,
++are permitted provided that the following conditions are met:
++
++    * Redistributions of source code must retain the above copyright notice,
++      this list of conditions and the following disclaimer.
++    * Redistributions in binary form must reproduce the above copyright notice,
++      this list of conditions and the following disclaimer in the documentation
++      and/or other materials provided with the distribution.
++
++THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
++ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
++WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
++ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
++(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
++LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
++SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++
++http://opensource.org/licenses/bsd-license.php
++
++```
+--- a/소스/licenses/Temurin17/legal/java.base/cldr.md
++++ b/소스/licenses/Temurin17/legal/java.base/cldr.md
+@@ -1,105 +1,105 @@
+-## Unicode Common Local Data Repository (CLDR) v39
+-
+-### CLDR License
+-
+-```
+-
+-UNICODE, INC. LICENSE AGREEMENT - DATA FILES AND SOFTWARE
+-
+-See Terms of Use for definitions of Unicode Inc.'s
+-Data Files and Software.
+-
+-NOTICE TO USER: Carefully read the following legal agreement.
+-BY DOWNLOADING, INSTALLING, COPYING OR OTHERWISE USING UNICODE INC.'S
+-DATA FILES ("DATA FILES"), AND/OR SOFTWARE ("SOFTWARE"),
+-YOU UNEQUIVOCALLY ACCEPT, AND AGREE TO BE BOUND BY, ALL OF THE
+-TERMS AND CONDITIONS OF THIS AGREEMENT.
+-IF YOU DO NOT AGREE, DO NOT DOWNLOAD, INSTALL, COPY, DISTRIBUTE OR USE
+-THE DATA FILES OR SOFTWARE.
+-
+-COPYRIGHT AND PERMISSION NOTICE
+-
+-Copyright © 1991-2021 Unicode, Inc. All rights reserved.
+-Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
+-
+-Permission is hereby granted, free of charge, to any person obtaining
+-a copy of the Unicode data files and any associated documentation
+-(the "Data Files") or Unicode software and any associated documentation
+-(the "Software") to deal in the Data Files or Software
+-without restriction, including without limitation the rights to use,
+-copy, modify, merge, publish, distribute, and/or sell copies of
+-the Data Files or Software, and to permit persons to whom the Data Files
+-or Software are furnished to do so, provided that either
+-(a) this copyright and permission notice appear with all copies
+-of the Data Files or Software, or
+-(b) this copyright and permission notice appear in associated
+-Documentation.
+-
+-THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
+-ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+-WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+-NONINFRINGEMENT OF THIRD PARTY RIGHTS.
+-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS
+-NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL
+-DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
+-DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+-TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+-PERFORMANCE OF THE DATA FILES OR SOFTWARE.
+-
+-Except as contained in this notice, the name of a copyright holder
+-shall not be used in advertising or otherwise to promote the sale,
+-use or other dealings in these Data Files or Software without prior
+-written authorization of the copyright holder.
+-
+-
+------------------------------------------------------------- Terms of Use ---------------------------------------------------------------
+-
+-Unicode® Copyright and Terms of Use
+-For the general privacy policy governing access to this site, see the  Unicode Privacy Policy.
+-
+-Unicode Copyright
+-Copyright © 1991-2021 Unicode, Inc. All rights reserved.
+-Definitions
+-Unicode Data Files ("DATA FILES") include all data files under the directories:
+-https://www.unicode.org/Public/
+-https://www.unicode.org/reports/
+-https://www.unicode.org/ivd/data/
+-
+-Unicode Data Files do not include PDF online code charts under the directory:
+-https://www.unicode.org/Public/
+-
+-Unicode Software ("SOFTWARE") includes any source code published in the Unicode Standard
+-or any source code or compiled code under the directories:
+-https://www.unicode.org/Public/PROGRAMS/
+-https://www.unicode.org/Public/cldr/
+-http://site.icu-project.org/download/
+-Terms of Use
+-Certain documents and files on this website contain a legend indicating that "Modification is permitted." Any person is hereby authorized, without fee, to modify such documents and files to create derivative works conforming to the Unicode® Standard, subject to Terms and Conditions herein.
+-Any person is hereby authorized, without fee, to view, use, reproduce, and distribute all documents and files, subject to the Terms and Conditions herein.
+-Further specifications of rights and restrictions pertaining to the use of the Unicode DATA FILES and SOFTWARE can be found in the Unicode Data Files and Software License.
+-Each version of the Unicode Standard has further specifications of rights and restrictions of use. For the book editions (Unicode 5.0 and earlier), these are found on the back of the title page.
+-The Unicode PDF online code charts carry specific restrictions. Those restrictions are incorporated as the first page of each PDF code chart.
+-All other files, including online documentation of the core specification for Unicode 6.0 and later, are covered under these general Terms of Use.
+-No license is granted to "mirror" the Unicode website where a fee is charged for access to the "mirror" site.
+-Modification is not permitted with respect to this document. All copies of this document must be verbatim.
+-Restricted Rights Legend
+-Any technical data or software which is licensed to the United States of America, its agencies and/or instrumentalities under this Agreement is commercial technical data or commercial computer software developed exclusively at private expense as defined in FAR 2.101, or DFARS 252.227-7014 (June 1995), as applicable. For technical data, use, duplication, or disclosure by the Government is subject to restrictions as set forth in DFARS 202.227-7015 Technical Data, Commercial and Items (Nov 1995) and this Agreement. For Software, in accordance with FAR 12-212 or DFARS 227-7202, as applicable, use, duplication or disclosure by the Government is subject to the restrictions set forth in this Agreement.
+-Warranties and Disclaimers
+-This publication and/or website may include technical or typographical errors or other inaccuracies. Changes are periodically added to the information herein; these changes will be incorporated in new editions of the publication and/or website. Unicode, Inc. may make improvements and/or changes in the product(s) and/or program(s) described in this publication and/or website at any time.
+-If this file has been purchased on magnetic or optical media from Unicode, Inc. the sole and exclusive remedy for any claim will be exchange of the defective media within ninety (90) days of original purchase.
+-EXCEPT AS PROVIDED IN SECTION E.2, THIS PUBLICATION AND/OR SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND EITHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. UNICODE, INC. AND ITS LICENSORS ASSUME NO RESPONSIBILITY FOR ERRORS OR OMISSIONS IN THIS PUBLICATION AND/OR SOFTWARE OR OTHER DOCUMENTS WHICH ARE REFERENCED BY OR LINKED TO THIS PUBLICATION OR THE UNICODE WEBSITE.
+-Waiver of Damages
+-In no event shall Unicode, Inc. or its licensors be liable for any special, incidental, indirect or consequential damages of any kind, or any damages whatsoever, whether or not Unicode, Inc. was advised of the possibility of the damage, including, without limitation, those resulting from the following: loss of use, data or profits, in connection with the use, modification or distribution of this information or its derivatives.
+-Trademarks & Logos
+-The Unicode Word Mark and the Unicode Logo are trademarks of Unicode, Inc. “The Unicode Consortium” and “Unicode, Inc.” are trade names of Unicode, Inc. Use of the information and materials found on this website indicates your acknowledgement of Unicode, Inc.’s exclusive worldwide rights in the Unicode Word Mark, the Unicode Logo, and the Unicode trade names.
+-The Unicode Consortium Name and Trademark Usage Policy (“Trademark Policy”) are incorporated herein by reference and you agree to abide by the provisions of the Trademark Policy, which may be changed from time to time in the sole discretion of Unicode, Inc.
+-All third party trademarks referenced herein are the property of their respective owners.
+-Miscellaneous
+-Jurisdiction and Venue. This website is operated from a location in the State of California, United States of America. Unicode, Inc. makes no representation that the materials are appropriate for use in other locations. If you access this website from other locations, you are responsible for compliance with local laws. This Agreement, all use of this website and any claims and damages resulting from use of this website are governed solely by the laws of the State of California without regard to any principles which would apply the laws of a different jurisdiction. The user agrees that any disputes regarding this website shall be resolved solely in the courts located in Santa Clara County, California. The user agrees said courts have personal jurisdiction and agree to waive any right to transfer the dispute to any other forum.
+-Modification by Unicode, Inc. Unicode, Inc. shall have the right to modify this Agreement at any time by posting it to this website. The user may not assign any part of this Agreement without Unicode, Inc.’s prior written consent.
+-Taxes. The user agrees to pay any taxes arising from access to this website or use of the information herein, except for those based on Unicode’s net income.
+-Severability.  If any provision of this Agreement is declared invalid or unenforceable, the remaining provisions of this Agreement shall remain in effect.
+-Entire Agreement. This Agreement constitutes the entire agreement between the parties.
+-
+-
+-```
++## Unicode Common Local Data Repository (CLDR) v39
++
++### CLDR License
++
++```
++
++UNICODE, INC. LICENSE AGREEMENT - DATA FILES AND SOFTWARE
++
++See Terms of Use for definitions of Unicode Inc.'s
++Data Files and Software.
++
++NOTICE TO USER: Carefully read the following legal agreement.
++BY DOWNLOADING, INSTALLING, COPYING OR OTHERWISE USING UNICODE INC.'S
++DATA FILES ("DATA FILES"), AND/OR SOFTWARE ("SOFTWARE"),
++YOU UNEQUIVOCALLY ACCEPT, AND AGREE TO BE BOUND BY, ALL OF THE
++TERMS AND CONDITIONS OF THIS AGREEMENT.
++IF YOU DO NOT AGREE, DO NOT DOWNLOAD, INSTALL, COPY, DISTRIBUTE OR USE
++THE DATA FILES OR SOFTWARE.
++
++COPYRIGHT AND PERMISSION NOTICE
++
++Copyright © 1991-2021 Unicode, Inc. All rights reserved.
++Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
++
++Permission is hereby granted, free of charge, to any person obtaining
++a copy of the Unicode data files and any associated documentation
++(the "Data Files") or Unicode software and any associated documentation
++(the "Software") to deal in the Data Files or Software
++without restriction, including without limitation the rights to use,
++copy, modify, merge, publish, distribute, and/or sell copies of
++the Data Files or Software, and to permit persons to whom the Data Files
++or Software are furnished to do so, provided that either
++(a) this copyright and permission notice appear with all copies
++of the Data Files or Software, or
++(b) this copyright and permission notice appear in associated
++Documentation.
++
++THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
++ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
++WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++NONINFRINGEMENT OF THIRD PARTY RIGHTS.
++IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS
++NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL
++DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
++DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
++TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
++PERFORMANCE OF THE DATA FILES OR SOFTWARE.
++
++Except as contained in this notice, the name of a copyright holder
++shall not be used in advertising or otherwise to promote the sale,
++use or other dealings in these Data Files or Software without prior
++written authorization of the copyright holder.
++
++
++------------------------------------------------------------ Terms of Use ---------------------------------------------------------------
++
++Unicode® Copyright and Terms of Use
++For the general privacy policy governing access to this site, see the  Unicode Privacy Policy.
++
++Unicode Copyright
++Copyright © 1991-2021 Unicode, Inc. All rights reserved.
++Definitions
++Unicode Data Files ("DATA FILES") include all data files under the directories:
++https://www.unicode.org/Public/
++https://www.unicode.org/reports/
++https://www.unicode.org/ivd/data/
++
++Unicode Data Files do not include PDF online code charts under the directory:
++https://www.unicode.org/Public/
++
++Unicode Software ("SOFTWARE") includes any source code published in the Unicode Standard
++or any source code or compiled code under the directories:
++https://www.unicode.org/Public/PROGRAMS/
++https://www.unicode.org/Public/cldr/
++http://site.icu-project.org/download/
++Terms of Use
++Certain documents and files on this website contain a legend indicating that "Modification is permitted." Any person is hereby authorized, without fee, to modify such documents and files to create derivative works conforming to the Unicode® Standard, subject to Terms and Conditions herein.
++Any person is hereby authorized, without fee, to view, use, reproduce, and distribute all documents and files, subject to the Terms and Conditions herein.
++Further specifications of rights and restrictions pertaining to the use of the Unicode DATA FILES and SOFTWARE can be found in the Unicode Data Files and Software License.
++Each version of the Unicode Standard has further specifications of rights and restrictions of use. For the book editions (Unicode 5.0 and earlier), these are found on the back of the title page.
++The Unicode PDF online code charts carry specific restrictions. Those restrictions are incorporated as the first page of each PDF code chart.
++All other files, including online documentation of the core specification for Unicode 6.0 and later, are covered under these general Terms of Use.
++No license is granted to "mirror" the Unicode website where a fee is charged for access to the "mirror" site.
++Modification is not permitted with respect to this document. All copies of this document must be verbatim.
++Restricted Rights Legend
++Any technical data or software which is licensed to the United States of America, its agencies and/or instrumentalities under this Agreement is commercial technical data or commercial computer software developed exclusively at private expense as defined in FAR 2.101, or DFARS 252.227-7014 (June 1995), as applicable. For technical data, use, duplication, or disclosure by the Government is subject to restrictions as set forth in DFARS 202.227-7015 Technical Data, Commercial and Items (Nov 1995) and this Agreement. For Software, in accordance with FAR 12-212 or DFARS 227-7202, as applicable, use, duplication or disclosure by the Government is subject to the restrictions set forth in this Agreement.
++Warranties and Disclaimers
++This publication and/or website may include technical or typographical errors or other inaccuracies. Changes are periodically added to the information herein; these changes will be incorporated in new editions of the publication and/or website. Unicode, Inc. may make improvements and/or changes in the product(s) and/or program(s) described in this publication and/or website at any time.
++If this file has been purchased on magnetic or optical media from Unicode, Inc. the sole and exclusive remedy for any claim will be exchange of the defective media within ninety (90) days of original purchase.
++EXCEPT AS PROVIDED IN SECTION E.2, THIS PUBLICATION AND/OR SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND EITHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. UNICODE, INC. AND ITS LICENSORS ASSUME NO RESPONSIBILITY FOR ERRORS OR OMISSIONS IN THIS PUBLICATION AND/OR SOFTWARE OR OTHER DOCUMENTS WHICH ARE REFERENCED BY OR LINKED TO THIS PUBLICATION OR THE UNICODE WEBSITE.
++Waiver of Damages
++In no event shall Unicode, Inc. or its licensors be liable for any special, incidental, indirect or consequential damages of any kind, or any damages whatsoever, whether or not Unicode, Inc. was advised of the possibility of the damage, including, without limitation, those resulting from the following: loss of use, data or profits, in connection with the use, modification or distribution of this information or its derivatives.
++Trademarks & Logos
++The Unicode Word Mark and the Unicode Logo are trademarks of Unicode, Inc. “The Unicode Consortium” and “Unicode, Inc.” are trade names of Unicode, Inc. Use of the information and materials found on this website indicates your acknowledgement of Unicode, Inc.’s exclusive worldwide rights in the Unicode Word Mark, the Unicode Logo, and the Unicode trade names.
++The Unicode Consortium Name and Trademark Usage Policy (“Trademark Policy”) are incorporated herein by reference and you agree to abide by the provisions of the Trademark Policy, which may be changed from time to time in the sole discretion of Unicode, Inc.
++All third party trademarks referenced herein are the property of their respective owners.
++Miscellaneous
++Jurisdiction and Venue. This website is operated from a location in the State of California, United States of America. Unicode, Inc. makes no representation that the materials are appropriate for use in other locations. If you access this website from other locations, you are responsible for compliance with local laws. This Agreement, all use of this website and any claims and damages resulting from use of this website are governed solely by the laws of the State of California without regard to any principles which would apply the laws of a different jurisdiction. The user agrees that any disputes regarding this website shall be resolved solely in the courts located in Santa Clara County, California. The user agrees said courts have personal jurisdiction and agree to waive any right to transfer the dispute to any other forum.
++Modification by Unicode, Inc. Unicode, Inc. shall have the right to modify this Agreement at any time by posting it to this website. The user may not assign any part of this Agreement without Unicode, Inc.’s prior written consent.
++Taxes. The user agrees to pay any taxes arising from access to this website or use of the information herein, except for those based on Unicode’s net income.
++Severability.  If any provision of this Agreement is declared invalid or unenforceable, the remaining provisions of this Agreement shall remain in effect.
++Entire Agreement. This Agreement constitutes the entire agreement between the parties.
++
++
++```
+--- a/소스/licenses/Temurin17/legal/java.base/icu.md
++++ b/소스/licenses/Temurin17/legal/java.base/icu.md
+@@ -1,140 +1,140 @@
+-## International Components for Unicode (ICU4J) v67.1
+-
+-### ICU4J License
+-```
+-
+-COPYRIGHT AND PERMISSION NOTICE (ICU 58 and later)
+-
+-Copyright © 1991-2020 Unicode, Inc. All rights reserved.
+-Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
+-
+-Permission is hereby granted, free of charge, to any person obtaining
+-a copy of the Unicode data files and any associated documentation
+-(the "Data Files") or Unicode software and any associated documentation
+-(the "Software") to deal in the Data Files or Software
+-without restriction, including without limitation the rights to use,
+-copy, modify, merge, publish, distribute, and/or sell copies of
+-the Data Files or Software, and to permit persons to whom the Data Files
+-or Software are furnished to do so, provided that either
+-(a) this copyright and permission notice appear with all copies
+-of the Data Files or Software, or
+-(b) this copyright and permission notice appear in associated
+-Documentation.
+-
+-THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
+-ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+-WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+-NONINFRINGEMENT OF THIRD PARTY RIGHTS.
+-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS
+-NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL
+-DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
+-DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+-TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+-PERFORMANCE OF THE DATA FILES OR SOFTWARE.
+-
+-Except as contained in this notice, the name of a copyright holder
+-shall not be used in advertising or otherwise to promote the sale,
+-use or other dealings in these Data Files or Software without prior
+-written authorization of the copyright holder.
+-
+----------------------
+-
+-Third-Party Software Licenses
+-
+-This section contains third-party software notices and/or additional
+-terms for licensed third-party software components included within ICU
+-libraries.
+-
+-1. ICU License - ICU 1.8.1 to ICU 57.1
+-
+-COPYRIGHT AND PERMISSION NOTICE
+-
+-Copyright (c) 1995-2016 International Business Machines Corporation and others
+-All rights reserved.
+-
+-Permission is hereby granted, free of charge, to any person obtaining
+-a copy of this software and associated documentation files (the
+-"Software"), to deal in the Software without restriction, including
+-without limitation the rights to use, copy, modify, merge, publish,
+-distribute, and/or sell copies of the Software, and to permit persons
+-to whom the Software is furnished to do so, provided that the above
+-copyright notice(s) and this permission notice appear in all copies of
+-the Software and that both the above copyright notice(s) and this
+-permission notice appear in supporting documentation.
+-
+-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+-OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+-HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY
+-SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER
+-RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
+-CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+-CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+-
+-Except as contained in this notice, the name of a copyright holder
+-shall not be used in advertising or otherwise to promote the sale, use
+-or other dealings in this Software without prior written authorization
+-of the copyright holder.
+-
+-All trademarks and registered trademarks mentioned herein are the
+-property of their respective owners.
+-
+-
+-——————————————————————————————————————————————————————————————————————
+-
+-
+-From: https://www.unicode.org/copyright.html:
+-
+-    Unicode® Copyright and Terms of Use
+-
+-    For the general privacy policy governing access to this site, see the  Unicode Privacy Policy.
+-
+-        Unicode Copyright
+-            Copyright © 1991-2020 Unicode, Inc. All rights reserved.
+-        Definitions
+-
+-        Unicode Data Files ("DATA FILES") include all data files under the directories:
+-        https://www.unicode.org/Public/
+-        https://www.unicode.org/reports/
+-        https://www.unicode.org/ivd/data/
+-
+-        Unicode Data Files do not include PDF online code charts under the directory:
+-        https://www.unicode.org/Public/
+-
+-        Unicode Software ("SOFTWARE") includes any source code published in the Unicode Standard
+-        or any source code or compiled code under the directories:
+-        https://www.unicode.org/Public/PROGRAMS/
+-        https://www.unicode.org/Public/cldr/
+-        http://site.icu-project.org/download/
+-
+-        Terms of Use
+-            Certain documents and files on this website contain a legend indicating that "Modification is permitted." Any person is hereby authorized, without fee, to modify such documents and files to create derivative works conforming to the Unicode® Standard, subject to Terms and Conditions herein.
+-            Any person is hereby authorized, without fee, to view, use, reproduce, and distribute all documents and files, subject to the Terms and Conditions herein.
+-            Further specifications of rights and restrictions pertaining to the use of the Unicode DATA FILES and SOFTWARE can be found in the Unicode Data Files and Software License.
+-            Each version of the Unicode Standard has further specifications of rights and restrictions of use. For the book editions (Unicode 5.0 and earlier), these are found on the back of the title page.
+-            The Unicode PDF online code charts carry specific restrictions. Those restrictions are incorporated as the first page of each PDF code chart.
+-            All other files, including online documentation of the core specification for Unicode 6.0 and later, are covered under these general Terms of Use.
+-            No license is granted to "mirror" the Unicode website where a fee is charged for access to the "mirror" site.
+-            Modification is not permitted with respect to this document. All copies of this document must be verbatim.
+-        Restricted Rights Legend
+-            Any technical data or software which is licensed to the United States of America, its agencies and/or instrumentalities under this Agreement is commercial technical data or commercial computer software developed exclusively at private expense as defined in FAR 2.101, or DFARS 252.227-7014 (June 1995), as applicable. For technical data, use, duplication, or disclosure by the Government is subject to restrictions as set forth in DFARS 202.227-7015 Technical Data, Commercial and Items (Nov 1995) and this Agreement. For Software, in accordance with FAR 12-212 or DFARS 227-7202, as applicable, use, duplication or disclosure by the Government is subject to the restrictions set forth in this Agreement.
+-        Warranties and Disclaimers
+-            This publication and/or website may include technical or typographical errors or other inaccuracies. Changes are periodically added to the information herein; these changes will be incorporated in new editions of the publication and/or website. Unicode, Inc. may make improvements and/or changes in the product(s) and/or program(s) described in this publication and/or website at any time.
+-            If this file has been purchased on magnetic or optical media from Unicode, Inc. the sole and exclusive remedy for any claim will be exchange of the defective media within ninety (90) days of original purchase.
+-            EXCEPT AS PROVIDED IN SECTION E.2, THIS PUBLICATION AND/OR SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND EITHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. UNICODE, INC. AND ITS LICENSORS ASSUME NO RESPONSIBILITY FOR ERRORS OR OMISSIONS IN THIS PUBLICATION AND/OR SOFTWARE OR OTHER DOCUMENTS WHICH ARE REFERENCED BY OR LINKED TO THIS PUBLICATION OR THE UNICODE WEBSITE.
+-        Waiver of Damages
+-            In no event shall Unicode, Inc. or its licensors be liable for any special, incidental, indirect or consequential damages of any kind, or any damages whatsoever, whether or not Unicode, Inc. was advised of the possibility of the damage, including, without limitation, those resulting from the following: loss of use, data or profits, in connection with the use, modification or distribution of this information or its derivatives.
+-        Trademarks & Logos
+-            The Unicode Word Mark and the Unicode Logo are trademarks of Unicode, Inc. “The Unicode Consortium” and “Unicode, Inc.” are trade names of Unicode, Inc. Use of the information and materials found on this website indicates your acknowledgement of Unicode, Inc.’s exclusive worldwide rights in the Unicode Word Mark, the Unicode Logo, and the Unicode trade names.
+-            The Unicode Consortium Name and Trademark Usage Policy (“Trademark Policy”) are incorporated herein by reference and you agree to abide by the provisions of the Trademark Policy, which may be changed from time to time in the sole discretion of Unicode, Inc.
+-            All third party trademarks referenced herein are the property of their respective owners.
+-        Miscellaneous
+-            Jurisdiction and Venue. This website is operated from a location in the State of California, United States of America. Unicode, Inc. makes no representation that the materials are appropriate for use in other locations. If you access this website from other locations, you are responsible for compliance with local laws. This Agreement, all use of this website and any claims and damages resulting from use of this website are governed solely by the laws of the State of California without regard to any principles which would apply the laws of a different jurisdiction. The user agrees that any disputes regarding this website shall be resolved solely in the courts located in Santa Clara County, California. The user agrees said courts have personal jurisdiction and agree to waive any right to transfer the dispute to any other forum.
+-            Modification by Unicode, Inc. Unicode, Inc. shall have the right to modify this Agreement at any time by posting it to this website. The user may not assign any part of this Agreement without Unicode, Inc.’s prior written consent.
+-            Taxes. The user agrees to pay any taxes arising from access to this website or use of the information herein, except for those based on Unicode’s net income.
+-            Severability.  If any provision of this Agreement is declared invalid or unenforceable, the remaining provisions of this Agreement shall remain in effect.
+-            Entire Agreement. This Agreement constitutes the entire agreement between the parties. 
+-
+-```
+-
++## International Components for Unicode (ICU4J) v67.1
++
++### ICU4J License
++```
++
++COPYRIGHT AND PERMISSION NOTICE (ICU 58 and later)
++
++Copyright © 1991-2020 Unicode, Inc. All rights reserved.
++Distributed under the Terms of Use in https://www.unicode.org/copyright.html.
++
++Permission is hereby granted, free of charge, to any person obtaining
++a copy of the Unicode data files and any associated documentation
++(the "Data Files") or Unicode software and any associated documentation
++(the "Software") to deal in the Data Files or Software
++without restriction, including without limitation the rights to use,
++copy, modify, merge, publish, distribute, and/or sell copies of
++the Data Files or Software, and to permit persons to whom the Data Files
++or Software are furnished to do so, provided that either
++(a) this copyright and permission notice appear with all copies
++of the Data Files or Software, or
++(b) this copyright and permission notice appear in associated
++Documentation.
++
++THE DATA FILES AND SOFTWARE ARE PROVIDED "AS IS", WITHOUT WARRANTY OF
++ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
++WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++NONINFRINGEMENT OF THIRD PARTY RIGHTS.
++IN NO EVENT SHALL THE COPYRIGHT HOLDER OR HOLDERS INCLUDED IN THIS
++NOTICE BE LIABLE FOR ANY CLAIM, OR ANY SPECIAL INDIRECT OR CONSEQUENTIAL
++DAMAGES, OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
++DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
++TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
++PERFORMANCE OF THE DATA FILES OR SOFTWARE.
++
++Except as contained in this notice, the name of a copyright holder
++shall not be used in advertising or otherwise to promote the sale,
++use or other dealings in these Data Files or Software without prior
++written authorization of the copyright holder.
++
++---------------------
++
++Third-Party Software Licenses
++
++This section contains third-party software notices and/or additional
++terms for licensed third-party software components included within ICU
++libraries.
++
++1. ICU License - ICU 1.8.1 to ICU 57.1
++
++COPYRIGHT AND PERMISSION NOTICE
++
++Copyright (c) 1995-2016 International Business Machines Corporation and others
++All rights reserved.
++
++Permission is hereby granted, free of charge, to any person obtaining
++a copy of this software and associated documentation files (the
++"Software"), to deal in the Software without restriction, including
++without limitation the rights to use, copy, modify, merge, publish,
++distribute, and/or sell copies of the Software, and to permit persons
++to whom the Software is furnished to do so, provided that the above
++copyright notice(s) and this permission notice appear in all copies of
++the Software and that both the above copyright notice(s) and this
++permission notice appear in supporting documentation.
++
++THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
++OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
++HOLDERS INCLUDED IN THIS NOTICE BE LIABLE FOR ANY CLAIM, OR ANY
++SPECIAL INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY DAMAGES WHATSOEVER
++RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF
++CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
++CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++
++Except as contained in this notice, the name of a copyright holder
++shall not be used in advertising or otherwise to promote the sale, use
++or other dealings in this Software without prior written authorization
++of the copyright holder.
++
++All trademarks and registered trademarks mentioned herein are the
++property of their respective owners.
++
++
++——————————————————————————————————————————————————————————————————————
++
++
++From: https://www.unicode.org/copyright.html:
++
++    Unicode® Copyright and Terms of Use
++
++    For the general privacy policy governing access to this site, see the  Unicode Privacy Policy.
++
++        Unicode Copyright
++            Copyright © 1991-2020 Unicode, Inc. All rights reserved.
++        Definitions
++
++        Unicode Data Files ("DATA FILES") include all data files under the directories:
++        https://www.unicode.org/Public/
++        https://www.unicode.org/reports/
++        https://www.unicode.org/ivd/data/
++
++        Unicode Data Files do not include PDF online code charts under the directory:
++        https://www.unicode.org/Public/
++
++        Unicode Software ("SOFTWARE") includes any source code published in the Unicode Standard
++        or any source code or compiled code under the directories:
++        https://www.unicode.org/Public/PROGRAMS/
++        https://www.unicode.org/Public/cldr/
++        http://site.icu-project.org/download/
++
++        Terms of Use
++            Certain documents and files on this website contain a legend indicating that "Modification is permitted." Any person is hereby authorized, without fee, to modify such documents and files to create derivative works conforming to the Unicode® Standard, subject to Terms and Conditions herein.
++            Any person is hereby authorized, without fee, to view, use, reproduce, and distribute all documents and files, subject to the Terms and Conditions herein.
++            Further specifications of rights and restrictions pertaining to the use of the Unicode DATA FILES and SOFTWARE can be found in the Unicode Data Files and Software License.
++            Each version of the Unicode Standard has further specifications of rights and restrictions of use. For the book editions (Unicode 5.0 and earlier), these are found on the back of the title page.
++            The Unicode PDF online code charts carry specific restrictions. Those restrictions are incorporated as the first page of each PDF code chart.
++            All other files, including online documentation of the core specification for Unicode 6.0 and later, are covered under these general Terms of Use.
++            No license is granted to "mirror" the Unicode website where a fee is charged for access to the "mirror" site.
++            Modification is not permitted with respect to this document. All copies of this document must be verbatim.
++        Restricted Rights Legend
++            Any technical data or software which is licensed to the United States of America, its agencies and/or instrumentalities under this Agreement is commercial technical data or commercial computer software developed exclusively at private expense as defined in FAR 2.101, or DFARS 252.227-7014 (June 1995), as applicable. For technical data, use, duplication, or disclosure by the Government is subject to restrictions as set forth in DFARS 202.227-7015 Technical Data, Commercial and Items (Nov 1995) and this Agreement. For Software, in accordance with FAR 12-212 or DFARS 227-7202, as applicable, use, duplication or disclosure by the Government is subject to the restrictions set forth in this Agreement.
++        Warranties and Disclaimers
++            This publication and/or website may include technical or typographical errors or other inaccuracies. Changes are periodically added to the information herein; these changes will be incorporated in new editions of the publication and/or website. Unicode, Inc. may make improvements and/or changes in the product(s) and/or program(s) described in this publication and/or website at any time.
++            If this file has been purchased on magnetic or optical media from Unicode, Inc. the sole and exclusive remedy for any claim will be exchange of the defective media within ninety (90) days of original purchase.
++            EXCEPT AS PROVIDED IN SECTION E.2, THIS PUBLICATION AND/OR SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND EITHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT. UNICODE, INC. AND ITS LICENSORS ASSUME NO RESPONSIBILITY FOR ERRORS OR OMISSIONS IN THIS PUBLICATION AND/OR SOFTWARE OR OTHER DOCUMENTS WHICH ARE REFERENCED BY OR LINKED TO THIS PUBLICATION OR THE UNICODE WEBSITE.
++        Waiver of Damages
++            In no event shall Unicode, Inc. or its licensors be liable for any special, incidental, indirect or consequential damages of any kind, or any damages whatsoever, whether or not Unicode, Inc. was advised of the possibility of the damage, including, without limitation, those resulting from the following: loss of use, data or profits, in connection with the use, modification or distribution of this information or its derivatives.
++        Trademarks & Logos
++            The Unicode Word Mark and the Unicode Logo are trademarks of Unicode, Inc. “The Unicode Consortium” and “Unicode, Inc.” are trade names of Unicode, Inc. Use of the information and materials found on this website indicates your acknowledgement of Unicode, Inc.’s exclusive worldwide rights in the Unicode Word Mark, the Unicode Logo, and the Unicode trade names.
++            The Unicode Consortium Name and Trademark Usage Policy (“Trademark Policy”) are incorporated herein by reference and you agree to abide by the provisions of the Trademark Policy, which may be changed from time to time in the sole discretion of Unicode, Inc.
++            All third party trademarks referenced herein are the property of their respective owners.
++        Miscellaneous
++            Jurisdiction and Venue. This website is operated from a location in the State of California, United States of America. Unicode, Inc. makes no representation that the materials are appropriate for use in other locations. If you access this website from other locations, you are responsible for compliance with local laws. This Agreement, all use of this website and any claims and damages resulting from use of this website are governed solely by the laws of the State of California without regard to any principles which would apply the laws of a different jurisdiction. The user agrees that any disputes regarding this website shall be resolved solely in the courts located in Santa Clara County, California. The user agrees said courts have personal jurisdiction and agree to waive any right to transfer the dispute to any other forum.
++            Modification by Unicode, Inc. Unicode, Inc. shall have the right to modify this Agreement at any time by posting it to this website. The user may not assign any part of this Agreement without Unicode, Inc.’s prior written consent.
++            Taxes. The user agrees to pay any taxes arising from access to this website or use of the information herein, except for those based on Unicode’s net income.
++            Severability.  If any provision of this Agreement is declared invalid or unenforceable, the remaining provisions of this Agreement shall remain in effect.
++            Entire Agreement. This Agreement constitutes the entire agreement between the parties. 
++
++```
++

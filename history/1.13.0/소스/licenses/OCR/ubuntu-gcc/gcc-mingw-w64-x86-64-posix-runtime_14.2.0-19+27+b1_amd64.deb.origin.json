@@ -1,0 +1,18 @@
+{
+  "korean_time": "2026-10-21T01:41:37.051019+09:00",
+  "argv": [
+    "소스/licenses/OCR/ubuntu-gcc/download_one.py",
+    "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb",
+    "gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb",
+    "c898d96177574a8a7238564a1e799d8ddfed5a3d2ea005510305f9ad466a6f59"
+  ],
+  "url": "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb",
+  "destination": "소스/licenses/OCR/ubuntu-gcc/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb",
+  "final_url": "https://deb.debian.org/debian/pool/main/g/gcc-mingw-w64/gcc-mingw-w64-x86-64-posix-runtime_14.2.0-19+27+b1_amd64.deb",
+  "content_type": "application/vnd.debian.binary-package",
+  "status": "success",
+  "size": 13037152,
+  "sha256": "c898d96177574a8a7238564a1e799d8ddfed5a3d2ea005510305f9ad466a6f59",
+  "changed": true,
+  "exit_code": 0
+}
