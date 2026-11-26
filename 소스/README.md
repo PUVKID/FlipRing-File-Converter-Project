@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../en/README.md)
+<!-- language-choice:end -->
+
 <!-- user-levels:start -->
 <details>
 <summary>읽기 수준 선택</summary>

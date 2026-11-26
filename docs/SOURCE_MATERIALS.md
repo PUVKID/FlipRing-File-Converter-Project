@@ -1,3 +1,7 @@
+<!-- language-choice:start -->
+🔵 **한국어** · [English overview](../en/README.md)
+<!-- language-choice:end -->
+
 <div align="center">
 
 <a name="️--공개-제품자료와-압축-소스"></a>
