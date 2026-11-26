@@ -22,7 +22,7 @@
   <source media="(max-width: 600px)" srcset="assets/readme/flow-ko-light-mobile.svg" />
   <source media="(prefers-color-scheme: dark)" srcset="assets/readme/flow-ko-dark.svg" />
   <source media="(prefers-color-scheme: light)" srcset="assets/readme/flow-ko-light.svg" />
-  <img src="assets/readme/flow-ko-light.svg" alt="FlipRing Project: 로컬 파일 · PDF → 변환 · 편집 · OCR → 새 파일 · 편집 문서" width="100%" />
+  <img src="assets/readme/flow-ko-light.svg" alt="로컬 파일 · PDF: 이미지·문서·미디어·PDF 선택 → 변환 · 편집 · OCR: 형식 변환·페이지 편집·문자 인식 → 새 파일 · 편집 문서: 새 형식 파일·편집 PDF·인식 문서" width="100%" />
 </picture>
 <!-- readme-header32:end -->
 

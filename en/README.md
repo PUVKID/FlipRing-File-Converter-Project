@@ -21,7 +21,7 @@
   <source media="(max-width: 600px)" srcset="../assets/readme/flow-en-light-mobile.svg" />
   <source media="(prefers-color-scheme: dark)" srcset="../assets/readme/flow-en-dark.svg" />
   <source media="(prefers-color-scheme: light)" srcset="../assets/readme/flow-en-light.svg" />
-  <img src="../assets/readme/flow-en-light.svg" alt="FlipRing Project: Local files · PDFs → Convert · edit · OCR → New files · edited documents" width="100%" />
+  <img src="../assets/readme/flow-en-light.svg" alt="Local files · PDFs: Select images, documents, media or PDFs → Convert · edit · OCR: Convert, edit pages and recognize text → New files · edited documents: Converted files, edited PDFs and OCR" width="100%" />
 </picture>
 <!-- readme-header32:end -->
 
