@@ -470,6 +470,7 @@ Windows 글꼴·운영 체제 API와 선택한 기능의 실행 파일이 필요
 | 1.11.0 | [폴더](history/1.11.0/) | [설명](docs/versions/1.11.0.md)<br>[전체 비교](docs/revision-audit/1.11.0.md) |
 | 1.12.0 | [폴더](history/1.12.0/) | [설명](docs/versions/1.12.0.md)<br>[전체 비교](docs/revision-audit/1.12.0.md) |
 | 1.13.0 | [폴더](history/1.13.0/) | [설명](docs/versions/1.13.0.md)<br>[전체 비교](docs/revision-audit/1.13.0-직전비교.md) |
+| 1.14.0 | [폴더](history/1.14.0/) | [설명](docs/versions/1.14.0.md)<br>[전체 비교](docs/revision-audit/1.14.0.md) |
 | 1.12.1 | [폴더](history/1.12.1/) | [설명](docs/versions/1.12.1.md)<br>[전체 비교](docs/revision-audit/1.12.1.md) |
 | 최종 | [폴더](소스/) | [설명](docs/versions/최종.md)<br>[전체 비교](docs/revision-audit/최종.md) |
 | 현행소스 | 원격 726 기준: [자료 폴더](%EC%86%8C%EC%8A%A4)<br>현재 후보: [폴더](소스/) | 원격 726 기준: [상세 설명](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md)<br>현재 후보: [설명](docs/revision-audit/현행소스.md)<br>원격 726 기준: [전체 비교·범위](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md)<br>현재 후보: [전체 비교](docs/revision-audit/현행소스.md) |
