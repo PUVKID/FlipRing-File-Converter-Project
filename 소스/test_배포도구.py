@@ -24,7 +24,7 @@ class DeliveryBoundaryTests(unittest.TestCase):
             path = self.root / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(value)
-        self.config = {"version": "1.11.0", "required": ["소스/app.py", "소스/licenses/COPYING", "검사도구/check.py"],
+        self.config = {"version": "1.14.0", "required": ["소스/app.py", "소스/licenses/COPYING", "검사도구/check.py"],
                        "excluded_files": {}, "excluded_dirs": {}, "runtime_source_archive_allowlist": [
                            delivery.record(self.root / "소스/licenses/archive.tar.gz", "소스/licenses/archive.tar.gz")]}
         self.prepared = {"schema": 1, "config": self.config, "source_tree": delivery.snapshot(self.root),
@@ -154,6 +154,35 @@ class DeliveryBoundaryTests(unittest.TestCase):
         self.assertNotIn(str(self.root), spec + installer)
         self.assertNotIn("1.10.0", (source / "version-info.txt").read_text(encoding="utf-8"))
         compile(spec, "FlipRing.spec", "exec")
+
+    def test_supplemental_pdfium_notice_requires_exact_original(self):
+        import build
+        source = self.root / "소스"
+        target = source / "licenses/pypdfium2" / build.PYPDFIUM_SUPPLEMENT
+        target.parent.mkdir(parents=True)
+        original = Path(__file__).resolve().parent / "licenses/pypdfium2" / build.PYPDFIUM_SUPPLEMENT
+        shutil.copy2(original, target)
+        self.assertEqual(build.supplemental_pdfium_notice(source), target)
+        target.unlink()
+        with self.assertRaises(delivery.DeliveryError):
+            build.supplemental_pdfium_notice(source)
+        target.write_bytes(original.read_bytes() + b"changed")
+        with self.assertRaises(delivery.DeliveryError):
+            build.supplemental_pdfium_notice(source)
+
+    def test_collect_supplemental_notice_keeps_validated_self_origin(self):
+        import build
+        source = self.root / "소스"
+        original = Path(__file__).resolve().parent
+        target = source / "licenses/pypdfium2" / build.PYPDFIUM_SUPPLEMENT
+        target.parent.mkdir(parents=True)
+        shutil.copy2(original / "licenses/pypdfium2" / build.PYPDFIUM_SUPPLEMENT, target)
+        (source / "assets").mkdir()
+        shutil.copy2(original / "assets/NanumGothic-OFL.txt", source / "assets/NanumGothic-OFL.txt")
+        before = target.read_bytes()
+        generated = build.collect_legal_notices(source, ["pypdfium2"])
+        self.assertEqual(target.read_bytes(), before)
+        self.assertIn(target.relative_to(source.parent).as_posix(), generated)
 
     def test_stale_notice_overlay_and_missing_notice_are_rejected(self):
         manifest = self.freeze()
@@ -302,6 +331,11 @@ class PackagingConnectionTests(unittest.TestCase):
             "source": {**delivery.record(h2o / "H2Orestart-v0.8.0-source.tar.gz", "source"), "file": "H2Orestart-v0.8.0-source.tar.gz"}}), encoding="utf-8")
         (source / "licenses/Temurin17/출하목록.json").write_text(json.dumps({"files": [delivery.record(source / name, name) for name in (
             "vendor/java/bin/java.exe", "licenses/Temurin17/OpenJDK17U-jdk-sources_17.0.21_9.tar.gz")]}), encoding="utf-8")
+        # 실제 PyInstaller가 수집하는 HWPX 자료도 모의 컴파일에서 같은 바이트로 복원합니다.
+        self.hwpx_runtime_fixture = {
+            path.relative_to(program).as_posix(): path.read_bytes()
+            for path in (program / "_internal/hwpx").rglob("*") if path.is_file()
+        }
         # 실행 결과는 모의 컴파일이 새로 만들며 빈 output의 존재 계약을 유지한다.
         shutil.rmtree(release)
         self.config["required"] += ["검사도구/" + name for name in self.TOOLS]
@@ -327,6 +361,10 @@ class PackagingConnectionTests(unittest.TestCase):
                 shutil.copytree(source / directory, internal / directory)
             for name in ("document_bridge.py", "document_formats.py", "document_xlsb.py"):
                 shutil.copy2(source / name, internal / name)
+            for relative, content in self.hwpx_runtime_fixture.items():
+                target = program / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(content)
             delivery.stage_legal(source, program, manifest, self.config)
             (output / "설치파일").mkdir()
             (output / "설치파일/FlipRing-Setup.exe").write_bytes(b"fixture")

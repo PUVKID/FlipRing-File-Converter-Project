@@ -44,8 +44,8 @@ def set_reduced_motion(root, enabled):
 
 SURFACE_STYLE = """
 QFileDialog#flipringPicker {background:#fafafa;}
-QFileDialog#flipringPicker QWidget {font-family:'SUIT';font-size:13px;color:#262626;}
-QFileDialog#flipringPicker QLabel#pickerTitle {font-size:24px;font-weight:600;}
+QFileDialog#flipringPicker QWidget {font-family:'NanumGothic';font-weight:700;font-size:13px;color:#262626;}
+QFileDialog#flipringPicker QLabel#pickerTitle {font-size:24px;font-weight:700;}
 QFileDialog#flipringPicker QLabel#pickerCaption {color:#737373;font-size:12px;}
 QFileDialog#flipringPicker QLabel#pickerSummary {color:#646464;font-size:12px;}
 QFileDialog#flipringPicker QFrame#pickerHeader {background:transparent;border:0;}
@@ -62,7 +62,7 @@ QFileDialog#flipringPicker QComboBox {padding-right:30px;}
 QFileDialog#flipringPicker QComboBox::drop-down {border:0;width:26px;}
 QFileDialog#flipringPicker QToolButton {background:#f1f1f1;border:0;border-radius:8px;padding:7px;min-width:20px;min-height:20px;}
 QFileDialog#flipringPicker QToolButton:checked {background:#dedede;}
-QFileDialog#flipringPicker QPushButton {background:#ffffff;border:1px solid #dedede;border-radius:9px;padding:10px 22px;min-height:18px;font-weight:500;}
+QFileDialog#flipringPicker QPushButton {background:#ffffff;border:1px solid #dedede;border-radius:9px;padding:10px 22px;min-height:18px;font-weight:700;}
 QFileDialog#flipringPicker QPushButton[primary="true"] {background:#222222;border-color:#222222;color:#ffffff;}
 QFileDialog#flipringPicker QScrollBar:vertical {background:#fafafa;width:7px;}
 QFileDialog#flipringPicker QScrollBar::handle:vertical {background:#c4c4c4;min-height:28px;border-radius:3px;}
@@ -74,14 +74,14 @@ QMenu::item:selected {background:#ededed;color:#262626;}
 QMenu::item:disabled {color:#898989;}
 QMenu::separator {height:1px;background:#ededed;margin:5px 10px;}
 QMessageBox {background:#fafafa;}
-QMessageBox QLabel {font-family:'SUIT';font-size:14px;color:#303030;padding:14px;}
-QMessageBox QLabel#messageTitle {font-size:20px;font-weight:600;padding:0;color:#242424;}
-QMessageBox QPushButton {font-family:'SUIT';font-size:13px;background:#242424;color:#ffffff;border:0;border-radius:9px;padding:10px 26px;min-height:19px;}
+QMessageBox QLabel {font-family:'NanumGothic';font-weight:700;font-size:14px;color:#303030;padding:14px;}
+QMessageBox QLabel#messageTitle {font-size:20px;font-weight:700;padding:0;color:#242424;}
+QMessageBox QPushButton {font-family:'NanumGothic';font-weight:700;font-size:13px;background:#242424;color:#ffffff;border:0;border-radius:9px;padding:10px 26px;min-height:19px;}
 """
 
 
 class FeedbackOverlay(QWidget):
-    """항목 위치를 바꾸지 않고 테두리·광선만 그리는 입력 투명 레이어."""
+    """항목 위치를 바꾸지 않고 칸 안의 테두리·옅은 배경만 그리는 레이어."""
 
     def __init__(self, host):
         super().__init__(host)
@@ -103,15 +103,11 @@ class FeedbackOverlay(QWidget):
         painter.setPen(QPen(theme_color(54, 54, 54, round(105 * self.amount)), 1.1))
         painter.setBrush(theme_color(90, 90, 90, round(8 * self.amount)))
         painter.drawRoundedRect(rectangle, 8, 8)
-        painter.setPen(QPen(theme_color(42, 42, 42, round(145 * self.amount)), 2, Qt.SolidLine, Qt.RoundCap))
-        width = max(0, rectangle.width() - 18) * (0.18 + 0.65 * self.amount)
-        painter.drawLine(QPointF(rectangle.left() + 9, rectangle.bottom() - 1),
-                         QPointF(rectangle.left() + 9 + width, rectangle.bottom() - 1))
         painter.end()
 
     def current_rectangle(self):
         """현재 그리는 위치를 재사용해 빠른 행 이동도 그 지점에서 이어간다."""
-        rectangle = self.rectangle if self.rectangle is not None else QRectF(self.rect()).adjusted(3, 3, -3, -3)
+        rectangle = self.rectangle if self.rectangle is not None else QRectF(self.rect()).adjusted(1, 1, -1, -1)
         if self.origin is not None:
             start = self.origin
             rectangle = QRectF(start.x() + (rectangle.x() - start.x()) * self.travel,
@@ -129,7 +125,7 @@ class SurfaceMotion(QObject):
         self.overlay = FeedbackOverlay(self.host)
         self.amount = 0.0
         self.animation = QVariantAnimation(self)
-        self.animation.setDuration(280)
+        self.animation.setDuration(340)
         self.animation.setEasingCurve(QEasingCurve.InOutSine)
         self.animation.valueChanged.connect(self._frame)
         self.animation.finished.connect(self.stop)
@@ -165,7 +161,8 @@ class SurfaceMotion(QObject):
     def _frame(self, value):
         self.amount = float(value)
         self.overlay.amount = self.amount
-        self.overlay.travel = min(1.0, self.animation.currentTime() / 170)
+        progress = min(1.0, self.animation.currentTime() / 220)
+        self.overlay.travel = 1.0 - (1.0 - progress) ** 3
         self.overlay.update()
 
     def _connect_view(self):
@@ -181,7 +178,7 @@ class SurfaceMotion(QObject):
             model.rowsMoved.connect(self.selection_pulse)
             self._model = model
 
-    def pulse(self, *unused, rectangle=None):
+    def pulse(self, *unused, rectangle=None, strength=0.42, duration=340):
         widget = self.parent()
         if not widget.isVisible():
             return
@@ -195,9 +192,25 @@ class SurfaceMotion(QObject):
         self.overlay.raise_()
         # 시작값을 현재 값으로 두므로 반복 입력에서도 밝기가 처음으로 튀지 않는다.
         with QSignalBlocker(self.animation):
-            self.animation.setStartValue(current)
-            self.animation.setKeyValueAt(0.30, 0.9)
-            self.animation.setEndValue(0.0)
+            self.animation.setDuration(duration)
+            self.animation.setKeyValues([(0.0, current), (0.40, strength), (1.0, 0.0)])
+            self.animation.setCurrentTime(0)
+        self._frame(current)
+        start_motion(self.animation)
+
+    def fade_out(self):
+        """마우스가 벗어나면 현재 위치·밝기에서 바로 잔잔하게 사라진다."""
+        if self.amount <= 0.0:
+            self.stop()
+            return
+        rectangle = self.overlay.current_rectangle()
+        current = self.amount
+        self.animation.stop()
+        self.overlay.rectangle = rectangle
+        self.overlay.origin = None
+        with QSignalBlocker(self.animation):
+            self.animation.setDuration(220)
+            self.animation.setKeyValues([(0.0, current), (1.0, 0.0)])
             self.animation.setCurrentTime(0)
         self._frame(current)
         start_motion(self.animation)
@@ -223,7 +236,8 @@ class SurfaceMotion(QObject):
         self.pulse(rectangle=rectangle)
 
     def menu_pulse(self, action):
-        self.pulse(rectangle=QRectF(self.parent().actionGeometry(action)).adjusted(1, 1, -1, -1))
+        self.pulse(rectangle=QRectF(self.parent().actionGeometry(action)).adjusted(1, 1, -1, -1),
+                   strength=0.18, duration=420)
 
     def stop(self):
         self.animation.stop()
@@ -237,8 +251,15 @@ class SurfaceMotion(QObject):
             if kind == QEvent.Show:
                 if isinstance(self.parent(), QAbstractItemView):
                     self._connect_view()
-                self.pulse()
-        elif kind in (QEvent.Enter, QEvent.FocusIn, QEvent.MouseButtonPress, QEvent.KeyPress):
+                if isinstance(self.parent(), (QAbstractItemView, QComboBox, QLineEdit,
+                                              QAbstractSpinBox, QAbstractButton, QMenu, QProgressBar)):
+                    self.pulse(strength=0.14, duration=420)
+        elif kind in (QEvent.Enter, QEvent.FocusIn):
+            widget = self.parent()
+            # 버튼·목록은 자체 hover 상태를 쓴다. 창 전체와 비조작 박스는 반짝이지 않는다.
+            if widget.isEnabled() and isinstance(widget, (QComboBox, QLineEdit, QAbstractSpinBox)):
+                self.pulse(strength=0.18, duration=420)
+        elif kind in (QEvent.MouseButtonPress, QEvent.KeyPress):
             widget = self.parent()
             # 타이핑은 입력 자체로 응답한다. 글자마다 테두리를 재점등하지 않는다.
             editing_key = kind == QEvent.KeyPress and isinstance(widget, (QLineEdit, QAbstractSpinBox))
@@ -251,6 +272,7 @@ class SurfaceMotion(QObject):
             hide_tooltip(self.parent())
         elif kind == QEvent.Leave:
             hide_tooltip(self.parent())
+            self.fade_out()
         elif kind == QEvent.EnabledChange and not self.parent().isEnabled():
             self.stop()
         elif kind == QEvent.ToolTip:
@@ -427,7 +449,7 @@ class MotionToolTip(QFrame):
         self.setAttribute(Qt.WA_TransparentForMouseEvents, True)
         self.setObjectName("flipringTooltip")
         self.setStyleSheet("QFrame#flipringTooltip {background:#242424;border:1px solid #494949;border-radius:10px;}"
-                           "QLabel {color:#fafafa;font-family:'SUIT';font-size:12px;background:transparent;}")
+                           "QLabel {color:#fafafa;font-family:'NanumGothic';font-weight:700;font-size:12px;background:transparent;}")
         layout = QVBoxLayout(self)
         layout.setContentsMargins(14, 11, 14, 11)
         self.label = QLabel()

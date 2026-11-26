@@ -29,6 +29,13 @@
 파일 변환과 PDF 편집·OCR을 한 화면에서 처리하는 Windows 앱입니다.
 
 <!-- project-levels:start -->
+## 1.14.0 · 화면 간격과 Rust 테마 엔진
+
+기존 작업 흐름을 유지하면서 내부 화면의 간격·글꼴·조작 상태를 통일합니다. 앱 기동과 테마 변경에서 Rust가 현재 팔레트의 Qt 스타일을 생성합니다. 두 테마의 Qt 소스 검사와 설정 저장을 확인했으며, 마우스 진입 강조를 낮추고 즉시 이탈 시 중지하도록 보완했습니다. Windows 재설치와 실제 이미지·문서 변환을 확인했습니다. [확인 범위와 남은 제한](docs/1.14.0_배포확인.md)을 함께 안내합니다.
+
+[차수 설명](docs/versions/1.14.0.md) · [소스](history/1.14.0/소스/) · [1.13과 전체 비교](docs/revision-audit/1.14.0.md) · [현재 확인 범위](docs/1.14.0_배포확인.md)
+
+
 ## 1.13.0 · 작업 완성도 확장
 
 전후 비교·호환 안내·선택 메타데이터 정리와 작업 복구를 확장했습니다. 실행 파일·설치 파일·전체 소스 ZIP을 빌드하고 구성 파일을 대조했습니다. Windows 설치와 설치 파일 전체 대조, 새 배포 실행본의 기동을 확인했습니다. 실제 탐색기의 Shift 드래그로 PNG·PDF 생성과 원본 보존·중앙 취소를 확인했습니다. 파일 선택창·PDF·OCR·검토 도구의 라이트·다크 화면과 모션도 사용자 직접 확인을 마쳤습니다. [배포 확인 범위](docs/1.13.0_배포확인.md)를 별도로 안내합니다.
@@ -94,6 +101,7 @@ HWP·HWPX의 PDF·Word 등 기존 읽기 변환과 Office 문서 변환에는 Li
 
 `Python`
 `PySide6`
+`Rust`
 `Windows`
 
 [빠른 시작](#quick-start) · [저장소 구성](#repository-structure) · [입출력 구성](#data-settings)
@@ -351,7 +359,7 @@ flowchart LR
 <a name="-빠른-시작"></a>
 ## 빠른 시작
 
-Windows Python 환경에서 의존성을 준비합니다.
+Windows Python 환경에서 의존성을 준비합니다. 1.14.0의 실제 테마 생성에는 Rust 엔진도 필요합니다. 실행용 도우미를 포함한 전체 소스 ZIP과 공개 Git 코드의 범위는 다르며, 전체 재빌드에는 [이번 차수 빌드 방법](history/1.14.0/소스/빌드방법.md)을 따릅니다.
 
 ```powershell
 cd "소스"
@@ -359,7 +367,7 @@ python -m venv .venv
 .\.venv\Scripts\python -m pip install -r requirements-lock.txt
 ```
 
-이 공개 사본에는 `소스/assets/fonts/`의 SUIT Regular·Medium·SemiBold 글꼴과 `소스/assets/NanumGothicBold.ttf`, 일부 화면 자산 및 `소스/vendor/tesseract/tessdata/`의 eng·kor·osd 언어 자료가 포함되어 있습니다.
+이 공개 사본에는 기존 SUIT 자산과 `소스/assets/NanumGothicBold.ttf`, 화면 자산·법적 고지와 처리 코드가 있습니다. 1.14.0의 앱 글꼴은 나눔고딕 Bold 700입니다. 도우미의 전체 실행 구성과 OCR 언어 자료는 고객용 전체 소스 ZIP과 Windows 배포 구성에서 확인합니다.
 
 OCR·압축 기능에 필요한 `tesseract.exe`와 7-Zip 실행 바이너리는 포함되어 있지 않습니다.
 
@@ -367,11 +375,17 @@ OCR·압축 기능에 필요한 `tesseract.exe`와 7-Zip 실행 바이너리는 
 
 필요한 자산을 정당한 배포 원본에서 준비한 개발 환경의 진입점은 다음과 같습니다.
 
+`--settings`는 작업 창을 표시합니다. 인자 없는 일반 실행은 트레이에 상주합니다. 1.14.0은 `assets/NanumGothicBold.ttf`를 앱에 등록하며, 글꼴이나 동봉 Rust 엔진을 읽지 못하면 시작 오류를 표시합니다. Git 사본에서 직접 실행할 때는 먼저 Rust 2024 edition을 지원하는 도구체인과 MSVC·Windows SDK를 준비해 다음과 같이 엔진을 빌드합니다. 설치본 고객에게 Python·Rust 개발 환경을 요구하는 절차는 아닙니다.
+
 ```powershell
+Push-Location ".\rust\astryx-theme"
+$env:RUSTFLAGS = "-C target-feature=+crt-static"
+cargo build --release --locked
+Pop-Location
+New-Item -ItemType Directory -Path ".\vendor\astryx" -Force
+Copy-Item -LiteralPath ".\rust\astryx-theme\target\release\astryx-theme.exe" -Destination ".\vendor\astryx\astryx-theme.exe"
 .\.venv\Scripts\python app.py --settings
 ```
-
-`--settings`는 작업 창을 표시합니다. 인자 없는 일반 실행은 트레이에 상주합니다. UI 글꼴 3 종을 읽지 못하면 시작 단계에서 오류가 발생하므로 `assets/fonts/` 입력도 필요합니다.
 
 빌드 스크립트는 PyInstaller와 Inno Setup을 사용하며 기존 출력 폴더가 있으면 중단합니다. `build.py`는 추가 배포 자산·고지 파일도 참조하므로 빌드 전에 해당 입력을 함께 준비해야 합니다.
 

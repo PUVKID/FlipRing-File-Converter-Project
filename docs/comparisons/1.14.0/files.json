@@ -1,0 +1,577 @@
+{
+  "scope": "1.13 당시 공개 루트 소스 전체와 1.14 현재 공개 루트의 실제 경로별 비교; 변경 없는 vendor 고지 포함, 원격 언어 머리말 보존 포함, 비공개 관측 자료 삭제는 메타데이터만 공개",
+  "files": [
+    {
+      "path": "소스/1.10-문서지원안내.md",
+      "change": "modified",
+      "before": {
+        "bytes": 5116,
+        "sha256": "ea96bd17fe4a178ee513d300efb5675d18423ae94f3382b3d8ea92d1264c5ed0"
+      },
+      "after": {
+        "bytes": 5181,
+        "sha256": "4bc9dce8b900ece45dac38f5bba62ed6ff587a5a01aee7100b76f9c8b588bc60"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/1.8-화면안내.md",
+      "change": "modified",
+      "before": {
+        "bytes": 2503,
+        "sha256": "d4f291d83677a2eac4b0e41c922e903836aabf37ddd61afe62fe9110c558f8a5"
+      },
+      "after": {
+        "bytes": 1751,
+        "sha256": "b08abe4d74580dcfaed7fff960d81b77205751480612cdfea45469045e7925e1"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/README.md",
+      "change": "modified",
+      "before": {
+        "bytes": 1610,
+        "sha256": "50652d1685e6bdd6ba5b0c6b11039c0ca69928b9f123ef74cf7458cbc2825ed7"
+      },
+      "after": {
+        "bytes": 2457,
+        "sha256": "788e7b66491adcbdb9032d309213c1da7b536d12b8c013a44dcfdeab28ada721"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/app.py",
+      "change": "modified",
+      "before": {
+        "bytes": 98974,
+        "sha256": "92db4cf799ea56dc417d4b35c7188e76e9552d6f82750f452d037863c8066ebe"
+      },
+      "after": {
+        "bytes": 101639,
+        "sha256": "1aff87124664eed6a53fb3fa7382ed59498f9bd00570e8278736e9ddb2a58ae1"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/assets/NanumGothic-OFL.txt",
+      "change": "modified",
+      "before": {
+        "bytes": 5398,
+        "sha256": "9413f0aaff51c59be2ff01113a28759b491e6fd67172c3d0a666e6354af18883"
+      },
+      "after": {
+        "bytes": 4534,
+        "sha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/assets/NanumGothic-출처.json",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 487,
+        "sha256": "5774aab9ba7ccee9b22549708ccd84d437e07bb26c2dddedfb99799e91ff4e15"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/assets/NanumGothicBold.ttf",
+      "change": "modified",
+      "before": {
+        "bytes": 4642244,
+        "sha256": "454eb3f503f377782a99eb84fc4bb7dde22a0f075d41b47427737f2985053bc9"
+      },
+      "after": {
+        "bytes": 2073868,
+        "sha256": "f96298f9fb18e364d2370f4c3ce948ac67a2b61af992d7234bc15c42b033c674"
+      },
+      "representation": "binary-size-sha256"
+    },
+    {
+      "path": "소스/astryx_theme.py",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 1501,
+        "sha256": "c6750af3fcdc5b1db233688997a70f63daeb7586b24d4b716b110aeb1b35ece0"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/build.py",
+      "change": "modified",
+      "before": {
+        "bytes": 20335,
+        "sha256": "ea2ce97a829bda05fadd4ca0be33e6b2b976a331565cd792dd86247c32e1703b"
+      },
+      "after": {
+        "bytes": 20836,
+        "sha256": "da78fb6990821a3e7230c336d6fdcff6829ac2d2f3c1666c4647fd47f84f1fe8"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/document_bridge.py",
+      "change": "modified",
+      "before": {
+        "bytes": 13064,
+        "sha256": "a5f3680324be5dd4bb4ab4b2b09040a0bbfe713732f4f997f5cfe3fe7fc95cb8"
+      },
+      "after": {
+        "bytes": 13343,
+        "sha256": "d076c8bd1b1c677523b6041322151b2b0a9cada52c486a12f4f49a5af503421b"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/document_formats.py",
+      "change": "modified",
+      "before": {
+        "bytes": 14910,
+        "sha256": "848f7d524cf3cf3ea1d3d17f18f95f2339138db8b691c7736391b0ebd945f437"
+      },
+      "after": {
+        "bytes": 15197,
+        "sha256": "dc789298182a657406d921e54f59531d2299d45cd9ef75f5bad6799800738bb8"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/engine.py",
+      "change": "modified",
+      "before": {
+        "bytes": 43450,
+        "sha256": "7a91d510a03d10b3551b414ec504f90e7d7f091019eb42cf03075c9a824b2535"
+      },
+      "after": {
+        "bytes": 43461,
+        "sha256": "ed00196dc578a5846beeafa194a30aa5956f20e436b02f950b5808af897b1a7a"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/installer.iss",
+      "change": "modified",
+      "before": {
+        "bytes": 1222,
+        "sha256": "cf3d4657812dcf0d8a2dc6d46db5b96fb88254cdf2e5c17024cfe0daa0dc696c"
+      },
+      "after": {
+        "bytes": 1222,
+        "sha256": "aaa640fd339cc7933691844cc81d6cdbb05b99544c99d26f469c5cc9c882c37f"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/licenses/Astryx/Astryx-MIT-LICENSE.txt",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 1077,
+        "sha256": "a6855be541fc8f446acd1bc4f2f8efce1ace6dce71dba32fcd8da553ee54b473"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/licenses/Astryx/Rust-표준라이브러리-저작권.html",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 1512515,
+        "sha256": "626556344c12679d7cab2c1aa2ce80de01937b62c2c88c62f0650a469be18799"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/licenses/Astryx/읽어주세요.md",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 579,
+        "sha256": "57bcdedd1ffee7369a4356d3009475f61c76f4b5cd807875b7056946c2e09d7b"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/licenses/Astryx/출하목록.json",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 1763,
+        "sha256": "2f3b578c581159bee136e402bc376b40a453b6e22dc7ea3e8b0eaeaa731b3aa6"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/licenses/NanumGothic-OFL.txt",
+      "change": "modified",
+      "before": {
+        "bytes": 5398,
+        "sha256": "9413f0aaff51c59be2ff01113a28759b491e6fd67172c3d0a666e6354af18883"
+      },
+      "after": {
+        "bytes": 4534,
+        "sha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/licenses/Temurin17/legal/jdk.localedata/cldr.md",
+      "change": "modified",
+      "before": {
+        "bytes": 32,
+        "sha256": "c8aba9b5d0b6904764d93994e97c3f1d182ba791257634036982bae5bb3eb58c"
+      },
+      "after": {
+        "bytes": 33,
+        "sha256": "09972449731a1d1a0863af0384aeb7839f84cac74983c96856e6c305e31ed8b2"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/libjpeg_turbo.md",
+      "change": "modified",
+      "before": {
+        "bytes": 5620,
+        "sha256": "96f5b328adbb78eeaaec6980d73fd558cb1e4d62560ed615646bc3cf5e532430"
+      },
+      "after": {
+        "bytes": 5755,
+        "sha256": "be2b2b5ab168bce87bc3e31f2a5c5adba4b7f6e9e51d618e958d1d46972ebd95"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/offscreen-monitor.json",
+      "change": "deleted",
+      "before": {
+        "bytes": 141,
+        "sha256": "286c010caaf6c1e673d942e907c09274e0cb43870670653d45f263afa2c0c139"
+      },
+      "after": null,
+      "representation": "private-observation-deletion-metadata-only"
+    },
+    {
+      "path": "소스/package.py",
+      "change": "modified",
+      "before": {
+        "bytes": 18546,
+        "sha256": "8b11784dee19b71b3b009b63b22a6022db63da3591068e16bb604132906da575"
+      },
+      "after": {
+        "bytes": 19141,
+        "sha256": "00b16b9afd9cf671f1518a6ce39c9fb27b6839e214114c56b1c08e95bdf96796"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/pdf_tools.py",
+      "change": "modified",
+      "before": {
+        "bytes": 38287,
+        "sha256": "014b480c958e620e7e6038aff0fa9b1eda28a397539044ca2e68c58380e20f94"
+      },
+      "after": {
+        "bytes": 39207,
+        "sha256": "895096b1c1a6704286c9b4b7b30e1093439832f506b98ddd6e42ac224bb83393"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/runtime_paths.py",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 431,
+        "sha256": "93ea499f415974fea18a4cb0bf07b900772aee4bec8973dd44af8a5e1e032c0e"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/rust/astryx-theme/Cargo.lock",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 156,
+        "sha256": "33c18528525718a33df2b56402b0e8de1f92487556fc998e972df8b29bcffc1a"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/rust/astryx-theme/Cargo.toml",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 144,
+        "sha256": "2ffde206ed28f33c8743f39f7e68e19042ff79373237da54acdeb0584dabadc7"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/rust/astryx-theme/src/main.rs",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 10397,
+        "sha256": "e9f475ba112a7cde44800c4c1139505f183ba6d763d9cbee39cd833fe4369569"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/studio_ui.py",
+      "change": "modified",
+      "before": {
+        "bytes": 16703,
+        "sha256": "8fa947bf77f7339f8c02380b77779c7a1d4fbb0c5c79ef06d2636e48046db6c4"
+      },
+      "after": {
+        "bytes": 17074,
+        "sha256": "e0c8fc1c15231bffcd744651c77aaea91084c5a4cb3ff6ed1eaaf59170303f4f"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/test_design113.py",
+      "change": "modified",
+      "before": {
+        "bytes": 5945,
+        "sha256": "27cf131eaa51f37cc37a5fa1be95a823247f141c500df851dfcd87d4068bd864"
+      },
+      "after": {
+        "bytes": 8791,
+        "sha256": "83ee22cc13bed02ff15f1a3e4133d4077af23804fb9b88c22cd44e5573786541"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/test_document_formats.py",
+      "change": "modified",
+      "before": {
+        "bytes": 10657,
+        "sha256": "295a873464f8904aae047c0c8ea23deabab7301f3f1178d9fdafc99933b7049c"
+      },
+      "after": {
+        "bytes": 11851,
+        "sha256": "49764f227df337e00912ff6854319ad817d50f2e545bdb045b16ea89a5b1430d"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/test_document_prepare.py",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 5101,
+        "sha256": "f0ae0be9a575c5a0d57029a4ecc7d62e6bfcd7d1c3c1011ee2dc967bd65da30a"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/test_배포도구.py",
+      "change": "modified",
+      "before": {
+        "bytes": 39057,
+        "sha256": "03b7ab6d138caec3bac6a56b2962bc2d1fdace1c9e63699dd2453bb48ba3d1a5"
+      },
+      "after": {
+        "bytes": 41141,
+        "sha256": "5a5f70eca302ea9d6381ed52097309044f039c59909ccc51fcda3e93ef8db9a3"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/theme_manager.py",
+      "change": "modified",
+      "before": {
+        "bytes": 4893,
+        "sha256": "7b8a889169ecff3fbaa84f6af8455623993084f29bfd28e196bbb542d2e2b14b"
+      },
+      "after": {
+        "bytes": 5931,
+        "sha256": "4eca61bd4ff54cb250f586c289b684239e9deab9bb42aa57a46d80e58b6402b9"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/ui_motion.py",
+      "change": "modified",
+      "before": {
+        "bytes": 40816,
+        "sha256": "25d9a4763a93ccd4c7af42358e124a5b9b92718789d7cc507b2ba26b1da0cab9"
+      },
+      "after": {
+        "bytes": 41941,
+        "sha256": "aa13574a60c6cec56317caa70b1c336680aa55a4cffff25846f9368d7dd395ba"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/version-info.txt",
+      "change": "modified",
+      "before": {
+        "bytes": 519,
+        "sha256": "9c1e41e38812c5d74074705124d61edb4319855d2a98b6f9b1c9107701249421"
+      },
+      "after": {
+        "bytes": 519,
+        "sha256": "29651d47f2a916dd086228bb7ce88af9af73cde5c4fe84167bd49e04ee4fad14"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/workspace_ui.py",
+      "change": "modified",
+      "before": {
+        "bytes": 45515,
+        "sha256": "2f5c3c321126d0756b22c7a1c9e1819ce0c340e188eb8c9e55e90eec463483b4"
+      },
+      "after": {
+        "bytes": 45516,
+        "sha256": "a9c608cbeeac37a7bca90aff4c28b205bb0c5d99f7d796d701a1685cdb306bb7"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/배포구성.json",
+      "change": "modified",
+      "before": {
+        "bytes": 67094,
+        "sha256": "e182cc6e4ea93b0264b195a14fba86e92808382065b565e4bb3740efb18136fa"
+      },
+      "after": {
+        "bytes": 68273,
+        "sha256": "3ef3ef43513393d8d5a6ae9bebf6bd3de473b75003e43eb0fd3d544c557d5f5f"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/배포빌드.py",
+      "change": "modified",
+      "before": {
+        "bytes": 17055,
+        "sha256": "0daff7d8af2352317d5a5257237c446fbf27220bcf2d78ca59ddbb70f7a7fb36"
+      },
+      "after": {
+        "bytes": 16721,
+        "sha256": "7c05d61b204155f8e5e76b64893a59f2d6873358fcd2dbe86ccd71f09b598d1e"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/빌드방법.md",
+      "change": "modified",
+      "before": {
+        "bytes": 35400,
+        "sha256": "9e1db1ce8206eb690f09c6d6c9b961b233d29e414319b7cba2e1325672e3a0a6"
+      },
+      "after": {
+        "bytes": 37408,
+        "sha256": "f097ad38287b933892fe6f672379677810bdf486e3a1d2e129e5fbbcf2197f44"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    }
+  ],
+  "parts": [
+    {
+      "path": "part-001.patch",
+      "bytes": 119988,
+      "sha256": "12c2370c48b9b0a5d6c1949ad1ffea32a76e5a427a461107055c2ad8078f60fa"
+    },
+    {
+      "path": "part-002.patch",
+      "bytes": 119908,
+      "sha256": "287fd5c703df97aac394b9631a2b8b97e0389eba1fc4cc1c5bd34077cd298d47"
+    },
+    {
+      "path": "part-003.patch",
+      "bytes": 119936,
+      "sha256": "de7189f217503b84788de5a6259bb122327be9289b040ef51c49d2c9a91dc4ee"
+    },
+    {
+      "path": "part-004.patch",
+      "bytes": 119982,
+      "sha256": "c921bc107aee297d6fcd236742276bfb2cebd0d62505b547885622afda8b47f1"
+    },
+    {
+      "path": "part-005.patch",
+      "bytes": 119943,
+      "sha256": "458cdf16a792b19b41df86a5e3acaef8ccacbbdd80306bc63af3dad3c9c01436"
+    },
+    {
+      "path": "part-006.patch",
+      "bytes": 119992,
+      "sha256": "ff7f228135b173eeb59d4fb82fae5315c2b3cdfc3d99ae833f47fbab662ff5b5"
+    },
+    {
+      "path": "part-007.patch",
+      "bytes": 119989,
+      "sha256": "33dc9c54dab61254b1f4e023dfbe637caec942949ea327af923536b887e221d1"
+    },
+    {
+      "path": "part-008.patch",
+      "bytes": 119997,
+      "sha256": "afe7fbc8a54b0a1166aa31fb3a74a948412c8677bae6ac1ba67cf7e966541284"
+    },
+    {
+      "path": "part-009.patch",
+      "bytes": 119947,
+      "sha256": "2c4ef72c1d26c5b6865c24f413f557af20e51e2d77f9e53923d4e23e61e7a61a"
+    },
+    {
+      "path": "part-010.patch",
+      "bytes": 119992,
+      "sha256": "fbb93f68fb852183bd0b77d85c4df758ddc52b3bc6a1c52ebba5b9b5cb714bb0"
+    },
+    {
+      "path": "part-011.patch",
+      "bytes": 119931,
+      "sha256": "6aab00fb47857ad80ff0cd65dcf055c8016eb33baf045425f08fc826e33e986e"
+    },
+    {
+      "path": "part-012.patch",
+      "bytes": 119965,
+      "sha256": "8d9297920ce30adcc7f1d686b05b847666e005db5b0c91f92e961161009f9a90"
+    },
+    {
+      "path": "part-013.patch",
+      "bytes": 119954,
+      "sha256": "057dc0382cc34d20b87828b4cb73e443998784b6e95d8fed2db0e1bf16e5a99e"
+    },
+    {
+      "path": "part-014.patch",
+      "bytes": 119980,
+      "sha256": "2e8258f53d0653029667db6affacf432a0322e5fca6f014c719c28b7ea73077d"
+    },
+    {
+      "path": "part-015.patch",
+      "bytes": 119941,
+      "sha256": "80f0d2554876438393db3b05fa133a903ac04451598bac2abe6d12cbda80c531"
+    },
+    {
+      "path": "part-016.patch",
+      "bytes": 119996,
+      "sha256": "8f2cd77d316ea56141a31739c936ae6117182aaf31cb93d7019279ea02d9ac01"
+    },
+    {
+      "path": "part-017.patch",
+      "bytes": 119972,
+      "sha256": "c944b8def1fc6e7cdebafd743aa75493cb3e4e3b0d767792d49a36e82ee7d6df"
+    },
+    {
+      "path": "part-018.patch",
+      "bytes": 100862,
+      "sha256": "4c4d39469fd1b0f282ecd11b853ae1bb10f46bc1f5f78b821da7ac4597ec65fe"
+    }
+  ],
+  "joined": {
+    "bytes": 2140275,
+    "sha256": "16366f2ace6f82737c3415b800745dd6418bea824362a044056bd0232c5b3a7a"
+  },
+  "changed": 39,
+  "before_files": 728,
+  "after_files": 738,
+  "before_commit": "21ad796b465278c33b0cf7c2d3a0245d6e371ff6",
+  "public_merge_baseline": "fb77c078a95b4dc10256a720f744d8041093c501"
+}

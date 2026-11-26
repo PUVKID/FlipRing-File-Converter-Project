@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "1.13.0",
+  "version": "1.14.0",
   "source_roots": [
     "소스",
     "검사도구",
@@ -57,6 +57,7 @@
     "소스/assets/lucide/scan-text.svg",
     "소스/assets/lucide/sliders-horizontal.svg",
     "소스/assets/lucide/x.svg",
+    "소스/astryx_theme.py",
     "소스/build.py",
     "소스/delivery_tools.py",
     "소스/delivery_ui.py",
@@ -79,6 +80,10 @@
     "소스/licenses/7Zip/sources/7z2605-src.tar.xz",
     "소스/licenses/7Zip/unRarLicense.txt",
     "소스/licenses/7Zip/출하목록.json",
+    "소스/licenses/Astryx/Astryx-MIT-LICENSE.txt",
+    "소스/licenses/Astryx/Rust-표준라이브러리-저작권.html",
+    "소스/licenses/Astryx/읽어주세요.md",
+    "소스/licenses/Astryx/출하목록.json",
     "소스/licenses/GCC-RUNTIME-EXCEPTION.txt",
     "소스/licenses/GPL-3.0.txt",
     "소스/licenses/H2Orestart/COPYING",
@@ -552,6 +557,10 @@
     "소스/requirements-documents-test.txt",
     "소스/requirements-lock.txt",
     "소스/restore_document_runtime.py",
+    "소스/runtime_paths.py",
+    "소스/rust/astryx-theme/Cargo.lock",
+    "소스/rust/astryx-theme/Cargo.toml",
+    "소스/rust/astryx-theme/src/main.rs",
     "소스/studio_ui.py",
     "소스/test-fixtures/sample.heic",
     "소스/test-fixtures/공식휠_출처와해시.json",
@@ -594,6 +603,7 @@
     "소스/ui_motion.py",
     "소스/vendor/7zip/7z.dll",
     "소스/vendor/7zip/7z.exe",
+    "소스/vendor/astryx/astryx-theme.exe",
     "소스/vendor/h2orestart/H2Orestart.oxt",
     "소스/vendor/java/NOTICE",
     "소스/vendor/java/bin/WinFallbackLookup.dll",
@@ -992,7 +1002,8 @@
     "소스/배포구성.json",
     "소스/배포빌드.py",
     "소스/빌드방법.md",
-    "소스/사용안내.txt"
+    "소스/사용안내.txt",
+    "소스/실행환경_참조.json"
   ],
   "excluded_files": {
     "ROUTING-LESSONS.md": "비공개 작업 실패와 운영 기록. 제품·검사 소스는 별도 모두 포함.",
@@ -1025,7 +1036,9 @@
     "docs/2026-11-25_작업완성도_설계.md": "로컬 운영과 작업 계획을 포함한 비공개 기록. 제품 구현과 공개 사용 안내는 별도 보존.",
     "docs/2026-11-25_구현계획.md": "로컬 운영과 작업 계획을 포함한 비공개 기록. 제품 구현과 공개 사용 안내는 별도 보존.",
     "docs/2026-11-25_작업완성도_구현계획.md": "로컬 운영과 비공개 작업 계획. 공개 사용 안내와 실제 전체 소스는 별도 포함.",
-    "docs/2026-11-25_문서와배포자료보완.md": "직전 차수의 공개 자료 보완 이력. 원문 상대 링크는 원래 저장소 구조에서 유효하므로 고객 ZIP에서 제외. 현재 1.13 사용 안내와 전체 제품 소스는 별도 포함."
+    "docs/2026-11-25_문서와배포자료보완.md": "직전 차수의 공개 자료 보완 이력. 원문 상대 링크는 원래 저장소 구조에서 유효하므로 고객 ZIP에서 제외. 현재 1.13 사용 안내와 전체 제품 소스는 별도 포함.",
+    "README.md": "차수 인계·운영 상태 문서. 제품 소스와 빌드 안내는 별도 모두 포함.",
+    "검사.py": "인계 당시 오프스크린 운영 진입점. 실제 검사 구현은 work와 기존 제품 검사 소스로 보존."
   },
   "excluded_dirs": {
     "work": "비공개 작업·중간본·운영 이력",
@@ -1078,6 +1091,16 @@
       "path": "소스/licenses/python-hwpx/원본출처.json",
       "bytes": 557,
       "sha256": "18083def18c9223d65a8e8eb46a591d60ca80dc57cd7f0f996166070f5cdccea"
+    },
+    {
+      "path": "소스/licenses/OCR/libjpeg-turbo/libjpeg-turbo/java/README",
+      "bytes": 2637,
+      "sha256": "302bd54bacb35aa74bad7f2c5944e23d7b7e1731163807d374089d407b0e8389"
+    },
+    {
+      "path": "소스/licenses/pypdfium2/licenses/data/windows_x64/BUILD_LICENSES/README.ijg",
+      "bytes": 13059,
+      "sha256": "db16a04128171879c60708d171b88d97345a2dd20f9bfc173680a4497c73f704"
     }
   ],
   "runtime_source_archive_allowlist": [
@@ -1133,5 +1156,5 @@
     }
   ],
   "separation_reason": "528499332바이트의 정확10개 원 archive는 전체소스ZIP에 보존하고 실행부에서만 분리. 동등한 동일 Release 접근의 실제 게시 검증은 별도.",
-  "source_zip": "플립링-1.13.0-전체소스.zip"
+  "source_zip": "플립링-1.14.0-전체소스.zip"
 }

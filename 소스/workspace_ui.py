@@ -273,7 +273,7 @@ class WorkspacePanel(QWidget):
         self.output_dir=self.data_dir/'results'; self.output_dir.mkdir(exist_ok=True)
         self.watcher=StableFolderWatch(); self.watch_timer=QTimer(self); self.watch_timer.setInterval(1200)
         self.watch_timer.timeout.connect(self.scan_watch); self.watch_queue=[]
-        layout=QVBoxLayout(self); layout.setContentsMargins(0,0,0,0); layout.setSpacing(10)
+        layout=QVBoxLayout(self); layout.setContentsMargins(0,0,0,0); layout.setSpacing(12)
         toolbar=QHBoxLayout(); layout.addLayout(toolbar)
         self.add_button=self.button('ws_add',self.choose_files); toolbar.addWidget(self.add_button)
         toolbar.addWidget(self.button('ws_clipboard',self.import_clipboard))
@@ -282,7 +282,7 @@ class WorkspacePanel(QWidget):
         split=QSplitter(Qt.Horizontal); layout.addWidget(split,1)
         center_scroll=QScrollArea(); center_scroll.setWidgetResizable(True); center_scroll.setFrameShape(QScrollArea.NoFrame)
         self.center_scroll=center_scroll
-        center=QWidget(); body=QVBoxLayout(center); body.setContentsMargins(0,0,8,0); body.setSpacing(9)
+        center=QWidget(); body=QVBoxLayout(center); body.setContentsMargins(0,0,8,0); body.setSpacing(12)
         body.setSizeConstraint(QLayout.SetMinimumSize)
         center_scroll.setWidget(center); split.addWidget(center_scroll)
         self.visual=WorkspaceVisual(); body.addWidget(self.visual)

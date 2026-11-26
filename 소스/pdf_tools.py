@@ -10,6 +10,7 @@ from functools import wraps
 import io
 import os
 from pathlib import Path
+from runtime_paths import vendor_path
 import re
 import shutil
 import signal
@@ -246,7 +247,7 @@ def reader_for(path):
 
 def tesseract_paths():
     base = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent))
-    folder = base / "vendor" / "tesseract"
+    folder = vendor_path('tesseract')
     executable = folder / "tesseract.exe"
     data = folder / "tessdata"
     if not executable.is_file() or not data.is_dir():

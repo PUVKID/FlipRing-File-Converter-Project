@@ -5,6 +5,7 @@ import re
 from PySide6.QtCore import QObject, QEvent, Qt, Signal
 from PySide6.QtGui import QColor, QPalette
 from PySide6.QtWidgets import QApplication, QWidget
+from astryx_theme import compile_qss
 
 
 def is_dark():
@@ -79,7 +80,12 @@ class ThemeManager(QObject):
                 palette.setColor(role, theme_color(value))
             for role in (QPalette.WindowText, QPalette.Text, QPalette.ButtonText):
                 palette.setColor(QPalette.Disabled, role, theme_color('#999999'))
+            self._astryx_qss = compile_qss('dark' if dark else 'light',
+                theme_color('#242424').name(), theme_color('#fafafa').name(),
+                theme_color('#ffffff').name(), theme_color('#171717').name(),
+                theme_color('#777777').name(), theme_color('#dddddd').name())
             self.app.setPalette(palette)
+            self.app.setStyleSheet(self._astryx_qss)
             for widget in self.app.allWidgets():
                 self._style(widget)
                 widget.update()
@@ -96,6 +102,13 @@ class ThemeManager(QObject):
                                              if rendered and current.startswith(rendered) else current)
         source = getattr(widget, '_flipring_theme_source', current)
         target = themed_style(source)
+        if source:
+            target += getattr(self, '_astryx_qss', '')
+            target += ('QFrame#studioCard,QFrame#dropCard {border-radius:16px;}'
+                       'QFrame#sidebar {border-right:1px solid ' + theme_color('#dddddd').name() + ';}'
+                       'QWidget {font-family:"NanumGothic";font-weight:700;}'
+                       'QPushButton[primary="true"] {background:' + theme_color('#202020').name() +
+                       ';color:' + theme_color('#ffffff').name() + ';}')
         widget._flipring_theme_rendered = target
         if target != current:
             widget.setStyleSheet(target)

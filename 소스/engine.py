@@ -10,6 +10,7 @@ import io
 import json
 import os
 from pathlib import Path
+from runtime_paths import vendor_path
 import re
 import shutil
 import subprocess
@@ -242,7 +243,7 @@ _RAR_LOCK = threading.RLock()
 
 def rar_tools():
     """번들의 두 실행 구성 요소를 확인하고 정상 외부 도구 경로도 찾는다."""
-    vendor = Path(__file__).resolve().parent / 'vendor/7zip'
+    vendor = vendor_path('7zip')
     bundle = str(vendor / '7z.exe') if all((vendor / name).is_file() for name in ('7z.exe', '7z.dll')) else None
     installed = Path(os.environ.get('ProgramFiles', 'C:/Program Files')) / '7-Zip/7z.exe'
     return {'bundle': bundle, 'unrar': shutil.which('unrar'), 'unar': shutil.which('unar'),

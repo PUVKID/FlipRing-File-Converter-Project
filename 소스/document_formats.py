@@ -53,8 +53,9 @@ def office_python(office_path):
 
 def java_path():
     """설치 상태 표시에서는 프로세스를 실행하지 않고 실제 파일만 찾는다."""
+    from runtime_paths import vendor_path
     exe = "java.exe" if os.name == "nt" else "java"
-    roots = [Path(__file__).resolve().parent / "vendor/java"]
+    roots = [vendor_path('java')]
     if os.environ.get("JAVA_HOME"):
         roots.append(Path(os.environ["JAVA_HOME"]))
     for root in roots:
@@ -88,7 +89,8 @@ def java_path():
 
 
 def hwp_status(office_path):
-    extension = Path(__file__).resolve().parent / "vendor/h2orestart/H2Orestart.oxt"
+    from runtime_paths import vendor_path
+    extension = vendor_path('h2orestart') / 'H2Orestart.oxt'
     java = java_path()
     code = ("missing_office" if not office_path else "missing_bridge" if not office_python(office_path)
             else "missing_oxt" if not extension.is_file() else "missing_java" if not java else "ready")

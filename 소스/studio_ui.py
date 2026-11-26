@@ -56,20 +56,20 @@ class HistoryDelegate(QStyledItemDelegate):
         painter.drawRoundedRect(icon, 9, 9)
         font = option.font
         font.setPixelSize(9)
-        font.setWeight(QFont.Medium)
+        font.setWeight(QFont.Bold)
         painter.setFont(font)
         painter.setPen(theme_color("#666666"))
         painter.drawText(icon, Qt.AlignCenter, row["format"])
         left = rectangle.left() + 74
         width = max(20, rectangle.width() - 94)
         font.setPixelSize(13)
-        font.setWeight(QFont.Medium)
+        font.setWeight(QFont.Bold)
         painter.setFont(font)
         painter.setPen(theme_color("#303030"))
         painter.drawText(QRectF(left, rectangle.top() + 15, width, 22), Qt.AlignLeft | Qt.AlignVCenter,
                          painter.fontMetrics().elidedText(row["source"], Qt.ElideMiddle, int(width)))
         font.setPixelSize(11)
-        font.setWeight(QFont.Normal)
+        font.setWeight(QFont.Bold)
         painter.setFont(font)
         painter.setPen(theme_color("#737373"))
         detail = row["time"] + "   ·   " + row["detail"]
@@ -155,7 +155,7 @@ class NavButton(QAbstractButton):
         self.setAutoExclusive(True)
         self.setFocusPolicy(Qt.StrongFocus)
         self.setCursor(Qt.PointingHandCursor)
-        self.setFixedHeight(46)
+        self.setFixedHeight(44)
         self.motion = QVariantAnimation(self)
         self.motion.setDuration(170)
         self.motion.setEasingCurve(QEasingCurve.InOutSine)
@@ -214,7 +214,7 @@ class NavButton(QAbstractButton):
         if self.svg_icons is not None:
             self.svg_icons[(is_dark(), self.isChecked())].paint(painter, 16, round(self.height() / 2 - 10), 20, 20)
         font = self.font()
-        font.setWeight(QFont.Medium if self.isChecked() else QFont.Normal)
+        font.setWeight(QFont.Bold)
         painter.setFont(font)
         painter.drawText(QRectF(46, 0, self.width() - 58, self.height()), Qt.AlignVCenter | Qt.AlignLeft, self.text())
         if self.hasFocus():
@@ -328,7 +328,7 @@ class OrbitVisual(QWidget):
             painter.drawLine(-5, 8, 2, 8)
         font = self.font()
         font.setPixelSize(10)
-        font.setWeight(QFont.Medium)
+        font.setWeight(QFont.Bold)
         painter.setFont(font)
         for index, label in enumerate(self.formats):
             progress = min(1.0, max(0.0, (self.phase - index * 0.12) / 0.64))

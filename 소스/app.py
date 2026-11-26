@@ -50,7 +50,7 @@ from ui_motion import (make_file_dialog, install_surface_motions, pulse_widget, 
                        install_motion_system, SURFACE_STYLE, MotionMessageBox, decorate_message)
 
 VERSION = 3
-RELEASE_VERSION = "1.13.0"
+RELEASE_VERSION = "1.14.0"
 APPNAME = "플립링"
 AUTOSTART_NAME = "FlipRing19"
 DATA = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "PUVKID" / "FlipRing19"
@@ -112,21 +112,20 @@ def select_in_explorer(path):
 def ui_font(size=10, weight=QFont.Normal):
     # 동봉 글꼴은 이 앱에만 등록하며 운영체제 글꼴 설정을 바꾸지 않는다.
     font = QFont()
-    font.setFamilies(["SUIT", "Segoe UI", "Malgun Gothic", "맑은 고딕"])
+    font.setFamilies(["NanumGothic", "나눔고딕", "Malgun Gothic"])
     font.setPointSize(size)
-    font.setWeight(weight)
+    font.setWeight(QFont.Bold)
     return font
 
 
 def apply_application_style(application):
     if not hasattr(application, "_flipring_fonts"):
         application._flipring_fonts = {}
-        for style in ("Regular", "Medium", "SemiBold"):
-            filename = engine.asset(f"fonts/SUIT-{style}.ttf")
-            identifier = QFontDatabase.addApplicationFont(str(filename))
-            if identifier < 0:
-                raise RuntimeError(f"UI font could not be loaded: {filename}")
-            application._flipring_fonts[style] = identifier
+        filename = engine.asset('NanumGothicBold.ttf')
+        identifier = QFontDatabase.addApplicationFont(str(filename))
+        if identifier < 0:
+            raise RuntimeError(f'UI 글꼴을 불러오지 못했습니다: {filename}')
+        application._flipring_fonts['Bold'] = identifier
     application.setStyle("Fusion")
     application.setFont(ui_font())
     theme_manager(application).apply('system')
@@ -743,15 +742,15 @@ class MainWindow(QMainWindow):
         self.sidebar.setObjectName("sidebar")
         self.sidebar.setFixedWidth(204)
         sidebar_layout = QVBoxLayout(self.sidebar)
-        sidebar_layout.setContentsMargins(16, 28, 16, 22)
-        sidebar_layout.setSpacing(6)
+        sidebar_layout.setContentsMargins(16, 24, 16, 24)
+        sidebar_layout.setSpacing(8)
         self.brand = QLabel()
         self.brand.setObjectName("brand")
         sidebar_layout.addWidget(self.brand)
         side_caption = self.localized(QLabel(), "studio_workspace")
         side_caption.setObjectName("sideCaption")
         sidebar_layout.addWidget(side_caption)
-        sidebar_layout.addSpacing(30)
+        sidebar_layout.addSpacing(24)
         self.nav_buttons = {}
         for index, symbol in ((0, "convert"), (4, "pdf"), (2, "history"), (1, "tools"), (3, "about")):
             button = NavButton(symbol)
@@ -772,11 +771,11 @@ class MainWindow(QMainWindow):
         content = QWidget()
         content.setObjectName("workspace")
         layout = QVBoxLayout(content)
-        layout.setContentsMargins(30, 28, 30, 20)
-        layout.setSpacing(22)
+        layout.setContentsMargins(24, 24, 24, 24)
+        layout.setSpacing(24)
         header = QHBoxLayout()
         headings = QVBoxLayout()
-        headings.setSpacing(6)
+        headings.setSpacing(8)
         self.page_title = QLabel()
         self.page_title.setObjectName("pageTitle")
         headings.addWidget(self.page_title)
@@ -827,7 +826,7 @@ class MainWindow(QMainWindow):
         self.quick_settings = StudioCard()
         self.quick_settings.setMinimumWidth(286)
         settings_layout = QVBoxLayout(self.quick_settings)
-        settings_layout.setContentsMargins(20, 22, 20, 22)
+        settings_layout.setContentsMargins(20, 20, 20, 20)
         settings_layout.setSpacing(8)
         quick_heading = self.localized(QLabel(), "studio_quick_settings")
         quick_heading.setObjectName("cardTitle")
@@ -878,11 +877,11 @@ class MainWindow(QMainWindow):
         row.setContentsMargins(12, 16, 12, 0)
         choose = self.localized(self.button("", self.pick_files), "pick_files")
         choose.setProperty("primary", True)
-        choose.setIcon(svg_icon(engine.asset("lucide/file-up.svg"), "#ffffff"))
+        choose.setIcon(svg_icon(engine.asset("lucide/file-up.svg"), theme_color("#ffffff").name()))
         self.choose_button = choose
         row.addWidget(choose)
         self.folder_button = self.localized(self.button("", self.pick_folder), "pick_folder")
-        self.folder_button.setIcon(svg_icon(engine.asset("lucide/folder-open.svg")))
+        self.folder_button.setIcon(svg_icon(engine.asset("lucide/folder-open.svg"), theme_color("#5a5a5a").name()))
         row.addWidget(self.folder_button)
         self.drop_card.body.addLayout(row)
         self.selection_label = self.localized(QLabel(), "studio_no_selection")
@@ -1216,6 +1215,7 @@ class MainWindow(QMainWindow):
         self.retry_button.setVisible(not busy and any(row['state'] == 'failed' and row['format'] for row in self.jobs))
         if hasattr(self, 'choose_button'):
             self.choose_button.setProperty('primary', not bool(self.paths))
+            self.refresh_file_icons()
             self.choose_button.style().unpolish(self.choose_button)
             self.choose_button.style().polish(self.choose_button)
             self.choose_button.update()
@@ -1425,7 +1425,16 @@ class MainWindow(QMainWindow):
         self.settings.sync()
         self.theme.apply(mode)
 
+    def refresh_file_icons(self):
+        # 주 버튼과 일반 버튼의 실제 배경에 맞춰 아이콘 전경도 함께 전환한다.
+        primary = bool(self.choose_button.property("primary"))
+        self.choose_button.setIcon(svg_icon(engine.asset("lucide/file-up.svg"),
+                                  theme_color("#ffffff" if primary else "#242424").name()))
+        self.folder_button.setIcon(svg_icon(engine.asset("lucide/folder-open.svg"),
+                                  theme_color("#5a5a5a").name()))
+
     def theme_updated(self, mode):
+        self.refresh_file_icons()
         # 직접 그리는 휠과 트레이 아이콘도 현재 선택으로 다시 만든다.
         self.wheel.update()
         self.tray.setIcon(icon(busy=bool(self.pending)))
@@ -1497,7 +1506,7 @@ class MainWindow(QMainWindow):
 
     def apply_style(self):
         style = """
-        QWidget {font-family:'SUIT','Segoe UI','Malgun Gothic';font-size:13px;font-weight:400;color:#242424;}
+        QWidget {font-family:'NanumGothic','나눔고딕';font-size:14px;font-weight:700;color:#242424;}
         QMainWindow {background:#f6f6f6;}
         QMenu {background:#fafafa;}
         QFrame#sidebar {background:#efefef;border:0;border-right:1px solid #424242;}

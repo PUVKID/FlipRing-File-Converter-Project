@@ -3,9 +3,10 @@ import os
 os.environ.setdefault('QT_QPA_PLATFORM', 'offscreen')
 import unittest
 from unittest.mock import patch
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QEvent, QPointF, QAbstractAnimation
+from PySide6.QtGui import QEnterEvent
 from PySide6.QtTest import QTest
-from PySide6.QtWidgets import QApplication, QLineEdit, QListWidget, QListWidgetItem, QProgressBar, QMainWindow, QMenu
+from PySide6.QtWidgets import QApplication, QLineEdit, QListWidget, QListWidgetItem, QProgressBar, QMainWindow, QMenu, QFrame
 from ui_motion import ensure_surface_motion, set_reduced_motion
 from delivery_ui import DeliveryDialog
 from theme_manager import manager
@@ -34,6 +35,69 @@ class Design113Tests(unittest.TestCase):
             pulse.assert_not_called()
         edit.close()
         edit.deleteLater()
+
+    def test_pointer_feedback_stays_quiet_and_inside_its_cell(self):
+        edit = QLineEdit()
+        edit.resize(320, 42)
+        edit.setFocusPolicy(Qt.NoFocus)
+        motion = ensure_surface_motion(edit)
+        edit.show()
+        self.app.processEvents()
+        motion.stop()
+        geometry = edit.geometry()
+        self.app.sendEvent(edit, QEnterEvent(QPointF(8, 8), QPointF(8, 8), QPointF(8, 8)))
+        amounts = []
+        for elapsed in (20, 60, 100, 140, 220, 300, 420):
+            motion.animation.setCurrentTime(elapsed)
+            amounts.append(motion.amount)
+            self.assertEqual(edit.geometry(), geometry)
+            self.assertTrue(edit.rect().contains(motion.overlay.current_rectangle().toAlignedRect()))
+        self.assertGreater(max(amounts), 0.01)
+        self.assertLessEqual(max(amounts), 0.24)
+        self.assertEqual(motion.amount, 0.0)
+        self.app.sendEvent(edit, QEnterEvent(QPointF(8, 8), QPointF(8, 8), QPointF(8, 8)))
+        motion.animation.setCurrentTime(100)
+        before_leave = motion.amount
+        self.app.sendEvent(edit, QEvent(QEvent.Leave))
+        for elapsed in (20, 80, 160, 260):
+            motion.animation.setCurrentTime(elapsed)
+            self.assertLessEqual(motion.amount, before_leave + 0.001)
+        self.assertEqual(motion.amount, 0.0)
+        edit.close()
+        edit.deleteLater()
+
+    def test_immediate_pointer_leave_cancels_pending_highlight(self):
+        edit = QLineEdit()
+        edit.setFocusPolicy(Qt.NoFocus)
+        motion = ensure_surface_motion(edit)
+        edit.show()
+        self.app.processEvents()
+        motion.stop()
+        try:
+            self.app.sendEvent(edit, QEnterEvent(QPointF(8, 8), QPointF(8, 8), QPointF(8, 8)))
+            self.assertEqual(motion.amount, 0.0)
+            self.app.sendEvent(edit, QEvent(QEvent.Leave))
+            self.assertEqual(motion.animation.state(), QAbstractAnimation.Stopped)
+            self.assertFalse(motion.overlay.isVisible())
+            motion.animation.setCurrentTime(100)
+            self.assertFalse(motion.overlay.isVisible())
+        finally:
+            edit.close()
+            edit.deleteLater()
+
+    def test_passive_container_does_not_flash_on_pointer_enter(self):
+        frame = QFrame()
+        frame.resize(500, 300)
+        motion = ensure_surface_motion(frame)
+        frame.show()
+        self.app.processEvents()
+        motion.stop()
+        self.app.sendEvent(frame, QEnterEvent(QPointF(8, 8), QPointF(8, 8), QPointF(8, 8)))
+        motion.animation.setCurrentTime(100)
+        self.assertEqual(motion.amount, 0.0)
+        self.assertFalse(motion.overlay.isVisible())
+        frame.close()
+        frame.deleteLater()
 
     def test_selection_and_reduced_motion_finish_cleanly(self):
         view = QListWidget()

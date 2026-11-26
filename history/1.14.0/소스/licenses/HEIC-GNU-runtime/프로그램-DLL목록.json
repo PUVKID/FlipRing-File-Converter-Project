@@ -1,0 +1,26 @@
+[
+  {
+    "name": "libgcc_s_seh-1-7ae6ef6cd308b2641d26e0f0ad54de8d.dll",
+    "package": "pi-heif-decoder",
+    "version": "1.7.0.post4",
+    "sha256": "4ce1e246f8fb63d0d43f03fe54f9104762cd2d71d7fd981af28a167ce5508a63",
+    "size": 150998,
+    "installed_wheel_and_built_program_identical": true
+  },
+  {
+    "name": "libstdc++-6-713bd0e402b4c0182869d2240ab08467.dll",
+    "package": "pi-heif-decoder",
+    "version": "1.7.0.post4",
+    "sha256": "0e08dfab68ce05393d49a9337f20cbe4b9e3f79f57c49c822e11f0d36fa32fde",
+    "size": 2661299,
+    "installed_wheel_and_built_program_identical": true
+  },
+  {
+    "name": "libwinpthread-1-2da71960a872bd1e59b60377f798f285.dll",
+    "package": "pi-heif-decoder",
+    "version": "1.7.0.post4",
+    "sha256": "2da71960a872bd1e59b60377f798f285ce630106509d6bd1d75e553f16218b7b",
+    "size": 63840,
+    "installed_wheel_and_built_program_identical": true
+  }
+]

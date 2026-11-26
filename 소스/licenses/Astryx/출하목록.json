@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "version": "0.1.0",
+  "author": "PUVKID",
+  "engine": "vendor/astryx/astryx-theme.exe",
+  "source": "rust/astryx-theme",
+  "compiler": "1.100.0 (0ef1bc386 2026-11-09)",
+  "build_environment": {
+    "RUSTFLAGS": "-C target-feature=+crt-static"
+  },
+  "build_argv": [
+    "cargo",
+    "build",
+    "--release",
+    "--locked"
+  ],
+  "official_linkage_reference": "https://doc.rust-lang.org/reference/linkage.html#static-and-dynamic-c-runtimes",
+  "scope": "공식 Astryx React 패키지 자체가 아닌 로컬 Rust QSS 생성기. 자체 소스 신규 라이선스 부여 없음. 공식 테마 MIT와 Rust 표준 라이브러리 원문 고지 보존.",
+  "files": [
+    {
+      "path": "vendor/astryx/astryx-theme.exe",
+      "bytes": 295424,
+      "sha256": "94b2603c0c424f3e8e07ca0ae4f56a9ee432b2edf122a97564faf33db2d5d777"
+    },
+    {
+      "path": "rust/astryx-theme/Cargo.toml",
+      "bytes": 144,
+      "sha256": "2ffde206ed28f33c8743f39f7e68e19042ff79373237da54acdeb0584dabadc7"
+    },
+    {
+      "path": "rust/astryx-theme/Cargo.lock",
+      "bytes": 156,
+      "sha256": "33c18528525718a33df2b56402b0e8de1f92487556fc998e972df8b29bcffc1a"
+    },
+    {
+      "path": "rust/astryx-theme/src/main.rs",
+      "bytes": 10397,
+      "sha256": "e9f475ba112a7cde44800c4c1139505f183ba6d763d9cbee39cd833fe4369569"
+    },
+    {
+      "path": "licenses/Astryx/Astryx-MIT-LICENSE.txt",
+      "bytes": 1077,
+      "sha256": "a6855be541fc8f446acd1bc4f2f8efce1ace6dce71dba32fcd8da553ee54b473"
+    },
+    {
+      "path": "licenses/Astryx/Rust-표준라이브러리-저작권.html",
+      "bytes": 1512515,
+      "sha256": "626556344c12679d7cab2c1aa2ce80de01937b62c2c88c62f0650a469be18799"
+    }
+  ]
+}

@@ -5,6 +5,7 @@
 
 | 차수·자료 | 자료 폴더·원본 | 상세 설명 | 직전 비교·범위 |
 | --- | --- | --- | --- |
+| 1.14.0 | [폴더](../history/1.14.0/) | [설명](versions/1.14.0.md) | [1.13과 전체 비교](revision-audit/1.14.0.md) |
 | 1.13.0 | [폴더](../history/1.13.0/) | [설명](versions/1.13.0.md) | [직전 전체 비교](revision-audit/1.13.0-직전비교.md) · [공개 소스 동기화](revision-audit/1.13.0.md) |
 | 1.12.1 | [폴더](../history/1.12.1/) | [설명](versions/1.12.1.md) | [전체 비교](revision-audit/1.12.1.md) |
 | 1.2.0 | [자료 폴더](../history/1.2.0) | [상세 설명](versions/1.2.0.md) | [전체 비교·범위](revision-audit/1.2.0.md) |

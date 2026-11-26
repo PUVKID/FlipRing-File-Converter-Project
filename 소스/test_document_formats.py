@@ -13,6 +13,25 @@ import document_bridge
 
 
 class DocumentFormatTests(unittest.TestCase):
+    def test_isolated_bridge_import_does_not_require_app_vendor_locator(self):
+        # 격리 문서 Python은 앱의 도우미 탐지 모듈 없이 형식과 입력 처리를 읽는다.
+        import builtins
+        original_import = builtins.__import__
+        def isolated_import(name, *args, **kwargs):
+            if name == "runtime_paths":
+                raise ModuleNotFoundError("격리 문서 실행에는 앱 경로 모듈이 없습니다.")
+            return original_import(name, *args, **kwargs)
+        filename = Path(document_formats.__file__)
+        namespace = {"__name__": "isolated_document_formats", "__file__": str(filename)}
+        with patch("builtins.__import__", side_effect=isolated_import):
+            exec(compile(filename.read_bytes(), str(filename), "exec"), namespace)
+            with tempfile.TemporaryDirectory() as folder:
+                source = Path(folder) / "원본.txt"
+                content = "원본 보존".encode("utf-8")
+                source.write_bytes(content)
+                self.assertEqual(source, namespace["prepare_import_source"](source, "txt", Path(folder)))
+                self.assertEqual(content, source.read_bytes())
+
     def test_01_representative_inputs_are_classified(self):
         expected = {
             "문서": "hwp hwpx doc docx docm dot dotx dotm odt ott fodt rtf txt md html xhtml epub pages wpd abw sxw stw",

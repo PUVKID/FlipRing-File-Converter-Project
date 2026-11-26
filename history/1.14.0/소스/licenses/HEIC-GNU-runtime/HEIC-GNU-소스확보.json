@@ -1,0 +1,12 @@
+[
+  {
+    "url": "https://repo.msys2.org/mingw/sources/mingw-w64-gcc-16.2.0-3.src.tar.zst",
+    "size": 107228430,
+    "sha256": "eb3479a8b0b23810fbbbc25ef76879e867e88d09960a40145d73f5505fda4da0"
+  },
+  {
+    "url": "https://repo.msys2.org/mingw/sources/mingw-w64-winpthreads-14.0.0.r375.g9c1abbbf5-1.src.tar.zst",
+    "size": 54173752,
+    "sha256": "7bf513784ae0bc4f1a413e1f787f7a3ba2bd7ec0503980ea4d17ddf0e4796c87"
+  }
+]

@@ -133,6 +133,21 @@ def _shutdown_office(document, desktop, process, primary_error):
         raise failures[0]
 
 
+def _prepare_hwp_extension(command, env, flags):
+    """유한한 확장 준비 예산 안에서 등록하고 기존 실패·회수 조건을 유지한다."""
+    install = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                               stdin=subprocess.DEVNULL, creationflags=flags, env=env)
+    try:
+        # 최초 45초 초과와 실행별 지연 변동을 관측해 준비 예산을 120초로 둔다.
+        stdout, stderr = install.communicate(timeout=120)
+    except subprocess.TimeoutExpired:
+        _stop(install)
+        raise RuntimeError("격리한 HWP 확장 준비 시간이 초과되었습니다.")
+    if install.returncode:
+        raise RuntimeError("격리한 HWP 확장을 준비하지 못했습니다. Java 설치와 LibreOffice 비트수를 확인해 주세요.\n" +
+                           (stderr or stdout).decode("utf-8", "replace")[-600:])
+
+
 def convert(request):
     import uno
     import unohelper
@@ -174,16 +189,7 @@ def convert(request):
         unopkg = Path(request["office"]).parent / ("unopkg.com" if os.name == "nt" else "unopkg")
         command = [str(unopkg), f"-env:UserInstallation={profile.as_uri()}",
                    "add", "--force", "--suppress-license", request["oxt"]]
-        install = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                   stdin=subprocess.DEVNULL, creationflags=flags, env=env)
-        try:
-            stdout, stderr = install.communicate(timeout=45)
-        except subprocess.TimeoutExpired:
-            _stop(install)
-            raise RuntimeError("격리한 HWP 확장 준비 시간이 초과되었습니다.")
-        if install.returncode:
-            raise RuntimeError("격리한 HWP 확장을 준비하지 못했습니다. Java 설치와 LibreOffice 비트수를 확인해 주세요.\n" +
-                               (stderr or stdout).decode("utf-8", "replace")[-600:])
+        _prepare_hwp_extension(command, env, flags)
 
     pipe = "flipring_" + uuid.uuid4().hex
     listener = f"pipe,name={pipe};urp;StarOffice.ComponentContext"

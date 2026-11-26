@@ -1,0 +1,29 @@
+--- a/source/soffice/ConvGraphics.java
++++ b/source/soffice/ConvGraphics.java
+@@ -1,5 +1,5 @@
+ /* Copyright (C) 2023 ebandal
+- * 
++ * 수정일: 2026-11-25. FlipRing의 원본 전체 그림 경계 처리 수정.
+  * This program is free software: you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation, either version 3 of the License, or
+@@ -252,7 +252,18 @@
+             if (graphic == null) {
+                 log.severe("Error loading the image");
+             } else {
+-                if (pic.cropLeft>0 || pic.cropRight>0 || pic.cropTop>0 || pic.cropBottom>0) {
++                // 원본 전체 범위는 픽셀로 다시 잘라 정수 절삭으로 한 행을 잃지 않게 한다.
++                int fullWidth = pic.iniPicWidth==0 ? pic.iniWidth : pic.iniPicWidth;
++                int fullHeight = pic.iniPicHeight==0 ? pic.iniHeight : pic.iniPicHeight;
++                if (pic.iniWidth == pic.cropRight && pic.iniHeight == pic.cropBottom) {
++                    fullWidth = pic.iniWidth;
++                    fullHeight = pic.iniHeight;
++                }
++                boolean fullImageBounds = fullWidth>0 && fullHeight>0
++                        && pic.cropLeft==0 && pic.cropTop==0
++                        && pic.cropRight==fullWidth && pic.cropBottom==fullHeight;
++                if (!fullImageBounds
++                        && (pic.cropLeft>0 || pic.cropRight>0 || pic.cropTop>0 || pic.cropBottom>0)) {
+                     /* 이미지 원본이 페이지보다 크면  원본이미지가 아닌 페이지크기에서 crop하므로 원하는 그림을 가져오지 못한다.
+                     GraphicCrop crop = new GraphicCrop();
+                     crop.Left   = Transform.translateHwp2Office(pic.cropLeft);

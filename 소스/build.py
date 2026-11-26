@@ -15,8 +15,8 @@ import 배포빌드 as delivery
 ROOT = Path(__file__).resolve().parent
 
 SPEC = "from pathlib import Path\nimport os\nsource = Path(os.environ['FLIPRING_SOURCE'])\n# Windows 배포에 필요한 Qt 기본 모듈만 포함한다.\nfrom PyInstaller.utils.hooks import collect_data_files\na = Analysis([str(source / 'app.py')], pathex=[str(source)], binaries=[], datas=[(str(source / 'assets'), 'assets'), (str(source / 'vendor'), 'vendor'), (str(source / 'document_bridge.py'), '.'), (str(source / 'document_formats.py'), '.'), (str(source / 'document_xlsb.py'), '.')] + collect_data_files('pypdfium2_raw') + collect_data_files('hwpx'), hiddenimports=['PIL.AvifImagePlugin', 'PIL.WebPImagePlugin'], excludes=['tkinter', 'PySide6.QtWebEngineCore', 'PySide6.QtQml', 'PySide6.QtQuick', 'olefile'])\nblocked = ('Qt6Pdf', 'Qt6Qml', 'Qt6Quick', 'Qt6VirtualKeyboard')\ndef required(entry):\n    path = entry[0].replace('\\\\', '/')\n    if any(part in path for part in blocked): return False\n    if '/plugins/platforminputcontexts/' in path or '/plugins/qmltooling/' in path: return False\n    if path.endswith('/qpdf.dll'): return False\n    return True\na.binaries = [entry for entry in a.binaries if required(entry)]\npyz = PYZ(a.pure)\nexe = EXE(pyz, a.scripts, [], exclude_binaries=True, name='FlipRing', debug=False, bootloader_ignore_signals=False, strip=False, upx=False, console=False, icon=str(source / 'assets/app.ico'), version=str(source / 'version-info.txt'))\ncoll = COLLECT(exe, a.binaries, a.datas, strip=False, upx=False, name='FlipRing')\n"
-ISS = '; PUVKID 무료 배포판 설치 구성\n[Setup]\nAppId=PUVKID.FlipRing19\nAppName=FlipRing\nAppVersion=1.13.0\nAppPublisher=PUVKID\nDefaultDirName={localappdata}\\Programs\\FlipRing19\nDefaultGroupName=FlipRing\nUsePreviousAppDir=no\nPrivilegesRequired=lowest\nArchitecturesAllowed=x64compatible\nArchitecturesInstallIn64BitMode=x64compatible\nMinVersion=10.0\nOutputDir={#GetEnv(\'FLIPRING_INSTALLER\')}\nOutputBaseFilename=FlipRing-Setup\nSetupIconFile={#GetEnv(\'FLIPRING_SOURCE\')}\\assets\\app.ico\nUninstallDisplayIcon={app}\\FlipRing.exe\nCompression=lzma2\nSolidCompression=yes\nWizardStyle=modern\nCloseApplications=yes\nRestartApplications=no\nLicenseFile={#GetEnv(\'FLIPRING_SOURCE\')}\\LICENSE.txt\nInfoAfterFile={#GetEnv(\'FLIPRING_PROGRAM\')}\\사용안내.txt\n[Languages]\nName: "english"; MessagesFile: "compiler:Default.isl"\nName: "korean"; MessagesFile: "compiler:Languages\\Korean.isl"\n[Files]\nSource: "{#GetEnv(\'FLIPRING_PROGRAM\')}\\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs\n[Registry]\nRoot: HKCU; Subkey: "Software\\Microsoft\\Windows\\CurrentVersion\\Run"; ValueName: "FlipRing19"; Flags: uninsdeletevalue\n[Run]\nFilename: "{app}\\FlipRing.exe"; Description: "FlipRing"; Flags: nowait postinstall skipifsilent\n'
-VERSION = "VSVersionInfo(\n  ffi=FixedFileInfo(filevers=(1,13,0,0), prodvers=(1,13,0,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),\n  kids=[StringFileInfo([StringTable('040904B0', [\n    StringStruct('CompanyName','PUVKID'), StringStruct('FileDescription','FlipRing'),\n    StringStruct('FileVersion','1.13.0'), StringStruct('ProductVersion','1.13.0'),\n    StringStruct('ProductName','FlipRing'), StringStruct('OriginalFilename','FlipRing.exe')\n  ])]), VarFileInfo([VarStruct('Translation',[1033,1200])])]\n)\n"
+ISS = '; PUVKID 무료 배포판 설치 구성\n[Setup]\nAppId=PUVKID.FlipRing19\nAppName=FlipRing\nAppVersion=1.14.0\nAppPublisher=PUVKID\nDefaultDirName={localappdata}\\Programs\\FlipRing19\nDefaultGroupName=FlipRing\nUsePreviousAppDir=no\nPrivilegesRequired=lowest\nArchitecturesAllowed=x64compatible\nArchitecturesInstallIn64BitMode=x64compatible\nMinVersion=10.0\nOutputDir={#GetEnv(\'FLIPRING_INSTALLER\')}\nOutputBaseFilename=FlipRing-Setup\nSetupIconFile={#GetEnv(\'FLIPRING_SOURCE\')}\\assets\\app.ico\nUninstallDisplayIcon={app}\\FlipRing.exe\nCompression=lzma2\nSolidCompression=yes\nWizardStyle=modern\nCloseApplications=yes\nRestartApplications=no\nLicenseFile={#GetEnv(\'FLIPRING_SOURCE\')}\\LICENSE.txt\nInfoAfterFile={#GetEnv(\'FLIPRING_PROGRAM\')}\\사용안내.txt\n[Languages]\nName: "english"; MessagesFile: "compiler:Default.isl"\nName: "korean"; MessagesFile: "compiler:Languages\\Korean.isl"\n[Files]\nSource: "{#GetEnv(\'FLIPRING_PROGRAM\')}\\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs\n[Registry]\nRoot: HKCU; Subkey: "Software\\Microsoft\\Windows\\CurrentVersion\\Run"; ValueName: "FlipRing19"; Flags: uninsdeletevalue\n[Run]\nFilename: "{app}\\FlipRing.exe"; Description: "FlipRing"; Flags: nowait postinstall skipifsilent\n'
+VERSION = "VSVersionInfo(\n  ffi=FixedFileInfo(filevers=(1,14,0,0), prodvers=(1,14,0,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),\n  kids=[StringFileInfo([StringTable('040904B0', [\n    StringStruct('CompanyName','PUVKID'), StringStruct('FileDescription','FlipRing'),\n    StringStruct('FileVersion','1.14.0'), StringStruct('ProductVersion','1.14.0'),\n    StringStruct('ProductName','FlipRing'), StringStruct('OriginalFilename','FlipRing.exe')\n  ])]), VarFileInfo([VarStruct('Translation',[1033,1200])])]\n)\n"
 
 COMPILER_PROBE = "[Setup]\nAppName=FlipRingCompilerProbe\nAppVersion=1\nDefaultDirName={tmp}\\FlipRingCompilerProbe\nUninstallable=no\nOutput=no\nOutputDir=\nOutputManifestFile=\n"
 
@@ -98,6 +98,18 @@ def environment(compiler, probe_root):
             "packages": packages, **probe_compiler(compiler, probe_root)}
 
 
+PYPDFIUM_SUPPLEMENT = "licenses/data/windows_x64/BUILD_LICENSES/README.ijg"
+
+
+def supplemental_pdfium_notice(source):
+    """기존 공개 원문으로 고정된 추가 고지만 허용합니다."""
+    path = delivery.reject_links(source / "licenses/pypdfium2" / PYPDFIUM_SUPPLEMENT)
+    if (not path.is_file() or path.stat().st_size != 13059
+            or delivery.digest(path) != "db16a04128171879c60708d171b88d97345a2dd20f9bfc173680a4497c73f704"):
+        raise delivery.DeliveryError("추가 PDFium 고지 원문의 누락·변조: " + str(path))
+    return path
+
+
 def collect_legal_notices(source, packages):
     """패키지별 원문 목록을 먼저 확정하고 오래된 overlay 파일은 거부한다."""
     licenses = source / "licenses"
@@ -121,6 +133,8 @@ def collect_legal_notices(source, packages):
             for original in Path(pypdfium2_raw.__file__).parent.rglob("*"):
                 if original.is_file() and any(x in original.name.lower() for x in ("license", "notice", "copyright")):
                     planned[original.name] = original
+        if package == "pypdfium2":
+            planned[PYPDFIUM_SUPPLEMENT] = supplemental_pdfium_notice(source)
         if package == "python-hwpx":
             # 정확 출하 원문과 출처는 고지 overlay에도 같은 항목으로 포함한다.
             for relative in ("sources/python_hwpx-6.12.0.tar.gz", "원본출처.json"):
@@ -133,7 +147,8 @@ def collect_legal_notices(source, packages):
         for relative, original in planned.items():
             destination = target / delivery.relative_name(relative)
             destination.parent.mkdir(parents=True, exist_ok=True)
-            if package == "python-hwpx" and relative in ("sources/python_hwpx-6.12.0.tar.gz", "원본출처.json"):
+            if ((package == "python-hwpx" and relative in ("sources/python_hwpx-6.12.0.tar.gz", "원본출처.json"))
+                    or (package == "pypdfium2" and relative == PYPDFIUM_SUPPLEMENT)):
                 if not original.is_file():
                     raise delivery.DeliveryError("상응 소스·출처 원문이 없습니다: " + str(original))
             else:

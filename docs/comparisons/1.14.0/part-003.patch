@@ -1,0 +1,2162 @@
+-        raise delivery.DeliveryError("성공한 실제 Inno Setup 6 엔진 버전을 하나로 확인할 수 없습니다.")
+-    after = {"compiler_sha256": delivery.digest(compiler), "compiler_bytes": compiler.stat().st_size,
+-             "compiler_engine_sha256": delivery.digest(engine), "compiler_engine_bytes": engine.stat().st_size}
+-    if after != before or script.read_text(encoding="utf-8-sig") != COMPILER_PROBE:
+-        raise delivery.DeliveryError("엔진 진단 중 실행기·엔진 DLL·진단 입력이 바뀌었습니다.")
+-    return {"compiler_version": versions[0], **before}
+-
+-
+-def environment(compiler, probe_root):
+-    """고정 의존성과 실제 엔진 버전·ISCC/엔진 DLL 해시를 준비/빌드 양쪽에서 대조한다."""
+-    import struct
+-    if os.name != "nt" or sys.version_info[:2] != (3, 12) or struct.calcsize("P") != 8:
+-        raise delivery.DeliveryError("Windows·Python 3.12 x64 환경이 필요합니다.")
+-    compiler = delivery.reject_links(compiler).resolve(strict=True)
+-    packages = {}
+-    for line in (ROOT / "requirements-lock.txt").read_text(encoding="utf-8").splitlines():
+-        if "==" not in line:
+-            continue
+-        package, expected = line.split("==", 1)
+-        actual = metadata.version(package)
+-        if actual != expected:
+-            raise delivery.DeliveryError("고정 의존 버전 불일치: " + package + ": " + actual + " != " + expected)
+-        packages[package] = actual
+-    return {"python": platform.python_version(), "python_sha256": delivery.digest(sys.executable),
+-            "packages": packages, **probe_compiler(compiler, probe_root)}
+-
+-
+-def collect_legal_notices(source, packages):
+-    """패키지별 원문 목록을 먼저 확정하고 오래된 overlay 파일은 거부한다."""
+-    licenses = source / "licenses"
+-    inventory = []
+-    generated = []
+-    for package in packages:
+-        dist = metadata.distribution(package)
+-        target = licenses / package
+-        planned = {}
+-        inventory.append({"name": dist.metadata["Name"], "version": dist.version,
+-                          "homepage": dist.metadata.get("Home-page", ""),
+-                          "license": dist.metadata.get("License-Expression", dist.metadata.get("License", ""))})
+-        for file in dist.files or []:
+-            value = str(file).replace("\\", "/")
+-            if ".dist-info/" in value and (any(x in value.lower() for x in ("license", "copying", "notice")) or value.endswith("METADATA")):
+-                original = Path(dist.locate_file(file))
+-                if original.is_file():
+-                    planned[value.split(".dist-info/", 1)[1]] = original
+-        if package == "pypdfium2":
+-            import pypdfium2_raw
+-            for original in Path(pypdfium2_raw.__file__).parent.rglob("*"):
+-                if original.is_file() and any(x in original.name.lower() for x in ("license", "notice", "copyright")):
+-                    planned[original.name] = original
+-        if package == "python-hwpx":
+-            # 정확 출하 원문과 출처는 고지 overlay에도 같은 항목으로 포함한다.
+-            for relative in ("sources/python_hwpx-6.12.0.tar.gz", "원본출처.json"):
+-                planned[relative] = source / "licenses/python-hwpx" / relative
+-        if not planned:
+-            raise delivery.DeliveryError("패키지 원문 고지·메타데이터를 찾을 수 없습니다: " + package)
+-        existing = {entry["path"] for entry in delivery.snapshot(target)} if target.exists() else set()
+-        if existing - set(planned):
+-            raise delivery.DeliveryError("오래된 패키지 고지 overlay 발견: " + package + ": " + repr(sorted(existing - set(planned))))
+-        for relative, original in planned.items():
+-            destination = target / delivery.relative_name(relative)
+-            destination.parent.mkdir(parents=True, exist_ok=True)
+-            if package == "python-hwpx" and relative in ("sources/python_hwpx-6.12.0.tar.gz", "원본출처.json"):
+-                if not original.is_file():
+-                    raise delivery.DeliveryError("상응 소스·출처 원문이 없습니다: " + str(original))
+-            else:
+-                shutil.copy2(original, destination)
+-            generated.append(destination.relative_to(source.parent).as_posix())
+-    (licenses / "구성요소.json").write_text(json.dumps(inventory, ensure_ascii=False, indent=2), encoding="utf-8")
+-    shutil.copy2(source / "assets/NanumGothic-OFL.txt", licenses / "NanumGothic-OFL.txt")
+-    shutil.copy2(Path(sys.base_prefix) / "LICENSE.txt", licenses / "Python-LICENSE.txt")
+-    generated.extend(["소스/licenses/구성요소.json", "소스/licenses/NanumGothic-OFL.txt", "소스/licenses/Python-LICENSE.txt"])
+-    return generated
+-
+-
+-def generate_build_inputs(source):
+-    from PIL import Image, ImageDraw
+-    image = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
+-    draw = ImageDraw.Draw(image)
+-    draw.ellipse((8, 8, 248, 248), fill="#202020", outline="#eeeeee", width=14)
+-    draw.ellipse((88, 88, 168, 168), outline="#eeeeee", width=14)
+-    image.save(source / "assets/app.ico", sizes=[(16, 16), (32, 32), (48, 48), (128, 128), (256, 256)])
+-    for filename, text in (("FlipRing.spec", SPEC), ("version-info.txt", VERSION), ("installer.iss", ISS)):
+-        (source / filename).write_text(text, encoding="utf-8-sig" if filename.endswith(".iss") else "utf-8", newline="\n")
+-
+-
+-def prepare(source, output, work, compiler):
+-    source = source.resolve(strict=True)
+-    root = source.parent
+-    output = delivery.external_path(root, output)
+-    work = delivery.external_path(root, work)
+-    if output == work or output.is_relative_to(work) or work.is_relative_to(output):
+-        raise delivery.DeliveryError("작업 폴더와 배포 폴더는 서로 분리해야 합니다.")
+-    if output.exists() or work.exists():
+-        raise delivery.DeliveryError("중단·이전 결과를 재사용하지 않습니다. 없는 새 폴더를 지정하세요.")
+-    config = delivery.load(source / "배포구성.json")
+-    # 고지 생성 전에 권한 보류 시험 입력과 정확 상응 소스 누락부터 거부한다.
+-    delivery.classified_entries(root, config)
+-    work.mkdir(parents=True)
+-    tools = environment(compiler, work / "컴파일러준비확인")
+-    legal_generated = collect_legal_notices(source, tools["packages"])
+-    generate_build_inputs(source)
+-    output.mkdir(parents=True)
+-    return {"schema": 1, "config": config, "config_path": "소스/배포구성.json", "source_root": str(root), "source_tree": delivery.snapshot(root),
+-            "environment": tools, "generated_files": sorted(set((legal_generated or []) + ["소스/FlipRing.spec", "소스/version-info.txt", "소스/installer.iss", "소스/assets/app.ico"]))}
+-
+-
+-def run_owned(source, argv, env, work, identity, timeout):
+-    """기존 Windows Job 수집기로 유한 출력·시간·소유 후손 종료를 유지한다."""
+-    path = source.parent / "검사도구/release_capture.py"
+-    spec = importlib.util.spec_from_file_location("flipring_release_capture", path)
+-    module = importlib.util.module_from_spec(spec)
+-    spec.loader.exec_module(module)
+-    # Inno 경고와 정상 로그를 보존하며 이 실행의 독립 수집 인스턴스만 한정한다.
+-    if identity == "inno":
+-        module.MAX_CAPTURE_BYTES = 256 * 1024
+-    previous = os.environ.copy()
+-    try:
+-        os.environ.update(env)
+-        result = module.run_check({"id": identity, "argv": argv, "cwd": str(source), "timeout_seconds": timeout})
+-    finally:
+-        os.environ.clear()
+-        os.environ.update(previous)
+-    delivery.save_new(work / (identity + ".json"), result)
+-    # 종료0과 출력 수집 성공을 구분하며 실패 원JSON은 위에서 먼저 보존한다.
+-    text = result.get("output")
+-    counts = (result.get("output_bytes"), result.get("captured_bytes"))
+-    valid_bytes = (isinstance(text, str) and all(type(value) is int and value >= 0 for value in counts)
+-                   and counts[0] == counts[1] == len(text.encode("utf-8")))
+-    if (result.get("status") != "passed" or type(result.get("exit_code")) is not int or result["exit_code"] != 0
+-            or result.get("output_complete") is not True or result.get("output_bytes_complete") is not True
+-            or result.get("output_truncated") is not False or result.get("output_invalid_utf8") is not False
+-            or result.get("output_display_truncated", False) is not False
+-            or result.get("capture_boundary_omitted_bytes", 0) != 0 or not valid_bytes
+-            or result.get("capture_error") or result.get("cleanup_errors") or result.get("error")):
+-        raise delivery.DeliveryError("컴파일 실패 또는 UTF-8 출력 수집 실패. 실행 원문을 보존했습니다: " + identity)
+-
+-
+-def compile_prepared(source, prepared, manifest, output, work, compiler):
+-    source = source.resolve(strict=True)
+-    root = source.parent
+-    output = delivery.external_path(root, output)
+-    work = delivery.external_path(root, work)
+-    delivery.verify_source_manifest(root, prepared, manifest, output / delivery.SOURCE_ZIP_NAME)
+-    if environment(compiler, work / "컴파일러재확인") != prepared["environment"]:
+-        raise delivery.DeliveryError("준비 이후 Python·고정 의존성·컴파일러가 변경됐습니다.")
+-    if (output / "프로그램").exists() or (output / "설치파일").exists() or (work / "pyinstaller.json").exists():
+-        raise delivery.DeliveryError("기존·중단 컴파일 산출물 재사용을 거부합니다.")
+-    env = os.environ.copy()
+-    env.update(PYTHONDONTWRITEBYTECODE="1", PYTHONUTF8="1", PYINSTALLER_CONFIG_DIR=str(work / "pyinstaller-config"),
+-               FLIPRING_SOURCE=str(source), FLIPRING_PROGRAM=str(output / "프로그램/FlipRing"),
+-               FLIPRING_INSTALLER=str(output / "설치파일"), TEMP=str(work / "temp"), TMP=str(work / "temp"))
+-    (work / "temp").mkdir()
+-    env["PATH"] = os.pathsep.join([str(Path(sys.executable).parent), sys.base_prefix,
+-                                    str(Path(os.environ["WINDIR"]) / "System32"), os.environ["WINDIR"]])
+-    try:
+-        run_owned(source, [sys.executable, "-B", "-X", "utf8", "-m", "PyInstaller", "--noconfirm", "--clean", "--distpath", str(output / "프로그램"),
+-                          "--workpath", str(work / "build-cache"), str(source / "FlipRing.spec")], env, work, "pyinstaller", 600)
+-    finally:
+-        delivery.assert_tree(root, prepared["source_tree"])
+-    program = output / "프로그램/FlipRing"
+-    delivery.stage_legal(source, program, manifest, prepared["config"])
+-    shutil.copy2(source / "LICENSE.txt", program / "LICENSE.txt")
+-    notice = (source / "사용안내.txt").read_text(encoding="utf-8") + "\n" + delivery.runtime_notice(manifest)
+-    (program / "사용안내.txt").write_text(notice, encoding="utf-8", newline="\n")
+-    try:
+-        run_owned(source, [str(compiler), str(source / "installer.iss")], env, work, "inno", 600)
+-    finally:
+-        delivery.assert_tree(root, prepared["source_tree"])
+-    print("컴파일 종료. 별도 package 검증·실제 실행·설치·독립 검토·원격 검증이 필요합니다.")
+-
+-
+-def main():
+-    parser = argparse.ArgumentParser(description=__doc__)
+-    parser.add_argument("--prepare-only", action="store_true")
+-    parser.add_argument("--prepared", type=Path)
+-    parser.add_argument("--source-manifest", type=Path)
+-    parser.add_argument("--output-root", type=Path, required=True)
+-    parser.add_argument("--work-root", type=Path, required=True)
+-    parser.add_argument("--iscc", type=Path, required=True)
+-    parser.add_argument("--manifest", type=Path)
+-    args = parser.parse_args()
+-    if args.prepare_only:
+-        if args.prepared or args.source_manifest or not args.manifest:
+-            parser.error("prepare-only에는 새 외부 --manifest만 지정하세요.")
+-        delivery.external_path(ROOT.parent, args.manifest)
+-        result = prepare(ROOT, args.output_root, args.work_root, args.iscc)
+-        delivery.save_new(args.manifest, result)
+-    else:
+-        if not args.prepared or not args.source_manifest:
+-            parser.error("컴파일에는 --prepared와 --source-manifest가 필요합니다.")
+-        compile_prepared(ROOT, delivery.load(args.prepared), delivery.load(args.source_manifest), args.output_root, args.work_root, args.iscc)
+-
+-
+-if __name__ == "__main__":
+-    try:
+-        main()
+-    except (delivery.DeliveryError, OSError, ValueError) as error:
+-        raise SystemExit("빌드 중단: " + str(error)) from error
++"""Windows 배포 입력 준비와 소스 불변 컴파일을 분리한다."""
++import argparse
++import importlib.metadata as metadata
++import importlib.util
++import json
++import os
++from pathlib import Path
++import shutil
++import sys
++import platform
++import re
++from datetime import datetime, timezone, timedelta
++import 배포빌드 as delivery
++
++ROOT = Path(__file__).resolve().parent
++
++SPEC = "from pathlib import Path\nimport os\nsource = Path(os.environ['FLIPRING_SOURCE'])\n# Windows 배포에 필요한 Qt 기본 모듈만 포함한다.\nfrom PyInstaller.utils.hooks import collect_data_files\na = Analysis([str(source / 'app.py')], pathex=[str(source)], binaries=[], datas=[(str(source / 'assets'), 'assets'), (str(source / 'vendor'), 'vendor'), (str(source / 'document_bridge.py'), '.'), (str(source / 'document_formats.py'), '.'), (str(source / 'document_xlsb.py'), '.')] + collect_data_files('pypdfium2_raw') + collect_data_files('hwpx'), hiddenimports=['PIL.AvifImagePlugin', 'PIL.WebPImagePlugin'], excludes=['tkinter', 'PySide6.QtWebEngineCore', 'PySide6.QtQml', 'PySide6.QtQuick', 'olefile'])\nblocked = ('Qt6Pdf', 'Qt6Qml', 'Qt6Quick', 'Qt6VirtualKeyboard')\ndef required(entry):\n    path = entry[0].replace('\\\\', '/')\n    if any(part in path for part in blocked): return False\n    if '/plugins/platforminputcontexts/' in path or '/plugins/qmltooling/' in path: return False\n    if path.endswith('/qpdf.dll'): return False\n    return True\na.binaries = [entry for entry in a.binaries if required(entry)]\npyz = PYZ(a.pure)\nexe = EXE(pyz, a.scripts, [], exclude_binaries=True, name='FlipRing', debug=False, bootloader_ignore_signals=False, strip=False, upx=False, console=False, icon=str(source / 'assets/app.ico'), version=str(source / 'version-info.txt'))\ncoll = COLLECT(exe, a.binaries, a.datas, strip=False, upx=False, name='FlipRing')\n"
++ISS = '; PUVKID 무료 배포판 설치 구성\n[Setup]\nAppId=PUVKID.FlipRing19\nAppName=FlipRing\nAppVersion=1.14.0\nAppPublisher=PUVKID\nDefaultDirName={localappdata}\\Programs\\FlipRing19\nDefaultGroupName=FlipRing\nUsePreviousAppDir=no\nPrivilegesRequired=lowest\nArchitecturesAllowed=x64compatible\nArchitecturesInstallIn64BitMode=x64compatible\nMinVersion=10.0\nOutputDir={#GetEnv(\'FLIPRING_INSTALLER\')}\nOutputBaseFilename=FlipRing-Setup\nSetupIconFile={#GetEnv(\'FLIPRING_SOURCE\')}\\assets\\app.ico\nUninstallDisplayIcon={app}\\FlipRing.exe\nCompression=lzma2\nSolidCompression=yes\nWizardStyle=modern\nCloseApplications=yes\nRestartApplications=no\nLicenseFile={#GetEnv(\'FLIPRING_SOURCE\')}\\LICENSE.txt\nInfoAfterFile={#GetEnv(\'FLIPRING_PROGRAM\')}\\사용안내.txt\n[Languages]\nName: "english"; MessagesFile: "compiler:Default.isl"\nName: "korean"; MessagesFile: "compiler:Languages\\Korean.isl"\n[Files]\nSource: "{#GetEnv(\'FLIPRING_PROGRAM\')}\\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs\n[Registry]\nRoot: HKCU; Subkey: "Software\\Microsoft\\Windows\\CurrentVersion\\Run"; ValueName: "FlipRing19"; Flags: uninsdeletevalue\n[Run]\nFilename: "{app}\\FlipRing.exe"; Description: "FlipRing"; Flags: nowait postinstall skipifsilent\n'
++VERSION = "VSVersionInfo(\n  ffi=FixedFileInfo(filevers=(1,14,0,0), prodvers=(1,14,0,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),\n  kids=[StringFileInfo([StringTable('040904B0', [\n    StringStruct('CompanyName','PUVKID'), StringStruct('FileDescription','FlipRing'),\n    StringStruct('FileVersion','1.14.0'), StringStruct('ProductVersion','1.14.0'),\n    StringStruct('ProductName','FlipRing'), StringStruct('OriginalFilename','FlipRing.exe')\n  ])]), VarFileInfo([VarStruct('Translation',[1033,1200])])]\n)\n"
++
++COMPILER_PROBE = "[Setup]\nAppName=FlipRingCompilerProbe\nAppVersion=1\nDefaultDirName={tmp}\\FlipRingCompilerProbe\nUninstallable=no\nOutput=no\nOutputDir=\nOutputManifestFile=\n"
++
++
++def capture_compiler_probe(check):
++    """설치 파일 없는 진단도 기존 Windows Job·유한 출력·시간 제한으로 실행한다."""
++    path = ROOT.parent / "검사도구/release_capture.py"
++    spec = importlib.util.spec_from_file_location("flipring_compiler_probe_capture", path)
++    module = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(module)
++    previous = {name: os.environ.get(name) for name in ("TEMP", "TMP")}
++    try:
++        os.environ.update(TEMP=str(Path(check["cwd"]) / "임시"), TMP=str(Path(check["cwd"]) / "임시"))
++        return module.run_check(check)
++    finally:
++        for name, value in previous.items():
++            if value is None:
++                os.environ.pop(name, None)
++            else:
++                os.environ[name] = value
++
++
++def probe_compiler(compiler, probe_root):
++    """PE 속성 대신 실제 엔진의 성공한 무출력 컴파일로 정확 버전과 두 파일을 확인한다."""
++    probe = delivery.external_path(ROOT, probe_root)
++    if probe.is_relative_to((ROOT.parent / "검사도구").resolve()) or probe.exists():
++        raise delivery.DeliveryError("진단은 제품 입력·검사도구 밖의 새 작업 폴더만 허용합니다.")
++    compiler = delivery.reject_links(compiler).resolve()
++    engine = delivery.reject_links(compiler.with_name("ISCmplr.dll"))
++    if not compiler.is_file() or not engine.is_file():
++        raise delivery.DeliveryError("실제 ISCC 실행기와 ISCmplr.dll이 모두 필요합니다.")
++    before = {"compiler_sha256": delivery.digest(compiler), "compiler_bytes": compiler.stat().st_size,
++              "compiler_engine_sha256": delivery.digest(engine), "compiler_engine_bytes": engine.stat().st_size}
++    probe.mkdir(parents=True)
++    (probe / "임시").mkdir()
++    script = probe / "진단.iss"
++    script.write_text(COMPILER_PROBE, encoding="utf-8-sig", newline="\n")
++    check = {"id": "inno-engine-probe", "argv": [str(compiler), "/O-", str(script)], "cwd": str(probe), "timeout_seconds": 15}
++    delivery.save_new(probe / "실행요청.json", {"kst": datetime.now(timezone(timedelta(hours=9))).isoformat(), "check": check})
++    result = capture_compiler_probe(check)
++    delivery.save_new(probe / "실행결과.json", result)
++    (probe / "실행원문.log").write_bytes(result.get("output", "").encode("utf-8"))
++    names = {entry["path"] for entry in delivery.snapshot(probe)}
++    if names - {"진단.iss", "실행요청.json", "실행결과.json", "실행원문.log"}:
++        raise delivery.DeliveryError("무출력 엔진 진단에서 예상하지 않은 산출물이 생겼습니다.")
++    if (result.get("status") != "passed" or result.get("exit_code") != 0 or not result.get("output_complete")
++            or not result.get("output_bytes_complete") or result.get("output_truncated") or result.get("output_invalid_utf8")
++            or result.get("capture_error") or result.get("cleanup_errors")):
++        raise delivery.DeliveryError("엔진 진단의 실패·시간 초과·출력 미완료를 발견했습니다. 외부 진단 원문을 확인하세요.")
++    text = result["output"]
++    if result.get("output_bytes") != result.get("captured_bytes") or len(text.encode("utf-8")) != result.get("output_bytes"):
++        raise delivery.DeliveryError("엔진 진단 출력의 실제 바이트 수가 일치하지 않습니다.")
++    versions = re.findall(r"^Compiler engine version: Inno Setup (\d+\.\d+\.\d+(?:\.\d+)?)\r?$", text, re.MULTILINE)
++    if len(versions) != 1 or not versions[0].startswith("6.") or re.search(r"^\s*Error(?:\s|:)", text, re.MULTILINE | re.IGNORECASE):
++        raise delivery.DeliveryError("성공한 실제 Inno Setup 6 엔진 버전을 하나로 확인할 수 없습니다.")
++    after = {"compiler_sha256": delivery.digest(compiler), "compiler_bytes": compiler.stat().st_size,
++             "compiler_engine_sha256": delivery.digest(engine), "compiler_engine_bytes": engine.stat().st_size}
++    if after != before or script.read_text(encoding="utf-8-sig") != COMPILER_PROBE:
++        raise delivery.DeliveryError("엔진 진단 중 실행기·엔진 DLL·진단 입력이 바뀌었습니다.")
++    return {"compiler_version": versions[0], **before}
++
++
++def environment(compiler, probe_root):
++    """고정 의존성과 실제 엔진 버전·ISCC/엔진 DLL 해시를 준비/빌드 양쪽에서 대조한다."""
++    import struct
++    if os.name != "nt" or sys.version_info[:2] != (3, 12) or struct.calcsize("P") != 8:
++        raise delivery.DeliveryError("Windows·Python 3.12 x64 환경이 필요합니다.")
++    compiler = delivery.reject_links(compiler).resolve(strict=True)
++    packages = {}
++    for line in (ROOT / "requirements-lock.txt").read_text(encoding="utf-8").splitlines():
++        if "==" not in line:
++            continue
++        package, expected = line.split("==", 1)
++        actual = metadata.version(package)
++        if actual != expected:
++            raise delivery.DeliveryError("고정 의존 버전 불일치: " + package + ": " + actual + " != " + expected)
++        packages[package] = actual
++    return {"python": platform.python_version(), "python_sha256": delivery.digest(sys.executable),
++            "packages": packages, **probe_compiler(compiler, probe_root)}
++
++
++PYPDFIUM_SUPPLEMENT = "licenses/data/windows_x64/BUILD_LICENSES/README.ijg"
++
++
++def supplemental_pdfium_notice(source):
++    """기존 공개 원문으로 고정된 추가 고지만 허용합니다."""
++    path = delivery.reject_links(source / "licenses/pypdfium2" / PYPDFIUM_SUPPLEMENT)
++    if (not path.is_file() or path.stat().st_size != 13059
++            or delivery.digest(path) != "db16a04128171879c60708d171b88d97345a2dd20f9bfc173680a4497c73f704"):
++        raise delivery.DeliveryError("추가 PDFium 고지 원문의 누락·변조: " + str(path))
++    return path
++
++
++def collect_legal_notices(source, packages):
++    """패키지별 원문 목록을 먼저 확정하고 오래된 overlay 파일은 거부한다."""
++    licenses = source / "licenses"
++    inventory = []
++    generated = []
++    for package in packages:
++        dist = metadata.distribution(package)
++        target = licenses / package
++        planned = {}
++        inventory.append({"name": dist.metadata["Name"], "version": dist.version,
++                          "homepage": dist.metadata.get("Home-page", ""),
++                          "license": dist.metadata.get("License-Expression", dist.metadata.get("License", ""))})
++        for file in dist.files or []:
++            value = str(file).replace("\\", "/")
++            if ".dist-info/" in value and (any(x in value.lower() for x in ("license", "copying", "notice")) or value.endswith("METADATA")):
++                original = Path(dist.locate_file(file))
++                if original.is_file():
++                    planned[value.split(".dist-info/", 1)[1]] = original
++        if package == "pypdfium2":
++            import pypdfium2_raw
++            for original in Path(pypdfium2_raw.__file__).parent.rglob("*"):
++                if original.is_file() and any(x in original.name.lower() for x in ("license", "notice", "copyright")):
++                    planned[original.name] = original
++        if package == "pypdfium2":
++            planned[PYPDFIUM_SUPPLEMENT] = supplemental_pdfium_notice(source)
++        if package == "python-hwpx":
++            # 정확 출하 원문과 출처는 고지 overlay에도 같은 항목으로 포함한다.
++            for relative in ("sources/python_hwpx-6.12.0.tar.gz", "원본출처.json"):
++                planned[relative] = source / "licenses/python-hwpx" / relative
++        if not planned:
++            raise delivery.DeliveryError("패키지 원문 고지·메타데이터를 찾을 수 없습니다: " + package)
++        existing = {entry["path"] for entry in delivery.snapshot(target)} if target.exists() else set()
++        if existing - set(planned):
++            raise delivery.DeliveryError("오래된 패키지 고지 overlay 발견: " + package + ": " + repr(sorted(existing - set(planned))))
++        for relative, original in planned.items():
++            destination = target / delivery.relative_name(relative)
++            destination.parent.mkdir(parents=True, exist_ok=True)
++            if ((package == "python-hwpx" and relative in ("sources/python_hwpx-6.12.0.tar.gz", "원본출처.json"))
++                    or (package == "pypdfium2" and relative == PYPDFIUM_SUPPLEMENT)):
++                if not original.is_file():
++                    raise delivery.DeliveryError("상응 소스·출처 원문이 없습니다: " + str(original))
++            else:
++                shutil.copy2(original, destination)
++            generated.append(destination.relative_to(source.parent).as_posix())
++    (licenses / "구성요소.json").write_text(json.dumps(inventory, ensure_ascii=False, indent=2), encoding="utf-8")
++    shutil.copy2(source / "assets/NanumGothic-OFL.txt", licenses / "NanumGothic-OFL.txt")
++    shutil.copy2(Path(sys.base_prefix) / "LICENSE.txt", licenses / "Python-LICENSE.txt")
++    generated.extend(["소스/licenses/구성요소.json", "소스/licenses/NanumGothic-OFL.txt", "소스/licenses/Python-LICENSE.txt"])
++    return generated
++
++
++def generate_build_inputs(source):
++    from PIL import Image, ImageDraw
++    image = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
++    draw = ImageDraw.Draw(image)
++    draw.ellipse((8, 8, 248, 248), fill="#202020", outline="#eeeeee", width=14)
++    draw.ellipse((88, 88, 168, 168), outline="#eeeeee", width=14)
++    image.save(source / "assets/app.ico", sizes=[(16, 16), (32, 32), (48, 48), (128, 128), (256, 256)])
++    for filename, text in (("FlipRing.spec", SPEC), ("version-info.txt", VERSION), ("installer.iss", ISS)):
++        (source / filename).write_text(text, encoding="utf-8-sig" if filename.endswith(".iss") else "utf-8", newline="\n")
++
++
++def prepare(source, output, work, compiler):
++    source = source.resolve(strict=True)
++    root = source.parent
++    output = delivery.external_path(root, output)
++    work = delivery.external_path(root, work)
++    if output == work or output.is_relative_to(work) or work.is_relative_to(output):
++        raise delivery.DeliveryError("작업 폴더와 배포 폴더는 서로 분리해야 합니다.")
++    if output.exists() or work.exists():
++        raise delivery.DeliveryError("중단·이전 결과를 재사용하지 않습니다. 없는 새 폴더를 지정하세요.")
++    config = delivery.load(source / "배포구성.json")
++    # 고지 생성 전에 권한 보류 시험 입력과 정확 상응 소스 누락부터 거부한다.
++    delivery.classified_entries(root, config)
++    work.mkdir(parents=True)
++    tools = environment(compiler, work / "컴파일러준비확인")
++    legal_generated = collect_legal_notices(source, tools["packages"])
++    generate_build_inputs(source)
++    output.mkdir(parents=True)
++    return {"schema": 1, "config": config, "config_path": "소스/배포구성.json", "source_root": str(root), "source_tree": delivery.snapshot(root),
++            "environment": tools, "generated_files": sorted(set((legal_generated or []) + ["소스/FlipRing.spec", "소스/version-info.txt", "소스/installer.iss", "소스/assets/app.ico"]))}
++
++
++def run_owned(source, argv, env, work, identity, timeout):
++    """기존 Windows Job 수집기로 유한 출력·시간·소유 후손 종료를 유지한다."""
++    path = source.parent / "검사도구/release_capture.py"
++    spec = importlib.util.spec_from_file_location("flipring_release_capture", path)
++    module = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(module)
++    # Inno 경고와 정상 로그를 보존하며 이 실행의 독립 수집 인스턴스만 한정한다.
++    if identity == "inno":
++        module.MAX_CAPTURE_BYTES = 256 * 1024
++    previous = os.environ.copy()
++    try:
++        os.environ.update(env)
++        result = module.run_check({"id": identity, "argv": argv, "cwd": str(source), "timeout_seconds": timeout})
++    finally:
++        os.environ.clear()
++        os.environ.update(previous)
++    delivery.save_new(work / (identity + ".json"), result)
++    # 종료0과 출력 수집 성공을 구분하며 실패 원JSON은 위에서 먼저 보존한다.
++    text = result.get("output")
++    counts = (result.get("output_bytes"), result.get("captured_bytes"))
++    valid_bytes = (isinstance(text, str) and all(type(value) is int and value >= 0 for value in counts)
++                   and counts[0] == counts[1] == len(text.encode("utf-8")))
++    if (result.get("status") != "passed" or type(result.get("exit_code")) is not int or result["exit_code"] != 0
++            or result.get("output_complete") is not True or result.get("output_bytes_complete") is not True
++            or result.get("output_truncated") is not False or result.get("output_invalid_utf8") is not False
++            or result.get("output_display_truncated", False) is not False
++            or result.get("capture_boundary_omitted_bytes", 0) != 0 or not valid_bytes
++            or result.get("capture_error") or result.get("cleanup_errors") or result.get("error")):
++        raise delivery.DeliveryError("컴파일 실패 또는 UTF-8 출력 수집 실패. 실행 원문을 보존했습니다: " + identity)
++
++
++def compile_prepared(source, prepared, manifest, output, work, compiler):
++    source = source.resolve(strict=True)
++    root = source.parent
++    output = delivery.external_path(root, output)
++    work = delivery.external_path(root, work)
++    delivery.verify_source_manifest(root, prepared, manifest, output / delivery.SOURCE_ZIP_NAME)
++    if environment(compiler, work / "컴파일러재확인") != prepared["environment"]:
++        raise delivery.DeliveryError("준비 이후 Python·고정 의존성·컴파일러가 변경됐습니다.")
++    if (output / "프로그램").exists() or (output / "설치파일").exists() or (work / "pyinstaller.json").exists():
++        raise delivery.DeliveryError("기존·중단 컴파일 산출물 재사용을 거부합니다.")
++    env = os.environ.copy()
++    env.update(PYTHONDONTWRITEBYTECODE="1", PYTHONUTF8="1", PYINSTALLER_CONFIG_DIR=str(work / "pyinstaller-config"),
++               FLIPRING_SOURCE=str(source), FLIPRING_PROGRAM=str(output / "프로그램/FlipRing"),
++               FLIPRING_INSTALLER=str(output / "설치파일"), TEMP=str(work / "temp"), TMP=str(work / "temp"))
++    (work / "temp").mkdir()
++    env["PATH"] = os.pathsep.join([str(Path(sys.executable).parent), sys.base_prefix,
++                                    str(Path(os.environ["WINDIR"]) / "System32"), os.environ["WINDIR"]])
++    try:
++        run_owned(source, [sys.executable, "-B", "-X", "utf8", "-m", "PyInstaller", "--noconfirm", "--clean", "--distpath", str(output / "프로그램"),
++                          "--workpath", str(work / "build-cache"), str(source / "FlipRing.spec")], env, work, "pyinstaller", 600)
++    finally:
++        delivery.assert_tree(root, prepared["source_tree"])
++    program = output / "프로그램/FlipRing"
++    delivery.stage_legal(source, program, manifest, prepared["config"])
++    shutil.copy2(source / "LICENSE.txt", program / "LICENSE.txt")
++    notice = (source / "사용안내.txt").read_text(encoding="utf-8") + "\n" + delivery.runtime_notice(manifest)
++    (program / "사용안내.txt").write_text(notice, encoding="utf-8", newline="\n")
++    try:
++        run_owned(source, [str(compiler), str(source / "installer.iss")], env, work, "inno", 600)
++    finally:
++        delivery.assert_tree(root, prepared["source_tree"])
++    print("컴파일 종료. 별도 package 검증·실제 실행·설치·독립 검토·원격 검증이 필요합니다.")
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("--prepare-only", action="store_true")
++    parser.add_argument("--prepared", type=Path)
++    parser.add_argument("--source-manifest", type=Path)
++    parser.add_argument("--output-root", type=Path, required=True)
++    parser.add_argument("--work-root", type=Path, required=True)
++    parser.add_argument("--iscc", type=Path, required=True)
++    parser.add_argument("--manifest", type=Path)
++    args = parser.parse_args()
++    if args.prepare_only:
++        if args.prepared or args.source_manifest or not args.manifest:
++            parser.error("prepare-only에는 새 외부 --manifest만 지정하세요.")
++        delivery.external_path(ROOT.parent, args.manifest)
++        result = prepare(ROOT, args.output_root, args.work_root, args.iscc)
++        delivery.save_new(args.manifest, result)
++    else:
++        if not args.prepared or not args.source_manifest:
++            parser.error("컴파일에는 --prepared와 --source-manifest가 필요합니다.")
++        compile_prepared(ROOT, delivery.load(args.prepared), delivery.load(args.source_manifest), args.output_root, args.work_root, args.iscc)
++
++
++if __name__ == "__main__":
++    try:
++        main()
++    except (delivery.DeliveryError, OSError, ValueError) as error:
++        raise SystemExit("빌드 중단: " + str(error)) from error
+--- a/소스/document_bridge.py
++++ b/소스/document_bridge.py
+@@ -133,6 +133,21 @@
+         raise failures[0]
+ 
+ 
++def _prepare_hwp_extension(command, env, flags):
++    """유한한 확장 준비 예산 안에서 등록하고 기존 실패·회수 조건을 유지한다."""
++    install = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
++                               stdin=subprocess.DEVNULL, creationflags=flags, env=env)
++    try:
++        # 최초 45초 초과와 실행별 지연 변동을 관측해 준비 예산을 120초로 둔다.
++        stdout, stderr = install.communicate(timeout=120)
++    except subprocess.TimeoutExpired:
++        _stop(install)
++        raise RuntimeError("격리한 HWP 확장 준비 시간이 초과되었습니다.")
++    if install.returncode:
++        raise RuntimeError("격리한 HWP 확장을 준비하지 못했습니다. Java 설치와 LibreOffice 비트수를 확인해 주세요.\n" +
++                           (stderr or stdout).decode("utf-8", "replace")[-600:])
++
++
+ def convert(request):
+     import uno
+     import unohelper
+@@ -174,16 +189,7 @@
+         unopkg = Path(request["office"]).parent / ("unopkg.com" if os.name == "nt" else "unopkg")
+         command = [str(unopkg), f"-env:UserInstallation={profile.as_uri()}",
+                    "add", "--force", "--suppress-license", request["oxt"]]
+-        install = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+-                                   stdin=subprocess.DEVNULL, creationflags=flags, env=env)
+-        try:
+-            stdout, stderr = install.communicate(timeout=45)
+-        except subprocess.TimeoutExpired:
+-            _stop(install)
+-            raise RuntimeError("격리한 HWP 확장 준비 시간이 초과되었습니다.")
+-        if install.returncode:
+-            raise RuntimeError("격리한 HWP 확장을 준비하지 못했습니다. Java 설치와 LibreOffice 비트수를 확인해 주세요.\n" +
+-                               (stderr or stdout).decode("utf-8", "replace")[-600:])
++        _prepare_hwp_extension(command, env, flags)
+ 
+     pipe = "flipring_" + uuid.uuid4().hex
+     listener = f"pipe,name={pipe};urp;StarOffice.ComponentContext"
+--- a/소스/document_formats.py
++++ b/소스/document_formats.py
+@@ -1,253 +1,255 @@
+-"""대표 문서의 읽기·쓰기 방향과 로컬 도우미를 한곳에서 정의한다."""
+-from __future__ import annotations
+-
+-import os
+-from pathlib import Path
+-import shutil
+-import xml.parsers.expat as expat
+-import zipfile
+-
+-
+-DOCUMENT_INPUTS = "hwp hwpx doc docx docm dot dotx dotm odt ott fodt rtf txt md html xhtml epub pages wpd abw sxw stw"
+-PRESENTATION_INPUTS = "ppt pptx pptm pot potx potm pps ppsx ppsm odp otp fodp key"
+-SPREADSHEET_INPUTS = "xls xlsx xlsb xlsm xlt xltx xltm ods ots fods csv tsv dif slk numbers"
+-DOCUMENT_OUTPUTS = "docx doc odt rtf md txt epub html pdf jpg png hwp hwpx"
+-NATIVE_HWP_INPUTS = frozenset({"docx", "txt", "hwp", "hwpx"})
+-PRESENTATION_OUTPUTS = "pptx ppt odp pdf jpg png txt"
+-SPREADSHEET_OUTPUTS = "xlsx xls ods csv tsv pdf html"
+-SIMPLE_TEXT = {"md", "txt", "html", "xhtml", "epub"}
+-OFFICE_DOCUMENTS = set(DOCUMENT_INPUTS.split()) - SIMPLE_TEXT
+-
+-EXPORT_FILTERS = {
+-    "문서": {"docx": "Office Open XML Text", "doc": "MS Word 97", "odt": "writer8",
+-             "rtf": "Rich Text Format", "txt": "Text (encoded)", "html": "HTML (StarWriter)",
+-             "pdf": "writer_pdf_Export", "epub": "EPUB"},
+-    "프레젠테이션": {"pptx": "Impress MS PowerPoint 2007 XML", "ppt": "MS PowerPoint 97",
+-                    "odp": "impress8", "pdf": "impress_pdf_Export"},
+-    "스프레드시트": {"xlsx": "Calc MS Excel 2007 XML", "xls": "MS Excel 97", "ods": "calc8",
+-                    "csv": "Text - txt - csv (StarCalc)", "tsv": "Text - txt - csv (StarCalc)",
+-                    "pdf": "calc_pdf_Export", "html": "HTML (StarCalc)"},
+-}
+-
+-
+-def support_matrix():
+-    """입력 전용 형식과 출력 전용 형식을 혼동하지 않는 정적 안내를 반환한다."""
+-    return [
+-        {"kind": "문서", "inputs": DOCUMENT_INPUTS.split(), "outputs": DOCUMENT_OUTPUTS.split(),
+-         "notes": "DOCX/TXT/HWP5/HWPX에서 HWP/HWPX로 제한 저장합니다. 다른 출력의 HWP 읽기는 LibreOffice·H2Orestart·Java가 필요합니다. 복잡한 개체·보호 문서는 거부하며 매크로는 실행하지 않습니다."},
+-        {"kind": "프레젠테이션", "inputs": PRESENTATION_INPUTS.split(), "outputs": PRESENTATION_OUTPUTS.split(),
+-         "notes": "전용 효과·글꼴·차트는 원본과 다를 수 있습니다. TXT는 슬라이드의 텍스트만 저장합니다."},
+-        {"kind": "스프레드시트", "inputs": SPREADSHEET_INPUTS.split(), "outputs": SPREADSHEET_OUTPUTS.split(),
+-         "notes": "XLSB·매크로·템플릿은 입력 전용입니다. CSV/TSV는 첫 시트이며 수식 대신 표시값을 저장합니다."},
+-    ]
+-
+-
+-def office_python(office_path):
+-    """실제 LibreOffice 설치의 UNO Python만 선택한다."""
+-    if not office_path:
+-        return None
+-    program = Path(office_path).resolve().parent
+-    candidate = program / ("python.exe" if os.name == "nt" else "python")
+-    return str(candidate) if candidate.is_file() else None
+-
+-
+-def java_path():
+-    """설치 상태 표시에서는 프로세스를 실행하지 않고 실제 파일만 찾는다."""
+-    exe = "java.exe" if os.name == "nt" else "java"
+-    roots = [Path(__file__).resolve().parent / "vendor/java"]
+-    if os.environ.get("JAVA_HOME"):
+-        roots.append(Path(os.environ["JAVA_HOME"]))
+-    for root in roots:
+-        if (root / "bin" / exe).is_file():
+-            return str((root / "bin" / exe).resolve())
+-    found = shutil.which(exe)
+-    if found:
+-        return found
+-    if os.name == "nt":
+-        # Java 설치 프로그램의 공인 등록 위치와 앱별 사용자 설치 위치만 살핀다.
+-        import winreg
+-        for hive in (winreg.HKEY_CURRENT_USER, winreg.HKEY_LOCAL_MACHINE):
+-            for key in (r"SOFTWARE\JavaSoft\JRE", r"SOFTWARE\JavaSoft\Java Runtime Environment",
+-                        r"SOFTWARE\JavaSoft\JDK", r"SOFTWARE\JavaSoft\Java Development Kit"):
+-                try:
+-                    with winreg.OpenKey(hive, key) as handle:
+-                        version = winreg.QueryValueEx(handle, "CurrentVersion")[0]
+-                    with winreg.OpenKey(hive, key + "\\" + version) as handle:
+-                        location = Path(winreg.QueryValueEx(handle, "JavaHome")[0])
+-                    if (location / "bin" / exe).is_file():
+-                        return str(location / "bin" / exe)
+-                except OSError:
+-                    continue
+-        local = Path(os.environ.get("LOCALAPPDATA", ""))
+-        for base in (local / "Programs/Eclipse Adoptium", local / "Programs/Java", local / "Programs/FlipRing-Java"):
+-            if base.is_dir():
+-                for candidate in sorted(base.glob("*/bin/java.exe"), reverse=True):
+-                    if candidate.is_file():
+-                        return str(candidate)
+-    return None
+-
+-
+-def hwp_status(office_path):
+-    extension = Path(__file__).resolve().parent / "vendor/h2orestart/H2Orestart.oxt"
+-    java = java_path()
+-    code = ("missing_office" if not office_path else "missing_bridge" if not office_python(office_path)
+-            else "missing_oxt" if not extension.is_file() else "missing_java" if not java else "ready")
+-    messages = {"missing_office": "LibreOffice를 설치해 주세요.",
+-                "missing_bridge": "이 LibreOffice 설치에 UNO Python이 없습니다. 공식 Windows 설치본을 사용해 주세요.",
+-                "missing_oxt": "H2Orestart 확장 파일이 없습니다. 전체 프로그램 폴더를 확인해 주세요.",
+-                "missing_java": "HWP/HWPX를 읽으려면 LibreOffice와 같은 비트수의 Java가 필요합니다.",
+-                "ready": "HWP/HWPX 읽기에 필요한 파일이 있습니다. 실제 문서 호환 여부는 변환 시 검사합니다."}
+-    return {"ready": code == "ready", "code": code, "message": messages[code],
+-            "oxt": str(extension) if extension.is_file() else None, "java": java}
+-
+-
+-def write_secure_profile(profile):
+-    """일회용 프로필에서 능동 콘텐츠를 차단하고 사이드바 초기 생성을 끈다."""
+-    profile = Path(profile)
+-    user = profile / "user"
+-    user.mkdir(parents=True, exist_ok=True)
+-    # 일회용 프로필의 반복 준비를 줄이기 위해 OpenCL을 끈다.
+-    values = [("/org.openoffice.Office.Common/Security/Scripting", "MacroSecurityLevel", "3"),
+-              ("/org.openoffice.Office.Common/Security/Scripting", "DisableMacrosExecution", "true"),
+-              ("/org.openoffice.Office.Common/Security/Scripting", "DisableActiveContent", "true"),
+-              ("/org.openoffice.Office.Common/Security/Scripting", "BlockUntrustedRefererLinks", "true"),
+-              ("/org.openoffice.Office.Common/Load", "UpdateDocMode", "0"),
+-              ("/org.openoffice.Office.Common/Misc", "UseOpenCL", "false")]
+-    body = ['<?xml version="1.0" encoding="UTF-8"?>',
+-            '<oor:items xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema">']
+-    body += [f'<item oor:path="{path}"><prop oor:name="{name}" oor:op="fuse"><value>{value}</value></prop></item>'
+-             for path, name, value in values]
+-    # 새 프로필에서는 이전 창 상태 대신 모듈별 초기 생성 조건을 명시한다.
+-    body.append('<item oor:path="/org.openoffice.Office.Views/Windows">')
+-    for module in ("scalc", "sdraw", "simpress", "smath", "swriter"):
+-        body += [f'<node oor:name="{module}/10336" oor:op="fuse">',
+-                 '<prop oor:name="Visible"><value>false</value></prop>',
+-                 '<node oor:name="UserData"><prop oor:name="Data" oor:type="xs:string" oor:op="fuse"><value></value></prop></node>',
+-                 '</node>']
+-    body.append('</item>')
+-    body.append('</oor:items>')
+-    (user / "registrymodifications.xcu").write_bytes(("\n".join(body) + "\n").encode("utf-8"))
+-
+-
+-def _safe_xml_import(raw, extension):
+-    """인코딩에 관계없이 엔터티를 거부하고 정형 AbiWord DTD만 제거한다."""
+-    parser = expat.ParserCreate()
+-    spans = []
+-
+-    def reject_entity(*_arguments):
+-        raise ValueError("외부 엔터티가 있는 문서는 변환하지 않습니다.")
+-
+-    def doctype(name, system_id, public_id, internal_subset):
+-        allowed = (extension == "abw" and name == "abiword" and not internal_subset
+-                   and public_id == "-//ABISOURCE//DTD AWML 1.0 Strict//EN"
+-                   and system_id == "http://www.abisource.com/awml.dtd")
+-        if not allowed:
+-            reject_entity()
+-        # Expat의 위치는 선언 끝 '>'의 원본 바이트 위치다. UTF-16도 변환하지 않는다.
+-        codec = "utf-16-le" if raw.startswith((b"\xff\xfe", b"<\x00")) else (
+-            "utf-16-be" if raw.startswith((b"\xfe\xff", b"\x00<")) else "ascii")
+-        token, closing = "<!DOCTYPE".encode(codec), ">".encode(codec)
+-        end = parser.CurrentByteIndex
+-        start = raw.rfind(token, 0, end)
+-        if start < 0 or raw[end:end + len(closing)] != closing:
+-            raise ValueError("AbiWord 문서 선언의 위치를 안전하게 확인하지 못했습니다.")
+-        spans.append((start, end + len(closing)))
+-
+-    parser.StartDoctypeDeclHandler = doctype
+-    parser.EntityDeclHandler = reject_entity
+-    parser.ExternalEntityRefHandler = reject_entity
+-    parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_NEVER)
+-    try:
+-        parser.Parse(raw, True)
+-    except expat.ExpatError as exc:
+-        raise ValueError("XML 문서가 손상되었습니다.") from exc
+-    for start, end in reversed(spans):
+-        raw = raw[:start] + raw[end:]
+-    return raw
+-
+-
+-def prepare_import_source(source, extension, profile):
+-    """원본을 보존하며 문서 선언·텍스트 인코딩을 일회용 사본에서 정규화한다."""
+-    source = Path(source)
+-    if extension == "dif":
+-        # 앱의 기존 텍스트 입력 우선순위와 동일하며 시스템 문자집합에 의존하지 않는다.
+-        raw = source.read_bytes()
+-        if raw.startswith((b"\xff\xfe", b"\xfe\xff")):
+-            content = raw.decode("utf-16")
+-        else:
+-            for encoding in ("utf-8-sig", "cp949", "cp1252"):
+-                try:
+-                    content = raw.decode(encoding)
+-                    break
+-                except UnicodeDecodeError:
+-                    continue
+-            else:
+-                raise ValueError("DIF 텍스트 인코딩을 확인해 주세요.")
+-        normalized = content.encode("utf-8")
+-        if normalized == raw:
+-            return source
+-        copied = Path(profile) / "text-import.dif"
+-        with copied.open("xb") as stream:
+-            stream.write(normalized)
+-        return copied
+-    if extension != "abw":
+-        return source
+-    raw = source.read_bytes()
+-    normalized = _safe_xml_import(raw, extension)
+-    if normalized == raw:
+-        return source
+-    copied = Path(profile) / "abiword-import.abw"
+-    with copied.open("xb") as stream:
+-        stream.write(normalized)
+-    return copied
+-
+-
+-def validate_input(source, extension):
+-    """확장자만 바꾼 가짜 문서·깨진 ZIP·암호화 패키지를 조기에 거부한다."""
+-    source = Path(source)
+-    with source.open("rb") as stream:
+-        header = stream.read(32)
+-    if not header:
+-        raise ValueError("비어 있는 문서는 변환할 수 없습니다.")
+-    packages = {"docx": "word/document.xml", "docm": "word/document.xml", "dotx": "word/document.xml",
+-                "dotm": "word/document.xml", "xlsx": "xl/workbook.xml", "xlsm": "xl/workbook.xml",
+-                "xltx": "xl/workbook.xml", "xltm": "xl/workbook.xml", "xlsb": "xl/workbook.bin",
+-                "pptx": "ppt/presentation.xml", "pptm": "ppt/presentation.xml", "potx": "ppt/presentation.xml",
+-                "potm": "ppt/presentation.xml", "ppsx": "ppt/presentation.xml", "ppsm": "ppt/presentation.xml"}
+-    zipped = set(packages) | {"odt", "ott", "ods", "ots", "odp", "otp", "sxw", "stw", "hwpx", "pages", "numbers", "key"}
+-    if extension in zipped:
+-        if header.startswith(b"\xd0\xcf\x11\xe0"):
+-            raise ValueError("암호화된 문서이거나 확장자와 실제 형식이 다릅니다. 암호를 해제한 복사본을 사용해 주세요.")
+-        try:
+-            with zipfile.ZipFile(source) as package:
+-                names = set(package.namelist())
+-                if any(item.flag_bits & 1 for item in package.infolist()):
+-                    raise ValueError("암호화된 ZIP 문서는 지원하지 않습니다.")
+-                if extension in packages and packages[extension] not in names:
+-                    raise ValueError("문서의 필수 본문이 없거나 확장자와 실제 형식이 다릅니다.")
+-                if extension in {"odt", "ott", "ods", "ots", "odp", "otp", "sxw", "stw"} and "content.xml" not in names:
+-                    raise ValueError("OpenDocument 본문이 없습니다.")
+-                if extension == "hwpx" and not any(name.startswith("Contents/section") and name.endswith(".xml") for name in names):
+-                    raise ValueError("HWPX 본문이 없습니다.")
+-                if extension in {"pages", "numbers", "key"} and not any(name.endswith((".iwa", "index.xml", "index.apxl", "index.xml.gz", "index.apxl.gz")) for name in names):
+-                    raise ValueError("지원 가능한 iWork 본문이 없습니다.")
+-                for item in package.infolist():
+-                    if item.filename.startswith("META-INF/") and item.filename.endswith("manifest.xml"):
+-                        if item.file_size > 8 * 1024 * 1024:
+-                            raise ValueError("문서 매니페스트가 비정상적으로 큽니다.")
+-                        if b"encryption-data" in package.read(item):
+-                            raise ValueError("암호화된 OpenDocument는 지원하지 않습니다.")
+-        except zipfile.BadZipFile as exc:
+-            raise ValueError("문서 패키지가 손상되었거나 실제 형식이 다릅니다.") from exc
+-    elif extension in {"doc", "dot", "xls", "xlt", "ppt", "pot", "pps"}:
+-        # 초기 Excel BIFF2/3/4는 OLE 컨테이너를 쓰지 않는다.
+-        old_biff = extension in {"xls", "xlt"} and header[:2] in (b"\x09\x00", b"\x09\x02", b"\x09\x04", b"\x09\x08")
+-        if not header.startswith(b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1") and not old_biff:
+-            raise ValueError("구형 Office 문서의 실제 파일 형식을 확인할 수 없습니다.")
+-    elif extension == "hwp":
+-        if not header.startswith((b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1", b"HWP Document File")):
+-            raise ValueError("HWP 파일의 실제 형식을 확인할 수 없습니다.")
+-    elif extension == "rtf" and not header.lstrip().startswith(b"{\\rtf"):
+-        raise ValueError("RTF 문서의 실제 형식을 확인할 수 없습니다.")
+-    elif extension in {"fodt", "fods", "fodp", "abw"}:
+-        _safe_xml_import(source.read_bytes(), extension)
++"""대표 문서의 읽기·쓰기 방향과 로컬 도우미를 한곳에서 정의한다."""
++from __future__ import annotations
++
++import os
++from pathlib import Path
++import shutil
++import xml.parsers.expat as expat
++import zipfile
++
++
++DOCUMENT_INPUTS = "hwp hwpx doc docx docm dot dotx dotm odt ott fodt rtf txt md html xhtml epub pages wpd abw sxw stw"
++PRESENTATION_INPUTS = "ppt pptx pptm pot potx potm pps ppsx ppsm odp otp fodp key"
++SPREADSHEET_INPUTS = "xls xlsx xlsb xlsm xlt xltx xltm ods ots fods csv tsv dif slk numbers"
++DOCUMENT_OUTPUTS = "docx doc odt rtf md txt epub html pdf jpg png hwp hwpx"
++NATIVE_HWP_INPUTS = frozenset({"docx", "txt", "hwp", "hwpx"})
++PRESENTATION_OUTPUTS = "pptx ppt odp pdf jpg png txt"
++SPREADSHEET_OUTPUTS = "xlsx xls ods csv tsv pdf html"
++SIMPLE_TEXT = {"md", "txt", "html", "xhtml", "epub"}
++OFFICE_DOCUMENTS = set(DOCUMENT_INPUTS.split()) - SIMPLE_TEXT
++
++EXPORT_FILTERS = {
++    "문서": {"docx": "Office Open XML Text", "doc": "MS Word 97", "odt": "writer8",
++             "rtf": "Rich Text Format", "txt": "Text (encoded)", "html": "HTML (StarWriter)",
++             "pdf": "writer_pdf_Export", "epub": "EPUB"},
++    "프레젠테이션": {"pptx": "Impress MS PowerPoint 2007 XML", "ppt": "MS PowerPoint 97",
++                    "odp": "impress8", "pdf": "impress_pdf_Export"},
++    "스프레드시트": {"xlsx": "Calc MS Excel 2007 XML", "xls": "MS Excel 97", "ods": "calc8",
++                    "csv": "Text - txt - csv (StarCalc)", "tsv": "Text - txt - csv (StarCalc)",
++                    "pdf": "calc_pdf_Export", "html": "HTML (StarCalc)"},
++}
++
++
++def support_matrix():
++    """입력 전용 형식과 출력 전용 형식을 혼동하지 않는 정적 안내를 반환한다."""
++    return [
++        {"kind": "문서", "inputs": DOCUMENT_INPUTS.split(), "outputs": DOCUMENT_OUTPUTS.split(),
++         "notes": "DOCX/TXT/HWP5/HWPX에서 HWP/HWPX로 제한 저장합니다. 다른 출력의 HWP 읽기는 LibreOffice·H2Orestart·Java가 필요합니다. 복잡한 개체·보호 문서는 거부하며 매크로는 실행하지 않습니다."},
++        {"kind": "프레젠테이션", "inputs": PRESENTATION_INPUTS.split(), "outputs": PRESENTATION_OUTPUTS.split(),
++         "notes": "전용 효과·글꼴·차트는 원본과 다를 수 있습니다. TXT는 슬라이드의 텍스트만 저장합니다."},
++        {"kind": "스프레드시트", "inputs": SPREADSHEET_INPUTS.split(), "outputs": SPREADSHEET_OUTPUTS.split(),
++         "notes": "XLSB·매크로·템플릿은 입력 전용입니다. CSV/TSV는 첫 시트이며 수식 대신 표시값을 저장합니다."},
++    ]
++
++
++def office_python(office_path):
++    """실제 LibreOffice 설치의 UNO Python만 선택한다."""
++    if not office_path:
++        return None
++    program = Path(office_path).resolve().parent
++    candidate = program / ("python.exe" if os.name == "nt" else "python")
++    return str(candidate) if candidate.is_file() else None
++
++
++def java_path():
++    """설치 상태 표시에서는 프로세스를 실행하지 않고 실제 파일만 찾는다."""
++    from runtime_paths import vendor_path
++    exe = "java.exe" if os.name == "nt" else "java"
++    roots = [vendor_path('java')]
++    if os.environ.get("JAVA_HOME"):
++        roots.append(Path(os.environ["JAVA_HOME"]))
++    for root in roots:
++        if (root / "bin" / exe).is_file():
++            return str((root / "bin" / exe).resolve())
++    found = shutil.which(exe)
++    if found:
++        return found
++    if os.name == "nt":
++        # Java 설치 프로그램의 공인 등록 위치와 앱별 사용자 설치 위치만 살핀다.
++        import winreg
++        for hive in (winreg.HKEY_CURRENT_USER, winreg.HKEY_LOCAL_MACHINE):
++            for key in (r"SOFTWARE\JavaSoft\JRE", r"SOFTWARE\JavaSoft\Java Runtime Environment",
++                        r"SOFTWARE\JavaSoft\JDK", r"SOFTWARE\JavaSoft\Java Development Kit"):
++                try:
++                    with winreg.OpenKey(hive, key) as handle:
++                        version = winreg.QueryValueEx(handle, "CurrentVersion")[0]
++                    with winreg.OpenKey(hive, key + "\\" + version) as handle:
++                        location = Path(winreg.QueryValueEx(handle, "JavaHome")[0])
++                    if (location / "bin" / exe).is_file():
++                        return str(location / "bin" / exe)
++                except OSError:
++                    continue
++        local = Path(os.environ.get("LOCALAPPDATA", ""))
++        for base in (local / "Programs/Eclipse Adoptium", local / "Programs/Java", local / "Programs/FlipRing-Java"):
++            if base.is_dir():
++                for candidate in sorted(base.glob("*/bin/java.exe"), reverse=True):
++                    if candidate.is_file():
++                        return str(candidate)
++    return None
++
++
++def hwp_status(office_path):
++    from runtime_paths import vendor_path
++    extension = vendor_path('h2orestart') / 'H2Orestart.oxt'
++    java = java_path()
++    code = ("missing_office" if not office_path else "missing_bridge" if not office_python(office_path)
++            else "missing_oxt" if not extension.is_file() else "missing_java" if not java else "ready")
++    messages = {"missing_office": "LibreOffice를 설치해 주세요.",
++                "missing_bridge": "이 LibreOffice 설치에 UNO Python이 없습니다. 공식 Windows 설치본을 사용해 주세요.",
++                "missing_oxt": "H2Orestart 확장 파일이 없습니다. 전체 프로그램 폴더를 확인해 주세요.",
++                "missing_java": "HWP/HWPX를 읽으려면 LibreOffice와 같은 비트수의 Java가 필요합니다.",
++                "ready": "HWP/HWPX 읽기에 필요한 파일이 있습니다. 실제 문서 호환 여부는 변환 시 검사합니다."}
++    return {"ready": code == "ready", "code": code, "message": messages[code],
++            "oxt": str(extension) if extension.is_file() else None, "java": java}
++
++
++def write_secure_profile(profile):
++    """일회용 프로필에서 능동 콘텐츠를 차단하고 사이드바 초기 생성을 끈다."""
++    profile = Path(profile)
++    user = profile / "user"
++    user.mkdir(parents=True, exist_ok=True)
++    # 일회용 프로필의 반복 준비를 줄이기 위해 OpenCL을 끈다.
++    values = [("/org.openoffice.Office.Common/Security/Scripting", "MacroSecurityLevel", "3"),
++              ("/org.openoffice.Office.Common/Security/Scripting", "DisableMacrosExecution", "true"),
++              ("/org.openoffice.Office.Common/Security/Scripting", "DisableActiveContent", "true"),
++              ("/org.openoffice.Office.Common/Security/Scripting", "BlockUntrustedRefererLinks", "true"),
++              ("/org.openoffice.Office.Common/Load", "UpdateDocMode", "0"),
++              ("/org.openoffice.Office.Common/Misc", "UseOpenCL", "false")]
++    body = ['<?xml version="1.0" encoding="UTF-8"?>',
++            '<oor:items xmlns:oor="http://openoffice.org/2001/registry" xmlns:xs="http://www.w3.org/2001/XMLSchema">']
++    body += [f'<item oor:path="{path}"><prop oor:name="{name}" oor:op="fuse"><value>{value}</value></prop></item>'
++             for path, name, value in values]
++    # 새 프로필에서는 이전 창 상태 대신 모듈별 초기 생성 조건을 명시한다.
++    body.append('<item oor:path="/org.openoffice.Office.Views/Windows">')
++    for module in ("scalc", "sdraw", "simpress", "smath", "swriter"):
++        body += [f'<node oor:name="{module}/10336" oor:op="fuse">',
++                 '<prop oor:name="Visible"><value>false</value></prop>',
++                 '<node oor:name="UserData"><prop oor:name="Data" oor:type="xs:string" oor:op="fuse"><value></value></prop></node>',
++                 '</node>']
++    body.append('</item>')
++    body.append('</oor:items>')
++    (user / "registrymodifications.xcu").write_bytes(("\n".join(body) + "\n").encode("utf-8"))
++
++
++def _safe_xml_import(raw, extension):
++    """인코딩에 관계없이 엔터티를 거부하고 정형 AbiWord DTD만 제거한다."""
++    parser = expat.ParserCreate()
++    spans = []
++
++    def reject_entity(*_arguments):
++        raise ValueError("외부 엔터티가 있는 문서는 변환하지 않습니다.")
++
++    def doctype(name, system_id, public_id, internal_subset):
++        allowed = (extension == "abw" and name == "abiword" and not internal_subset
++                   and public_id == "-//ABISOURCE//DTD AWML 1.0 Strict//EN"
++                   and system_id == "http://www.abisource.com/awml.dtd")
++        if not allowed:
++            reject_entity()
++        # Expat의 위치는 선언 끝 '>'의 원본 바이트 위치다. UTF-16도 변환하지 않는다.
++        codec = "utf-16-le" if raw.startswith((b"\xff\xfe", b"<\x00")) else (
++            "utf-16-be" if raw.startswith((b"\xfe\xff", b"\x00<")) else "ascii")
++        token, closing = "<!DOCTYPE".encode(codec), ">".encode(codec)
++        end = parser.CurrentByteIndex
++        start = raw.rfind(token, 0, end)
++        if start < 0 or raw[end:end + len(closing)] != closing:
++            raise ValueError("AbiWord 문서 선언의 위치를 안전하게 확인하지 못했습니다.")
++        spans.append((start, end + len(closing)))
++
++    parser.StartDoctypeDeclHandler = doctype
++    parser.EntityDeclHandler = reject_entity
++    parser.ExternalEntityRefHandler = reject_entity
++    parser.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_NEVER)
++    try:
++        parser.Parse(raw, True)
++    except expat.ExpatError as exc:
++        raise ValueError("XML 문서가 손상되었습니다.") from exc
++    for start, end in reversed(spans):
++        raw = raw[:start] + raw[end:]
++    return raw
++
++
++def prepare_import_source(source, extension, profile):
++    """원본을 보존하며 문서 선언·텍스트 인코딩을 일회용 사본에서 정규화한다."""
++    source = Path(source)
++    if extension == "dif":
++        # 앱의 기존 텍스트 입력 우선순위와 동일하며 시스템 문자집합에 의존하지 않는다.
++        raw = source.read_bytes()
++        if raw.startswith((b"\xff\xfe", b"\xfe\xff")):
++            content = raw.decode("utf-16")
++        else:
++            for encoding in ("utf-8-sig", "cp949", "cp1252"):
++                try:
++                    content = raw.decode(encoding)
++                    break
++                except UnicodeDecodeError:
++                    continue
++            else:
++                raise ValueError("DIF 텍스트 인코딩을 확인해 주세요.")
++        normalized = content.encode("utf-8")
++        if normalized == raw:
++            return source
++        copied = Path(profile) / "text-import.dif"
++        with copied.open("xb") as stream:
++            stream.write(normalized)
++        return copied
++    if extension != "abw":
++        return source
++    raw = source.read_bytes()
++    normalized = _safe_xml_import(raw, extension)
++    if normalized == raw:
++        return source
++    copied = Path(profile) / "abiword-import.abw"
++    with copied.open("xb") as stream:
++        stream.write(normalized)
++    return copied
++
++
++def validate_input(source, extension):
++    """확장자만 바꾼 가짜 문서·깨진 ZIP·암호화 패키지를 조기에 거부한다."""
++    source = Path(source)
++    with source.open("rb") as stream:
++        header = stream.read(32)
++    if not header:
++        raise ValueError("비어 있는 문서는 변환할 수 없습니다.")
++    packages = {"docx": "word/document.xml", "docm": "word/document.xml", "dotx": "word/document.xml",
++                "dotm": "word/document.xml", "xlsx": "xl/workbook.xml", "xlsm": "xl/workbook.xml",
++                "xltx": "xl/workbook.xml", "xltm": "xl/workbook.xml", "xlsb": "xl/workbook.bin",
++                "pptx": "ppt/presentation.xml", "pptm": "ppt/presentation.xml", "potx": "ppt/presentation.xml",
++                "potm": "ppt/presentation.xml", "ppsx": "ppt/presentation.xml", "ppsm": "ppt/presentation.xml"}
++    zipped = set(packages) | {"odt", "ott", "ods", "ots", "odp", "otp", "sxw", "stw", "hwpx", "pages", "numbers", "key"}
++    if extension in zipped:
++        if header.startswith(b"\xd0\xcf\x11\xe0"):
++            raise ValueError("암호화된 문서이거나 확장자와 실제 형식이 다릅니다. 암호를 해제한 복사본을 사용해 주세요.")
++        try:
++            with zipfile.ZipFile(source) as package:
++                names = set(package.namelist())
++                if any(item.flag_bits & 1 for item in package.infolist()):
++                    raise ValueError("암호화된 ZIP 문서는 지원하지 않습니다.")
++                if extension in packages and packages[extension] not in names:
++                    raise ValueError("문서의 필수 본문이 없거나 확장자와 실제 형식이 다릅니다.")
++                if extension in {"odt", "ott", "ods", "ots", "odp", "otp", "sxw", "stw"} and "content.xml" not in names:
++                    raise ValueError("OpenDocument 본문이 없습니다.")
++                if extension == "hwpx" and not any(name.startswith("Contents/section") and name.endswith(".xml") for name in names):
++                    raise ValueError("HWPX 본문이 없습니다.")
++                if extension in {"pages", "numbers", "key"} and not any(name.endswith((".iwa", "index.xml", "index.apxl", "index.xml.gz", "index.apxl.gz")) for name in names):
++                    raise ValueError("지원 가능한 iWork 본문이 없습니다.")
++                for item in package.infolist():
++                    if item.filename.startswith("META-INF/") and item.filename.endswith("manifest.xml"):
++                        if item.file_size > 8 * 1024 * 1024:
++                            raise ValueError("문서 매니페스트가 비정상적으로 큽니다.")
++                        if b"encryption-data" in package.read(item):
++                            raise ValueError("암호화된 OpenDocument는 지원하지 않습니다.")
++        except zipfile.BadZipFile as exc:
++            raise ValueError("문서 패키지가 손상되었거나 실제 형식이 다릅니다.") from exc
++    elif extension in {"doc", "dot", "xls", "xlt", "ppt", "pot", "pps"}:
++        # 초기 Excel BIFF2/3/4는 OLE 컨테이너를 쓰지 않는다.
++        old_biff = extension in {"xls", "xlt"} and header[:2] in (b"\x09\x00", b"\x09\x02", b"\x09\x04", b"\x09\x08")
++        if not header.startswith(b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1") and not old_biff:
++            raise ValueError("구형 Office 문서의 실제 파일 형식을 확인할 수 없습니다.")
++    elif extension == "hwp":
++        if not header.startswith((b"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1", b"HWP Document File")):
++            raise ValueError("HWP 파일의 실제 형식을 확인할 수 없습니다.")
++    elif extension == "rtf" and not header.lstrip().startswith(b"{\\rtf"):
++        raise ValueError("RTF 문서의 실제 형식을 확인할 수 없습니다.")
++    elif extension in {"fodt", "fods", "fodp", "abw"}:
++        _safe_xml_import(source.read_bytes(), extension)
+--- a/소스/engine.py
++++ b/소스/engine.py
+@@ -10,6 +10,7 @@
+ import json
+ import os
+ from pathlib import Path
++from runtime_paths import vendor_path
+ import re
+ import shutil
+ import subprocess
+@@ -242,7 +243,7 @@
+ 
+ def rar_tools():
+     """번들의 두 실행 구성 요소를 확인하고 정상 외부 도구 경로도 찾는다."""
+-    vendor = Path(__file__).resolve().parent / 'vendor/7zip'
++    vendor = vendor_path('7zip')
+     bundle = str(vendor / '7z.exe') if all((vendor / name).is_file() for name in ('7z.exe', '7z.dll')) else None
+     installed = Path(os.environ.get('ProgramFiles', 'C:/Program Files')) / '7-Zip/7z.exe'
+     return {'bundle': bundle, 'unrar': shutil.which('unrar'), 'unar': shutil.which('unar'),
+--- a/소스/installer.iss
++++ b/소스/installer.iss
+@@ -2,7 +2,7 @@
+ [Setup]
+ AppId=PUVKID.FlipRing19
+ AppName=FlipRing
+-AppVersion=1.13.0
++AppVersion=1.14.0
+ AppPublisher=PUVKID
+ DefaultDirName={localappdata}\Programs\FlipRing19
+ DefaultGroupName=FlipRing
+--- a/소스/licenses/Astryx/Astryx-MIT-LICENSE.txt
++++ b/소스/licenses/Astryx/Astryx-MIT-LICENSE.txt
+@@ -0,0 +1,21 @@
++MIT License
++
++Copyright (c) 2026 Meta Platforms, Inc.
++
++Permission is hereby granted, free of charge, to any person obtaining a copy
++of this software and associated documentation files (the "Software"), to deal
++in the Software without restriction, including without limitation the rights
++to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++copies of the Software, and to permit persons to whom the Software is
++furnished to do so, subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in all
++copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
++SOFTWARE.
+--- a/소스/licenses/Astryx/Rust-표준라이브러리-저작권.html
++++ b/소스/licenses/Astryx/Rust-표준라이브러리-저작권.html
+@@ -0,0 +1,29630 @@
++<!DOCTYPE html>
++<html>
++<head>
++    <meta charset="UTF-8">
++    <title>Copyright notices for The Rust Standard Library</title>
++</head>
++<body>
++
++<h1>Copyright notices for The Rust Standard Library</h1>
++
++<h2>Table of Contents</h2>
++<ul>
++    <li><a href="#short-version">Short version for non-lawyers</a></li>
++    <li><a href="#longer-version">Longer version</a></li>
++    <li><a href="#in-tree-files">In-tree files</a></li>
++    <li><a href="#out-of-tree-dependencies">Out-of-tree dependencies</a></li>
++</ul>
++
++<h2 id="short-version">Short version for non-lawyers</h2>
++
++The Rust Standard Library is dual-licensed under Apache 2.0 and MIT terms.
++
++<h2 id="longer-version">Longer version</h2>
++
++<p>Copyrights in the Rust Standard Library are retained by their contributors. No copyright assignment is required to contribute to the Rust project.</p>
++
++<p>Some files include explicit copyright notices and/or license notices. For full authorship information, see the version control history or <a href="https://thanks.rust-lang.org">https://thanks.rust-lang.org</a>.</p>
++
++<p>Except as otherwise noted (below and/or in individual files), the Rust Standard Library is licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a> or the <a href="http://opensource.org/licenses/MIT">MIT</a> license, at your option.</p>
++
++<p>This file describes the copyright and licensing information for the source code within The Rust Project git tree related to the Rust Standard Library, and the third-party dependencies used when building the Rust Standard Library.</p>
++
++<h2 id="in-tree-files">In-tree files</h2>
++
++<p>The following licenses cover the in-tree source files that were used in this release:</p>
++
++
++
++
++
++
++<div style="border:1px solid black; padding: 5px;">
++
++    <p>
++    <b>File/Directory:</b> <code>.</code>
++    </p>
++
++    
++
++    <p><b>License:</b> Apache-2.0 OR MIT</p>
++    
++    <p><b>Copyright:</b> The Rust Project Developers (see https://thanks.rust-lang.org)</p>
++    
++
++    
++
++    
++
++    <p><b>Exceptions:</b></p>
++    
++    
++
++<div style="border:1px solid black; padding: 5px;">
++
++    <p>
++    <b>File/Directory:</b> <code>library/core/src/unicode</code>
++    </p>
++
++    
++
++    <p><b>License:</b> Unicode-3.0</p>
++    
++    <p><b>Copyright:</b> 1991-2024 Unicode, Inc</p>
++    
++
++    
++
++    
++
++    <p><b>Exceptions:</b></p>
++    
++    
++
++<div style="border:1px solid black; padding: 5px;">
++    <p>
++    <b>File/Directory:</b> <code>mod.rs</code>
++    </p>
++
++    <p><b>License:</b> Apache-2.0 OR MIT</p>
++    
++    <p><b>Copyright:</b> The Rust Project Developers (see https://thanks.rust-lang.org)</p>
++    
++</div>
++
++
++    
++
++    
++
++</div>
++
++
++    
++    
++
++<div style="border:1px solid black; padding: 5px;">
++
++    <p>
++        <b>File/Directory:</b>
++        
++        
++    </p>
++
++    <p><b>License:</b> Apache-2.0 WITH LLVM-exception AND (Apache-2.0 OR MIT)</p>
++    
++    <p><b>Copyright:</b> 2003-2019 University of Illinois at Urbana-Champaign</p>
++    
++    <p><b>Copyright:</b> The Rust Project Developers (see https://thanks.rust-lang.org)</p>
++    
++
++</div>
++
++
++    
++    
++
++<div style="border:1px solid black; padding: 5px;">
++
++    <p>
++    <b>File/Directory:</b> <code>library/backtrace</code>
++    </p>
++
++    
++
++    <p><b>License:</b> Apache-2.0 OR MIT</p>
++    
++    <p><b>Copyright:</b> 2014 Alex Crichton</p>
++    
++    <p><b>Copyright:</b> The Rust Project Developers (see https://thanks.rust-lang.org)</p>
++    
++
++    
++
++    
++
++</div>
++
++
++    
++    
++
++<div style="border:1px solid black; padding: 5px;">
++
++    <p>
++    <b>File/Directory:</b> <code>library/std/src/sync/mpmc</code>
++    </p>
++
++    
++
++    <p><b>License:</b> Apache-2.0 OR MIT</p>
++    
++    <p><b>Copyright:</b> 2019 The Crossbeam Project Developers</p>
++    
++    <p><b>Copyright:</b> The Rust Project Developers (see https://thanks.rust-lang.org)</p>
++    
++
++    
++
++    
++
++</div>
++
++
++    
++    
++
++<div style="border:1px solid black; padding: 5px;">
++    <p>
++    <b>File/Directory:</b> <code>library/std/src/sys/sync/mutex/fuchsia.rs</code>
++    </p>
++
++    <p><b>License:</b> BSD-2-Clause AND (Apache-2.0 OR MIT)</p>
++    
++    <p><b>Copyright:</b> 2016 The Fuchsia Authors</p>
++    
++    <p><b>Copyright:</b> The Rust Project Developers (see https://thanks.rust-lang.org)</p>
++    
++</div>
++
++
++    
++
++    
++
++</div>
++
++
++
++
++
++
++<h2 id="out-of-tree-dependencies">Out-of-tree dependencies</h2>
++
++<p>The following licenses cover the out-of-tree crates that were used in the
++Rust Standard Library in this release:</p>
++
++
++    <h3>📦 aho-corasick-1.1.4</h3>
++    <p><b>URL:</b> <a href="https://crates.io/crates/aho-corasick/1.1.4">https://crates.io/crates/aho-corasick/1.1.4</a></p>
++    <p><b>Authors:</b> Andrew Gallant &#60;jamslam@gmail.com&#62;</p>
++    <p><b>License:</b> Unlicense OR MIT</p>
++    
++    
++        <p><b>Notices:</b>
++        
++            <details>
++                <summary><code>LICENSE-MIT</code></summary>
++                <pre>
++The MIT License (MIT)
++
++Copyright (c) 2015 Andrew Gallant
++
++Permission is hereby granted, free of charge, to any person obtaining a copy
++of this software and associated documentation files (the &#34;Software&#34;), to deal
++in the Software without restriction, including without limitation the rights
++to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++copies of the Software, and to permit persons to whom the Software is
++furnished to do so, subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in
++all copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED &#34;AS IS&#34;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
++THE SOFTWARE.
++
++                </pre>
++            </details>
++        
++            <details>
++                <summary><code>UNLICENSE</code></summary>
++                <pre>
++This is free and unencumbered software released into the public domain.
++
++Anyone is free to copy, modify, publish, use, compile, sell, or
++distribute this software, either in source code form or as a compiled
++binary, for any purpose, commercial or non-commercial, and by any
++means.
++
++In jurisdictions that recognize copyright laws, the author or authors
++of this software dedicate any and all copyright interest in the
++software to the public domain. We make this dedication for the benefit
++of the public at large and to the detriment of our heirs and
++successors. We intend this dedication to be an overt act of
++relinquishment in perpetuity of all present and future rights to this
++software under copyright law.
++
++THE SOFTWARE IS PROVIDED &#34;AS IS&#34;, WITHOUT WARRANTY OF ANY KIND,
++EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
++IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
++OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++OTHER DEALINGS IN THE SOFTWARE.
++
++For more information, please refer to &#60;http://unlicense.org/&#62;
++
++                </pre>
++            </details>
++        
++        </p>
++    
++
++    <h3>📦 anstream-1.0.0</h3>
++    <p><b>URL:</b> <a href="https://crates.io/crates/anstream/1.0.0">https://crates.io/crates/anstream/1.0.0</a></p>
++    <p><b>Authors:</b> </p>
++    <p><b>License:</b> MIT OR Apache-2.0</p>
++    
++    
++        <p><b>Notices:</b>
++        
++            <details>
++                <summary><code>LICENSE-APACHE</code></summary>
++                <pre>
++                                 Apache License
++                           Version 2.0, January 2004
++                        http://www.apache.org/licenses/
++
++   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
++
++   1. Definitions.
++
++      &#34;License&#34; shall mean the terms and conditions for use, reproduction,
++      and distribution as defined by Sections 1 through 9 of this document.
++
++      &#34;Licensor&#34; shall mean the copyright owner or entity authorized by
++      the copyright owner that is granting the License.
++
++      &#34;Legal Entity&#34; shall mean the union of the acting entity and all
++      other entities that control, are controlled by, or are under common
++      control with that entity. For the purposes of this definition,
++      &#34;control&#34; means (i) the power, direct or indirect, to cause the
++      direction or management of such entity, whether by contract or
++      otherwise, or (ii) ownership of fifty percent (50%) or more of the
++      outstanding shares, or (iii) beneficial ownership of such entity.
++
++      &#34;You&#34; (or &#34;Your&#34;) shall mean an individual or Legal Entity
++      exercising permissions granted by this License.
++
++      &#34;Source&#34; form shall mean the preferred form for making modifications,
++      including but not limited to software source code, documentation
++      source, and configuration files.
++
++      &#34;Object&#34; form shall mean any form resulting from mechanical
++      transformation or translation of a Source form, including but
++      not limited to compiled object code, generated documentation,
++      and conversions to other media types.
++
++      &#34;Work&#34; shall mean the work of authorship, whether in Source or
++      Object form, made available under the License, as indicated by a
++      copyright notice that is included in or attached to the work
++      (an example is provided in the Appendix below).
++
++      &#34;Derivative Works&#34; shall mean any work, whether in Source or Object
++      form, that is based on (or derived from) the Work and for which the
++      editorial revisions, annotations, elaborations, or other modifications
++      represent, as a whole, an original work of authorship. For the purposes
++      of this License, Derivative Works shall not include works that remain
++      separable from, or merely link (or bind by name) to the interfaces of,
++      the Work and Derivative Works thereof.
++
++      &#34;Contribution&#34; shall mean any work of authorship, including
++      the original version of the Work and any modifications or additions
++      to that Work or Derivative Works thereof, that is intentionally
++      submitted to Licensor for inclusion in the Work by the copyright owner
++      or by an individual or Legal Entity authorized to submit on behalf of
++      the copyright owner. For the purposes of this definition, &#34;submitted&#34;
++      means any form of electronic, verbal, or written communication sent
++      to the Licensor or its representatives, including but not limited to
++      communication on electronic mailing lists, source code control systems,
++      and issue tracking systems that are managed by, or on behalf of, the
++      Licensor for the purpose of discussing and improving the Work, but
++      excluding communication that is conspicuously marked or otherwise
++      designated in writing by the copyright owner as &#34;Not a Contribution.&#34;
++
++      &#34;Contributor&#34; shall mean Licensor and any individual or Legal Entity
++      on behalf of whom a Contribution has been received by Licensor and
++      subsequently incorporated within the Work.
++
++   2. Grant of Copyright License. Subject to the terms and conditions of
++      this License, each Contributor hereby grants to You a perpetual,
++      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
++      copyright license to reproduce, prepare Derivative Works of,
++      publicly display, publicly perform, sublicense, and distribute the
++      Work and such Derivative Works in Source or Object form.
++
++   3. Grant of Patent License. Subject to the terms and conditions of
++      this License, each Contributor hereby grants to You a perpetual,
++      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
++      (except as stated in this section) patent license to make, have made,
++      use, offer to sell, sell, import, and otherwise transfer the Work,
++      where such license applies only to those patent claims licensable
++      by such Contributor that are necessarily infringed by their
++      Contribution(s) alone or by combination of their Contribution(s)
++      with the Work to which such Contribution(s) was submitted. If You
++      institute patent litigation against any entity (including a
++      cross-claim or counterclaim in a lawsuit) alleging that the Work
++      or a Contribution incorporated within the Work constitutes direct
++      or contributory patent infringement, then any patent licenses
++      granted to You under this License for that Work shall terminate
++      as of the date such litigation is filed.
++
++   4. Redistribution. You may reproduce and distribute copies of the
++      Work or Derivative Works thereof in any medium, with or without
++      modifications, and in Source or Object form, provided that You
++      meet the following conditions:
++
++      (a) You must give any other recipients of the Work or
++          Derivative Works a copy of this License; and
++
++      (b) You must cause any modified files to carry prominent notices
++          stating that You changed the files; and
++
++      (c) You must retain, in the Source form of any Derivative Works
++          that You distribute, all copyright, patent, trademark, and
++          attribution notices from the Source form of the Work,
++          excluding those notices that do not pertain to any part of
++          the Derivative Works; and
++
++      (d) If the Work includes a &#34;NOTICE&#34; text file as part of its
++          distribution, then any Derivative Works that You distribute must
++          include a readable copy of the attribution notices contained
++          within such NOTICE file, excluding those notices that do not
++          pertain to any part of the Derivative Works, in at least one
++          of the following places: within a NOTICE text file distributed
++          as part of the Derivative Works; within the Source form or
++          documentation, if provided along with the Derivative Works; or,
++          within a display generated by the Derivative Works, if and
++          wherever such third-party notices normally appear. The contents
++          of the NOTICE file are for informational purposes only and
++          do not modify the License. You may add Your own attribution
++          notices within Derivative Works that You distribute, alongside
++          or as an addendum to the NOTICE text from the Work, provided
++          that such additional attribution notices cannot be construed
++          as modifying the License.
++
++      You may add Your own copyright statement to Your modifications and
++      may provide additional or different license terms and conditions
++      for use, reproduction, or distribution of Your modifications, or
++      for any such Derivative Works as a whole, provided Your use,
++      reproduction, and distribution of the Work otherwise complies with
++      the conditions stated in this License.
++
++   5. Submission of Contributions. Unless You explicitly state otherwise,
++      any Contribution intentionally submitted for inclusion in the Work
++      by You to the Licensor shall be under the terms and conditions of
++      this License, without any additional terms or conditions.
++      Notwithstanding the above, nothing herein shall supersede or modify
++      the terms of any separate license agreement you may have executed
++      with Licensor regarding such Contributions.
++
++   6. Trademarks. This License does not grant permission to use the trade
++      names, trademarks, service marks, or product names of the Licensor,
++      except as required for reasonable and customary use in describing the
++      origin of the Work and reproducing the content of the NOTICE file.
++
++   7. Disclaimer of Warranty. Unless required by applicable law or
++      agreed to in writing, Licensor provides the Work (and each
++      Contributor provides its Contributions) on an &#34;AS IS&#34; BASIS,
++      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
++      implied, including, without limitation, any warranties or conditions
++      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
++      PARTICULAR PURPOSE. You are solely responsible for determining the
++      appropriateness of using or redistributing the Work and assume any
++      risks associated with Your exercise of permissions under this License.
++
++   8. Limitation of Liability. In no event and under no legal theory,
++      whether in tort (including negligence), contract, or otherwise,
++      unless required by applicable law (such as deliberate and grossly
++      negligent acts) or agreed to in writing, shall any Contributor be
++      liable to You for damages, including any direct, indirect, special,
++      incidental, or consequential damages of any character arising as a
++      result of this License or out of the use or inability to use the
++      Work (including but not limited to damages for loss of goodwill,
++      work stoppage, computer failure or malfunction, or any and all
++      other commercial damages or losses), even if such Contributor
++      has been advised of the possibility of such damages.
++
++   9. Accepting Warranty or Additional Liability. While redistributing
++      the Work or Derivative Works thereof, You may choose to offer,
++      and charge a fee for, acceptance of support, warranty, indemnity,
++      or other liability obligations and/or rights consistent with this
++      License. However, in accepting such obligations, You may act only
++      on Your own behalf and on Your sole responsibility, not on behalf
++      of any other Contributor, and only if You agree to indemnify,
++      defend, and hold each Contributor harmless for any liability
++      incurred by, or claims asserted against, such Contributor by reason
++      of your accepting any such warranty or additional liability.
++
++   END OF TERMS AND CONDITIONS
++
++   APPENDIX: How to apply the Apache License to your work.
++
++      To apply the Apache License to your work, attach the following
++      boilerplate notice, with the fields enclosed by brackets &#34;{}&#34;
++      replaced with your own identifying information. (Don&#39;t include
++      the brackets!)  The text should be enclosed in the appropriate
++      comment syntax for the file format. We also recommend that a
++      file or class name and description of purpose be included on the
++      same &#34;printed page&#34; as the copyright notice for easier
++      identification within third-party archives.
++
++   Copyright {yyyy} {name of copyright owner}
++
++   Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
++   you may not use this file except in compliance with the License.
++   You may obtain a copy of the License at
++
++       http://www.apache.org/licenses/LICENSE-2.0
++
++   Unless required by applicable law or agreed to in writing, software
++   distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
++   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++   See the License for the specific language governing permissions and
++   limitations under the License.
++
++
++                </pre>
++            </details>
++        
++            <details>
++                <summary><code>LICENSE-MIT</code></summary>
++                <pre>
++Copyright (c) Individual contributors
++
++Permission is hereby granted, free of charge, to any person obtaining a copy
++of this software and associated documentation files (the &#34;Software&#34;), to deal
++in the Software without restriction, including without limitation the rights
++to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++copies of the Software, and to permit persons to whom the Software is
++furnished to do so, subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in all
++copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED &#34;AS IS&#34;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
++SOFTWARE.
++
++                </pre>
++            </details>
++        
++        </p>
++    
++
++    <h3>📦 anstyle-1.0.14</h3>
++    <p><b>URL:</b> <a href="https://crates.io/crates/anstyle/1.0.14">https://crates.io/crates/anstyle/1.0.14</a></p>
++    <p><b>Authors:</b> </p>
++    <p><b>License:</b> MIT OR Apache-2.0</p>
++    
++    
++        <p><b>Notices:</b>
++        
++            <details>
++                <summary><code>LICENSE-APACHE</code></summary>
++                <pre>
++                                 Apache License
++                           Version 2.0, January 2004
++                        http://www.apache.org/licenses/
++
++   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
++
++   1. Definitions.
++
++      &#34;License&#34; shall mean the terms and conditions for use, reproduction,
++      and distribution as defined by Sections 1 through 9 of this document.
++
++      &#34;Licensor&#34; shall mean the copyright owner or entity authorized by
++      the copyright owner that is granting the License.
++
++      &#34;Legal Entity&#34; shall mean the union of the acting entity and all
++      other entities that control, are controlled by, or are under common
++      control with that entity. For the purposes of this definition,
++      &#34;control&#34; means (i) the power, direct or indirect, to cause the
++      direction or management of such entity, whether by contract or
++      otherwise, or (ii) ownership of fifty percent (50%) or more of the
++      outstanding shares, or (iii) beneficial ownership of such entity.
++
++      &#34;You&#34; (or &#34;Your&#34;) shall mean an individual or Legal Entity
++      exercising permissions granted by this License.
++
++      &#34;Source&#34; form shall mean the preferred form for making modifications,
++      including but not limited to software source code, documentation
++      source, and configuration files.
++
++      &#34;Object&#34; form shall mean any form resulting from mechanical
++      transformation or translation of a Source form, including but
++      not limited to compiled object code, generated documentation,
++      and conversions to other media types.
++
++      &#34;Work&#34; shall mean the work of authorship, whether in Source or
++      Object form, made available under the License, as indicated by a
++      copyright notice that is included in or attached to the work
++      (an example is provided in the Appendix below).
++
++      &#34;Derivative Works&#34; shall mean any work, whether in Source or Object
++      form, that is based on (or derived from) the Work and for which the
++      editorial revisions, annotations, elaborations, or other modifications
++      represent, as a whole, an original work of authorship. For the purposes
++      of this License, Derivative Works shall not include works that remain
++      separable from, or merely link (or bind by name) to the interfaces of,
++      the Work and Derivative Works thereof.
++
++      &#34;Contribution&#34; shall mean any work of authorship, including
++      the original version of the Work and any modifications or additions
++      to that Work or Derivative Works thereof, that is intentionally
++      submitted to Licensor for inclusion in the Work by the copyright owner
++      or by an individual or Legal Entity authorized to submit on behalf of
++      the copyright owner. For the purposes of this definition, &#34;submitted&#34;
++      means any form of electronic, verbal, or written communication sent
++      to the Licensor or its representatives, including but not limited to
++      communication on electronic mailing lists, source code control systems,
++      and issue tracking systems that are managed by, or on behalf of, the
++      Licensor for the purpose of discussing and improving the Work, but
++      excluding communication that is conspicuously marked or otherwise
++      designated in writing by the copyright owner as &#34;Not a Contribution.&#34;
++
++      &#34;Contributor&#34; shall mean Licensor and any individual or Legal Entity
++      on behalf of whom a Contribution has been received by Licensor and
++      subsequently incorporated within the Work.
++
++   2. Grant of Copyright License. Subject to the terms and conditions of
++      this License, each Contributor hereby grants to You a perpetual,
++      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
++      copyright license to reproduce, prepare Derivative Works of,
++      publicly display, publicly perform, sublicense, and distribute the
++      Work and such Derivative Works in Source or Object form.
++
++   3. Grant of Patent License. Subject to the terms and conditions of
++      this License, each Contributor hereby grants to You a perpetual,
++      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
++      (except as stated in this section) patent license to make, have made,
++      use, offer to sell, sell, import, and otherwise transfer the Work,
++      where such license applies only to those patent claims licensable
++      by such Contributor that are necessarily infringed by their
++      Contribution(s) alone or by combination of their Contribution(s)
++      with the Work to which such Contribution(s) was submitted. If You
++      institute patent litigation against any entity (including a
++      cross-claim or counterclaim in a lawsuit) alleging that the Work
++      or a Contribution incorporated within the Work constitutes direct
++      or contributory patent infringement, then any patent licenses
++      granted to You under this License for that Work shall terminate
++      as of the date such litigation is filed.
++
++   4. Redistribution. You may reproduce and distribute copies of the
++      Work or Derivative Works thereof in any medium, with or without
++      modifications, and in Source or Object form, provided that You
++      meet the following conditions:
++
++      (a) You must give any other recipients of the Work or
++          Derivative Works a copy of this License; and
++
++      (b) You must cause any modified files to carry prominent notices
++          stating that You changed the files; and
++
++      (c) You must retain, in the Source form of any Derivative Works
++          that You distribute, all copyright, patent, trademark, and
++          attribution notices from the Source form of the Work,
++          excluding those notices that do not pertain to any part of
++          the Derivative Works; and
++
++      (d) If the Work includes a &#34;NOTICE&#34; text file as part of its
++          distribution, then any Derivative Works that You distribute must
++          include a readable copy of the attribution notices contained
++          within such NOTICE file, excluding those notices that do not
++          pertain to any part of the Derivative Works, in at least one
++          of the following places: within a NOTICE text file distributed
++          as part of the Derivative Works; within the Source form or
++          documentation, if provided along with the Derivative Works; or,
++          within a display generated by the Derivative Works, if and
++          wherever such third-party notices normally appear. The contents
++          of the NOTICE file are for informational purposes only and
++          do not modify the License. You may add Your own attribution
++          notices within Derivative Works that You distribute, alongside
++          or as an addendum to the NOTICE text from the Work, provided
++          that such additional attribution notices cannot be construed
++          as modifying the License.
++
++      You may add Your own copyright statement to Your modifications and
++      may provide additional or different license terms and conditions
++      for use, reproduction, or distribution of Your modifications, or
++      for any such Derivative Works as a whole, provided Your use,
++      reproduction, and distribution of the Work otherwise complies with
++      the conditions stated in this License.
++
++   5. Submission of Contributions. Unless You explicitly state otherwise,
++      any Contribution intentionally submitted for inclusion in the Work
++      by You to the Licensor shall be under the terms and conditions of
++      this License, without any additional terms or conditions.
++      Notwithstanding the above, nothing herein shall supersede or modify
++      the terms of any separate license agreement you may have executed
++      with Licensor regarding such Contributions.
++
++   6. Trademarks. This License does not grant permission to use the trade
++      names, trademarks, service marks, or product names of the Licensor,
++      except as required for reasonable and customary use in describing the
++      origin of the Work and reproducing the content of the NOTICE file.
++
++   7. Disclaimer of Warranty. Unless required by applicable law or
++      agreed to in writing, Licensor provides the Work (and each
++      Contributor provides its Contributions) on an &#34;AS IS&#34; BASIS,
++      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
++      implied, including, without limitation, any warranties or conditions
++      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
++      PARTICULAR PURPOSE. You are solely responsible for determining the
++      appropriateness of using or redistributing the Work and assume any
++      risks associated with Your exercise of permissions under this License.
++
++   8. Limitation of Liability. In no event and under no legal theory,
++      whether in tort (including negligence), contract, or otherwise,
++      unless required by applicable law (such as deliberate and grossly
++      negligent acts) or agreed to in writing, shall any Contributor be
++      liable to You for damages, including any direct, indirect, special,
++      incidental, or consequential damages of any character arising as a
++      result of this License or out of the use or inability to use the
++      Work (including but not limited to damages for loss of goodwill,
++      work stoppage, computer failure or malfunction, or any and all
++      other commercial damages or losses), even if such Contributor
++      has been advised of the possibility of such damages.
++
++   9. Accepting Warranty or Additional Liability. While redistributing
++      the Work or Derivative Works thereof, You may choose to offer,
++      and charge a fee for, acceptance of support, warranty, indemnity,
++      or other liability obligations and/or rights consistent with this
++      License. However, in accepting such obligations, You may act only
++      on Your own behalf and on Your sole responsibility, not on behalf
++      of any other Contributor, and only if You agree to indemnify,
++      defend, and hold each Contributor harmless for any liability
++      incurred by, or claims asserted against, such Contributor by reason
++      of your accepting any such warranty or additional liability.
++
++   END OF TERMS AND CONDITIONS
++
++   APPENDIX: How to apply the Apache License to your work.
++
++      To apply the Apache License to your work, attach the following
++      boilerplate notice, with the fields enclosed by brackets &#34;{}&#34;
++      replaced with your own identifying information. (Don&#39;t include
++      the brackets!)  The text should be enclosed in the appropriate
++      comment syntax for the file format. We also recommend that a
++      file or class name and description of purpose be included on the
++      same &#34;printed page&#34; as the copyright notice for easier
++      identification within third-party archives.
++
++   Copyright {yyyy} {name of copyright owner}
++
++   Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
++   you may not use this file except in compliance with the License.
++   You may obtain a copy of the License at
++
++       http://www.apache.org/licenses/LICENSE-2.0
++
++   Unless required by applicable law or agreed to in writing, software
++   distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
++   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++   See the License for the specific language governing permissions and
++   limitations under the License.
++
++
++                </pre>
++            </details>
++        
++            <details>
++                <summary><code>LICENSE-MIT</code></summary>
++                <pre>
++Copyright (c) Individual contributors
++
++Permission is hereby granted, free of charge, to any person obtaining a copy
++of this software and associated documentation files (the &#34;Software&#34;), to deal
++in the Software without restriction, including without limitation the rights
++to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++copies of the Software, and to permit persons to whom the Software is
++furnished to do so, subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in all
++copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED &#34;AS IS&#34;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
++SOFTWARE.
++
++                </pre>
++            </details>
++        
++        </p>
++    
++
++    <h3>📦 anstyle-parse-1.0.0</h3>
++    <p><b>URL:</b> <a href="https://crates.io/crates/anstyle-parse/1.0.0">https://crates.io/crates/anstyle-parse/1.0.0</a></p>
++    <p><b>Authors:</b> </p>
++    <p><b>License:</b> MIT OR Apache-2.0</p>
++    
++    
++        <p><b>Notices:</b>
++        
++            <details>
++                <summary><code>LICENSE-APACHE</code></summary>
++                <pre>
++                                 Apache License
++                           Version 2.0, January 2004
++                        http://www.apache.org/licenses/
++
++   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
++
++   1. Definitions.
++
++      &#34;License&#34; shall mean the terms and conditions for use, reproduction,
++      and distribution as defined by Sections 1 through 9 of this document.
++
++      &#34;Licensor&#34; shall mean the copyright owner or entity authorized by
++      the copyright owner that is granting the License.
++
++      &#34;Legal Entity&#34; shall mean the union of the acting entity and all
++      other entities that control, are controlled by, or are under common
++      control with that entity. For the purposes of this definition,
++      &#34;control&#34; means (i) the power, direct or indirect, to cause the
++      direction or management of such entity, whether by contract or
++      otherwise, or (ii) ownership of fifty percent (50%) or more of the
++      outstanding shares, or (iii) beneficial ownership of such entity.
++
++      &#34;You&#34; (or &#34;Your&#34;) shall mean an individual or Legal Entity
++      exercising permissions granted by this License.
++
++      &#34;Source&#34; form shall mean the preferred form for making modifications,
++      including but not limited to software source code, documentation
++      source, and configuration files.
++
++      &#34;Object&#34; form shall mean any form resulting from mechanical
++      transformation or translation of a Source form, including but
++      not limited to compiled object code, generated documentation,
++      and conversions to other media types.
++
++      &#34;Work&#34; shall mean the work of authorship, whether in Source or
++      Object form, made available under the License, as indicated by a
++      copyright notice that is included in or attached to the work
++      (an example is provided in the Appendix below).
++
++      &#34;Derivative Works&#34; shall mean any work, whether in Source or Object
++      form, that is based on (or derived from) the Work and for which the
++      editorial revisions, annotations, elaborations, or other modifications
++      represent, as a whole, an original work of authorship. For the purposes
++      of this License, Derivative Works shall not include works that remain
++      separable from, or merely link (or bind by name) to the interfaces of,
++      the Work and Derivative Works thereof.
++
++      &#34;Contribution&#34; shall mean any work of authorship, including
++      the original version of the Work and any modifications or additions
++      to that Work or Derivative Works thereof, that is intentionally
++      submitted to Licensor for inclusion in the Work by the copyright owner
++      or by an individual or Legal Entity authorized to submit on behalf of
++      the copyright owner. For the purposes of this definition, &#34;submitted&#34;
++      means any form of electronic, verbal, or written communication sent
++      to the Licensor or its representatives, including but not limited to
++      communication on electronic mailing lists, source code control systems,
++      and issue tracking systems that are managed by, or on behalf of, the
++      Licensor for the purpose of discussing and improving the Work, but
++      excluding communication that is conspicuously marked or otherwise
++      designated in writing by the copyright owner as &#34;Not a Contribution.&#34;
++
++      &#34;Contributor&#34; shall mean Licensor and any individual or Legal Entity
++      on behalf of whom a Contribution has been received by Licensor and
++      subsequently incorporated within the Work.
++
++   2. Grant of Copyright License. Subject to the terms and conditions of
++      this License, each Contributor hereby grants to You a perpetual,
++      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
++      copyright license to reproduce, prepare Derivative Works of,
++      publicly display, publicly perform, sublicense, and distribute the
++      Work and such Derivative Works in Source or Object form.
++
++   3. Grant of Patent License. Subject to the terms and conditions of
++      this License, each Contributor hereby grants to You a perpetual,
++      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
++      (except as stated in this section) patent license to make, have made,
++      use, offer to sell, sell, import, and otherwise transfer the Work,
++      where such license applies only to those patent claims licensable
++      by such Contributor that are necessarily infringed by their
++      Contribution(s) alone or by combination of their Contribution(s)
++      with the Work to which such Contribution(s) was submitted. If You
++      institute patent litigation against any entity (including a
++      cross-claim or counterclaim in a lawsuit) alleging that the Work
++      or a Contribution incorporated within the Work constitutes direct
++      or contributory patent infringement, then any patent licenses
++      granted to You under this License for that Work shall terminate
++      as of the date such litigation is filed.
++
++   4. Redistribution. You may reproduce and distribute copies of the
++      Work or Derivative Works thereof in any medium, with or without
++      modifications, and in Source or Object form, provided that You
++      meet the following conditions:
++
++      (a) You must give any other recipients of the Work or
++          Derivative Works a copy of this License; and
++
++      (b) You must cause any modified files to carry prominent notices
++          stating that You changed the files; and
++
++      (c) You must retain, in the Source form of any Derivative Works
++          that You distribute, all copyright, patent, trademark, and
++          attribution notices from the Source form of the Work,
++          excluding those notices that do not pertain to any part of
++          the Derivative Works; and
++
++      (d) If the Work includes a &#34;NOTICE&#34; text file as part of its
++          distribution, then any Derivative Works that You distribute must
++          include a readable copy of the attribution notices contained
++          within such NOTICE file, excluding those notices that do not
++          pertain to any part of the Derivative Works, in at least one
++          of the following places: within a NOTICE text file distributed
++          as part of the Derivative Works; within the Source form or
++          documentation, if provided along with the Derivative Works; or,
++          within a display generated by the Derivative Works, if and
++          wherever such third-party notices normally appear. The contents
++          of the NOTICE file are for informational purposes only and
++          do not modify the License. You may add Your own attribution
++          notices within Derivative Works that You distribute, alongside
++          or as an addendum to the NOTICE text from the Work, provided
++          that such additional attribution notices cannot be construed
++          as modifying the License.
++
++      You may add Your own copyright statement to Your modifications and
++      may provide additional or different license terms and conditions
++      for use, reproduction, or distribution of Your modifications, or
++      for any such Derivative Works as a whole, provided Your use,
++      reproduction, and distribution of the Work otherwise complies with
++      the conditions stated in this License.
++
++   5. Submission of Contributions. Unless You explicitly state otherwise,
++      any Contribution intentionally submitted for inclusion in the Work
++      by You to the Licensor shall be under the terms and conditions of
++      this License, without any additional terms or conditions.
++      Notwithstanding the above, nothing herein shall supersede or modify
++      the terms of any separate license agreement you may have executed
++      with Licensor regarding such Contributions.
++
++   6. Trademarks. This License does not grant permission to use the trade
++      names, trademarks, service marks, or product names of the Licensor,
++      except as required for reasonable and customary use in describing the
++      origin of the Work and reproducing the content of the NOTICE file.
++
++   7. Disclaimer of Warranty. Unless required by applicable law or
++      agreed to in writing, Licensor provides the Work (and each
++      Contributor provides its Contributions) on an &#34;AS IS&#34; BASIS,
++      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
++      implied, including, without limitation, any warranties or conditions
++      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
++      PARTICULAR PURPOSE. You are solely responsible for determining the
++      appropriateness of using or redistributing the Work and assume any
++      risks associated with Your exercise of permissions under this License.
++
++   8. Limitation of Liability. In no event and under no legal theory,
++      whether in tort (including negligence), contract, or otherwise,
++      unless required by applicable law (such as deliberate and grossly
++      negligent acts) or agreed to in writing, shall any Contributor be
++      liable to You for damages, including any direct, indirect, special,
++      incidental, or consequential damages of any character arising as a
++      result of this License or out of the use or inability to use the
++      Work (including but not limited to damages for loss of goodwill,
++      work stoppage, computer failure or malfunction, or any and all
++      other commercial damages or losses), even if such Contributor
++      has been advised of the possibility of such damages.
++
++   9. Accepting Warranty or Additional Liability. While redistributing
++      the Work or Derivative Works thereof, You may choose to offer,
++      and charge a fee for, acceptance of support, warranty, indemnity,
++      or other liability obligations and/or rights consistent with this
++      License. However, in accepting such obligations, You may act only
++      on Your own behalf and on Your sole responsibility, not on behalf
++      of any other Contributor, and only if You agree to indemnify,
++      defend, and hold each Contributor harmless for any liability
++      incurred by, or claims asserted against, such Contributor by reason
++      of your accepting any such warranty or additional liability.
++
++   END OF TERMS AND CONDITIONS
++
++   APPENDIX: How to apply the Apache License to your work.
++
++      To apply the Apache License to your work, attach the following
++      boilerplate notice, with the fields enclosed by brackets &#34;{}&#34;
++      replaced with your own identifying information. (Don&#39;t include
++      the brackets!)  The text should be enclosed in the appropriate
++      comment syntax for the file format. We also recommend that a
++      file or class name and description of purpose be included on the
++      same &#34;printed page&#34; as the copyright notice for easier
++      identification within third-party archives.
++
++   Copyright {yyyy} {name of copyright owner}
++
++   Licensed under the Apache License, Version 2.0 (the &#34;License&#34;);
++   you may not use this file except in compliance with the License.
++   You may obtain a copy of the License at
++
++       http://www.apache.org/licenses/LICENSE-2.0
++
++   Unless required by applicable law or agreed to in writing, software
++   distributed under the License is distributed on an &#34;AS IS&#34; BASIS,
++   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++   See the License for the specific language governing permissions and
++   limitations under the License.
++
++
++                </pre>
++            </details>
++        
++            <details>
++                <summary><code>LICENSE-MIT</code></summary>
++                <pre>
++Copyright (c) Individual contributors
++
++Permission is hereby granted, free of charge, to any person obtaining a copy
++of this software and associated documentation files (the &#34;Software&#34;), to deal
++in the Software without restriction, including without limitation the rights
++to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++copies of the Software, and to permit persons to whom the Software is
++furnished to do so, subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in all
++copies or substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED &#34;AS IS&#34;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
++AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
++SOFTWARE.
++
++                </pre>
++            </details>
++        
++        </p>
++    
++
++    <h3>📦 anstyle-query-1.1.5</h3>
++    <p><b>URL:</b> <a href="https://crates.io/crates/anstyle-query/1.1.5">https://crates.io/crates/anstyle-query/1.1.5</a></p>
++    <p><b>Authors:</b> </p>
++    <p><b>License:</b> MIT OR Apache-2.0</p>
++    
++    
++        <p><b>Notices:</b>
++        
++            <details>
++                <summary><code>LICENSE-APACHE</code></summary>
++                <pre>
++                                 Apache License
++                           Version 2.0, January 2004
++                        http://www.apache.org/licenses/
++
++   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
++
++   1. Definitions.
++
++      &#34;License&#34; shall mean the terms and conditions for use, reproduction,
++      and distribution as defined by Sections 1 through 9 of this document.
++
++      &#34;Licensor&#34; shall mean the copyright owner or entity authorized by
++      the copyright owner that is granting the License.
++
++      &#34;Legal Entity&#34; shall mean the union of the acting entity and all
++      other entities that control, are controlled by, or are under common
++      control with that entity. For the purposes of this definition,
++      &#34;control&#34; means (i) the power, direct or indirect, to cause the
++      direction or management of such entity, whether by contract or
++      otherwise, or (ii) ownership of fifty percent (50%) or more of the
++      outstanding shares, or (iii) beneficial ownership of such entity.
++
++      &#34;You&#34; (or &#34;Your&#34;) shall mean an individual or Legal Entity
++      exercising permissions granted by this License.
++
++      &#34;Source&#34; form shall mean the preferred form for making modifications,
++      including but not limited to software source code, documentation
++      source, and configuration files.
++
++      &#34;Object&#34; form shall mean any form resulting from mechanical
++      transformation or translation of a Source form, including but
++      not limited to compiled object code, generated documentation,
++      and conversions to other media types.
++
++      &#34;Work&#34; shall mean the work of authorship, whether in Source or
++      Object form, made available under the License, as indicated by a
++      copyright notice that is included in or attached to the work
++      (an example is provided in the Appendix below).
++
++      &#34;Derivative Works&#34; shall mean any work, whether in Source or Object

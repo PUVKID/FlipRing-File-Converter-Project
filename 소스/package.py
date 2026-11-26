@@ -111,6 +111,14 @@ def main():
     required += [directory / "vendor/java/bin/java.exe" for directory in (root, program / "_internal")]
     required += [directory / "licenses/Temurin17" / name for directory in (root, program)
                  for name in ("출하목록.json", "OpenJDK17U-jdk-sources_17.0.21_9.tar.gz")]
+    # Rust 실행부와 재빌드 원문을 소스·실행 묶음 양쪽에서 확인합니다.
+    required += [root / name for name in (
+        'astryx_theme.py', 'runtime_paths.py', 'rust/astryx-theme/Cargo.toml',
+        'rust/astryx-theme/Cargo.lock', 'rust/astryx-theme/src/main.rs',
+    )]
+    required += [directory / 'vendor/astryx/astryx-theme.exe' for directory in (root, program / '_internal')]
+    required += [directory / 'licenses/Astryx' / name for directory in (root, program)
+                 for name in ('Astryx-MIT-LICENSE.txt', '읽어주세요.md', '출하목록.json')]
     missing = [str(path) for path in required if not resolved_file(path).is_file()]
     if missing:
         raise SystemExit("배포에 필요한 파일이 없습니다: " + ", ".join(missing))

@@ -1,0 +1,12 @@
+{
+  "name": "python-hwpx",
+  "version": "6.12.0",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/airmang/python-hwpx",
+  "distribution": "https://pypi.org/project/python-hwpx/6.12.0/",
+  "source_filename": "python_hwpx-6.12.0.tar.gz",
+  "source_bytes": 1904791,
+  "source_sha256": "cad4b8cbdc4036762a1abf9c862196d7c281cb71233f90b53fe50ca93d66ef17",
+  "wheel_sha256": "948d3701d6688cd442e0224772535cc890e41658d144c569af1d3509e628d157",
+  "scope": "무료 로컬 변환, HWP5 출력 실험적; 한컴·oracle 자동 실행 없음"
+}
