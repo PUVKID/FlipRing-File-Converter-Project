@@ -302,6 +302,45 @@
       "self_index": false
     },
     {
+      "path": "docs/상세자료/현행소스_475b25f3/본문_01.md",
+      "change": "modified",
+      "before": {
+        "bytes": 186495,
+        "sha256": "5ff322a77986153e07e74cfe96360060ee8f0f79a73c2b4f14f8d0d3e8371a19"
+      },
+      "after": {
+        "bytes": 186525,
+        "sha256": "19ad9675827f7d28190818435da3224e4babc7a0e9bed59e57ca9a432c96b4c4"
+      },
+      "self_index": false
+    },
+    {
+      "path": "docs/상세자료/현행소스_475b25f3/본문_02.md",
+      "change": "modified",
+      "before": {
+        "bytes": 185403,
+        "sha256": "2ca901e824c1dc8e1051a6458a37bf1ac897fa787574baab299548dc99469d40"
+      },
+      "after": {
+        "bytes": 185433,
+        "sha256": "c81f1f8dd32a1d0c4bda351e07d359e935c8a8a0374a5e3585119d7498c273a4"
+      },
+      "self_index": false
+    },
+    {
+      "path": "docs/상세자료/현행소스_475b25f3/본문_03.md",
+      "change": "modified",
+      "before": {
+        "bytes": 144005,
+        "sha256": "1aaf3cb8b093d4c87e3d56f56dc1d4515b9dc0b351e78ae42c43581ac89a8782"
+      },
+      "after": {
+        "bytes": 144020,
+        "sha256": "081483cd9f1fa8e9eab1662e4f439e1a023606787d90f574e2b07c4710ed6bff"
+      },
+      "self_index": false
+    },
+    {
       "path": "docs/읽기안내/레벨1.md",
       "change": "modified",
       "before": {
@@ -376,6 +415,16 @@
       "after": {
         "bytes": 42042,
         "sha256": "b27695bf7869485880ad5667fe077527d5815608934ca5926085fb5a2e70aaf3"
+      },
+      "self_index": false
+    },
+    {
+      "path": "history/1.14.0/검사도구/HWP그림경계검사1121.py",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 8322,
+        "sha256": "da65cfb2c7cdf6264e9b5ac8c1d4efcfa3c6c94079a96a92c84aeffbf0ab5c76"
       },
       "self_index": false
     },
