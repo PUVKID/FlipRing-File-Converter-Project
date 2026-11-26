@@ -1,0 +1,18 @@
+{
+  "korean_time": "2026-10-21T01:44:40.733044+09:00",
+  "argv": [
+    "소스\\licenses\\OCR\\ubuntu-gcc\\download_one.py",
+    "https://deb.debian.org/debian/pool/main/g/gcc-14/gcc-14_14.2.0-19.debian.tar.xz",
+    "gcc-14_14.2.0-19.debian.tar.xz",
+    "31cbab4bafa48aa1c540497bd8098cbcf98e673778f927651ed944709f687781"
+  ],
+  "url": "https://deb.debian.org/debian/pool/main/g/gcc-14/gcc-14_14.2.0-19.debian.tar.xz",
+  "destination": "소스/licenses/OCR/ubuntu-gcc/gcc-14_14.2.0-19.debian.tar.xz",
+  "final_url": "https://deb.debian.org/debian/pool/main/g/gcc-14/gcc-14_14.2.0-19.debian.tar.xz",
+  "content_type": "application/x-xz",
+  "status": "success",
+  "size": 2577016,
+  "sha256": "31cbab4bafa48aa1c540497bd8098cbcf98e673778f927651ed944709f687781",
+  "changed": true,
+  "exit_code": 0
+}

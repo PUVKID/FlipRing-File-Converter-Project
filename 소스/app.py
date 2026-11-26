@@ -50,7 +50,7 @@ from ui_motion import (make_file_dialog, install_surface_motions, pulse_widget, 
                        install_motion_system, SURFACE_STYLE, MotionMessageBox, decorate_message)
 
 VERSION = 3
-RELEASE_VERSION = "1.14.0"
+RELEASE_VERSION = "1.15.0"
 APPNAME = "플립링"
 AUTOSTART_NAME = "FlipRing19"
 DATA = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "PUVKID" / "FlipRing19"
@@ -1089,6 +1089,8 @@ class MainWindow(QMainWindow):
         self.timer.start(30)
         self.refresh_tools()
         self.refresh_history()
+        from clarity_ui import ClarityController
+        self.clarity = ClarityController(self)
         self.apply_style()
         self.theme.changed.connect(self.theme_updated)
         install_button_motions(self)
@@ -1197,7 +1199,6 @@ class MainWindow(QMainWindow):
             for entry in self.jobs:
                 state = self.text('job_' + entry['state'])
                 summary = f"{Path(entry['source']).name}  ·  {entry['format'].upper()}  ·  {state}"
-                if entry['error']: summary += ' · ' + error_text(self.language, entry['error'])[:100]
                 item = QListWidgetItem(summary)
                 report = entry.get('check')
                 detail = error_text(self.language, entry['error']) if entry['error'] else entry['output']
@@ -1219,6 +1220,8 @@ class MainWindow(QMainWindow):
             self.choose_button.style().unpolish(self.choose_button)
             self.choose_button.style().polish(self.choose_button)
             self.choose_button.update()
+        if hasattr(self, 'clarity'):
+            self.clarity.selection_changed()
 
     def preview_selection(self, *unused):
         index = self.queue_list.currentRow()
@@ -1383,6 +1386,8 @@ class MainWindow(QMainWindow):
         self.preview_selection()
         self.preset_toggle.setText(self.text('preset_hide' if self.preset_toggle.isChecked() else 'preset_show'))
         self.document_support_toggle.setText(self.text('support_hide' if self.document_support_toggle.isChecked() else 'support_show'))
+        if hasattr(self, 'clarity'):
+            self.clarity.set_language()
 
     def update_record_label(self):
         key = "record_wait" if self.recording else "recorded" if self.recorded_key is not None else "record"
@@ -1399,7 +1404,8 @@ class MainWindow(QMainWindow):
             self.tray.setToolTip(self.app_name())
         elif self.last_result is not None:
             output, error = self.last_result
-            self.status.setText(self.text("failed_status", error=error_text(self.language, error)[:90]) if error
+            from recovery import explain_failure
+            self.status.setText(self.text("failed_status", error=explain_failure(error, self.language).title) if error
                                 else self.text("done_status", name=Path(output).name))
             self.tray.setToolTip(self.app_name())
         else:
@@ -1460,6 +1466,8 @@ class MainWindow(QMainWindow):
         self.install_cancel.setVisible(busy)
         for key, button in self.install_buttons.items():
             button.setEnabled(not busy and not bool(self._tool_paths.get(key)))
+        if hasattr(self, 'clarity'):
+            self.clarity.refresh()
         self.update_tray_menu(refresh=False)
 
     def render_install_status(self):
@@ -1483,7 +1491,9 @@ class MainWindow(QMainWindow):
 
     def work_busy(self):
         return bool(self.pending or self.pdf_panel.is_busy() or self.workspace_panel.is_busy()
+                    or self.installer.is_busy()
                     or self.quick_actions_panel.is_busy()
+                    or getattr(getattr(self, 'conversion_preview', None), 'is_busy', lambda: False)()
                     or any(dialog.is_busy() for dialog in getattr(self, 'delivery_dialogs', [])))
 
     def open_delivery_tools(self):
@@ -1560,6 +1570,8 @@ class MainWindow(QMainWindow):
         # 따옴표로 감싼 절대 경로는 한글·공백이 있는 소스/배포 경로에서도 유지된다.
         arrow = engine.asset("combo-chevron.svg").as_posix()
         style += '\nQComboBox::down-arrow {image:url("' + arrow + '");width:12px;height:8px;}'
+        from clarity_ui import CLARITY_STYLE
+        style += CLARITY_STYLE
         self.setStyleSheet(style)
         self.tray_menu.setStyleSheet(style)
         self.tray_menu.setStyleSheet(style + SURFACE_STYLE)
@@ -1705,7 +1717,6 @@ class MainWindow(QMainWindow):
         try:
             if dialog.exec() == QFileDialog.Accepted:
                 self.set_files(dialog.selectedFiles())
-                self.preview()
         finally:
             dialog.deleteLater()
 
@@ -1714,7 +1725,6 @@ class MainWindow(QMainWindow):
         try:
             if dialog.exec() == QFileDialog.Accepted:
                 self.set_files(dialog.selectedFiles())
-                self.preview()
         finally:
             dialog.deleteLater()
 
@@ -1761,7 +1771,6 @@ class MainWindow(QMainWindow):
 
     def receive_files(self, paths):
         self.set_files(paths)
-        self.preview()
 
     def dragEnterEvent(self, event):
         if event.possibleActions() & Qt.CopyAction and file_urls(event.mimeData()):
@@ -1779,7 +1788,6 @@ class MainWindow(QMainWindow):
             return
         Wheel._accept_copy(event)
         self.set_files(paths)
-        self.preview()
 
     def preview(self):
         if not self.paths or not engine.targets(self.paths):
@@ -1895,6 +1903,8 @@ class MainWindow(QMainWindow):
         self.refresh_history()
         self.last_result = (output, error)
         if error:
+            if hasattr(self, 'clarity'):
+                self.clarity.show_error(error, source)
             self.notify(self.text("failed_title"), f"{Path(source).name}\n{error_text(self.language, error)}")
         else:
             self.notify(self.text("done_title"), Path(output).name)

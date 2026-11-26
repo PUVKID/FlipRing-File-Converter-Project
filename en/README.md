@@ -29,6 +29,12 @@
 A Windows app for file conversion, PDF editing, and OCR in one screen.
 
 <!-- project-levels:start -->
+## 1.15.0 · simpler screens and actual conversion previews
+
+Four main destinations and a More tools menu reduce the initial information density. Preview converts one temporary copy (up to 128 MiB) with the same engine, reports actual output bytes and format-loss warnings, and offers a matching recovery action on failure. Existing formats, PDF/OCR, Korean/English, and light/dark/system themes remain available. The 60-second preview limit requests cancellation; temporary files remain until the worker finishes.
+
+[Version details](../docs/versions/1.15.0.md) · [Source](../history/1.15.0/소스/) · [Full comparison](../docs/revision-audit/1.15.0.md) · [Actual deployment checks](../docs/1.15.0_배포확인.md)
+
 ## 1.14.0 · consistent spacing and a Rust theme engine
 
 Keeps the existing conversion, PDF, OCR, and history workflows while refining spacing, typography, and control states. A bundled Rust program generates Qt styles at startup and when the theme changes. Source-level Qt checks, actual font checks, icon contrast, and an HWPX-to-PDF sample are documented separately from testing the new executable and installer. The new executable was rebuilt with PyInstaller, and Windows 1.14.0 was freshly installed: all 1,232 distributed installed files matched their build hashes. Actual GUI JPG-to-PNG and installed-app HWPX-to-DOCX conversion preserved the originals; the complete test-document text matched. Hover feedback is quieter, stays inside each cell, and stops after immediate pointer exit. A one-time simultaneous crash of the compiler and app was followed by successful standalone compilation, startup, installation and conversion; its initial cause remains unconfirmed. Physical Explorer Shift-drag was not rerun for this installed build.

@@ -1,0 +1,206 @@
+{
+  "scope": "1.14.0 고정 커밋의 현재 루트 소스 전체 → 1.15.0 현재 루트 소스 전체, 주석·공백·개행 보존",
+  "files": [
+    {
+      "path": "소스/1.15-사용안내.md",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 3802,
+        "sha256": "bb35106047aeff5660c0587f5a5913b95115e1f2ee23abee9564f4b9442c32c2"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/1.8-화면안내.md",
+      "change": "modified",
+      "before": {
+        "bytes": 1751,
+        "sha256": "b08abe4d74580dcfaed7fff960d81b77205751480612cdfea45469045e7925e1"
+      },
+      "after": {
+        "bytes": 1749,
+        "sha256": "88f4e73699691b5afe8b67a61c54544598ff37362cc4d9498f1c670bf0054bf2"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/app.py",
+      "change": "modified",
+      "before": {
+        "bytes": 101639,
+        "sha256": "1aff87124664eed6a53fb3fa7382ed59498f9bd00570e8278736e9ddb2a58ae1"
+      },
+      "after": {
+        "bytes": 102142,
+        "sha256": "90e634c4229fb320960a9e91fffe5318b9492026a966f8120cb7f03e8a8ef5b1"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/build.py",
+      "change": "modified",
+      "before": {
+        "bytes": 20836,
+        "sha256": "da78fb6990821a3e7230c336d6fdcff6829ac2d2f3c1666c4647fd47f84f1fe8"
+      },
+      "after": {
+        "bytes": 20836,
+        "sha256": "83525e0de97d3e3a75c40997bc982b22168d471188d5dbc07d8a17dac6fa43d2"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/clarity_ui.py",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 10804,
+        "sha256": "d82fa10ffb9ca99e7e28345b48a10cbc5fe6b193476ba4178390537b41e2c29f"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/conversion_preview.py",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 5245,
+        "sha256": "7eeaf3c293a520054a3309d695378db526594a8275f4551fc92fdc08a300ffe6"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/installer.iss",
+      "change": "modified",
+      "before": {
+        "bytes": 1222,
+        "sha256": "aaa640fd339cc7933691844cc81d6cdbb05b99544c99d26f469c5cc9c882c37f"
+      },
+      "after": {
+        "bytes": 1222,
+        "sha256": "c1110b4c347f1be46a43b4f91c0ca77f66804c310f03e73a0a49eda797719cc4"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/preview_dialog.py",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 6182,
+        "sha256": "fabbb2c36cacdc40632b508a591e7f03f5306285a661d40fd234f60b2f5b8b85"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/recovery.py",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 4570,
+        "sha256": "8f3d75341cf1768a57b86ed07c7bc99dae97fef83ddef6b9ee64fa5533d2dad9"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/test_clarity115.py",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 4094,
+        "sha256": "711b4c8180439a00d6459a34b9fab83eed2965227a574a603696217f81de5d98"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/test_clarity_ui115.py",
+      "change": "added",
+      "before": null,
+      "after": {
+        "bytes": 4877,
+        "sha256": "e14d6b39837cd8c58d510bcaaa88f4d8cd8cdffd41338a7cfc7fdb98debc2fae"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/ui_motion.py",
+      "change": "modified",
+      "before": {
+        "bytes": 41941,
+        "sha256": "aa13574a60c6cec56317caa70b1c336680aa55a4cffff25846f9368d7dd395ba"
+      },
+      "after": {
+        "bytes": 42224,
+        "sha256": "b84ba58a284cb12bfd794efb431169163098a1f497319b231831fe424c3df675"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/version-info.txt",
+      "change": "modified",
+      "before": {
+        "bytes": 519,
+        "sha256": "29651d47f2a916dd086228bb7ce88af9af73cde5c4fe84167bd49e04ee4fad14"
+      },
+      "after": {
+        "bytes": 519,
+        "sha256": "2802b540dc8e2196e90d0ad25bc802bcc6e299f6576c936232792b382c87e7bd"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/배포구성.json",
+      "change": "modified",
+      "before": {
+        "bytes": 68273,
+        "sha256": "3ef3ef43513393d8d5a6ae9bebf6bd3de473b75003e43eb0fd3d544c557d5f5f"
+      },
+      "after": {
+        "bytes": 68506,
+        "sha256": "11690e8b1cf1c1ffd29bef4bed8b827f13bc01fccff368412b6b7695ea2e007a"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/배포빌드.py",
+      "change": "modified",
+      "before": {
+        "bytes": 16721,
+        "sha256": "7c05d61b204155f8e5e76b64893a59f2d6873358fcd2dbe86ccd71f09b598d1e"
+      },
+      "after": {
+        "bytes": 16721,
+        "sha256": "6f40509bdd19947815f0e545572207946a7f5b917c12e15b88d29bbe725d1d49"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    },
+    {
+      "path": "소스/빌드방법.md",
+      "change": "modified",
+      "before": {
+        "bytes": 37408,
+        "sha256": "f097ad38287b933892fe6f672379677810bdf486e3a1d2e129e5fbbcf2197f44"
+      },
+      "after": {
+        "bytes": 37406,
+        "sha256": "4fa629d1bf261207f4b2b35cb7a27a3e4c975d00d00cbb43ae168cba084f3717"
+      },
+      "representation": "utf8-unified-diff-preserved-line-endings"
+    }
+  ],
+  "parts": [
+    {
+      "path": "part-001.patch",
+      "bytes": 58827,
+      "sha256": "f925a0e28e82d3c9dec89b590f9f7268df102cbab7c75e25cb9163e1acd6cdcb"
+    }
+  ],
+  "joined": {
+    "bytes": 58827,
+    "sha256": "f925a0e28e82d3c9dec89b590f9f7268df102cbab7c75e25cb9163e1acd6cdcb"
+  },
+  "changed": 16,
+  "before_files": 738,
+  "after_files": 745
+}

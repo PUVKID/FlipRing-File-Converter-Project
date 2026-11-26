@@ -29,6 +29,12 @@
 파일 변환과 PDF 편집·OCR을 한 화면에서 처리하는 Windows 앱입니다.
 
 <!-- project-levels:start -->
+## 1.15.0 · 간단한 화면과 실제 결과 미리보기
+
+자주 쓰는 네 메뉴와 파일 선택→형식→미리보기→실행 순서로 정리했습니다. 실제 임시 변환 결과의 용량·손실 경고를 확인하고, 실패하면 원인에 맞는 해결 버튼을 사용합니다. 한국어·영어와 라이트·다크·시스템 테마, 기존 변환·PDF·OCR·빠른 작업은 유지합니다.
+
+[차수 설명](docs/versions/1.15.0.md) · [소스](history/1.15.0/소스/) · [직전 전체 비교](docs/revision-audit/1.15.0.md) · [사용·제한](docs/1.15-사용안내.md) · [실제 배포 확인](docs/1.15.0_배포확인.md)
+
 ## 1.14.0 · 화면 간격과 Rust 테마 엔진
 
 기존 작업 흐름을 유지하면서 내부 화면의 간격·글꼴·조작 상태를 통일합니다. 앱 기동과 테마 변경에서 Rust가 현재 팔레트의 Qt 스타일을 생성합니다. 두 테마의 Qt 소스 검사와 설정 저장을 확인했으며, 마우스 진입 강조를 낮추고 즉시 이탈 시 중지하도록 보완했습니다. Windows 재설치와 실제 이미지·문서 변환을 확인했습니다. [확인 범위와 남은 제한](docs/1.14.0_배포확인.md)을 함께 안내합니다.
@@ -471,6 +477,7 @@ Windows 글꼴·운영 체제 API와 선택한 기능의 실행 파일이 필요
 | 1.12.0 | [폴더](history/1.12.0/) | [설명](docs/versions/1.12.0.md)<br>[전체 비교](docs/revision-audit/1.12.0.md) |
 | 1.13.0 | [폴더](history/1.13.0/) | [설명](docs/versions/1.13.0.md)<br>[전체 비교](docs/revision-audit/1.13.0-직전비교.md) |
 | 1.14.0 | [폴더](history/1.14.0/) | [설명](docs/versions/1.14.0.md)<br>[전체 비교](docs/revision-audit/1.14.0.md) |
+| 1.15.0 | [폴더](history/1.15.0/) | [설명](docs/versions/1.15.0.md) · [전체 비교](docs/revision-audit/1.15.0.md) |
 | 1.12.1 | [폴더](history/1.12.1/) | [설명](docs/versions/1.12.1.md)<br>[전체 비교](docs/revision-audit/1.12.1.md) |
 | 최종 | [폴더](소스/) | [설명](docs/versions/최종.md)<br>[전체 비교](docs/revision-audit/최종.md) |
 | 현행소스 | 원격 726 기준: [자료 폴더](%EC%86%8C%EC%8A%A4)<br>현재 후보: [폴더](소스/) | 원격 726 기준: [상세 설명](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md)<br>현재 후보: [설명](docs/revision-audit/현행소스.md)<br>원격 726 기준: [전체 비교·범위](docs/revision-audit/%ED%98%84%ED%96%89%EC%86%8C%EC%8A%A4.md)<br>현재 후보: [전체 비교](docs/revision-audit/현행소스.md) |
@@ -514,3 +521,4 @@ HWP 5 문서와 HWPX의 실제 검사 범위, 지원하지 않는 초기 Excel 2
 ### 차수별 화면과 검증 이미지
 
 [원문 이미지·차수별 출처·파일 해시](docs/IMAGE_MATERIALS.md)에서 화면과 합성 테스트 입력을 확인할 수 있습니다.
+

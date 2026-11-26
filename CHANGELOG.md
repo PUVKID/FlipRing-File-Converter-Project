@@ -150,3 +150,7 @@ HWP·HWPX의 PDF·Word 등 기존 읽기 변환과 Office 문서 변환에는 Li
 ## 2026-11-02 · 1.9.0 작업 공간 확장
 
 [실제 변경과 검사 결과](docs/versions/1.9.0.md) · [주석·공백 포함 전체 비교](docs/revision-audit/1.9.0.md)
+
+## 1.15.0
+
+기본 네 메뉴와 접힌 부가 기능, 실제 결과 미리보기와 용량·손실 안내, 원인별 해결 버튼을 추가했습니다. [차수 상세](docs/versions/1.15.0.md) · [전체 비교](docs/revision-audit/1.15.0.md)

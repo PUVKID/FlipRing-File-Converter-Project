@@ -1,0 +1,105 @@
+{
+  "project": "H2Orestart",
+  "base_version": "v0.8.0",
+  "local_patch": "flipring-fullbounds1",
+  "modified": true,
+  "change": "원본 전체 그림 범위일 때만 파괴적 픽셀 자르기 분기를 생략합니다. 실제 부분 자르기 산식은 유지합니다.",
+  "upstream_source": {
+    "file": "H2Orestart-v0.8.0-source.tar.gz",
+    "bytes": 757464,
+    "sha256": "24c143bb442cd3d726414389f8e3b2f79b8ebb023c31abe58515096c2beeda3a",
+    "url": "https://api.github.com/repos/ebandal/H2Orestart/tarball/v0.8.0"
+  },
+  "upstream_binary": {
+    "file": "vendor/h2orestart/H2Orestart.oxt",
+    "bytes": 611297,
+    "sha256": "f36c19fa6b7dff1cf34114d926bdc088e6bcfa7fdc93d67eaafd3f572be1d62c",
+    "url": "https://github.com/ebandal/H2Orestart/releases/download/v0.8.0/H2Orestart.oxt",
+    "local_preserved_file": "H2Orestart-v0.8.0-original.oxt"
+  },
+  "modified_source": {
+    "file": "수정소스/soffice/ConvGraphics.java",
+    "sha256": "84b3dc0a06becb60a1a646ac2dc058439803a94dfafcd0f816d403feb0c1ae3a"
+  },
+  "patch": {
+    "file": "전체그림경계-수정.patch",
+    "sha256": "0ecac44320f37136ba6dbe3a7d0d865e96dcaca2b15c63cb33bbc17a8c4b49ff"
+  },
+  "recipe": {
+    "file": "재빌드.py",
+    "sha256": "53d28b922a11875a15a995a6890a229c8e50fe9e8be7610073d19c5b7f08fb71",
+    "arguments_template": [
+      "python",
+      "-B",
+      "-X",
+      "utf8",
+      "재빌드.py",
+      "--jdk-home",
+      "<JDK17>",
+      "--libreoffice-home",
+      "<LibreOffice>",
+      "--upstream-oxt",
+      "<정확한 v0.8.0 OXT>",
+      "--output",
+      "<새 OXT>"
+    ],
+    "arguments_evidence": "재현용 인자 틀입니다. 실제 실행의 절대 경로와 원문 로그는 비공개 작업 기록에 보존합니다."
+  },
+  "compiler": {
+    "vendor": "Eclipse Temurin",
+    "version": "17.0.21+9",
+    "release_target": "8",
+    "class_major_version": 52,
+    "javac_sha256": "dea4f68ee1c4f4029cc18f9d0683bd43f59dee386f1745ab769f941047316956",
+    "release_metadata": "IMPLEMENTOR=\"Eclipse Adoptium\"\nIMPLEMENTOR_VERSION=\"Temurin-17.0.21+9\"\nJAVA_RUNTIME_VERSION=\"17.0.21+9\"\nJAVA_VERSION=\"17.0.21\"\nJAVA_VERSION_DATE=\"2026-10-20\"\nLIBC=\"default\"\nMODULES=\"java.base java.compiler java.datatransfer java.xml java.prefs java.desktop java.instrument java.logging java.management java.security.sasl java.naming java.rmi java.management.rmi java.net.http java.scripting java.security.jgss java.transaction.xa java.sql java.sql.rowset java.xml.crypto java.se java.smartcardio jdk.accessibility jdk.internal.jvmstat jdk.attach jdk.charsets jdk.compiler jdk.crypto.ec jdk.crypto.cryptoki jdk.crypto.mscapi jdk.dynalink jdk.internal.ed jdk.editpad jdk.hotspot.agent jdk.httpserver jdk.incubator.foreign jdk.incubator.vector jdk.internal.le jdk.internal.opt jdk.internal.vm.ci jdk.internal.vm.compiler jdk.internal.vm.compiler.management jdk.jartool jdk.javadoc jdk.jcmd jdk.management jdk.management.agent jdk.jconsole jdk.jdeps jdk.jdwp.agent jdk.jdi jdk.jfr jdk.jlink jdk.jpackage jdk.jshell jdk.jsobject jdk.jstatd jdk.localedata jdk.management.jfr jdk.naming.dns jdk.naming.rmi jdk.net jdk.nio.mapmode jdk.random jdk.sctp jdk.security.auth jdk.security.jgss jdk.unsupported jdk.unsupported.desktop jdk.xml.dom jdk.zipfs\"\nOS_ARCH=\"x86_64\"\nOS_NAME=\"Windows\"\nSOURCE=\".:git:551f220d8884\"\nBUILD_SOURCE=\"git:1cf43d7a3e77886bfea7d550a902e151a87d724d\"\nBUILD_SOURCE_REPO=\"https://github.com/adoptium/temurin-build.git\"\nSOURCE_REPO=\"https://github.com/adoptium/jdk17u.git\"\nFULL_VERSION=\"17.0.21+9\"\nSEMANTIC_VERSION=\"17.0.21+9\"\nBUILD_INFO=\"OS: Windows Server 2022 Version: 10.0\"\nJVM_VARIANT=\"Hotspot\"\nJVM_VERSION=\"17.0.21+9\"\nIMAGE_TYPE=\"JDK\"\n",
+    "archive_file": "OpenJDK17U-jdk_x64_windows_hotspot_17.0.21_9.zip",
+    "archive_sha256": "98518ecf554465057ee5509462631deeee374bc368c12a411d225cd29381f84b",
+    "source_url": "https://github.com/adoptium/temurin17-binaries/releases/tag/jdk-17.0.21%2B9",
+    "runtime_bundling": "개발 컴파일 도구이며 새 JDK를 제품에 동봉하지 않습니다."
+  },
+  "compile_dependency": {
+    "file": "LibreOffice/program/classes/libreoffice.jar",
+    "bytes": 2229948,
+    "sha256": "abb1956fdfc79ddd001642951cf76c1b573d48eb4cf869c9e67dcd6b26fde1d0",
+    "source_url": "https://www.libreoffice.org/download/download-libreoffice/",
+    "scope": "로컬 공식 LibreOffice 설치의 Java UNO API. 제품에 새로 복사하지 않습니다."
+  },
+  "build_result": {
+    "source_sha256": "84b3dc0a06becb60a1a646ac2dc058439803a94dfafcd0f816d403feb0c1ae3a",
+    "upstream_oxt_sha256": "f36c19fa6b7dff1cf34114d926bdc088e6bcfa7fdc93d67eaafd3f572be1d62c",
+    "output_bytes": 606897,
+    "output_sha256": "6a12a08a4c10bd4e020c4bce9dc9315046a71bf5dc3061ad9405e456d75a13ab",
+    "original_jar_sha256": "d203bc4025ecfb231889124ce725648d4a427ea6d77b8ec5507aa166936e06ee",
+    "patched_jar_sha256": "8d6a584e4ca9962c4b2129ea0c50336b99cb277d2cb58840cbd095665407c67b",
+    "classes": {
+      "soffice/ConvGraphics$1.class": {
+        "bytes": 1121,
+        "sha256": "1430a6acf75d0f928003ff8b430b978ff246afffd99e0d151347903eb73e8253",
+        "major_version": 52
+      },
+      "soffice/ConvGraphics$2.class": {
+        "bytes": 6567,
+        "sha256": "3b99bd9c5387bc6c0e453f48c8d6fb2a30590953a58fa3b00b73d374001155ed",
+        "major_version": 52
+      },
+      "soffice/ConvGraphics.class": {
+        "bytes": 66021,
+        "sha256": "8d11b5ba5aab4289d86f65a6f87a2e50f05fe0f1f3e4ea00bd3a678328355b41",
+        "major_version": 52
+      }
+    },
+    "javac_sha256": "dea4f68ee1c4f4029cc18f9d0683bd43f59dee386f1745ab769f941047316956",
+    "uno_jar_sha256": "abb1956fdfc79ddd001642951cf76c1b573d48eb4cf869c9e67dcd6b26fde1d0",
+    "uno_jar_bytes": 2229948,
+    "unchanged_jar_entries_verified": true,
+    "unchanged_oxt_entries_verified": true
+  },
+  "binary_preservation": "원본 JAR에서 정확한 ConvGraphics.class와 $1.class를 교체하고 javac가 만든 enum-switch 보조 $2.class 한 개만 추가했습니다. 다른 JAR 항목 및 OXT의 H2Orestart.jar 외 항목은 비압축 바이트 전량 동일합니다.",
+  "license": "GPL-3.0-or-later (원본 COPYING과 각 Java 저작권 고지를 보존)",
+  "modification_date": "2026-11-25",
+  "regression_tool": {
+    "file": "../../../검사도구/HWP그림경계검사1121.py",
+    "sha256": "da65cfb2c7cdf6264e9b5ac8c1d4efcfa3c6c94079a96a92c84aeffbf0ab5c76",
+    "fixture_distribution": "표본 원본은 포함하지 않습니다. CLI 인자로 사용자가 제공한 원본 경로와 보존된 PNG SHA-256을 받습니다."
+  }
+}

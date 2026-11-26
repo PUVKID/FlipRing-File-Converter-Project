@@ -1,0 +1,808 @@
+--- a/소스/1.15-사용안내.md
++++ b/소스/1.15-사용안내.md
+@@ -0,0 +1,26 @@
++# 플립링 1.15 · 간단한 화면과 실제 결과 미리보기
++
++무료 Windows 파일 변환 앱 · PUVKID 제작.
++
++| 할 일 | 조작 | 결과 |
++|---|---|---|
++| 파일 변환 | 파일 선택 → 출력 형식 → 변환 실행 | 원본 옆에 새 결과를 저장하며 원본·기존 파일은 덮지 않습니다. |
++| 먼저 확인 | 출력 형식 → 결과 미리보기 | 임시 사본을 실제 변환해 원본/출력과 실제 바이트 수·형식별 주의사항을 표시합니다. |
++| 실패 해결 | 짧은 원인 아래의 해결 버튼 | 필요한 도구 설치·파일 다시 선택·저장 폴더 확인·형식 선택·재시도를 상황에 맞게 연결합니다. |
++| 추가 기능 | 왼쪽 더 보기 | 빠른 작업·작업 공간·외부 도우미·정보를 엽니다. 기존 기능을 삭제하지 않습니다. |
++| 화면 설정 | 왼쪽 설정 | 한국어/English, 라이트·다크·시스템, 키·알림·모션 축소를 선택합니다. |
++| PDF·OCR | 왼쪽 PDF·OCR | 파일 작업/페이지 편집을 선택합니다. 작업에 필요한 옵션부터 표시하고 나머지는 고급 옵션에서 펼칩니다. |
++
++탐색기에서 Shift를 누른 채 파일을 끌면 기존 원형 메뉴를 사용합니다. 앱 안에서 파일을 고르거나 놓을 때는 작업 목록에만 추가합니다. 앱 안의 선택 직후 메뉴가 자동으로 뜨지 않으므로 출력 형식을 천천히 고를 수 있습니다.
++
++## 미리보기 범위
++파일 하나씩, 128MiB 이하를 미리 봅니다. 폴더는 미리보기 대상에서 제외됩니다. 실제 변환과 같은 도구가 필요하며, 없는 도구는 해당 설치 동작으로 연결합니다. 60초가 지나면 취소를 요청하고 변환기가 종료된 뒤 임시 파일을 정리합니다. 닫기/취소 중에는 스레드가 끝날 때까지 자원을 유지합니다.
++
++이미지·PDF는 가능한 실제 그림/페이지를 표시합니다. Office·오디오·비디오·압축 등 시각 렌더러가 없는 출력은 생성된 파일 정보와 실제 크기를 표시합니다. 여러 이미지 결과는 첫 그림과 전체 결과 크기를 표시합니다. 원본이 미리보기 도중 바뀌면 결과를 사용하지 않고 다시 선택하도록 안내합니다.
++
++미리보기는 저장된 최종 결과가 아니며 창을 닫으면 임시 결과를 지웁니다. 실제 변환은 ‘변환 실행’으로 진행합니다. 저장 공간 준비 예상과 실제 최종 용량은 구분합니다. 복잡한 문서의 서식·글꼴·쪽 배치, OCR 정확도와 모든 뷰어의 표시 동등성은 보장하지 않습니다. HWP 5 저장은 실험적 기능입니다. 움직이는 이미지의 프레임, 투명도, 텍스트·표·미디어의 정보 손실 가능성은 형식별로 안내합니다.
++
++## English
++Choose files, select the output format, then run conversion. Preview result converts a temporary copy with the same engine and reports the actual output size. Images and PDFs show supported visual previews; other outputs show generated-file information. Preview supports one file up to 128MiB, excludes folders, and requests cancellation after 60 seconds. Temporary files remain owned until the worker finishes, then are removed on close. A changed source invalidates the preview. Originals and existing outputs remain unchanged.
++
++The main navigation contains Convert, PDF/OCR, History and Settings. More tools keeps the existing quick actions, workspace, helpers and app information accessible. Failures offer a relevant next action; technical details are collapsed. Light, dark, system theme, Korean/English and reduced motion remain available. Shift-drag in Explorer retains the original radial workflow; selecting files inside the app stays in the main work list.
+--- a/소스/1.8-화면안내.md
++++ b/소스/1.8-화면안내.md
+@@ -1,7 +1,7 @@
+ <!-- language-choice:start -->
+ 🔵 **한국어** · [English overview](../en/README.md)
+-<!-- language-choice:end -->
+-
++<!-- language-choice:end -->
++
+ # 플립링 1.8 화면 안내
+ 
+ 기본 창은 1160×820 논리 픽셀의 고정 크기입니다. Windows 배율에 따라 실제 픽셀 수가 달라집니다. 사용 가능한 화면이 작으면 그 영역 안으로 고정 크기를 맞추고 필요한 내용은 스크롤로 확인합니다.
+--- a/소스/app.py
++++ b/소스/app.py
+@@ -50,7 +50,7 @@
+                        install_motion_system, SURFACE_STYLE, MotionMessageBox, decorate_message)
+ 
+ VERSION = 3
+-RELEASE_VERSION = "1.14.0"
++RELEASE_VERSION = "1.15.0"
+ APPNAME = "플립링"
+ AUTOSTART_NAME = "FlipRing19"
+ DATA = Path(os.environ.get("LOCALAPPDATA", str(Path.home()))) / "PUVKID" / "FlipRing19"
+@@ -1089,6 +1089,8 @@
+         self.timer.start(30)
+         self.refresh_tools()
+         self.refresh_history()
++        from clarity_ui import ClarityController
++        self.clarity = ClarityController(self)
+         self.apply_style()
+         self.theme.changed.connect(self.theme_updated)
+         install_button_motions(self)
+@@ -1197,7 +1199,6 @@
+             for entry in self.jobs:
+                 state = self.text('job_' + entry['state'])
+                 summary = f"{Path(entry['source']).name}  ·  {entry['format'].upper()}  ·  {state}"
+-                if entry['error']: summary += ' · ' + error_text(self.language, entry['error'])[:100]
+                 item = QListWidgetItem(summary)
+                 report = entry.get('check')
+                 detail = error_text(self.language, entry['error']) if entry['error'] else entry['output']
+@@ -1219,6 +1220,8 @@
+             self.choose_button.style().unpolish(self.choose_button)
+             self.choose_button.style().polish(self.choose_button)
+             self.choose_button.update()
++        if hasattr(self, 'clarity'):
++            self.clarity.selection_changed()
+ 
+     def preview_selection(self, *unused):
+         index = self.queue_list.currentRow()
+@@ -1383,6 +1386,8 @@
+         self.preview_selection()
+         self.preset_toggle.setText(self.text('preset_hide' if self.preset_toggle.isChecked() else 'preset_show'))
+         self.document_support_toggle.setText(self.text('support_hide' if self.document_support_toggle.isChecked() else 'support_show'))
++        if hasattr(self, 'clarity'):
++            self.clarity.set_language()
+ 
+     def update_record_label(self):
+         key = "record_wait" if self.recording else "recorded" if self.recorded_key is not None else "record"
+@@ -1399,7 +1404,8 @@
+             self.tray.setToolTip(self.app_name())
+         elif self.last_result is not None:
+             output, error = self.last_result
+-            self.status.setText(self.text("failed_status", error=error_text(self.language, error)[:90]) if error
++            from recovery import explain_failure
++            self.status.setText(self.text("failed_status", error=explain_failure(error, self.language).title) if error
+                                 else self.text("done_status", name=Path(output).name))
+             self.tray.setToolTip(self.app_name())
+         else:
+@@ -1460,6 +1466,8 @@
+         self.install_cancel.setVisible(busy)
+         for key, button in self.install_buttons.items():
+             button.setEnabled(not busy and not bool(self._tool_paths.get(key)))
++        if hasattr(self, 'clarity'):
++            self.clarity.refresh()
+         self.update_tray_menu(refresh=False)
+ 
+     def render_install_status(self):
+@@ -1483,7 +1491,9 @@
+ 
+     def work_busy(self):
+         return bool(self.pending or self.pdf_panel.is_busy() or self.workspace_panel.is_busy()
++                    or self.installer.is_busy()
+                     or self.quick_actions_panel.is_busy()
++                    or getattr(getattr(self, 'conversion_preview', None), 'is_busy', lambda: False)()
+                     or any(dialog.is_busy() for dialog in getattr(self, 'delivery_dialogs', [])))
+ 
+     def open_delivery_tools(self):
+@@ -1560,6 +1570,8 @@
+         # 따옴표로 감싼 절대 경로는 한글·공백이 있는 소스/배포 경로에서도 유지된다.
+         arrow = engine.asset("combo-chevron.svg").as_posix()
+         style += '\nQComboBox::down-arrow {image:url("' + arrow + '");width:12px;height:8px;}'
++        from clarity_ui import CLARITY_STYLE
++        style += CLARITY_STYLE
+         self.setStyleSheet(style)
+         self.tray_menu.setStyleSheet(style)
+         self.tray_menu.setStyleSheet(style + SURFACE_STYLE)
+@@ -1705,7 +1717,6 @@
+         try:
+             if dialog.exec() == QFileDialog.Accepted:
+                 self.set_files(dialog.selectedFiles())
+-                self.preview()
+         finally:
+             dialog.deleteLater()
+ 
+@@ -1714,7 +1725,6 @@
+         try:
+             if dialog.exec() == QFileDialog.Accepted:
+                 self.set_files(dialog.selectedFiles())
+-                self.preview()
+         finally:
+             dialog.deleteLater()
+ 
+@@ -1761,7 +1771,6 @@
+ 
+     def receive_files(self, paths):
+         self.set_files(paths)
+-        self.preview()
+ 
+     def dragEnterEvent(self, event):
+         if event.possibleActions() & Qt.CopyAction and file_urls(event.mimeData()):
+@@ -1779,7 +1788,6 @@
+             return
+         Wheel._accept_copy(event)
+         self.set_files(paths)
+-        self.preview()
+ 
+     def preview(self):
+         if not self.paths or not engine.targets(self.paths):
+@@ -1895,6 +1903,8 @@
+         self.refresh_history()
+         self.last_result = (output, error)
+         if error:
++            if hasattr(self, 'clarity'):
++                self.clarity.show_error(error, source)
+             self.notify(self.text("failed_title"), f"{Path(source).name}\n{error_text(self.language, error)}")
+         else:
+             self.notify(self.text("done_title"), Path(output).name)
+--- a/소스/build.py
++++ b/소스/build.py
+@@ -15,8 +15,8 @@
+ ROOT = Path(__file__).resolve().parent
+ 
+ SPEC = "from pathlib import Path\nimport os\nsource = Path(os.environ['FLIPRING_SOURCE'])\n# Windows 배포에 필요한 Qt 기본 모듈만 포함한다.\nfrom PyInstaller.utils.hooks import collect_data_files\na = Analysis([str(source / 'app.py')], pathex=[str(source)], binaries=[], datas=[(str(source / 'assets'), 'assets'), (str(source / 'vendor'), 'vendor'), (str(source / 'document_bridge.py'), '.'), (str(source / 'document_formats.py'), '.'), (str(source / 'document_xlsb.py'), '.')] + collect_data_files('pypdfium2_raw') + collect_data_files('hwpx'), hiddenimports=['PIL.AvifImagePlugin', 'PIL.WebPImagePlugin'], excludes=['tkinter', 'PySide6.QtWebEngineCore', 'PySide6.QtQml', 'PySide6.QtQuick', 'olefile'])\nblocked = ('Qt6Pdf', 'Qt6Qml', 'Qt6Quick', 'Qt6VirtualKeyboard')\ndef required(entry):\n    path = entry[0].replace('\\\\', '/')\n    if any(part in path for part in blocked): return False\n    if '/plugins/platforminputcontexts/' in path or '/plugins/qmltooling/' in path: return False\n    if path.endswith('/qpdf.dll'): return False\n    return True\na.binaries = [entry for entry in a.binaries if required(entry)]\npyz = PYZ(a.pure)\nexe = EXE(pyz, a.scripts, [], exclude_binaries=True, name='FlipRing', debug=False, bootloader_ignore_signals=False, strip=False, upx=False, console=False, icon=str(source / 'assets/app.ico'), version=str(source / 'version-info.txt'))\ncoll = COLLECT(exe, a.binaries, a.datas, strip=False, upx=False, name='FlipRing')\n"
+-ISS = '; PUVKID 무료 배포판 설치 구성\n[Setup]\nAppId=PUVKID.FlipRing19\nAppName=FlipRing\nAppVersion=1.14.0\nAppPublisher=PUVKID\nDefaultDirName={localappdata}\\Programs\\FlipRing19\nDefaultGroupName=FlipRing\nUsePreviousAppDir=no\nPrivilegesRequired=lowest\nArchitecturesAllowed=x64compatible\nArchitecturesInstallIn64BitMode=x64compatible\nMinVersion=10.0\nOutputDir={#GetEnv(\'FLIPRING_INSTALLER\')}\nOutputBaseFilename=FlipRing-Setup\nSetupIconFile={#GetEnv(\'FLIPRING_SOURCE\')}\\assets\\app.ico\nUninstallDisplayIcon={app}\\FlipRing.exe\nCompression=lzma2\nSolidCompression=yes\nWizardStyle=modern\nCloseApplications=yes\nRestartApplications=no\nLicenseFile={#GetEnv(\'FLIPRING_SOURCE\')}\\LICENSE.txt\nInfoAfterFile={#GetEnv(\'FLIPRING_PROGRAM\')}\\사용안내.txt\n[Languages]\nName: "english"; MessagesFile: "compiler:Default.isl"\nName: "korean"; MessagesFile: "compiler:Languages\\Korean.isl"\n[Files]\nSource: "{#GetEnv(\'FLIPRING_PROGRAM\')}\\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs\n[Registry]\nRoot: HKCU; Subkey: "Software\\Microsoft\\Windows\\CurrentVersion\\Run"; ValueName: "FlipRing19"; Flags: uninsdeletevalue\n[Run]\nFilename: "{app}\\FlipRing.exe"; Description: "FlipRing"; Flags: nowait postinstall skipifsilent\n'
+-VERSION = "VSVersionInfo(\n  ffi=FixedFileInfo(filevers=(1,14,0,0), prodvers=(1,14,0,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),\n  kids=[StringFileInfo([StringTable('040904B0', [\n    StringStruct('CompanyName','PUVKID'), StringStruct('FileDescription','FlipRing'),\n    StringStruct('FileVersion','1.14.0'), StringStruct('ProductVersion','1.14.0'),\n    StringStruct('ProductName','FlipRing'), StringStruct('OriginalFilename','FlipRing.exe')\n  ])]), VarFileInfo([VarStruct('Translation',[1033,1200])])]\n)\n"
++ISS = '; PUVKID 무료 배포판 설치 구성\n[Setup]\nAppId=PUVKID.FlipRing19\nAppName=FlipRing\nAppVersion=1.15.0\nAppPublisher=PUVKID\nDefaultDirName={localappdata}\\Programs\\FlipRing19\nDefaultGroupName=FlipRing\nUsePreviousAppDir=no\nPrivilegesRequired=lowest\nArchitecturesAllowed=x64compatible\nArchitecturesInstallIn64BitMode=x64compatible\nMinVersion=10.0\nOutputDir={#GetEnv(\'FLIPRING_INSTALLER\')}\nOutputBaseFilename=FlipRing-Setup\nSetupIconFile={#GetEnv(\'FLIPRING_SOURCE\')}\\assets\\app.ico\nUninstallDisplayIcon={app}\\FlipRing.exe\nCompression=lzma2\nSolidCompression=yes\nWizardStyle=modern\nCloseApplications=yes\nRestartApplications=no\nLicenseFile={#GetEnv(\'FLIPRING_SOURCE\')}\\LICENSE.txt\nInfoAfterFile={#GetEnv(\'FLIPRING_PROGRAM\')}\\사용안내.txt\n[Languages]\nName: "english"; MessagesFile: "compiler:Default.isl"\nName: "korean"; MessagesFile: "compiler:Languages\\Korean.isl"\n[Files]\nSource: "{#GetEnv(\'FLIPRING_PROGRAM\')}\\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs\n[Registry]\nRoot: HKCU; Subkey: "Software\\Microsoft\\Windows\\CurrentVersion\\Run"; ValueName: "FlipRing19"; Flags: uninsdeletevalue\n[Run]\nFilename: "{app}\\FlipRing.exe"; Description: "FlipRing"; Flags: nowait postinstall skipifsilent\n'
++VERSION = "VSVersionInfo(\n  ffi=FixedFileInfo(filevers=(1,15,0,0), prodvers=(1,15,0,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),\n  kids=[StringFileInfo([StringTable('040904B0', [\n    StringStruct('CompanyName','PUVKID'), StringStruct('FileDescription','FlipRing'),\n    StringStruct('FileVersion','1.15.0'), StringStruct('ProductVersion','1.15.0'),\n    StringStruct('ProductName','FlipRing'), StringStruct('OriginalFilename','FlipRing.exe')\n  ])]), VarFileInfo([VarStruct('Translation',[1033,1200])])]\n)\n"
+ 
+ COMPILER_PROBE = "[Setup]\nAppName=FlipRingCompilerProbe\nAppVersion=1\nDefaultDirName={tmp}\\FlipRingCompilerProbe\nUninstallable=no\nOutput=no\nOutputDir=\nOutputManifestFile=\n"
+ 
+--- a/소스/clarity_ui.py
++++ b/소스/clarity_ui.py
+@@ -0,0 +1,145 @@
++"""기존 기능과 값을 유지하고 기본 화면의 정보 밀도만 낮춘다."""
++from pathlib import Path
++from PySide6.QtCore import QObject,Qt,QTimer
++from PySide6.QtWidgets import (QWidget,QLabel,QPushButton,QVBoxLayout,QHBoxLayout,QMenu,QPlainTextEdit,QFormLayout,QSizePolicy)
++from recovery import explain_failure
++from studio_ui import NavButton
++
++CLARITY_STYLE='''
++QMainWindow QLabel#pageTitle {font-size:24px;padding:0;border:0;}
++QLabel#sectionHeading {border:0;padding:3px 0;color:#707070;}
++QLabel#quietDialogTitle {font-size:21px;}
++QLabel#quietSummary {color:#666666;font-size:12px;}
++QWidget#quietRecovery {background:#f2f2f2;border-radius:10px;}
++QMainWindow QPushButton[quiet="true"] {background:transparent;border:0;color:#666666;padding:7px 9px;}
++QMainWindow QPushButton[quiet="true"]:hover {background:#eeeeee;color:#242424;}
++QMainWindow QFrame#dropCard[compact="true"] {background:transparent;border:0;}
++QFrame#sidebar {border:0;background:#f1f1f1;}
++QLabel#brand {font-size:21px;}
++QFrame#studioCard,QFrame#dropCard {border:1px solid #ebebeb;border-radius:12px;}
++QLabel#cardTitle {font-size:14px;}
++QLabel#dropTitle {font-size:19px;}
++QListWidget::item {padding:12px 10px;border-bottom:0;}
++QListWidget::item:selected {background:#ededed;border-radius:6px;}
++QTabBar::tab {padding:10px 14px;}
++QFrame#pickerHeader {border:0;}
++QLabel#pickerTitle {font-size:19px;}
++'''
++
++def quiet_button(button):button.setProperty('quiet',True);button.setAutoDefault(False)
++
++class ClarityController(QObject):
++    def __init__(self,owner):
++        super().__init__(owner);self.owner=owner;self.error='';self.error_source='';self.issue=None
++        owner.sidebar.setFixedWidth(178);owner.page_description.hide();owner.key_badge.hide()
++        for label in owner.sidebar.findChildren(QLabel):
++            if label.objectName()=='sideCaption':label.hide()
++        for label in owner.findChildren(QLabel):
++            if label.objectName()=='sectionHeading':label.hide()
++        side=owner.sidebar.layout();self.more=NavButton('tools');self.more.clicked.connect(self.open_more)
++        side.insertWidget(side.indexOf(owner.nav_buttons[5])+1,self.more)
++        for index in (1,3,6,7):owner.nav_buttons[index].hide()
++        theme_label=next((w for w,key,_ in owner._translated_widgets if key=='theme'),None)
++        settings=owner.quick_settings.layout()
++        if theme_label:settings.insertWidget(2,theme_label)
++        settings.insertWidget(3,owner.theme_combo)
++        owner.subtitle.hide()
++        for label in owner.quick_settings.findChildren(QLabel):
++            if label.objectName()=='cardTitle':label.hide()
++        owner.queue_list.setMinimumHeight(110);owner.queue_list.setMaximumHeight(150)
++        quiet_button(owner.preset_toggle);owner.preset_toggle.setMaximumWidth(200)
++        body=owner.workbench.layout();body.setSpacing(16);body.setAlignment(Qt.AlignTop)
++        self.preview_button=QPushButton();quiet_button(self.preview_button);self.preview_button.clicked.connect(self.open_preview)
++        body.itemAt(3).layout().insertWidget(2,self.preview_button)
++        execution=body.itemAt(3).layout();execution.addStretch(1)
++        execution.itemAt(0).widget().setMaximumWidth(82)
++        owner.output_combo.setMinimumWidth(132);owner.output_combo.setMaximumWidth(180)
++        for button in (self.preview_button,owner.run_button):button.setMaximumWidth(200)
++        owner.drop_card.title.setAlignment(Qt.AlignLeft);owner.drop_card.caption.setAlignment(Qt.AlignLeft)
++        owner.choose_button.setMaximumWidth(210);owner.folder_button.setMaximumWidth(170);quiet_button(owner.folder_button)
++        for i in range(owner.drop_card.body.count()):
++            row=owner.drop_card.body.itemAt(i).layout()
++            if row and row.indexOf(owner.choose_button)>=0:
++                row.setContentsMargins(0,0,0,0);row.addStretch(1)
++        owner.preflight_label.hide();owner.preview_panel.hide()
++        self.result_toggle=QPushButton();self.result_toggle.setCheckable(True);quiet_button(self.result_toggle);self.result_toggle.toggled.connect(owner.preview_panel.setVisible);body.addWidget(self.result_toggle)
++        self.recovery=QWidget();self.recovery.setObjectName('quietRecovery');r=QVBoxLayout(self.recovery);r.setContentsMargins(16,14,16,14);r.setSpacing(8)
++        self.recovery.setSizePolicy(QSizePolicy.Expanding,QSizePolicy.Maximum)
++        self.title=QLabel();self.title.setWordWrap(True);self.message=QLabel();self.message.setWordWrap(True);self.message.setObjectName('quietSummary');r.addWidget(self.title);r.addWidget(self.message)
++        actions=QHBoxLayout();self.fix=QPushButton();self.fix.clicked.connect(self.resolve);actions.addWidget(self.fix);self.details_toggle=QPushButton();self.details_toggle.setCheckable(True);quiet_button(self.details_toggle);actions.addWidget(self.details_toggle);actions.addStretch();r.addLayout(actions)
++        self.details=QPlainTextEdit();self.details.setReadOnly(True);self.details.setFixedHeight(90);r.addWidget(self.details);self.details.hide();self.details_toggle.toggled.connect(self.details.setVisible)
++        body.insertWidget(4,self.recovery);self.recovery.hide()
++        owner.output_combo.currentIndexChanged.connect(self.refresh)
++        owner.queue_list.currentRowChanged.connect(self.selection_changed)
++        owner.tabs.currentChanged.connect(self.navigation_changed)
++        # 2차 작업 도구의 선택 옵션을 기존 고급 영역으로 옮긴다. 값/시그널은 그대로다.
++        panel=owner.workspace_panel;panel.visual.hide();form=panel.format.parentWidget().layout()
++        original=next((layout for layout in (panel.format.parentWidget().layout().itemAt(i).layout() for i in range(panel.format.parentWidget().layout().count())) if isinstance(layout,QFormLayout)),None)
++        if original:
++            extra=QFormLayout();panel.advanced_body.layout().insertLayout(0,extra)
++            for widget in (panel.max_bytes,panel.dpi,panel.quality):
++                row=original.takeRow(widget)
++                if row.labelItem and row.fieldItem:extra.addRow(row.labelItem.widget(),row.fieldItem.widget())
++        for widget in (panel.quality_enabled,panel.a4,panel.name_template,panel.names_preview):panel.advanced_body.layout().insertWidget(0,widget)
++        for widget,key in panel._labels:
++            if key=='ws_name':panel.advanced_body.layout().insertWidget(0,widget)
++        for name in ('note','pdf_note'):
++            owner.pdf_panel._advanced_form.addWidget(getattr(owner.pdf_panel,name))
++        quiet_button(owner.pdf_panel.save_preset_button)
++        self.set_language()
++
++    def set_language(self):
++        en=self.owner.language=='en';self.more.setText('More tools' if en else '더 보기');self.preview_button.setText('Preview result' if en else '결과 미리보기');self.result_toggle.setText('Original · saved result' if en else '원본 · 저장된 결과 보기');self.details_toggle.setText('Technical details' if en else '상세 내용');self.owner.drop_card.title.setText('Convert files' if en else '파일 변환');self.owner.drop_card.caption.setText('Drop files here, or choose them below.' if en else '파일을 여기에 놓거나 아래에서 선택하세요.');self.navigation_changed(self.owner.tabs.currentIndex());self.refresh()
++
++    def navigation_changed(self,index):self.more.setChecked(index in (1,3,6,7))
++    def open_more(self):
++        owner=self.owner;menu=QMenu(owner)
++        for index,key in ((7,'quick_actions'),(6,'ws_title'),(1,'studio_helpers'),(3,'about')):
++            menu.addAction(owner.text(key),lambda checked=False,target=index:owner.tabs.setCurrentIndex(target))
++        menu.exec(self.more.mapToGlobal(self.more.rect().bottomLeft()))
++    def open_preview(self):
++        owner=self.owner
++        if owner.work_busy() or not owner.paths or not owner.output_combo.currentData():return
++        index=owner.queue_list.currentRow();source=owner.jobs[index]['source'] if 0<=index<len(owner.jobs) else owner.paths[0]
++        from preview_dialog import ConversionPreviewDialog
++        dialog=ConversionPreviewDialog(owner,source,owner.output_combo.currentData());owner.conversion_preview=dialog;dialog.recovery_requested.connect(self.preview_recovery)
++        try:dialog.exec()
++        finally:owner.conversion_preview=None;dialog.deleteLater()
++    def preview_recovery(self,error,source):
++        self.show_error(error,source)
++        QTimer.singleShot(0,self.open_preview if self.issue.action=='retry' else self.resolve)
++    def selection_changed(self,*unused):
++        i=self.owner.queue_list.currentRow()
++        if 0<=i<len(self.owner.jobs):
++            row=self.owner.jobs[i];self.show_error(row.get('error',''),row['source'])
++        else:self.show_error('','')
++        self.refresh()
++    def refresh(self,*unused):
++        owner=self.owner;self.preview_button.setEnabled(not owner.work_busy() and bool(owner.paths) and bool(owner.output_combo.currentData()))
++        owner.queue_list.setFixedHeight(min(180,max(68,len(owner.jobs)*46+16)))
++        owner.selection_label.setVisible(not owner.paths)
++        owner.drop_card.setProperty('compact',bool(owner.paths));owner.drop_card.setMaximumHeight(80 if owner.paths else 210)
++        owner.drop_card.style().unpolish(owner.drop_card);owner.drop_card.style().polish(owner.drop_card)
++        i=owner.queue_list.currentRow();has_output=0<=i<len(owner.jobs) and bool(owner.jobs[i].get('output'));self.result_toggle.setVisible(has_output)
++        if not has_output:self.result_toggle.setChecked(False);owner.preview_panel.hide()
++        if self.error:self.show_error(self.error,self.error_source)
++    def show_error(self,error,source=''):
++        self.error=str(error);self.error_source=source;self.recovery.setVisible(bool(error))
++        if not error:return
++        self.issue=explain_failure(error,self.owner.language);self.title.setText(self.issue.title);self.message.setText(self.issue.body);self.fix.setText(self.issue.label);self.details.setPlainText(str(error));self.fix.setEnabled(not self.owner.work_busy())
++    def resolve(self):
++        owner=self.owner
++        if owner.work_busy() or self.issue is None:return
++        action=self.issue.action
++        if action=='install':
++            if self.issue.tool in __import__('engine').TOOLS:owner.installer.start(self.issue.tool)
++        elif action in ('select','unlock'):owner.pick_files()
++        elif action=='helpers':owner.tabs.setCurrentIndex(1)
++        elif action=='location':
++            path=Path(self.error_source)
++            if path.exists():owner.reveal_preview(str(path))
++            else:owner.pick_files()
++        elif action=='format':owner.output_combo.setFocus();owner.output_combo.showPopup()
++        else:
++            if any(row['state']=='failed' for row in owner.jobs):owner.retry_failed()
++            else:owner.tabs.setCurrentIndex(4)
+--- a/소스/conversion_preview.py
++++ b/소스/conversion_preview.py
+@@ -0,0 +1,79 @@
++"""원본 폴더 밖의 임시 사본에만 쓰는 실제 변환 미리보기."""
++from dataclasses import dataclass
++from pathlib import Path
++import tempfile
++import engine
++
++MAX_PREVIEW_BYTES = 128 * 1024 * 1024
++
++@dataclass(frozen=True)
++class PreviewResult:
++    source: str
++    output: str
++    source_bytes: int
++    output_bytes: int
++    warnings: tuple[str, ...]
++
++def format_warnings(source, destination, language='ko'):
++    en=language=='en';kind,extension=engine.classify(source);warnings=[]
++    if kind=='이미지':
++        from PIL import Image
++        frames=1
++        try:
++            with Image.open(source) as image:frames=getattr(image,'n_frames',1)
++        except (OSError,ValueError):
++            pass  # SVG 등 기존 변환기가 처리한 형식은 PIL 메타데이터를 요구하지 않는다.
++        if frames>1:
++            warnings.append((f'The original has {frames} frames. Animation or additional frames may be lost in this output.' if en else f'원본은 {frames}프레임입니다. 출력에서 움직임이나 나머지 프레임이 사라질 수 있습니다.'))
++    if destination in ('jpg','bmp'):
++        warnings.append('Transparency may be flattened; JPG uses lossy compression.' if en else '투명 배경이 사라질 수 있으며 JPG는 손실 압축을 사용합니다.')
++    if kind in ('문서','프레젠테이션','스프레드시트'):
++        warnings.append('Fonts, pagination and complex layouts may change. Check the actual preview.' if en else '글꼴·쪽 나눔·복잡한 서식은 달라질 수 있습니다. 실제 결과를 확인하세요.')
++    if destination in ('csv','tsv','txt'):
++        warnings.append('Plain text outputs cannot preserve all formatting, formulas or multiple sheets.' if en else '텍스트 형식은 서식·수식·여러 시트를 모두 보존하지 못합니다.')
++    if destination=='hwp':
++        warnings.append('HWP 5 export is experimental.' if en else 'HWP 5 저장은 실험적 기능입니다.')
++    if kind in ('오디오','비디오') and destination in ('mp3','m4a','ogg','opus','gif'):
++        warnings.append('Re-encoding may reduce quality or discard tracks and metadata.' if en else '다시 인코딩하면 품질·일부 트랙·메타데이터가 달라질 수 있습니다.')
++    return tuple(warnings)
++
++class PreviewSession:
++    def __init__(self, source, destination, *, max_bytes=MAX_PREVIEW_BYTES, language='ko'):
++        self.source=Path(source).resolve(strict=True);self.destination=destination;self.language=language
++        if not self.source.is_file():raise ValueError('폴더 대신 파일 하나를 선택해 주세요. / Select one file, not a folder.')
++        self.initial=self.source.stat();self.max_bytes=max_bytes
++        if self.initial.st_size>max_bytes:raise ValueError('미리보기는 128 MiB 이하 파일을 지원합니다. / Preview supports files up to 128 MiB.')
++        if destination not in engine.targets([self.source]):raise ValueError('지원하지 않는 미리보기 형식입니다. / Unsupported preview format.')
++        self._temporary=None
++
++    def __enter__(self):
++        self._temporary=tempfile.TemporaryDirectory(prefix='flipring-preview-')
++        return self
++
++    def run(self,cancel):
++        if self._temporary is None:raise RuntimeError('PreviewSession context is required.')
++        def check():
++            if cancel.is_set():raise engine.Cancelled('미리보기를 취소했습니다. / Preview cancelled.')
++        check();missing=engine.requirement(self.source,self.destination)
++        if missing:raise RuntimeError(f'{missing} 설치가 필요합니다.')
++        duplicate=Path(self._temporary.name)/self.source.name;total=0
++        with self.source.open('rb') as original,duplicate.open('xb') as target:
++            while True:
++                check();chunk=original.read(1024*1024)
++                if not chunk:break
++                total+=len(chunk)
++                if total>self.max_bytes:raise ValueError('미리보기 크기 제한을 초과했습니다. / Preview size limit exceeded.')
++                target.write(chunk)
++        observed=self.source.stat()
++        if (observed.st_size,observed.st_mtime_ns)!=(self.initial.st_size,self.initial.st_mtime_ns):
++            raise ValueError('파일이 변경되었습니다. 다시 선택해 주세요. / File changed; select it again.')
++        check();output=Path(engine.convert(duplicate,self.destination,cancel=cancel));check()
++        observed=self.source.stat()
++        if (observed.st_size,observed.st_mtime_ns)!=(self.initial.st_size,self.initial.st_mtime_ns):
++            raise ValueError('변환 중 원본이 변경되었습니다. 다시 선택해 주세요. / File changed during preview; select it again.')
++        if not output.resolve().is_relative_to(Path(self._temporary.name).resolve()):raise RuntimeError('Unexpected preview output path.')
++        size=sum(p.stat().st_size for p in output.rglob('*') if p.is_file()) if output.is_dir() else output.stat().st_size
++        return PreviewResult(str(self.source),str(output),total,size,format_warnings(self.source,self.destination,self.language))
++
++    def __exit__(self,*unused):
++        if self._temporary is not None:self._temporary.cleanup();self._temporary=None
+--- a/소스/installer.iss
++++ b/소스/installer.iss
+@@ -2,7 +2,7 @@
+ [Setup]
+ AppId=PUVKID.FlipRing19
+ AppName=FlipRing
+-AppVersion=1.14.0
++AppVersion=1.15.0
+ AppPublisher=PUVKID
+ DefaultDirName={localappdata}\Programs\FlipRing19
+ DefaultGroupName=FlipRing
+--- a/소스/preview_dialog.py
++++ b/소스/preview_dialog.py
+@@ -0,0 +1,76 @@
++"""미리보기 작업과 임시 파일의 수명을 함께 소유하는 작은 창."""
++import threading
++from pathlib import Path
++from PySide6.QtCore import QThread, Signal, QTimer, Qt, QSize
++from PySide6.QtWidgets import QDialog,QVBoxLayout,QHBoxLayout,QLabel,QPushButton,QProgressBar
++from conversion_preview import PreviewSession
++from preview_panel import PreviewPanel
++from recovery import explain_failure
++from fixed_viewport import fit_window
++from ui_motion import install_surface_motions,set_reduced_motion
++
++class _PreviewJob(QThread):
++    result=Signal(object,str)
++    def __init__(self,session,parent):
++        super().__init__(parent);self.session=session;self.cancel=threading.Event()
++    def run(self):
++        try:self.result.emit(self.session.run(self.cancel),'')
++        except Exception as error:self.result.emit(None,str(error))
++
++class ConversionPreviewDialog(QDialog):
++    recovery_requested=Signal(str,str)
++    def __init__(self,owner,source,destination):
++        super().__init__(owner);self.language=owner.language;self.session=None;self.job=None;self._closing=False;self._outcome=(None,'');self.timed_out=False
++        en=self.language=='en';self.setWindowTitle('Conversion preview' if en else '변환 미리보기');fit_window(self,QSize(880,650))
++        body=QVBoxLayout(self);body.setContentsMargins(28,26,28,24);body.setSpacing(16)
++        title=QLabel((destination.upper()+' preview') if en else (destination.upper()+' 결과 미리보기'));title.setObjectName('quietDialogTitle');body.addWidget(title)
++        self.note=QLabel('A temporary copy is converted. Your original and existing outputs remain unchanged.' if en else '임시 사본으로 변환합니다. 원본과 기존 결과는 그대로 남습니다.');self.note.setWordWrap(True);self.note.setObjectName('muted');body.addWidget(self.note)
++        self.preview=PreviewPanel();self.preview.set_language(self.language);body.addWidget(self.preview,1)
++        # 임시 결과는 창과 함께 정리된다. 탐색기에서 열어 유지되는 파일처럼 보이지 않게 한다.
++        for _,_,_,button in self.preview.panels:button.hide()
++        self.summary=QLabel();self.summary.setWordWrap(True);body.addWidget(self.summary)
++        self.warnings=QLabel();self.warnings.setWordWrap(True);self.warnings.setObjectName('muted');body.addWidget(self.warnings)
++        self.progress=QProgressBar();self.progress.setRange(0,0);self.progress.setTextVisible(False);body.addWidget(self.progress)
++        row=QHBoxLayout();self.recovery_button=QPushButton();self.recovery_button.hide();self.recovery_button.clicked.connect(self._recover);row.addWidget(self.recovery_button);row.addStretch();self.close_button=QPushButton('Cancel' if en else '취소');self.close_button.clicked.connect(self.reject);row.addWidget(self.close_button);body.addLayout(row)
++        self.source=str(source)
++        self.timeout=QTimer(self);self.timeout.setSingleShot(True);self.timeout.timeout.connect(self._timeout)
++        try:
++            self.session=PreviewSession(source,destination,language=self.language);self.session.__enter__()
++            self.preview.set_paths(source,'');self.summary.setText('Creating the actual result…' if en else '실제 결과를 만들고 있습니다…')
++            self.job=_PreviewJob(self.session,self);self.job.result.connect(self._receive);self.job.finished.connect(self._finished);self.job.start();self.timeout.start(60000)
++        except Exception as error:
++            self._outcome=(None,str(error));self._finished()
++        install_surface_motions(self);set_reduced_motion(self,owner.reduced_motion_toggle.isChecked())
++
++    def is_busy(self):return bool(self.job and self.job.isRunning())
++    def _receive(self,result,error):self._outcome=(result,error)
++    def _timeout(self):
++        if self.is_busy():self.timed_out=True;self.job.cancel.set();self.summary.setText('Stopping the preview…' if self.language=='en' else '미리보기를 중지하고 있습니다…')
++    def _finished(self):
++        self.timeout.stop();self.progress.hide();en=self.language=='en';self.close_button.setText('Close' if en else '닫기');result,error=self._outcome
++        if result:
++            shown=Path(result.output)
++            if shown.is_dir():
++                candidates=sorted(x for x in shown.iterdir() if x.suffix.lower() in ('.png','.jpg','.jpeg','.pdf'))
++                if candidates:shown=candidates[0]
++            self.preview.set_paths(result.source,str(shown))
++            for _,_,_,button in self.preview.panels:button.hide()
++            self.summary.setText((f'Original {result.source_bytes:,} bytes  →  Actual result {result.output_bytes:,} bytes' if en else f'원본 {result.source_bytes:,}바이트  →  실제 결과 {result.output_bytes:,}바이트'))
++            self.warnings.setText('\n'.join(result.warnings))
++        elif not self._closing:
++            if self.timed_out:self.summary.setText('Preview exceeded 60 seconds and was cancelled. The original is unchanged.' if en else '미리보기 60초를 초과해 취소했습니다. 원본은 그대로입니다.')
++            elif self.job and self.job.cancel.is_set():self.summary.setText('Preview cancelled.' if en else '미리보기를 취소했습니다.')
++            else:
++                issue=explain_failure(error,self.language);self.summary.setText(issue.title);self.warnings.setText(issue.body+'\n'+error[:450]);self.recovery_button.setText(issue.label);self.recovery_button.show()
++        if self._closing:self._dispose();super().reject()
++    def _dispose(self):
++        if self.session:self.session.__exit__(None,None,None);self.session=None
++    def _recover(self):
++        if self.is_busy():return
++        error=self._outcome[1];self.reject();self.recovery_requested.emit(error,self.source)
++    def reject(self):
++        if self.is_busy():self._closing=True;self.job.cancel.set();self.close_button.setEnabled(False);self.summary.setText('Cancelling…' if self.language=='en' else '취소하고 있습니다…');return
++        self._dispose();super().reject()
++    def closeEvent(self,event):
++        if self.is_busy():self.reject();event.ignore()
++        else:self._dispose();event.accept()
+--- a/소스/recovery.py
++++ b/소스/recovery.py
+@@ -0,0 +1,38 @@
++"""오류 원문을 보존하면서 짧은 원인과 허용된 다음 동작을 정한다."""
++from dataclasses import dataclass
++import re
++import engine
++
++@dataclass(frozen=True)
++class Recovery:
++    title:str
++    body:str
++    action:str
++    label:str
++    tool:str=''
++
++def explain_failure(error,language='ko'):
++    raw=str(error);text=raw.casefold();en=language=='en'
++    def row(ko_title,en_title,ko_body,en_body,action,ko_label,en_label,tool=''):
++        return Recovery(en_title if en else ko_title,en_body if en else ko_body,action,en_label if en else ko_label,tool)
++    if any(x in text for x in ('python312.dll','dll conflicts','module use of','runtime missing','동봉','언어 모델')):
++        return row('실행 구성 확인이 필요해요','Check the app components','앱과 도우미 파일이 맞지 않거나 일부가 없습니다. 도구 화면에서 구성을 확인하세요.','The app or bundled helper components are missing or incompatible. Check the tools screen.','helpers','도구 확인','Check tools')
++    if any(x in text for x in ('file not found:','no such file:','입력이 없','파일이 이동','file changed','파일이 변경')):
++        return row('파일을 다시 선택해 주세요','Select the file again','파일이 이동됐거나 더 이상 읽을 수 없습니다. 현재 위치에서 다시 선택하세요.','The file moved or cannot be read. Select it from its current location.','select','파일 다시 선택','Choose file')
++    for key,(name,_,_) in engine.TOOLS.items():
++            token='(?:'+re.escape(name)+'|'+re.escape(key)+')'
++            required=re.search(r'(?<![\w./\\-])'+token+r'\s+(?:도구(?:를)?\s*)?(?:설치|is required|required|not found|missing)',raw,re.I)
++            required=required or re.search(r'\b(?:install|missing|required)\s+'+token+r'(?![\w./\\-])',raw,re.I)
++            if required:
++                return row(f'{name}가 필요해요',f'{name} is required','버튼을 눌러 필요한 도구를 설치한 뒤 다시 시도하세요.','Install the required tool, then retry the conversion.','install',f'{name} 설치',f'Install {name}',key)
++    if any(x in text for x in ('암호','encrypted','password')):
++        return row('암호를 먼저 해제해 주세요','Unlock the file first','원본 앱에서 암호를 해제한 사본을 저장한 뒤 선택해 주세요.','Save an unlocked copy in the original app, then select that copy.','unlock','파일 다시 선택','Select unlocked copy')
++    if any(x in text for x in ('여유 공간','disk space','no space','공간이 부족','쓰기','permission denied','access is denied','권한')):
++        return row('저장 위치를 확인해 주세요','Check the output location','저장 폴더의 여유 공간과 쓰기 권한을 확인하거나, 쓸 수 있는 폴더의 사본을 선택하세요.','Check free space and write access, or choose a copy in a writable folder.','location','저장 폴더 확인','Show folder')
++    if any(x in text for x in ('이동','입력이 없','not exist','no such file','찾을 수 없','file changed','파일이 변경')):
++        return row('파일을 다시 선택해 주세요','Select the file again','파일이 이동됐거나 더 이상 읽을 수 없습니다. 현재 위치에서 다시 선택하세요.','The file moved or cannot be read. Select it from its current location.','select','파일 다시 선택','Choose file')
++    if any(x in text for x in ('시간','timeout','timed out','time limit')):
++        return row('처리가 오래 걸렸어요','The operation timed out','작은 파일이나 낮은 해상도로 다시 시도하세요. 원본은 그대로 남아 있습니다.','Retry with a smaller file or lower resolution. The original is unchanged.','retry','다시 시도','Retry')
++    if any(x in text for x in ('지원','unsupported','손상','읽을 수','corrupt','invalid','형식')):
++        return row('파일이나 형식을 확인해 주세요','Check the file and format','원본 앱에서 파일이 열리는지 확인하고 다른 출력 형식을 선택해 보세요.','Check that the source opens in its original app, then try another output format.','format','출력 형식 선택','Choose format')
++    return row('변환을 마치지 못했어요','Conversion did not finish','원본은 그대로입니다. 파일과 출력 형식을 확인한 뒤 다시 시도하세요. 상세 내용은 펼쳐 볼 수 있습니다.','The original is unchanged. Check the file and output format. Expand details for the original error.','retry','다시 시도','Retry')
+--- a/소스/test_clarity115.py
++++ b/소스/test_clarity115.py
+@@ -0,0 +1,62 @@
++"""새 미리보기의 원본 보존·취소와 해결 동작의 경계를 검사한다."""
++from pathlib import Path
++import tempfile,threading,unittest
++from PIL import Image
++
++class PreviewRecoveryTests(unittest.TestCase):
++    def test_actual_preview_preserves_source_and_existing_output(self):
++        from conversion_preview import PreviewSession
++        with tempfile.TemporaryDirectory() as folder:
++            p=Path(folder)/'사진.png';Image.new('RGBA',(32,20),(255,0,0,90)).save(p)
++            before=p.read_bytes();existing=p.with_suffix('.jpg');existing.write_bytes(b'existing')
++            with PreviewSession(p,'jpg') as session:
++                result=session.run(threading.Event())
++                self.assertTrue(Path(result.output).is_file());self.assertEqual(result.output_bytes,Path(result.output).stat().st_size)
++                self.assertNotEqual(Path(result.output).parent,p.parent)
++                with Image.open(result.output) as image:self.assertEqual(image.size,(32,20))
++                self.assertTrue(result.warnings)
++                output=Path(result.output)
++            self.assertFalse(output.exists());self.assertEqual(p.read_bytes(),before);self.assertEqual(existing.read_bytes(),b'existing')
++            self.assertEqual(set(x.name for x in p.parent.iterdir()),{'사진.png','사진.jpg'})
++
++    def test_cancel_has_no_published_result(self):
++        from conversion_preview import PreviewSession
++        import engine
++        with tempfile.TemporaryDirectory() as folder:
++            p=Path(folder)/'사진.png';Image.new('RGB',(4,4)).save(p);cancel=threading.Event();cancel.set()
++            with PreviewSession(p,'jpg') as session:
++                with self.assertRaises(engine.Cancelled):session.run(cancel)
++            self.assertEqual(len(list(p.parent.iterdir())),1)
++
++    def test_large_or_directory_input_not_copied(self):
++        from conversion_preview import PreviewSession
++        with tempfile.TemporaryDirectory() as folder:
++            with self.assertRaises(ValueError):PreviewSession(folder,'zip')
++            p=Path(folder)/'file.txt';p.write_text('hello')
++            with self.assertRaises(ValueError):PreviewSession(p,'pdf',max_bytes=2)
++
++    def test_only_allowed_missing_tool_has_install_action(self):
++        from recovery import explain_failure
++        a=explain_failure('FFmpeg 도구를 설치해 주세요.','ko');self.assertEqual(a.action,'install');self.assertEqual(a.tool,'ffmpeg')
++        b=explain_failure('UnknownTool 설치가 필요합니다.','en');self.assertNotEqual(b.action,'install')
++
++    def test_missing_source_named_after_tool_is_not_an_install_request(self):
++        from recovery import explain_failure
++        result=explain_failure("File not found: 'E:/사진/ffmpeg.mp4'",'en')
++        self.assertEqual(result.action,'select')
++
++    def test_failure_messages_have_actionable_specific_causes(self):
++        from recovery import explain_failure
++        for raw,action in [('입력이 없거나 이동되었습니다.','select'),('여유 공간이 부족합니다.','location'),('암호화된 PDF는 지원하지 않습니다.','unlock'),('처리 제한 시간을 초과했습니다.','retry')]:
++            with self.subTest(raw=raw):
++                result=explain_failure(raw,'ko');self.assertEqual(result.action,action);self.assertTrue(result.title);self.assertTrue(result.body)
++        result=explain_failure('Module use of python312.dll conflicts with this version of Python','en');self.assertEqual(result.action,'helpers');self.assertNotIn('다시',result.body)
++
++    def test_animation_to_still_warns_about_lost_frames(self):
++        from conversion_preview import PreviewSession
++        with tempfile.TemporaryDirectory() as folder:
++            p=Path(folder)/'움직임.gif';Image.new('RGB',(12,8),'red').save(p,save_all=True,append_images=[Image.new('RGB',(12,8),'blue')],duration=100,loop=0)
++            with PreviewSession(p,'png') as session:
++                result=session.run(threading.Event());self.assertTrue(any('프레임' in x for x in result.warnings))
++
++if __name__=='__main__':unittest.main()
+--- a/소스/test_clarity_ui115.py
++++ b/소스/test_clarity_ui115.py
+@@ -0,0 +1,65 @@
++"""핵심 탐색·접힌 상세·한영/두 테마·실제 미리보기 연결의 Qt 검사."""
++import os
++os.environ.setdefault('QT_QPA_PLATFORM','offscreen')
++from pathlib import Path
++import tempfile,unittest
++from PIL import Image
++from PySide6.QtWidgets import QApplication
++from PySide6.QtCore import QEventLoop,QTimer
++from PySide6.QtTest import QTest
++import app
++
++APPLICATION=QApplication.instance() or QApplication([])
++APPLICATION.setQuitOnLastWindowClosed(False)
++
++class ClarityUiTests(unittest.TestCase):
++    def setUp(self):
++        self.temp=tempfile.TemporaryDirectory();self.old_data=app.DATA;app.DATA=Path(self.temp.name)/'data'
++        app.apply_application_style(APPLICATION);self.window=app.MainWindow();self.window.timer.stop();self.window.show();APPLICATION.processEvents()
++    def tearDown(self):
++        w=self.window;w.timer.stop();w.pdf_panel.shutdown();w.workspace_panel.shutdown();w.quick_actions_panel.shutdown();w.pool.shutdown(wait=True);w.tray.hide();w.wheel.hide();w.hide();w.deleteLater();APPLICATION.processEvents();app.DATA=self.old_data;self.temp.cleanup()
++    def test_core_navigation_and_optional_panels_stay_quiet(self):
++        w=self.window
++        for language in ('ko','en'):
++            w.set_language(language)
++            for theme in ('light','dark'):
++                w.theme.apply(theme);APPLICATION.processEvents()
++                self.assertEqual([i for i,b in w.nav_buttons.items() if not b.isHidden()],[0,4,2,5])
++                self.assertFalse(w.clarity.more.isHidden());self.assertTrue(w.page_description.isHidden());self.assertTrue(w.key_badge.isHidden())
++                self.assertTrue(w.preview_panel.isHidden());self.assertTrue(w.clarity.details.isHidden())
++                self.assertTrue(w.workspace_panel.visual.isHidden())
++                self.assertLessEqual(w.sidebar.width(),180)
++    def test_selection_does_not_open_the_wheel_and_recovery_has_exact_action(self):
++        w=self.window;p=Path(self.temp.name)/'사진.png';Image.new('RGBA',(60,40),'red').save(p)
++        w.receive_files([str(p)]);APPLICATION.processEvents();self.assertFalse(w.wheel.isVisible())
++        self.assertTrue(w.clarity.preview_button.isEnabled())
++        w.clarity.show_error('FFmpeg 설치가 필요합니다.',str(p));APPLICATION.processEvents();self.assertTrue(w.clarity.recovery.isVisible());self.assertEqual(w.clarity.issue.tool,'ffmpeg');self.assertTrue(w.clarity.details.isHidden())
++        w.clarity.details_toggle.setChecked(True);self.assertFalse(w.clarity.details.isHidden());self.assertIn('FFmpeg',w.clarity.details.toPlainText())
++    def test_preview_dialog_actual_result_and_close_cleanup(self):
++        from preview_dialog import ConversionPreviewDialog
++        p=Path(self.temp.name)/'사진.png';Image.new('RGBA',(30,20),'red').save(p);original=p.read_bytes()
++        d=ConversionPreviewDialog(self.window,str(p),'jpg');d.show();loop=QEventLoop();timer=QTimer();timer.setSingleShot(True);timer.timeout.connect(loop.quit);d.job.finished.connect(loop.quit);timer.start(15000)
++        if d.job.isRunning():loop.exec()
++        APPLICATION.processEvents();self.assertFalse(d.is_busy());self.assertIsNotNone(d._outcome[0]);output=Path(d._outcome[0].output);self.assertTrue(output.exists());self.assertIn('실제 결과',d.summary.text());d.reject();self.assertFalse(output.exists());self.assertEqual(p.read_bytes(),original)
++
++    def test_loaded_controls_fit_and_recovery_does_not_stretch(self):
++        w=self.window;w._flipring_screen_fit.pending.stop();w.setFixedSize(1160,820)
++        p=Path(self.temp.name)/'사진.png';Image.new('RGB',(10,10)).save(p)
++        w.receive_files([str(p)]);w.clarity.show_error('FFmpeg 설치가 필요합니다.',str(p));APPLICATION.processEvents();QTest.qWait(200)
++        for button in (w.choose_button,w.folder_button):
++            point=button.mapTo(w.drop_card,button.rect().bottomRight())
++            self.assertTrue(w.drop_card.rect().contains(point))
++            self.assertGreaterEqual(button.height(),button.minimumSizeHint().height())
++        self.assertLess(w.clarity.recovery.height(),220)
++
++    def test_failed_preview_offers_the_matching_recovery_action(self):
++        from unittest.mock import patch
++        from preview_dialog import ConversionPreviewDialog
++        p=Path(self.temp.name)/'사진.png';Image.new('RGB',(10,10)).save(p)
++        with patch('engine.requirement',return_value='FFmpeg'):
++            d=ConversionPreviewDialog(self.window,str(p),'jpg');d.show();loop=QEventLoop();d.job.finished.connect(loop.quit);QTimer.singleShot(5000,loop.quit)
++            if d.job.isRunning():loop.exec()
++            APPLICATION.processEvents();self.assertFalse(d.is_busy());self.assertTrue(hasattr(d,'recovery_button'))
++            self.assertTrue(d.recovery_button.isVisible());self.assertIn('FFmpeg',d.recovery_button.text());d.reject()
++
++if __name__=='__main__':unittest.main()
+--- a/소스/ui_motion.py
++++ b/소스/ui_motion.py
+@@ -45,7 +45,7 @@
+ SURFACE_STYLE = """
+ QFileDialog#flipringPicker {background:#fafafa;}
+ QFileDialog#flipringPicker QWidget {font-family:'NanumGothic';font-weight:700;font-size:13px;color:#262626;}
+-QFileDialog#flipringPicker QLabel#pickerTitle {font-size:24px;font-weight:700;}
++QFileDialog#flipringPicker QLabel#pickerTitle {font-size:19px;font-weight:700;}
+ QFileDialog#flipringPicker QLabel#pickerCaption {color:#737373;font-size:12px;}
+ QFileDialog#flipringPicker QLabel#pickerSummary {color:#646464;font-size:12px;}
+ QFileDialog#flipringPicker QFrame#pickerHeader {background:transparent;border:0;}
+@@ -306,6 +306,10 @@
+ 
+ 
+ def pulse_widget(widget):
++    # 문구에 입력 칸처럼 생긴 테두리를 반복해서 그리지 않는다.
++    # 페이지 전환·버튼·진행 상태의 기존 유한 모션은 유지한다.
++    if isinstance(widget, QLabel):
++        return
+     ensure_surface_motion(widget).pulse()
+ 
+ 
+@@ -636,6 +640,7 @@
+         header.setSpacing(16)
+         self.mark = PickerMark()
+         header.addWidget(self.mark)
++        self.mark.hide()
+         headings = QVBoxLayout()
+         headings.setSpacing(5)
+         self.heading = QLabel(title)
+@@ -644,6 +649,7 @@
+         self.caption = QLabel(tr(language, "picker_folder_caption" if folder else "picker_caption"))
+         self.caption.setObjectName("pickerCaption")
+         headings.addWidget(self.caption)
++        self.caption.hide()
+         header.addLayout(headings, 1)
+         layout.addWidget(self.header, 0, 0, 1, 4)
+         button_box = self.findChild(QDialogButtonBox)
+--- a/소스/version-info.txt
++++ b/소스/version-info.txt
+@@ -1,8 +1,8 @@
+ VSVersionInfo(
+-  ffi=FixedFileInfo(filevers=(1,14,0,0), prodvers=(1,14,0,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),
++  ffi=FixedFileInfo(filevers=(1,15,0,0), prodvers=(1,15,0,0), mask=0x3f, flags=0, OS=0x40004, fileType=1, subtype=0, date=(0,0)),
+   kids=[StringFileInfo([StringTable('040904B0', [
+     StringStruct('CompanyName','PUVKID'), StringStruct('FileDescription','FlipRing'),
+-    StringStruct('FileVersion','1.14.0'), StringStruct('ProductVersion','1.14.0'),
++    StringStruct('FileVersion','1.15.0'), StringStruct('ProductVersion','1.15.0'),
+     StringStruct('ProductName','FlipRing'), StringStruct('OriginalFilename','FlipRing.exe')
+   ])]), VarFileInfo([VarStruct('Translation',[1033,1200])])]
+ )
+--- a/소스/배포구성.json
++++ b/소스/배포구성.json
+@@ -1,6 +1,6 @@
+ {
+   "schema": 1,
+-  "version": "1.14.0",
++  "version": "1.15.0",
+   "source_roots": [
+     "소스",
+     "검사도구",
+@@ -1003,7 +1003,14 @@
+     "소스/배포빌드.py",
+     "소스/빌드방법.md",
+     "소스/사용안내.txt",
+-    "소스/실행환경_참조.json"
++    "소스/실행환경_참조.json",
++    "소스/conversion_preview.py",
++    "소스/preview_dialog.py",
++    "소스/recovery.py",
++    "소스/clarity_ui.py",
++    "소스/test_clarity115.py",
++    "소스/test_clarity_ui115.py",
++    "소스/1.15-사용안내.md"
+   ],
+   "excluded_files": {
+     "ROUTING-LESSONS.md": "비공개 작업 실패와 운영 기록. 제품·검사 소스는 별도 모두 포함.",
+@@ -1156,5 +1163,5 @@
+     }
+   ],
+   "separation_reason": "528499332바이트의 정확10개 원 archive는 전체소스ZIP에 보존하고 실행부에서만 분리. 동등한 동일 Release 접근의 실제 게시 검증은 별도.",
+-  "source_zip": "플립링-1.14.0-전체소스.zip"
++  "source_zip": "플립링-1.15.0-전체소스.zip"
+ }
+--- a/소스/배포빌드.py
++++ b/소스/배포빌드.py
+@@ -10,9 +10,9 @@
+ import sys
+ import zipfile
+ 
+-SOURCE_ZIP_NAME = "플립링-1.14.0-전체소스.zip"
+-RELEASE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.14.0"
+-SOURCE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/download/v1.14.0/" + "FlipRing-1.14.0-Source.zip"
++SOURCE_ZIP_NAME = "플립링-1.15.0-전체소스.zip"
++RELEASE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/tag/v1.15.0"
++SOURCE_URL = "https://github.com/PUVKID/FlipRing-File-Converter-Project/releases/download/v1.15.0/" + "FlipRing-1.15.0-Source.zip"
+ 
+ 
+ class DeliveryError(RuntimeError):
+@@ -190,7 +190,7 @@
+     entries, excluded = classified_entries(root, prepared["config"])
+     if manifest.get("entries") != entries or manifest.get("excluded") != excluded:
+         raise DeliveryError("전체 소스 분류와 외부 manifest가 다릅니다.")
+-    if (manifest.get("file") != SOURCE_ZIP_NAME or manifest.get("version") != "1.14.0"
++    if (manifest.get("file") != SOURCE_ZIP_NAME or manifest.get("version") != "1.15.0"
+             or manifest.get("release_url") != RELEASE_URL or manifest.get("source_url") != SOURCE_URL):
+         raise DeliveryError("전체 소스의 버전·파일명·예정 URL이 다릅니다.")
+     archive = reject_links(archive)
+@@ -253,7 +253,7 @@
+ 
+ 
+ def runtime_notice(manifest):
+-    return ("플립링 1.14.0 전체 상응 소스\n파일: " + manifest["file"] + "\nSHA-256: " + manifest["sha256"]
++    return ("플립링 1.15.0 전체 상응 소스\n파일: " + manifest["file"] + "\nSHA-256: " + manifest["sha256"]
+             + "\n동일 Release: " + manifest["release_url"] + "\n정확 소스 자산: " + manifest["source_url"]
+             + "\n고객 배포 폴더의 같은 전체 소스 ZIP과 원문 고지·패치·빌드 방법을 보존해 주세요.\n"
+             "온라인 재배포자는 같은 장소에서 무료로 동등한 상응 소스 접근을 제공할 수 있습니다.\n"
+--- a/소스/빌드방법.md
++++ b/소스/빌드방법.md
+@@ -1,10 +1,10 @@
+ <!-- language-choice:start -->
+ 🔵 **한국어** · [English overview](../en/README.md)
+-<!-- language-choice:end -->
+-
+-# 플립링 1.14.0 빌드
+-
+-현재 버전은 **1.14.0**입니다. 아래 1.13 이하 기록은 과거 차수의 재현 설명으로 보존합니다. 현재 전체 소스 ZIP은 `플립링-1.14.0-전체소스.zip`입니다.
++<!-- language-choice:end -->
++
++# 플립링 1.15.0 빌드
++
++현재 버전은 **1.15.0**입니다. 아래 1.13 이하 기록은 과거 차수의 재현 설명으로 보존합니다. 현재 전체 소스 ZIP은 `플립링-1.15.0-전체소스.zip`입니다.
+ 
+ | 구성 | 방법 |
+ |---|---|

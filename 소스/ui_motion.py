@@ -45,7 +45,7 @@ def set_reduced_motion(root, enabled):
 SURFACE_STYLE = """
 QFileDialog#flipringPicker {background:#fafafa;}
 QFileDialog#flipringPicker QWidget {font-family:'NanumGothic';font-weight:700;font-size:13px;color:#262626;}
-QFileDialog#flipringPicker QLabel#pickerTitle {font-size:24px;font-weight:700;}
+QFileDialog#flipringPicker QLabel#pickerTitle {font-size:19px;font-weight:700;}
 QFileDialog#flipringPicker QLabel#pickerCaption {color:#737373;font-size:12px;}
 QFileDialog#flipringPicker QLabel#pickerSummary {color:#646464;font-size:12px;}
 QFileDialog#flipringPicker QFrame#pickerHeader {background:transparent;border:0;}
@@ -306,6 +306,10 @@ def install_surface_motions(root):
 
 
 def pulse_widget(widget):
+    # 문구에 입력 칸처럼 생긴 테두리를 반복해서 그리지 않는다.
+    # 페이지 전환·버튼·진행 상태의 기존 유한 모션은 유지한다.
+    if isinstance(widget, QLabel):
+        return
     ensure_surface_motion(widget).pulse()
 
 
@@ -636,6 +640,7 @@ class MotionFileDialog(QFileDialog):
         header.setSpacing(16)
         self.mark = PickerMark()
         header.addWidget(self.mark)
+        self.mark.hide()
         headings = QVBoxLayout()
         headings.setSpacing(5)
         self.heading = QLabel(title)
@@ -644,6 +649,7 @@ class MotionFileDialog(QFileDialog):
         self.caption = QLabel(tr(language, "picker_folder_caption" if folder else "picker_caption"))
         self.caption.setObjectName("pickerCaption")
         headings.addWidget(self.caption)
+        self.caption.hide()
         header.addLayout(headings, 1)
         layout.addWidget(self.header, 0, 0, 1, 4)
         button_box = self.findChild(QDialogButtonBox)
